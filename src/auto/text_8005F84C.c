@@ -2090,8 +2090,8 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void PSMTXRotRad(void *, s32, f32);
-    void fn_80202540(void *, f32, f32, f32);
-    void fn_802025C0(void *, f32, f32, f32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void PSMTXScale(void *, f32, f32, f32);
     void fn_80202640(void *, f32 *);
     void Game_Assert(void *, s32, void *);
     extern f32 lbl_803691E4;
@@ -2396,12 +2396,12 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
             PSMTXConcat(mD8, mA8, mD8);
         }
         if (arg1 & 0x80) {
-            fn_80202540(mA8, arg2[0x30 / 4], arg2[0x34 / 4], arg2[0x38 / 4]);
+            PSMTXTrans(mA8, arg2[0x30 / 4], arg2[0x34 / 4], arg2[0x38 / 4]);
             PSMTXConcat(mA8, mD8, mD8);
-            fn_80202540(mA8, -arg2[0x30 / 4], -arg2[0x34 / 4], -arg2[0x38 / 4]);
+            PSMTXTrans(mA8, -arg2[0x30 / 4], -arg2[0x34 / 4], -arg2[0x38 / 4]);
             PSMTXConcat(mD8, mA8, mD8);
             if (arg1 & 0x200) {
-                fn_80202540(mA8, arg2[0x48 / 4], arg2[0x4C / 4], arg2[0x50 / 4]);
+                PSMTXTrans(mA8, arg2[0x48 / 4], arg2[0x4C / 4], arg2[0x50 / 4]);
                 PSMTXConcat(mA8, mD8, mD8);
             }
         }
@@ -2409,21 +2409,21 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
         PSMTXIdentity(mD8);
     }
     if (arg1 & 8) {
-        fn_802025C0(m108, arg2[0], arg2[1], arg2[2]);
+        PSMTXScale(m108, arg2[0], arg2[1], arg2[2]);
         if (arg1 & 0x100) {
-            fn_80202540(mA8, arg2[0x3C / 4], arg2[0x40 / 4], arg2[0x44 / 4]);
+            PSMTXTrans(mA8, arg2[0x3C / 4], arg2[0x40 / 4], arg2[0x44 / 4]);
             PSMTXConcat(mA8, m108, m108);
-            fn_80202540(mA8, -arg2[0x3C / 4], -arg2[0x40 / 4], -arg2[0x44 / 4]);
+            PSMTXTrans(mA8, -arg2[0x3C / 4], -arg2[0x40 / 4], -arg2[0x44 / 4]);
             PSMTXConcat(m108, mA8, m108);
             if (arg1 & 0x400) {
-                fn_80202540(mA8, arg2[0x54 / 4], arg2[0x58 / 4], arg2[0x5C / 4]);
+                PSMTXTrans(mA8, arg2[0x54 / 4], arg2[0x58 / 4], arg2[0x5C / 4]);
                 PSMTXConcat(mA8, m108, m108);
             }
         }
         PSMTXConcat(mD8, m108, mD8);
     }
     if (arg1 & 0x20) {
-        fn_80202540(mA8, arg2[0x18 / 4], arg2[0x1C / 4], arg2[0x20 / 4]);
+        PSMTXTrans(mA8, arg2[0x18 / 4], arg2[0x1C / 4], arg2[0x20 / 4]);
         PSMTXConcat(mA8, mD8, mD8);
     }
     PSMTXCopy(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
