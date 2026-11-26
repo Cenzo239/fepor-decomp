@@ -16131,7 +16131,7 @@ void fn_800E4E5C(void *arg0) {
 }
 
 #pragma push
-#pragma cplusplus reset
+#pragma cplusplus off
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
