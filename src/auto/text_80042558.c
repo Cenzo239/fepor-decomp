@@ -177,6 +177,17 @@ static inline void *get_4F128_resource(void *arg0,s32 value) {
 }
 
 
+static inline void *Unit_GetDisplayTexture(void *unit) {
+ void *fn_8004B078(void *, s32);
+ void *resource = get_4F128_resource(unit, get_4F128_id(unit));
+ switch(M2C_FIELD(M2C_FIELD(unit,void **,0x190),u8 *,8)) {
+ case 0: return fn_8004B078(resource,0);
+ case 1: return fn_8004B078(resource,1);
+ case 2: return fn_8004B078(resource,2);
+ case 3: return fn_8004B078(resource,3);
+ default: return fn_8004B078(resource,0);
+ }
+}
 void fn_8004FE98(s32 arg0, s8 arg1);
 
 typedef struct {
@@ -6455,6 +6466,8 @@ void fn_8004EB14(void *arg0, u32 arg1) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma push
+#pragma optimization_level 3
 s32 Unit_IsDisplayReady(void *arg0) {
 #pragma opt_common_subs off
   void fn_800056A0(s32);
@@ -6497,7 +6510,7 @@ default: res=fn_8004B078(res,0);break;
  }
  return 1;
 }
-
+#pragma pop
 static inline s32 get_4F5EC_id(void *arg0) {
  void *Unit_GetActiveItemPtr(void *);
  s32 fn_8004ABD4(void *,s32);
@@ -6575,16 +6588,16 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  void *name;
  u8 flags=M2C_FIELD(arg0,u8 *,3);
  if(!(flags&3)||(flags&4)) {
- char buf2[0x20];
  res=get_4F5EC_resource(arg0);
  name=fn_8004B158(res);
  arg1=(u16)arg1|8;
  fn_8005C870(name,arg1);
  if(!fn_8004AF74(res,M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8))) {
- void *base2;
+ char buf2[0x20];
+ s32 value2;
  s32 idx2;
  void *name2;
- s32 value2;
+ void *base2;
  void *resolved2;
  value2=get_4F5EC_id(arg0);
  base2=M2C_FIELD(arg0,void **,0x18C);
@@ -6614,10 +6627,10 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  }
  switch(M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8)) {
  case 0: res=fn_8004B078(res,0);break;
-case 1: res=fn_8004B078(res,1);break;
-case 2: res=fn_8004B078(res,2);break;
-case 3: res=fn_8004B078(res,3);break;
-default: res=fn_8004B078(res,0);break;
+ case 1: res=fn_8004B078(res,1);break;
+ case 2: res=fn_8004B078(res,2);break;
+ case 3: res=fn_8004B078(res,3);break;
+ default: res=fn_8004B078(res,0);break;
  }
  if(!res||FileCache_Probe(res)==0x8000U) res=lbl_80366DC8;
  if(res!=lbl_80366DC8) fn_8005C870(res,arg1);
