@@ -1,6 +1,6 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline void Video_DistributeOuter(u8 *dst, u16 amount) {
+static inline void Video_DistributeOuter(u16 amount, u8 *dst) {
     extern f32 lbl_8036B480;
     extern f32 lbl_8036B478;
     s32 i;
