@@ -3173,6 +3173,9 @@ s32 fn_8014716C(u8 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_strength_reduction off
 extern "C" void fn_80147188(s32 arg0) {
     void fn_800B3194(void);
     extern f32 gMsPerFrame;
@@ -3201,7 +3204,7 @@ extern "C" void fn_80147188(s32 arg0) {
     s32 arg_save;
     Entry *base;
     s16 ext;
-    s8 idx;
+    s32 idx;
     s8 *str;
     s8 *a;
     s8 *b;
@@ -3300,8 +3303,8 @@ extern "C" void fn_80147188(s32 arg0) {
         loop:
             ca = *(s8 *)((u8 *)a);
             if (ca == 0) {
-                if (idx >= 0) {
-                    temp = (s32)idx * 0x30;
+                if ((s8)idx >= 0) {
+                    temp = (s8)idx * 0x30;
                     {
                         Entry *hit = (Entry *)((u8 *)base + 0x2a0 + temp);
                         if (hit->flags & 1) {
@@ -3331,6 +3334,7 @@ extern "C" void fn_80147188(s32 arg0) {
 
     fn_800B3194();
 }
+#pragma pop
 
 #pragma cplusplus on
 /* Fade an active SE cue slot to silence over durationMs (immediate stop if <= 0). */
