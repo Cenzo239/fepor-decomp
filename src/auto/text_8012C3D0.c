@@ -953,36 +953,43 @@ void fn_8012D6A4(void *arg0) {
     }
 }
 
-s32 fn_8012DC74(void *arg0) {
-    M2C_UNK fn_8000C070(void *, M2C_UNK);
-    f32 fn_8005A028(M2C_UNK, s32, u8, f32, f32, f32, f32);
+s32 fn_8012DC74(void *arg0)
+{
+    void Process_Goto(void *, s32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
     extern f32 lbl_8036A4EC;
-    u32 temp_r5;
-    u8 temp_r4;
-    u8 temp_r6;
+    u8 *state;
+    u8 idx;
+    u8 fr;
+    s32 a;
+    s32 b;
 
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x64) == 0) {
-        temp_r4 = M2C_FIELD(arg0, u8 *, 0x63);
-        if (temp_r4 == (s32) (M2C_FIELD(arg0, u8 *, 0x6D) - 1)) {
+    state = (u8 *)arg0;
+
+    if (state[0x64] == 0) {
+        if (state[0x63] == (s32)(state[0x6D] - 1)) {
             return 0;
         }
-        M2C_FIELD(arg0, u8 *, 0x63) = (u8) (temp_r4 + 1);
-        M2C_FIELD(arg0, s8 *, 0x65) = 0;
-        goto block_4;
+        state[0x63]++;
+        state[0x65] = 0;
     }
-block_4:
-    M2C_FIELD(arg0, u8 *, 0x64) = (u8) (M2C_FIELD(arg0, u8 *, 0x64) + 1);
-    temp_r6 = M2C_FIELD(arg0, u8 *, 0x63);
-    temp_r5 = (temp_r6 - 1) * 0x120;
-    M2C_FIELD(arg0, s16 *, 0x68) = (s16) fn_8005A028(2, temp_r5, temp_r6, (f32) temp_r5, (f32) (temp_r6 * 0x120), lbl_8036A4EC, (f32) M2C_FIELD(arg0, u8 *, 0x64));
-    if ((u8) M2C_FIELD(arg0, u8 *, 0x64) == 0x10) {
-        M2C_FIELD(arg0, u8 *, 0x64) = 0U;
-        if ((s8) M2C_FIELD(arg0, u8 *, 0x62) < 0) {
-            fn_8000C070(arg0, 6);
+
+    state[0x64]++;
+    idx = state[0x63];
+    fr = state[0x64];
+    a = (idx - 1) * 0x120;
+    b = idx * 0x120;
+    *(s16 *)(state + 0x68) = (s16)Math_EaseOutPow(2, (f32)a, (f32)b, lbl_8036A4EC, (f32)fr);
+
+    if (state[0x64] == 0x10) {
+        state[0x64] = 0;
+        if ((s8)state[0x62] < 0) {
+            Process_Goto(state, 6);
         } else {
-            fn_8000C070(arg0, 1);
+            Process_Goto(state, 1);
         }
     }
+
     return 1;
 }
 
