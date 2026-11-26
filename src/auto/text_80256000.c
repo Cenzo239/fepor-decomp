@@ -1,6 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline void Sound_InitDelay6386C(s32 length, u8 *record) {
+static inline void Sound_InitDelay6386C(s32 length, u8 *record, f32 zero) {
     void *fn_802637A4(s32);
     void *memset(void *, s32, u32);
     extern const f32 lbl_8036C378;
@@ -8,7 +8,7 @@ static inline void Sound_InitDelay6386C(s32 length, u8 *record) {
     *(s32 *)(record + 8) = size;
     *(void **)(record + 12) = fn_802637A4(size);
     memset(*(void **)(record + 12), 0, size);
-    *(f32 *)(record + 16) = lbl_8036C378;
+    *(f32 *)(record + 16) = zero;
     *(s32 *)(record + 4) = *(s32 *)record - ((length >> 1) << 2);
     while (*(s32 *)(record + 4) < 0)
         *(s32 *)(record + 4) += *(s32 *)(record + 8);
