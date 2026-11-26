@@ -11784,10 +11784,6 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&out, -1);
 }
 
-static inline void Str_AssignAt(void *src, void *dst) {
-    extern void String_Assign(void *, void *, s32, s32);
-    String_Assign(dst, (u8 *)src + 0xC, 0, -1);
-}
 static inline void *Str_CStrDestroy(void *str) {
     extern void *String_CStr(void *);
     extern void String_Destroy(void *, s32);
@@ -11800,8 +11796,8 @@ void *fn_800DDB94(void *arg0)
     extern void *StringMap_FindOrInsert(void *);
     extern void String_Assign(void *, void *, s32, s32);
 
-    struct StrInner { u8 pad[0xC]; u32 field; };
-    struct StrInner *source;
+    void *source;
+    u8 *field;
     u32 temp[3];
 
     temp[1] = 0;
@@ -11809,8 +11805,9 @@ void *fn_800DDB94(void *arg0)
     temp[2] = 0;
     temp[1] = 0;
 
-    source = (struct StrInner *)StringMap_FindOrInsert((u8 *)arg0 + 0x68);
-    String_Assign(temp, &source->field, 0, -1);
+    source = StringMap_FindOrInsert((u8 *)arg0 + 0x68);
+    field = (u8 *)source + 0xC;
+    String_Assign(temp, field, 0, -1);
     return Str_CStrDestroy(temp);
 }
 
