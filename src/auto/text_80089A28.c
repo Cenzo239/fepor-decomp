@@ -784,9 +784,6 @@ void fn_8008A998(s32 x, s32 y, s32 width) {
 #pragma global_optimizer off
 void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     s64 OSGetTime(void);
-    s64 __div2i(s64, s64);
-    s64 __mod2i(s64, s64);
-    f32 fn_8022CB78(s64);
     f64 sin(f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -804,8 +801,6 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void Prim2D_EndPrim(void);
     extern s32 gUiAtlas;
     extern f32 lbl_803696E0;
-    extern f64 lbl_803696E8;
-    extern f64 lbl_803696F0;
     extern f32 lbl_803696F8;
     extern f32 lbl_803696FC;
     extern f32 lbl_80369700;
@@ -813,31 +808,30 @@ void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 
     s32 col0, col1, col2;
     struct { u8 buf[0x20]; u16 w; u16 h; } sp;
-    s32 handle, half, bottom, width, lo, hi, alpha, cidx, y, x;
+    s32 handle, half, bottom, width, tw, th, alpha, cidx, y, x;
     f32 phase, s;
 
-    lo = arg4; hi = arg5; alpha = arg6;
     width = arg2; x = arg0; y = arg1; cidx = arg3;
     handle = gUiAtlas;
     if (width <= 0x50) width = 0x50;
-    phase = fn_8022CB78(__mod2i(__div2i(OSGetTime(), (s64)((*(u32 *)0x800000F8 >> 2) / 1000)), 0x5DC)) / lbl_803696F8;
-    if ((u8)alpha == 0) alpha = lo;
+    phase = (f32)((OSGetTime() / ((*(u32 *)0x800000F8 >> 2) / 1000)) % 1500) / lbl_803696F8;
+    if ((u8)arg6 == 0) alpha = arg4;
     else {
         s = (f32)sin(lbl_803696FC * phase);
-        alpha = (s32)(lbl_80369700 * (((f32)(u8)hi - (f32)(u8)lo) * (lbl_80369704 + s)) + (f32)(u8)lo);
+        alpha = (s32)(lbl_80369700 * (((f32)(u8)arg5 - (f32)(u8)arg4) * (lbl_80369704 + s)) + (f32)(u8)arg4);
     }
     Ui_LoadAtlasTex(handle, sp.buf, 0x43);
     sp.w = GXGetTexObjWidth(sp.buf); sp.h = GXGetTexObjHeight(sp.buf);
     Prim2D_Begin(); Prim2D_SetTex(sp.buf, 0x11); Prim2D_PrepareTex();
-    lo = sp.w; hi = sp.h; Prim2D_AddPrim(1);
+    tw = sp.w; th = sp.h; Prim2D_AddPrim(1);
     half = width / 2; width = x - half;
     Prim2D_SetQuadMin((f32)width, (f32)(y - 0xA), lbl_803696E0, lbl_803696E0);
-    width = lo + width; bottom = y + hi; bottom -= 0xA;
-    Prim2D_SetQuadMax((f32)width, (f32)bottom, (f32)lo, (f32)hi);
+    width = tw + width; bottom = y + th; bottom -= 0xA;
+    Prim2D_SetQuadMax((f32)width, (f32)bottom, (f32)tw, (f32)th);
     Prim2D_EmitQuad(); col0 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col0); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
-    Prim2D_AddPrim(1); x += half; half = x - lo;
-    Prim2D_SetQuadMin((f32)half, (f32)(y - 0xA), (f32)lo, lbl_803696E0);
-    Prim2D_SetQuadMax((f32)x, (f32)bottom, lbl_803696E0, (f32)hi);
+    Prim2D_AddPrim(1); x += half; half = x - tw;
+    Prim2D_SetQuadMin((f32)half, (f32)(y - 0xA), (f32)tw, lbl_803696E0);
+    Prim2D_SetQuadMax((f32)x, (f32)bottom, lbl_803696E0, (f32)th);
     Prim2D_EmitQuad(); col1 = *Ui_GetColor((u8)cidx); Prim2D_SetColorPacked(&col1); Prim2D_SetAlpha(alpha); Prim2D_EndPrim();
     Ui_LoadAtlasTex(handle, sp.buf, 0x44);
     sp.w = GXGetTexObjWidth(sp.buf); sp.h = GXGetTexObjHeight(sp.buf);
