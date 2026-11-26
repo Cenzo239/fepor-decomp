@@ -944,6 +944,7 @@ s32 fn_80227174(void *arg0) {
     u32 unk1C;
     u32 unk20;
     u32 unk24;
+    s32 ret;
 
     a = arg0;
     TRKSetBufferPosition(a, 0);
@@ -952,8 +953,8 @@ s32 fn_80227174(void *arg0) {
     unk24 = *(u32 *)((u8 *)a + 0x24);
 
     switch (unk18) {
+    case 0:
     case 16:
-    case 0: {
         unk1C = *(u8 *)((u8 *)a + 0x1c);
         if (unk1C < 1) {
             u8 buf[0x40];
@@ -964,16 +965,11 @@ s32 fn_80227174(void *arg0) {
             TRK_cc_write((s32)(void *)buf, 0x40);
             return 0;
         }
-        for (;;) {
-            u32 v = fn_80229030();
-            if (v < unk20) {
-                break;
-            }
-            if (v > unk24) {
-                break;
-            }
-        }
-        {
+        break;
+    case 1:
+    case 17: {
+        u32 pc = fn_80229030();
+        if (pc < unk20 || pc > unk24) {
             u8 buf[0x40];
             memset(buf, 0, 0x40);
             buf[4] = 0x80;
@@ -982,6 +978,7 @@ s32 fn_80227174(void *arg0) {
             TRK_cc_write((s32)(void *)buf, 0x40);
             return 0;
         }
+        break;
     }
     default: {
         u8 buf[0x40];
@@ -992,38 +989,38 @@ s32 fn_80227174(void *arg0) {
         TRK_cc_write((s32)(void *)buf, 0x40);
         return 0;
     }
-    case 1:
-    case 17: {
-        if (TRKTargetStopped() == 0) {
-            u8 buf[0x40];
-            memset(buf, 0, 0x40);
-            buf[4] = 0x80;
-            *(s32 *)buf = 0x40;
-            buf[8] = 0x16;
-            TRK_cc_write((s32)(void *)buf, 0x40);
-            return 0;
-        }
-        {
-            u8 buf[0x40];
-            memset(buf, 0, 0x40);
-            buf[4] = 0x80;
-            *(s32 *)buf = 0x40;
-            buf[8] = 0x0;
-            TRK_cc_write((s32)(void *)buf, 0x40);
-            break;
-        }
     }
+
+    if (TRKTargetStopped() == 0) {
+        u8 buf[0x40];
+        memset(buf, 0, 0x40);
+        buf[4] = 0x80;
+        *(s32 *)buf = 0x40;
+        buf[8] = 0x16;
+        TRK_cc_write((s32)(void *)buf, 0x40);
+        return 0;
     }
+    {
+        u8 buf[0x40];
+        memset(buf, 0, 0x40);
+        buf[4] = 0x80;
+        *(s32 *)buf = 0x40;
+        buf[8] = 0x0;
+        TRK_cc_write((s32)(void *)buf, 0x40);
+    }
+
+    ret = 0;
     switch (unk18) {
     case 0:
     case 16:
-        return fn_802290F8(unk1C, unk18 == 16);
+        ret = fn_802290F8(unk1C, unk18 == 16);
+        break;
     case 1:
     case 17:
-        return fn_80229040(unk20, unk24, unk18 == 17);
-    default:
-        return 0;
+        ret = fn_80229040(unk20, unk24, unk18 == 17);
+        break;
     }
+    return ret;
 }
 
 s32 fn_80227394(void) {
@@ -1643,7 +1640,8 @@ return err;
 #pragma pop
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 1
 s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
  void fn_80226C34(u32); void fn_8022699C(u32);
  s32 TRKMessageSend(s32); void *TRKGetBuffer(u32); void TRKSetBufferPosition(void*,s32); void fn_80227FEC(void*,u32);
@@ -1685,7 +1683,7 @@ s32 fn_802283A8(s32 message, s32 *reply, s32 unused, s32 retries, s32 timeout) {
  if(*reply==-1) error=0x800;
  return error;
 }
-#pragma global_optimizer on
+#pragma pop
 s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     void *TRKGetBuffer(s32);
     s32 fn_802262E8(s32);
@@ -2598,13 +2596,15 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
 
     typedef void (*Thunk)(void *, void *);
 
-    u32 vals[2];
+    u64 value;
     u32 saved[4];
     u32 fprRead[10];
     u32 fprWrite[10];
     u32 specialRead[10];
     u32 specialWrite[10];
 
+    s32 read; s32 *length; void *buffer;u32 last;
+    u32 *readCode,*readSpecial,*writeCode,*writeSpecial;
     u32 *tmpl;
     u32 *source;
     u8 *status;
@@ -2613,9 +2613,11 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
     u32 msr;
     u32 count;
     s32 result;
-    s32 i;
+    s32 accessResult;
+    u32 index;
 
-    if (arg1 > 0x21) {
+    read=arg4;length=arg3;buffer=arg2;last=arg1;
+    if (last > 0x21) {
         return 0x701;
     }
 
@@ -2631,13 +2633,15 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
     msr = fn_80228948();
     fn_80228950(msr | 0x2000);
 
-    *arg3 = 0;
+    *length = 0;
 
+    index=arg0;
     regBits = (u32)arg0 << 21;
+    readCode=fprRead;readSpecial=specialRead;writeCode=fprWrite;writeSpecial=specialWrite;
     result = 0;
 
-    while (arg0 <= arg1 && result == 0) {
-        if (arg4 != 0) {
+    while (index <= last && result == 0) {
+        if (read != 0) {
             source = lbl_802827B0;
 
             fprRead[0] = source[0];
@@ -2651,30 +2655,30 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
             fprRead[8] = source[8];
             fprRead[9] = source[9];
 
-            if (arg0 < 0x20) {
+            if (index < 0x20) {
                 opcode = regBits | 0xC8030000;
 
-                if (arg4 != 0) {
+                if (read != 0) {
                     opcode = regBits | 0xD8030000;
                 }
 
                 fprRead[0] = opcode;
                 fprRead[9] = 0x4E800020;
 
-                fn_80228858(fprRead, 0x28);
+                fn_80228858(readCode, 0x28);
 
-                ((Thunk)fprRead)(vals, lbl_8033CFB4);
-            } else if (arg0 == 0x20) {
-                if (arg4 != 0) {
-                    fn_80228CDC((f64 *)vals);
+                ((Thunk)fprRead)(&value, lbl_8033CFB4);
+            } else if (index == 0x20) {
+                if (read != 0) {
+                    fn_80228CDC((f64 *)&value);
                 } else {
-                    fn_80228D00((f64 *)vals);
+                    fn_80228D00((f64 *)&value);
                 }
 
-                *(u64*)vals &= 0xFFFFFFFFULL;
-            } else if (arg0 == 0x21) {
-                if (arg4 == 0) {
-                    vals[0] = vals[1];
+                value &= 0xFFFFFFFFULL;
+            } else if (index == 0x21) {
+                if (read == 0) {
+                    ((u32*)&value)[0] = ((u32*)&value)[1];
                 }
 
                 source = lbl_80282760;
@@ -2690,32 +2694,32 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
                 specialRead[8] = source[8];
                 specialRead[9] = source[9];
 
-                if (arg4 != 0) {
-                    specialRead[0] = 0x7C9FFAA6;
+                if (read != 0) {
+                    specialRead[0] = 0x7C9EFAA6;
                     specialRead[1] = 0x90830000;
                 } else {
                     specialRead[0] = 0x80830000;
-                    specialRead[1] = 0x7C9FFBA6;
+                    specialRead[1] = 0x7C9EFBA6;
                 }
 
                 specialRead[9] = 0x4E800020;
 
-                fn_80228858(specialRead, 0x28);
+                fn_80228858(readSpecial, 0x28);
 
-                ((Thunk)specialRead)(vals, lbl_8033CFB4);
+                ((Thunk)specialRead)(&value, lbl_8033CFB4);
 
-                if (arg4 != 0) {
-                    *(u64*)vals = (u64)vals[0] & 0xFFFFFFFFULL;
+                if (read != 0) {
+                    value = (u64)((u32*)&value)[0] & 0xFFFFFFFFULL;
                 }
             }
 
             result = fn_80226700(
-                arg2,
-                ((u64)vals[0] << 32) | vals[1]
+                buffer,
+                ((u64)((u32*)&value)[0] << 32) | ((u32*)&value)[1]
             );
         } else {
-            fn_802264B4(arg2, (u8 *)vals);
-
+            fn_802264B4(buffer, (u8 *)&value);
+            accessResult=0;
             source = lbl_802827B0;
 
             fprWrite[0] = source[0];
@@ -2729,30 +2733,31 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
             fprWrite[8] = source[8];
             fprWrite[9] = source[9];
 
-            if (arg0 < 0x20) {
+            if (index < 0x20) {
                 opcode = regBits | 0xC8030000;
 
-                if (arg4 != 0) {
+                if (read != 0) {
                     opcode = regBits | 0xD8030000;
                 }
 
                 fprWrite[0] = opcode;
                 fprWrite[9] = 0x4E800020;
 
-                fn_80228858(fprWrite, 0x28);
+                fn_80228858(writeCode, 0x28);
 
-                ((Thunk)fprWrite)(vals, lbl_8033CFB4);
-            } else if (arg0 == 0x20) {
-                if (arg4 != 0) {
-                    fn_80228CDC((f64 *)vals);
+                ((Thunk)fprWrite)(&value, lbl_8033CFB4);
+                accessResult=0;
+            } else if (index == 0x20) {
+                if (read != 0) {
+                    fn_80228CDC((f64 *)&value);
                 } else {
-                    fn_80228D00((f64 *)vals);
+                    fn_80228D00((f64 *)&value);
                 }
 
-                *(u64*)vals &= 0xFFFFFFFFULL;
-            } else if (arg0 == 0x21) {
-                if (arg4 == 0) {
-                    vals[0] = vals[1];
+                value &= 0xFFFFFFFFULL;
+            } else if (index == 0x21) {
+                if (read == 0) {
+                    ((u32*)&value)[0] = ((u32*)&value)[1];
                 }
 
                 source = lbl_80282760;
@@ -2768,44 +2773,45 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
                 specialWrite[8] = source[8];
                 specialWrite[9] = source[9];
 
-                if (arg4 != 0) {
-                    specialWrite[0] = 0x7C9FFAA6;
+                if (read != 0) {
+                    specialWrite[0] = 0x7C9EFAA6;
                     specialWrite[1] = 0x90830000;
                 } else {
                     specialWrite[0] = 0x80830000;
-                    specialWrite[1] = 0x7C9FFBA6;
+                    specialWrite[1] = 0x7C9EFBA6;
                 }
 
                 specialWrite[9] = 0x4E800020;
 
-                fn_80228858(specialWrite, 0x28);
+                fn_80228858(writeSpecial, 0x28);
 
-                ((Thunk)specialWrite)(vals, lbl_8033CFB4);
+                ((Thunk)specialWrite)(&value, lbl_8033CFB4);
+                accessResult=0;
 
-                if (arg4 != 0) {
-                    *(u64*)vals = (u64)vals[0] & 0xFFFFFFFFULL;
+                if (read != 0) {
+                    value = (u64)((u32*)&value)[0] & 0xFFFFFFFFULL;
                 }
             }
 
-            result = 0;
+            result = accessResult;
         }
 
         regBits += 0x200000;
-        arg0++;
+        index++;
 
-        count = *(u32 *)arg3;
-        *arg3 = count + 8;
+        count = *(u32 *)length;
+        *length = count + 8;
     }
 
     if (status[13] != 0) {
-        *arg3 = 0;
+        *length = 0;
         result = 0x702;
     }
 
-    *(u32 *)(status + 0) = saved[0];
-    *(u32 *)(status + 4) = saved[1];
-    *(u32 *)(status + 8) = saved[2];
-    *(u32 *)(status + 12) = saved[3];
+    *(u32 *)(gTRKExceptionStatus_8029E574 + 0) = saved[0];
+    *(u32 *)(gTRKExceptionStatus_8029E574 + 4) = saved[1];
+    *(u32 *)(gTRKExceptionStatus_8029E574 + 8) = saved[2];
+    *(u32 *)(gTRKExceptionStatus_8029E574 + 12) = saved[3];
 
     return result;
 }
@@ -3021,7 +3027,6 @@ void InitMetroTRK_BBA(void) {
 
 #pragma intrinsic __dcbi
 void fn_8022A99C(s32 arg0, u32 arg1, s32 *arg2) {
-#pragma intrinsic __dcbi
     u32 fn_80214058(void);
     void fn_80214094(s32, void *, u32, u32);
     void fn_80214338(void);
