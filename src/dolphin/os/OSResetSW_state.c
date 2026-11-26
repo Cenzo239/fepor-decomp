@@ -155,12 +155,12 @@ static inline s32 ResetSW_ReadState(s32 zero) {
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
     s64 __div2i(s64, s64);
-    s32 state;
     s32 enabled;
+    s32 state;
     s32 pad;
     s64 now;
     s32 soft;
-    u64 freq;
+    u32 freq;
     u32 thresh;
     s32 n;
     s64 t;
@@ -223,7 +223,7 @@ static inline s32 ResetSW_ReadState(s32 zero) {
  t += __OSStartTime;
         if (t < now) {
             q = __div2i(now - t, (u64)freq);
-            q = __div2i(q, 2LL);
+            q = __div2i(q, 2);
             if ((q & 1) == zero) {
                 state = 1;
             } else {
