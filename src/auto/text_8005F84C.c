@@ -8765,6 +8765,14 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2) {
     Ui_CreateMenu((u8 *)d + 0x80, fn_800C0658(), 0);
 }
 #pragma global_optimizer off
+static inline void Ui_SetupMenuEntries(volatile s32 *table, volatile void **entries, s32 a0, s32 a1) {
+    entries[0] = (void *)table;
+    table[1] = a0;
+    entries[1] = (void *)(table + 2);
+    table[3] = a1;
+    entries[2] = 0;
+}
+
 void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
