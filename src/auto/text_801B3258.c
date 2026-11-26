@@ -7343,22 +7343,16 @@ static inline void SetHelpText_801C0F54(s32 self, void *msg) {
 }
 
 void fn_801C0F54(s32 arg0) {
-    u32 fn_8013FF94(s32, s32, s32);
-    void fn_801658DC(u32, void *);
-    void *fn_8000E0E4(void *);
-    extern char lbl_8027CF10[];
+    u32 Ui_FindChild(s32, s32, s32);
+    void Ui_SetWidgetText(u32, void *);
+    void *Msg_Expand(void *);
+    extern char gUiScrollListStrings[];
     void *tmp;
-    void *str;
-    u32 result;
 
-    tmp = (void *)fn_8013FF94(arg0, 0x80, 0);
+    tmp = (void *)Ui_FindChild(arg0, 0x80, 0);
     *(s32 *)((u8 *)tmp + 0x48) = 1;
-    fn_801658DC((u32)tmp, lbl_8027CF10 + 0x86);
-    str = fn_8000E0E4(lbl_8027CF10 + 0x99);
-    result = fn_8013FF94(arg0, -0x1000, 0);
-    if (result != 0) {
-        fn_801658DC(result, str);
-    }
+    Ui_SetWidgetText((u32)tmp, gUiScrollListStrings + 0x86);
+    SetHelpText_801C0F54(arg0, Msg_Expand(gUiScrollListStrings + 0x99));
 }
 #pragma optimization_level reset
 void fn_801C0FDC(void *arg0) {
