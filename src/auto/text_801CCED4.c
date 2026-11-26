@@ -1932,12 +1932,6 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 #pragma global_optimizer off
 static inline void CursorBoxBody(u8 *arg0, u8 *arg1)
 {
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
-    extern f32 lbl_8036B510;
-
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
     struct Line {
         static inline void hline(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
