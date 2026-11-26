@@ -490,22 +490,24 @@ f64 __kernel_cos(f64 x, f64 y) {
     return (__kcos_one - qx) - (((__kcos_half * z) - qx) - ((z * r) - (xLocal * y)));
 }
 
+#pragma push
+#pragma optimization_level 4
 s32 fn_80236D88(const f64 *x, f64 *y, s32 e0, s32 nx, s32 prec, const s32 *ipio2)
 {
     extern s32 lbl_80282E88[];
     extern f64 lbl_80282E98[];
-    extern f64 lbl_8036C058;
-    extern f64 lbl_8036C060;
-    extern f64 lbl_8036C068;
-    extern f64 lbl_8036C070;
-    extern f64 lbl_8036C078;
-    extern f64 lbl_8036C080;
-    extern f64 lbl_8036C088;
+    
+    
+    
+    
+    
+    
+    
     f64 fn_80238378(f64, s32);
     f64 floor(f64);
     s32 jz, jx, jv, jp, jk, carry, n, iq[20], i, j, k, m, q0, ih;
     f64 z, fw, f[20], fq[20], q[20];
-    register f64 twon24, two24, eighth, eight, zero;
+    register f64 zero, eight, eighth, two24, twon24;
 
     jk = lbl_80282E88[prec];
     jp = jk;
@@ -518,33 +520,21 @@ s32 fn_80236D88(const f64 *x, f64 *y, s32 e0, s32 nx, s32 prec, const s32 *ipio2
 
     j = jv - jx;
     m = jx + jk;
-    {
-        const s32 *from = ipio2 + j;
-        f64 *to = f;
-        for (i = 0; i <= m; i++, j++, from++, to++) {
-            if (j < 0) {
-                *to = lbl_8036C058;
-            } else {
-                *to = (f64)(*from);
-            }
-        }
-    }
+    for(i=0;i<=m;i++,j++) f[i] = j<0 ? 0.0 : (f64)ipio2[j];
 
     for (i = 0; i <= jk; i++) {
-        const f64 *px = x;
-        const f64 *pf = f + jx + i;
-        fw = lbl_8036C058;
+        fw = 0.0;
         for (j = 0; j <= jx; j++) {
-            fw += (*px++) * (*pf--);
+            fw += x[j] * f[jx + i - j];
         }
         q[i] = fw;
     }
 
-    twon24 = lbl_8036C060;
-    two24 = lbl_8036C068;
-    eighth = lbl_8036C078;
-    eight = lbl_8036C070;
-    zero = lbl_8036C058;
+    twon24 = 5.9604644775390625e-8;
+    two24 = 16777216.0;
+    eighth = 0.125;
+    eight = 8.0;
+    zero = 0.0;
 
     jz = jk;
 recompute:
@@ -557,7 +547,7 @@ recompute:
     }
 
     z = fn_80238378(z, q0);
-    z -= eight * floor(z * eighth);
+    z -= eight * floor(eighth * z);
     n = (s32)z;
     z -= (f64)n;
     ih = 0;
@@ -568,7 +558,7 @@ recompute:
         ih = iq[jz - 1] >> (23 - q0);
     } else if (q0 == 0) {
         ih = iq[jz - 1] >> 23;
-    } else if (z >= lbl_8036C080) {
+    } else if (z >= 0.5) {
         ih = 2;
     }
 
@@ -597,14 +587,14 @@ recompute:
             }
         }
         if (ih == 2) {
-            z = lbl_8036C088 - z;
+            z = 1.0 - z;
             if (carry != 0) {
-                z -= fn_80238378(lbl_8036C088, q0);
+                z -= fn_80238378(1.0, q0);
             }
         }
     }
 
-    if (z == zero) {
+    if (zero == z) {
         j = 0;
         for (i = jz - 1; i >= jk; i--) {
             j |= iq[i];
@@ -613,15 +603,9 @@ recompute:
             for (k = 1; iq[jk - k] == 0; k++) {
             }
             for (i = jz + 1; i <= jz + k; i++) {
-                const f64 *px = x;
-                const f64 *pf;
-                s32 value = ipio2[jv + i];
-                f[jx + i] = (f64)value;
-                fw = zero;
-                pf = f + jx + i;
-                for (j = 0; j <= jx; j++) {
-                    fw += (*px++) * (*pf--);
-                }
+                f[jx+i] = (f64)ipio2[jv+i];
+                fw = 0.0;
+                for(j=0;j<=jx;j++) fw += x[j] * f[jx+i-j];
                 q[i] = fw;
             }
             jz += k;
@@ -629,7 +613,7 @@ recompute:
         }
     }
 
-    if (z == zero) {
+    if (0.0 == z) {
         jz--;
         q0 -= 24;
         while (iq[jz] == 0) {
@@ -638,10 +622,10 @@ recompute:
         }
     } else {
         z = fn_80238378(z, -q0);
-        if (z >= two24) {
-            s32 integral = (s32)(twon24 * z);
+        if (z >= 16777216.0) {
+            s32 integral = (s32)(5.9604644775390625e-8 * z);
             fw = (f64)integral;
-            iq[jz] = (s32)(z - two24 * fw);
+            iq[jz] = (s32)(z - 16777216.0 * fw);
             jz++;
             q0 += 24;
             iq[jz] = (s32)fw;
@@ -650,74 +634,47 @@ recompute:
         }
     }
 
-    fw = fn_80238378(lbl_8036C088, q0);
+    fw = fn_80238378(1.0, q0);
     for (i = jz; i >= 0; i--) {
         q[i] = fw * (f64)iq[i];
-        fw *= twon24;
+        fw *= 5.9604644775390625e-8;
     }
     for (i = jz; i >= 0; i--) {
-        const f64 *pi = lbl_80282E98;
-        fw = zero;
-        for (k = 0; k <= jp && k <= jz - i; k++) {
-            fw += (*pi++) * q[i + k];
+        fw = 0.0;
+        for (k = 0; k <= jp && k <= jz-i; k++) {
+            fw += lbl_80282E98[k] * q[i+k];
         }
         fq[jz - i] = fw;
     }
 
     switch (prec) {
     case 0:
-        fw = zero;
-        {
-            const f64 *p = &fq[jz];
-            for (i = jz; i >= 0; i--) {
-                fw += *p--;
-            }
-        }
+        fw = 0.0;
+        for (i=jz;i>=0;i--) fw += fq[i];
         y[0] = ih == 0 ? fw : -fw;
         break;
     case 1:
     case 2:
-        fw = zero;
-        {
-            const f64 *p = &fq[jz];
-            for (i = jz; i >= 0; i--) {
-                fw += *p--;
-            }
-        }
+        fw = 0.0;
+        for (i=jz;i>=0;i--) fw += fq[i];
         y[0] = ih == 0 ? fw : -fw;
         fw = fq[0] - fw;
-        {
-            const f64 *p = &fq[1];
-            for (i = 1; i <= jz; i++) {
-                fw += *p++;
-            }
-        }
+        for (i=1;i<=jz;i++) fw += fq[i];
         y[1] = ih == 0 ? fw : -fw;
         break;
     case 3:
-        {
-            f64 *p = &fq[jz];
-            for (i = jz; i > 0; i--, p--) {
-                fw = p[-1] + p[0];
-                p[0] += p[-1] - fw;
-                p[-1] = fw;
-            }
+        for(i=jz;i>0;i--) {
+            fw=fq[i-1]+fq[i];
+            fq[i] += fq[i-1]-fw;
+            fq[i-1]=fw;
         }
-        {
-            f64 *p = &fq[jz];
-            for (i = jz; i > 1; i--, p--) {
-                fw = p[-1] + p[0];
-                p[0] += p[-1] - fw;
-                p[-1] = fw;
-            }
+        for(i=jz;i>1;i--) {
+            fw=fq[i-1]+fq[i];
+            fq[i] += fq[i-1]-fw;
+            fq[i-1]=fw;
         }
-        fw = zero;
-        {
-            const f64 *p = &fq[jz];
-            for (i = jz; i >= 2; i--) {
-                fw += *p--;
-            }
-        }
+        fw = 0.0;
+        for(i=jz;i>=2;i--) fw += fq[i];
         if (ih == 0) {
             y[0] = fq[0];
             y[1] = fq[1];
@@ -731,7 +688,7 @@ recompute:
     }
     return n & 7;
 }
-
+#pragma pop
 f64 fn_80237BDC(f64 x, f64 y, s32 iy) {
     extern f64 lbl_8036C098;
     extern f64 lbl_8036C0A0;
