@@ -11551,7 +11551,7 @@ void *fn_80175A2C(void) {
     extern void *lbl_803681A4, *lbl_803681AC, *lbl_803681B4;
     extern void * volatile lbl_803681BC;
     extern void *lbl_803681C8, *lbl_803681D0, *lbl_803681D8, *lbl_803681E0, *lbl_803681E8;
-    extern f32 lbl_8036AB70;
+    extern const f32 lbl_8036AB70;
     void *p;
 
     if (!lbl_803681A0) {
@@ -11599,8 +11599,8 @@ void *fn_80175A2C(void) {
         M2C_FIELD(p, void **, 0) = lbl_802945DC;
         M2C_FIELD(p, void **, 4) = lbl_802920E0;
         M2C_FIELD(p, s16 *, 8) = 0;
-        M2C_FIELD(p, s16 *, 0xC) = 0x80;
         M2C_FIELD(p, s16 *, 0xA) = 0;
+        M2C_FIELD(p, s16 *, 0xC) = 0x80;
         M2C_FIELD(p, s16 *, 0xE) = 0;
         M2C_FIELD(p, s16 *, 0x10) = 2;
         M2C_FIELD(p, s16 *, 0x12) = 0xC;
@@ -17471,27 +17471,20 @@ void fn_8017E8C0(void *arg0) {
     }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1) {
-    void Prim2D_SetColor(u8, u8, u8, u8);
-    void Prim2D_SetColorByte(u8);
-    void Prim2D_Begin(void);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_BindTexture(s32, s32, s32);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
-    void Prim2D_EmitQuad(void);
-    void Prim2D_EndPrim(void);
-    void Prim2D_ResetState(void);
+    void fn_800076AC(u8, u8, u8, u8);
+    void fn_80009B8C(u8);
     extern f32 lbl_8036AC44;
     extern f32 lbl_8036AC48;
     extern f32 lbl_8036AC30;
     extern f32 lbl_8036AC4C;
     f32 var_f31;
+    s32 var_r30;
+    s32 var_r29;
 
     if (arg3 != 0) {
-        s32 var_r30;
-        s32 var_r29;
         var_f31 = lbl_8036AC44;
         var_r30 = 0x10;
         if ((u8) arg5 != 0) {
@@ -17499,39 +17492,39 @@ void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
             var_f31 -= lbl_8036AC48;
         }
         if (arg4 > 0x28) {
-            Prim2D_Begin();
-            Prim2D_SetTransform(farg0, farg1, var_f31, lbl_8036AC48);
-            Prim2D_BindTexture(arg0, 6, (u16) (var_r30 | 1));
-            Prim2D_SetColorByte((u8) arg1);
-            Prim2D_PrepareTex();
+            fn_8000A258();
+            fn_80009D74(farg0, farg1, var_f31, lbl_8036AC48);
+            fn_80009F90(arg0, 6, (u16) (var_r30 | 1));
+            fn_80009B8C((u8) arg1);
+            fn_8000A248();
             var_r29 = -6;
             for (; arg3 > 0; arg3 -= 0x28, var_r29 += 0xE) {
                 s32 var_r30_2 = 0x28;
                 if (arg3 <= 0x28) {
                     var_r30_2 = arg3;
                 }
-                Prim2D_AddPrim(1);
-                Prim2D_SetRectUv((f32)(var_r30_2 * 5), lbl_8036AC30, (f32) var_r29, lbl_8036AC30, lbl_8036AC30, (f32) (var_r30_2 * 5 + 1));
-                Prim2D_SetColor((u8) arg2, (u8) arg2, (u8) arg2, 0xFF);
-                Prim2D_EmitQuad();
-                Prim2D_EndPrim();
+                fn_80007898(1);
+                fn_8000770C(var_r30_2 * 5, lbl_8036AC30, (f32) var_r29, lbl_8036AC30, lbl_8036AC30, (f32) (var_r30_2 * 5 + 1), lbl_8036AC4C);
+                fn_800076AC((u8) arg2, (u8) arg2, (u8) arg2, 0xFF);
+                fn_800075D8();
+                fn_80007884();
             }
         } else {
-            Prim2D_Begin();
-            Prim2D_SetTransform(farg0, farg1, var_f31, lbl_8036AC48);
-            Prim2D_BindTexture(arg0, 5, (u16) (var_r30 | 1));
-            Prim2D_SetColorByte((u8) arg1);
-            Prim2D_PrepareTex();
-            Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)(arg3 * 5), lbl_8036AC30, lbl_8036AC30, lbl_8036AC30, lbl_8036AC30, (f32) (arg3 * 5 + 1));
-            Prim2D_SetColor((u8) arg2, (u8) arg2, (u8) arg2, 0xFF);
-            Prim2D_EmitQuad();
-            Prim2D_EndPrim();
+            fn_8000A258();
+            fn_80009D74(farg0, farg1, var_f31, lbl_8036AC48);
+            fn_80009F90(arg0, 5, (u16) (var_r30 | 1));
+            fn_80009B8C((u8) arg1);
+            fn_8000A248();
+            fn_80007898(1);
+            fn_8000770C(arg3 * 5, lbl_8036AC30, lbl_8036AC30, lbl_8036AC30, lbl_8036AC30, (f32) (arg3 * 5 + 1), lbl_8036AC4C);
+            fn_800076AC((u8) arg2, (u8) arg2, (u8) arg2, 0xFF);
+            fn_800075D8();
+            fn_80007884();
         }
-        Prim2D_ResetState();
+        fn_80009B28();
     }
 }
-
+#pragma pop
 void fn_8017F040(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_Create(u8 *, s32);
     extern u8 lbl_80295508[];
