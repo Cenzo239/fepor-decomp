@@ -2084,6 +2084,10 @@ while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Co
 String_Destroy(&str,-1);return count;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
 s32 fn_800C802C(void *arg0, s32 arg1) {
  typedef struct { u32 a,b,c,d,e,f,g,h; } Block;
  void String_Init(void *, char *, void *);
@@ -2092,14 +2096,14 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  Block value, temp, fallback;
  String str;
  u8 alloc;
- s32 result;
- u8 *self;
- u8 *entry;
  s32 offset;
+ u8 *entry;
  s32 j,k;
+ s32 listOffset;
+ u8 *self;
+ s32 result;
  s32 index;
  u8 *list;
- s32 listOffset;
  u8 equal;
  self=arg0; result=1;
  if (*(s8 *)(self+0x28)==0) {
@@ -2109,17 +2113,17 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  } else {*(void **)(self+0x1c)=0;*(s32 *)(self+0x20)=-1;result=0;}
  return result;
  }
- for(index=arg1,listOffset=arg1*4;index<*(s32 *)(self+0x18);index++,listOffset+=4) {
- list=index<*(s32 *)(self+0x18)?*(u8 **)(*(u8 **)(self+0x14)+listOffset):0;
+ for(index=arg1;index<*(s32 *)(self+0x18);index++) {
+ list=index<*(s32 *)(self+0x18)?*(u8 **)(*(u8 **)(self+0x14)+index*4):0;
  String_Init(&str,(char *)self+0x28,&alloc);
  if(list) {
- j=0; offset=j;
+ j=0;
  while(j<*(s32 *)list) {
- if(list && j<*(s32 *)list) entry=*(u8 **)(list+4)+offset; else entry=0;
+ if(list && j<*(s32 *)list) entry=*(u8 **)(list+4)+j*0x38; else entry=0;
  if(String_Compare(&str,0,str.size,(char *)entry,strlen((char *)entry))==0) {
  *(s32 *)(self+0x24)=j;temp=*(Block *)(entry+0x18);goto found;
  } 
- offset+=0x38; j++;
+ j++;
  }
  }
  fallback.a=0;fallback.b=0;fallback.c=0;fallback.d=0;
@@ -2134,7 +2138,7 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  if(index>=*(s32 *)(self+0x18)){*(void **)(self+0x1c)=0;*(s32 *)(self+0x20)=-1;result=0;}
  return result;
 }
-
+#pragma pop
 void fn_800C8328(void *unused, void *dest, s32 index, String *str)
 {
     M2C_UNK *fn_800C93EC(void *);
@@ -14452,6 +14456,9 @@ else SpriteSheet_DrawFrame(sheet,layer,*(s32*)(self+0x64),x,y,*(s32*)(self+0x44)
 }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
 void *fn_800E2370(void *arg0, void *arg1, void *arg2)
 {
     void *fn_800E2CF4(void *, void *, void *);
@@ -14466,8 +14473,8 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
 
     extern u8 lbl_8028E020[];
     extern char lbl_80271C50[];
-    extern f32 lbl_80369EC8;
-    extern f32 lbl_80369EE0;
+    extern const f32 lbl_80369EC8;
+    extern const f32 lbl_80369EE0;
     extern f64 lbl_80369ED0;
 
     struct Value {
@@ -14481,6 +14488,7 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
     struct Value value4;
     struct Value value5;
 
+    String temporary;
     String name0;
     String name1;
     String name2;
@@ -14495,19 +14503,21 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
     s32 scratch4;
     s32 scratch5;
 
-    String *str;
-    u8 *self;
+    void *owner;
     void *parent;
+    u8 *self;
     void *resource;
     s32 enabled;
+    char *text;
+    u32 len;
     s32 width;
     s32 height;
     f32 scale;
 
-    self = (u8 *)arg0;
     parent = arg2;
+    self = (u8 *)arg0;
 
-    fn_800E2CF4(self, arg1, arg2);
+    fn_800E2CF4(arg0, arg1, arg2);
 
     *(void **)(self + 0x40) = lbl_8028E020;
 
@@ -14516,7 +14526,11 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
     *(u32 *)(self + 0x5C) = 0;
     *(u32 *)(self + 0x58) = 0;
 
-    str = (String *)(self + 0x54);
+    owner = *(void **)self;
+    temporary.cap = 0;
+    temporary.size = 0;
+    temporary.data = 0;
+    temporary.cap = 0;
 
     String_Init(
         &name0,
@@ -14530,11 +14544,9 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
         &name0
     );
 
-    String_AssignCStr(
-        str,
-        (char *)&value0,
-        strlen((char *)&value0)
-    );
+    text = (char *)&value0;
+    len = strlen(text);
+    String_AssignCStr((String *)(self + 0x54), text, len);
 
     String_Destroy(&name0, -1);
 
@@ -14621,38 +14633,32 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
 
     if (enabled != 0) {
         resource = fn_800E7FB4(
-            *(void **)self,
+            owner,
             (String *)(self + 0x54)
         );
 
         scale = *(f32 *)(self + 0x6C);
 
-        if (scale == lbl_80369EC8) {
+        if (lbl_80369EC8 == scale) {
             width = fn_800E2E68(resource);
 
             *(s32 *)(self + 0x70) =
-                (width + ((u32)width >> 31)) >> 1;
+                width / 2;
 
             height = fn_800E2E60(resource);
 
             *(s32 *)(self + 0x74) =
-                (height + ((u32)height >> 31)) >> 1;
+                height / 2;
         } else {
             width = fn_800E2E68(resource);
 
             *(s32 *)(self + 0x70) =
-                (s32)(
-                    (scale * (f32)width) *
-                    lbl_80369EE0
-                );
+                (s32)((*(f32 *)(self + 0x6C) * (f32)width) * lbl_80369EE0);
 
             height = fn_800E2E60(resource);
 
             *(s32 *)(self + 0x74) =
-                (s32)(
-                    (scale * (f32)height) *
-                    lbl_80369EE0
-                );
+                (s32)((*(f32 *)(self + 0x6C) * (f32)height) * lbl_80369EE0);
         }
     } else {
         *(s32 *)(self + 0x74) = 0;
@@ -14661,13 +14667,14 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
 
     *(void **)(self + 0x60) =
         fn_800E7FB4(
-            *(void **)self,
+            owner,
             (String *)(self + 0x54)
         );
 
+    String_Destroy(&temporary, -1);
     return self;
 }
-
+#pragma pop
 void *fn_800E266C(void *arg0, s16 arg1) {
     void fn_800DF724(void *, s16);
     void Heap_Free(void *);
@@ -22389,20 +22396,18 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
     s32 texCoord;
     s32 texMap;
     u32 self;
-    s32 path;
     u8 *tbl;
     f32 half;
 
     tbl = lbl_80272C00;
     self = (u32)arg0;
-    path = arg1;
     fn_8006A384(spC4);
     tev = GMaterial_AllocTevStage();
     texMap = GMaterial_AllocTexMap();
     texCoord = GMaterial_AllocTexCoord();
     {
-        u8 *entry = (u8 *)*(void **)(self + 0x14);
-        entry += *(u8 *)(self + 6) * 0x1C;
+        u8 *entry;
+        entry = (u8 *)*(void **)(self + 0x14) + *(u8 *)(self + 6) * 0x1C;
         self = *(u16 *)(entry - 0x18);
     }
     {
@@ -22445,7 +22450,7 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
     tbl = (u8 *)GMaterial_AllocMtx();
     fn_80224E50(spF4, (s32)tbl, 0);
     fn_802201A8(texCoord, 0, 0, (s32)tbl, 0, 0x7D);
-    Ui_LoadAtlasTex(path, sp44, (u16)self);
+    Ui_LoadAtlasTex(arg1, sp44, (u16)self);
     fn_80222C50(sp44, texMap);
     GXSetTevOrder(tev, texCoord, texMap, 4);
     GXSetTevColorOp(tev, 0, 0, 0, 1, 0);
