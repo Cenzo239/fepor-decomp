@@ -14133,7 +14133,6 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
     s32 *fn_800E069C(s32 *, s32 *, s32 *, SortCompare);
     s32 *fn_800E0728(s32 *, s32 *, s32 *, s32, s32, SortIterator, SortIterator);
     void fn_800E0A94(SortIterator &, SortIterator, s32 *, s32 *, s32 *, SortCompare);
-    void fn_800E0C44(s32 *, s32 *, SortIterator &, SortIterator, s32 *, SortCompare);
     s32 n;
     s32 left, right;
     s32 *cut1, *cut2;
