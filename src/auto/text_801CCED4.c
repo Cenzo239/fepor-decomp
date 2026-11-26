@@ -4260,6 +4260,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
     s16 pt[2];
+    s16 sub;
     s16 temp_r6;
     s16 temp_r6_2;
     s32 temp_r7;
@@ -4280,7 +4281,8 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
+    sub = M2C_FIELD(arg1, s16 *, 0x54);
+    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - sub;
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
@@ -8888,6 +8890,28 @@ Process_CreateChild(lbl_80299C58, owner);
 #pragma opt_propagation reset
 #pragma opt_loop_invariants reset
 #pragma global_optimizer on
+static inline void Init_801DE274(void *arg) {
+    s32 sprintf(char *, char *, ...);
+    s32 FileCache_GetFlags(char *);
+    void fn_8006EEFC(void *, void *);
+    extern char gUiSeCues[];
+    char buf[0x40];
+    char *cues;
+    u8 *p = (u8 *)arg;
+    s32 i;
+
+    cues = gUiSeCues;
+    i = 0;
+    do {
+        sprintf(buf, cues + 0x661, *(s32 *)(p + 4));
+        if (FileCache_GetFlags(buf) & 0x2000) {
+            fn_8006EEFC(p + 8, buf);
+        }
+        i += 1;
+        p += 0xC;
+    } while (i < 0x28);
+}
+
 void fn_801DE274(void) {
     s32 sprintf(char *, char *, ...);
     s32 FileCache_GetFlags(char *);
