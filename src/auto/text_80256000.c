@@ -1,5 +1,10 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 Sound_ClampMix(s32 value) {
+    if (value > 0x7FFFFF) return 0x7FFFFF;
+    if (value < -0x7FFFFF) return -0x7FFFFF;
+    return value;
+}
 static inline void Sound_SetPanPair(u8 *entry, u16 left, u16 right) {
     *(u16 *)(entry + 0xD0) = left;
     *(u16 *)(entry + 0xD2) = right;
@@ -2720,6 +2725,8 @@ void fn_80259D94(s32 *arg0, s16 *arg1, s32 *arg2) {
     *arg2 += *arg1 * 0xA0;
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_80259E40(void *arg0, void *arg1) {
     s32 temp_r0;
     s32 temp_r0_2;
@@ -2752,7 +2759,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5 = -0x7FFFFF;
-            if (temp_r0 < 0xFF800001) {
+            if (temp_r0 < -0x7FFFFF) {
 
             } else {
                 var_r5 = temp_r0;
@@ -2768,7 +2775,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_2 = -0x7FFFFF;
-            if (temp_r0_2 < 0xFF800001) {
+            if (temp_r0_2 < -0x7FFFFF) {
 
             } else {
                 var_r5_2 = temp_r0_2;
@@ -2784,7 +2791,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_3 = -0x7FFFFF;
-            if (temp_r0_3 < 0xFF800001) {
+            if (temp_r0_3 < -0x7FFFFF) {
 
             } else {
                 var_r5_3 = temp_r0_3;
@@ -2800,7 +2807,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_4 = -0x7FFFFF;
-            if (temp_r0_4 < 0xFF800001) {
+            if (temp_r0_4 < -0x7FFFFF) {
 
             } else {
                 var_r5_4 = temp_r0_4;
@@ -2816,7 +2823,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_5 = -0x7FFFFF;
-            if (temp_r0_5 < 0xFF800001) {
+            if (temp_r0_5 < -0x7FFFFF) {
 
             } else {
                 var_r5_5 = temp_r0_5;
@@ -2832,7 +2839,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_6 = -0x7FFFFF;
-            if (temp_r0_6 < 0xFF800001) {
+            if (temp_r0_6 < -0x7FFFFF) {
 
             } else {
                 var_r5_6 = temp_r0_6;
@@ -2848,7 +2855,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_7 = -0x7FFFFF;
-            if (temp_r0_7 < 0xFF800001) {
+            if (temp_r0_7 < -0x7FFFFF) {
 
             } else {
                 var_r5_7 = temp_r0_7;
@@ -2864,7 +2871,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r5_8 = -0x7FFFFF;
-            if (temp_r0_8 < 0xFF800001) {
+            if (temp_r0_8 < -0x7FFFFF) {
 
             } else {
                 var_r5_8 = temp_r0_8;
@@ -2880,7 +2887,7 @@ void fn_80259E40(void *arg0, void *arg1) {
 
         } else {
             var_r4 = -0x7FFFFF;
-            if (temp_r0_9 < 0xFF800001) {
+            if (temp_r0_9 < -0x7FFFFF) {
 
             } else {
                 var_r4 = temp_r0_9;
@@ -2889,7 +2896,7 @@ void fn_80259E40(void *arg0, void *arg1) {
         M2C_FIELD(arg0, s32 *, 0x24) = var_r4;
     }
 }
-
+#pragma pop
 void fn_8025A14C(void **arr, s32 lo, s32 hi) {
     void **arr_save;
     s32 hi_save;
