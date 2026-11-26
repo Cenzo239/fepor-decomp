@@ -3693,32 +3693,32 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     one = lbl_8036A9AC;
     self = arg0;
     self2 = self;
-    *(void **)self = lbl_8028FDB0;
-    *(s32 *)((u8 *)self + 4) = 0;
-    *(void **)self = lbl_80292230;
-    *(s16 *)((u8 *)self + 8) = -1;
-    *(s16 *)((u8 *)self + 0xA) = arg1;
-    *(s16 *)((u8 *)self + 0xC) = arg2;
-    *(s16 *)((u8 *)self + 0xE) = (s16)((s16)arg1 + 0x108);
-    *(s16 *)((u8 *)self + 0x10) = (s16)((s16)arg2 + (s16)arg3);
-    *(s16 *)((u8 *)self + 0x12) = 0;
-    *(s16 *)((u8 *)self + 0x14) = 0;
-    *(s16 *)((u8 *)self + 0x16) = 0x108;
-    *(s16 *)((u8 *)self + 0x18) = arg3;
-    *(s16 *)((u8 *)self + 0x1A) = 0;
-    *(s16 *)((u8 *)self + 0x1C) = 0;
-    *(u8 *)((u8 *)self + 0x1E) = 0xFF;
-    *(u8 *)((u8 *)self + 0x1F) = 0xFF;
-    *(u8 *)((u8 *)self + 0x20) = 0xFF;
-    *(u8 *)((u8 *)self + 0x21) = 0xFF;
-    *(s16 *)((u8 *)self + 0x22) = arg4;
-    *(s16 *)((u8 *)self + 0x24) = 0;
-    *(f32 *)((u8 *)self + 0x28) = one;
-    *(f32 *)((u8 *)self + 0x2C) = one;
-    *(f32 *)((u8 *)self + 0x30) = one;
-    *(s32 *)((u8 *)self + 0x34) = 0;
-    *(s32 *)((u8 *)self + 0x38) = 0;
-    *(void **)self = lbl_80292208;
+    *(void **)self2 = lbl_8028FDB0;
+    *(s32 *)((u8 *)self2 + 4) = 0;
+    *(void **)self2 = lbl_80292230;
+    *(s16 *)((u8 *)self2 + 8) = -1;
+    *(s16 *)((u8 *)self2 + 0xA) = arg1;
+    *(s16 *)((u8 *)self2 + 0xC) = arg2;
+    *(s16 *)((u8 *)self2 + 0xE) = (s16)((s16)arg1 + 0x108);
+    *(s16 *)((u8 *)self2 + 0x10) = (s16)((s16)arg2 + (s16)arg3);
+    *(s16 *)((u8 *)self2 + 0x12) = 0;
+    *(s16 *)((u8 *)self2 + 0x14) = 0;
+    *(s16 *)((u8 *)self2 + 0x16) = 0x108;
+    *(s16 *)((u8 *)self2 + 0x18) = arg3;
+    *(s16 *)((u8 *)self2 + 0x1A) = 0;
+    *(s16 *)((u8 *)self2 + 0x1C) = 0;
+    *(u8 *)((u8 *)self2 + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)self2 + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)self2 + 0x20) = 0xFF;
+    *(u8 *)((u8 *)self2 + 0x21) = 0xFF;
+    *(s16 *)((u8 *)self2 + 0x22) = arg4;
+    *(s16 *)((u8 *)self2 + 0x24) = 0;
+    *(f32 *)((u8 *)self2 + 0x28) = one;
+    *(f32 *)((u8 *)self2 + 0x2C) = one;
+    *(f32 *)((u8 *)self2 + 0x30) = one;
+    *(s32 *)((u8 *)self2 + 0x34) = 0;
+    *(s32 *)((u8 *)self2 + 0x38) = 0;
+    *(void **)self2 = lbl_80292208;
     fn_80142060((u8 *)self2 + 0x3C);
     *(void **)self = gUiPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
@@ -8585,7 +8585,7 @@ void fn_80171004(void *arg0)
     void Ui_AddChild(void *, void *);
     void *Heap_Alloc(s32);
     void *fn_80179800(void *, s16, s16, s32, s32, s16);
-    void fn_80171218(void *, s32, s32, s32, s32);
+    void *fn_80171218(void *, s32, s32, s32, s32);
     void fn_801439F0(void *, void *, void *);
     void fn_80143570(void *);
     u8 fn_80175924(s32 **, s32);
@@ -8602,6 +8602,7 @@ void fn_80171004(void *arg0)
     u8 *slot;
     u8 *obj;
     void *p;
+    u32 *ctx;
     s16 pos[2];
     s16 slide[2];
     s16 height;
@@ -8648,13 +8649,12 @@ void fn_80171004(void *arg0)
             *(s32 *)(list + 4) + 1;
     }
 
+    *(s16 *)(*(u8 **)(self + 0x54) + 8) = 0x105;
+    *(s16 *)(*(u8 **)(self + 0x54) + 0x24) = 8;
+    *(s16 *)(*(u8 **)(self + 0x54) + 0x8A) = 2;
+    *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = 0;
+
     list = *(u8 **)(self + 0x54);
-
-    *(s16 *)(list + 8) = 0x105;
-    *(s16 *)(list + 0x24) = 8;
-    *(s16 *)(list + 0x8A) = 2;
-    list[0x4C] = 0;
-
     i = 0;
     slot = (u8 *)gConvoy;
 
@@ -8669,20 +8669,24 @@ void fn_80171004(void *arg0)
 
     fn_80143570(*(void **)(self + 0x54));
 
+    ctx = (u32 *)gUiContext;
+
     list = *(u8 **)(self + 0x54);
-
     *(u32 *)(list + 0x11C) = 0;
-    *(void **)(list + 0x120) = (void *)fn_80175924;
-    *(u32 *)(list + 0x124) = gUiContext[0];
 
+    list = *(u8 **)(self + 0x54);
+    *(void **)(list + 0x120) = (void *)fn_80175924;
+    *(u32 *)(list + 0x124) = *ctx;
+
+    list = *(u8 **)(self + 0x54);
     ((void (*)(void *))(*(void ***)list)[13])(list);
 
     Ui_AddChild(self, *(void **)(self + 0x54));
 
     list = *(u8 **)(self + 0x54);
-
+    height = *(s16 *)(list + 0xC);
     slide[0] = 0x138;
-    slide[1] = *(s16 *)(list + 0xC);
+    slide[1] = height;
 
     Ui_SlideWidgetChildMode1(
         self,
@@ -8694,7 +8698,7 @@ void fn_80171004(void *arg0)
     obj = Heap_Alloc(0x40);
 
     if (obj != NULL) {
-        fn_80171218(
+        obj = fn_80171218(
             obj,
             0x198,
             0x38,
@@ -11276,9 +11280,7 @@ extern "C" void fn_801752EC(void *arg0) {
     void *walk;
     u32 *bits;
     u32 player;
-    u64 zero;
 
-    zero = 0;
     self = arg0;
     inner = *(void **)((u8 *)self + 0x40);
     idx = *(s16 *)((u8 *)inner + 0x4E);
@@ -11345,8 +11347,8 @@ extern "C" void fn_801752EC(void *arg0) {
                 add = 0;
             } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
                 bits = fn_8001CB64((u32)entry);
-                add = (s32)zero;
-                if ((*(u64 *)bits & 0x200ULL) == zero) {
+                add = 0;
+                if ((*(u64 *)bits & 0x200ULL) == 0) {
                     add = 1;
                 }
             } else {
@@ -11370,8 +11372,8 @@ extern "C" void fn_801752EC(void *arg0) {
                 add = 0;
             } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) {
                 bits = fn_8001CB64((u32)slot);
-                add = (s32)zero;
-                if ((*(u64 *)bits & 0x200ULL) == zero) {
+                add = 0;
+                if ((*(u64 *)bits & 0x200ULL) == 0) {
                     add = 1;
                 }
             } else {
@@ -11406,8 +11408,8 @@ loop2_body:
             add = 0;
         } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
             bits = fn_8001CB64((u32)entry);
-            add = (s32)zero;
-            if ((*(u64 *)bits & 0x200ULL) == zero) {
+            add = 0;
+            if ((*(u64 *)bits & 0x200ULL) == 0) {
                 add = 1;
             }
         } else {
@@ -11431,8 +11433,8 @@ loop2_body:
             add = 0;
         } else if (fn_80105BC0((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) {
             bits = fn_8001CB64((u32)slot);
-            add = (s32)zero;
-            if ((*(u64 *)bits & 0x200ULL) == zero) {
+            add = 0;
+            if ((*(u64 *)bits & 0x200ULL) == 0) {
                 add = 1;
             }
         } else {
@@ -19471,3 +19473,13 @@ u8 fn_80181B9C(void *arg0, void *arg1) {
 
 #pragma scheduling on
 #pragma peephole on
+static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
+    u8 fn_80105BC0(void *, u8);
+    u32 *fn_8001CB64(u32);
+    if (!unit) return 1;
+    if (unit == player) return 0;
+    if (fn_80105BC0((u8 *)*(void **)((u8 *)unit + 0x18C) + 0x1C, 8)) {
+        if ((*(u64 *)fn_8001CB64((u32)item) & 0x200ULL) != 0) return 0;
+    }
+    return 1;
+}
