@@ -14600,7 +14600,7 @@ static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) 
     fn_80142060((u8 *)tmp + 0x3C);
 }
 #pragma push
-#pragma opt_lifetimes off
+#pragma optimization_level 0
 extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     void fn_80142060(void *);
     void fn_8013BBF8(void *);
