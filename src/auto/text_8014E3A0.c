@@ -33,26 +33,7 @@ static inline void *MsgDebug_FilterText(void *text, u8 *dst)
     return lbl_80330C80;
 }
 
-static inline void Ui_WritePointPosition(f32 x, f32 y, f32 z)
-{
-    *(volatile f32 *)0xCC008000 = x;
-    *(volatile f32 *)0xCC008000 = y;
-    *(volatile f32 *)0xCC008000 = z;
-}
-static inline void Ui_WritePointColor(u8 r, u8 g, u8 b, u8 a)
-{
-    *(volatile u8 *)0xCC008000 = r;
-    *(volatile u8 *)0xCC008000 = g;
-    *(volatile u8 *)0xCC008000 = b;
-    *(volatile u8 *)0xCC008000 = a;
-}
-static inline void Ui_WritePointTexCoord(f32 s, f32 t)
-{
-    *(volatile f32 *)0xCC008000 = s;
-    *(volatile f32 *)0xCC008000 = t;
-}
 
-typedef union { u8 byte; f32 floating; } UiPointFifo;
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef union { Color rgba; u32 word; } PanelColor;
@@ -1224,7 +1205,6 @@ volatile unsigned long long fn_8014EFB8(void *arg0, void *arg1, void *arg2, void
 #pragma optimization_level 4
 #pragma opt_lifetimes off
 #pragma opt_propagation on
-#pragma opt_propagation off
 #pragma global_optimizer off
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
@@ -7247,6 +7227,7 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Color4 corner;
     Color4 colors;
     s32 finalColor;
+    u8 zero;
     Color4 *palette;
 
     x = (s16)arg0;
@@ -7254,16 +7235,17 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     w = (s16)arg2;
     h = (s16)arg3;
     flags = arg4;
-    h3 = h / 3;
-    right = (s16)(x + w);
-    bottom = (s16)(y + h3);
     bottom2 = (s16)(y + h);
+    h3 = h / 3;
+    bottom = (s16)(y + h3);
+    right = (s16)(x + w);
     if (lbl_803680D6 == 0) {
         palette = (Color4 *)lbl_80330D58;
-        ((Color *)&initial.c0)->r = 0; ((Color *)&initial.c0)->g = 0; ((Color *)&initial.c0)->b = 0; ((Color *)&initial.c0)->a = 0;
-        ((Color *)&initial.c1)->r = 0; ((Color *)&initial.c1)->g = 0; ((Color *)&initial.c1)->b = 0; ((Color *)&initial.c1)->a = 0;
-        ((Color *)&initial.c2)->r = 0; ((Color *)&initial.c2)->g = 0; ((Color *)&initial.c2)->b = 0; ((Color *)&initial.c2)->a = 0xFF;
-        ((Color *)&initial.c3)->r = 0; ((Color *)&initial.c3)->g = 0; ((Color *)&initial.c3)->b = 0; ((Color *)&initial.c3)->a = 0xFF;
+        zero = 0;
+        ((Color *)&initial.c0)->r = zero; ((Color *)&initial.c0)->g = zero; ((Color *)&initial.c0)->b = zero; ((Color *)&initial.c0)->a = zero;
+        ((Color *)&initial.c1)->r = zero; ((Color *)&initial.c1)->g = zero; ((Color *)&initial.c1)->b = zero; ((Color *)&initial.c1)->a = zero;
+        ((Color *)&initial.c2)->r = zero; ((Color *)&initial.c2)->g = zero; ((Color *)&initial.c2)->b = zero; ((Color *)&initial.c2)->a = 0xFF;
+        ((Color *)&initial.c3)->r = zero; ((Color *)&initial.c3)->g = zero; ((Color *)&initial.c3)->b = zero; ((Color *)&initial.c3)->a = 0xFF;
         palette->c0 = initial.c0;
         palette->c1 = initial.c1;
         palette->c2 = initial.c2;
