@@ -968,7 +968,7 @@ static inline s32 Battle_AdjustHpDelta(u8 *obj, s32 amount) {
     return (s8)amount;
 }
 
-void fn_801A4B40(u8 *obj, s32 a1) {
+void fn_801A4B40(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
