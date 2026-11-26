@@ -8734,9 +8734,10 @@ return self;
 }
 
 #pragma push
+#pragma cplusplus on
 #pragma optimization_level 4
 #pragma opt_common_subs off
-void fn_800D8030(void *arg0)
+extern "C" void fn_800D8030(void *arg0)
 {
     s32 strlen(char *);
     void String_AssignCStr(void *, char *, s32);
@@ -8784,6 +8785,8 @@ void fn_800D8030(void *arg0)
     s32 len;
     s8 trig;
     f32 fov;
+    u8 sy, sx;
+    f32 scale, offset;
 
     (void)lbl_80369E50;
 
@@ -8827,10 +8830,16 @@ void fn_800D8030(void *arg0)
     }
 
     stick = *(u8 **)gPadInput;
-    f29 += (f23 * (f32)(s8)stick[3]) * lbl_80369E40;
-    f31 += (f24 * (f32)(s8)stick[3]) * lbl_80369E40;
-    f29 += (rx * (f32)(s8)stick[2]) * lbl_80369E40;
-    f31 += (rz * (f32)(s8)stick[2]) * lbl_80369E40;
+    sy=stick[3]; sx=stick[2];
+    scale=lbl_80369E40;
+    offset=f23*(f32)(s8)sy;
+    f29 += offset*scale;
+    offset=f24*(f32)(s8)sy;
+    f31 += offset*scale;
+    offset=rx*(f32)(s8)sx;
+    f29 += offset*scale;
+    offset=rz*(f32)(s8)sx;
+    f31 += offset*scale;
 
     if (held & 0x40) {
         f30 += lbl_80369E44 * f25;
@@ -8862,12 +8871,11 @@ void fn_800D8030(void *arg0)
         f26 += lbl_80369E30;
     }
 
-    vt = *(void **)((u8 *)self + 0x40);
-    ((void (*)(void *, f32, f32, f32))*(void **)((u8 *)vt + 0x24))(self, f29, f30, f31);
-    vt = *(void **)((u8 *)self + 0x40);
-    ((void (*)(void *, f32, f32, f32))*(void **)((u8 *)vt + 0x2C))(self, f26, f27, f28);
+    ((DebugCameraMethods *)self)->SetPosition(f29,f30,f31);
+    ((DebugCameraMethods *)self)->SetLookAt(f26,f27,f28);
 }
 #pragma pop
+#pragma cplusplus off
 extern s32 lbl_8036A0CC;
 extern s32 lbl_8036A0D4;
 extern s32 lbl_8036A0D8;
@@ -26188,7 +26196,7 @@ bits:
 }
 
 #pragma push
-#pragma optimization_level 2
+#pragma opt_lifetimes off
 void fn_800F8868(u8 *self) {
     extern u8 *gAiCmd;
     extern u8 gUiContext[], gAiState[], gTargetList[];
@@ -26875,7 +26883,7 @@ void fn_800F9E90(void *arg0) {
     extern u8 gUiContext[];
     u8 fn_801021F0(void *, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-    u8 fn_80100BA4(s16, s16, s8, s8);
+    u8 fn_80100BA4(s16, s16, s32, s32);
     void *Unit_FindByName(void *);
     void *cmd;
     s16 x;
@@ -29355,30 +29363,23 @@ void fn_800FDDBC(s32 x, s32 y, s32 min, s32 max, s32 layer) {
     }
 }
 #pragma opt_lifetimes off
-void fn_800FDF38(s32 x, s32 y, u8 *path, s32 mode, s32 value) {
-    extern struct {
-        u8 pad[8];
-        s8 minX, minY, maxX, maxY;
-        u8 pad2[0x14190 - 12];
-        u16 *buf;
-    } gBattleMap;
-    void Map_SelectRangeBuffer(void *, s32);
-    register u8 *map = (u8 *)&gBattleMap;
-    Map_SelectRangeBuffer(map, mode);
-    gBattleMap.buf[(s8)x + ((s8)y << 6)] = (short)value;
-    while (*path) {
+void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
+    extern u8 gBattleMap[];
+    void Map_SelectRangeBuffer(void *,s32);
+    register u8 *map=gBattleMap;
+    Map_SelectRangeBuffer(map,mode);
+    (*(u16 **)(gBattleMap+0x14190))[(s8)x+((s8)y<<6)]=(short)value;
+    while(*path) {
         u8 outside;
-        switch (*path) {
+        switch(*path) {
         case '4': x--; break;
         case '6': x++; break;
         case '8': y--; break;
         case '2': y++; break;
         }
-        outside = 0;
-        if (x < gBattleMap.minX || gBattleMap.maxX - 1 < x || y < gBattleMap.minY || gBattleMap.maxY - 1 < y)
-            outside = 1;
-        if (!outside)
-            (*(u16 **)(map + 0x14190))[(s8)x + ((s8)y << 6)] = value;
+        outside=0;
+        if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<y) outside=1;
+        if(!outside) (*(u16 **)(map+0x14190))[(s8)x+((s8)y<<6)]=value;
         path++;
     }
 }
@@ -30141,25 +30142,64 @@ void fn_800FF3C4(void *arg0)
 }
 
 void fn_800FF424(void *parent) {
-extern u8 gUiContext[], lbl_8028E858[];
-void fn_800280C8(void *, u8, u8);
-void *Process_CreateChild(void *, void *);
-s8 x,y; u8 *unit; u8 *child; u8 *ctx=gUiContext;
-fn_800280C8(ctx,ctx[13],ctx[14]);
-switch(gUiContext[8]) {
-case 0: return;
-case 1: case 4: case 14: case 19: case 20: case 22: case 23:
-x=(s8)ctx[13]; y=(s16)((s8)ctx[14]-1); break;
-case 10: case 11: case 12:
-x=(s8)gUiContext[15]; y=(s8)gUiContext[16]; break;
-case 7: case 15: case 16: case 17: case 18: case 21:
-unit=*(u8**)(ctx+4) ? *(u8**)(ctx+4) : *(u8**)ctx;
-x=(s8)unit[0x19e]; y=(s8)unit[0x19f]; break;
-case 49: default: return;
-}
-child=Process_CreateChild(lbl_8028E858,parent);
-*(f32*)(child+0x30)=(s8)x; *(f32*)(child+0x34)=(s8)y;
-*(u32*)(child+0x60)=0; *(u32*)(child+0x64)=0;
+    extern struct {
+        s8 *unit0;
+        s8 *unit4;
+        u8 mode;
+        u8 pad9[4];
+        s8 x1;
+        s8 y1;
+        s8 x2;
+        s8 y2;
+    } gUiContext;
+    extern u8 lbl_8028E858[];
+    void fn_800280C8(void *, u8, u8);
+    void *Process_CreateChild(void *, void *);
+    s32 x;
+    s16 y;
+    s8 *unit;
+    u8 *child;
+    u8 *ctx = (u8 *)&gUiContext;
+
+    fn_800280C8(ctx, gUiContext.x1, gUiContext.y1);
+    switch (gUiContext.mode) {
+    case 0:
+        return;
+    case 1:
+    case 4:
+    case 14:
+    case 19:
+    case 20:
+    case 22:
+    case 23:
+        x = ((s8 *)ctx)[13];
+        y = ((s8 *)ctx)[14] - 1;
+        break;
+    case 10:
+    case 11:
+    case 12:
+        x = gUiContext.x2;
+        y = gUiContext.y2;
+        break;
+    case 7:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 21:
+        unit = *(s8 **)(ctx + 4) ? *(s8 **)(ctx + 4) : *(s8 **)ctx;
+        x = unit[0x19e];
+        y = unit[0x19f];
+        break;
+    case 49:
+    default:
+        return;
+    }
+    child = Process_CreateChild(lbl_8028E858, parent);
+    *(f32 *)(child + 0x30) = (s8)x;
+    *(f32 *)(child + 0x34) = (s8)y;
+    *(u32 *)(child + 0x60) = 0;
+    *(u32 *)(child + 0x64) = 0;
 }
 
 void fn_800FF564(void *arg0) {
