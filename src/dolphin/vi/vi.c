@@ -3,13 +3,6 @@
 #include <dolphin/os.h>
 #include "global.h"
 
-static inline u64 VIReadChangedBits(void) {
-    extern void *lbl_80368630, *lbl_80368634;
-    union { u64 value; struct { u32 hi, lo; } words; } bits;
-    bits.words.hi = (u32)lbl_80368630;
-    bits.words.lo = (u32)lbl_80368634;
-    return bits.value;
-}
 /* Minimal DVDCommandBlock layout used by the DVD state machine. */
 typedef struct DVDReadyCommand {
     u8 pad[8];
