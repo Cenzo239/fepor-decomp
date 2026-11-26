@@ -23,6 +23,16 @@ typedef struct {
     void *f7C;
 } Struct_80089490;
 
+typedef struct {
+    u8 f00;
+    u8 pad01[0x17];
+    u8 f18;
+    u8 pad19[0x17];
+    u8 f30;
+    u8 pad31[0x27];
+    void *f58;
+} Struct_89950;
+
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
@@ -114,7 +124,7 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-#pragma global_optimizer off
+#pragma opt_propagation off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[];
@@ -122,20 +132,22 @@ void fn_800895B8(void) {
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
+    u8 *base = lbl_80289950;
     void *tmp;
+    s32 i;
 
-    base = lbl_80289950;
-    lbl_803674E0 = Process_Create(&((Struct_80089490 *)base)->f00, 7);
-    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
-    tmp = Process_Create((u8 *)base + 0x18, 7);
+    for (i = 0; i < 1; i++) {
+        lbl_803674E0 = Process_Create(base + i, 7);
+    }
+    lbl_803674E4 = Process_Create(base + 0x58, 7);
+    tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create((u8 *)base + 0x30, 7);
+    tmp = Process_Create(base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
-#pragma global_optimizer reset
+#pragma opt_propagation on
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
