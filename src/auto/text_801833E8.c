@@ -2,6 +2,7 @@
 #include "common.h"
 #include "global.h"
 static inline s16 fn_80190BBC_Add16(s32 x) { return (s16)(x + 0x10); }
+static inline s16 fn_80190BBC_Add2(s32 a, s32 b) { return (s16)(a + b + 0x10); }
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 
@@ -6711,8 +6712,8 @@ void fn_80190BBC(void *arg0) {
     s16 *p = (s16 *)arg0;
     s32 tmp;
 
-    tmp = p[0x46/2] + p[0x4C/2] * 2;
-    p[0x10/2] = (s16)(p[0xC/2] + (s16)(tmp + 0x10));
+    tmp = p[0x4C/2] * 2 + p[0x46/2];
+    p[0x10/2] = (s16)(p[0xC/2] + fn_80190BBC_Add16(tmp));
     height = p[0x10/2] - p[0xC/2];
     width = p[0xE/2] - p[0xA/2];
     bottom = height - 8;
