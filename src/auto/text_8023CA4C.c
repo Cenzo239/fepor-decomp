@@ -362,7 +362,7 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
