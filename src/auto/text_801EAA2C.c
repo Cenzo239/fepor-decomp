@@ -3169,102 +3169,110 @@ block_else:
     String_Destroy(&path, -1);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma opt_common_subs off
-void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2) {
-    s32 String_Compare(String *, s32, s32, char *, s32);
-    void String_Assign(String *, void *, s32, s32);
-    void String_Destroy(String *, s32);
-    void String_Init(String *, char *, void *);
-    void String_Copy(String *, void *);
-    void String_Concat(String *, String *, String *);
-    void String_ConcatCStr(String *, String *, char *);
-    u32 StringMap_FindOrInsert(void *, String *);
-    s32 strlen(char *);
-    extern char gGActorPathExt[];
-
-    String sp54;
-    String sp48;
-    String sp3C;
-    String sp30;
-    String sp24;
-    String sp18;
-    String spC;
-    u8 sp8[4];
-    s32 n;
-    char *str;
-    u8 *row;
-    String *out;
-    u8 *base;
-
-    sp54.cap = 0;
-    sp48.cap = 0;
-    sp54.size = 0;
-    sp54.data = 0;
-    sp54.cap = 0;
-    sp48.size = 0;
-    sp48.data = 0;
-    sp48.cap = 0;
-    out = arg0;
-    base = arg1;
-    row = base + arg2 * 0xC;
-    String_Copy(&sp3C, row + 0x74);
-    String_Copy(&sp30, row + 0x5C);
-    String_Copy(&sp24, row + 0x8C);
-    String_Assign(&sp48, (void *)(StringMap_FindOrInsert(base + 4, &sp24) + 0xC), 0, -1);
-    str = gGActorPathExt;
-    str += 0x221;
-    n = strlen(str);
-    str = gGActorPathExt;
-    if (String_Compare(&sp48, 0, (s32)sp48.size, str + 0x221, n) != 0) {
-        String_Copy(out, &sp48);
-        String_Destroy(&sp24, -1);
-        String_Destroy(&sp30, -1);
-        String_Destroy(&sp3C, -1);
-        String_Destroy(&sp48, -1);
-        String_Destroy(&sp54, -1);
-        return;
-    }
-    String_ConcatCStr(&sp18, &sp3C, (char *)((u8 *)gGActorPathExt + 0x222));
-    String_Concat(&spC, &sp18, &sp30);
-    String_Assign(&sp54, &spC, 0, -1);
-    String_Destroy(&spC, -1);
-    String_Destroy(&sp18, -1);
-    String_Assign(&sp48, (void *)(StringMap_FindOrInsert(base + 4, &sp54) + 0xC), 0, -1);
-    str = gGActorPathExt;
-    str += 0x221;
-    n = strlen(str);
-    str = gGActorPathExt;
-    if (String_Compare(&sp48, 0, (s32)sp48.size, str + 0x221, n) != 0) {
-        String_Copy(out, &sp48);
-        String_Destroy(&sp24, -1);
-        String_Destroy(&sp30, -1);
-        String_Destroy(&sp3C, -1);
-        String_Destroy(&sp48, -1);
-        String_Destroy(&sp54, -1);
-        return;
-    }
-    String_Assign(&sp48, (void *)(StringMap_FindOrInsert(base + 4, &sp3C) + 0xC), 0, -1);
-    str = gGActorPathExt;
-    str += 0x221;
-    n = strlen(str);
-    str = gGActorPathExt;
-    if (String_Compare(&sp48, 0, (s32)sp48.size, str + 0x221, n) != 0) {
-        String_Copy(out, &sp48);
-        String_Destroy(&sp24, -1);
-        String_Destroy(&sp30, -1);
-        String_Destroy(&sp3C, -1);
-        String_Destroy(&sp48, -1);
-        String_Destroy(&sp54, -1);
-        return;
-    }
-    String_Init(out, (char *)((u8 *)gGActorPathExt + 0x221), sp8);
+void fn_801EF39C(String *arg0, u8 *arg1, s32 arg2)
+{
+  s32 String_Compare(String *, s32, s32, char *, s32);
+  void String_Assign(String *, void *, s32, s32);
+  void String_Destroy(String *, s32);
+  void String_Init(String *, char *, void *);
+  void String_Copy(String *, void *);
+  void String_Concat(String *, String *, String *);
+  u8 *entry;
+  void String_ConcatCStr(String *, String *, char *);
+  void *StringMap_FindOrInsert(void *, String *);
+  s32 strlen(char *);
+  extern char gGActorPathExt[];
+  String sp54;
+  String sp48;
+  String sp3C;
+  String sp30;
+  String sp24;
+  String sp18;
+  String spC;
+  u8 sp8[4];
+  s32 n;
+  char *str;
+  u8 *row;
+  String *out;
+  u8 *base;
+  sp54.cap = 0;
+  sp48.cap = 0;
+  sp54.size = 0;
+  sp54.data = 0;
+  sp54.cap = 0;
+  sp48.size = 0;
+  sp48.data = 0;
+  sp48.cap = 0;
+  out = arg0;
+  base = arg1;
+  row = base + (arg2 * 0xC);
+  String_Copy(&sp3C, row + 0x74);
+  String_Copy(&sp30, row + 0x5C);
+  String_Copy(&sp24, row + 0x8C);
+  entry = ((u8 *) StringMap_FindOrInsert(base + 4, &sp24)) + 0xC;
+  String_Assign(&sp48, entry, 0, -1);
+  str = gGActorPathExt;
+  str += 0x221;
+  n = strlen(str);
+  str = gGActorPathExt;
+  if (String_Compare(&sp48, 0, (s32) sp48.size, str + 0x221, n) != 0)
+  {
+    String_Copy(out, &sp48);
     String_Destroy(&sp24, -1);
     String_Destroy(&sp30, -1);
     String_Destroy(&sp3C, -1);
     String_Destroy(&sp48, -1);
     String_Destroy(&sp54, -1);
+    return;
+  }
+  String_ConcatCStr(&sp18, &sp3C, (char *) (((u8 *) gGActorPathExt) + 0x222));
+  String_Concat(&spC, &sp18, &sp30);
+  String_Assign(&sp54, &spC, 0, -1);
+  String_Destroy(&spC, -1);
+  String_Destroy(&sp18, -1);
+  entry = ((u8 *) StringMap_FindOrInsert(base + 4, &sp54)) + 0xC;
+  String_Assign(&sp48, entry, 0, -1);
+  str = gGActorPathExt;
+  str += 0x221;
+  n = strlen(str);
+  str = gGActorPathExt;
+  if (String_Compare(&sp48, 0, (s32) sp48.size, str + 0x221, n) != 0)
+  {
+    String_Copy(out, &sp48);
+    String_Destroy(&sp24, -1);
+    String_Destroy(&sp30, -1);
+    String_Destroy(&sp3C, -1);
+    String_Destroy(&sp48, -1);
+    String_Destroy(&sp54, -1);
+    return;
+  }
+  entry = ((u8 *) StringMap_FindOrInsert(base + 4, &sp3C)) + 0xC;
+  String_Assign(&sp48, entry, 0, -1);
+  str = gGActorPathExt;
+  str += 0x221;
+  n = strlen(str);
+  str = gGActorPathExt;
+  if (String_Compare(&sp48, 0, (s32) sp48.size, str + 0x221, n) != 0)
+  {
+    String_Copy(out, &sp48);
+    String_Destroy(&sp24, -1);
+    String_Destroy(&sp30, -1);
+    String_Destroy(&sp3C, -1);
+    String_Destroy(&sp48, -1);
+    String_Destroy(&sp54, -1);
+    return;
+  }
+  String_Init(out, (char *) (((u8 *) gGActorPathExt) + 0x221), sp8);
+  String_Destroy(&sp24, -1);
+  String_Destroy(&sp30, -1);
+  String_Destroy(&sp3C, -1);
+  String_Destroy(&sp48, -1);
+  String_Destroy(&sp54, -1);
 }
-#pragma opt_propagation off
+#pragma pop
 void fn_801EF6BC(void *arg0) {
     typedef struct { u32 unk0; char name[4]; } Named;
     u16 FileCache_Probe(void);
@@ -3804,13 +3812,13 @@ void fn_801EFDC8(void *arg0) {
 }
 #pragma global_optimizer reset
 void fn_801F0718(void *arg0) {
-    f32 Math_Hermite(f32, f32, f32, f32, f32);
-    void *Camera_Get(void);
-    void PSMTXRotRad(void *, s32, f32);
+    f32 fn_80059500(f32, f32, f32, f32, f32);
+    void *fn_80068548(void);
+    void fn_80202300(void *, s32, f32);
     void fn_802029C4(void *, void *, void *);
     void fn_80203184(void *, void *, void *);
     void fn_80067FE8(void *, void *, void *);
-    void Process_ClearFunc(void *);
+    void fn_8000C188(void *);
     extern f32 lbl_8036B7C8;
     extern f32 lbl_8036B7D4;
     extern f64 lbl_8036B7D8;
@@ -3833,43 +3841,43 @@ void fn_801F0718(void *arg0) {
     u32 *src;
     u16 n;
 
-    cam = (struct Cam *)Camera_Get();
+    cam = (struct Cam *)fn_80068548();
     t = lbl_8036B7C8;
     n = *(u16 *)((u8 *)arg0 + 0x4C);
     if (n != 0) {
         t = (f32)*(u16 *)((u8 *)arg0 + 0x4E) / (f32)n;
     }
-    f27 = Math_Hermite(
+    f27 = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[0],
         (*(f32 **)((u8 *)arg0 + 0x3C))[0],
         (*(f32 **)((u8 *)arg0 + 0x40))[0],
         (*(f32 **)((u8 *)arg0 + 0x44))[0], t);
-    f28 = Math_Hermite(
+    f28 = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[1],
         (*(f32 **)((u8 *)arg0 + 0x3C))[1],
         (*(f32 **)((u8 *)arg0 + 0x40))[1],
         (*(f32 **)((u8 *)arg0 + 0x44))[1], t);
-    f29 = Math_Hermite(
+    f29 = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[2],
         (*(f32 **)((u8 *)arg0 + 0x3C))[2],
         (*(f32 **)((u8 *)arg0 + 0x40))[2],
         (*(f32 **)((u8 *)arg0 + 0x44))[2], t);
-    f30 = Math_Hermite(
+    f30 = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[3],
         (*(f32 **)((u8 *)arg0 + 0x3C))[3],
         (*(f32 **)((u8 *)arg0 + 0x40))[3],
         (*(f32 **)((u8 *)arg0 + 0x44))[3], t);
-    f31 = Math_Hermite(
+    f31 = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[4],
         (*(f32 **)((u8 *)arg0 + 0x3C))[4],
         (*(f32 **)((u8 *)arg0 + 0x40))[4],
         (*(f32 **)((u8 *)arg0 + 0x44))[4], t);
-    Math_Hermite(
+    fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[5],
         (*(f32 **)((u8 *)arg0 + 0x3C))[5],
         (*(f32 **)((u8 *)arg0 + 0x40))[5],
         (*(f32 **)((u8 *)arg0 + 0x44))[5], t);
-    ftmp = Math_Hermite(
+    ftmp = fn_80059500(
         (*(f32 **)((u8 *)arg0 + 0x38))[6],
         (*(f32 **)((u8 *)arg0 + 0x3C))[6],
         (*(f32 **)((u8 *)arg0 + 0x40))[6],
@@ -3877,14 +3885,15 @@ void fn_801F0718(void *arg0) {
     cam->eye[0] = f27;
     src = (u32 *)lbl_8027F250;
     ftmp = -ftmp;
-    angle = (cam->eye[1] = f28, lbl_8036B7D4 * f30);
+    cam->eye[1] = f28;
+    angle = lbl_8036B7D4 * f30;
     cam->eye[2] = f29;
     ((u32 *)vec)[2] = src[2];
     ((u32 *)vec)[0] = src[0];
     ((u32 *)vec)[1] = src[1];
     vec[2] = ftmp;
-    RotSetup801F0718(mtx14, 0x58, angle);
-    PSMTXRotRad(mtx44, 0x59, lbl_8036B7D4 * f31);
+    fn_80202300(mtx14, 0x58, angle);
+    fn_80202300(mtx44, 0x59, lbl_8036B7D4 * f31);
     fn_802029C4(mtx14, vec, vec);
     fn_802029C4(mtx44, vec, vec);
     fn_80203184(cam->eye, vec, cam->at);
@@ -3892,7 +3901,7 @@ void fn_801F0718(void *arg0) {
     (*(u16 *)((u8 *)arg0 + 0x4E))++;
     if (*(u16 *)((u8 *)arg0 + 0x4E) >= *(u16 *)((u8 *)arg0 + 0x4C)) {
         (*(u16 *)((u8 *)arg0 + 0x48))++;
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
 }
 
