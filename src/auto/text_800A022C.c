@@ -76,7 +76,7 @@ static inline u32 MenuToggle_800A0260(u32 state) {
     extern u8 lbl_80366E24;
     u32 t = lbl_80366E24 ^ 1;
     lbl_80366E24 = t;
-    if (t != 0) state = 0;
+    if ((u8)t != 0) state = 0;
     return state;
 }
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
