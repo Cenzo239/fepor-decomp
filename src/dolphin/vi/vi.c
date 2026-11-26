@@ -1048,10 +1048,11 @@ static inline s32 cntlzd(u64 bit) {
 }
 
 #pragma push
-#pragma global_optimizer off
+#pragma optimization_level 4
+#pragma global_optimizer on
 void VIFlush(void) {
-    s32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(s32);
+    u32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(u32);
     extern u8 lbl_8033A068[];
     extern s32 lbl_80368608;
     struct {
@@ -1060,20 +1061,20 @@ void VIFlush(void) {
         u8 pad[0x30];
         void *unk120;
     } *vi = (void *)lbl_8033A068;
-    s32 enabled;
+    u32 enabled;
     u32 regIndex;
- u16 value;
+    u16 *p;
 
     enabled = OSDisableInterrupts();
     *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
     *(u32 *)&lbl_80368628 = 0;
     *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
- *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
+    *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
 
     while (*(u64 *)&lbl_80368630 != 0) {
         regIndex = cntlzd(*(u64 *)&lbl_80368630);
-        value = vi->regs[regIndex];
- vi->shdwRegs[regIndex] = value;
+        p = &vi->regs[regIndex];
+        p[60] = vi->regs[regIndex];
         *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
 
