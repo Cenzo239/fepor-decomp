@@ -1813,30 +1813,44 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 
 
-void fn_80134C24(s32 *arg0, const s16 *arg1) {
-    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-    s32 Text_MeasureHeight(s32, f32);
-    Vec2s out, in;
-    s16 rowH;
-    s16 kind, colW;
-    s16 quot;
-    s32 rem, hdiv, t;
-    s16 x, y, half, off48, off4a;
-    colW = arg1[34];
-    kind = arg1[31];
-    quot = kind / colW;
-    rowH = arg1[35];
-    t = MenuGridColumnWidth(arg1, colW);
-    rem = kind % colW;
-    rem = (s16)rem;
-    rem = t * rem;
-    x = (s16)(rem + arg1[36]);
-    y = (s16)((s16)rowH * (s16)quot + arg1[37]);
-    t = Text_MeasureHeight(-1, lbl_8036A5AC);
-    half = (s16)(((s32)(s16)rowH - t) >> 1);
-    in.x = x;
-    in.y = (s32)y + half;
-    *arg0 = *(s32 *)fn_8013F748((void*)arg1, &out, &in);
+void fn_80134C24(s32 *arg0, const s16 *arg1)
+{
+  volatile unsigned long pad;
+  int new_var;
+  Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
+  s32 Text_MeasureHeight(s32, f32);
+  Vec2s out;
+  Vec2s in;
+  s16 rowH;
+  s16 kind;
+  s16 colW;
+  s16 quot;
+  s32 rem;
+  s32 hdiv;
+  s32 t;
+  s16 x;
+  s16 y;
+  s16 half;
+  s16 off48;
+  s16 off4a;
+  colW = arg1[34];
+  kind = arg1[31];
+  quot = kind / colW;
+  rowH = arg1[35];
+  off48 = arg1[36];
+  off4a = arg1[37];
+  t = MenuGridColumnWidth(arg1, colW);
+  rem = kind % colW;
+  rem = (s16) rem;
+  rem = t * rem;
+  x = (s16) (rem + off48);
+  new_var = ((s16) rowH) * ((s16) quot);
+  y = (s16) (new_var + off4a);
+  t = Text_MeasureHeight(-1, lbl_8036A5AC);
+  in.x = x;
+  half = (s16) ((((s32) ((s16) rowH)) - t) >> 1);
+  in.y = ((s32) y) + half;
+  *arg0 = *((s32 *) fn_8013F748((void *) arg1, &out, &in));
 }
 #pragma peephole reset
 #pragma optimization_level reset
