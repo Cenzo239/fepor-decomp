@@ -1,10 +1,6 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void *fn_800895B8_Create(void *base, s32 off) {
-    void *Process_Create(void *, s32);
-    return Process_Create((u8 *)base + off, 7);
-}
 typedef struct {
     f32 x, y;
     u8 unk8[4];
@@ -130,7 +126,7 @@ void fn_800895B8(void) {
     void *tmp;
 
     base = lbl_80289950;
-    lbl_803674E0 = Process_Create(base, 7);
+    lbl_803674E0 = Process_Create(&((Struct_80089490 *)base)->f00, 7);
     lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
     tmp = Process_Create((u8 *)base + 0x18, 7);
     lbl_803674E8 = tmp;
