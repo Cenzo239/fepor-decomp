@@ -893,6 +893,24 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
+static inline u8 *Save_FindLinkedSlotAt(u8 *base, s32 id) {
+    s32 i;
+    s32 off=0x2000;
+    u8 *slot;
+    u8 valid;
+    for(i=0;i<6;i++) {
+        slot=base+off;
+        if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+        else if (*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+        else valid=1;
+        if (valid) {
+            if (id==(s32)slot[0x62]) return slot;
+        }
+        off+=0x4000;
+    }
+    return 0;
+}
+
 static inline void Save_CopySystemFields(u8 *arg0, u8 *tmpl) {
  extern u8 gSystemSave[];
  u8 *src=tmpl; u8 *dst; u32 w8,wC; s32 j=0,ctr;
@@ -1061,8 +1079,9 @@ void fn_801E14F4(void *arg0) {
     fn_801E1540(&gSaveDataBase, arg0, *(s32 *)((u8 *)arg0 + 0x60), *(s32 *)((u8 *)arg0 + 0x64), *(s32 *)((u8 *)arg0 + 0x68));
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
 void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -1117,49 +1136,8 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     u8 *base;
 
     other = arg1;
-    best = NULL;
-    i = 0;
     gSystemSave[0x47] = (u8)arg2;
-    minSize = (u32)-1;
-    off = 0x2000;
-
-    for (ctr = 3; ctr != 0; ctr--) {
-        base = *arg0;
-        slot = base + off;
-        if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
-            hdrOk = 0;
-        } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        base = *arg0;
-        slot = base + off;
-        if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
-            hdrOk = 0;
-        } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        i += 1;
-    }
+    best = Save_FindUnusedSlotIn(arg0);
 
     fn_80006298(best, 0, 0x4000);
     *(s32 *)(best + 0x4C) = 0x4000;
@@ -1190,91 +1168,23 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     hist[0x20] = 0; hist[0x21] = 0; hist[0x22] = 0; hist[0x23] = 0;
     hist[0x24] = 0; hist[0x25] = 0; hist[0x26] = 0; hist[0x27] = 0;
 
-    for (ctr = 5; ctr != 0; ctr--) {
-        b = rec[0x12];
-        if (b == 0) {
-            break;
-        }
-        hist[b] += 1;
-        b = rec[0x13];
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        hist[b] += 1;
-        b = rec[0x13];
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        hist[b] += 1;
-        b = rec[0x13];
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        hist[b] += 1;
-        b = rec[0x13];
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        hist[b] += 1;
-        b = rec[0x13];
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        rec += 1;
-        hist[b] += 1;
+    for (i=0; i<30; i++) {
+        b=rec[0x12];
+        if (!b) break;
+        hist[b]++;
+        rec++;
     }
 
     i = 0;
     do {
         off = 0x2000;
-        for (ctr = 2; ctr != 0; ctr--) {
-            found = (u8 *)gSaveDataBase + off;
-            if ((u32)(*(u32 *)(found + 0x40) + 0xB9BB0000) != 0x384AU) {
-                hdrOk = 0;
-            } else if ((u32)(*(u32 *)(found + 0x44) + 0xDFFB0000) != 0x201U) {
-                hdrOk = 0;
-            } else {
-                hdrOk = 1;
-            }
-            if (hdrOk == 0) {
-            } else if (i != (s32)found[0x62]) {
-            } else {
-                goto found_id;
-            }
-            off += 0x4000;
-            found = (u8 *)gSaveDataBase + off;
-            if ((u32)(*(u32 *)(found + 0x40) + 0xB9BB0000) != 0x384AU) {
-                hdrOk = 0;
-            } else if ((u32)(*(u32 *)(found + 0x44) + 0xDFFB0000) != 0x201U) {
-                hdrOk = 0;
-            } else {
-                hdrOk = 1;
-            }
-            if (hdrOk == 0) {
-            } else if (i != (s32)found[0x62]) {
-            } else {
-                goto found_id;
-            }
-            off += 0x4000;
-            found = (u8 *)gSaveDataBase + off;
-            if ((u32)(*(u32 *)(found + 0x40) + 0xB9BB0000) != 0x384AU) {
-                hdrOk = 0;
-            } else if ((u32)(*(u32 *)(found + 0x44) + 0xDFFB0000) != 0x201U) {
-                hdrOk = 0;
-            } else {
-                hdrOk = 1;
-            }
-            if (hdrOk == 0) {
-            } else if (i != (s32)found[0x62]) {
-            } else {
-                goto found_id;
-            }
-            off += 0x4000;
+        for (ctr=0;ctr<6;ctr++) {
+            found=(u8 *)gSaveDataBase+off;
+            if (*(u32 *)(found+0x40)!=0x4645384AU) hdrOk=0;
+            else if (*(u32 *)(found+0x44)!=0x20050201U) hdrOk=0;
+            else hdrOk=1;
+            if(hdrOk && i==(s32)found[0x62]) goto found_id;
+            off+=0x4000;
         }
         found = NULL;
     found_id:
@@ -1287,89 +1197,21 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
         i += 1;
     } while (i < 5);
 
-    hp = &hist[1];
-    idx = 1;
-    for (ctr = 0xD; ctr != 0; ctr--) {
-        if ((s8)hp[0] == 0) {
-            freeId = idx;
-            goto got_free;
-        }
-        idx += 1;
-        if ((s8)hp[1] == 0) {
-            freeId = idx;
-            goto got_free;
-        }
-        idx += 1;
-        if ((s8)hp[2] == 0) {
-            freeId = idx;
-            goto got_free;
-        }
-        hp += 3;
-        idx += 1;
+    freeId=0;
+    for (n=1;n<40;n++) {
+        if ((s8)hist[n]==0) { freeId=(u8)n; break; }
     }
-    freeId = 0;
- got_free:
     best[0x61] = freeId;
     n = 0;
     best[0x64] = 1;
     best[0x65] = 3;
     best[0x66] = arg3;
 
-    rec = gSystemSave;
-    for (ctr = 3; ctr != 0; ctr--) {
-        if (rec[0x12] == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        b = rec[0x13];
-        n += 1;
-        rec += 1;
-        if (b == 0) {
-            break;
-        }
-        n += 1;
-        rec += 1;
+    rec=gSystemSave;
+    for (i=0;i<30;i++) {
+        if (rec[0x12]==0) break;
+        n++;
+        rec++;
     }
 
     fn_8014D698(gBattleState, best[0x61], best[0x66], arg4, (u8)(n + 1));
@@ -1413,7 +1255,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     diff = (s32)best - (s32)gSaveDataBase;
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, other);
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 void fn_801E1CB4(u8 **arg0, void *arg1) {
@@ -2587,7 +2429,7 @@ memcpy(dst,name,strlen(name));
 memcpy(dst+0x20,formatted,strlen(formatted));
 }
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_strength_reduction off
 void fn_801E3CA8(void *arg0) {
     void *Msg_Expand(void *);
@@ -2620,48 +2462,15 @@ void fn_801E3CA8(void *arg0) {
     u8 *base;
     u8 *src;
     void *buf;
-    u8 *dst;
-    u8 *tmpl;
     void *name;
+    u8 *tmpl;
+    u8 *dst;
 
     j = 0;
     tmpl = gSystemSave;
     src = tmpl;
-    *(u32 *)((u8 *)arg0 + 0x70) = *(u32 *)(tmpl + 0);
-    *(u32 *)((u8 *)arg0 + 0x74) = *(u32 *)(tmpl + 4);
-    w8 = *(u32 *)(tmpl + 8);
-    wC = *(u32 *)(tmpl + 0xC);
-    *(u32 *)((u8 *)arg0 + 0x7C) = wC;
-    *(u32 *)((u8 *)arg0 + 0x78) = w8;
-    *(u16 *)((u8 *)arg0 + 0x80) = *(u16 *)(tmpl + 0x10);
-    ((u8 *)arg0)[0xB0] = tmpl[0x40];
-    ((u8 *)arg0)[0xB1] = tmpl[0x41];
-    ((u8 *)arg0)[0xB2] = tmpl[0x42];
-    ((u8 *)arg0)[0xB3] = tmpl[0x43];
-    ((u8 *)arg0)[0xB4] = tmpl[0x44];
-    ((u8 *)arg0)[0xB7] = tmpl[0x47];
     dst = (u8 *)arg0 + 0x70;
-    for (ctr = 5; ctr != 0; ctr--) {
-        u8 *p = dst + j + 0x12;
-        u8 *s = src + 0x12;
-        j += 6;
-        p[0] = s[0];
-        p[1] = s[1];
-        p[2] = s[2];
-        p[3] = s[3];
-        p[4] = s[4];
-        p[5] = s[5];
-        src += 6;
-    }
-    *(u32 *)(dst + 0x3C) = 0;
-    *(u32 *)(dst + 0x38) = 0;
-    *(u32 *)(dst + 0x34) = 0;
-    *(u32 *)(dst + 0x30) = 0;
-    src = gSystemSave;
-    *(u32 *)(dst + 0x30) |= *(u32 *)(src + 0x30);
-    *(u32 *)(dst + 0x34) |= *(u32 *)(src + 0x34);
-    *(u32 *)(dst + 0x38) |= *(u32 *)(src + 0x38);
-    *(u32 *)(dst + 0x3C) |= *(u32 *)(src + 0x3C);
+    Save_CopySystemFields(arg0, tmpl);
     best = Save_FindMaxSizeIn(gSaveDataBase);
     *(u32 *)((u8 *)arg0 + 0x48) = best + 1;
     for (j = 0; j < 0x40; j+=8) { u8 *p=(u8 *)arg0+j; p[0]=0x20;p[1]=0x20;p[2]=0x20;p[3]=0x20;p[4]=0x20;p[5]=0x20;p[6]=0x20;p[7]=0x20; }
