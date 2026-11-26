@@ -8781,7 +8781,6 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
     entries->e2 = 0;
     Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
-#pragma inline_depth(0)
 
 void fn_8006F170(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
