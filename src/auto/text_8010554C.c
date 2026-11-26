@@ -4767,15 +4767,14 @@ selected:
 }
 #pragma pop
 
-static inline s8 Ai_GetHealAmount(void *unit, void *item) {
+static inline s8 Ai_GetHealAmount(void *unit, void *item, void *iid1, void *iid2) {
     void *Item_GetByIid(void *);
     s8 Unit_GetMaxHp(void *);
-    extern u8 lbl_80273B40[];
 
-    if (item == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
+    if (item == Item_GetByIid(iid1)) {
         return 0xA;
     }
-    if (item == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
+    if (item == Item_GetByIid(iid2)) {
         return Unit_GetMaxHp(unit);
     }
     return 0;
