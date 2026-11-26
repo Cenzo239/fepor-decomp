@@ -1037,6 +1037,11 @@ path_ok:
     OSRestoreInterrupts(irq);
 }
 
+static inline void VIFlushMode(u32 *shadow, u32 *changed) {
+    *shadow |= *changed;
+    *changed = 0;
+}
+
 static inline s32 cntlzd(u64 bit) {
     u32 hi = (u32)(bit >> 32);
     u32 lo = (u32)(bit & 0xFFFFFFFF);
@@ -1050,9 +1055,10 @@ static inline s32 cntlzd(u64 bit) {
 #pragma push
 #pragma optimization_level 3
 #pragma global_optimizer off
+#pragma opt_dead_assignments off
 void VIFlush(void) {
-    u32 OSDisableInterrupts(void);
-    void OSRestoreInterrupts(u32);
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
     extern u8 lbl_8033A068[];
     extern s32 lbl_80368608;
     struct {
@@ -1062,14 +1068,14 @@ void VIFlush(void) {
         void *unk120;
     } *vi = (void *)lbl_8033A068;
     u32 enabled;
-    u32 regIndex;
+    s32 regIndex;
     u16 *p;
 
     enabled = OSDisableInterrupts();
-    *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
-    *(u32 *)&lbl_80368628 = 0;
-    *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
-    *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
+    *(s32 *)&lbl_80368638 |= *(s32 *)&lbl_80368628;
+    *(s32 *)&lbl_80368628 = 0;
+    *(s32 *)&lbl_80368644 |= *(s32 *)&lbl_80368634;
+    *(s32 *)&lbl_80368640 |= *(s32 *)&lbl_80368630;
 
     while (*(u64 *)&lbl_80368630 != 0) {
         regIndex = cntlzd(*(u64 *)&lbl_80368630);
