@@ -16160,6 +16160,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
+    return;
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
@@ -20265,6 +20266,7 @@ extern "C" void fn_8021D28C(s32, s32, void *);
 extern "C" u8 gCardStrings[];
 #pragma cplusplus on
 #pragma dont_inline on
+#pragma optimization_level 3
 extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     struct Stream_800EBACC {
         u8 pad[0x10];
