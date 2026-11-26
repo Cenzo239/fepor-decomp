@@ -2292,13 +2292,14 @@ break;
 }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_801ACF4C(void *arg0) {
     extern u8 lbl_80368220;
     extern u16 lbl_80368224[4];
     extern f32 lbl_8036AFA0;
     extern f32 lbl_8036B028;
     extern u8 gOptionsTable[];
-    extern f64 lbl_8036AFC0;
     extern f32 lbl_8036B030;
     extern f32 lbl_8036B01C;
     extern f32 lbl_8036B02C;
@@ -2307,15 +2308,12 @@ void fn_801ACF4C(void *arg0) {
     void Prim2D_SetCallback(void *, void *);
     void Prim2D_PrepareTex(void);
     void Prim2D_ClearCallbacks(void);
-    void fn_801AB8A8(void *self, s32 option, f32 x, f32 y, f32 unused);
+    void fn_801AB8A8(void *self, s32 option, f32 x, f32 y);
 
     s32 temp_r4;
     s32 var_r30;
-    f32 temp_f3;
     f32 var_f1;
     f32 var_f2;
-    f32 fi;
-    f32 t;
     u16 a;
     u16 b;
     u16 c;
@@ -2354,12 +2352,9 @@ void fn_801ACF4C(void *arg0) {
     var_r30 = 0;
     do {
         temp_r4 = var_r30 - 1;
-        temp_r4 += *(u8 *)((char *)arg0 + 0x36);
+        temp_r4 = *(u8 *)((char *)arg0 + 0x36) + temp_r4;
         if ((temp_r4 >= 0) && (temp_r4 < *(u8 *)((char *)arg0 + 0x31)) && (*(u8 *)(gOptionsTable + (temp_r4 * 0xC)) == 1)) {
-            fi = var_r30;
-            t = lbl_8036B030 * fi + lbl_8036B01C;
-            temp_f3 = *(f32 *)((char *)arg0 + 0x38);
-            fn_801AB8A8(arg0, temp_r4, lbl_8036B02C, t + lbl_8036B030 * temp_f3, temp_f3);
+            fn_801AB8A8(arg0, temp_r4, lbl_8036B02C, (lbl_8036B030 * (f32)var_r30 + lbl_8036B01C) + lbl_8036B030 * *(f32 *)((char *)arg0 + 0x38));
         }
         var_r30 += 1;
     } while (var_r30 < 0xA);
@@ -2367,7 +2362,7 @@ void fn_801ACF4C(void *arg0) {
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 void fn_801AD0B0(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
