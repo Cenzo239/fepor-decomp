@@ -23,6 +23,8 @@ extern u8 gBattleState[1400];
 
 extern u16 *lbl_803674E0;
 
+static inline u8 Unit_ReturnZero_8009197C(u8 zero) { return zero; }
+
 #pragma inline
 
 extern f32 lbl_8036A118;
