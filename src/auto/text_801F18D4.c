@@ -2,11 +2,6 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
-static inline void fn_801F18D4_Store(u32 *p, u32 b, u32 a) {
-    p[1] = a;
-    p[1] = b;
-}
-
 #pragma optimization_level 3
 void fn_801F18D4(void) {
     void fn_8022C260(void *, void (*)(void), void *, s32, s32);
