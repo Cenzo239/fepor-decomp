@@ -1,6 +1,20 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct UiUpdateObj {
+ virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
+ virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
+};
+static inline void UiUpdate_Body(void *a, void *b) {
+ void *flag = *(void **)((u8 *)a + 0x34);
+ UiUpdateObj *p = 0;
+ if (flag != 0) p = *(UiUpdateObj **)((u8 *)*(void **)((u8 *)b + 0x38) + 8);
+ if (p != 0) {
+  UiUpdateObj *q = 0;
+  if (flag != 0) q = *(UiUpdateObj **)((u8 *)*(void **)((u8 *)b + 0x38) + 8);
+  if (q != 0) q->v7();
+ }
+}
 struct MenuCenteredLabel {
 virtual void v0()=0;
 virtual void *getText()=0;
