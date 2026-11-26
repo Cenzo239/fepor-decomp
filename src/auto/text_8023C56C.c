@@ -116,7 +116,7 @@ extern u8 lbl_803689B0;
 extern u8 gSoundData[]; char lbl_80282B20[];
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
-extern u16 Ecb_8033E188[192];u16 *D_80256B30;
+extern u16 Ecb_8033E188[192];extern u16 *D_80256B30;
 extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
