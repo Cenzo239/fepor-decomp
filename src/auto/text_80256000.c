@@ -10,22 +10,6 @@ prev=node->prev;
 if(prev) prev->next=node->next;
  else *(SoundBucketNode **)(lbl_8034C964+node->index*12+offset)=node->next;
  }
-static inline void fn_80261BC8_Body(u8 *entry, u16 value) {
-  extern u8 lbl_80368AD0;
-  u8 index;
-  u8 *p;
-  int off = 0x38;
-  index = *(u8 *)(entry + 0xE8);
-  if (index != 0xFF) {
-    p = entry + (index << 2);
-    if (*(u32 *)(p + off) == ((u32)value << 4)) return;
-  }
-  p = entry + (lbl_80368AD0 << 2);
-  *(u32 *)(p + 0x38) = value << 4;
-  p = entry + (lbl_80368AD0 << 2);
-  *(u32 *)(p + 0x24) = *(u32 *)(p + 0x24) | 8;
-  *(u8 *)(entry + 0xE8) = lbl_80368AD0;
-}
 extern u64 lbl_8029F3D0[4];
 extern u32 lbl_8029F3F0[4];
 extern u8 lbl_8034D034[];
