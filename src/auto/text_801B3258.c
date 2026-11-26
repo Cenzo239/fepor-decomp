@@ -1,5 +1,9 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline s16 Ui_ScrollDirection(s16 value) {
+    if (value < 0) return -1;
+    return value > 0;
+}
 static inline u8 Ui_TickMarker(void *pos) {
     s16 *life = (s16 *)((u8 *)pos + 0x10);
     void fn_80067708(s32, s32, void (*)(void), s32);
