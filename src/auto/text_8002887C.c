@@ -24,7 +24,7 @@ static inline void map_select(void *obj, void *entry) {
     if (entry) *(void **)((u8 *)obj + 0x44) = entry;
 }
 
-static inline void map_move_cursor(void *obj, f32 x, f32 y, s32 *base) {
+static inline void map_move_cursor(void *obj, s32 x, s32 y, s32 *base) {
     extern const f32 lbl_80368E08;
     u8 *p = (u8 *)obj;
     p[0x3C] = p[0x3E];
