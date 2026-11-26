@@ -1,6 +1,7 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
+static inline void Ui_StoreCursorTile(s8 x, s8 y) { extern u8 gUiContext[]; gUiContext[0xD] = x; gUiContext[0xE] = y; }
 static inline u8 Ui_IsTargetTile(s8 x, s8 y)
 {
     extern u8 gBattleMap[], gUnits[], gTargetList[];
@@ -5063,6 +5064,7 @@ sound:
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_80119884(void *arg0)
 {
     void *Map_GetCursorUnit(void);
@@ -5142,11 +5144,12 @@ void fn_80119884(void *arg0)
         found = 0;
         other = *(u8 **)(gUnitLists + 0xC);
         while (other != 0) {
-            if (*(u32 *)(other + 0x1A0) & 0x800) {
+            unitFlags = *(u32 *)(other + 0x1A0);
+            other = *(u8 **)(other + 0x184);
+            if (unitFlags & 0x800) {
                 found = 1;
                 break;
             }
-            other = *(u8 **)(other + 0x184);
         }
         if (!found) {
             widget = (u8 *)Ui_FindChild(process, -0x1000, 0);
@@ -5163,8 +5166,7 @@ void fn_80119884(void *arg0)
     }
 
     other = (u8 *)Map_GetCursorUnit();
-    flags = gUiInputFlags;
-    if (other == 0 && (flags & 0x400)) {
+    if (other == 0 && (gUiInputFlags & 0x400)) {
         Map_HideMoveLimitView();
     }
 
@@ -5172,21 +5174,22 @@ void fn_80119884(void *arg0)
     locked = Ui_InputLocked(flags);
     if (!locked) {
         pad = (u8 *)gPadInput;
-        if ((*(u32 *)(pad + 4) & 0xF) == 0) {
-            u8 *axes = *(u8 **)pad;
-            if ((s8)axes[2] == 0 && (s8)axes[3] == 0) {
-                if (lbl_803679F0 != other || (flags & 0x400) == 0) {
-                    lbl_803679F0 = other;
-                    if (other != 0 && *(u8 *)(*(u8 **)(other + 0x190) + 8) != 0) {
-                        Map_SetupUnitMoveLimit(other);
-                        Map_ShowMoveLimitView();
-                    } else if (flags & 0x400) {
-                        Map_HideMoveLimitView();
-                    }
-                }
-            }
+        if (*(u32 *)(pad + 4) & 0xF) goto move_limit_done;
+        {
+            s8 *axes = *(s8 **)pad;
+            if ((s8)axes[2] || (s8)axes[3]) goto move_limit_done;
         }
     }
+    if (lbl_803679F0 != other || (flags & 0x400) == 0) {
+        lbl_803679F0 = other;
+        if (other == 0 || *(u8 *)(*(u8 **)(other + 0x190) + 8) == 0) {
+            if (flags & 0x400) Map_HideMoveLimitView();
+        } else {
+            Map_SetupUnitMoveLimit(other);
+            Map_ShowMoveLimitView();
+        }
+    }
+move_limit_done:
 
     flags = gUiInputFlags;
     locked = Ui_InputLocked(flags);
@@ -5197,7 +5200,7 @@ void fn_80119884(void *arg0)
     pad = (u8 *)gPadInput;
     input = *(u32 *)(pad + 4);
     lastInput = *(u32 *)(pad + 8);
-    pressed = input & (input ^ lastInput);
+    pressed = input & (lastInput ^ input);
 
     if (unit != 0 && (pressed & 0x800)) {
         fn_800A8400();
@@ -5240,7 +5243,7 @@ void fn_80119884(void *arg0)
             gUiContext[0xE] = (u8)cy;
             Process_Goto(process, 6);
             Ui_PlaySeCue((const char *)(lbl_80274508 + 0x2D4), 0x64);
-        }
+        } else goto cancel_menu;
         return;
     }
 
@@ -5255,19 +5258,11 @@ void fn_80119884(void *arg0)
                     Map_SetupUnitMoveLimit(unit);
                     Ui_PlaySeCue((const char *)(lbl_80274508 + 0x22C), 0x64);
                 }
+                return;
             }
-        } else {
-            found = 0;
-            other = *(u8 **)(gUnitLists + 0xC);
-            while (other != 0) {
-                unitFlags = *(u32 *)(other + 0x1A0);
-                tileUnit = *(u8 **)(other + 0x184);
-                if (unitFlags & 0x800) {
-                    *(u32 *)(other + 0x1A0) = unitFlags & ~0x800;
-                    found = 1;
-                }
-                other = tileUnit;
-            }
+        }
+        if (unit == 0) {
+            found = ClearUnitSelections(*(void **)(gUnitLists + 0xC));
             if (found != 0) {
                 Ui_PlaySeCue((const char *)(lbl_80274508 + 0x22C), 0x64);
                 Map_RefreshUnitMap(gBattleMap);
@@ -5277,6 +5272,7 @@ void fn_80119884(void *arg0)
     }
 
     if (pressed & 0x10) {
+cancel_menu:
         if (gUiInputFlags & 0x400) {
             Map_HideMoveLimitView();
         }
@@ -5286,7 +5282,7 @@ void fn_80119884(void *arg0)
     }
 
     if (pressed & 0x1000) {
-        if (gUiInputFlags & 0x400) {
+        if (flags & 0x400) {
             Map_HideMoveLimitView();
         }
         process[0x48] = 2;
