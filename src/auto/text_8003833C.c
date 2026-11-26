@@ -1,5 +1,15 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline s8 Unit_39408BaseStat(void *self, s32 index) {
+    void *class = *(void **)((u8 *)self + 0x18C);
+    void *unit = *(void **)((u8 *)self + 0x188);
+    s8 value = *(u8 *)((u8 *)unit + 0x1D + index) +
+        (*(u8 *)((u8 *)class + 0x44 + index) + *(u8 *)((u8 *)self + 0x1AB + index));
+    s8 limit = *(s8 *)((u8 *)class + 0x4C + index);
+    if (value > limit) value = limit;
+    if (value < 0) value = 0;
+    return value;
+}
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -597,7 +607,8 @@ found2:
     }
     return result;
 }
-#pragma optimization_level reset
+#pragma push
+#pragma optimization_level 4
 s8 fn_80038A48(void *arg0) {
     u8 fn_80105BC0(void *, s32);
     void *fn_8001CB64(void *);
@@ -607,8 +618,8 @@ s8 fn_80038A48(void *arg0) {
     void *class;
     void *unit;
     u8 b;
-    u8 lim_u;
     unsigned long s;
+    u8 lim_u;
     s8 lim;
     s8 var_r5;
     s8 var_r4;
@@ -780,8 +791,7 @@ s8 fn_80038A48(void *arg0) {
     }
     return var_r31;
 }
-
-#pragma cplusplus off
+#pragma pop
 s8 fn_80038F28(void *arg0) {
 void *Item_GetFlagsPtr(void *);
 void *Res_GetByName(void *);
@@ -850,7 +860,7 @@ result-=((s8)M2C_FIELD(base,u8 *,0x47)-(s8)M2C_FIELD(other,u8 *,0x47))/2;
 }}
 return result;
 }
-s32 fn_80039408(void *arg0) {
+s32 fn_80039408(u8 *arg0) {
     u8 fn_80105BC0(void *, s32);
     void *fn_8001CB64(void *);
     void *fn_8000D354(void *);
