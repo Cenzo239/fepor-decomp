@@ -2641,7 +2641,7 @@ s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
 #pragma global_optimizer off
-Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
+Vec2s *fn_8013F748(const void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
     Vec2s sp38;
     Vec2s sp34;
@@ -2660,8 +2660,8 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     u32 parent;
     u32 gp;
 
-    parent = *(u32 *)((u8 *)arg0 + 0x38);
-    sp3C = *(Vec2s *)((u8 *)arg0 + 0xA);
+    parent = *(const u32 *)((const u8 *)arg0 + 0x38);
+    sp3C = *(const Vec2s *)((const u8 *)arg0 + 0xA);
     if (parent != 0) {
         sp24 = *fn_8013FC64((Vec2s *)((u8 *)parent + 0xA));
         gp = *(u32 *)((u8 *)parent + 0x38);
@@ -2691,8 +2691,8 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
         sp3C.y = sp28.y;
     }
     sp30 = sp3C;
-    sp30.x = (s16)(sp30.x + *(s16 *)((u8 *)arg0 + 0x12));
-    sp30.y = (s16)(sp30.y + *(s16 *)((u8 *)arg0 + 0x14));
+    sp30.x = (s16)(sp30.x + *(const s16 *)((const u8 *)arg0 + 0x12));
+    sp30.y = (s16)(sp30.y + *(const s16 *)((const u8 *)arg0 + 0x14));
     sp34 = sp30;
     sp34.x = (s16)(sp34.x + arg2->x);
     sp34.y = (s16)(sp34.y + arg2->y);
@@ -2936,18 +2936,15 @@ extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
         virtual void v6() = 0;
         virtual void v7() = 0;
     };
-    struct Inner {
-        u8 pad[8];
-        Obj *obj;
-    };
     struct Panel {
         u8 pad[0x34];
         void *flag;
-        Inner *inner;
+        u8 *inner;
+        inline void *get() { return flag ? *(void **)(inner + 8) : (void *)0; }
     };
     Panel *p = (Panel *)arg0;
-    if ((p->flag ? p->inner->obj : (Obj *)0) != 0) {
-        (p->flag ? p->inner->obj : (Obj *)0)->v7();
+    if (p->get() != 0) {
+        ((Obj *)p->get())->v7();
     }
 }
 
@@ -3137,18 +3134,20 @@ void Ui_AddChild(void *arg0, void *arg1) {
     }
 }
 
+#pragma global_optimizer off
 void fn_8014017C(s32 arg0, void *arg1, void *arg2, s32 arg3) {
     struct Vec { s32 x, y, z; };
-    void fn_80140830(s32, void *, void *, struct Vec, struct Vec, s32);
-    extern struct Vec lbl_802922E4;
-    extern struct Vec lbl_802922D8;
-    struct Vec a;
-    struct Vec b;
-    a.x = lbl_802922E4.x; a.y = lbl_802922E4.y; a.z = lbl_802922E4.z;
-    b.x = lbl_802922D8.x; b.y = lbl_802922D8.y; b.z = lbl_802922D8.z;
-    fn_80140830(arg0, arg1, arg2, b, a, arg3);
+    void fn_80140830(s32, void *, void *, void *, void *, s32);
+    extern u8 lbl_802922E4[];
+    extern u8 lbl_802922D8[];
+    struct Vec v[4];
+    v[0] = *(struct Vec *)&lbl_802922E4[0];
+    v[1] = *(struct Vec *)&lbl_802922E4[0];
+    v[2] = *(struct Vec *)&lbl_802922D8[0];
+    v[3] = *(struct Vec *)&lbl_802922D8[0];
+    fn_80140830(arg0, arg1, arg2, &v[3], &v[1], arg3);
 }
-
+#pragma global_optimizer on
 void Ui_CloseChildAnim(void *arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80140E58(void *, void *, void *, M2C_UNK);
     fn_80140E58(arg0, arg1, arg2, 1);
