@@ -3974,7 +3974,7 @@ void fn_8018B2FC(void *arg0) {
 #pragma fp_contract off
 #pragma global_optimizer off
 void fn_8018B31C(void *arg0) {
- extern f32 lbl_8036ACEC, lbl_8036ACF8, lbl_8036AD40;
+ extern const f32 lbl_8036ACEC, lbl_8036ACF8, lbl_8036AD40;
  void Process_ClearFunc(void *);
  f32 f0; f32 f1; f32 f2; f32 f3; f32 f4; void *r4;
  f1=*(f32 *)((u8 *)arg0+0x48); f0=lbl_8036ACF8;
@@ -3990,8 +3990,9 @@ void fn_8018B31C(void *arg0) {
  if(f1>f0) {
  f1=*(f32 *)((u8 *)arg0+0x4c); f0=lbl_8036ACEC; f1=f4*f1;
  *(f32 *)((u8 *)arg0+0x40)=f1; *(f32 *)((u8 *)arg0+0x48)=f0;
+ f1=*(f32 *)((u8 *)arg0+0x3c);
  }
- f1=*(f32 *)((u8 *)arg0+0x3c); r4=*(void **)((u8 *)arg0+0x30);
+ r4=*(void **)((u8 *)arg0+0x30);
  f0=lbl_8036AD40; *(f32 *)((u8 *)r4+0xc)=f1;
  f1=*(f32 *)((u8 *)arg0+0x40);
  if(f1<f0) Process_ClearFunc(arg0);
