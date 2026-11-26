@@ -3481,9 +3481,9 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
     void fn_8005FEE8(void *, f32);
     void *Process_CreateEx(void *);
 
+    u8 *obj;
     s32 mode;
     u8 *node;
-    u8 *obj;
     u8 *process;
     u32 flags;
     u8 enabled;
@@ -3521,10 +3521,12 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
         *(void **)(process + 0x30) = obj;
         *(s32 *)(process + 0x44) = mode;
         process[0x48] = 0;
-        *(f32 *)(process + 0x38) = (f32)((s8)obj[4] + (s8)obj[6]) * 0.5f;
-        *(f32 *)(process + 0x3C) = (f32)((s8)obj[5] + (s8)obj[7]) * 0.5f;
+        *(f32 *)(process + 0x38) = (f32)((s8)obj[4] + (s8)obj[6]) / 2.0f;
+        *(f32 *)(process + 0x3C) = (f32)((s8)obj[5] + (s8)obj[7]) / 2.0f;
         *(f32 *)(process + 0x40) = *(f32 *)(obj + 0xC);
         switch (mode) {
+        default:
+            return;
         case 0:
             fn_8005FEE8(obj + 0x14, lbl_80368EE4);
             *(f32 *)(node + 0x5C) = lbl_80368F10;
@@ -7703,14 +7705,15 @@ void fn_8005306C(void *arg0) {
     u8 temp_r0_2;
     u8 temp_r0_3;
     u8 temp_r0_4;
-    f32 *var_r31;
-    f32 *var_r30;
-    void *temp_r29;
+
     void *temp_r3;
     void *temp_r4;
     void *temp_r5;
 
 
+    f32 *var_r31;
+    f32 *var_r30;
+    void *temp_r29;
     var_r31 = NULL;
     var_r30 = NULL;
     temp_r3 = M2C_FIELD(arg0, void **, 0x30);
@@ -7744,10 +7747,10 @@ void fn_8005306C(void *arg0) {
         var_r3 = var_r30;
     }
     if (var_r3 != NULL) {
- f32 z=var_r3[2]; f32 y=var_r3[1]; f32 x=var_r3[0];
+ f32 x,z,height,y; z=var_r3[2]; y=var_r3[1]; x=var_r3[0]; height=lbl_8036909C;
         M2C_FIELD(temp_r4, f32 *, 0xC) = x;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = y;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + z);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = height+z;
     }
 }
 #pragma pop
