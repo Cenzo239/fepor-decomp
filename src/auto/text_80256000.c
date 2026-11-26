@@ -6961,8 +6961,9 @@ void fn_802618E4(s32 arg0)
         q = q + (lbl_80368AD0 << 2);
         *(u32 *)(q + 0x24) |= 0x20;
 }
+#pragma push
 #pragma optimization_level 4
-void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
+void Sound_SetVoiceEnvelope(u32 arg0, void *arg1, s32 arg2)
 {
     typedef struct {
         u8 pad0[0x24];
@@ -6982,13 +6983,13 @@ void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
     extern u8 gSoundLevelCurve[];
     extern u32 fn_80257940(u32);
 
-    s32 idx;
-    u32 data;
+    u8 *data;
     u32 value;
     u32 index;
+    s32 idx;
 
     idx = arg0;
-    data = (u32)arg1;
+    data = (u8 *)arg1;
 
     switch ((u8)arg2) {
     case 0:
@@ -7022,17 +7023,18 @@ void Sound_SetVoiceEnvelope(u8 arg0, void *arg1, s32 arg2)
             gSoundVoices[idx].unkB8 = *(u32 *)(data + 0x00) & 0xFFFF;
             gSoundVoices[idx].unkBC = *(u32 *)(data + 0x04) & 0xFFFF;
             gSoundVoices[idx].unkC0 = *(u16 *)(data + 0x08);
-            gSoundVoices[idx].unkC4 = *(u16 *)(data + 0x0A);
         }
+        gSoundVoices[idx].unkC4 = *(u16 *)(data + 0x0A);
         break;
 
     default:
-        return;
+        break;
     }
 
     gSoundVoices[idx].unk24 |= 0x10;
 }
-
+#pragma pop
+#pragma optimization_level 4
 void Sound_SetVoiceStreamParams(s32 arg0, s32 arg1, s32 arg2) {
     typedef struct {
         u8 pad[0x94];
