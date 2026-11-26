@@ -1,5 +1,13 @@
 /* Functions from 0x800AD24C to 0x800C3F18, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 Icon_IsSjisPair(const u8 *src) {
+    u32 lead = src[0];
+    u32 trail;
+    if (!((lead >= 0x81U && lead <= 0x9FU) || (lead >= 0xE0U && lead <= 0xFCU))) return 0;
+    trail = src[1];
+    if (!((trail >= 0x40U && trail <= 0x7EU) || (trail >= 0x80U && trail <= 0xFCU))) return 0;
+    return 1;
+}
 
 typedef struct {
     u8 flag : 1;
