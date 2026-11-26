@@ -1656,7 +1656,9 @@ void fn_801CE744(s32 arg0) {
     Ui_BringChildToFront(arg0, Ui_FindChild(arg0, 2, 0));
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 2
 extern "C" void fn_801CE7F4(void *arg0) {
 void *Ui_FindChild(void *,s32,s32);
 s16 fn_801CF614(void *);
@@ -1695,7 +1697,7 @@ register int btn;
 s32 t;
 u8 gate;
 s32 flags;
-register s16 saved;
+s32 saved;
 void *a,*b,*c;
 s32 idx;
 Parent *self;
@@ -1706,7 +1708,7 @@ c=Ui_FindChild(self,2,0);
 saved=*(s16 *)((u8 *)a+0x3c);
 ((Obj *)a)->v7(self);
 ((Obj *)b)->v7(self);
-if((int)saved!=(int)*(s16 *)((u8 *)a+0x3c)) {
+if((s16)saved!=(int)*(s16 *)((u8 *)a+0x3c)) {
  if(Ui_IsUnitInfoPopupOpen(gUnitInfoPopup)) {
   *(Pair *)&pos1=((Obj *)a)->v9();
   Ui_ShowUnitInfoText(gUnitInfoPopup,((Obj *)a)->v8(),(f32)*(s16 *)&pos1,(f32)*((s16 *)&pos1+1));
@@ -1755,7 +1757,7 @@ if(!gate) {
  }
 }
 }
-#pragma cplusplus reset
+#pragma pop
 
 void fn_801CEC28(void *arg0) {
     void Ui_BringChildToFront(void *, void *);
@@ -10014,6 +10016,7 @@ return 0;
 }
 #pragma push
 #pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
@@ -10025,73 +10028,18 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
 
-    u8 *base;
-    u8 *src;
-    u8 *cand;
-    u8 *dst;
-    s32 off;
-    s32 j;
-    s32 i;
-    s32 ctr;
-    u8 id;
-    u8 hdrOk;
-    u8 chkOk;
-    void *buf;
-    u32 sum;
-
-    src = Save_FindLinkedHeader(arg0);
-
-phase2:
-    i = 0;
-    off = 0x20000 - 0x6000;
-loop2:
-    dst = *arg0 + off;
-    if (*(u32 *)(dst + 0x40) != 0x4645384AU) {
-        hdrOk = 0;
-    } else if (*(u32 *)(dst + 0x44) != 0x20050201U) {
-        hdrOk = 0;
-    } else {
-        hdrOk = 1;
-    }
-    if (hdrOk == 0) {
-        goto do_copy;
-    }
-    if (*(u32 *)(dst + 0x50) == 0x12345678U) {
-        chkOk = 1;
-    } else if (*(u8 *)(dst + 0x60) == 1) {
-        chkOk = 1;
-    } else {
-        buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
-        Crc32_InitTable();
-        sum = Crc32_Calc(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
-        fn_800C4588(buf);
-        if (*(u32 *)(dst + 0x50) != sum) {
-            chkOk = 0;
-        } else {
-            chkOk = 1;
-        }
-    }
-    if (chkOk == 0) {
-        goto do_copy;
-    }
-    i += 1;
-    off += 0x6000;
-    if (i < 2) {
-        goto loop2;
-    }
-    base = *arg0;
-    dst = base + 0x1A000;
-    if (save_slot_size(base + 0x1A000) >= save_slot_size(base + 0x20000)) {
-        dst = base + 0x20000;
-    }
-
-do_copy:
+s32 self; u8 *src; u8 **save; u8 *dst;
+self=arg1;save=arg0;
+src=Save_FindLinkedHeader(save);
+dst=Save_FindWritableHeaderIn(save);
     fn_800062CC(dst, src, *(s32 *)(src + 0x4C));
     fn_801E3CA8(dst);
     *(u8 *)(dst + 0x60) = 1;
-    Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, arg1);
+    Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
 void fn_801E047C(u8 **arg0, s32 arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -10196,8 +10144,7 @@ do_init:
     slot[0x65] = 0;
     slot[0x66] = 0;
     slot[0x63] = lbl_80331FB8[0x47];
-    *(u32 *)(slot + 0x5C) = *(u32 *)(lbl_80330708 + 0x5C);
-    *(u32 *)(slot + 0x58) = *(u32 *)(lbl_80330708 + 0x58);
+    *(u64 *)(slot + 0x58) = *(u64 *)(lbl_80330708 + 0x58);
     slot[0x61] = lbl_80330708[0x51C];
     slot[0x64] = lbl_80330708[0x10];
     slot[0x65] = 8;
@@ -10241,8 +10188,7 @@ do_init:
     picked = slot;
     fn_800E9B80(picked, *(s32 *)(picked + 0x4C), (s32)picked - (s32)lbl_803682F0, (s32)picked - (s32)lbl_803682F0, arg1);
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
