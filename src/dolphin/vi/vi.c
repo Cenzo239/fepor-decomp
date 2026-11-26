@@ -83,6 +83,12 @@ extern u16* lbl_80368648;
 extern void* lbl_8036864C;
 extern void* lbl_80368650;
 extern void* lbl_80368654;
+static inline void VIFlushCopyRegister(u16 *regs, u32 index) {
+    regs[index + 60] = regs[index];
+}
+static inline u64 VIFlushGetChanged(void) {
+    return ((u64)(u32)lbl_80368630 << 32) | (u32)lbl_80368634;
+}
 
 u8 ErrorCode2Num(s32);
 
@@ -1053,29 +1059,23 @@ void VIFlush(void) {
     void OSRestoreInterrupts(s32);
     extern u8 lbl_8033A068[];
     extern s32 lbl_80368608;
-    struct {
-        u16 regs[60];
-        u16 shdwRegs[60];
-        u8 pad[0x30];
-        void *unk120;
-    } *vi = (void *)lbl_8033A068;
+    struct { u16 regs[60]; u16 shdwRegs[60]; u8 pad[0x30]; void *unk120; } *vi = (void *)lbl_8033A068;
     s32 enabled;
     u32 regIndex;
- u16 value;
-
+ u64 changed;
+    u16 value;
     enabled = OSDisableInterrupts();
     *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
     *(u32 *)&lbl_80368628 = 0;
     *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
- *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
-
+    *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
     while (*(u64 *)&lbl_80368630 != 0) {
-        regIndex = cntlzd(*(u64 *)&lbl_80368630);
+        changed = *(u64 *)&lbl_80368630;
+ regIndex = cntlzd(changed);
         value = vi->regs[regIndex];
- ((u16 *)((u8 *)vi + regIndex * 2))[60] = value;
+        vi->shdwRegs[regIndex] = value;
         *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
-
     lbl_80368608 = 1;
     lbl_80368650 = vi->unk120;
     OSRestoreInterrupts(enabled);
