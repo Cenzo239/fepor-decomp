@@ -77,9 +77,25 @@ ThpDecodeState *s = lbl_80368950;
 u8 **cursor = &s->cursor;
 u8 *p = *cursor;
 u16 value = (p[0] << 8) | p[1];
-*cursor = p + 2;
+ *cursor = p + 2;
  return value;
- }
+  }
+static inline void ThpLoadTable_8023CA4C(u8 *zig, f32 *table) {
+    extern ThpDecodeState *volatile lbl_80368950;
+    u8 *p = zig;
+    u32 i;
+    for (i = 0; (u16)i < 64; i += 8, p += 8) {
+        table[*p] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 3)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 4)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 5)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
+    }
+}
+
  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
@@ -376,7 +392,7 @@ s32 fn_8023CA4C(void) {
     u8 *state;
 
     size = ThpReadWord() - 2;
-    for (;;) {
+    while (1) {
         id = ThpReadByte();
         zig = lbl_80282FD8;
         p = zig;
