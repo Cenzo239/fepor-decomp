@@ -1,5 +1,9 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
+static inline s16 Ui_RowCenterOffset(s16 height) {
+    s32 Text_MeasureHeight(s32, f32);
+    return (height - Text_MeasureHeight(-1, 1.0f)) >> 1;
+}
 #pragma cplusplus on
 struct MenuCenteredLabel {
 virtual void v0()=0;
