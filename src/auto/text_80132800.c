@@ -1,6 +1,34 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+    struct PortraitPanelObject {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3(s32) = 0;
+        u8 pad4[6];
+        s16 unkA;
+        s16 unkC;
+        s16 unkE;
+        s16 unk10;
+        s16 unk12;
+        s16 unk14;
+        s16 unk16;
+        s16 unk18;
+        u8 pad1A[0x22 - 0x1A];
+        s16 unk22;
+        u8 pad24[0x34 - 0x24];
+        u32 unk34;
+        u8 pad38[4];
+        void *unk3C;
+        u32 unk40;
+        s16 unk44;
+        s16 unk46;
+        s16 unk48;
+        s16 unk4A;
+        s32 unk4C;
+        u8 *unk50;
+    };
 struct MenuCenteredLabel {
 virtual void v0()=0;
 virtual void *getText()=0;
@@ -3887,7 +3915,7 @@ void *fn_80137EA8(void *arg0, s16 arg1) {
 #pragma use_lmw_stmw on
 #pragma push
 #pragma cplusplus on
-#pragma optimization_level 4
+#pragma optimization_level 2
 #pragma opt_common_subs off
 extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     struct Obj {
@@ -3984,21 +4012,20 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     u8 sp68[0x30];
     u8 sp38[0x30];
 
-    self = (Obj *)arg0;
     idx = arg1;
+    self = (Obj *)arg0;
     self->v2();
     fn_80160F00(0, 0, self->unk4C == 0 ? 1 : 0, 0x10);
     self->v3(idx);
 
     unit = self->unk3C;
-    rect = &self->unk44;
     h = (s16)(self->unk18 - self->unk14);
     w = (s16)(self->unk16 - self->unk12);
     self->unk44 = 0;
     self->unk46 = 0;
     self->unk48 = w;
     self->unk4A = h;
-    fn_8013F748(self, rect, rect);
+    fn_8013F748(self, &self->unk44, &self->unk44);
     rect = &self->unk48;
     fn_8013F748(self, rect, rect);
 
@@ -4080,19 +4107,19 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
         } else {
             xoff = 0x38;
         }
-        fy = (f32)xoff;
+        fgap = (f32)xoff;
         fx = (f32)(s16)(self->unk18 - self->unk14);
-        fy += (f32)self->unkA;
+        fgap += (f32)self->unkA;
         fx += (f32)self->unkC;
         fn_8004BD1C(unit, sp2C, lbl_8036A650);
         fx += sp2C[1];
-        fy += sp2C[0];
+        fgap += sp2C[0];
         fx += lbl_8036A654;
         PSMTXRotRad(sp38, 0x79, lbl_8036A658);
         PSMTXRotRad(sp68, 0x78, lbl_8036A65C);
         PSMTXConcat(sp68, sp38, sp68);
         fn_802025E8(sp68, sp68, lbl_8036A650, lbl_8036A650, lbl_8036A650);
-        fn_80202574(sp68, self->unk50 + 0x10, fy, fx, (f32)self->unk22);
+        fn_80202574(sp68, self->unk50 + 0x10, fgap, fx, (f32)self->unk22);
         a = fn_80138AC0(self);
         c0 = (s32)(lbl_8036A660 * a);
         u8 red, green, blue;
