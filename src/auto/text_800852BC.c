@@ -1137,7 +1137,11 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     (void)lbl_80369440;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1159,17 +1163,12 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
 
     char buf[8];
     s32 widths[10];
-    s32 gap[4];
-    s32 x0;
-    s32 y0;
-    s32 abs_val;
     s32 saved;
     s32 sign;
-    s16 u0;
-    s16 v0;
-    s16 x;
-    s16 y;
+    s32 x;
     s16 v_base;
+    s16 y;
+    s32 abs_val;
     s16 u_off;
     s32 len;
     s32 i;
@@ -1186,10 +1185,6 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     widths[7] = lbl_8026C7DC[7];
     widths[8] = lbl_8026C7DC[8];
     widths[9] = lbl_8026C7DC[9];
-    gap[0] = widths[0];
-    gap[1] = widths[1];
-    gap[2] = widths[2];
-    gap[3] = widths[3];
 
     if (arg0 != 0) {
         abs_val = Abs(arg0);
@@ -1197,6 +1192,9 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         Prim2D_Begin();
         Prim2D_BindTexture(saved, 0x29, 0x11);
         Prim2D_PrepareTex();
+        {
+        s32 x0, y0;
+        s16 u0, v0;
         x0 = (s32)farg0;
         y0 = (s32)farg1;
         if (arg0 > 0) {
@@ -1212,27 +1210,27 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
         Prim2D_EmitQuad();
         Prim2D_EndPrim();
+        }
         sprintf(buf, (char *)(gUiStrings + 0x215), abs_val);
         len = strlen(buf);
+        x = (s32)(lbl_803694A4 + farg0);
         y = (s16)(s32)farg1;
-        sign = (-arg0 & ~arg0) >> 31;
-        v_base = (s16)(0x10 & ~sign);
-        x = (s16)(s32)(lbl_803694A4 + farg0);
+        v_base = arg0 > 0 ? 0 : 0x10;
         p = buf;
         for (i = 0; i < len; i++, p++) {
             u_off = (s16)(((s8)*p - 0x30) * 0xF);
             Prim2D_AddPrim(1);
-            Prim2D_SetQuadMin((f32)x, (f32)y, (f32)u_off, (f32)v_base);
-            Prim2D_SetQuadMax((f32)(x + 0xF), (f32)(y + 0x10), (f32)(u_off + 0xF), (f32)(v_base + 0x10));
+            Prim2D_SetQuadMin((f32)(s16)x, (f32)y, (f32)u_off, (f32)v_base);
+            Prim2D_SetQuadMax((f32)((s16)x + 0xF), (f32)(y + 0x10), (f32)(u_off + 0xF), (f32)(v_base + 0x10));
             Prim2D_SetColor(0xFF, 0xFF, 0xFF, 0xFF);
             Prim2D_EmitQuad();
             Prim2D_EndPrim();
             ch = *p;
-            x = (s16)(x + gap[0] - gap[0] + widths[ch - 0x30]);
+            x = (s16)(x + widths[ch - 0x30]);
         }
     }
 }
-
+#pragma pop
 void fn_80088300(void *arg0) {
 typedef struct { u8 pad[8]; s8 dir[4]; s8 next; u8 type; u8 pad2[6]; } LocalEntry;
 u32 *Unit_GetItemSlot(void *, s32);
@@ -1350,6 +1348,11 @@ Ui_PlaySeCue(gUiStrings+0x19b,100);
 
 #pragma optimization_level 3
 #pragma opt_strength_reduction off
+static inline void Menu888_InitSelection(void *self) {
+    s32 initial[3] = {29, 19, 17};
+    M2C_FIELD(self, s16 *, 4) = 1;
+    M2C_FIELD(self, s32 *, 0x1C) = initial[M2C_FIELD(self, s8 *, 9)];
+}
 void fn_800888A4(void *arg0) {
     void Process_Goto(void *, s32);
     void *Unit_GetItemSlot(void *, s32);
@@ -1363,9 +1366,7 @@ void fn_800888A4(void *arg0) {
     extern Menu888Entry lbl_80288FE8[][37];
     extern void *gPadInput;
     extern f32 lbl_80369670, lbl_80369674, lbl_80369678;
-    s32 sp8[3];
     Menu888Entry (*base)[37];
-    s32 *select;
     s32 *initial;
     u32 repeat;
     u32 pressed, buttons;
@@ -1415,14 +1416,10 @@ void fn_800888A4(void *arg0) {
         return;
     }
     if (pressed & 0x800) {
-        select = sp8;
-        initial = lbl_8026C7D0;
-        sp8[0] = initial[0];
-        sp8[1] = initial[1];
-        sp8[2] = initial[2];
+        s32 sp8[3] = {29,19,17};
         base = lbl_80288FE8;
         M2C_FIELD(self, s16 *, 4) = 1;
-        M2C_FIELD(self, s32 *, 0x1C) = select[M2C_FIELD(self, s8 *, 9)];
+        M2C_FIELD(self, s32 *, 0x1C) = sp8[M2C_FIELD(self, s8 *, 9)];
         goto check;
     next:
         row = (Menu888Entry *)((s32)base + M2C_FIELD(self, s8 *, 9) * 0x2E4);
