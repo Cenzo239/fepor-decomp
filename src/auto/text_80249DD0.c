@@ -1523,45 +1523,15 @@ void fn_8024BB90(void) {
     extern u8 lbl_803689CC;
     extern s32 lbl_803689C0;
     extern u8 lbl_803689C4[8];
-    u8 *data;
-    u8 *slot;
-    u8 *p;
-    s32 count;
     s32 i;
-    u8 zero;
-
-    data = gSoundData;
-    zero = 0;
-    i = 0;
-    lbl_803689CD = zero;
-    count = data[0x210];
+    lbl_803689CD = 0;
     lbl_803689CC = 3;
-    if (count > 0) {
-        if (count > 8) {
-            slot = gSoundSlots;
-            for (; i < count; i += 8) {
-                slot[0xC] = zero;
-                slot[0x74] = zero;
-                slot[0xDC] = zero;
-                slot[0x144] = zero;
-                slot[0x1AC] = zero;
-                slot[0x214] = zero;
-                slot[0x27C] = zero;
-                slot[0x2E4] = zero;
-                slot += 0x340;
-            }
-        }
-        count = data[0x210];
-        slot = gSoundSlots + (i * 0x68);
-        for (; i < count; i++) {
-            slot[0xC] = 0;
-            slot += 0x68;
-        }
+    for (i = 0; i < gSoundData[0x210]; i++) {
+        gSoundSlots[i * 0x68 + 0xc] = 0;
     }
-    p = lbl_803689C4;
     lbl_803689C0 = 0;
-    *p = 0;
-    *(s32 *)(p + 4) = 0;
+    lbl_803689C4[0] = 0;
+    *(s32 *)(lbl_803689C4 + 4) = 0;
 }
 #pragma optimization_level reset
 void fn_8024BC58(void *arg0) {
