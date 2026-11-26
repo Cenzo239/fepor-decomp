@@ -24,6 +24,7 @@ typedef struct {
 } Struct_80089490;
 
 extern s32 gSaveDataBase;
+static inline u32 fn_80089490_Ptr(u8 *base, s32 off) { return (u32)(base + off); }
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
 extern f32 gScreenOrigin;
@@ -88,6 +89,7 @@ static inline s32 IsSpecialAddr(u32 v, u8 *base, s32 off) {
     return v == (u32)(base + off);
 }
 
+#pragma optimization_level 1
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
@@ -103,4 +105,4 @@ void fn_80089490(void *arg0) {
         }
     }
 }
-#pragma opt_dead_code reset
+#pragma optimization_level reset
