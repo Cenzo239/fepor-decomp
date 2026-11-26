@@ -13,7 +13,7 @@ typedef struct Vec3_800193D8 {
 } Vec3_800193D8;
 
 typedef struct CamPathInitialEntry { u8 kind; s32 duration; Vec3_800193D8 pos; } CamPathInitialEntry;
-static inline void CamPath_AppendInitial(u8 *p, s32 kind, s32 duration, Vec3_800193D8 v) {
+static inline void CamPath_AppendInitial(u8 *p, s32 duration, s32 kind, Vec3_800193D8 v) {
  Vec3_800193D8 copy; Vec3_800193D8 *dest;
  *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=kind;
  (*(CamPathInitialEntry **)(p+0x40))[p[0x44]].duration=duration;
@@ -729,7 +729,8 @@ void fn_800180F4(void *arg0, u8 arg1) {
             sp14 = *(Vec3_800193D8 *)((u8 *)cam + 0x40);
             *((u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14) = (u8)found;
             idx = *((u8 *)arg0 + 0x44);
-            (*(CamPathInitialEntry **)((u8 *)arg0 + 0x40))[idx].duration = found;
+            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
+            *(s32 *)((u8 *)slot + 4) = found;
             idx = *((u8 *)arg0 + 0x44);
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
             *(f32 *)((u8 *)slot + 0) = sp14.x;
@@ -756,21 +757,10 @@ void fn_800180F4(void *arg0, u8 arg1) {
         if ((u8)found == 0) {
 
             idx = *((u8 *)arg0 + 0x44);
-            found = 0;
             sp2C.x = *(f32 *)((u8 *)cam + 4);
             sp2C.y = *(f32 *)((u8 *)cam + 8);
             sp2C.z = *(f32 *)((u8 *)cam + 0xc);
-            *((u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14) = 1;
-            idx = *((u8 *)arg0 + 0x44);
-            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
-            *(s32 *)((u8 *)slot + 4) = found;
-            idx = *((u8 *)arg0 + 0x44);
-            sp8 = sp2C;
-            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
-            *(f32 *)((u8 *)slot + 0) = sp8.x;
-            *(f32 *)((u8 *)slot + 4) = sp8.y;
-            *(f32 *)((u8 *)slot + 8) = sp8.z;
-            *((u8 *)arg0 + 0x44) += 1;
+            CamPath_AppendInitial((u8 *)arg0, 1, 0, sp2C);
         }
     }
     fn_80018594(arg0);
