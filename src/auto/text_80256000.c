@@ -32,10 +32,6 @@ extern u8 lbl_8034CBB4[];
 
 typedef struct AudioGroupSlot { void *node; s32 id; void *data; } AudioGroupSlot;
 typedef struct AudioGroupState { u8 pad[8]; s16 count; u16 padA; AudioGroupSlot slots[128]; } AudioGroupState;
-static inline void *Sound_GroupNodeAt(AudioGroupState *state, s16 index) {
-    state = (AudioGroupState *)((u8 *)state + index * 12);
-    return state->slots[0].node;
-}
 typedef struct SynthMessageSlots { u8 pad[0xAC]; u32 slots[32]; } SynthMessageSlots;
 typedef struct SynthMessageQueue { u8 pad[0x444]; u32 slots[4]; } SynthMessageQueue;
 typedef struct SynthMsgSlot { u8 pad[0x444]; u32 value; } SynthMsgSlot;
