@@ -296,6 +296,7 @@ void fn_8005EBCC(s32 arg0, s32 arg1) {
 #pragma optimization_level 4
 #pragma global_optimizer off
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void *fn_800C4638(s32, void *, s32);
     void Game_Assert(void *, s32, void *);
