@@ -381,7 +381,10 @@ void fn_800AEB90(void) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_800AECC0(void) {
     void fn_800B1720(void *);
     void fn_800B16EC(void *);
@@ -460,8 +463,7 @@ void fn_800AECC0(void) {
         position += 0x13C;
     } while (i<3);
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_800AF0B4(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -675,7 +677,82 @@ void fn_800B16EC(void *arg0) {
     fn_800B1720(0, *M2C_FIELD(arg0, s32 **, 4) + 0x40);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
+static inline void Sound_CompletePending(s32 j, u8 *base2, u8 *arg1)
+{
+    void fn_8024CE60(void *, s32, u8, u8, s32);
+    void fn_8024E100(void *);
+    extern f32 lbl_80369CB4;
+    s32 off, ctr;
+    u8 *e2, *entry2;
+    u32 flags;
+    u8 vol;
+    f32 f, f31;
+    off = j;
+    for (ctr = 3; ctr != 0; ctr--) {
+        e2 = *(u8 **)(base2 + 0xF8) + off;
+        flags = *(u16 *)e2;
+        if (flags != 0 && !(flags & 8)) {
+            if (*(u8 **)(e2 + 0x2C) + 0x40 == arg1) {
+                *(u16 *)(e2 + 0x82) = 1;
+            }
+            if (*(u8 **)(e2 + 0xB4) + 0x40 == arg1) {
+                *(u16 *)(e2 + 0x10A) = 1;
+            }
+            if (*(u16 *)(e2 + 0x1E) == 2) {
+                if (*(s16 *)(e2 + 0x82) != 0) {
+                    if (*(s16 *)(e2 + 0x10A) != 0) {
+                        goto process;
+                    }
+                }
+                goto cont2;
+            }
+            if (*(s16 *)(e2 + 0x82) == 0) {
+                goto cont2;
+            }
+        process:
+            *(u16 *)(e2 + 0x78) = 0;
+            *(u16 *)(e2 + 0x100) = 0;
+            *(u16 *)(e2 + 0x80) = 0;
+            *(u16 *)(e2 + 0x108) = 0;
+            fn_8024E100(*(void **)(e2 + 0x50));
+            if (*(u16 *)(e2 + 0x1E) == 2) {
+                fn_8024E100(*(void **)(e2 + 0xD8));
+            }
+            vol = (u8)*(u16 *)(e2 + 6);
+            entry2 = *(u8 **)(base2 + 0xF8) + j * 0x13C;
+            if (*(u16 *)entry2 != 0) {
+                *(u16 *)(entry2 + 6) = vol;
+                if (*(u16 *)entry2 & 8) {
+                    if (*(u16 *)(entry2 + 0x1E) == 1) {
+                        fn_8024CE60(*(void **)(entry2 + 0x50), (s32)*(f32 *)(entry2 + 0x10), vol, (u8)*(u16 *)(entry2 + 8), 0);
+                    } else {
+                        f = *(f32 *)(entry2 + 0x10);
+                        f31 = f;
+                        if (vol < 0x40) {
+                            f31 = ((f32)vol * f) / lbl_80369CB4;
+                        }
+                        if ((u32)(vol - 0x40) >> 31 == 0) {
+                            f = ((f32)(s32)(0x7F - vol) * f) / lbl_80369CB4;
+                        }
+                        fn_8024CE60(*(void **)(entry2 + 0x50), (s32)f, 0, (u8)*(u16 *)(entry2 + 8), 0);
+                        fn_8024CE60(*(void **)(entry2 + 0xD8), (s32)f31, 0x7F, (u8)*(u16 *)(entry2 + 8), 0);
+                    }
+                }
+            }
+            *(u16 *)e2 = (u16)(*(u16 *)e2 | 8);
+            return;
+        }
+    cont2:
+        off += 0x13C;
+        j += 1;
+    }
+
+}
+
 void fn_800B1720(s32 arg0, u8 *arg1)
 {
     s32 OSDisableInterrupts(void);
@@ -708,8 +785,8 @@ void fn_800B1720(s32 arg0, u8 *arg1)
     *(u16 *)(base + 0x124) = (u16)(*(u16 *)(base + 0x124) + 1);
     base2 = lbl_80317338;
 
-    for (i = 0; i < 3; i++) {
-        entry = *(u8 **)(base2 + 0xF8) + i * 0x13C;
+    for (i = 0; i < 3 * 0x13C; i += 0x13C) {
+        entry = *(u8 **)(base2 + 0xF8) + i;
         if (*(u16 *)entry != 0) {
             sub = NULL;
             which = 0;
@@ -756,11 +833,8 @@ void fn_800B1720(s32 arg0, u8 *arg1)
         }
     }
 
-    j = 0;
-    off = j;
-    ctr = j + 3;
-    for (; ctr != 0; ctr--) {
-        e2 = *(u8 **)(base2 + 0xF8) + off;
+    for (j = 0; j < 3; j++) {
+        e2 = *(u8 **)(base2 + 0xF8) + j * 0x13C;
         flags = *(u16 *)e2;
         if (flags != 0 && !(flags & 8)) {
             if (*(u8 **)(e2 + 0x2C) + 0x40 == arg1) {
@@ -813,9 +887,8 @@ void fn_800B1720(s32 arg0, u8 *arg1)
             *(u16 *)e2 = (u16)(*(u16 *)e2 | 8);
             goto cleanup;
         }
-    cont2:
-        off += 0x13C;
-        j += 1;
+    cont2:;
+
     }
 
 cleanup:
@@ -828,6 +901,7 @@ cleanup:
         }
     }
 }
+#pragma pop
 s32 fn_800B1B24(s32 arg0)
 {
     extern u8 gSoundSys[];
@@ -2136,10 +2210,8 @@ void fn_800B4C20(void) {
             if (fn_8020C79C(entry + 0x40) == 0) OSReport(lbl_8026EC50 + 0x1E, entry);
             memset(entry, 0, 0x98);
         }
-        if (moved) goto done;
-
+        if (moved != 0) break;
     }
-done:
     if (lbl_80367824) lbl_80367824();
 }
 #pragma global_optimizer reset
@@ -10033,9 +10105,9 @@ s32 Event_GetString(void *arg0, u16 arg1) {
     return M2C_FIELD(M2C_FIELD(arg0, void **, 8), s32 *, 0x24) + arg1;
 }
 
+#pragma push
 #pragma global_optimizer off
 void fn_800C2750(void) {
-    u8 *work;
     M2C_UNK fn_80014000(s32, s32);
     M2C_UNK fn_80013F6C(void *, s32);
     M2C_UNK EventWork_Set(void *);
@@ -10050,6 +10122,7 @@ void fn_800C2750(void) {
     extern u8 gEventWork[];
     extern u8 lbl_8026FE18[];
     extern u16 gBattleState[700];
+    u8 *work;
 
     work = gEventWork;
     fn_80014000(0x20, 0x1A0);
@@ -10076,7 +10149,7 @@ void fn_800C2750(void) {
     ScriptCtx_Begin(lbl_8026FE18 + 0x1D6);
     ScriptCtx_Call();
 }
-#pragma global_optimizer reset
+#pragma pop
 extern u8 lbl_8028D768[16];
 void fn_800C28A0(s32 arg0) {
     void Process_CreateChild(void *, s32);
@@ -10979,7 +11052,9 @@ void fn_800B125C(s32 arg0, u32 arg1) {
         }
     }
 }
-#pragma optimization_level reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_pointer_analysis off
 void fn_800B1368(void *arg0) {
     void fn_800B1720(void *);
     s32 fn_800B49C8(void *);
@@ -11064,4 +11139,4 @@ void fn_800B1368(void *arg0) {
         *(u32 *)(entry + 0x74) = size;
     }
 }
-#pragma opt_strength_reduction reset
+#pragma pop
