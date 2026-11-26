@@ -6095,7 +6095,7 @@ void fn_80255A40(void)
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_80255B20(void *arg0) {
     void fn_80257668(void *);
     extern s32 gSynthVoices;
@@ -6105,11 +6105,6 @@ void fn_80255B20(void *arg0) {
     s32 temp_r3_2;
     s32 temp_r4_3;
     s32 val;
-    void **temp_r4;
-    void **temp_r4_10;
-    void **temp_r4_4;
-    void **temp_r4_6;
-    void **temp_r4_8;
     void *temp_r3_10;
     void *temp_r3_11;
     void *temp_r3_12;
@@ -6125,20 +6120,25 @@ void fn_80255B20(void *arg0) {
     void *temp_r4_5;
     void *temp_r4_7;
     void *temp_r4_9;
-    void *vp;
+    void **temp_r4;
+    void **temp_r4_10;
+    void **temp_r4_4;
+    void **temp_r4_6;
+    void **temp_r4_8;
+    SynthStateLink *vp;
 
     if ((u32)(*(s32 *)((u8 *)arg0 + 0xF4) + 0x10000) != 0xFFFFU) {
         fn_80257668(arg0);
         temp_r3 = *(s32 *)((u8 *)arg0 + 0xF0);
         if ((u32)(temp_r3 + 0x10000) != 0xFFFFU) {
-            vp = (void *)(gSynthVoices + ((u8)temp_r3 * 0x458));
+            vp = &((SynthStateLink *)gSynthVoices)[(u8)temp_r3];
             val = *(s32 *)((u8 *)arg0 + 0xEC);
-            *(s32 *)((u8 *)vp + 0xEC) = val;
+            vp->next = val;
             temp_r3_2 = *(s32 *)((u8 *)arg0 + 0xEC);
             if ((u32)(temp_r3_2 + 0x10000) != 0xFFFFU) {
-                vp = (void *)(gSynthVoices + ((u8)temp_r3_2 * 0x458));
+                vp = &((SynthStateLink *)gSynthVoices)[(u8)temp_r3_2];
                 val = *(s32 *)((u8 *)arg0 + 0xF0);
-                *(s32 *)((u8 *)vp + 0xF0) = val;
+                vp->prev = val;
             }
             temp_r3_3 = *(void **)((u8 *)arg0 + 0xF8);
             temp_r4 = *(void ***)((u8 *)temp_r3_3 + 4);
@@ -6164,15 +6164,17 @@ void fn_80255B20(void *arg0) {
         temp_r4_3 = *(s32 *)((u8 *)arg0 + 0xEC);
         if ((u32)(temp_r4_3 + 0x10000) != 0xFFFFU) {
             *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0xF8) + 0xC) = temp_r4_3;
+            temp_r3_4 = *(void **)((u8 *)arg0 + 0xF8);
             temp_r3_5 = *(void **)((u8 *)arg0 + 0xFC);
-            if (*(void **)((u8 *)arg0 + 0xF8) != temp_r3_5) {
+            if (temp_r3_4 != temp_r3_5) {
                 *(s32 *)((u8 *)temp_r3_5 + 0xC) = *(s32 *)((u8 *)arg0 + 0xEC);
             }
-            vp = (void *)(gSynthVoices + ((u8)*(s32 *)((u8 *)arg0 + 0xEC) * 0x458));
-            *(s32 *)((u8 *)vp + 0xF0) = -1;
-            vp = (void *)(gSynthVoices + ((u8)*(s32 *)((u8 *)arg0 + 0xEC) * 0x458));
+            vp = &((SynthStateLink *)gSynthVoices)[(u8)*(s32 *)((u8 *)arg0 + 0xEC)];
+            val = -1;
+            vp->prev = val;
+            vp = &((SynthStateLink *)gSynthVoices)[(u8)*(s32 *)((u8 *)arg0 + 0xEC)];
             val = (s32)*(void **)((u8 *)arg0 + 0xFC);
-            *(s32 *)((u8 *)vp + 0xFC) = val;
+            vp->root = (void *)val;
             temp_r3_6 = *(void **)((u8 *)arg0 + 0xF8);
             if (temp_r3_6 != *(void **)((u8 *)arg0 + 0xFC)) {
                 temp_r4_4 = *(void ***)((u8 *)temp_r3_6 + 4);
