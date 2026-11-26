@@ -23,7 +23,7 @@ static inline u8 Ui_IsTargetTile(s8 x, s8 y)
     }
     return selected;
 }
-static inline u8 Ui_InputLocked(u32 flags) { return (flags & 0x10) && !(flags & 0x20); }
+static inline u8 Ui_InputLocked(u32 flags) { u8 locked = 0; if ((flags & 0x10) && !(flags & 0x20)) locked = 1; return locked; }
 
 
 static inline u8 ClearUnitSelections(void *cur)
@@ -5090,10 +5090,10 @@ void fn_80119884(void *arg0)
     extern s32 gUiInputFlags;
     extern u32 *gPadInput;
 
-    s32 cy;
     s32 cx;
-    u8 *process;
+    s32 cy;
     u8 *unit;
+    u8 *process;
     u8 *other;
     u8 *tileUnit;
     u8 *widget;
@@ -5129,22 +5129,7 @@ void fn_80119884(void *arg0)
                 }
             }
         } else {
-            selected = 0;
-            unitId = gBattleMap[(s8)cx + ((s8)cy << 6) + 0xD];
-            if (unitId != 0) {
-                tileUnit = unitId ? gUnits + (unitId - 1) * 0x280 : 0;
-                if (*(u32 *)(tileUnit + 0x1A0) & 0x20000) {
-                    goto initial_text_selected;
-                }
-            }
-            for (i = 0; i < *(s32 *)gTargetList; i++) {
-                entry = (u8 *)TargetList_GetAt(gTargetList, i);
-                if ((s8)entry[0] == (s8)cx && (s8)entry[1] == (s8)cy) {
-                    selected = 1;
-                    break;
-                }
-            }
-initial_text_selected:
+            selected = Ui_IsTargetTile((s8)cx, (s8)cy);
             if (selected) {
                 widget = (u8 *)Ui_FindChild(process, -0x1000, 0);
                 if (widget) Ui_SetWidgetText(widget, (const char *)(lbl_80274508 + 0x1A7));
@@ -5184,7 +5169,7 @@ initial_text_selected:
     }
 
     flags = gUiInputFlags;
-    locked = (flags & 0x10) && !(flags & 0x20);
+    locked = Ui_InputLocked(flags);
     if (!locked) {
         pad = (u8 *)gPadInput;
         if ((*(u32 *)(pad + 4) & 0xF) == 0) {
@@ -5204,7 +5189,7 @@ initial_text_selected:
     }
 
     flags = gUiInputFlags;
-    locked = (flags & 0x10) && !(flags & 0x20);
+    locked = Ui_InputLocked(flags);
     if (locked) {
         return;
     }
@@ -5228,22 +5213,7 @@ initial_text_selected:
 
     if (pressed & 0x100) {
         if (unit != 0) {
-            selected = 0;
-            unitId = gBattleMap[(s8)cx + ((s8)cy << 6) + 0xD];
-            if (unitId != 0) {
-                tileUnit = unitId ? gUnits + (unitId - 1) * 0x280 : 0;
-                if (*(u32 *)(tileUnit + 0x1A0) & 0x20000) {
-                    goto first_target_done;
-                }
-            }
-            for (i = 0; i < *(s32 *)gTargetList; i++) {
-                entry = (u8 *)TargetList_GetAt(gTargetList, i);
-                if ((s8)entry[0] == (s8)cx && (s8)entry[1] == (s8)cy) {
-                    selected = 1;
-                    break;
-                }
-            }
-first_target_done:
+            selected = Ui_IsTargetTile((s8)cx, (s8)cy);
             if (selected == 0) {
                 if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)(unit + 0x190) + 8)) == 1) {
                     unitFlags = *(u32 *)(unit + 0x1A0);
@@ -5261,22 +5231,7 @@ first_target_done:
             }
         }
 
-        selected = 0;
-        unitId = gBattleMap[(s8)cx + ((s8)cy << 6) + 0xD];
-        if (unitId != 0) {
-            tileUnit = unitId ? gUnits + (unitId - 1) * 0x280 : 0;
-            if (*(u32 *)(tileUnit + 0x1A0) & 0x20000) {
-                goto second_target_done;
-            }
-        }
-        for (i = 0; i < *(s32 *)gTargetList; i++) {
-            entry = (u8 *)TargetList_GetAt(gTargetList, i);
-            if ((s8)entry[0] == (s8)cx && (s8)entry[1] == (s8)cy) {
-                selected = 1;
-                break;
-            }
-        }
-second_target_done:
+        selected = Ui_IsTargetTile((s8)cx, (s8)cy);
         if (selected != 0) {
             if (gUiInputFlags & 0x400) {
                 Map_HideMoveLimitView();
@@ -5291,22 +5246,7 @@ second_target_done:
 
     if (pressed & 0x200) {
         if (unit != 0) {
-            selected = 0;
-            unitId = gBattleMap[(s8)cx + ((s8)cy << 6) + 0xD];
-            if (unitId != 0) {
-                tileUnit = unitId ? gUnits + (unitId - 1) * 0x280 : 0;
-                if (*(u32 *)(tileUnit + 0x1A0) & 0x20000) {
-                    goto third_target_done;
-                }
-            }
-            for (i = 0; i < *(s32 *)gTargetList; i++) {
-                entry = (u8 *)TargetList_GetAt(gTargetList, i);
-                if ((s8)entry[0] == (s8)cx && (s8)entry[1] == (s8)cy) {
-                    selected = 1;
-                    break;
-                }
-            }
-third_target_done:
+            selected = Ui_IsTargetTile((s8)cx, (s8)cy);
             if (selected == 0 && Allegiance_CompareIds(0, *(u8 *)(*(u8 **)(unit + 0x190) + 8)) == 1) {
                 unitFlags = *(u32 *)(unit + 0x1A0);
                 if (unitFlags & 0x800) {
