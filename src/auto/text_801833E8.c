@@ -1,14 +1,7 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-#pragma push
-#pragma inline on
-static inline void Effect_SetCenteredMapPos(void *effect, f32 height, s32 x, s32 y) {
-    extern f32 lbl_8036AF80;
-    void Effect_SetPos(void *, f32, f32, f32);
-    Effect_SetPos(effect, lbl_8036AF80 + (f32)x, lbl_8036AF80 + (f32)y, height);
-}
-#pragma pop
+
 
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
@@ -15121,7 +15114,9 @@ s32 fn_8019F2D0(s32 x, long long y)
   return 1;
 }
 
-#pragma use_lmw_stmw off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 s32 fn_8019F4A8(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
@@ -15201,7 +15196,7 @@ s32 fn_8019F4A8(s32 x, s32 y) {
         return 1;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 /* Show the 0x1000 map object at (x,y), clear its event, and show linked 0x800 objects. */
 s32 Map_ShowObjAt(s32 x, s32 y) {
     s32 Map_Get(void);
