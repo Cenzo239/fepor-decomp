@@ -17203,21 +17203,23 @@ void fn_801A251C(void) {
     }
 }
 #pragma optimization_level reset
+#pragma global_optimizer off
 void fn_801A2570(void) {
     void fn_800C1060(void);
     extern u8 gMapBlendMode;
-    u8 flag;
-    u8 temp;
+    s32 flag;
+    u32 t;
 
     flag = 1;
-    temp = (u8)(gMapBlendMode - 1);
-    if (!(temp <= 1U)) {
+    t = ((u8)(gMapBlendMode - 1) <= (u32)flag);
+    if (!t) {
         flag = 0;
     }
-    if (flag) {
+    if ((u8)flag != 0) {
         fn_800C1060();
     }
 }
+#pragma global_optimizer reset
 
 void fn_801A25C4(void) {
     M2C_UNK fn_80016180();
