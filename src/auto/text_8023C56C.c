@@ -349,58 +349,101 @@ extern f64 lbl_8036C148;
 #pragma global_optimizer off
 #pragma inline_depth(0)
 
-u8 fn_8023C56C(u8 *arg0,u32 arg1,u32 arg2,u32 arg3,u32 arg4) {
-extern u8 *lbl_80368950;extern s32 lbl_8036894C,lbl_80368954;
-s32 PPCMfhid2(void);void fn_80205198(void*,u32);
-s32 fn_8023C7F4(void);s32 fn_8023C930(void);
-u8 fn_8023CA4C(void);u8 fn_8023CE08(void);
-void fn_8023D2FC(void);void fn_8023C7B0(void);void fn_8023D59C(u32,u32,u32);
-u8 done;u32 result;u8 marker;
-u8 **cursor;
-if(!arg0) goto noInput;
-if(!arg1 || !arg2 || !arg3) goto noOutput;
-if(!arg4) goto noWork;
-if(!(PPCMfhid2()&0x10000000)) goto badHid;
-if(!lbl_80368954) goto notInit;
-lbl_8036894C=arg4;
-lbl_80368950=(u8*)((lbl_8036894C+31)&~31);
-lbl_8036894C=(u32)lbl_80368950;lbl_8036894C+=0x6bc;
-fn_80205198(lbl_80368950,0x6bc);
-done=0;
-*(u32*)(lbl_80368950+0x6a4)=0x21;
-*(u16*)(lbl_80368950+0x698)=0;
-*(u8**)(lbl_80368950+0x69c)=arg0;
-do{
-if(*(*(u8**)(lbl_80368950+0x69c))++!=255) goto badPrefix;
-while(**(cursor=(u8**)(lbl_80368950+0x69c))==255) (*cursor)++;
-marker=*(*cursor)++;
-if(marker<=0xd7U){
-if(marker==0xc4){result=fn_8023CE08();if((u8)result) goto error;}
-else if(marker==0xc0){result=fn_8023C7F4();if((u8)result) goto error;}
-else goto badMarker;
-}else if(marker>=0xd8U && marker<=0xdfU){
-if(marker==0xdd)fn_8023D2FC();
-else if(marker==0xdb){result=fn_8023CA4C();if((u8)result)goto error;}
-else if(marker==0xda){result=fn_8023C930();if((u8)result)goto error;done=1;}
-else if(marker!=0xd8) goto badMarker;
-}else if(marker>=0xe0U){
-if((marker>=0xe0U && marker<=0xefU)||marker==0xfe){
-u8 *p=*(u8**)(lbl_80368950+0x69c);
-*(u8**)(lbl_80368950+0x69c)=p+((p[0]<<8)|p[1]);
-}else goto badMarker;
-}
-}while(!done);
-fn_8023C7B0();
-fn_8023D59C(arg1,arg2,arg3);
-return 0;
-noInput:return 0x19;
-noOutput:return 0x1b;
-noWork:return 0x1a;
-badMarker:return 11;
-badPrefix:return 3;
-error:return (u8)result;
-badHid:return 0x1c;
-notInit:return 0x1d;
+u8 fn_8023C56C(u8 *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4) {
+    extern u8 *lbl_80368950;
+    extern s32 lbl_8036894C;
+    extern s32 lbl_80368954;
+    s32 PPCMfhid2(void);
+    void fn_80205198(void *, u32);
+    s32 fn_8023C7F4(void);
+    s32 fn_8023C930(void);
+    s32 fn_8023CA4C(void);
+    s32 fn_8023CE08(void);
+    void fn_8023D2FC(void);
+    void fn_8023C7B0(void);
+    void fn_8023D59C(u32, u32, u32);
+    u8 done;
+    u32 result;
+    u8 marker;
+    u8 **cursor;
+    u8 *aligned;
+
+    if (!arg0) goto noInput;
+    if (!arg1 || !arg2 || !arg3) goto noOutput;
+    if (!arg4) goto noWork;
+    if (!(PPCMfhid2() & 0x10000000)) goto badHid;
+    if (!lbl_80368954) goto notInit;
+
+    lbl_8036894C = arg4;
+    aligned = (u8 *)((lbl_8036894C + 31) & ~31);
+    lbl_80368950 = aligned;
+    lbl_8036894C = (u32)(aligned + 0x6bc);
+    fn_80205198(lbl_80368950, 0x6bc);
+
+    done = 0;
+    *(u32 *)(lbl_80368950 + 0x6a4) = 0x21;
+    *(u16 *)(lbl_80368950 + 0x698) = 0;
+    *(u8 **)(lbl_80368950 + 0x69c) = arg0;
+
+    do {
+        if (*(*(u8 **)(lbl_80368950 + 0x69c))++ != 255) goto badPrefix;
+        while (**(cursor = (u8 **)(lbl_80368950 + 0x69c)) == 255) (*cursor)++;
+        marker = *(*cursor)++;
+        if (marker <= 0xd7U) {
+            if (marker == 0xc4) {
+                result = fn_8023CE08();
+                if ((u8)result) goto error;
+            } else if (marker == 0xc0) {
+                result = fn_8023C7F4();
+                if ((u8)result) goto error;
+            } else {
+                goto badMarker;
+            }
+        } else if (marker >= 0xd8U && marker <= 0xdfU) {
+            if (marker == 0xdd) {
+                fn_8023D2FC();
+            } else if (marker == 0xdb) {
+                result = fn_8023CA4C();
+                if ((u8)result) goto error;
+            } else if (marker == 0xda) {
+                result = fn_8023C930();
+                if ((u8)result) goto error;
+                done = 1;
+            } else if (marker == 0xd8) {
+            } else {
+                goto badMarker;
+            }
+        } else if (marker >= 0xe0U) {
+            if ((marker >= 0xe0U && marker <= 0xefU) || marker == 0xfe) {
+                u8 *p = *(u8 **)(lbl_80368950 + 0x69c);
+                u8 **cp = (u8 **)(lbl_80368950 + 0x69c);
+                *cp = p + ((p[0] << 8) | p[1]);
+            } else {
+                goto badMarker;
+            }
+        }
+    } while (!done);
+
+    fn_8023C7B0();
+    fn_8023D59C(arg1, arg2, arg3);
+    return 0;
+
+noInput:
+    return 0x19;
+noOutput:
+    return 0x1b;
+noWork:
+    return 0x1a;
+badMarker:
+    return 11;
+badPrefix:
+    return 3;
+error:
+    return (u8)result;
+badHid:
+    return 0x1c;
+notInit:
+    return 0x1d;
 }
 #pragma inline_depth(8)
 #pragma global_optimizer reset
