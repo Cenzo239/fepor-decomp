@@ -10589,7 +10589,9 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 extern "C" void PSMTXRotRad(void *, s32, f32);
 extern "C" void fn_802029C4(void *, f32 *, f32 *);
 #pragma cplusplus reset
-struct DirectionVector { f32 x, y, z; };
+#pragma cplusplus on
+struct DirectionVector { f32 x, y, z; DirectionVector(f32 xx, f32 yy, f32 zz) : x(xx), y(yy), z(zz) {} };
+#pragma cplusplus reset
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
