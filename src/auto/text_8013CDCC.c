@@ -2630,9 +2630,9 @@ void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
     return arg1;
 }
 
-void fn_8013FBC8(s32 *, s32 *);
+s32 *fn_8013FBC8(s32 *, s32 *);
 s32 fn_8013FBD4(s32);
-void fn_8013FBDC(s16 *, s16 *);
+s16 *fn_8013FBDC(s16 *, s16 *);
 void fn_8013FC00(s16 *, s16 *);
 void fn_8013FC14(s16 *, s16 *);
 void fn_8013FC28(s32 *, s32 *, s16 *);
@@ -2640,8 +2640,6 @@ s32 fn_8013FBC0(s32);
 s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
-#define FBC8Ret(dst, src) (fn_8013FBC8((dst), (src)), (dst))
-#define FBDCRet(dst, src) (fn_8013FBDC((dst), (src)), (dst))
 #pragma inline_depth(0)
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
@@ -2685,9 +2683,9 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
             fn_8013FC00((s16 *)&sp24, (s16 *)&sp1C);
         }
         fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)parent));
-        p8 = FBC8Ret((s32 *)&sp8, (s32 *)&sp2C);
-        FBDCRet((s16 *)p8, (s16 *)&sp3C);
-        FBC8Ret((s32 *)&sp28, p8);
+        p8 = fn_8013FBC8((s32 *)&sp8, (s32 *)&sp2C);
+        fn_8013FBDC((s16 *)p8, (s16 *)&sp3C);
+        fn_8013FBC8((s32 *)&sp28, p8);
         sp3C.x = sp28.x;
         sp3C.y = sp28.y;
     }
@@ -2785,8 +2783,9 @@ s32 fn_8013FBC0(s32 arg0) {
     return arg0 + 0x12;
 }
 
-void fn_8013FBC8(s32 *arg0, s32 *arg1) {
+s32 *fn_8013FBC8(s32 *arg0, s32 *arg1) {
     *arg0 = *arg1;
+    return arg0;
 }
 
 s32 fn_8013FBD4(s32 arg0) {
@@ -2794,13 +2793,14 @@ s32 fn_8013FBD4(s32 arg0) {
 }
 
 #pragma global_optimizer off
-void fn_8013FBDC(s16 *dst, s16 *src) {
+s16 *fn_8013FBDC(s16 *dst, s16 *src) {
 s16 c,b,a,d;
 a=dst[0]; b=src[0]; c=src[1];
 d=a;
 d+=b;
 dst[0]=d;
 d=dst[1]; c=d+c; dst[1]=c;
+return dst;
 }
 #pragma global_optimizer reset
 void fn_8013FC00(s16 *dst, s16 *src)
