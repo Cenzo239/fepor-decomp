@@ -16088,14 +16088,21 @@ static inline s16 GoldCost_CalculateInline(s32 unit, s16 qty) {
     u8 fn_80105BC0(s32, s32);
     extern f32 lbl_8036ABD8;
     s16 cost;
+    s32 unitTmp = unit;
     if (qty == 0) return 0;
-    cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)qty));
-    if (fn_80105BC0(unit + 0x1BC, 0x4B)) cost = (s16)((cost * 10) / 7);
-    if (fn_80105BC0(unit + 0x1BC, 0xB)) cost /= 2;
+    cost = (s16)(lbl_8036ABD8 + fn_80037818(unitTmp, (u8)qty));
+    if (fn_80105BC0(unitTmp + 0x1BC, 0x4B)) cost = (s16)((cost * 10) / 7);
+    if (fn_80105BC0(unitTmp + 0x1BC, 0xB)) cost /= 2;
     if (cost < 1) cost = 1;
     return cost;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma inline_depth(8)
+#pragma dont_inline off
 void fn_8017C4BC(void *arg0) {
     f32 fn_80037818(s32, u8);
     u8 fn_800386B0(s32);
@@ -16140,20 +16147,7 @@ void fn_8017C4BC(void *arg0) {
         next = field + 1;
         unit = *(s32 *)((u8 *)self + 0x40);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
-        if (next == 0) {
-            cost = 0;
-        } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-            if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                cost = (s16)((cost * 10) / 7);
-            }
-            if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost /= 2;
-            }
-            if (cost < 1) {
-                cost = 1;
-            }
-        }
+        cost = GoldCost_CalculateInline(unit, next);
         can = cost <= limit;
     }
     if ((u8)can != 0 && (buttons & 0x08000008)) {
@@ -16162,20 +16156,7 @@ void fn_8017C4BC(void *arg0) {
         next = *(s16 *)((u8 *)self + 0x3E);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
         unit = *(s32 *)((u8 *)self + 0x40);
-        if (next == 0) {
-            cost = 0;
-        } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-            if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                cost = (s16)((cost * 10) / 7);
-            }
-            if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost /= 2;
-            }
-            if (cost < 1) {
-                cost = 1;
-            }
-        }
+        cost = GoldCost_CalculateInline(unit, next);
         *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
         *(s16 *)((u8 *)self + 0x5A) = 1;
@@ -16189,20 +16170,7 @@ void fn_8017C4BC(void *arg0) {
         next = *(s16 *)((u8 *)self + 0x3E);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
         unit = *(s32 *)((u8 *)self + 0x40);
-        if (next == 0) {
-            cost = 0;
-        } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-            if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                cost = (s16)((cost * 10) / 7);
-            }
-            if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost /= 2;
-            }
-            if (cost < 1) {
-                cost = 1;
-            }
-        }
+        cost = GoldCost_CalculateInline(unit, next);
         *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         fn_801475FC(lbl_80278838 + 0x1D, 0x64);
         *(s16 *)((u8 *)self + 0x82) = 1;
@@ -16216,20 +16184,7 @@ void fn_8017C4BC(void *arg0) {
         unit = *(s32 *)((u8 *)self + 0x40);
         next = (s16)(*(s16 *)((u8 *)self + 0x3E) + 1);
         limit = *(s32 *)(lbl_80330708 + 0x1C);
-        if (next == 0) {
-            cost = 0;
-        } else {
-            cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-            if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                cost = (s16)((cost * 10) / 7);
-            }
-            if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                cost /= 2;
-            }
-            if (cost < 1) {
-                cost = 1;
-            }
-        }
+        cost = GoldCost_CalculateInline(unit, next);
         can = cost <= limit;
     }
     if ((u8)can != 0 && (buttons & 0x02000002)) {
@@ -16239,20 +16194,7 @@ void fn_8017C4BC(void *arg0) {
             next = *(s16 *)((u8 *)self + 0x3E);
             limit = *(s32 *)(lbl_80330708 + 0x1C);
             unit = *(s32 *)((u8 *)self + 0x40);
-            if (next == 0) {
-                cost = 0;
-            } else {
-                cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-                if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                    cost = (s16)((cost * 10) / 7);
-                }
-                if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                    cost /= 2;
-                }
-                if (cost < 1) {
-                    cost = 1;
-                }
-            }
+            cost = GoldCost_CalculateInline(unit, next);
             *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         check_inc:
             if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)self + 0x40)) + *(s16 *)((u8 *)self + 0x3E)) == 0x64) {
@@ -16265,20 +16207,7 @@ void fn_8017C4BC(void *arg0) {
                 next = field + 1;
                 unit = *(s32 *)((u8 *)self + 0x40);
                 limit = *(s32 *)(lbl_80330708 + 0x1C);
-                if (next == 0) {
-                    cost = 0;
-                } else {
-                    cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-                    if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                        cost = (s16)((cost * 10) / 7);
-                    }
-                    if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                        cost /= 2;
-                    }
-                    if (cost < 1) {
-                        cost = 1;
-                    }
-                }
+                cost = GoldCost_CalculateInline(unit, next);
                 can = cost <= limit;
             }
         } while ((u8)can != 0);
@@ -16295,20 +16224,7 @@ void fn_8017C4BC(void *arg0) {
             next = *(s16 *)((u8 *)self + 0x3E);
             limit = *(s32 *)(lbl_80330708 + 0x1C);
             unit = *(s32 *)((u8 *)self + 0x40);
-            if (next == 0) {
-                cost = 0;
-            } else {
-                cost = (s16)(lbl_8036ABD8 + fn_80037818(unit, (u8)next));
-                if (fn_80105BC0(unit + 0x1BC, 0x4B) != 0) {
-                    cost = (s16)((cost * 10) / 7);
-                }
-                if (fn_80105BC0(unit + 0x1BC, 0xB) != 0) {
-                    cost /= 2;
-                }
-                if (cost < 1) {
-                    cost = 1;
-                }
-            }
+            cost = GoldCost_CalculateInline(unit, next);
             *(s16 *)((u8 *)self + 0x3C) = (s16)(limit - cost);
         check_dec:
             if ((s32)((u8)fn_800386B0(*(s32 *)((u8 *)self + 0x40)) + *(s16 *)((u8 *)self + 0x3E)) == 0x64) {
