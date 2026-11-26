@@ -143,6 +143,13 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
+static inline s64 ResetSW_Time(u32 high, u32 low) {
+ union { s64 time; struct { u32 high, low; } words; } value;
+ value.words.high = high;
+ value.words.low = low;
+ return value.time;
+}
+
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -157,7 +164,7 @@ s32 fn_80208D18(void) {
     u32 thresh;
     u32 n;
     s64 t;
-    s64 q;
+    u64 q;
 
     enabled = OSDisableInterrupts();
     now = __OSGetSystemTime();
@@ -167,7 +174,7 @@ s32 fn_80208D18(void) {
         if (lbl_803684FC == 0) {
             soft = 1;
             lbl_803684FC = soft;
-            if (*(s64 *)&lbl_80368508 == 0) {
+            if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
                 soft = 0;
             }
             lbl_80368514 = (u32)now;
@@ -175,10 +182,10 @@ s32 fn_80208D18(void) {
             lbl_80368510 = (u32)((u64)now >> 32);
         } else {
             soft = 1;
-            if (*(s64 *)&lbl_80368508 == 0) {
+            if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
                 freq = *(u32 *)0x800000F8 >> 2;
-                thresh = ((u32)((freq * (u64)0x431BDE83u) >> 32) >> 15) * 0x64 >> 3;
-                if ((u64)(now - *(s64 *)&lbl_80368510) < (u64)thresh) {
+                thresh = (freq / 125000) * 0x64 >> 3;
+                if ((s64)thresh >= now - (s64)((u64)lbl_80368510 << 32 | lbl_80368514)) {
                     soft = 0;
                 }
             }
@@ -192,21 +199,21 @@ s32 fn_80208D18(void) {
         lbl_803684FC = 0;
         state = lbl_80368500;
         if (state != 0) {
-            *(s64 *)&lbl_80368508 = now;
+            lbl_8036850C = (u32)now; lbl_80368508 = (s32)((u64)now >> 32);
         } else {
-            *(s64 *)&lbl_80368508 = 0;
+            lbl_8036850C = 0; lbl_80368508 = 0;
         }
-    } else if (*(s64 *)&lbl_80368508 != 0) {
+    } else if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) != 0) {
         freq = *(u32 *)0x800000F8 >> 2;
-        thresh = ((u32)((freq * (u64)0x10624DD3u) >> 32) >> 6) * 0x28;
-        if ((u64)(now - *(s64 *)&lbl_80368508) < (u64)thresh) {
+        thresh = (freq / 1000) * 0x28;
+        if (now - (s64)((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) < (s64)thresh) {
             state = 1;
         } else {
-            *(s64 *)&lbl_80368508 = 0;
+            lbl_8036850C = 0; lbl_80368508 = 0;
             state = 0;
         }
     } else {
-        *(s64 *)&lbl_80368508 = 0;
+        lbl_8036850C = 0; lbl_80368508 = 0;
         state = 0;
     }
 
