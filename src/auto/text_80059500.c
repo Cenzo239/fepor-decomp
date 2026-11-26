@@ -6,8 +6,6 @@ s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
 extern const f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 
-static inline f64 Half(void) { return lbl_80369160; }
-
 #pragma optimization_level reset
 
 /* Free up/down scroll arrows; if create, alloc new ones (kinds 8 and 4). */
