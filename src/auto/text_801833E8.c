@@ -693,16 +693,6 @@ flags=*(u16 *)(anim+0x52)&15;
 if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
-static inline void MuFade_CopyColor(u8 *dst, u8 *src) {
-    u8 a = src[0];
-    u8 b = src[1];
-    u8 c = src[2];
-    u8 d = src[3];
-    dst[0x34] = a;
-    dst[0x35] = b;
-    dst[0x36] = c;
-    dst[0x37] = d;
-}
 #pragma optimization_level 3
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     void fn_8000A388(void *, void *, void *);
