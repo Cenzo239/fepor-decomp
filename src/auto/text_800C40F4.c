@@ -10569,7 +10569,10 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-static inline void Copy3_800DBAB8(f32 *dst, f32 x, f32 y, f32 z) {
+static inline void Copy3_800DBAB8(f32 *dst, u8 *src) {
+    f32 z = *(f32 *)(src + 0x68);
+    f32 y = *(f32 *)(src + 0x64);
+    f32 x = *(f32 *)(src + 0x60);
     dst[0] = x;
     dst[1] = y;
     dst[2] = z;
@@ -10580,9 +10583,6 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
-    f32 y;
-    f32 z;
-    f32 x;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
@@ -10592,12 +10592,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
     *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
-    z = *(f32 *)((u8 *)arg1 + 0x68);
-    y = *(f32 *)((u8 *)arg1 + 0x64);
-    x = *(f32 *)((u8 *)arg1 + 0x60);
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+    Copy3_800DBAB8(arg0, (u8 *)arg1);
 }
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
