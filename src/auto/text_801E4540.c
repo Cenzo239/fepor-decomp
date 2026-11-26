@@ -567,17 +567,14 @@ static inline void fn_801E4FB8_InsertLoop(void *arg0, u8 *entry) {
     }
 }
 
-void fn_801E4FB8(void *arg0) {
+static inline void fn_801E4FB8_Impl(void *arg0, s32 index, u8 *entry) {
     void fn_801EA430(void *, void *);
     void fn_801EA248(void *, void *);
     void List_Insert(void *, void *, void *, void *);
     void fn_80057898(void *, s32);
-    extern u8 lbl_80332020[];
     struct { u8 value; } initB, initA, keyCopy, key, bCopy, b, aCopy, a;
     void *sp[5];
-    u8 *entry;
     void *end;
-    s32 index;
     void *node;
     u8 found;
 
@@ -588,9 +585,7 @@ void fn_801E4FB8(void *arg0) {
     a = aCopy;
     fn_801EA248((u8 *)arg0 + 0x50, &a);
     end = (u8 *)arg0 + 0x54;
-    index = 0;
     sp[4] = *(void **)((u8 *)arg0 + 0x58);
-    entry = lbl_80332020;
     for (;;) {
         keyCopy.value = index + 1;
         key = keyCopy;
@@ -621,6 +616,23 @@ void fn_801E4FB8(void *arg0) {
         entry += 0x18;
         index++;
     }
+    fn_80057898(*(void **)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x50) << 5);
+}
+
+void fn_801E4FB8(void *arg0) {
+    void fn_801EA430(void *, void *);
+    void fn_801EA248(void *, void *);
+    void fn_80057898(void *, s32);
+    extern u8 lbl_80332020[];
+    struct { u8 value; } initB, initA, bCopy, b, aCopy, a;
+
+    bCopy = initB;
+    b = bCopy;
+    fn_801EA430((u8 *)arg0 + 0x50, &b);
+    aCopy = initA;
+    a = aCopy;
+    fn_801EA248((u8 *)arg0 + 0x50, &a);
+    fn_801E4FB8_InsertLoop(arg0, lbl_80332020);
     fn_80057898(*(void **)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x50) << 5);
 }
 #pragma use_lmw_stmw reset
