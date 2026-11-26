@@ -7626,7 +7626,7 @@ void fn_8026212C(u8 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(s32 *)((char *)temp_r3 + 0xB8) = arg4;
 }
 
-static inline u8 *fn_80262154_Entry(u8 *voices, u32 arg0) {
+static inline u8 *fn_80262154_Entry(u32 arg0, u8 *voices) {
     return voices + arg0 * 0xF8;
 }
 u32 fn_80262154(u32 arg0)
@@ -7639,7 +7639,7 @@ u32 fn_80262154(u32 arg0)
     u32 remainder;
 
     voices = gSoundVoices;
-    entry = arg0 * 0xF8 + voices;
+    entry = fn_80262154_Entry(arg0, voices);
 
     if (*(u8 *)(entry + 0xF0) != 2) {
         return 0;
@@ -7650,7 +7650,7 @@ u32 fn_80262154(u32 arg0)
     case 1:
     case 4:
     case 5:
-        entry = arg0 * 0xF8 + voices;
+        entry = fn_80262154_Entry(arg0, voices);
         count = *(u32 *)(entry + 0x78);
         value = *(u32 *)(entry + 0x20);
         remainder = value & 0xF;
@@ -7668,7 +7668,7 @@ u32 fn_80262154(u32 arg0)
 
     case 2:
     case 6:
-        entry = arg0 * 0xF8 + voices;
+        entry = fn_80262154_Entry(arg0, voices);
         count = *(u32 *)(entry + 0x78);
         value = *(u32 *)(entry + 0x20);
         return value - (count >> 1);
