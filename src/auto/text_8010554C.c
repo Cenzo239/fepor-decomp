@@ -1847,19 +1847,18 @@ s32 fn_80107874(void *arg0, void *arg1) {
     extern s32 gBattleMap[];
     u32 spC;
     u32 sp8;
+    u32 data;
     u8 sp10[0x68];
-    s32 a;
-    s32 r30v;
-    s32 b;
+    u32 a[1];
+    s32 r30v[1];
+    s32 b[1];
     s32 n;
     s32 count;
     u8 flags;
     void *self;
-    void *out;
     s32 i;
 
     self = arg0;
-    out = arg1;
     count = 0;
     flags = 0;
     *(s32 *)(sp10 + 0x10) = 0; sp10[0x30] = 0; *(s32 *)(sp10 + 0x48) = 0;
@@ -1878,39 +1877,41 @@ s32 fn_80107874(void *arg0, void *arg1) {
     }
     sp8 = (u32)Hash_Lookup(self);
     if (sp8 == 0) {
-        spC = 0;
+        data = 0;
     } else {
-        r30v = Bin_ReadU8(&sp8);
+        r30v[0] = Bin_ReadU8(&sp8);
         switch ((u8)Bin_ReadU8(&sp8)) {
         case 2:
-            a = 1;
-            b = 0;
+            a[0] = 1;
+            b[0] = 0;
             break;
         case 3:
-            a = Bin_ReadU8(&sp8);
-            b = Bin_ReadU8(&sp8);
+            a[0] = Bin_ReadU8(&sp8);
+            b[0] = Bin_ReadU8(&sp8);
             Bin_ReadU32(&sp8);
             break;
         case 4:
-            a = Bin_ReadU8(&sp8);
-            b = Bin_ReadU8(&sp8);
+            a[0] = Bin_ReadU8(&sp8);
+            b[0] = Bin_ReadU8(&sp8);
             break;
         }
         sp8 = (sp8 + 3) & ~3;
-        spC = sp8;
+        data = sp8;
     }
-    n = (u8)r30v;
-    r30v = (s32)gBattleMap;
-    a = (u8)a;
+    spC = data;
+    self = arg1;
+    n = (u8)r30v[0];
+    r30v[0] = (s32)gBattleMap;
+    a[0] = (u8)a[0];
     for (i = 0; i < n; i++) {
-        *(s32 *)((u8 *)out + 4) = 0;
-        ((u8 *)out)[0xC] = 0x10;
-        ((u8 *)out)[0x10D] = 0;
-        *(u32 *)out = spC;
-        ((u8 *)out)[0x10C] = flags;
-        ((u8 *)out)[0x10D] = (u8)b;
-        Dispos_ParseEntry(&spC, sp10, ((u8 *)out)[0x10D]);
-        if (a == 0) {
+        *(s32 *)((u8 *)self + 4) = 0;
+        ((u8 *)self)[0xC] = 0x10;
+        ((u8 *)self)[0x10D] = 0;
+        *(u32 *)self = spC;
+        ((u8 *)self)[0x10C] = flags;
+        ((u8 *)self)[0x10D] = (u8)b[0];
+        Dispos_ParseEntry(&spC, sp10, ((u8 *)self)[0x10D]);
+        if (a[0] == 0) {
             s8 x = sp10[0xB];
             s8 y = sp10[0xC];
             u8 *map = (u8 *)gBattleMap + x + (y << 6);
@@ -1919,15 +1920,15 @@ s32 fn_80107874(void *arg0, void *arg1) {
                 continue;
             }
         }
-        if ((s8)sp10[0xB] < gBattleMap[0] && (s8)sp10[0xC] < ((s32 *)r30v)[1]
-            && (s8)sp10[0xD] < gBattleMap[0] && (s8)sp10[0xE] < ((s32 *)r30v)[1]) {
+        if ((s8)sp10[0xB] < gBattleMap[0] && (s8)sp10[0xC] < ((s32 *)r30v[0])[1]
+            && (s8)sp10[0xD] < gBattleMap[0] && (s8)sp10[0xE] < ((s32 *)r30v[0])[1]) {
             count += 1;
-            *(s32 *)((u8 *)out + 4) = 0;
-            ((u8 *)out)[8] = sp10[0xB];
-            ((u8 *)out)[9] = sp10[0xC];
-            ((u8 *)out)[0xA] = sp10[0xD];
-            ((u8 *)out)[0xB] = sp10[0xE];
-            out = (u8 *)out + 0x110;
+            *(s32 *)((u8 *)self + 4) = 0;
+            ((u8 *)self)[8] = sp10[0xB];
+            ((u8 *)self)[9] = sp10[0xC];
+            ((u8 *)self)[0xA] = sp10[0xD];
+            ((u8 *)self)[0xB] = sp10[0xE];
+            self = (u8 *)self + 0x110;
         }
     }
     return count;
@@ -3619,6 +3620,10 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
 }
 
 #pragma use_lmw_stmw on
+static inline u8 AlphaMul8010A704(u8 alpha, u8 v) {
+    return (u8)((alpha * v) >> 8);
+}
+
 void fn_8010A704(void *arg0, u8 arg1) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -3938,8 +3943,9 @@ return (u8)fn_8010B01C(arg0,x,y)!=0;
 #pragma cplusplus reset
 }
 
+#pragma push
 #pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma optimization_level 3
 s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void Allegiance_FillMask(s32, void *);
     s32 Item_GetRangeForUnit(void *, void *);
@@ -3977,17 +3983,21 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
         struct Unit *unit;
         s32 score;
     } result;
-    struct Result best;
     u8 flags[8];
     s32 pad;
     u8 *map;
     struct Unit *unit;
+    s32 bestScore;
+    struct Unit *bestUnit;
+    u8 bestX;
+    u8 bestY;
+    u16 bestSlot;
     s32 slot;
     void **item;
     s32 unitId;
 
-    best.score = 0x80000000;
-    best.unit = NULL;
+    bestScore = 0x80000000;
+    bestUnit = NULL;
     Map_FillLayer(gBattleMap, 5, -1);
     Map_SelectRangeBuffer(gBattleMap, 5);
     map = gBattleMap;
@@ -4043,12 +4053,12 @@ loop_slot:
                                         fn_800FDDBC((s8)unit->unk19E, (s8)unit->unk19F, var_r0_3, var_r0_2, 6);
                                         result.unit = unit;
                                         if (fn_800F7E9C(arg0, arg1, arg2, &result) != 0) {
-                                            if (result.score > best.score) {
-                                                best.x = result.x;
-                                                best.score = result.score;
-                                                best.y = result.y;
-                                                best.slot = result.slot;
-                                                best.unit = result.unit;
+                                            if (result.score > bestScore) {
+                                                bestX = result.x;
+                                                bestScore = result.score;
+                                                bestY = result.y;
+                                                bestSlot = result.slot;
+                                                bestUnit = result.unit;
                                             }
                                         }
                                     }
@@ -4066,16 +4076,17 @@ loop_slot:
         }
     }
 
-    if (best.unit != NULL) {
-        fn_800951D0(arg0, best.slot);
+    if (bestUnit != NULL) {
+        fn_800951D0(arg0, bestSlot);
         pad = 0;
-        fn_800FB96C(0xF, (s8)best.x, (s8)best.y, best.unit,
-                    best.unit->unk19E, best.unit->unk19F,
-                    (s8)best.slot, 0, 0);
+        fn_800FB96C(0xF, (s8)bestX, (s8)bestY, bestUnit,
+                    bestUnit->unk19E, bestUnit->unk19F,
+                    (s8)bestSlot, 0, 0);
         return 1;
     }
     return 0;
 }
+#pragma pop
 u8 fn_8010B30C(void *arg0, s16 arg1, s16 arg2) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
@@ -4230,7 +4241,9 @@ s32 fn_8010B60C(void *arg0, void *arg1) {
     return *(u32 *)((u8 *)arg1 + 0x1A0) & 1;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 u8 Ai_TryApproachHealer(void *arg0) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
@@ -4243,9 +4256,9 @@ u8 Ai_TryApproachHealer(void *arg0) {
     extern u16 gUnits[];
     extern u8 Ai_UnitIsHostileToActive[];
 
+    s32 idx;
+    s32 found;
     void *other;
-    s8 found;
-    s8 idx;
     u8 *map;
     u8 *map2;
     void *self;
@@ -4284,9 +4297,9 @@ inner:
                 u8 id = ((u8 *)other)[0xD];
                 if (id != 0) {
                     if (id != 0) {
-                        other = (void *)((s32)((u8 *)gUnits + (id - 1) * 0x280) + (0 & (s32)other));
+                        other = (u8 *)gUnits + (id - 1) * 0x280;
                     } else {
-                        other = (void *)(0 & (s32)other);
+                        other = NULL;
                     }
                     if (self != other && Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)other + 0x190)) != 1) {
                         void *item;
@@ -4298,7 +4311,7 @@ inner:
                         idx = 4;
                         goto slot_cmp;
                     slot_loop:
-                        item = *Unit_GetItemSlot(other, idx);
+                        item = *Unit_GetItemSlot(other, (s8)idx);
                         if (item == NULL) {
                             goto slot_done;
                         }
@@ -4320,11 +4333,11 @@ inner:
                         }
                         idx += 1;
                     slot_cmp:
-                        if (idx < 8) {
+                        if ((s8)idx < 8) {
                             goto slot_loop;
                         }
                     slot_done:
-                        if (found >= 0) {
+                        if ((s8)found >= 0) {
                             dist = Map_CountNeighborUnits((s16)x, (s16)y, Ai_UnitIsHostileToActive);
                             if (dist <= bestDist) {
                                 u8 bc = bestCost;
@@ -4355,22 +4368,22 @@ outer_cmp:
     if ((u32)(bestDist - 0x7FFF0000) != 0xFFFFU) {
         s32 bx;
         s32 by;
-        u8 *p;
+        s32 p;
         u8 tile;
         u8 v;
         bx = (s8)bestX;
         by = (s8)bestY;
-        p = map + bx;
+        p = (s32)(map + bx);
         v = ((u8 *)self)[0x198];
-        p = (u8 *)((s32)p + (by << 6));
-        tile = p[0xD];
+        p += by << 6;
+        tile = ((u8 *)p)[0xD];
         if (tile != v) {
             Ai_SetUnitMoveTo(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
         }
     }
     return gAiState[0x21C];
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 /* AI: pick a reachable approach tile and set the unit's move destination. */
 u8 Ai_TrySelectApproachTile(void *unit) {
     void Map_BuildUnitMoveRange(void *, s32, s32);
