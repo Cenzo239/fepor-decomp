@@ -76,7 +76,7 @@ extern ThpDecodeState *lbl_80368950;
 ThpDecodeState *state = lbl_80368950;
 u8 *p = state->cursor;
 u32 high = p[0];
-u32 low = p[1];
+u16 low = p[1];
 state->cursor = p + 2;
 return low | (high << 8);
 }
