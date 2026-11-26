@@ -75,11 +75,11 @@ static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 r
         return found;
     }
     {
+        u8 d;
         s32 dir;
         for (dir = 0; dir < 4; dir++) {
-            u8 d = DirFromIndex_80042558(dir);
-            s32 dx = DirGetDX_80042558(d);
-            found = FindMapObj_80042558(map, x + dx, y + DirGetDY_80042558(d), 0, require);
+            d = DirFromIndex_80042558(dir);
+            found = FindMapObj_80042558(map, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
             if (found != 0) {
                 return found;
             }
@@ -680,10 +680,7 @@ void fn_80042558(Map_80042558 *arg0)
         channel[5] = lbl_80367298[1];
         channel[6] = lbl_80367298[2];
     }
-    {
-        void *channel = Light_GetChannel(2);
-        Light_CopyChannel(Light_GetChannel(0), channel);
-    }
+    Light_CopyChannel(Light_GetChannel(0), Light_GetChannel(2));
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
     {
