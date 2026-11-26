@@ -3620,10 +3620,6 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
 }
 
 #pragma use_lmw_stmw on
-static inline u8 AlphaMul8010A704(u8 alpha, u8 v) {
-    return (u8)((alpha * v) >> 8);
-}
-
 void fn_8010A704(void *arg0, u8 arg1) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -3681,22 +3677,22 @@ void fn_8010A704(void *arg0, u8 arg1) {
     p[0] = ((u8 *)arg0)[0x24];
     p[1] = ((u8 *)arg0)[0x25];
     p[2] = ((u8 *)arg0)[0x26];
-    p[3] = (u8)((alpha * ((u8 *)arg0)[0x27]) >> 8);
+    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x27]);
     p = (u8 *)&sp20;
     p[0] = ((u8 *)arg0)[0x28];
     p[1] = ((u8 *)arg0)[0x29];
     p[2] = ((u8 *)arg0)[0x2A];
-    p[3] = (u8)((alpha * ((u8 *)arg0)[0x2B]) >> 8);
+    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x2B]);
     p = (u8 *)&sp1C;
     p[0] = ((u8 *)arg0)[0x2C];
     p[1] = ((u8 *)arg0)[0x2D];
     p[2] = ((u8 *)arg0)[0x2E];
-    p[3] = (u8)((alpha * ((u8 *)arg0)[0x2F]) >> 8);
+    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x2F]);
     p = (u8 *)&sp18;
     p[0] = ((u8 *)arg0)[0x30];
     p[1] = ((u8 *)arg0)[0x31];
     p[2] = ((u8 *)arg0)[0x32];
-    p[3] = (u8)((alpha * ((u8 *)arg0)[0x33]) >> 8);
+    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x33]);
     Prim2D_AddPrim(3);
     Prim2D_SetPosCorners(
         (f32)*(s16 *)((u8 *)arg0 + 0x14),
@@ -3952,7 +3948,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
-    u8 fn_8009339C(void *);
+    u8 fn_8009339C(void *, void *);
     void fn_800951D0(void *, s32);
     u8 Unit_IsInMovAttackRange(void *, void *, void **);
     u8 fn_800F7E9C(void *, s8, s8, void *);
@@ -4007,7 +4003,7 @@ s32 fn_8010B01C(void *arg0, s8 arg1, s8 arg2) {
 loop_slot:
     item = Unit_GetHeldItemSlot(arg0, slot);
     if (*item != NULL) {
-        if (fn_8009339C(arg0) != 0) {
+        if (fn_8009339C(arg0, *item) != 0) {
             result.slot = (u16)slot;
             Allegiance_FillMask(1, flags);
             unitId = 1;
@@ -4039,7 +4035,7 @@ loop_slot:
                                     }
                                     if (fn_80100FD0(arg1, arg2, (s8)unit->unk19E, (s8)unit->unk19F, (u32)var_r0) != 0) {
                                         u8 var_r0_2;
-                                        u8 var_r0_3;
+                                        s32 var_r0_3;
                                         if (*item != NULL) {
                                             var_r0_2 = Item_GetRangeForUnit(*item, unit);
                                         } else {
