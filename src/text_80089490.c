@@ -105,6 +105,4 @@ void fn_80089490(void *arg0) {
     }
 }
 #pragma optimization_level reset
-static inline int TypeEquals_80089490(u32 value, u8 *base, s32 offset) {
-    return value == (u32)(base + offset);
-}
+
