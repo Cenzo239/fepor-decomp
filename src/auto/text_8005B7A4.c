@@ -346,6 +346,27 @@ s32 FileCache_IsReady(char *name) {
     return (flags >> 15) & 1;
 }
 
+#pragma push
+#pragma opt_lifetimes off
+typedef struct FileCacheEntry_8005BB2C {
+    s8 name;
+    u8 pad[0x2F];
+    volatile u16 flags;
+    u16 ref;
+    u32 stamp;
+    u8 rest[0x7C - 0x38];
+} FileCacheEntry_8005BB2C;
+
+static inline s32 FileCache_CheckAll_8005BB2C(u32 time, FileCacheEntry_8005BB2C *e) {
+    s32 i;
+    for (i = 0; i < 1024; i++, e++) {
+        if (e->name != 0 && !(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 s32 fn_8005BB2C(void) {
     u8 fn_800B2FF4(s32);
     s64 OSGetTime(void);
@@ -358,44 +379,22 @@ s32 fn_8005BB2C(void) {
         u32 stamp;
         u8 rest[0x7C - 0x38];
     } Entry;
-    Entry *e;
     u32 time;
     s32 i;
-    s32 j;
 
     if ((u8)fn_800B2FF4(0) == 0) {
         return 0;
     }
     time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
-    e = (Entry *)gFileCache;
-    j = 0;
-    for (i = 0; i < 0x100; i++) {
-        if (e->name != 0) {
-            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
-                return 0;
-            }
+    for (i = 0; i < 1024; i++) {
+        Entry *e = &((Entry *)gFileCache)[i];
+        if (e->name != 0 && !(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
+            return 0;
         }
-        if ((++e)->name != 0) {
-            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
-                return 0;
-            }
-        }
-        if ((++e)->name != 0) {
-            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
-                return 0;
-            }
-        }
-        if ((++e)->name != 0) {
-            if (!(e->flags & 0x2000) && (e->flags & 0x200) && time <= e->stamp + 0xA) {
-                return 0;
-            }
-        }
-        e++;
-        j += 3;
     }
     return 1;
 }
-
+#pragma pop
 void fn_8005C8D8();
 void fn_8005BC8C() {
     void fn_8005C8D8();
