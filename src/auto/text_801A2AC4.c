@@ -960,19 +960,27 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     }
 }
 #pragma opt_common_subs reset
+static inline s32 Battle_AdjustHpDelta(u8 *obj, s32 amount) {
+    s32 Unit_GetMaxHp(void *);
+    s32 fn_800AA76C(s32, s32, s32);
+    s32 hp = obj[0x488];
+    amount = fn_800AA76C((s8)hp, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)amount);
+    return (s8)amount;
+}
+
 void fn_801A4B40(u8 *obj, s32 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
-    struct S { s8 v; } s;
     s32 orig;
 
     orig = obj[0x488];
-    s.v = (s8)fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)a1);
-    Unit_SetHp(obj + 0x2E0, s.v + (s8)obj[0x488]);
+    a1 = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj + 0x2E0), (s8)a1);
+    a1 = (s8)a1;
+    Unit_SetHp(obj + 0x2E0, a1 + (s8)obj[0x488]);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(obj + 0x8A0, 0x15, s.v);
+    BattleAnim_Queue(obj + 0x8A0, 0x15, a1);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
 }
 #pragma opt_common_subs reset
