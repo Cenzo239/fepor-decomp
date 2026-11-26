@@ -59,6 +59,3 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   return (f32) ((((f64) ((t_m1 * farg4) * farg4)) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (((one - farg4) * (one - farg4)) * farg4)) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
 #pragma optimization_level reset
-static inline f64 HermiteTangent(f32 a, f32 b) {
-    return (f64)(a - b) * 0.5;
-}
