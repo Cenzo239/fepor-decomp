@@ -48,6 +48,11 @@ extern u16 *lbl_803674E0;
 extern f32 lbl_8036A118;
 extern f32 lbl_8036A120;
 extern f32 lbl_8036A130;
+
+static u8 s_80289950[0x48] = { 1 };
+static u8 s_80289998[0x10] = { 1 };
+static u8 s_802899A8[0x24] = { 1 };
+static u8 s_802899CC[0x4] = { 1 };
 extern f32 gTextScale2;
 
 extern f32 lbl_80369768;
@@ -81,7 +86,7 @@ void fn_80089490(void *);
 
 #pragma opt_strength_reduction off
 
-#pragma optimization_level 2
+#pragma opt_propagation off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
@@ -108,3 +113,4 @@ void fn_80089490(void *arg0) {
     }
     fn_8000A408(arg0);
 }
+#pragma opt_propagation on
