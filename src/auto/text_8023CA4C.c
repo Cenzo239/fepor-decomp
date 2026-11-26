@@ -360,10 +360,12 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 s32 fn_8023CA4C(void) {
-    extern const u8 lbl_80282FD8[];
-    extern ThpDecodeState *volatile lbl_80368950;
+    extern u8 lbl_80282FD8[];
+extern ThpDecodeState *volatile lbl_80368950;
+extern const f64 lbl_8036C190;
+
     f32 table[64];
     u32 size;
     u16 i;
@@ -372,12 +374,14 @@ s32 fn_8023CA4C(void) {
     u8 *state;
     const f64 *scale;
     const f64 *base;
+    u8 *zig;
 
     size = ThpReadWord() - 2;
     do {
         id = ThpReadByte();
+        zig = lbl_80282FD8;
         for (i = 0; i < 64; i++) {
-            table[lbl_80282FD8[i]] = (f32)(u32)ThpReadByte();
+            table[zig[i]] = (f32)(u32)ThpReadByte();
         }
         state = (u8 *)lbl_80368950;
         base = (const f64 *)(lbl_80282FD8 + 0x50);
@@ -398,7 +402,7 @@ s32 fn_8023CA4C(void) {
     } while ((u16)size);
     return 0;
 }
-
+#pragma opt_strength_reduction reset
 u8 fn_8023CE08(void)
 {
     extern s32 lbl_8036894C;
