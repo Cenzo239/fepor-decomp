@@ -150,6 +150,93 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
+static inline s32 ResetSW_ReadState(s32 zero) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    s64 __OSGetSystemTime(void);
+    s64 __div2i(s64, s64);
+    s32 state;
+    s32 enabled;
+    s32 pad;
+    s64 now;
+    s32 soft;
+    u32 freq;
+    u32 thresh;
+    s32 n;
+    s64 t;
+    s64 q;
+
+    enabled = OSDisableInterrupts();
+    now = __OSGetSystemTime();
+    pad = zero;
+
+    if (!(*(u32 *)0xCC003000 & 0x10000)) {
+        if (lbl_803684FC == zero) {
+            lbl_803684FC = 1;
+            if ((s64)((u64)(u32)lbl_80368508<<32|lbl_8036850C)) soft=1; else soft=zero;
+            lbl_80368514 = (u32)now;
+            state = soft;
+            lbl_80368510 = (u32)((u64)now >> 32);
+        } else {
+            soft = 1;
+            if (((s64)((u64)(u32)lbl_80368508<<32|lbl_8036850C)) == zero) {
+                freq = *(u32 *)0x800000F8 >> 2;
+                thresh = (freq / 125000) * 0x64 >> 3;
+                if ((s64)thresh >= now - ((s64)((u64)lbl_80368510<<32|lbl_80368514))) {
+                    soft = zero;
+                }
+            }
+            if (soft != zero) {
+                state = 1;
+            } else {
+                state = zero;
+            }
+        }
+    } else if (lbl_803684FC != zero) {
+        lbl_803684FC = zero;
+        state = lbl_80368500;
+        if (state != zero) {
+            lbl_8036850C = (u32)now; lbl_80368508 = (s32)((u64)now >> 32);
+        } else {
+            lbl_8036850C = zero; lbl_80368508 = zero;
+        }
+    } else if (((s64)((u64)(u32)lbl_80368508<<32|lbl_8036850C)) != zero) {
+        freq = *(u32 *)0x800000F8 >> 2;
+        thresh = (freq / 1000) * 0x28;
+        if (now - (s64)((s64)((u64)(u32)lbl_80368508<<32|lbl_8036850C)) < (s64)thresh) {
+            state = 1;
+        } else {
+            lbl_8036850C = zero; lbl_80368508 = zero;
+            state = zero;
+        }
+    } else {
+        lbl_8036850C = zero; lbl_80368508 = zero;
+        state = zero;
+    }
+
+    lbl_80368500 = state;
+
+    n = *(u8 *)0x800030E3 & 0x1F;
+    if (n != zero) {
+        freq = *(u32 *)0x800000F8 >> 2;
+        t = (s64)(s32)(n * 60) * (s64)freq;
+ t += __OSStartTime;
+        if (t < now) {
+            q = __div2i(now - t, (u64)freq);
+            q = __div2i(q, 2);
+            if ((q & 1) == zero) {
+                state = 1;
+            } else {
+                state = zero;
+            }
+        }
+    }
+
+    (void)pad;
+    OSRestoreInterrupts(enabled);
+    return state;
+}
+
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
