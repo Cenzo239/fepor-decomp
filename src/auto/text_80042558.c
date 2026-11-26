@@ -26,6 +26,16 @@ static inline void Map_SetHeights444(u8 *map, s32 index, const s16 *heights)
     }
 }
 
+static inline void Map_SetLowerHeights444(u8 *map, s32 index, const s16 *heights)
+{
+    s32 k;
+    MapHeightCell444 *cell;
+    for (k = 0; k < 4; k++) {
+        cell = (MapHeightCell444 *)(map + 2 * (index * 4 + k));
+        cell->lower = heights[k];
+    }
+}
+
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
@@ -1539,12 +1549,7 @@ extern u8 gBattleMap[];
                         off = c + 0x100D;
                         rowPtr[off] = ok;
                         t = c + rowSl;
-                        for(k=0;k<4;k++) {
-                s16 height=((s16*)tile)[k];
-                cell=(MapHeightCell444*)(ca+2*(t*4+k));
-                            cell->lower=height;
-                            cell->upper=height;
-                        }
+                        Map_SetHeights444(ca, t, (s16*)tile);
                     }
                 }
             } else {
@@ -4110,7 +4115,7 @@ void fn_8004A2EC(void *arg0) {
     f32 sp8[12];
     s8 y;
     s8 x;
-    f32 x0, y0, x1, y1, fy, margin, z;
+    f32 fy, x0, y0, x1, y1, margin, z;
 
     if (fn_800AA188() != 0) {
         GXClearVtxDesc();
