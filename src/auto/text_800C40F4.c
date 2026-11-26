@@ -55,6 +55,28 @@ static inline void *Ai_ActionTileUnit(u8 id) {
     if (id) return gUnits + (id - 1) * 0x280;
     return NULL;
 }
+static inline s32 Ai_CountHostileNeighborsIn(AiActionMap *map, s16 x, s16 y, s16 *nb) {
+    extern u8 gBattleMap[];
+    u8 Ai_UnitIsHostileToActive(void *);
+    s32 count = 0;
+    while (nb[0] != 0x7fff) {
+        u8 oob;
+        s32 nx;
+        s32 ny;
+        nx = x + nb[0];
+        ny = y + nb[1];
+        oob = 0;
+        if (nx < map->xMin || map->xMax - 1 < nx || ny < map->yMin || map->yMax - 1 < ny)
+            oob = 1;
+        if (!oob) {
+            u8 id = gBattleMap[(s8)nx + ((s8)ny << 6) + 0xd];
+            if (id && Ai_UnitIsHostileToActive(Ai_ActionTileUnit(id))) count++;
+        }
+        nb += 2;
+    }
+    return count;
+}
+
 typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
@@ -30696,9 +30718,8 @@ s32 fn_801001F0(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_propagation off
-#pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
-s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
+s32 fn_80100284(void *self, u8 mode, u32 arg2, s16 *out_x, s16 *out_y) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8002C618(void *, s8, s8);
     void fn_8002F728(void *);
@@ -30714,30 +30735,26 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     extern u8 lbl_8028EA98[];
     extern s32 gTargetList[];
 
-    u32 flags;
-    void *self;
-    u8 mode;
-    register s32 x, y;
-    s16 best_alt, best_cost;
-    s32 idx;
-    u8 *maprow, *rowbase;
-    s32 yrow, ncount;
+    u32 keep_bit;
+    u32 flags = arg2;
+    u8 *map2;
+    AiActionMap *map;
     s16 *neigh;
-    u8 *map2, *map;
+    s32 ncount, yrow;
+    u8 *rowbase, *maprow;
+    s32 idx;
+    s16 best_cost, best_alt;
+    s32 y, x;
+    u8 *costcell;
     s32 short_y, byte_x, short_x;
-    s16 *out_x, *out_y;
-    s32 keep_bit, nx, ny;
+    s32 nx, ny;
+    s32 dx;
     u8 out_of_bounds, cell;
     void *unit;
     s16 cost, alt;
     s32 best_x, best_y;
     void *ctx[3], *ctx2[3];
 
-    mode = arg1;
-    flags = arg2;
-    self = arg0;
-    out_x = arg3;
-    out_y = arg4;
     map2 = gBattleMap;
     best_cost = 0x7FFF;
     best_alt = -1;
@@ -30754,42 +30771,38 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     if (flags & 8) {
         mode &= ~2;
     }
-    map = gBattleMap;
+    map = (AiActionMap *)gBattleMap;
     keep_bit = flags & 1;
     flags &= 2;
-    y = map[9];
-    y = (s8)y;
-    while (y <= (s8)map[0xB] - 1) {
+    y = map->yMin;
+    while (y <= map->yMax - 1) {
         yrow = (s8)y << 6;
-        x = map[8];
-        x = (s8)x;
+        x = map->xMin;
         short_y = (s16)y;
-        rowbase = map + yrow;
+        rowbase = (u8 *)map + yrow;
         maprow = map2 + yrow;
-        while (x <= (s8)map[0xA] - 1) {
+        while (x <= map->xMax - 1) {
             byte_x = (s8)x;
             idx = (byte_x + yrow) * 2;
-            if (*(s16 *)(map + idx + 0x818E) >= 0
+            costcell = (u8 *)map + idx;
+            if (*(s16 *)(costcell + 0x818E) >= 0
                 && (s8)rowbase[byte_x + 0xE18E] == 0
-                && Map_IsAiTerrainBlocked(x, y) == 0) {
-                if (keep_bit != 0 && (cell = maprow[(s32)x + 0xD], cell != 0)) {
-                    if (cell != 0)
-                        unit = gUnits + (cell - 1) * 0x280;
-                    else
-                        unit = NULL;
+                && Map_IsAiTerrainBlocked(byte_x, y) == 0) {
+                if (keep_bit != 0 && (cell = maprow[byte_x + 0xD], cell != 0)) {
+                    unit = Ai_ActionTileUnit(cell);
                     if (Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1)
                         goto next_x;
                 }
                 if (flags != 0) {
                     neigh = lbl_802732A0;
                     ncount = 0;
-                    while (*neigh != 0x7FFF) {
+                    while ((dx = *neigh) != 0x7FFF) {
                         short_x = (s16)x;
-                        nx = short_x + neigh[0];
+                        nx = short_x + dx;
                         ny = short_y + neigh[1];
                         out_of_bounds = 0;
-                        if (nx < (s8)map[8] || (s8)map[0xA] - 1 < nx
-                            || ny < (s8)map[9] || (s8)map[0xB] - 1 < ny) {
+                        if (nx < map->xMin || map->xMax - 1 < nx
+                            || ny < map->yMin || map->yMax - 1 < ny) {
                             out_of_bounds = 1;
                         }
                         if (!out_of_bounds) {
@@ -30815,9 +30828,10 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
                 fn_8002F728(gTargetList);
                 fn_8002C618(ctx, x, y);
                 if (gTargetList[0] != 0) {
-                    cost = *(s16 *)(map + idx + 0x818E);
-                    alt = *(s16 *)(map2 + idx + 0x610E);
-                    if (maprow[(s32)x + 0xD] != 0)
+                    costcell = map2 + idx;
+                    cost = *(s16 *)(costcell + 0x818E);
+                    alt = *(s16 *)(costcell + 0x610E);
+                    if (maprow[byte_x + 0xD] != 0)
                         alt = -1;
                     if (cost < best_cost) {
                         if (alt >= 0 || best_alt < 0) {
