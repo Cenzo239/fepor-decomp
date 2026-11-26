@@ -1,6 +1,13 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+static inline s32 Heap_FindUnusedIndex(void **table) {
+    s32 i;
+    for (i = 0; i < 16; i++) {
+        if (table[i] == 0) return i;
+    }
+    return -1;
+}
 typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
 typedef struct AiActionMap {
         s32 width;
@@ -1090,8 +1097,10 @@ found4:
 }
 #pragma use_lmw_stmw reset
 
+#pragma push
 #pragma optimization_level 3
 #pragma global_optimizer off
+#pragma opt_lifetimes off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
     extern u32 lbl_8036786C;
@@ -1107,9 +1116,6 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     s32 index;
     u8 *heap;
     u32 size;
-    u8 *data;
-    u32 *table;
-    s32 groups;
     u32 end;
 
     size = Heap_AlignSize(arg1);
@@ -1127,7 +1133,6 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
 
     heap[0xF] = 0;
     *(u32 *)(heap + 0x10) = 0;
-
 
     *(u32 *)(heap + 0x1C) = size;
     *(u32 *)(heap + 0x14) = 0;
@@ -1155,8 +1160,7 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
 
     return index;
 }
-#pragma global_optimizer reset
-#pragma optimization_level reset
+#pragma pop
 s32 Heap_Create(void *arg0, s32 arg1)
 {
     extern u8 *lbl_80367868;
@@ -11771,7 +11775,9 @@ void ListWin_HandleInput(void *list) {
     M2C_FIELD(list, s32 *, 0x100) = M2C_FIELD(list, s32 *, 0xF8) + thumbH;
 }
 
+#pragma push
 #pragma inline_depth(0)
+#pragma optimization_level 2
 void *fn_800DD3E8(u8 *self, void *owner, void *xml) {
     void *fn_800E4688(void *, void *, void *);
     u8 Xml_AdvanceChild(void *);
@@ -11831,9 +11837,7 @@ void *fn_800DD3E8(u8 *self, void *owner, void *xml) {
     *(s32 *)(self+0x104)=((*(s32 *)(self+0x64)-32)* *(s32 *)(self+0x108))/ *(s32 *)(self+0xb0);
     return self;
 }
-
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma pop
 void fn_800DD598(void *vec, String *begin, String *end)
 {
     void String_Resize(String *, u32, s32);
@@ -16949,6 +16953,7 @@ void GActor_ApplyPoseMtx(void *obj) {
 
 #pragma peephole off
 #pragma cplusplus on
+#pragma push
 extern "C" void fn_800E5DEC(void *arg0) {
     struct Vec3 { f32 x, y, z; };
     struct Obj {
@@ -16985,7 +16990,7 @@ extern "C" void fn_800E5DEC(void *arg0) {
     Vec3 pos;
     f32 zero;
     f32 spd;
-    s32 r, g, b;
+    u32 r, g, b;
 
     if (*(void **)(p + 0xDC) != 0) {
         zero = lbl_80369F3C;
@@ -17028,6 +17033,7 @@ extern "C" void fn_800E5DEC(void *arg0) {
         self->v6();
     }
 }
+#pragma pop
 #pragma cplusplus reset
 #pragma peephole reset
 /* Destroy an actor: unlink GActor nodes, nested member, strings, then base; free if asked. */
@@ -23956,6 +23962,8 @@ void fn_800F2ED8(void) {
     *(s32 *)((u8 *)lbl_8032AC58 + 0x638) = -2;
     *(u8 *)((u8 *)lbl_8032AC58 + 0x65c) = 0;
 }
+#pragma push
+#pragma optimization_level 3
 u8 fn_800F30E0(s32 arg0, u8 arg1) {
     extern u8 gAiState[];
     extern u8 gBattleMap[];
@@ -24027,8 +24035,7 @@ u8 fn_800F30E0(s32 arg0, u8 arg1) {
     }
     return gAiState[0x21C];
 }
-#pragma push
-#pragma optimization_level 3
+#pragma pop
 s32 fn_800F32A4(void *arg) {
 extern u8 gBattleMap[];
 void Map_BuildUnitMoveRange(void *,s32,s32);
@@ -26583,57 +26590,43 @@ else ((u8*)unit)[0x251]++;
 #pragma global_optimizer reset
 #pragma dont_inline reset
 
-#pragma cplusplus on
+#pragma push
+#pragma optimization_level 3
 void fn_800F8E5C(void *arg0) {
-    extern u8 gAiState[], gUiContext[], gTargetList[];
-    extern u8 *gAiCmd;
-    extern s32 gAiCmdIsAlt;
-    u8 fn_801021F0(void *, s16 *, s16 *);
-    void *Unit_FindByName(void *);
-    u8 fn_800BF1E8(void *);
-    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-    void fn_800FFB4C(void *, s8, s8);
-    void *fn_8002F680(void *, u8, u8);
-    void Ai_SetDecision(s8, s32, s8, s8, s8, s8, s8);
-    s16 x, y;
-    u8 *unit;
-    u8 *other;
-    void *ctx;
-    s8 dx, dy;
-
-    unit = (u8 *)arg0;
-    other = gAiCmd;
-    if (!(gAiState[1] & 2) && !(*(u32 *)(unit + 0x254) & 0x3000000)) {
-        if ((unit[0x1a5] >> 4) & 7) {
-            *(s32 *)(gAiState + 8) = 0;
-            *(s32 *)(gAiState + 12) = 0;
-        } else if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
-            other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
-            ctx = gUiContext;
-            *(void **)((u8 *)ctx + 4) = other;
-            if (!fn_800BF1E8(ctx)) {
-                *(s32 *)(gAiState + 8) = 9;
-                *(s32 *)(gAiState + 12) = 9;
-            } else {
-                Ai_SetUnitMoveTo(unit, x, y, 1, *(u16 *)(gAiState + 4), 1, 0, -1);
-                dx = gUiContext[0xD];
-                dy = gUiContext[0xE];
-                fn_800FFB4C(unit, dx, dy);
-                if (fn_8002F680(gTargetList, other[0x19e], other[0x19f]) &&
-                    *(s32 *)(gAiState + 8) != 4) {
-                    *(s32 *)(gAiState + 8) = 3;
-                    Ai_SetDecision(7, (s32)other, (s8)x, (s8)y, -1, 0, 0);
-                }
-            }
-        }
-    }
-    if (gAiCmdIsAlt == 0) {
-        unit[0x250]++;
-    } else {
-        unit[0x251]++;
-    }
+extern u8 gAiState[],gUiContext[],gTargetList[];
+extern u8 *gAiCmd;
+extern s32 gAiCmdIsAlt;
+u8 fn_801021F0(void *,s16 *,s16 *);
+void *Unit_FindByName(void *);
+u8 fn_800BF1E8(void *);
+void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
+void fn_800FFB4C(void *,s16,s16);
+void *fn_8002F680(void *,u8,u8);
+void Ai_SetDecision(s8,s32,s8,s8,s8,s8,s8);
+s16 x,y;
+u8 *unit=arg0;
+u8 *other=gAiCmd;
+if(!(gAiState[1]&2) && !(*(u32*)(unit+0x254)&0x3000000)) {
+if((unit[0x1a5]>>4)&7) {
+*(s32*)(gAiState+8)=0;*(s32*)(gAiState+12)=0;
+} else if(fn_801021F0(*(void**)(other+0x14),&x,&y)) {
+other=Unit_FindByName(*(void**)(other+0x14));
+*(void**)(gUiContext+4)=other;
+if(!fn_800BF1E8(gUiContext)) {
+*(s32*)(gAiState+8)=9;*(s32*)(gAiState+12)=9;
+} else {
+Ai_SetUnitMoveTo(unit,x,y,1,*(u16*)(gAiState+4),1,0,-1);
+fn_800FFB4C(unit,(s8)gUiContext[13],(s8)gUiContext[14]);
+if(fn_8002F680(gTargetList,other[0x19e],other[0x19f]) && *(s32*)(gAiState+8)!=4) {
+*(s32*)(gAiState+8)=3;
+Ai_SetDecision(7,(s32)other,(s8)x,(s8)y,-1,0,0);
 }
-#pragma cplusplus reset
+}
+}
+}
+if(gAiCmdIsAlt==0) unit[0x250]++; else unit[0x251]++;
+}
+#pragma pop
 void fn_800F8FF4(void *arg0) {
     extern void *gAiCmd;
     if ((s32) gAiCmd == 0) {
