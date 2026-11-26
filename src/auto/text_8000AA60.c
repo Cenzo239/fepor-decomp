@@ -12,6 +12,11 @@ static inline u32 Process_CompareName(const s8 *a, const s8 *b)
     return 0;
 }
 
+static inline s32 GetKey_8000B39C(u32 *base)
+{
+    return (u8)(*base >> 16);
+}
+
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
     s32 c2;
