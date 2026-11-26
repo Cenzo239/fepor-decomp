@@ -3477,74 +3477,64 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
     extern f32 lbl_80368EE4;
     extern f32 lbl_80368F10;
     extern f32 lbl_80368F2C;
-    extern f32 lbl_80368F00;
 
     void fn_8005FEE8(void *, f32);
     void *Process_CreateEx(void *);
 
-    u8 *obj;
-    u8 *node;
-    u8 *process;
     s32 mode;
+    u8 *node;
+    u8 *obj;
+    u8 *process;
     u32 flags;
     u8 enabled;
-    s32 x;
-    s32 y;
 
     obj = (u8 *)arg0;
     flags = *(u32 *)(*(u8 **)(obj + 0x10) + 0xBC);
 
     if (flags & 0x400) {
-        if (flags & 0x200) {
-            enabled = 1;
-        } else {
-            enabled = 0;
-        }
+        enabled = 0;
+    } else if (flags & 0x200) {
+        enabled = 1;
     } else {
         enabled = 0;
+    }
+
+    if (!enabled) {
+        return;
     }
 
     mode = (u8)arg2;
     node = obj + 0x14;
 
-    if (enabled != 0) {
-        switch (mode) {
-        case 3:
-            fn_8005FEE8(node, lbl_80368EE4);
-            *(f32 *)(node + 0x5C) = lbl_80368F10;
-            break;
-
-        case 4:
-            fn_8005FEE8(node, lbl_80368F2C);
-            *(f32 *)(node + 0x5C) = lbl_80368F10;
-            break;
-        }
-    } else {
+    switch (mode) {
+    case 3:
+        fn_8005FEE8(node, lbl_80368EE4);
+        *(f32 *)(node + 0x5C) = lbl_80368F10;
+        break;
+    case 4:
+        fn_8005FEE8(node, lbl_80368F2C);
+        *(f32 *)(node + 0x5C) = lbl_80368F10;
+        break;
+    default:
         process = (u8 *)Process_CreateEx(lbl_802856C8);
-
         *(void **)(process + 0x34) = node;
         *(void **)(process + 0x30) = obj;
         *(s32 *)(process + 0x44) = mode;
         process[0x48] = 0;
-
-        x = (s8)obj[4] + (s8)obj[6];
-        y = (s8)obj[5] + (s8)obj[7];
-
-        *(f32 *)(process + 0x38) = (f32)x * lbl_80368F00;
-        *(f32 *)(process + 0x3C) = (f32)y * lbl_80368F00;
+        *(f32 *)(process + 0x38) = (f32)((s8)obj[4] + (s8)obj[6]) * 0.5f;
+        *(f32 *)(process + 0x3C) = (f32)((s8)obj[5] + (s8)obj[7]) * 0.5f;
         *(f32 *)(process + 0x40) = *(f32 *)(obj + 0xC);
-
         switch (mode) {
         case 0:
-            fn_8005FEE8(node, lbl_80368EE4);
+            fn_8005FEE8(obj + 0x14, lbl_80368EE4);
             *(f32 *)(node + 0x5C) = lbl_80368F10;
             break;
-
         case 1:
-            fn_8005FEE8(node, lbl_80368F2C);
+            fn_8005FEE8(obj + 0x14, lbl_80368F2C);
             *(f32 *)(node + 0x5C) = lbl_80368F2C;
             break;
         }
+        break;
     }
 }
 
@@ -6525,116 +6515,15 @@ if(!result || FileCache_Probe(result)==0x8000) result=lbl_80366DC8;
 fn_8005F434(dest,result,8);
 }
 }
-#pragma optimization_level 2
-void fn_800504FC(void *arg0, s32 arg1)
-{
-    void *Unit_GetActiveItemPtr(void *);
-    s32 fn_8004ABD4(void *, s32);
-    u8 Status_Test(void *, s32);
-    void *Res_GetByName(void *);
-    void fn_800056A0(s32);
-    s32 fn_8004B1A0(s32);
-    s32 fn_8004B158(void);
-    u16 FileCache_Probe(void *);
-    void fn_8004AFB4(s32, s32);
-    s32 sprintf(char *, const char *, ...);
-    void DebugPrint(const char *, ...);
-
-    extern u8 lbl_8026AB18[];
-
-    Unit *unit;
-    s32 index;
-    u8 *classData;
-    u8 *res;
-    u8 *name;
-    s32 item;
-    char buffer[0x20];
-
-    unit = (Unit *)arg0;
-
-    item = unit->unk16C;
-
-    if (item >= 0) {
-    } else {
-        item = fn_8004ABD4(
-            Unit_GetActiveItemPtr(unit), 0
-        );
-    }
-
-    classData = (u8 *)unit->unk18C;
-
-    if (unit->unk3 & 4) {
-        res = *(u8 **)(classData + 0xC);
-
-        if (res != 0) {
-            classData = (u8 *)Res_GetByName(res);
-        } else {
-            classData = 0;
-        }
-    }
-
-    index = 0;
-
-    if (Status_Test((u8 *)unit + 0x1BC, 8) != 0) {
-        if (Status_Test(classData + 0x1C, 9) != 0) {
-            index = 1;
-        }
-    } else {
-        if (Status_Test(classData + 0x1C, 2) != 0) {
-            index = 1;
-        }
-    }
-
-    res = *(u8 **)(
-        (u8 *)unit->unk188 + 0x5C + index * 4
-    );
-
-    name = res;
-
-    if (name == 0) {
-        name = *(u8 **)(classData + 0x18);
-
-        if (name == 0) {
-            fn_800056A0(0);
-            name = lbl_8026AB18 + 0x52;
-        }
-    }
-
-    if (name != 0) {
-        if ((s8)name[0] == 0) {
-            Res_GetByName(lbl_8026AB18 + 0x53);
-        } else {
-            sprintf(
-                buffer,
-                (char *)lbl_8026AB18 + 0x5F,
-                name,
-                fn_8004B1A0(item)
-            );
-
-            if ((res = (u8 *)Res_GetByName(buffer)) == 0) {
-                fn_800056A0(0);
-                Res_GetByName(lbl_8026AB18 + 0x53);
-            } else {
-                sprintf(
-                    buffer,
-                    (char *)lbl_8026AB18 + 0x64,
-                    fn_8004B158()
-                );
-
-                if (FileCache_Probe(buffer) == 0x8000) {
-                    DebugPrint(
-                        (char *)lbl_8026AB18 + 0x67,
-                        buffer
-                    );
-
-                    Res_GetByName(lbl_8026AB18 + 0x53);
-                }
-            }
-        }
-    }
-
-    fn_8004AFB4(item, arg1);
+#pragma push
+#pragma optimization_level 4
+void fn_800504FC(void *arg0, s32 arg1) {
+void fn_8004AFB4(void *, s32);
+s32 value = get_4F128_id(arg0);
+void *res = get_4F128_resource(arg0, value);
+fn_8004AFB4(res, arg1);
 }
+#pragma pop
 #pragma optimization_level reset
 void fn_800506E0(void *arg0, s32 arg1)
 {
@@ -7242,6 +7131,10 @@ void fn_80051538(s32 *arg0) {
     fn_80051564(&sp8);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
 {
     void GXBegin(s32, s32, s32);
@@ -7252,446 +7145,468 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
 
     volatile f32 *wgpipe = (volatile f32 *)0xCC008000;
     volatile u8 *colorpipe = (volatile u8 *)0xCC008000;
+    u8 rbottom, gbottom, abottom, bbottom;
     s32 x = (s32)fx;
     s32 y = (s32)fy;
+    f32 dy0;
     f32 dx;
-    f32 dy;
+    f32 dy2, dy1;
     f32 height;
-    u32 color;
+    u32 color0,color1,color2,color3,color4,color5,color6,color7,color8;
+    u8 a,b,g,r;
+    u8 redge, gedge, aedge, bedge;
     u8 *rgba;
 
     /* Center: tile (x, y) */
-    if ((x) >= 0 && (y) >= 0 &&
+    color0 = *arg0;
+if ((x) >= 0 && (y) >= 0 &&
         (x) < *(s32 *)(gBattleMap + 0) &&
         (y) < *(s32 *)(gBattleMap + 4) &&
-        (arg1 == 0 || gBattleMap[0x100D + (s8)(x) + ((s8)(y) << 6)] != 0x1A)) {
-        color = *arg0;
-        rgba = (u8 *)&color;
+        (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x) + ((s8)(y) << 6)] != 0x1A)) {
+        
+        rgba = (u8 *)&color0;
         GXBegin(0x98, 0, 4);
 
         height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
         *wgpipe = (f32)(x);
         *wgpipe = (f32)(y);
         *wgpipe = height;
-        *colorpipe = rgba[0];
-        *colorpipe = rgba[1];
-        *colorpipe = rgba[2];
-        *colorpipe = rgba[3];
+        *colorpipe = r;
+        *colorpipe = g;
+        *colorpipe = b;
+        *colorpipe = a;
 
         height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y), 1);
         *wgpipe = (f32)(x + 1);
         *wgpipe = (f32)(y);
         *wgpipe = height;
-        *colorpipe = rgba[0];
-        *colorpipe = rgba[1];
-        *colorpipe = rgba[2];
-        *colorpipe = rgba[3];
+        *colorpipe = r;
+        *colorpipe = g;
+        *colorpipe = b;
+        *colorpipe = a;
 
         height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y), 2);
         *wgpipe = (f32)(x);
         *wgpipe = (f32)(y + 1);
         *wgpipe = height;
-        *colorpipe = rgba[0];
-        *colorpipe = rgba[1];
-        *colorpipe = rgba[2];
-        *colorpipe = rgba[3];
+        *colorpipe = r;
+        *colorpipe = g;
+        *colorpipe = b;
+        *colorpipe = a;
 
         height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y), 3);
         *wgpipe = (f32)(x + 1);
         *wgpipe = (f32)(y + 1);
         *wgpipe = height;
-        *colorpipe = rgba[0];
-        *colorpipe = rgba[1];
-        *colorpipe = rgba[2];
-        *colorpipe = rgba[3];
+        *colorpipe = r;
+        *colorpipe = g;
+        *colorpipe = b;
+        *colorpipe = a;
     }
 
     dx = fx - (f32)x;
     if (dx < lbl_8036904C) {
         /* Left: tile (x - 1, y) */
-        if ((x - 1) >= 0 && (y) >= 0 &&
+        color1 = *arg0;
+if ((x - 1) >= 0 && (y) >= 0 &&
             (x - 1) < *(s32 *)(gBattleMap + 0) &&
             (y) < *(s32 *)(gBattleMap + 4) &&
-            (arg1 == 0 || gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y) << 6)] != 0x1A)) {
-            color = *arg0;
-            rgba = (u8 *)&color;
+            (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y) << 6)] != 0x1A)) {
+            
+            rgba = (u8 *)&color1;
             GXBegin(0x98, 0, 4);
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
             *wgpipe = (f32)(x - 1);
             *wgpipe = (f32)(y);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y), 1);
             *wgpipe = (f32)(x - 1 + 1);
             *wgpipe = (f32)(y);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y), 2);
             *wgpipe = (f32)(x - 1);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y), 3);
             *wgpipe = (f32)(x - 1 + 1);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
         }
 
-        dy = fy - (f32)y;
-        if (dy < lbl_8036904C) {
+        dy0 = fy - (f32)y;
+        if (dy0 < lbl_8036904C) {
             /* Upper-left: tile (x - 1, y - 1) */
-            if ((x - 1) >= 0 && (y - 1) >= 0 &&
+            color2 = *arg0;
+if ((x - 1) >= 0 && (y - 1) >= 0 &&
                 (x - 1) < *(s32 *)(gBattleMap + 0) &&
                 (y - 1) < *(s32 *)(gBattleMap + 4) &&
-                (arg1 == 0 || gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y - 1) << 6)] != 0x1A)) {
-                color = *arg0;
-                rgba = (u8 *)&color;
+                (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y - 1) << 6)] != 0x1A)) {
+                
+                rgba = (u8 *)&color2;
                 GXBegin(0x98, 0, 4);
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y - 1), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
                 *wgpipe = (f32)(x - 1);
                 *wgpipe = (f32)(y - 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y - 1), 1);
                 *wgpipe = (f32)(x - 1 + 1);
                 *wgpipe = (f32)(y - 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y - 1), 2);
                 *wgpipe = (f32)(x - 1);
                 *wgpipe = (f32)(y - 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y - 1), 3);
                 *wgpipe = (f32)(x - 1 + 1);
                 *wgpipe = (f32)(y - 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
             }
         }
-        if (dy > lbl_80369050) {
+        if (dy0 > lbl_80369050) {
             /* Lower-left: tile (x - 1, y + 1) */
-            if ((x - 1) >= 0 && (y + 1) >= 0 &&
+            color3 = *arg0;
+if ((x - 1) >= 0 && (y + 1) >= 0 &&
                 (x - 1) < *(s32 *)(gBattleMap + 0) &&
                 (y + 1) < *(s32 *)(gBattleMap + 4) &&
-                (arg1 == 0 || gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y + 1) << 6)] != 0x1A)) {
-                color = *arg0;
-                rgba = (u8 *)&color;
+                (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x - 1) + ((s8)(y + 1) << 6)] != 0x1A)) {
+                
+                rgba = (u8 *)&color3;
                 GXBegin(0x98, 0, 4);
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y + 1), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
                 *wgpipe = (f32)(x - 1);
                 *wgpipe = (f32)(y + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y + 1), 1);
                 *wgpipe = (f32)(x - 1 + 1);
                 *wgpipe = (f32)(y + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y + 1), 2);
                 *wgpipe = (f32)(x - 1);
                 *wgpipe = (f32)(y + 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x - 1), (s8)(y + 1), 3);
                 *wgpipe = (f32)(x - 1 + 1);
                 *wgpipe = (f32)(y + 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
             }
         }
     }
 
     if (dx > lbl_80369050) {
         /* Right: tile (x + 1, y) */
-        if ((x + 1) >= 0 && (y) >= 0 &&
+        color4 = *arg0;
+if ((x + 1) >= 0 && (y) >= 0 &&
             (x + 1) < *(s32 *)(gBattleMap + 0) &&
             (y) < *(s32 *)(gBattleMap + 4) &&
-            (arg1 == 0 || gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y) << 6)] != 0x1A)) {
-            color = *arg0;
-            rgba = (u8 *)&color;
+            (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y) << 6)] != 0x1A)) {
+            
+            rgba = (u8 *)&color4;
             GXBegin(0x98, 0, 4);
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y), 1);
             *wgpipe = (f32)(x + 1 + 1);
             *wgpipe = (f32)(y);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y), 2);
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y), 3);
             *wgpipe = (f32)(x + 1 + 1);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = r;
+            *colorpipe = g;
+            *colorpipe = b;
+            *colorpipe = a;
         }
 
-        dy = fy - (f32)y;
-        if (dy < lbl_8036904C) {
+        dy1 = fy - (f32)y;
+        if (dy1 < lbl_8036904C) {
             /* Upper-right: tile (x + 1, y - 1) */
-            if ((x + 1) >= 0 && (y - 1) >= 0 &&
+            color5 = *arg0;
+if ((x + 1) >= 0 && (y - 1) >= 0 &&
                 (x + 1) < *(s32 *)(gBattleMap + 0) &&
                 (y - 1) < *(s32 *)(gBattleMap + 4) &&
-                (arg1 == 0 || gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y - 1) << 6)] != 0x1A)) {
-                color = *arg0;
-                rgba = (u8 *)&color;
+                (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y - 1) << 6)] != 0x1A)) {
+                
+                rgba = (u8 *)&color5;
                 GXBegin(0x98, 0, 4);
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y - 1), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
                 *wgpipe = (f32)(x + 1);
                 *wgpipe = (f32)(y - 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y - 1), 1);
                 *wgpipe = (f32)(x + 1 + 1);
                 *wgpipe = (f32)(y - 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y - 1), 2);
                 *wgpipe = (f32)(x + 1);
                 *wgpipe = (f32)(y - 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y - 1), 3);
                 *wgpipe = (f32)(x + 1 + 1);
                 *wgpipe = (f32)(y - 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
             }
         }
-        if (dy > lbl_80369050) {
+        if (dy1 > lbl_80369050) {
             /* Lower-right: tile (x + 1, y + 1) */
-            if ((x + 1) >= 0 && (y + 1) >= 0 &&
+            color6 = *arg0;
+if ((x + 1) >= 0 && (y + 1) >= 0 &&
                 (x + 1) < *(s32 *)(gBattleMap + 0) &&
                 (y + 1) < *(s32 *)(gBattleMap + 4) &&
-                (arg1 == 0 || gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y + 1) << 6)] != 0x1A)) {
-                color = *arg0;
-                rgba = (u8 *)&color;
+                (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x + 1) + ((s8)(y + 1) << 6)] != 0x1A)) {
+                
+                rgba = (u8 *)&color6;
                 GXBegin(0x98, 0, 4);
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y + 1), 0);
+        r = rgba[0]; g = rgba[1]; b = rgba[2]; a = rgba[3];
                 *wgpipe = (f32)(x + 1);
                 *wgpipe = (f32)(y + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y + 1), 1);
                 *wgpipe = (f32)(x + 1 + 1);
                 *wgpipe = (f32)(y + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y + 1), 2);
                 *wgpipe = (f32)(x + 1);
                 *wgpipe = (f32)(y + 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
 
                 height = Map_GetTileCornerHeight(gBattleMap, (s8)(x + 1), (s8)(y + 1), 3);
                 *wgpipe = (f32)(x + 1 + 1);
                 *wgpipe = (f32)(y + 1 + 1);
                 *wgpipe = height;
-                *colorpipe = rgba[0];
-                *colorpipe = rgba[1];
-                *colorpipe = rgba[2];
-                *colorpipe = rgba[3];
+                *colorpipe = r;
+                *colorpipe = g;
+                *colorpipe = b;
+                *colorpipe = a;
             }
         }
     }
 
-    dy = fy - (f32)y;
-    if (dy < lbl_8036904C) {
+    dy2 = fy - (f32)y;
+    if (dy2 < lbl_8036904C) {
         /* Above: tile (x, y - 1) */
-        if ((x) >= 0 && (y - 1) >= 0 &&
+        color7 = *arg0;
+if ((x) >= 0 && (y - 1) >= 0 &&
             (x) < *(s32 *)(gBattleMap + 0) &&
             (y - 1) < *(s32 *)(gBattleMap + 4) &&
-            (arg1 == 0 || gBattleMap[0x100D + (s8)(x) + ((s8)(y - 1) << 6)] != 0x1A)) {
-            color = *arg0;
-            rgba = (u8 *)&color;
+            (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x) + ((s8)(y - 1) << 6)] != 0x1A)) {
+            
+            rgba = (u8 *)&color7;
             GXBegin(0x98, 0, 4);
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y - 1), 0);
+        redge = rgba[0]; gedge = rgba[1]; bedge = rgba[2]; aedge = rgba[3];
             *wgpipe = (f32)(x);
             *wgpipe = (f32)(y - 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = redge;
+            *colorpipe = gedge;
+            *colorpipe = bedge;
+            *colorpipe = aedge;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y - 1), 1);
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y - 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = redge;
+            *colorpipe = gedge;
+            *colorpipe = bedge;
+            *colorpipe = aedge;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y - 1), 2);
             *wgpipe = (f32)(x);
             *wgpipe = (f32)(y - 1 + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = redge;
+            *colorpipe = gedge;
+            *colorpipe = bedge;
+            *colorpipe = aedge;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y - 1), 3);
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y - 1 + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = redge;
+            *colorpipe = gedge;
+            *colorpipe = bedge;
+            *colorpipe = aedge;
         }
     }
-    if (dy > lbl_80369050) {
+    if (dy2 > lbl_80369050) {
         /* Below: tile (x, y + 1) */
-        if ((x) >= 0 && (y + 1) >= 0 &&
+        color8 = *arg0;
+if ((x) >= 0 && (y + 1) >= 0 &&
             (x) < *(s32 *)(gBattleMap + 0) &&
             (y + 1) < *(s32 *)(gBattleMap + 4) &&
-            (arg1 == 0 || gBattleMap[0x100D + (s8)(x) + ((s8)(y + 1) << 6)] != 0x1A)) {
-            color = *arg0;
-            rgba = (u8 *)&color;
+            (arg1 == 0 || (s32)gBattleMap[0x100D + (s8)(x) + ((s8)(y + 1) << 6)] != 0x1A)) {
+            
+            rgba = (u8 *)&color8;
             GXBegin(0x98, 0, 4);
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y + 1), 0);
+        rbottom = rgba[0]; gbottom = rgba[1]; bbottom = rgba[2]; abottom = rgba[3];
             *wgpipe = (f32)(x);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = rbottom;
+            *colorpipe = gbottom;
+            *colorpipe = bbottom;
+            *colorpipe = abottom;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y + 1), 1);
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = rbottom;
+            *colorpipe = gbottom;
+            *colorpipe = bbottom;
+            *colorpipe = abottom;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y + 1), 2);
             *wgpipe = (f32)(x);
             *wgpipe = (f32)(y + 1 + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = rbottom;
+            *colorpipe = gbottom;
+            *colorpipe = bbottom;
+            *colorpipe = abottom;
 
             height = Map_GetTileCornerHeight(gBattleMap, (s8)(x), (s8)(y + 1), 3);
             *wgpipe = (f32)(x + 1);
             *wgpipe = (f32)(y + 1 + 1);
             *wgpipe = height;
-            *colorpipe = rgba[0];
-            *colorpipe = rgba[1];
-            *colorpipe = rgba[2];
-            *colorpipe = rgba[3];
+            *colorpipe = rbottom;
+            *colorpipe = gbottom;
+            *colorpipe = bbottom;
+            *colorpipe = abottom;
         }
     }
 }
-
+#pragma pop
 s32 Mu_GetFlashColor(s32 arg0) {
     extern s32 gMuFlashPalette[];
     return gMuFlashPalette[arg0];
@@ -7874,6 +7789,8 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_8005306C(void *arg0) {
     typedef struct { f32 x, y, z; } Triple;
     f32 Map_SampleHeightRaw(M2C_UNK *, f32, f32, f32);
@@ -7894,8 +7811,8 @@ void fn_8005306C(void *arg0) {
     void *temp_r3;
     void *temp_r4;
     void *temp_r5;
-    void *var_r30;
-    void *var_r31;
+    f32 *var_r30;
+    f32 *var_r31;
 
     var_r31 = NULL;
     var_r30 = NULL;
@@ -7921,22 +7838,21 @@ void fn_8005306C(void *arg0) {
         var_r30 = &b.x;
     }
     if ((var_r31 != NULL) && (var_r30 != NULL)) {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x24) = Math_Angle2D(M2C_FIELD(var_r31, f32 *, 0), M2C_FIELD(var_r31, f32 *, 4), M2C_FIELD(var_r30, f32 *, 0), M2C_FIELD(var_r30, f32 *, 4));
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x24) = Math_Angle2D(var_r31[0], var_r31[1], var_r30[0], var_r30[1]);
     }
     temp_r4 = M2C_FIELD(arg0, void **, 0x30);
     if ((M2C_FIELD(temp_r4, s32 *, 8) & 0x20000000) && (var_r31 != NULL)) {
-        var_r3 = (f32 *)var_r31;
+        var_r3 = var_r31;
     } else {
-        var_r3 = (f32 *)var_r30;
+        var_r3 = var_r30;
     }
     if (var_r3 != NULL) {
-        M2C_FIELD(temp_r4, f32 *, 0xC) = (f32)M2C_FIELD(var_r3, f32 *, 0);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = (f32)M2C_FIELD(var_r3, f32 *, 4);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + M2C_FIELD(var_r3, f32 *, 8));
+        M2C_FIELD(temp_r4, f32 *, 0xC) = (f32)var_r3[0];
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = (f32)var_r3[1];
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + var_r3[2]);
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 static inline void *MapObj_GetOwner(void *base) {
     void *obj;
     if (*(u32 *)((u8 *)base + 8) & 0x20000000) {
