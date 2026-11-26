@@ -2747,21 +2747,21 @@ void fn_8002CB50(void *arg0, void *arg1) {
 #pragma opt_strength_reduction off
 void fn_8002CBDC(void *unused, s32 x, s32 y)
 {
-    extern u8 lbl_802CA518[];
-    extern u8 lbl_802EF4E0[];
-    extern s16 fn_8002134C(void *);
+    extern u8 gBattleMap[];
+    extern u8 gTargetList[];
+    extern s16 fn_8002134C(void *, s32, s32);
     extern void fn_8002F6E8(void *, s32, s32, s32, s32);
 
     u8 *base;
     s32 r31;
     s32 r30;
 
-    base = lbl_802CA518;
+    base = gBattleMap;
     r31 = y;
     r30 = x;
     if (base[(s8)r30 + ((s8)r31 << 6) + 0xD] == 0) {
-        if (fn_8002134C(base) <= 0x7530) {
-            fn_8002F6E8(lbl_802EF4E0, r30, r31, 0, 0);
+        if (fn_8002134C(base, x, y) <= 0x7530) {
+            fn_8002F6E8(gTargetList, r30, r31, 0, 0);
         }
     }
 }
