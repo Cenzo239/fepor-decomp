@@ -32,6 +32,41 @@ static inline u8 TabMenu_InRange32(s32 low, s32 value, s32 high) {
     if (low <= value && value <= high) ok = 1;
     return ok;
 }
+static inline s32 TabMenu_ScrollUp(void *arg0, u8 *arg1, u8 var_r7) {
+    void *var_r5;
+    s32 var_r0;
+    s32 temp_r7;
+    u8 temp_r8;
+        var_r5 = *(void **)((u8 *)arg0 + 0x58);
+        var_r0 = 0;
+        if ((s8)var_r7 >= 0) {
+            while ((s8)var_r7 > 0) {
+                var_r5 = *(void **)((u8 *)var_r5 + 4);
+                var_r7 -= 1;
+            }
+        } else {
+            while ((s8)var_r7 < 0) {
+                var_r5 = *(void **)var_r5;
+                var_r7 += 1;
+            }
+        }
+        do {
+            temp_r8 = *arg1;
+            if ((((s8)temp_r8 >= 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) < 0))
+                || (((s8)temp_r8 > 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 0))) {
+                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r0 = 1;
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)(temp_r7 - ((s8)(((s8)(temp_r7 / 32) - temp_r8) + 1) << 5));
+            }
+            if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
+                break;
+            }
+            var_r5 = *(void **)var_r5;
+            *arg1 -= 1;
+        } while (1);
+
+    return var_r0;
+}
 static inline void *TabMenu_IteratorValue(void **it) { return *it; }
 static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
     return low <= value && value <= high;
@@ -2144,24 +2179,27 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 #pragma push
 #pragma optimization_level 3
 #pragma opt_common_subs off
-s32 fn_801E8734(void *arg0) {
-    s8 fn_801E4A60();
+s32 fn_801E8734(void *arg0, u8 arg1) {
+    s8 fn_801E4A60(void *, u8);
     s32 v;
     s32 lower;
-    s32 q, r, lo;
+    s32 q;
+    s32 lo;
     u8 ok;
     s8 count;
-    count = fn_801E4A60();
+    s32 index;
+    s32 upper;
+    count = fn_801E4A60(arg0, arg1);
     if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
     lower = (s8)q;
     lo = lower + 8;
     if (v % 32 != 0) lo = lower + 9;
-    { s32 upper = (s8)lo; s32 index = (s8)count;
+    upper = (s8)lo;
+    index = (s8)count;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
-    }
     if (!ok) {
         M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
         return 1;
@@ -2171,35 +2209,66 @@ s32 fn_801E8734(void *arg0) {
 #pragma push
 #pragma optimization_level 2
 #pragma opt_common_subs off
-s32 fn_801E87EC(void *arg0, s32 arg1) {
-    s8 fn_801E4A60();
-    s8 fn_801E8920(void *, s32);
-    s8 v0, v1;
-    s32 f36, q, rem, band, t, lower, first, last;
-    u8 inrange;
-    v0 = fn_801E4A60();
-    v1 = fn_801E8920(arg0, arg1);
-    if (v0 > 0) v0--;
-    if ((u32)v1 < (u32)(M2C_FIELD(arg0, s32 *, 0x50)-1)) v1++;
-    f36 = M2C_FIELD(arg0, s16 *, 0x36);
-    q = f36 / 32;
-    first = v0;
-    last = v1;
-    t = (s8)(last - first + 1);
-    rem = f36 % 32;
-    lower = (s8)q;
-    band = lower + 8;
-    if (rem) band = lower + 9;
-    { s32 index = v1; s32 upper = (s8)band;
-      inrange = 0;
-      if (lower <= index && index <= upper) inrange = 1;
+s32 fn_801E87EC(void *arg0, s32 arg1)
+{
+  s8 fn_801E4A60();
+  s8 fn_801E8920(void *, s32);
+  s8 v0;
+  s8 v1;
+  s32 f36;
+  s32 q;
+  s32 rem;
+  s32 band;
+  s32 t;
+  s32 lower;
+  s32 first;
+  s32 last;
+  u8 inrange;
+  v0 = fn_801E4A60();
+  v1 = fn_801E8920(arg0, arg1);
+  if (v0 > 0)
+  {
+    v0--;
+  }
+  if (((u32) v1) < ((u32) ((*((s32 *) (((s8 *) arg0) + 0x50))) - 1)))
+  {
+    v1++;
+  }
+  f36 = *((s16 *) (((s8 *) arg0) + 0x36));
+  q = f36 / 32;
+  first = v0;
+  last = v1;
+  t = (s8) ((last - first) + 1);
+  rem = f36 % 32;
+  lower = (s8) q;
+  band = lower + 8;
+  if (rem)
+  {
+    band = lower + 9;
+  }
+  {
+    s32 index = v1;
+    s32 upper = (s8) band;
+    inrange = 0;
+    if ((lower <= index) && (index <= upper))
+    {
+      inrange = 1;
+      rem = f36 % 32;
     }
-    if (!inrange) {
-        if (t <= 9) M2C_FIELD(arg0, s16 *, 0x38) = ((s8)(last - ((s8)q + 8)) << 5) + f36;
-        else M2C_FIELD(arg0, s16 *, 0x38) = f36 - ((s8)((s8)q - first) << 5);
-        return 1;
+  }
+  if (!inrange)
+  {
+    if (t <= 9)
+    {
+      *((s16 *) (((s8 *) arg0) + 0x38)) = (((s8) (last - (((s8) q) + 8))) << 5) + f36;
     }
-    return 0;
+    else
+    {
+      *((s16 *) (((s8 *) arg0) + 0x38)) = f36 - (((s8) (((s8) q) - first)) << 5);
+    }
+    return 1;
+  }
+  return 0;
 }
 #pragma pop
 s8 fn_801E8920(void *arg0, s32 arg1) {
@@ -2628,35 +2697,34 @@ void fn_801E8D34(u8 *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
-    s16 temp_r6;
-    s32 var_r8;
-    u32 temp_r5;
-    u32 temp_r0;
-    s32 temp_r6_2;
-    s8 var_r0;
+    s32 top, bottom, position;
+    
     u8 var_r7;
     void *var_r5;
-    s32 var_r0_2;
+    s32 var_r0;
+    s32 var_r8;
+    s32 temp_r7;
+    s32 scroll;
     u8 temp_r8;
-    s16 temp_r7;
-    u8 temp_r9;
-    s32 temp_r6_3;
-    s8 var_r6;
+    s32 temp_r9;
+    s32 temp_r6;
+    s8 var_r6_2;
 
-    temp_r6 = *(s16 *)((u8 *)arg0 + 0x36);
+    position = *(s16 *)((u8 *)arg0 + 0x36);
     var_r8 = 0;
-    temp_r5 = (u32)temp_r6 >> 0x1F;
-    temp_r0 = (temp_r6 << 0x1B) - temp_r5;
-    temp_r6_2 = temp_r6 / 32;
-    var_r0 = (s8)temp_r6_2 + 8;
-    if ((((temp_r0 << 5) | (temp_r0 >> 0x1B)) + temp_r5) != 0) {
-        var_r0 = (s8)temp_r6_2 + 9;
-    }
+    top = (s8)(position / 32);
+    bottom = top + 8;
+    if (position % 32) bottom = top + 9;
+    bottom = (s8)bottom;
     var_r7 = *arg1;
-    if ((s8)var_r7 <= (s8)temp_r6_2) {
+    if ((s8)var_r7 <= top) {
         var_r5 = *(void **)((u8 *)arg0 + 0x58);
-        var_r0_2 = 0;
+        var_r0 = 0;
         if ((s8)var_r7 >= 0) {
             while ((s8)var_r7 > 0) {
                 var_r5 = *(void **)((u8 *)var_r5 + 4);
@@ -2673,7 +2741,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
             if ((((s8)temp_r8 >= 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) < 0))
                 || (((s8)temp_r8 > 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 0))) {
                 temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
-                var_r0_2 = 1;
+                var_r0 = 1;
                 *(s16 *)((u8 *)arg0 + 0x38) = (s16)(temp_r7 - ((s8)(((s8)(temp_r7 / 32) - temp_r8) + 1) << 5));
             }
             if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
@@ -2682,8 +2750,8 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
             var_r5 = *(void **)var_r5;
             *arg1 -= 1;
         } while (1);
-        var_r8 = var_r0_2;
-    } else if (var_r0 <= (s8)var_r7) {
+        var_r8 = var_r0;
+    } else if (bottom <= (s8)var_r7) {
         var_r5 = *(void **)((u8 *)arg0 + 0x58);
         var_r8 = 0;
         if ((s8)var_r7 >= 0) {
@@ -2698,17 +2766,17 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
             }
         }
         do {
-            temp_r9 = *arg1;
-            temp_r6_3 = *(s32 *)((u8 *)arg0 + 0x50) - 1;
-            if ((((u32)(s8)temp_r9 <= (u32)temp_r6_3) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
-                || (((u32)(s8)temp_r9 < (u32)temp_r6_3) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
-                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
-                var_r6 = (s8)((s8)temp_r9 - ((s8)(temp_r7 / 32) + 8));
-                if ((u32)(s8)temp_r9 < (u32)temp_r6_3) {
-                    var_r6 += 1;
+            temp_r9 = *(s8 *)arg1;
+            temp_r6 = *(s32 *)((u8 *)arg0 + 0x50) - 1;
+            if ((((u32)temp_r9 <= (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
+                || (((u32)temp_r9 < (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r6_2 = (s8)(temp_r9 - ((s8)(scroll / 32) + 8));
+                if ((u32)temp_r9 < (u32)temp_r6) {
+                    var_r6_2 += 1;
                 }
                 var_r8 = 1;
-                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6 << 5) + temp_r7);
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6_2 << 5) + scroll);
             }
             if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
                 break;
@@ -2719,8 +2787,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     }
     return var_r8;
 }
-
-#pragma opt_propagation off
+#pragma pop
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
