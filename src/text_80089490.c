@@ -1,6 +1,9 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void *fn_80089490_At(void *tbl, s32 off) {
+    return (void *)((u8 *)tbl + off);
+}
 typedef struct {
     f32 x, y;
     u8 unk8[4];
@@ -81,6 +84,7 @@ void fn_80089490(void *);
 
 #pragma opt_strength_reduction off
 
+#pragma optimization_level 2
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
@@ -107,4 +111,3 @@ void fn_80089490(void *arg0) {
     }
     fn_8000A408(arg0);
 }
-#pragma opt_strength_reduction on
