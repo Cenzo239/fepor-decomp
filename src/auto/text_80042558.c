@@ -2,6 +2,17 @@
 #include "common.h"
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
+static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, const s16 *upper)
+{
+    s32 k;
+    MapHeightCell444 *cell;
+    for (k = 0; k < 4; k++) {
+        cell = (MapHeightCell444 *)(map + 2 * (index * 4 + k));
+        cell->lower = lower[k];
+        cell->upper = upper[k];
+    }
+}
+
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
@@ -1378,8 +1389,12 @@ entry+=0xB4; count--;
 }
 return 0;
 }
-#pragma global_optimizer reset
-void fn_80044450(void *arg0, s32 arg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma global_optimizer off
+void fn_80044450(u8 *arg0, u8 arg1) {
 void *Hash_Lookup(void *);
 u32 Res_GetByName(void *);
 void fn_80015DEC(void);
@@ -1424,6 +1439,8 @@ extern u8 gBattleMap[];
     u8 *tile;
     s32 row;
     s32 col;
+    s32 k;
+    MapHeightCell444 *cell;
 
     tblA = Hash_Lookup(lbl_8026A660 + 0x289);
     idxA = Hash_Lookup(lbl_8026A660 + 0x295);
@@ -1434,52 +1451,28 @@ extern u8 gBattleMap[];
         idxB = Hash_Lookup(lbl_8026A660 + 0x2B0);
     }
     ca = gBattleMap;
-    for (row = 0; row < *(s16 *)((u8 *)arg0 + 2); row++) {
+    for (row = 0; row < *(s16 *)(arg0 + 2); row++) {
         rowSl = (s8)row << 6;
         rowPtr = ca + rowSl;
-        for (col = 0; col < *(s16 *)((u8 *)arg0 + 0); ) {
-            ia = *idxA;
-            idxA += 1;
-            ib = *idxB;
-            idxB += 1;
-            tileA = (u8 *)tblA + ia * 0xC;
-            tileB = (u8 *)tblB + ib * 0xC;
+        for (col = 0; col < *(s16 *)(arg0 + 0); ) {
+            tileA = (u8 *)tblA + *idxA++ * 0xC;
+            tileB = (u8 *)tblB + *idxB++ * 0xC;
             ok = fn_8005B7A4(*(void **)(tileA + 8));
             c = (s8)col;
             col += 1;
             off = c + 0x100D;
             rowPtr[off] = ok;
             t = c + rowSl;
-            sh = t << 3;
-            q = t << 2;
-            v = *(s16 *)tileA;
-            p = ca + sh;
-            q1 = q + 1;
-            *(s16 *)(p + 0x142D4) = v;
-            v = *(s16 *)tileB;
-            *(s16 *)(p + 0x1C2D8) = v;
-            p = ca + (q1 << 1);
-            v = *(s16 *)(tileA + 2);
-            q1 = q + 2;
-            *(s16 *)(p + 0x142D4) = v;
-            v = *(s16 *)(tileB + 2);
-            *(s16 *)(p + 0x1C2D8) = v;
-            p = ca + (q1 << 1);
-            v = *(s16 *)(tileA + 4);
-            q1 = q + 3;
-            *(s16 *)(p + 0x142D4) = v;
-            v = *(s16 *)(tileB + 4);
-            *(s16 *)(p + 0x1C2D8) = v;
-            p = ca + (q1 << 1);
-            v = *(s16 *)(tileA + 6);
-            *(s16 *)(p + 0x142D4) = v;
-            v = *(s16 *)(tileB + 6);
-            *(s16 *)(p + 0x1C2D8) = v;
+            for(k=0;k<4;k++) {
+                cell=(MapHeightCell444*)(ca+2*(t*4+k));
+                cell->lower=((s16*)tileA)[k];
+                cell->upper=((s16*)tileB)[k];
+            }
         }
     }
-    if (*(u32 *)((u8 *)arg0 + 0x64) & 0x10000000) {
-        node = *(void **)((u8 *)arg0 + 0x14);
-        for (i = 0; i < *(s16 *)((u8 *)arg0 + 6); i++, node = (u8 *)node + 0xB4) {
+    if (*(u32 *)(arg0 + 0x64) & 0x10000000) {
+        node = *(void **)(arg0 + 0x14);
+        for (i = 0; i < *(s16 *)(arg0 + 6); i++, node = (u8 *)node + 0xB4) {
             flags = *(u32 *)(*(u8 **)((u8 *)node + 0x10) + 0xBC);
             if (flags & 0x10) {
                 ok = 0;
@@ -1507,11 +1500,11 @@ extern u8 gBattleMap[];
             if (y0 < 0) {
                 y0 = 0;
             }
-            lim = *(s16 *)((u8 *)arg0 + 0) - 1;
+            lim = *(s16 *)(arg0 + 0) - 1;
             if (x1 >= lim) {
                 x1 = lim;
             }
-            lim = *(s16 *)((u8 *)arg0 + 2) - 1;
+            lim = *(s16 *)(arg0 + 2) - 1;
             if (y1 >= lim) {
                 y1 = lim;
             }
@@ -1526,7 +1519,7 @@ extern u8 gBattleMap[];
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
+                    src = idxA + (x0 + yy * *(s16 *)(arg0 + 0));
                     for (; xx <= x1; ) {
                         ia = *src;
                         src += 1;
@@ -1537,27 +1530,12 @@ extern u8 gBattleMap[];
                         off = c + 0x100D;
                         rowPtr[off] = ok;
                         t = c + rowSl;
-                        q = t << 2;
-                        sh = t << 3;
-                        v = *(s16 *)tile;
-                        p = ca + sh;
-                        q1 = q + 1;
-                        *(s16 *)(p + 0x142D4) = v;
-                        *(s16 *)(p + 0x1C2D8) = v;
-                        p = ca + (q1 << 1);
-                        v = *(s16 *)(tile + 2);
-                        q1 = q + 2;
-                        *(s16 *)(p + 0x142D4) = v;
-                        *(s16 *)(p + 0x1C2D8) = v;
-                        p = ca + (q1 << 1);
-                        v = *(s16 *)(tile + 4);
-                        q1 = q + 3;
-                        *(s16 *)(p + 0x142D4) = v;
-                        *(s16 *)(p + 0x1C2D8) = v;
-                        p = ca + (q1 << 1);
-                        v = *(s16 *)(tile + 6);
-                        *(s16 *)(p + 0x142D4) = v;
-                        *(s16 *)(p + 0x1C2D8) = v;
+                        for(k=0;k<4;k++) {
+                s16 height=((s16*)tile)[k];
+                cell=(MapHeightCell444*)(ca+2*(t*4+k));
+                            cell->lower=height;
+                            cell->upper=height;
+                        }
                     }
                 }
             } else {
@@ -1571,7 +1549,7 @@ extern u8 gBattleMap[];
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
+                    src = idxA + (x0 + yy * *(s16 *)(arg0 + 0));
                     for (; xx <= x1; ) {
                         ia = *src;
                         src += 1;
@@ -1605,10 +1583,10 @@ extern u8 gBattleMap[];
     fn_80023A4C(gBattleMap);
     if ((u8)arg1 != 0) {
         fn_80015DEC();
-        *(u32 *)((u8 *)arg0 + 0x64) |= 1;
+        *(u32 *)(arg0 + 0x64) |= 1;
     }
 }
-#pragma global_optimizer on
+#pragma pop
 
 void Map_ReloadTileFlags(void *arg0, u8 arg1) {
     void fn_80023A4C(void *);
@@ -4090,187 +4068,151 @@ void fn_8004A264(void *arg0) {
     fn_8006785C(2, fn_8004A2EC, arg0);
 }
 
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma push
+#pragma global_optimizer on
 void fn_8004A2EC(void *arg0) {
-u8 fn_800AA188(void);
-void fn_8021FBB8(void);
-void fn_8021F4E4(s32, s32);
-void fn_8021FBF0(s32, s32, s32, s32, s32);
-void fn_80222334(s32);
-void fn_80222370(s32, s32, s32, s32, s32, s32, s32);
-void fn_802240C8(s32);
-void fn_802239D0(s32, s32);
-void fn_80223F2C(s32, s32, s32, s32);
-void fn_80220428(s32);
-void fn_802201A8(s32, s32, s32, s32, s32, s32);
-void fn_8022100C(s32);
-void fn_80202540(void *, f32, f32, f32);
-void *fn_80067FDC(void);
-void fn_80202024(void *, void *, void *);
-void fn_80224D7C(void *, s32);
-void fn_80224E1C(s32);
-void fn_802245D8(s32, s32, s32, s32);
-void fn_80220DEC(s32, s32, s32);
-f32 fn_8002300C(void *, s8, s8, s32);
-void fn_80066D00(s32);
-extern f32 lbl_80368F84;
-extern f32 lbl_80368F88;
-extern f32 lbl_80368F8C;
-extern f64 lbl_80368F90;
-extern u8 lbl_802CA518[];
-extern u8 lbl_80285828[];
+    u8 fn_800AA188(void);
+    void GXClearVtxDesc(void);
+    void GXSetVtxDesc(s32, s32);
+    void GXSetVtxAttrFmt(s32, s32, s32, s32, s32);
+    void GXSetCullMode(s32);
+    void GXSetBlendMode(s32, s32, s32, s32, s32, s32, s32);
+    void GXSetNumTevStages(s32);
+    void GXSetNumTexGens(s32, s32);
+    void GXSetTevOrder(s32, s32, s32, s32);
+    void GXSetNumChans(s32);
+    void fn_802201A8(s32, s32, s32, s32, s32, s32);
+    void fn_8022100C(s32);
+    void PSMTXTrans(void *, f32, f32, f32);
+    void *Camera_GetViewMtx(void);
+    void PSMTXConcat(void *, void *, void *);
+    void GXLoadPosMtxImm(void *, s32);
+    void GXSetCurrentMtx(s32);
+    void fn_802245D8(s32, s32, s32, s32);
+    void GXBegin(s32, s32, s32);
+    f32 Map_GetTileCornerHeight(void *, s8, s8, s32);
+    void fn_80066D00(s32);
+    extern f32 gMapColorDrawZero;
+    extern f32 gMapColorDrawZBias;
+    extern const f32 lbl_80368F8C;
+    extern u8 gBattleMap[];
+    extern u8 lbl_80285828[];
+
     f32 sp8[12];
-    register f32 f31v;
-    s32 idx;
-    unsigned yOff;
-    register u8 *ca;
     s8 y;
-    u8 *cell;
-    register f32 k8c;
     s8 x;
-    f64 k90;
-    register f32 z;
-    register u8 *pal;
-    f32 margin;
-    u8 *row;
-    int y1;
-    f32 f25v, f26v, f27v, f28v;
-    s32 th;
+    f32 x0, y0, x1, y1, fy, margin, z;
 
     if (fn_800AA188() != 0) {
-        fn_8021FBB8();
-        fn_8021F4E4(9, 1);
-        fn_8021F4E4(0xB, 1);
-        fn_8021FBF0(0, 9, 1, 4, 0);
-        fn_8021FBF0(0, 0xB, 1, 5, 0);
-        fn_80222334(1);
-        fn_80222370(4, 0, 0, 1, 0, 0, 2);
-        fn_802240C8(1);
-        fn_802239D0(0, 4);
-        fn_80223F2C(0, 0xFF, 0xFF, 4);
-        fn_80220428(0);
+        GXClearVtxDesc();
+        GXSetVtxDesc(9, 1);
+        GXSetVtxDesc(0xB, 1);
+        GXSetVtxAttrFmt(0, 9, 1, 4, 0);
+        GXSetVtxAttrFmt(0, 0xB, 1, 5, 0);
+        GXSetCullMode(1);
+        GXSetBlendMode(4, 0, 0, 1, 0, 0, 2);
+        GXSetNumTevStages(1);
+        GXSetNumTexGens(0, 4);
+        GXSetTevOrder(0, 0xFF, 0xFF, 4);
+        GXSetNumChans(0);
         fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
         fn_8022100C(0);
-        fn_80202540(sp8, lbl_80368F84, lbl_80368F84, lbl_80368F88);
-        fn_80202024(fn_80067FDC(), sp8, sp8);
-        fn_80224D7C(sp8, 0);
-        fn_80224E1C(0);
+        PSMTXTrans(sp8, gMapColorDrawZero, gMapColorDrawZero, gMapColorDrawZBias);
+        PSMTXConcat(Camera_GetViewMtx(), sp8, sp8);
+        GXLoadPosMtxImm(sp8, 0);
+        GXSetCurrentMtx(0);
         fn_802245D8(1, 4, 1, 0);
-        pal = lbl_80285828;
-        ca = lbl_802CA518;
-        k8c = lbl_80368F8C;
-        k90 = lbl_80368F90;
-        y = *(s32 *)(ca + 4) - 1;
-        yOff = y << 6;
-        row = ca + yOff;
-        goto y_test;
-        do {
-            x = *(s32 *)ca - 1;
-            y1 = (s8)y + 1;
-            f31v = k8c + (f32)(s8)y;
-            idx = x + yOff;
-            cell = row + x;
-            goto x_test;
-            do {
-                if ((s8)*(cell + 0xE18E) == 0) {
-                    th = *(s16 *)(lbl_802CA518 + (idx << 1) + 0x610E);
-                    if (th >= 0) {
+
+        for (y = *(s32 *)(gBattleMap + 4) - 1; y >= 0; y--) {
+            fy = lbl_80368F8C + (f32)y;
+            for (x = *(s32 *)gBattleMap - 1; x >= 0; x--) {
+                if ((s8)gBattleMap[y * 0x40 + x + 0xE18E] == 0) {
+                    if (*(s16 *)(gBattleMap + ((y * 0x40 + x) << 1) + 0x610E) >= 0) {
                         margin = *(f32 *)((u8 *)arg0 + 0x34);
-                        f26v = f31v - margin;
-                        f25v = (f32)x;
-                        f27v = f25v + margin;
-                        f28v = (f32)y1;
-                        fn_80220DEC(0x98, 0, 4);
-                        z = fn_8002300C(lbl_802CA518, x, y, 0);
-                        *(f32 *)0xCC008000 = f25v;
-                        *(f32 *)0xCC008000 = f26v;
+                        y0 = fy - margin;
+                        x0 = (f32)x;
+                        x1 = x0 + margin;
+                        y1 = (f32)(y + 1);
+                        GXBegin(0x98, 0, 4);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
+                        *(f32 *)0xCC008000 = x0;
+                        *(f32 *)0xCC008000 = y0;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x10];
-                        *(u8 *)0xCC008000 = pal[0x11];
-                        *(u8 *)0xCC008000 = pal[0x12];
-                        *(u8 *)0xCC008000 = pal[0x13];
-                        z = fn_8002300C(lbl_802CA518, x, y, 1);
-                        *(f32 *)0xCC008000 = f26v;
-                        *(f32 *)0xCC008000 = f27v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x10];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x11];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x12];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x13];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
+                        *(f32 *)0xCC008000 = x1;
+                        *(f32 *)0xCC008000 = y0;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x14];
-                        *(u8 *)0xCC008000 = pal[0x15];
-                        *(u8 *)0xCC008000 = pal[0x16];
-                        *(u8 *)0xCC008000 = pal[0x17];
-                        z = fn_8002300C(lbl_802CA518, x, y, 2);
-                        *(f32 *)0xCC008000 = f28v;
-                        *(f32 *)0xCC008000 = f25v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x14];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x15];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x16];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x17];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
+                        *(f32 *)0xCC008000 = x0;
+                        *(f32 *)0xCC008000 = y1;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x18];
-                        *(u8 *)0xCC008000 = pal[0x19];
-                        *(u8 *)0xCC008000 = pal[0x1A];
-                        *(u8 *)0xCC008000 = pal[0x1B];
-                        z = fn_8002300C(lbl_802CA518, x, y, 3);
-                        *(f32 *)0xCC008000 = f27v;
-                        *(f32 *)0xCC008000 = f28v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x18];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x19];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1A];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1B];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
+                        *(f32 *)0xCC008000 = x1;
+                        *(f32 *)0xCC008000 = y1;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x1C];
-                        *(u8 *)0xCC008000 = pal[0x1D];
-                        *(u8 *)0xCC008000 = pal[0x1E];
-                        *(u8 *)0xCC008000 = pal[0x1F];
-                    } else if (*(u16 *)(lbl_802CA518 + (idx << 1) + 0xC18E) != 0) {
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1C];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1D];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1E];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x1F];
+                    } else if (*(u16 *)(gBattleMap + ((y * 0x40 + x) << 1) + 0xC18E) != 0) {
                         margin = *(f32 *)((u8 *)arg0 + 0x34);
-                        f27v = f31v - margin;
-                        f28v = (f32)x;
-                        f26v = f28v + margin;
-                        f25v = (f32)y1;
-                        fn_80220DEC(0x98, 0, 4);
-                        z = fn_8002300C(lbl_802CA518, x, y, 0);
-                        *(f32 *)0xCC008000 = f28v;
-                        *(f32 *)0xCC008000 = f27v;
+                        y0 = fy - margin;
+                        x0 = (f32)x;
+                        x1 = x0 + margin;
+                        y1 = (f32)(y + 1);
+                        GXBegin(0x98, 0, 4);
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
+                        *(f32 *)0xCC008000 = x0;
+                        *(f32 *)0xCC008000 = y0;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x20];
-                        *(u8 *)0xCC008000 = pal[0x21];
-                        *(u8 *)0xCC008000 = pal[0x22];
-                        *(u8 *)0xCC008000 = pal[0x23];
-                        z = fn_8002300C(lbl_802CA518, x, y, 1);
-                        *(f32 *)0xCC008000 = f27v;
-                        *(f32 *)0xCC008000 = f26v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x20];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x21];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x22];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x23];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
+                        *(f32 *)0xCC008000 = x1;
+                        *(f32 *)0xCC008000 = y0;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x24];
-                        *(u8 *)0xCC008000 = pal[0x25];
-                        *(u8 *)0xCC008000 = pal[0x26];
-                        *(u8 *)0xCC008000 = pal[0x27];
-                        z = fn_8002300C(lbl_802CA518, x, y, 2);
-                        *(f32 *)0xCC008000 = f25v;
-                        *(f32 *)0xCC008000 = f28v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x24];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x25];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x26];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x27];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
+                        *(f32 *)0xCC008000 = x0;
+                        *(f32 *)0xCC008000 = y1;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x28];
-                        *(u8 *)0xCC008000 = pal[0x29];
-                        *(u8 *)0xCC008000 = pal[0x2A];
-                        *(u8 *)0xCC008000 = pal[0x2B];
-                        z = fn_8002300C(lbl_802CA518, x, y, 3);
-                        *(f32 *)0xCC008000 = f26v;
-                        *(f32 *)0xCC008000 = f25v;
+                        *(u8 *)0xCC008000 = lbl_80285828[0x28];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x29];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2A];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2B];
+                        z = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
+                        *(f32 *)0xCC008000 = x1;
+                        *(f32 *)0xCC008000 = y1;
                         *(f32 *)0xCC008000 = z;
-                        *(u8 *)0xCC008000 = pal[0x2C];
-                        *(u8 *)0xCC008000 = pal[0x2D];
-                        *(u8 *)0xCC008000 = pal[0x2E];
-                        *(u8 *)0xCC008000 = pal[0x2F];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2C];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2D];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2E];
+                        *(u8 *)0xCC008000 = lbl_80285828[0x2F];
                     }
                 }
-                cell--;
-                idx -= 1;
-                x -= 1;
-            x_test:
-                ;
-            } while ((s8)x >= 0);
-            row -= 0x40;
-            yOff -= 0x40;
-            y--;
-        y_test:
-            ;
-        } while ((s8)y >= 0);
+            }
+        }
         fn_80066D00(-1);
     }
 }
-#pragma global_optimizer on
+#pragma pop
 
 #pragma global_optimizer on
 void fn_8004A864(s32 x,s32 y,u8 *color) {
