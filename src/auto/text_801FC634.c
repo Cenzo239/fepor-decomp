@@ -472,11 +472,11 @@ void fn_801FCCA0(void *self) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
-static inline void *Particle_FindFree(void *base) {
+static inline void *Particle_FindFree(void **base) {
     s32 j;
     for (j = 0; j < 1024; j++) {
-        if (*(s16 *)((u8 *)base + j * 16 + 12) == 0)
-            return (u8 *)base + j * 16;
+        if (*(s16 *)((u8 *)*base + j * 16 + 12) == 0)
+            return (u8 *)*base + j * 16;
     }
     return NULL;
 }
@@ -487,7 +487,6 @@ static inline void *Particle_FindFree(void *base) {
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 void fn_801FD3B4(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, s32);
