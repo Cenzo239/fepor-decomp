@@ -25776,6 +25776,8 @@ static inline u8 Map_CompareNeighborAllegiance(void *unit, void *neighbor)
     return Allegiance_Compare(*(s32 *)((u8 *)unit + 0x190), *(s32 *)((u8 *)neighbor + 0x190));
 }
 
+#pragma push
+#pragma optimization_level 4
 s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
     u8 Allegiance_Compare(s32, s32);
     extern u8 lbl_80272E98[];
@@ -25804,9 +25806,7 @@ s32 fn_800F7838(void *arg0, s32 arg1, s32 arg2) {
                     unit = gUnits + (id - 1) * 0x280;
                 else
                     unit = 0;
-                b = *(s32 *)((u8 *)unit + 0x190);
-                a = *(s32 *)((u8 *)arg0 + 0x190);
-                if ((u8)(Allegiance_Compare(a, b) == 1) == 1)
+                if ((u8)(Map_CompareNeighborAllegiance(arg0, unit) == 1) == 1)
                     score -= p[2];
                 else
                     score += p[2];
