@@ -2273,7 +2273,7 @@ s32 fn_800A3734(s32 unused, s32 arg1) {
 }
 
 #pragma dont_inline off
-static inline void fn_800A3770_Add(s32 item, u8 *base) {
+static inline void fn_800A3770_Add(u8 *base, s32 item) {
     s32 fn_8005C0AC(s32, u8 *);
     extern s32 lbl_80312290[];
     extern s32 lbl_80367520;
@@ -2290,27 +2290,18 @@ void fn_800A3770(void) {
     void fn_8005B918(u8 *);
     s32 fn_8005B8CC(void);
     s32 fn_8005B8AC(s32);
-    s32 fn_8005C0AC(s32, u8 *);
     extern u8 gMenuCmdStrings[];
-    extern s32 lbl_80312290[];
     extern s32 lbl_80367520;
-    s32 item;
     u8 *base;
     s32 count;
     s32 i;
-    s32 idx;
 
     fn_8005B918(gMenuCmdStrings + 0x7E0);
     count = fn_8005B8CC();
     lbl_80367520 = 0;
     base = gMenuCmdStrings;
     for (i = 0; i < count; i++) {
-        item = fn_8005B8AC(i);
-        if ((u8)fn_8005C0AC(item, base + 0x7E6) != 0) {
-            idx = lbl_80367520;
-            lbl_80367520 = idx + 1;
-            lbl_80312290[idx] = item;
-        }
+        fn_800A3770_Add(base, fn_8005B8AC(i));
     }
 }
 #pragma dont_inline on
