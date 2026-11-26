@@ -2617,25 +2617,21 @@ void fn_80187FBC(void *arg0) {
 #pragma opt_strength_reduction on
 
 #pragma global_optimizer off
-void fn_8018820C(void *arg0)
-{
-  void Unit_SetWorldXY(s32, f32, f32);
-  f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
-  extern f32 gHalf;
-  extern f32 lbl_8036AD0C;
-  f32 temp_f1;
-  f32 temp_f31;
-  void *temp_r31;
-  temp_r31 = *((void **) (((u8 *) arg0) + 0x18));
-  temp_f31 = *((s32 *) (((u8 *) arg0) + 0x60));
-  *((s32 *) (((u8 *) arg0) + 0x60)) = temp_f31 + 1;
-  temp_f31 = Math_EaseOutPow(2, gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x38))))), gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x3A))))), lbl_8036AD0C, (f32) (*((s32 *) (((u8 *) arg0) + 0x60))));
-  temp_f1 = Math_EaseOutPow(2, gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x39))))), gHalf + ((f32) ((s8) (*((u8 *) (((u8 *) temp_r31) + 0x3B))))), lbl_8036AD0C, (f32) (*((s32 *) (((u8 *) arg0) + 0x60))));
-  Unit_SetWorldXY(*((s32 *) (((u8 *) temp_r31) + 0x34)), temp_f31, temp_f1);
-  if ((*((s32 *) (((u8 *) arg0) + 0x60))) >= 8)
-  {
-    Process_ClearFunc(arg0);
-  }
+void fn_8018820C(void *arg0) {
+    void Unit_SetWorldXY(s32, f32, f32);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    f32 temp_f1;
+    f32 temp_f31;
+    void *temp_r31;
+
+    temp_r31 = *(void **)((u8 *)arg0 + 0x18);
+    *(s32 *)((u8 *)arg0 + 0x60) = *(s32 *)((u8 *)arg0 + 0x60) + 1;
+    temp_f31 = Math_EaseOutPow(2, 0.5f + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x38), 0.5f + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3A), 8.0f, (f32)*(s32 *)((u8 *)arg0 + 0x60));
+    temp_f1 = Math_EaseOutPow(2, 0.5f + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x39), 0.5f + (f32)(s8)*(u8 *)((u8 *)temp_r31 + 0x3B), 8.0f, (f32)*(s32 *)((u8 *)arg0 + 0x60));
+    Unit_SetWorldXY(*(s32 *)((u8 *)temp_r31 + 0x34), temp_f31, temp_f1);
+    if (*(s32 *)((u8 *)arg0 + 0x60) >= 8) {
+        Process_ClearFunc(arg0);
+    }
 }
 #pragma global_optimizer on
 void fn_80188368(void *arg0) {
