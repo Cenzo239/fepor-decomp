@@ -1687,23 +1687,23 @@ void fn_80044BE4(void *arg0) {
     void DCInvalidateRange(void *, u32);
     void DCFlushRange(void *, u32);
     void *fn_802248D8(void *, u32);
-    s32 fn_802249A4(void *);
+    s32 fn_802249A4(void);
     void GXBegin(s32, s32, s32);
-    void DebugPrint(void *, s32);
+    void DebugPrint(void *, ...);
     void *memcpy(void *, void *, s32);
     extern u8 lbl_8026A660[];
     extern u8 gBattleMap[];
     extern f32 lbl_80368F58;
-    volatile f32 *wgpipe;
     void *buf;
     void *disp;
-    u8 *row;
-    u8 *cell;
-    u8 *base;
-    u8 *above;
-    s32 margin;
-    s32 x;
     s32 y;
+    s32 x;
+    u8 *row;
+    u8 *base;
+    u8 *cell;
+    s32 margin;
+    u8 *above;
+    u8 *mapRow;
     s32 tile;
     f32 dx;
     f32 dy;
@@ -1713,16 +1713,19 @@ void fn_80044BE4(void *arg0) {
 
     margin = M2C_FIELD(arg0, u8 *, 0x61);
     buf = fn_800C45B8(-0x4000, lbl_8026A660 + 0x245, 0);
+    base = (u8 *)buf + (margin << 7);
+    row = base;
     y = margin;
-    row = (u8 *)buf + (margin << 7);
-    base = row;
     while (y < M2C_FIELD(arg0, s16 *, 2) - margin) {
         x = margin;
         cell = row + margin;
         above = (u8 *)buf + (((y - 1) << 7) + margin);
+        mapRow = gBattleMap + ((s8)y << 6);
         while (x < M2C_FIELD(arg0, s16 *, 0) - margin) {
+            s32 off;
             *cell = 0;
-            tile = gBattleMap[((s8)y << 6) + ((s8)x + 0x100D)];
+            off = (s8)x + 0x100D;
+            tile = mapRow[off];
             if (tile == 0xB) goto next_cell;
             if (tile < 0xB) {
                 if (tile == 4) goto next_cell;
@@ -1772,12 +1775,10 @@ void fn_80044BE4(void *arg0) {
     disp = fn_800C45B8(0xFFFC0000, lbl_8026A660 + 0x245, 0);
     DCInvalidateRange(disp, 0x40000);
     fn_802248D8(disp, 0x40000);
-    wgpipe = (volatile f32 *)0xCC008000;
-    row = base;
     y = margin;
     while (y < M2C_FIELD(arg0, s16 *, 2) - margin) {
         x = margin;
-        cell = row + margin;
+        cell = base + margin;
         while (x < M2C_FIELD(arg0, s16 *, 0) - margin) {
             tile = *cell;
             if ((u32)tile != 0) {
@@ -1796,88 +1797,88 @@ void fn_80044BE4(void *arg0) {
             tri:
                 GXBegin(0xB0, 0, 3);
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 goto next2;
             case_7:
                 GXBegin(0xB0, 0, 4);
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 goto next2;
             case_e:
                 GXBegin(0xB0, 0, 4);
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 goto next2;
             case_f:
                 GXBegin(0xB0, 0, 5);
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 1);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 3);
-                wgpipe[0] = (f32)(x + 1);
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)(x + 1);
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 2);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)(y + 1);
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)(y + 1);
+                *(volatile f32 *)0xCC008000 = a;
                 a = Map_GetTileCornerHeight(gBattleMap, x, y, 0);
-                wgpipe[0] = (f32)x;
-                wgpipe[0] = (f32)y;
-                wgpipe[0] = a;
+                *(volatile f32 *)0xCC008000 = (f32)x;
+                *(volatile f32 *)0xCC008000 = (f32)y;
+                *(volatile f32 *)0xCC008000 = a;
             }
         next2:
             cell += 1;
             x += 1;
         }
-        row += 0x80;
+        base += 0x80;
         y += 1;
     }
 
-    size = fn_802249A4(disp);
+    size = fn_802249A4();
     out = M2C_FIELD(arg0, void **, 0xA4);
     if (out != 0) {
         fn_800C4588(out);
@@ -2273,6 +2274,49 @@ void *fn_80046360(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4, s32 arg5) 
 void Map_CollectLinkedObjs(void *arg0, void *arg1, void *arg2) {
     M2C_UNK fn_80046424(void *, void *, void *, M2C_UNK);
     fn_80046424(arg0, arg1, arg2, 0);
+}
+
+static inline void *Map_FindObjAt_80046424(void *arg0, s32 x, s32 y, u32 mask, s32 excl) {
+    s32 i;
+    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
+        u8 *base = *(u8 **)((u8 *)arg0 + 0x14);
+        u8 *entry = base + i * 0xB4;
+        u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+        if (!(flags & excl)) {
+            if (mask == 0 || mask == (mask & flags)) {
+                u8 ok = (x >= (s8)*(u8 *)(entry + 4) && x <= (s8)*(u8 *)(entry + 6) &&
+                         y >= (s8)*(u8 *)(entry + 5) && y <= (s8)*(u8 *)(entry + 7)) ? 1 : 0;
+                if (ok != 0) {
+                    return base + i * 0xB4;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+static inline s32 fn_80046424_step(void *arg0, void *arg1, void **arg2, s32 arg3) {
+    void *Map_FindObjAt(void *, s32, s32, u32, s32);
+    void *fn_80049E1C(void *);
+    s32 fn_80046424(void *, void *, void **, s32);
+    u32 mask;
+    s32 i;
+
+    if (arg1 == NULL) {
+        return arg3;
+    }
+    for (i = 0; i < arg3; i++) {
+        if (arg2[i] == arg1) {
+            return arg3;
+        }
+    }
+    arg2[arg3++] = arg1;
+    mask = *(u32 *)((u8 *)fn_80049E1C(arg1) + 0xBC) | 0x200000;
+    arg3 = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)arg1 + 4) - 1, ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)arg1 + 6) + 1, ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424(arg0, Map_FindObjAt(arg0, ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2, (s8)*(u8 *)((u8 *)arg1 + 5) - 1, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424(arg0, Map_FindObjAt(arg0, ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2, (s8)*(u8 *)((u8 *)arg1 + 7) + 1, mask, 0x10), arg2, arg3);
+    return arg3;
 }
 
 s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
