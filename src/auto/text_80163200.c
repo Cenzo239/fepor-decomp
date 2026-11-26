@@ -146,12 +146,12 @@ typedef struct Unk8016F694_Outer {
 } Unk8016F694_Outer;
 extern u8 gBattleState[];
   extern void *lbl_803680E8;
-  extern f32 lbl_8036AC2C;
-extern f32 lbl_8036AC30;
+  extern const f32 lbl_8036AC2C;
+extern const f32 lbl_8036AC30;
 extern const f32 lbl_8036AC34;
 extern const f32 lbl_8036AC40;
-extern f32 lbl_8036AC48;
-extern f32 lbl_8036AC5C;
+extern const f32 lbl_8036AC48;
+extern const f32 lbl_8036AC5C;
 extern f32 lbl_8036AC60;
 extern f32 lbl_8036AC64;
 extern f32 lbl_8036AC68;
@@ -17112,8 +17112,8 @@ void fn_8017E3F8(void *arg0) {
     f32 Math_Lerp(u8, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
     extern f64 lbl_8036AC50;
-    extern f32 lbl_8036AC2C;
-    extern f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC2C;
+    extern const f32 lbl_8036AC30;
     extern f32 lbl_8036AC4C;
     s8 temp_r0;
     u8 temp_r3;
@@ -17140,8 +17140,8 @@ void fn_8017E3F8(void *arg0) {
 void fn_8017E49C(void *arg0) {
     f32 Math_Lerp(u8, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern f32 lbl_8036AC2C;
-    extern f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC2C;
+    extern const f32 lbl_8036AC30;
     extern f32 lbl_8036AC58;
     s8 temp_r0;
     u8 temp_r3;
@@ -17197,7 +17197,7 @@ void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_8009822C(void *, s32);
     extern u8 lbl_802788B8[];
     extern u8 lbl_80295538[];
-    extern f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC30;
     extern f64 lbl_8036AC38;
 
     typedef struct {
@@ -17351,10 +17351,10 @@ void fn_8017E8C0(void *arg0) {
     M2C_UNK fn_8017EE3C(u32, u8, M2C_UNK, s32, s32, M2C_UNK, f32, f32);
     M2C_UNK fn_802380D0(f32);
     f64 sin(f64);
-    extern f32 lbl_8036AC2C;
-    extern f32 lbl_8036AC30;
-    extern f32 lbl_8036AC48;
-    extern f32 lbl_8036AC5C;
+    extern const f32 lbl_8036AC2C;
+    extern const f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC48;
+    extern const f32 lbl_8036AC5C;
     extern f32 lbl_8036AC60;
     extern f32 lbl_8036AC64;
     extern f32 lbl_8036AC68;
@@ -17480,8 +17480,8 @@ void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     void fn_800076AC(u8, u8, u8, u8);
     void fn_80009B8C(u8);
     extern f32 lbl_8036AC44;
-    extern f32 lbl_8036AC48;
-    extern f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC48;
+    extern const f32 lbl_8036AC30;
     extern f32 lbl_8036AC4C;
     f32 var_f31;
     s32 var_r30;
@@ -17557,7 +17557,10 @@ void fn_8017F120(void *arg0) {
     f32 fn_80059EB8(s32,s32,f32,f32);
     f32 Math_Lerp(f32,f32,f32,f32);
     void Process_ClearFunc(void *);
-    extern f32 lbl_8036AC58,lbl_8036AC2C,lbl_8036AC30,lbl_8036AC4C;
+    extern f32 lbl_8036AC58;
+extern const f32 lbl_8036AC2C;
+extern const f32 lbl_8036AC30;
+extern f32 lbl_8036AC4C;
     s32 temp;
     *(s32 *)((u8 *)arg0+0x38)+=1;
     temp=*(s32 *)((u8 *)arg0+0x38);
@@ -17606,9 +17609,9 @@ void fn_8017F258(void *arg0)
   extern u32 lbl_8036AC10;
   extern u32 lbl_8036AC14;
   extern f32 lbl_8036AC1C;
-  extern f32 lbl_8036AC30;
+  extern const f32 lbl_8036AC30;
   extern f64 lbl_8036AC38;
-  extern f32 lbl_8036AC48;
+  extern const f32 lbl_8036AC48;
   extern f32 lbl_8036AC4C;
   extern f32 lbl_8036AC7C;
   extern f32 lbl_8036AC80;
@@ -17754,8 +17757,8 @@ void fn_8017F650(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8009822C(void *, s32);
-    extern f32 lbl_8036AC30;
-    extern f32 lbl_8036AC48;
+    extern const f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC48;
     extern f32 lbl_8036AC74;
     extern f32 lbl_8036AC7C;
     extern f32 lbl_8036AC8C;
@@ -17844,8 +17847,8 @@ void fn_8017F8EC(void *arg0) {
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
     void fn_8009822C(void *, s32);
-    extern f32 lbl_8036AC30;
-    extern f32 lbl_8036AC48;
+    extern const f32 lbl_8036AC30;
+    extern const f32 lbl_8036AC48;
     extern f32 lbl_8036AC74;
     extern f32 lbl_8036AC7C;
     extern f32 lbl_8036AC98;
