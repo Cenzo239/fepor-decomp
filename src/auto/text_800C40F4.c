@@ -1,12 +1,6 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-
-static inline void Vec3Store3(f32 *dst, f32 x, f32 y, f32 z) {
-    dst[0] = x;
-    dst[1] = y;
-    dst[2] = z;
-}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -16145,7 +16139,7 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
-#pragma peephole off
+
     f32 pos[3];
     f32 z;
     f32 y;
@@ -16171,7 +16165,6 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
-#pragma peephole on
 }
 #pragma pop
 void fn_800E4F0C(void *arg0) {
