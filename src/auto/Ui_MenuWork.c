@@ -514,6 +514,7 @@ extern void FileCache_ReleaseByKey(u32);
 #pragma global_optimizer off
 
 typedef struct { void *e0, *e1, *e2; } MenuEntries;
+#pragma inline_depth(8)
 static inline void MenuInit(MenuEntries *entries, volatile s32 *table, s32 a, s32 b) {
     entries->e0 = (void *)table;
     table[1] = a;
