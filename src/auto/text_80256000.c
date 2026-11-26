@@ -4614,6 +4614,23 @@ s32 fn_8025DAA0(
     return 1;
 }
 
+static inline u8 Sound_FindVel_8025DBF4(u8 *list) {
+    if (list == NULL) {
+        return 0xFF;
+    } else {
+        u8 *cmd = *(u8 **)(list + 4);
+        u8 n = 0;
+        while (n < *list) {
+            if (*(u16 *)cmd == 0x8000) {
+                return cmd[2];
+            }
+            cmd += 4;
+            n++;
+        }
+        return 0xFF;
+    }
+}
+
 static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan, f32 fspan, f32 fvar, f32 ftime) {
     void Sound_SetParamU8(s32, s32, s32);
     void Sound_SetParamU16(s32, s32, s32);
@@ -4634,48 +4651,21 @@ static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan
 
     handle = *(s32 *)(voice + 0x38);
     if (*(u32 *)(voice + 0xC) & 0x100000) {
-        v = 0x7F;
-        tmp = (s32)(lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol));
-        if ((u8)tmp <= 0x7F) {
-            v = tmp;
-        }
-        Sound_SetParamU8(handle, 7, v);
+        Sound_SetParamU8(handle, 7, (u8)(tmp = (s32)(lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol))) <= 0x7F ? tmp : 0x7F);
     } else {
-        v = 0x7F;
         ft = lbl_8036C314 * fvol;
-        if ((u8)(s32)ft <= 0x7F) {
-            v = (s32)ft;
-        }
-        Sound_SetParamU8(handle, 7, v);
+        Sound_SetParamU8(handle, 7, (u8)(s32)ft <= 0x7F ? (s32)ft : 0x7F);
     }
-    v = 0x7F;
     ft = lbl_8036C318 * (lbl_8036C2E4 + fpan);
-    if ((u8)(s32)ft <= 0x7F) {
-        v = (s32)ft;
-    }
-    Sound_SetParamU8(handle, 0xA, v);
-    v = 0x7F;
+    Sound_SetParamU8(handle, 0xA, (u8)(s32)ft <= 0x7F ? (s32)ft : 0x7F);
     ft = lbl_8036C318 * (lbl_8036C2E4 - fspan);
-    if ((u8)(s32)ft <= 0x7F) {
-        v = (s32)ft;
-    }
-    Sound_SetParamU8(handle, 0x83, v);
+    Sound_SetParamU8(handle, 0x83, (u8)(s32)ft <= 0x7F ? (s32)ft : 0x7F);
     ft = lbl_8036C31C * fvar;
-    if (ft > lbl_8036C310) {
-        v = 0x3FFF;
-    } else {
-        v = (s32)ft;
-    }
-    Sound_SetParamU16(handle, 0x84, v);
+    Sound_SetParamU16(handle, 0x84, ft > lbl_8036C310 ? 0x3FFF : (s32)ft);
     if (*(u32 *)(voice + 0xC) & 0x180) {
         if (lbl_8036C2E0 != ftime) {
             ft = lbl_8036C310 * ftime;
-            if (ft > lbl_8036C310) {
-                v = 0x3FFF;
-            } else {
-                v = (s32)ft;
-            }
-            Sound_SetParamU16(handle, 0x1F, v);
+            Sound_SetParamU16(handle, 0x1F, ft > lbl_8036C310 ? 0x3FFF : (s32)ft);
             Sound_SetParamU8(handle, 0x4F, 0x7F);
         } else {
             Sound_SetParamU8(handle, 0x4F, 0);
@@ -4713,8 +4703,6 @@ void fn_8025DBF4(void) {
     };
     s32 Sound_Start(u16, u8, s32, s32, u8, s32);
     s32 fn_8024A430(u16);
-    void Sound_SetParamU8(s32, s32, s32);
-    void Sound_SetParamU16(s32, s32, s32);
     void fn_80257224(s32);
     extern u16 lbl_8035BF18[];
     extern u8 lbl_8035C318[];
@@ -4724,15 +4712,9 @@ void fn_8025DBF4(void) {
     extern u8 lbl_80368AB0;
     extern const f32 lbl_8036C2E0;
     extern const f32 lbl_8036C2E4;
-    extern const f32 lbl_8036C310;
-    extern const f32 lbl_8036C314;
-    extern const f32 lbl_8036C318;
-    extern const f32 lbl_8036C31C;
     extern const f32 lbl_8036C320;
     extern const f32 lbl_8036C324;
 
-    s32 handle;
-    s32 h;
     u8 *voice;
     u8 *node;
     s32 i;
@@ -4741,18 +4723,11 @@ void fn_8025DBF4(void) {
     u8 *list;
     u8 *cur;
     u8 *slot;
-    f32 fpan;
-    f32 fspan;
-    f32 fvar;
-    f32 ftime;
-    f32 fvol;
     f32 dt;
-    f32 ft;
-    s32 v;
+    s32 handle;
     s32 tmp;
     u8 vel;
     u8 n;
-    u16 w;
     u32 flags;
 
     if (lbl_80368AAF != 0) {
@@ -4796,10 +4771,10 @@ void fn_8025DBF4(void) {
                     vel = 0xFF;
                 }
             found1:
-                h = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
-                                (*(u32 *)(voice + 0xC) >> 4) & 1);
-                *(s32 *)(voice + 0x38) = h;
-                if ((u32)(h + 0x10000) == 0xFFFFU) {
+                handle = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
+                                     (*(u32 *)(voice + 0xC) >> 4) & 1);
+                *(s32 *)(voice + 0x38) = handle;
+                if ((u32)(handle + 0x10000) == 0xFFFFU) {
                     flags = *(u32 *)(voice + 0xC);
                     if (!(flags & 2)) {
                         *(u32 *)(voice + 0xC) = flags | 0x40000;
@@ -4813,77 +4788,8 @@ void fn_8025DBF4(void) {
                     } else {
                         *(f32 *)(voice + 0x48) = lbl_8036C2E4;
                     }
-                    ftime = *(f32 *)(node + 0x18);
-                    fvar = *(f32 *)(node + 0x14);
-                    fspan = *(f32 *)(node + 0x10);
-                    fpan = *(f32 *)(node + 8);
-                    fvol = *(f32 *)(node + 4);
-                    handle = *(s32 *)(voice + 0x38);
-                    if (*(u32 *)(voice + 0xC) & 0x100000) {
-                        v = 0x7F;
-                        tmp = (s32)(lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol));
-                        if ((u8)tmp <= 0x7F) {
-                            v = tmp;
-                        }
-                        Sound_SetParamU8(handle, 7, v);
-                    } else {
-                        v = 0x7F;
-                        ft = lbl_8036C314 * fvol;
-                        if ((u8)(s32)ft <= 0x7F) {
-                            v = (s32)ft;
-                        }
-                        Sound_SetParamU8(handle, 7, v);
-                    }
-                    v = 0x7F;
-                    ft = lbl_8036C318 * (lbl_8036C2E4 + fpan);
-                    if ((u8)(s32)ft <= 0x7F) {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU8(handle, 0xA, v);
-                    v = 0x7F;
-                    ft = lbl_8036C318 * (lbl_8036C2E4 - fspan);
-                    if ((u8)(s32)ft <= 0x7F) {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU8(handle, 0x83, v);
-                    ft = lbl_8036C31C * fvar;
-                    if (ft > lbl_8036C310) {
-                        v = 0x3FFF;
-                    } else {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU16(handle, 0x84, v);
-                    if (*(u32 *)(voice + 0xC) & 0x180) {
-                        if (lbl_8036C2E0 != ftime) {
-                            ft = lbl_8036C310 * ftime;
-                            if (ft > lbl_8036C310) {
-                                v = 0x3FFF;
-                            } else {
-                                v = (s32)ft;
-                            }
-                            Sound_SetParamU16(handle, 0x1F, v);
-                            Sound_SetParamU8(handle, 0x4F, 0x7F);
-                        } else {
-                            Sound_SetParamU8(handle, 0x4F, 0);
-                        }
-                    }
-                    list = *(u8 **)(voice + 8);
-                    if (list != NULL) {
-                        cmd = *(u8 **)(list + 4);
-                        n = 0;
-                        while (n < **(u8 **)(voice + 8)) {
-                            w = *(u16 *)cmd;
-                            if (!(w & 0xFF00)) {
-                                if (w < 0x40 || w == 0x80 || w == 0x84) {
-                                    Sound_SetParamU16(handle, (u8)w, *(u16 *)(cmd + 2));
-                                } else {
-                                    Sound_SetParamU8(handle, (u8)w, cmd[2]);
-                                }
-                            }
-                            cmd += 4;
-                            n++;
-                        }
-                    }
+                    Sound_ApplyVoiceParams_8025DBF4(voice, *(f32 *)(node + 4), *(f32 *)(node + 8), *(f32 *)(node + 0x10),
+                                                    *(f32 *)(node + 0x14), *(f32 *)(node + 0x18));
                     *(u32 *)(voice + 0xC) = *(u32 *)(voice + 0xC) & ~0x20000;
                     ((struct SoundEntry *)lbl_8035BF18)[i].count = ((struct SoundEntry *)lbl_8035BF18)[i].count + 1;
                     other = ((struct SoundEntry *)lbl_8035BF18)[i].list;
@@ -4939,10 +4845,10 @@ void fn_8025DBF4(void) {
                     vel = 0xFF;
                 }
             found2:
-                h = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
-                                (*(u32 *)(voice + 0xC) >> 4) & 1);
-                *(s32 *)(voice + 0x38) = h;
-                if ((u32)(h + 0x10000) == 0xFFFFU) {
+                handle = Sound_Start(*(u16 *)(voice + 0x40), vel, 0x7F, 0x40, *(u8 *)(voice + 0x42),
+                                     (*(u32 *)(voice + 0xC) >> 4) & 1);
+                *(s32 *)(voice + 0x38) = handle;
+                if ((u32)(handle + 0x10000) == 0xFFFFU) {
                     flags = *(u32 *)(voice + 0xC);
                     if (!(flags & 2)) {
                         *(u32 *)(voice + 0xC) = flags | 0x40000;
@@ -4956,77 +4862,8 @@ void fn_8025DBF4(void) {
                     } else {
                         *(f32 *)(voice + 0x48) = lbl_8036C2E4;
                     }
-                    ftime = *(f32 *)(node + 0x18);
-                    fvar = *(f32 *)(node + 0x14);
-                    fspan = *(f32 *)(node + 0x10);
-                    fpan = *(f32 *)(node + 8);
-                    fvol = *(f32 *)(node + 4);
-                    handle = *(s32 *)(voice + 0x38);
-                    if (*(u32 *)(voice + 0xC) & 0x100000) {
-                        v = 0x7F;
-                        tmp = (s32)(lbl_8036C314 * (*(f32 *)(voice + 0x48) * fvol));
-                        if ((u8)tmp <= 0x7F) {
-                            v = tmp;
-                        }
-                        Sound_SetParamU8(handle, 7, v);
-                    } else {
-                        v = 0x7F;
-                        ft = lbl_8036C314 * fvol;
-                        if ((u8)(s32)ft <= 0x7F) {
-                            v = (s32)ft;
-                        }
-                        Sound_SetParamU8(handle, 7, v);
-                    }
-                    v = 0x7F;
-                    ft = lbl_8036C318 * (lbl_8036C2E4 + fpan);
-                    if ((u8)(s32)ft <= 0x7F) {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU8(handle, 0xA, v);
-                    v = 0x7F;
-                    ft = lbl_8036C318 * (lbl_8036C2E4 - fspan);
-                    if ((u8)(s32)ft <= 0x7F) {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU8(handle, 0x83, v);
-                    ft = lbl_8036C31C * fvar;
-                    if (ft > lbl_8036C310) {
-                        v = 0x3FFF;
-                    } else {
-                        v = (s32)ft;
-                    }
-                    Sound_SetParamU16(handle, 0x84, v);
-                    if (*(u32 *)(voice + 0xC) & 0x180) {
-                        if (lbl_8036C2E0 != ftime) {
-                            ft = lbl_8036C310 * ftime;
-                            if (ft > lbl_8036C310) {
-                                v = 0x3FFF;
-                            } else {
-                                v = (s32)ft;
-                            }
-                            Sound_SetParamU16(handle, 0x1F, v);
-                            Sound_SetParamU8(handle, 0x4F, 0x7F);
-                        } else {
-                            Sound_SetParamU8(handle, 0x4F, 0);
-                        }
-                    }
-                    list = *(u8 **)(voice + 8);
-                    if (list != NULL) {
-                        cmd = *(u8 **)(list + 4);
-                        n = 0;
-                        while (n < **(u8 **)(voice + 8)) {
-                            w = *(u16 *)cmd;
-                            if (!(w & 0xFF00)) {
-                                if (w < 0x40 || w == 0x80 || w == 0x84) {
-                                    Sound_SetParamU16(handle, (u8)w, *(u16 *)(cmd + 2));
-                                } else {
-                                    Sound_SetParamU8(handle, (u8)w, cmd[2]);
-                                }
-                            }
-                            cmd += 4;
-                            n++;
-                        }
-                    }
+                    Sound_ApplyVoiceParams_8025DBF4(voice, *(f32 *)(node + 4), *(f32 *)(node + 8), *(f32 *)(node + 0x10),
+                                                    *(f32 *)(node + 0x14), *(f32 *)(node + 0x18));
                     *(u32 *)(voice + 0xC) = *(u32 *)(voice + 0xC) & ~0x20000;
                     cur = ((struct SoundEntry *)lbl_8035BF18)[i].list;
                     while (cur != NULL) {
