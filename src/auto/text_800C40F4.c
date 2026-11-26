@@ -16972,7 +16972,8 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     u32 strlen(char *);
     extern u8 gActorVtbl[];
     extern char lbl_802720E0[];
-    extern f32 lbl_80369F58;
+    extern const f32 lbl_80369F58;
+    extern const f32 lbl_80369F3C;
     u8 buf108[0x20];
     u8 bufE8[0x20];
     u8 bufC8[0x20];
@@ -17094,7 +17095,7 @@ void *fn_800E6058(void *arg0, void *arg1, void *arg2) {
     SELF->unk10C = zero;
     SELF->unk110 = zero;
     SELF->unk114 = 0;
-    String_Destroy(&str64, (s16)-1);
+    String_Destroy(&str64, -1);
     String_Destroy(&str70, -1);
     String_Destroy(&str7C, -1);
     return (void *)SELF;
