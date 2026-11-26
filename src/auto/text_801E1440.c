@@ -877,6 +877,22 @@ extern void fn_8021D614(u32, s32*, u32);
       return size & ~-(size > 0x100000U);
   }
 
+static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
+    u8 *best; s32 off; u8 *slot; u32 minSize; s32 i; u8 valid;
+    best=0; i=0; minSize=-1; off=0x2000;
+    for (;i<6;i++) {
+        slot=*save+off;
+        if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+        else if (*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+        else valid=1;
+        if (!valid && minSize>save_slot_size(slot)) {
+            best=slot; minSize=save_slot_size(slot);
+        }
+        off+=0x4000;
+    }
+    return best;
+}
+
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
     return (size <= limit) ? size : 0;
