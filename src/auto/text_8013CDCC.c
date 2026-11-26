@@ -936,10 +936,8 @@ u8 *p=(u8*)arg1;
 s16 dx=((Obj*)arg0)->v35();
 Obj *self=(Obj*)arg0;
 s16 dy=self->v20();
-s32 xoff=self->v31();
-s16 x=xoff+self->v16();
-s32 yoff=self->v32();
-s16 y=yoff+self->v17();
+s16 x=self->v16()+self->v31();
+s16 y=self->v17()+self->v32();
 s16 rows=self->v33(arg1);
 s16 cols=self->v34();
 s32 row=0, index=0;
@@ -2528,6 +2526,9 @@ void fn_8013F3CC(void) {
 }
 
 void fn_80059C2C(s32, s32, s32, s32, s32);
+#pragma push
+#pragma optimization_level 2
+#pragma global_optimizer off
 void fn_8013F3D0(void *arg0) {
     void fn_8013F748(void *, void *, void *);
     f32 fn_8013FA44(void *);
@@ -2542,9 +2543,9 @@ void fn_8013F3D0(void *arg0) {
     extern f32 lbl_8036A718;
 
     struct Point { s16 x, y; } pt;
-    u32 z;
-    s16 midX;
-    s16 midY;
+    s32 midY;
+    s32 midX;
+    s32 z;
     f32 scale;
 
     pt.x = 0;
@@ -2563,9 +2564,8 @@ void fn_8013F3D0(void *arg0) {
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 void fn_8013F54C(void *arg0) {
-#pragma opt_common_subs off
     void fn_8013F748(void *, void *, void *);
     f32 fn_8013FA44(void *);
     s32 fn_80138908(void *);
@@ -2573,10 +2573,11 @@ void fn_8013F54C(void *arg0) {
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
     void Prim2D_SetAlphaByte(s32);
-    extern f32 lbl_8036A718;
+    extern const f32 lbl_8036A718;
     struct Point { s16 x, y; } pt;
-    s16 z, height, width;
-    f32 scale, a, b, c, d, e, f;
+    s32 z;
+    s16 height, width;
+    f32 scale;
 
     *(u32 *)&pt = M2C_FIELD(arg0, u32 *, 0xA);
     if (M2C_FIELD(arg0, void **, 0x38))
@@ -2586,18 +2587,11 @@ void fn_8013F54C(void *arg0) {
     width = (s16)(M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA));
     z = M2C_FIELD(arg0, s16 *, 0x22);
     scale = fn_8013FA44(arg0);
-    f = fn_8013FA44(arg0);
-    a = (f32)pt.x;
-    b = (f32)pt.y;
-    c = (f32)z;
-    d = (f32)(width >> 1);
-    e = (f32)(height >> 1);
-    fn_80009C20(a, b, c, d, e, f, scale, lbl_8036A718);
+    fn_80009C20((f32)pt.x, (f32)pt.y, (f32)(s16)z, (f32)(width >> 1), (f32)(height >> 1), fn_8013FA44(arg0), scale, lbl_8036A718);
     Prim2D_SetTex(0, (u16)(M2C_FIELD(arg0, u32 *, 0x34) | 2));
     Prim2D_SetColorByte(fn_80138908(arg0));
     Prim2D_SetAlphaByte(fn_8013FA10(arg0));
     Prim2D_PrepareTex();
-#pragma opt_common_subs reset
 }
 
 void *fn_8013F6B8(void *arg0, void *arg1, void *arg2) {
