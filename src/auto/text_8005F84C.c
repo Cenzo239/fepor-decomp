@@ -1,6 +1,16 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void GMaterial_InsertSlot688D4(u32 value, u32 *slots) {
+    s32 j;
+    u32 entry;
+    for (j=0;j<8;j++) {
+        entry=slots[j];
+        if (entry==value) break;
+        if (!entry) { slots[j]=value; break; }
+    }
+}
+
 static inline void *GActor_FindInherited(void *p, u32 offset) {
     while (p) {
         void *matrices = *(void **)((u8 *)p + offset);
@@ -5341,7 +5351,9 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         }
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 3
+#pragma opt_loop_invariants off
 s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
     void *Res_GetByName(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -5384,11 +5396,9 @@ s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
         }
         return 1;
     }
-    if (!arg0) {
+    if (!arg0)
         found = (s32)Res_GetByName(arg1);
-        entry = 0;
-        off = 0;
-    } else {
+    else {
         entry = 0;
         off = entry;
         while (entry < *(u16 *)((u8 *)arg0 + 0x54)) {
@@ -5407,7 +5417,7 @@ s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
                 for (j = 0; j < 8; j++)
                     ((u32 *)*(u32 *)(found + 0x18))[j] = 0;
             }
-            slots = (u32 *)*(u32 *)(found + 0x18 + (off & entry & 0));
+            slots = (u32 *)*(u32 *)(found + 0x18);
             for (j = 0; j < 8; j++) {
                 value = slots[j];
                 if (value == arg2)
@@ -5423,6 +5433,7 @@ s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
     }
     return 0;
 }
+#pragma pop
 s32 fn_80068CFC(void *arg0, s32 arg1) {
     s32 Str_Cmp(void *, s32);
     s32 offset;
