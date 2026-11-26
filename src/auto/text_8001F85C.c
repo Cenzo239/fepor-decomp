@@ -181,8 +181,6 @@ void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
     s16 *values;
     u8 *cell;
     u8 *rowptr;
-    s32 negdy;
-    s32 delta;
     s32 centerY;
     s32 centerX;
     s32 radius;
@@ -193,11 +191,11 @@ void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
     s32 ady;
     s8 xmax;
     s8 ymax;
-    s32 offset;
+    s32 negdy;
     s8 x;
     s8 y;
-    s8 xmin;
     s32 dy;
+    s8 xmin;
 
     radius = arg3;
     centerX = arg1;
@@ -218,7 +216,6 @@ void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
     if (ymax > *(s32 *)((u8 *)arg0 + 4) - 1) {
         ymax = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
     }
-    delta = arg4;
     row = ymin << 6;
     rowptr = (u8 *)arg0 + row;
     for (y = ymin; y <= ymax; y++) {
@@ -226,7 +223,6 @@ void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
         negdy = -dy;
         index = xmin + row;
         cell = rowptr + xmin;
-        offset = index * 2;
         for (x = xmin; x <= xmax; x++) {
             ady = dy;
             if (dy < 0) {
@@ -238,11 +234,10 @@ void fn_8001F9C4(void *arg0, s8 arg1, s8 arg2, s8 arg3, s16 arg4) {
             }
             if (dx + ady <= radius && *(s8 *)(cell + 0xe18e) == 0) {
                 values = *(s16 **)((u8 *)arg0 + 0x14190);
-                values[index] = delta + values[index];
+                values[index] = arg4 + values[index];
             }
             cell++;
             index++;
-            offset += 2;
         }
         rowptr += 0x40;
         row += 0x40;
@@ -1250,6 +1245,26 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
 {
     void Map_FillLayer(void *, s32, s32);
     extern u8 gUnits[];
+    typedef struct {
+        u8 pad0[0x408E];
+        u16 terrainFlags[0x1000];
+        u8 pad1[0x14190 - 0x608E];
+        s16 *costs;
+        u8 pad2[0x14214 - 0x14194];
+        u16 terrainCost[0x100];
+        u8 pad3[0x242D8 - 0x14414];
+        u8 queue[2][0x600];
+        u8 *read;
+        u8 *write;
+        u8 slot;
+        u8 count;
+        u16 limit;
+        u8 blocked[4];
+        u8 mask;
+        u8 unused;
+        u8 flip;
+    } FloodMapLayout;
+    FloodMapLayout *self = (FloodMapLayout *)map;
     u8 *ed8;
     u8 *edc;
     u8 slot;
@@ -1257,9 +1272,10 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
     u8 nx;
     u8 ny;
     u8 kind;
+    s8 nextCoord;
     u16 flags;
     u16 neu;
-    u16 oldc;
+    s16 oldc;
     u16 have;
     u8 *cell;
     u8 tid;
@@ -1267,72 +1283,72 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
     u8 *unit;
     u8 *cls;
 
-    ((u8 *)map + 0x20000)[0x4EE0] = 0;
-    *(u16 *)((u8 *)map + 0x24EE2) = range;
-    *(void **)((u8 *)map + 0x24ED8) = (u8 *)map + 0x242D8;
-    *(void **)((u8 *)map + 0x24EDC) = (u8 *)map + 0x248D8;
+    self->slot = 0;
+    self->limit = range;
+    self->read = self->queue[0];
+    self->write = self->queue[1];
 
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
+    edc = self->write;
     edc[0] = x;
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
+    edc = self->write;
     edc[1] = y;
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
+    edc = self->write;
     edc[2] = 0x20;
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
+    edc = self->write;
     *(u16 *)(edc + 4) = 0;
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
-    *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-    edc = *(u8 **)((u8 *)map + 0x24EDC);
+    edc = self->write;
+    self->write = edc + 6;
+    edc = self->write;
     edc[2] = 0x10;
 
     Map_FillLayer(map, 0xB, -1);
 
     ((u8 *)map)[0xC] = 0;
-    costs = *(s16 **)((u8 *)map + 0x14190);
+    costs = self->costs;
     costs[(s8)x + ((s8)y << 6)] = 0;
 
     if ((u8)flagB == 0 || (u8)flagA == 0) {
-        ((u8 *)map + 0x20000)[0x4EE8] = 0;
+        self->mask = 0;
         if ((u8)flagB != 0) {
-            ((u8 *)map + 0x20000)[0x4EE8] |= 1;
+            self->mask |= 1;
         }
         if ((u8)flagA != 0) {
-            ((u8 *)map + 0x20000)[0x4EE8] |= 2;
+            self->mask |= 2;
         }
     }
 
     for (;;) {
-        slot = ((u8 *)map + 0x20000)[0x4EE0];
-        *(void **)((u8 *)map + 0x24EDC) = (u8 *)map + slot * 0x600 + 0x242D8;
-        ((u8 *)map + 0x20000)[0x4EE0] = (u8)(slot ^ 1);
-        slot = ((u8 *)map + 0x20000)[0x4EE0];
-        *(void **)((u8 *)map + 0x24ED8) = (u8 *)map + slot * 0x600 + 0x242D8;
-        ((u8 *)map + 0x20000)[0x4EE1] = 0;
+        slot = self->slot;
+        self->write = self->queue[slot];
+        self->slot ^= 1;
+        slot = self->slot;
+        self->read = self->queue[slot];
+        self->count = 0;
 
-        ed8 = *(u8 **)((u8 *)map + 0x24ED8);
+        ed8 = self->read;
         if (ed8[2] == 0x10) {
             break;
         }
 
-        do {
+        while ((ed8 = self->read), (kind = ed8[2]) != 0x10) {
             ny = ed8[1];
             nx = ed8[0];
-            kind = ed8[2];
-            flags = *(u16 *)((u8 *)map + 0x1408E + (((s8)nx + ((s8)ny << 6)) << 1));
-            if (((u8 *)map + 0x20000)[0x4EEA] != 0) {
+            flags = self->terrainFlags[(s8)nx + ((s8)ny << 6)];
+            if (self->flip != 0) {
                 flags = (u16)(((flags ^ 0xF0) >> 4) & 0xFFF);
             }
 
-            costs = *(s16 **)((u8 *)map + 0x14190);
-            oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
 
             switch (kind) {
             case 0x20:
                 if (flags & 0x8) {
-                    cell = (u8 *)map + (s8)nx + (((s8)ny - 1) << 6);
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny - 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1340,33 +1356,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c20_s;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny - 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x8;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny - 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c20_s:
                 if (flags & 0x4) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + (s8)nx + (((s8)ny + 1) << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny + 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1374,33 +1391,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c20_w;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny + 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x4;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny + 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c20_w:
                 if (flags & 0x1) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx - 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx - 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1408,33 +1426,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c20_e;
                         }
                     }
-                    have = (u16)costs[((s8)nx - 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x1;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx - 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
             c20_e:
                 if (flags & 0x2) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx + 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx + 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1442,30 +1461,33 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             break;
                         }
                     }
-                    have = (u16)costs[((s8)nx + 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x2;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx + 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
                 break;
             case 0x8:
                 if (flags & 0x8) {
-                    cell = (u8 *)map + (s8)nx + (((s8)ny - 1) << 6);
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny - 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1473,33 +1495,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c8_w;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny - 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x8;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny - 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c8_w:
                 if (flags & 0x1) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx - 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx - 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1507,33 +1530,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c8_e;
                         }
                     }
-                    have = (u16)costs[((s8)nx - 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x1;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx - 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
             c8_e:
                 if (flags & 0x2) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx + 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx + 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1541,30 +1565,33 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             break;
                         }
                     }
-                    have = (u16)costs[((s8)nx + 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x2;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx + 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
                 break;
             case 0x4:
                 if (flags & 0x4) {
-                    cell = (u8 *)map + (s8)nx + (((s8)ny + 1) << 6);
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny + 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1572,33 +1599,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c4_w;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny + 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x4;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny + 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c4_w:
                 if (flags & 0x1) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx - 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx - 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1606,33 +1634,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c4_e;
                         }
                     }
-                    have = (u16)costs[((s8)nx - 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x1;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx - 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
             c4_e:
                 if (flags & 0x2) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx + 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx + 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1640,30 +1669,33 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             break;
                         }
                     }
-                    have = (u16)costs[((s8)nx + 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x2;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx + 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
                 break;
             case 0x1:
                 if (flags & 0x8) {
-                    cell = (u8 *)map + (s8)nx + (((s8)ny - 1) << 6);
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny - 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1671,33 +1703,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c1_s;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny - 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x8;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny - 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c1_s:
                 if (flags & 0x4) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + (s8)nx + (((s8)ny + 1) << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny + 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1705,33 +1738,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c1_w;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny + 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x4;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny + 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c1_w:
                 if (flags & 0x1) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx - 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx - 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1739,30 +1773,33 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             break;
                         }
                     }
-                    have = (u16)costs[((s8)nx - 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x1;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx - 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
                 break;
             case 0x2:
                 if (flags & 0x8) {
-                    cell = (u8 *)map + (s8)nx + (((s8)ny - 1) << 6);
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny - 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1770,33 +1807,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c2_s;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny - 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny - 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x8;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny - 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c2_s:
                 if (flags & 0x4) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + (s8)nx + (((s8)ny + 1) << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(ny + 1);
+                    cell = (u8 *)map + (s8)nx + (((s8)nextCoord) << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1804,33 +1842,34 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             goto c2_e;
                         }
                     }
-                    have = (u16)costs[(s8)nx + (((s8)ny + 1) << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[(s8)nx + (((s8)nextCoord) << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
                         edc[0] = nx;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[1] = (u8)(ny + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
+                        edc[1] = (u8)nextCoord;
+                        edc = self->write;
                         edc[2] = 0x4;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[(s8)nx + (((s8)ny + 1) << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[(s8)nx + (((s8)nextCoord) << 6)] = (s16)neu;
                     }
                 }
             c2_e:
                 if (flags & 0x2) {
-                    ny = (*(u8 **)((u8 *)map + 0x24ED8))[1];
-                    nx = (*(u8 **)((u8 *)map + 0x24ED8))[0];
-                    costs = *(s16 **)((u8 *)map + 0x14190);
-                    oldc = (u16)costs[(s8)nx + ((s8)ny << 6)];
-                    cell = (u8 *)map + ((s8)nx + 1) + ((s8)ny << 6);
+                    ny = (self->read)[1];
+                    nx = (self->read)[0];
+                    costs = self->costs;
+                    oldc = costs[(s8)nx + ((s8)ny << 6)];
+                    nextCoord = (s8)(nx + 1);
+                    cell = (u8 *)map + ((s8)nextCoord) + ((s8)ny << 6);
                     tid = cell[0x100D];
                     uid = cell[0xD];
-                    neu = (u16)(oldc + *(u16 *)((u8 *)map + 0x14214 + (tid << 1)));
+                    neu = (u16)(oldc + self->terrainCost[tid]);
                     if (uid != 0) {
                         unit = (uid != 0) ? gUnits + (uid - 1) * 0x280 : NULL;
                         cls = *(u8 **)(unit + 0x190);
@@ -1838,31 +1877,32 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
                             break;
                         }
                     }
-                    have = (u16)costs[((s8)nx + 1) + ((s8)ny << 6)];
-                    if (neu < have && neu <= *(u16 *)((u8 *)map + 0x24EE2)) {
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        edc[0] = (u8)(nx + 1);
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                    have = (u16)costs[((s8)nextCoord) + ((s8)ny << 6)];
+                    if (neu < have && neu <= self->limit) {
+                        edc = self->write;
+                        edc[0] = (u8)nextCoord;
+                        edc = self->write;
                         edc[1] = ny;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         edc[2] = 0x2;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
+                        edc = self->write;
                         *(u16 *)(edc + 4) = neu;
-                        edc = *(u8 **)((u8 *)map + 0x24EDC);
-                        *(u8 **)((u8 *)map + 0x24EDC) = edc + 6;
-                        ((u8 *)map + 0x20000)[0x4EE1]++;
-                        costs = *(s16 **)((u8 *)map + 0x14190);
-                        costs[((s8)nx + 1) + ((s8)ny << 6)] = (s16)neu;
+                        edc = self->write;
+                        self->write = edc + 6;
+                        self->count++;
+                        costs = self->costs;
+                        costs[((s8)nextCoord) + ((s8)ny << 6)] = (s16)neu;
                     }
                 }
                 break;
             }
 
-            edc = *(u8 **)((u8 *)map + 0x24EDC);
+            edc = self->write;
             edc[2] = 0x10;
-            ed8 += 6;
-            *(u8 **)((u8 *)map + 0x24ED8) = ed8;
-        } while (ed8[2] != 0x10);
+            ed8 = self->read;
+            self->read = ed8 + 6;
+            ed8 = self->read;
+        }
     }
 }
 

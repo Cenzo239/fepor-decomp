@@ -87,6 +87,8 @@ extern u8 gMapObjEventList[];
 #include "global.h"
 extern u8 gBattleState[];
 
+#pragma push
+#pragma opt_lifetimes off
 u8 fn_8014BC10(void *arg0) {
     void *fn_80019F04(u8);
     void Allegiance_FillMask(s32, void *);
@@ -131,7 +133,8 @@ u8 fn_8014BC10(void *arg0) {
             }
         }
     }
-    score = 0x45 - (u8)g1;
+    score = (u8)g1;
+    score = 0x45 - score;
     id = *(u8 *)((u8 *)self + 0x10);
     if (id < 0x5A) {
         g2 = 0x2D;
@@ -172,8 +175,7 @@ u8 fn_8014BC10(void *arg0) {
         Allegiance_FillMask(4, flags);
         base = gUnits;
         flagp = flags;
-        i = 1;
-        for (ctr = 0x35; ctr != 0; ctr--) {
+        for (i=1;i<160;i++) {
             if ((u8)i != 0) {
                 unit = base + ((u8)i - 1) * 0x280;
             } else {
@@ -183,29 +185,8 @@ u8 fn_8014BC10(void *arg0) {
                 flagp[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
                 n += *(u16 *)((u8 *)unit + 0x22C);
             }
-            i += 1;
-            if ((u8)i != 0) {
-                unit = base + ((u8)i - 1) * 0x280;
-            } else {
-                unit = NULL;
-            }
-            if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
-                flagp[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
-                n += *(u16 *)((u8 *)unit + 0x22C);
-            }
-            i += 1;
-            if ((u8)i != 0) {
-                unit = base + ((u8)i - 1) * 0x280;
-            } else {
-                unit = NULL;
-            }
-            if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
-                flagp[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0) {
-                n += *(u16 *)((u8 *)unit + 0x22C);
-            }
-            i += 1;
         }
-        tbl = fn_80019F04(id);
+        tbl = fn_80019F04(*(u8 *)((u8 *)self + 0x10));
         g3 = 0x45;
         if (n >= *(u8 *)((u8 *)tbl + 0x5F)) {
             g3 = 0x44;
@@ -223,7 +204,7 @@ u8 fn_8014BC10(void *arg0) {
     score += 0x45 - (u8)g3;
     return (u8)(0x45 - score / 3);
 }
-
+#pragma pop
 s32 fn_8014BEE0(u8 *self) {
 void Allegiance_FillMask(s32,u8*);
 u8 mask[4];

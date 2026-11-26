@@ -69,11 +69,11 @@ void fn_8008F4BC(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_EndPrim(void);
     void Prim2D_SetColorPacked(BorderColor *);
-    extern const f32 lbl_80369754;
+    extern f32 lbl_80369754;
     extern const f32 gZeroF;
-    extern const f64 lbl_80369770;
-    extern const f32 lbl_80369778;
-    extern const f32 lbl_8036977C;
+    extern f64 lbl_80369770;
+    extern f32 lbl_80369778;
+    extern f32 lbl_8036977C;
 
     BorderColor d3_1, d2_1, d1_1, d0_1, c3_1, c2_1, c1_1, c0_1;
     BorderColor d3_2, d2_2, d1_2, d0_2, c3_2, c2_2, c1_2, c0_2;

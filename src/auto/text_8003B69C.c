@@ -1234,7 +1234,7 @@ void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
  layer[(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6)]=saved;
 }
 
-#pragma global_optimizer on
+#pragma push
 void fn_8003CE88(void *unit, s32 range) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer on
@@ -1254,23 +1254,18 @@ Map_FillLayer(gBattleMap, 5, -1);
 fn_800227F8(gBattleMap, *(void **)((u8 *)unit + 0x18C));
 sy = (s8)y;
 sx = (s8)x;
-for (y = (s8)gBattleMap[9]; y <= (s8)gBattleMap[11] - 1; y++) {
-    x = (s8)gBattleMap[8];
+for (y = *(s8 *)(gBattleMap+9); y <= (s8)gBattleMap[11] - 1; y++) {
+    dy = sy - y;
+    negativeDy = -dy;
+    row = gBattleMap + ((s8)y << 6);
+    x = *(s8 *)(gBattleMap+8);
     for (; x <= (s8)gBattleMap[10] - 1; x++) {
         s32 dx, absoluteY;
-        dy = sy - y;
-        negativeDy = -dy;
-        row = gBattleMap + ((s8)y << 6);
-        if (dy < 0) {
-            absoluteY = negativeDy;
-        } else {
-            absoluteY = dy;
-        }
-        if (sx - x < 0) {
-            dx = -(sx - x);
-        } else {
-            dx = sx - x;
-        }
+
+        if (dy < 0) absoluteY = negativeDy;
+        else absoluteY = dy;
+        if (sx - x < 0) dx = -(sx - x);
+        else dx = sx - x;
         if (dx + absoluteY <= range) {
             if (row[(s8)x + 0xD] == 0 && (s8)row[(s8)x + 0xE18E] == 0 && row[(s8)x + 0x200D] != 0 &&
                 fn_8002134C(gBattleMap, (s8)x, (s8)y) <= 30000) {
@@ -1280,7 +1275,7 @@ for (y = (s8)gBattleMap[9]; y <= (s8)gBattleMap[11] - 1; y++) {
     }
 }
 }
-
+#pragma pop
 u8 Unit_CalcHitRate(void *arg0, void *arg1) {
     s32 Unit_GetMagAtk(void *);
     s32 fn_8003A778(void *);

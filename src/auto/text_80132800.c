@@ -4915,35 +4915,71 @@ extern "C" void fn_80139884(void *arg0, s32 arg1)
 }
 #pragma cplusplus reset
 
+#pragma push
 #pragma cplusplus on
+#pragma opt_common_subs off
 extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
-struct Obj { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual s32 v11()=0; };
-struct Point { s16 x; s16 y; };
-struct Point *fn_8013F748(void *, struct Point *, struct Point *);
-Point out2,in2,in,out;
-if (*(s16 *)((u8 *)arg1+0x4e)!=0x7fff) {
-s32 width=((Obj*)arg1)->v11();
-s32 index=*(s16*)((u8*)arg1+0x4e);
-s32 cols=*(s16*)((u8*)arg1+0x58);
-s32 scroll=*(s16*)((u8*)arg1+0x56);
-s32 height=*(s16*)((u8*)arg1+0x5a);
-s32 x=*(s16*)((u8*)arg1+0x62);
-s32 y=*(s16*)((u8*)arg1+0x64);
-s16 row=index/cols;
-s16 col=index%cols;
-s16 adj=row-scroll;
-in.x=width*col+x;
-in.y=height*adj+y;
-*arg0=*(s32*)fn_8013F748(arg1,&out,&in);
-} else {
-s32 top=*(s16*)((u8*)arg1+0x14);
-s32 bottom=*(s16*)((u8*)arg1+0x18);
-s32 x=*(s16*)((u8*)arg1+0x62);
-in2.x=x; in2.y=bottom-top;
-*arg0=*(s32*)fn_8013F748(arg1,&out2,&in2);
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual s32 v11() = 0;
+    };
+    struct Point {
+        s16 x;
+        s16 y;
+    };
+    struct Point *fn_8013F748(void *, struct Point *, struct Point *);
+    struct Point out2;
+    struct Point in2;
+    struct Point in;
+    struct Point out;
+    unsigned vret;
+    s16 v4e;
+    s16 v58;
+    s16 v56;
+    s16 v5a;
+    s16 v62;
+    s16 v64;
+    u32 quot;
+    s16 rem;
+    s16 adj;
+    s16 x;
+    s16 y;
+
+    v4e = *(s16 *)((u8 *)arg1 + 0x4E);
+    if (v4e != 0x7FFF) {
+        vret = ((Obj *)arg1)->v11();
+        v4e = *(s16 *)((u8 *)arg1 + 0x4E);
+        v58 = *(s16 *)((u8 *)arg1 + 0x58);
+        v56 = *(s16 *)((u8 *)arg1 + 0x56);
+        quot = v4e / v58;
+        v5a = *(s16 *)((u8 *)arg1 + 0x5A);
+        v62 = *(s16 *)((u8 *)arg1 + 0x62);
+        v64 = *(s16 *)((u8 *)arg1 + 0x64);
+        rem = (s16)(v4e - quot * v58);
+        adj = (s16)((s16)quot - v56);
+        x = (s16)(vret * rem + v62);
+        y = (s16)(v5a * adj + v64);
+        in.x = x;
+        in.y = y;
+        *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
+    } else {
+        s16 diff = *(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14);
+        in2.x = *(s16 *)((u8 *)arg1 + 0x62);
+        in2.y = diff;
+        *arg0 = *(s32 *)fn_8013F748(arg1, &out2, &in2);
+    }
 }
-}
-#pragma cplusplus reset
+#pragma pop
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on

@@ -160,7 +160,7 @@ s32 fn_80208D18(void) {
     s64 __div2i(s64, s64);
     s32 state;
     s32 enabled;
-    s32 pad;
+    
     s64 now;
     s32 soft;
     u32 freq;
@@ -171,15 +171,12 @@ s32 fn_80208D18(void) {
 
     enabled = OSDisableInterrupts();
     now = __OSGetSystemTime();
-    pad = 0;
+    
 
     if (!(*(u32 *)0xCC003000 & 0x10000)) {
         if (lbl_803684FC == 0) {
-            soft = 1;
-            lbl_803684FC = soft;
-            if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
-                soft = 0;
-            }
+            lbl_803684FC = 1;
+            soft = ResetTimeIsSet(((u64)(u32)lbl_80368508 << 32 | lbl_8036850C), 1, 0);
             lbl_80368514 = (u32)now;
             state = soft;
             lbl_80368510 = (u32)((u64)now >> 32);
@@ -237,7 +234,7 @@ s32 fn_80208D18(void) {
         }
     }
 
-    (void)pad;
+    
     OSRestoreInterrupts(enabled);
     return state;
 }

@@ -439,20 +439,22 @@ void fn_8022D0DC(void *heap, void *ptr, u32 size) {
 }
 
 void fn_8022CDD0(void *);
-#pragma global_optimizer off
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 3
+#pragma dont_inline on
+#pragma opt_propagation off
 void fn_8022D234(void **arg0, void *arg1) {
-    u32 *block;
     u32 sizeWord;
     u32 heapRaw;
     u32 size;
     u32 *nextHeader;
+    u32 *block;
     u32 *heap;
     s32 off;
     u32 *listHead;
-    u32 *p;
-    u32 prevSize;
     u32 *prev;
+    u32 prevSize;
+    u32 *p;
     u32 *bck;
     u32 sz;
     u32 nextSize;
@@ -564,8 +566,7 @@ void fn_8022D234(void **arg0, void *arg1) {
         fn_8022CDD0(heap);
     }
 }
-#pragma opt_strength_reduction reset
-#pragma global_optimizer reset
+#pragma pop
 s32 __flush_all(void) {
     s32 fflush(void *);
     extern char __files[];

@@ -900,8 +900,8 @@ void fn_8020D5E4(u32 arg0) {
     }
 
     if (lbl_803685B8 != 0) {
-        finished = (DVDReadyCommand *)executing_80368598;
         ResumeFromHere_803685C0 = 2;
+        finished = (DVDReadyCommand *)executing_80368598;
         executing_80368598 = DummyCommandBlock_80339F80;
         lbl_803685B8 = 0;
         finished->state = 10;

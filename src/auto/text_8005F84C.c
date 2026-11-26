@@ -8759,7 +8759,7 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
     void *e3;
   } Entries;
   u8 *base = lbl_80311CA8;
-  s32 *table = (s32 *) (base + 0x4c);
+  s32 *table = (s32 *) ((((u32) base) & 0xFFFFu) + 0x4c);
   Entries *entries = (Entries *) (((u32) base) + 0x6c);
   entries->e0 = table;
   table = (s32 *) entries->e0;

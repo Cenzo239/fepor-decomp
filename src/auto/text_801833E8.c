@@ -694,10 +694,10 @@ if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
 #pragma optimization_level 3
-void *fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void *Process_Create(void *, u32);
-    void MuFade_UnlinkSame(void *, void *);
+void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
+    void fn_8000A388(void *, void *, void *);
+    void *fn_8000CAF0(void *, u32);
+    void fn_80185078(void *, void *);
     extern u8 lbl_80295B64[];
     u8 sp8[0x34];
     u32 var_r31;
@@ -709,11 +709,11 @@ void *fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
-    GfxEnt_ForEachKey(lbl_80295B64, MuFade_UnlinkSame, sp8);
+    fn_8000A388(lbl_80295B64, fn_80185078, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = Process_Create(lbl_80295B64, var_r31);
+    temp_r3 = fn_8000CAF0(lbl_80295B64, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     a = arg1[0];
     b = arg1[1];
@@ -723,7 +723,6 @@ void *fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     d = arg1[3];
     ((u8 *)temp_r3)[0x36] = c;
     ((u8 *)temp_r3)[0x37] = d;
-    return temp_r3;
 }
 #pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
@@ -9389,19 +9388,19 @@ extern "C" void fn_8019477C(void *arg0) {
     }
 }
 extern "C" void fn_80194988(void *arg0) {
-    void *Heap_Alloc(s32);
+    void *fn_800C42D8(s32);
     void *fn_80194DA0(void *, s32, s32, s32, s32, s32);
-    void **Unit_GetHeldItemSlot(void *, s32);
+    void **fn_80037BBC(void *, s32);
     void fn_801439F0(void *, void *, void *);
     u8 fn_8014D8DC(void *);
     void fn_80143570(void *);
-    void Ui_AddChild(void *, void *);
+    void fn_801400F4(void *, void *);
     void fn_8011D908(s32, void *);
-    void *Ui_FindChild(void *, s32, s32);
-    void Ui_SetWidgetText(u32, s32);
-    extern struct { void *head; s32 unk4; s32 unk8; } gUnitLists[];
-    extern u8 gBattleState[];
-    extern u32 gConvoy[];
+    void *fn_8013FF94(void *, s32, s32);
+    void fn_801658DC(u32, s32);
+    extern struct { void *head; s32 unk4; s32 unk8; } lbl_802CA264[];
+    extern u8 lbl_80330708[];
+    extern u32 lbl_803200AC[];
 
     struct Obj {
         virtual void v0();
@@ -9439,7 +9438,7 @@ extern "C" void fn_80194988(void *arg0) {
     Panel *panel;
 
     self = arg0;
-    obj = Heap_Alloc(0x12C);
+    obj = fn_800C42D8(0x12C);
     if (obj != NULL) {
         obj = fn_80194DA0(obj, 0x108, 0x84, 0x138, 0xC4, 0x1F4);
     }
@@ -9456,15 +9455,17 @@ extern "C" void fn_80194988(void *arg0) {
     panel->f8A = 0xA;
 
     dst = *(void **)((u8 *)self + 0x40);
-    unit = gUnitLists[0].head;
+    unit = lbl_802CA264[0].head;
     goto loop1_cond;
 loop1_body:
-    for (i = 0; i < 4; i++) {
-        entry = Unit_GetHeldItemSlot(unit, i);
+    i = 0;
+    while (i < 4) {
+        entry = fn_80037BBC(unit, i);
         if (*(u32 *)entry == 0) {
             break;
         }
         fn_801439F0(dst, entry, unit);
+        i += 1;
     }
     i = 0;
     walk = unit;
@@ -9483,15 +9484,17 @@ loop1_cond:
     }
 
     dst = *(void **)((u8 *)self + 0x40);
-    unit = *(void **)((u8 *)gUnitLists + 0x3C);
+    unit = *(void **)((u8 *)lbl_802CA264 + 0x3C);
     goto loop2_cond;
 loop2_body:
-    for (i = 0; i < 4; i++) {
-        entry = Unit_GetHeldItemSlot(unit, i);
+    i = 0;
+    while (i < 4) {
+        entry = fn_80037BBC(unit, i);
         if (*(u32 *)entry == 0) {
             break;
         }
         fn_801439F0(dst, entry, unit);
+        i += 1;
     }
     i = 0;
     walk = unit;
@@ -9509,9 +9512,9 @@ loop2_cond:
         goto loop2_body;
     }
 
-    if (fn_8014D8DC(gBattleState) != 0) {
+    if (fn_8014D8DC(lbl_80330708) != 0) {
         dst = *(void **)((u8 *)self + 0x40);
-        walk = gConvoy;
+        walk = lbl_803200AC;
         i = 0;
         while (i < 0xC8) {
             if (*(u32 *)walk != 0) {
@@ -9527,12 +9530,12 @@ loop2_cond:
     *(s32 *)((u8 *)obj + 0x11C) = 3;
     *(u8 *)((u8 *)*(void **)((u8 *)self + 0x40) + 0x4C) = 0;
     ((Obj *)*(void **)((u8 *)self + 0x40))->v11();
-    Ui_AddChild(self, *(void **)((u8 *)self + 0x40));
+    fn_801400F4(self, *(void **)((u8 *)self + 0x40));
     fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x44) + 4), self);
     saved = *(void **)((u8 *)*(void **)((u8 *)self + 0x44) + 0x2C);
-    res = (u32)Ui_FindChild(self, -0x1000, 0);
+    res = (u32)fn_8013FF94(self, -0x1000, 0);
     if (res != 0U) {
-        Ui_SetWidgetText(res, (s32)saved);
+        fn_801658DC(res, (s32)saved);
     }
 }
 

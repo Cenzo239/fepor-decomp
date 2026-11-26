@@ -80,13 +80,13 @@ typedef struct {
 #pragma fp_contract off
 #pragma global_optimizer off
 
-#pragma fp_contract off
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 2
 f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
 {
   float new_var2;
-  extern f32 lbl_80368D78;
-  extern f32 lbl_80368D7C;
+  extern const f32 lbl_80368D78;
+  extern const f32 lbl_80368D7C;
   void *self;
   u8 *row;
   f32 t1;
@@ -182,3 +182,4 @@ f32 fn_8001F53C(void *arg0, s8 arg1, s8 arg2, s32 arg3)
   }
 
 }
+#pragma pop

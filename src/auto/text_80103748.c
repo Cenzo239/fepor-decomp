@@ -961,7 +961,11 @@ s32 fn_801047D0(void) {
     return *(s32 *)((char *)lbl_803679C0 + 0x4);
 }
 
-void *fn_801047DC(u8 *arg0) {
+#pragma cplusplus on
+extern "C" s32 fn_801053E4(s32,s32,u16 *,void *);
+extern "C" s32 fn_80105474(s32,s32,void *,void *);
+extern "C" u32 fn_80104930(u16 *,u16);
+extern "C" void *fn_801047DC(u8 *arg0) {
     u16 sp8;
     u8 is_double;
     u16 code;
@@ -970,34 +974,31 @@ void *fn_801047DC(u8 *arg0) {
     void *end;
     void *start;
     void *entry;
-    s32 fn_801053E4(s32,s32,u16 *,void *);
-    s32 fn_80105474(s32,s32,void *,void *);
-    u32 fn_80104930(u16 *,u16);
     extern void *lbl_803679C0;
     if (((arg0[0]>=0x81U && arg0[0]<=0x9FU)||(arg0[0]>=0xE0U && arg0[0]<=0xFCU)) &&
        ((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
     else is_double=0;
     if(is_double) {
         code=arg0[1];
-        code=__rlwimi(code, (s32)*(s8 *)arg0, 8,16,23);
+        code=((s32)*(s8 *)arg0 << 8 & 0xFF00) | code;
     } else code=*(s8 *)arg0 & 0xFF;
     sp8=code;
-    ctx=lbl_803679C0;
+    ctx=(void **)lbl_803679C0;
     if(*(u16 *)ctx[3]!=code) {
         base=ctx[1];
         start=(u8 *)base+*(u16 *)((u8 *)base+0x22);
         end=(u8 *)start+((s32)ctx[2]<<4);
-        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,fn_80104930);
+        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,(void *)fn_80104930);
         entry=ctx[3];
         if(end==entry || *(u16 *)entry!=sp8) {
-            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,fn_80104930);
+            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,(void *)fn_80104930);
             entry=ctx[3];
             if(end==entry || *(u16 *)entry!=0x8199U) ctx[3]=start;
         }
     }
     return ctx[3];
 }
-
+#pragma cplusplus off
 u32 fn_80104930(u16 *arg0, u16 arg1) {
     return *arg0 < arg1;
 }
@@ -1218,6 +1219,8 @@ u16 fn_80104E58(void) {
 }
 
 extern u16 lbl_80366E80;
+#pragma push
+#pragma optimization_level 3
 s32 fn_80104E68(u8 *arg0) {
     u16 sp8;
     u8 is_double;
@@ -1227,68 +1230,79 @@ s32 fn_80104E68(u8 *arg0) {
     void *end;
     void *start;
     void *entry;
-    s32 fn_801053E4(s32,s32,u16 *,void *);
-    s32 fn_80105474(s32,s32,void *,void *);
-    u32 fn_80104930(u16 *,u16);
+    s32 fn_801053E4(s32, s32, u16 *, void *);
+    s32 fn_80105474(s32, s32, void *, void *);
+    u32 fn_80104930(u16 *, u16);
     extern void *lbl_803679C0;
-    ctx=lbl_803679C0;
-    if (((arg0[0]>=0x81U && arg0[0]<=0x9FU)||(arg0[0]>=0xE0U && arg0[0]<=0xFCU)) &&
-       ((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
-    else is_double=0;
-    if(is_double) {
-        u32 low=arg0[1];
-        arg0=(u8 *)(s32)*(s8 *)arg0;
-        code=__rlwimi(low,(u32)arg0,8,16,23);
-    } else code=*(s8 *)arg0 & 0xFF;
-    sp8=code;
-    if(*(u16 *)ctx[3]!=code) {
-        base=ctx[1];
-        start=(u8 *)base+*(u16 *)((u8 *)base+0x22);
-        end=(u8 *)start+((s32)ctx[2]<<4);
-        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,fn_80104930);
-        entry=ctx[3];
-        if(end==entry || *(u16 *)entry!=sp8) {
-            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,fn_80104930);
-            entry=ctx[3];
-            if(end==entry || *(u16 *)entry!=0x8199U) ctx[3]=start;
+    u8 c0 = arg0[0];
+    ctx = lbl_803679C0;
+    if (((c0 >= 0x81U && c0 <= 0x9FU) || (c0 >= 0xE0U && c0 <= 0xFCU)) &&
+        ((arg0[1] >= 0x40U && arg0[1] <= 0x7EU) || (arg0[1] >= 0x80U && arg0[1] <= 0xFCU)))
+        is_double = 1;
+    else
+        is_double = 0;
+    if (is_double) {
+        u32 low = arg0[1];
+        arg0 = (u8 *)(s32)*(s8 *)arg0;
+        code = __rlwimi(low, (u32)arg0, 8, 16, 23);
+    } else
+        code = *(s8 *)arg0 & 0xFF;
+    sp8 = code;
+    if (*(u16 *)ctx[3] != code) {
+        base = ctx[1];
+        start = (u8 *)base + *(u16 *)((u8 *)base + 0x22);
+        end = (u8 *)start + ((s32)ctx[2] << 4);
+        ctx[3] = (void *)fn_801053E4((s32)start, (s32)end, &sp8, fn_80104930);
+        entry = ctx[3];
+        if (end == entry || *(u16 *)entry != sp8) {
+            ctx[3] = (void *)fn_80105474((s32)start, (s32)end, &lbl_80366E80, fn_80104930);
+            entry = ctx[3];
+            if (end == entry || *(u16 *)entry != 0x8199U) ctx[3] = start;
         }
     }
-    return *(s8 *)((u8 *)ctx[3]+12);
+    return *(s8 *)((u8 *)ctx[3] + 12);
 }
-
+#pragma push
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 s32 fn_80104FC4(u8 **arg0) {
     extern void *lbl_803679C0;
     extern u16 lbl_80366E80;
     u32 fn_80104930(u16 *, u16);
     s32 fn_801053E4(s32, s32, u16 *, u32 (*)(u16 *, u16));
     s32 fn_80105474(s32, s32, u16 *, u32 (*)(u16 *, u16));
+    u8 *str;
     u8 *ctx;
     u8 *file;
-    u8 *base;
     u8 *end;
+    u8 *base;
     u8 *found;
     u8 *next;
     u16 code;
     u16 tmp;
     u8 isDouble;
+    u8 c0;
+    u8 c1;
     s32 result;
-    u8 *str;
 
     str = *arg0;
     ctx = lbl_803679C0;
-    if ((*str >= 0x81 && *str <= 0x9F) ||
-        (*str >= 0xE0 && *str <= 0xFC &&
-         ((str[1] >= 0x40 && str[1] <= 0x7E) ||
-          (str[1] >= 0x80 && str[1] <= 0xFC)))) {
-        isDouble = 1;
-    } else {
-        isDouble = 0;
+    c0 = *str;
+    if ((c0 >= 0x81 && c0 <= 0x9F) || (c0 >= 0xE0 && c0 <= 0xFC)) {
+        c1 = str[1];
+        if ((c1 >= 0x40 && c1 <= 0x7E) || (c1 >= 0x80 && c1 <= 0xFC)) {
+            isDouble = 1;
+            goto after_sjis;
+        }
     }
+    isDouble = 0;
+after_sjis:
 
     if (isDouble != 0) {
-        tmp = (u16)(str[1] | (((s8)str[0] << 8) & 0xFF00));
+        u8 lo = str[1];
         next = str + 2;
+        tmp = (u16)(lo | (((s8)str[0] << 8) & 0xFF00));
     } else {
         tmp = *str;
         next = str + 1;
@@ -1321,4 +1335,4 @@ done:
     *arg0 = next;
     return result;
 }
-#pragma scheduling on
+#pragma pop

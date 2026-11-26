@@ -596,7 +596,7 @@ void fn_80163C98(s32 *arg0, void *arg1) {
     s16 var5;
     s16 var0;
     s16 temp;
-    temp = *(s16 *)((u8 *)arg1 + 0x4C);
+    temp = Ui_GetCursorSlot_80163C98(arg1);
     if (temp < 0) { var0 = 0; var5 = 0; }
     else {
         var5 = *(s16 *)((u8 *)arg1 + 0x64);

@@ -824,12 +824,19 @@ extern "C" void fn_801AF48C(void *arg0) {
 #pragma global_optimizer on
 extern "C" void fn_801AF6BC(void *arg0)
 {
+    struct Point {
+        s16 x;
+        s16 y;
+        Point() {}
+        Point(s16 xx, s16 yy) : x(xx), y(yy) {}
+    };
+
     void *Ui_FindChild(void *, s32, s32);
-    s32 Ui_ListGetSelected(void *);
+    void *Ui_ListGetSelected(void *);
     void Ui_UpdatePanelWidgets(void *);
     void Ui_AddChild(void *, void *);
-    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
-    void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
+    void Ui_SlideWidgetChild(void *, void *, const Point &, s32);
+    void Ui_SlideWidgetChildMode1(void *, void *, const Point &, s32);
     void Ui_BringChildToFront(void *, void *);
     u8 fn_8014D8DC(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -849,8 +856,7 @@ extern "C" void fn_801AF6BC(void *arg0)
     extern u8 gFShopStrings[];
     extern u8 gBattleState[];
     extern u8 gConvoy[];
-    extern f32 lbl_8036B0AC;
-    extern f64 lbl_8036B0B0;
+    extern const f32 lbl_8036B0AC;
 
     struct Obj {
         virtual void v0(s32) = 0;
@@ -862,100 +868,62 @@ extern "C" void fn_801AF6BC(void *arg0)
         virtual void v6() = 0;
         virtual void v7() = 0;
         virtual void v8() = 0;
-        virtual void v9(s16 *, void *) = 0;
+        virtual Point v9() = 0;
         virtual void v10() = 0;
-        virtual void v11(s32) = 0;
+        virtual void v11(void *) = 0;
     };
 
     volatile u32 sp28;
-    s16 sp24[2];
-    s16 sp20[2];
-    s16 sp1C[2];
-    s16 sp18[2];
-    s16 sp14[2];
-    s16 sp10[2];
-    s16 spC[2];
-    s16 sp8[2];
 
     void *panel;
-    void *sel;
+    register void *sel;
     void *list;
     void *obj;
     void *tmp;
     void *res;
-    void **vt;
 
     u8 skip;
     u32 pressed;
     u32 held;
-    s16 y;
 
     list = *(void **)((u8 *)arg0 + 0x54);
 
     panel = Ui_FindChild(arg0, 4, 0);
-    sel = (void *)Ui_ListGetSelected(list);
+    sel = Ui_ListGetSelected(list);
 
     Ui_UpdatePanelWidgets(arg0);
 
-    if (sel != (void *)Ui_ListGetSelected(list)) {
-        if (sel != NULL && (u32)Ui_ListGetSelected(list) != 0) {
-            s32 arg = Ui_ListGetSelected(list);
+    if (sel != Ui_ListGetSelected(list)) {
+        if (sel != NULL && Ui_ListGetSelected(list) != NULL) {
+            void *arg = Ui_ListGetSelected(list);
             ((Obj *)*(void **)((u8 *)arg0 + 0x60))->v11(arg);
-        } else if (sel != NULL && (u32)Ui_ListGetSelected(list) == 0) {
+        } else if (sel != NULL && Ui_ListGetSelected(list) == NULL) {
             obj = *(void **)((u8 *)arg0 + 0x60);
-            y = *(s16 *)((u8 *)obj + 0xC);
-
-            sp24[0] = 0x260;
-            sp24[1] = y;
-
-            Ui_SlideWidgetChild(arg0, obj, sp24, 1);
+            Ui_SlideWidgetChild(arg0, obj, Point(0x260, *(s16 *)((u8 *)obj + 0xC)), 1);
 
             if (fn_8014D8DC(gBattleState) != 0) {
-                Ui_AddChild(
-                    arg0,
-                    *(void **)((u8 *)arg0 + 0x64)
-                );
-
+                Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x64));
                 obj = *(void **)((u8 *)arg0 + 0x64);
-                y = *(s16 *)((u8 *)obj + 0xC);
-
-                sp20[0] = 0x134;
-                sp20[1] = y;
-
-                Ui_SlideWidgetChildMode1(arg0, obj, sp20, 0);
+                Ui_SlideWidgetChildMode1(arg0, obj, Point(0x134, *(s16 *)((u8 *)obj + 0xC)), 0);
             }
 
             Ui_BringChildToFront(arg0, list);
         } else {
-            Ui_AddChild(
-                arg0,
-                *(void **)((u8 *)arg0 + 0x60)
-            );
-
+            Ui_AddChild(arg0, *(void **)((u8 *)arg0 + 0x60));
             obj = *(void **)((u8 *)arg0 + 0x60);
-            y = *(s16 *)((u8 *)obj + 0xC);
-
-            sp1C[0] = 0x138;
-            sp1C[1] = y;
-
-            Ui_SlideWidgetChildMode1(arg0, obj, sp1C, 1);
+            Ui_SlideWidgetChildMode1(arg0, obj, Point(0x138, *(s16 *)((u8 *)obj + 0xC)), 1);
 
             ((Obj *)*(void **)((u8 *)arg0 + 0x60))->v11(Ui_ListGetSelected(list));
 
             if (fn_8014D8DC(gBattleState) != 0) {
                 obj = *(void **)((u8 *)arg0 + 0x64);
-                y = *(s16 *)((u8 *)obj + 0xC);
-
-                sp18[0] = 0x260;
-                sp18[1] = y;
-
-                Ui_SlideWidgetChild(arg0, obj, sp18, 0);
+                Ui_SlideWidgetChild(arg0, obj, Point(0x260, *(s16 *)((u8 *)obj + 0xC)), 0);
             }
 
             Ui_BringChildToFront(arg0, list);
         }
 
-        sel = (void *)Ui_ListGetSelected(list);
+        sel = Ui_ListGetSelected(list);
     }
 
     *(void **)((u8 *)panel + 0x40) = sel;
@@ -969,28 +937,17 @@ extern "C" void fn_801AF6BC(void *arg0)
         if ((pressed & 0x100) != 0 && sel != NULL) {
             tmp = *(void **)((u8 *)panel + 0x3C);
 
-            Ui_PlaySeCue(
-                gFShopStrings + 0x37E,
-                0x64
-            );
+            Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
 
             if ((*Item_GetFlagsPtr(tmp) & 5ULL) != 0 &&
                 fn_80092F9C(sel) >= 4) {
 
-                TalkUi_ShowMsg(
-                    *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x40)
-                );
-
-                res = *(void **)(
-                    *(u8 **)((u8 *)arg0 + 0x6C) + 0x84
-                );
-
+                TalkUi_ShowMsg(*(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x40));
+                res = *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x84);
                 tmp = Ui_FindChild(arg0, -0x1000, 0);
-
                 if (tmp != NULL) {
                     Ui_SetWidgetText(tmp, res);
                 }
-
                 Process_Goto(arg0, 0x1E);
                 return;
             }
@@ -998,20 +955,12 @@ extern "C" void fn_801AF6BC(void *arg0)
             if ((*Item_GetFlagsPtr(tmp) & 0x18ULL) != 0 &&
                 fn_80092F38(sel) >= 4) {
 
-                TalkUi_ShowMsg(
-                    *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x40)
-                );
-
-                res = *(void **)(
-                    *(u8 **)((u8 *)arg0 + 0x6C) + 0x84
-                );
-
+                TalkUi_ShowMsg(*(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x40));
+                res = *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x84);
                 tmp = Ui_FindChild(arg0, -0x1000, 0);
-
                 if (tmp != NULL) {
                     Ui_SetWidgetText(tmp, res);
                 }
-
                 Process_Goto(arg0, 0x1E);
                 return;
             }
@@ -1025,40 +974,26 @@ extern "C" void fn_801AF6BC(void *arg0)
             *(s16 *)((u8 *)list + 0x4E) == 0x7FFF) {
 
             if (fn_8014D8DC(gBattleState) == 0) {
-                ((Obj *)list)->v9(sp14, list);
-
-                sp28 = *(u32 *)sp14;
-
+                const Point &pt = ((Obj *)list)->v9();
+                sp28 = *(const u32 *)&pt;
                 Ui_CreateMsgPopup(
                     gFShopStrings + 0x38E,
                     arg0,
                     (f32)((volatile s16 *)&sp28)[0],
                     (f32)((volatile s16 *)&sp28)[1]
                 );
-
                 return;
             }
 
-            Ui_PlaySeCue(
-                gFShopStrings + 0x37E,
-                0x64
-            );
+            Ui_PlaySeCue(gFShopStrings + 0x37E, 0x64);
 
             if (Convoy_FindEmpty(gConvoy) < 0) {
-                TalkUi_ShowMsg(
-                    *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x64)
-                );
-
-                res = *(void **)(
-                    *(u8 **)((u8 *)arg0 + 0x6C) + 0x7C
-                );
-
+                TalkUi_ShowMsg(*(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x64));
+                res = *(void **)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x7C);
                 tmp = Ui_FindChild(arg0, -0x1000, 0);
-
                 if (tmp != NULL) {
                     Ui_SetWidgetText(tmp, res);
                 }
-
                 Process_Goto(arg0, 0x21);
                 return;
             }
@@ -1069,77 +1004,52 @@ extern "C" void fn_801AF6BC(void *arg0)
 
         if ((pressed & 0x800) != 0 && sel != NULL) {
             fn_801695BC(sel, arg0, 0x1000000);
-
             *(u8 *)((u8 *)arg0 + 0x68) = 0x18;
-
             Process_Goto(arg0, 0x22);
             return;
         }
 
         if ((pressed & 0x400) != 0 && sel != NULL) {
             fn_801694AC(sel, arg0);
-
             *(u8 *)((u8 *)arg0 + 0x68) = 0x18;
-
             Process_Goto(arg0, 0x23);
             return;
         }
 
         if ((pressed & 0x200) != 0) {
-            y = *(s16 *)((u8 *)list + 0xC);
-
-            sp10[0] = 0x260;
-            sp10[1] = y;
-
-            Ui_SlideWidgetChild(arg0, list, sp10, 0);
+            Ui_SlideWidgetChild(arg0, list, Point(0x260, *(s16 *)((u8 *)list + 0xC)), 0);
 
             if (Ui_FindChild(arg0, 0xA, 0) != NULL) {
                 obj = *(void **)((u8 *)arg0 + 0x60);
-                y = *(s16 *)((u8 *)obj + 0xC);
-
-                spC[0] = 0x260;
-                spC[1] = y;
-
-                Ui_SlideWidgetChild(arg0, obj, spC, 0);
+                Ui_SlideWidgetChild(arg0, obj, Point(0x260, *(s16 *)((u8 *)obj + 0xC)), 0);
             }
 
             obj = *(void **)((u8 *)arg0 + 0x60);
-
             if (obj != NULL) {
                 if (--*(s32 *)((u8 *)obj + 4) == 0) {
                     if (obj != NULL) {
                         ((Obj *)obj)->v0(1);
                     }
                 }
-
                 *(void **)((u8 *)arg0 + 0x60) = NULL;
             }
 
             if (Ui_FindChild(arg0, 0xB, 0) != NULL) {
                 obj = *(void **)((u8 *)arg0 + 0x64);
-                y = *(s16 *)((u8 *)obj + 0xC);
-
-                sp8[0] = 0x260;
-                sp8[1] = y;
-
-                Ui_SlideWidgetChild(arg0, obj, sp8, 0);
+                Ui_SlideWidgetChild(arg0, obj, Point(0x260, *(s16 *)((u8 *)obj + 0xC)), 0);
             }
 
             obj = *(void **)((u8 *)arg0 + 0x64);
-
             if (obj != NULL) {
                 if (--*(s32 *)((u8 *)obj + 4) == 0) {
                     if (obj != NULL) {
                         ((Obj *)obj)->v0(1);
                     }
                 }
-
                 *(void **)((u8 *)arg0 + 0x64) = NULL;
             }
 
-            *(s16 *)((u8 *)panel + 0xE) =
-                (s16)(*(s16 *)((u8 *)panel + 0xA) + 0x108);
-
+            *(s16 *)((u8 *)panel + 0xE) = (s16)(*(s16 *)((u8 *)panel + 0xA) + 0x108);
             *(s16 *)((u8 *)panel + 0x4A) = 0x14;
             *(s16 *)((u8 *)panel + 0x4C) = 0;
 
@@ -1156,10 +1066,7 @@ extern "C" void fn_801AF6BC(void *arg0)
                 Process_Goto(arg0, 0xE);
             }
 
-            Ui_PlaySeCue(
-                gFShopStrings + 0x3A0,
-                0x64
-            );
+            Ui_PlaySeCue(gFShopStrings + 0x3A0, 0x64);
         }
     }
 }

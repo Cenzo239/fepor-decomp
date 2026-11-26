@@ -1132,7 +1132,7 @@ void fn_80070678(void *arg0) {
 #pragma cplusplus reset
 }
 
-void fn_80070798(void *arg0, void *arg1) {
+void fn_80070798(u8 *self, u8 *arg1) {
     void *GfxEnt_Get(s32);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern f32 lbl_803692E0;
@@ -1143,6 +1143,14 @@ void fn_80070798(void *arg0, void *arg1) {
         virtual void v2() = 0;
         virtual void v3() = 0;
         virtual void *v4(void *) = 0;
+    };
+    struct Group {
+        u8 pad[0x40];
+        u8 ent[0x20];
+        s8 count;
+        inline u8 *GetEnt(s32 idx) {
+            return (u8 *)GfxEnt_Get(ent[idx]);
+        }
     };
     struct SelfObj {
         u8 pad[4];
@@ -1167,10 +1175,8 @@ void fn_80070798(void *arg0, void *arg1) {
         virtual s16 v18() = 0;
     };
 
-    u8 *self = (u8 *)arg0;
-    u8 *group = (u8 *)arg1;
+    Group *group = (Group *)arg1;
     s32 i;
-    s16 width;
     s8 count;
     s16 spacing;
     s16 x;
@@ -1178,9 +1184,9 @@ void fn_80070798(void *arg0, void *arg1) {
 
     *(s16 *)(self + 8) = 0;
 
-    for (i = 0; i < *(s8 *)(group + 0x60); i++) {
-        width = Text_MeasureWidth(
-            (*(EntObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4(GfxEnt_Get(group[i + 0x40])),
+    for (i = 0; i < group->count; i++) {
+        s16 width = Text_MeasureWidth(
+            (*(EntObj **)(group->GetEnt(i) + 0x34))->v4(group->GetEnt(i)),
             -1,
             lbl_803692E0);
         if (width >= *(s16 *)(self + 8)) {
@@ -1188,14 +1194,14 @@ void fn_80070798(void *arg0, void *arg1) {
         }
     }
 
-    count = *(s8 *)(group + 0x60);
+    count = group->count;
     spacing = ((SelfObj *)self)->v18() / (count + 1);
     x = spacing;
     y = ((SelfObj *)self)->v17();
 
-    for (i = 0; i < count; i++) {
-        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x30) = x;
-        *(s16 *)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x32) = y;
+    for (s32 j = 0; j < count; j++) {
+        *(s16 *)(group->GetEnt(j) + 0x30) = x;
+        *(s16 *)(group->GetEnt(j) + 0x32) = y;
         x += spacing;
     }
 #pragma cplusplus reset

@@ -106,6 +106,11 @@ static inline int fn_80089490_IsSpecial(u32 v, u8 *base, s32 off) {
     return v == (u32)(base + off);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);

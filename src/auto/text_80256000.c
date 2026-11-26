@@ -4700,7 +4700,8 @@ void fn_8025D9A4(u16 *arg0, u32 arg1)
         current = next;
     }
 }
-#pragma optimization_level reset
+#pragma push
+#pragma optimization_level 3
 s32 fn_8025DAA0(
     void *arg0,
     f32 arg1,
@@ -4791,7 +4792,7 @@ s32 fn_8025DAA0(
 
     return 1;
 }
-
+#pragma pop
 void fn_8025DBF4(void) {
     s32 Sound_Start(u16, u8, s32, s32, u8, s32);
     s32 fn_8024A430(u16);

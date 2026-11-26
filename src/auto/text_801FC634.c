@@ -2389,44 +2389,82 @@ void fn_80201328(void *arg0) {
     Process_ClearFunc(arg0);
 }
 
-void fn_802013C0(s32 arg0) {
-extern s8 lbl_8036844C,lbl_8036844D;
-extern u8 lbl_80339348[],lbl_80339354[],lbl_8029B798[];
-s32 fn_80209A78(void);
-void *Heap_Alloc(u32);
-void fn_8013CE7C(void *);
-void fn_8013CE10(void *);
-void fn_8013CED0(void *,void *);
-u8 *Ui_CreateMenu(void *,s32,s32);
-extern void *lbl_8029B864[];
-u8 *menu;
-u8 *obj;
-s32 flags;
-u8 *label2;
-u8 *label;
-if(lbl_8036844C==0){fn_8013CE7C(lbl_80339348);lbl_8036844C=1;}
-if(lbl_8036844D==0){fn_8013CE10(lbl_80339354);lbl_8036844D=1;}
-label2=lbl_802820B8;
-label=lbl_802820B8;
-*(u8 **)(lbl_80339348+4)=label+0x7E;
-lbl_80339348[8]=1;lbl_80339348[9]|=1;
-*(u8 **)(lbl_80339354+4)=label2+0x91;
-lbl_80339354[8]=1;lbl_80339354[9]|=1;
-obj=Heap_Alloc(0x30);
-if(obj){
-fn_8013CED0(obj,lbl_8029B798);
-*(void **)(obj+4)=lbl_8029B864;
-*(s16 *)(obj+0xC)=0x1C0;*(s16 *)(obj+0xE)=0xAC;
-*(s16 *)(obj+8)=(0x260-(*(s16 (***)(void *))(obj+4))[20](obj))>>1;
-*(s16 *)(obj+10)=0x1A8-(*(s32 (***)(void *))(obj+4))[21](obj);
-obj[0x24]=1;
-}
-*(u8 **)(obj+0x20)=lbl_802820B8+0xA3;
-menu=Ui_CreateMenu(obj,arg0,0);
-flags=fn_80209A78()==0;
-((s8 *)menu)[0x62]=flags;((s8 *)menu)[0x63]=flags;
-}
+#pragma push
+#pragma opt_common_subs on
+#pragma cplusplus on
+extern "C" void fn_802013C0(s32 arg0) {
+    extern s8 lbl_8036844C, lbl_8036844D;
+    extern u8 lbl_80339348[], lbl_80339354[], lbl_8029B798[];
+    s32 fn_80209A78(void);
+    void *Heap_Alloc(u32);
+    void fn_8013CE7C(void *);
+    void fn_8013CE10(void *);
+    void fn_8013CED0(void *, void *);
+    u8 *Ui_CreateMenu(void *, s32, s32);
+    extern void *lbl_8029B864[];
 
+    struct Base {
+        u32 pad;
+    };
+    struct Obj : public Base {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 v18() = 0;
+        virtual s32 v19() = 0;
+    };
+
+    u8 *menu;
+    u8 *obj;
+    bool flags;
+
+    if (lbl_8036844C == 0) {
+        fn_8013CE7C(lbl_80339348);
+        lbl_8036844C = 1;
+    }
+    if (lbl_8036844D == 0) {
+        fn_8013CE10(lbl_80339354);
+        lbl_8036844D = 1;
+    }
+    *(u8 **)(lbl_80339348 + 4) = lbl_802820B8 + 0x7E;
+    lbl_80339348[8] = 1;
+    lbl_80339348[9] |= 1;
+    *(u8 **)(lbl_80339354 + 4) = lbl_802820B8 + 0x91;
+    lbl_80339354[8] = 1;
+    lbl_80339354[9] |= 1;
+    obj = (u8 *)Heap_Alloc(0x30);
+    if (obj) {
+        fn_8013CED0(obj, lbl_8029B798);
+        *(void **)(obj + 4) = lbl_8029B864;
+        *(s16 *)(obj + 0xC) = 0x1C0;
+        *(s16 *)(obj + 0xE) = 0xAC;
+        *(s16 *)(obj + 8) = (0x260 - ((Obj *)obj)->v18()) >> 1;
+        *(s16 *)(obj + 10) = 0x1A8 - ((Obj *)obj)->v19();
+        obj[0x24] = 1;
+    }
+    *(u8 **)(obj + 0x20) = lbl_802820B8 + 0xA3;
+    menu = Ui_CreateMenu(obj, arg0, 0);
+    flags = (fn_80209A78() == 0);
+    ((s8 *)menu)[0x62] = flags;
+    ((s8 *)menu)[0x63] = flags;
+}
+#pragma cplusplus off
+#pragma pop
 void fn_80201534(void) {
     extern u8 gUiContext[];
     extern s32 gGameFlags;

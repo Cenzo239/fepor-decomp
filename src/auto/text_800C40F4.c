@@ -29534,7 +29534,7 @@ Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
 Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
-s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(arg0,1,arg1); }
+s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(1,arg0,arg1); }
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
     return (u32) M2C_FIELD(arg0, u32 *, 0x24C) < (u32) M2C_FIELD(arg1, u32 *, 0x24C);

@@ -73,8 +73,9 @@ typedef struct {
 } Actor;
 
 
-#pragma cplusplus on
-extern "C" void fn_8001EEEC(s8 *p)
+#pragma push
+#pragma opt_lifetimes off
+void fn_8001EEEC(s8 *p)
 {
 start:
     switch (*p) {
@@ -97,7 +98,7 @@ start:
     p += 1;
     goto start;
 }
-#pragma cplusplus reset
+#pragma pop
 void fn_8001EF7C(void) {
 
 }

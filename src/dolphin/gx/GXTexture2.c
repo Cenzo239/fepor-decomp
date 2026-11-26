@@ -816,37 +816,67 @@ void fn_80223494(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     ((u16 *)__GXData)[1] = 0;
 }
 
-void fn_80223500(s32 arg0, f32 *mtx, s32 arg2) {
-u32 a,b;
-s32 index;
-s8 scale;
-switch(arg0) {
-case 1: case 2: case 3: index=arg0-1; break;
-case 5: case 6: case 7: index=arg0-5; break;
-case 9: case 10: case 11: index=arg0-9; break;
-default: index=0; break;
-}
-index*=3;
-scale=arg2+17;
-a=0;
-a=__rlwimi(a,(s32)(1024.0f*mtx[0]),0,21,31);
-a=__rlwimi(a,(s32)(1024.0f*mtx[3]),11,10,20);
-a=__rlwimi(a,scale,22,8,9);
-a=__rlwimi(a,index+6,24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=a;
-b=0;
-b=__rlwimi(b,(s32)(1024.0f*mtx[1]),0,21,31);
-b=__rlwimi(b,(s32)(1024.0f*mtx[4]),11,10,20);
-b=__rlwimi(b,((u32)scale>>2)&3,22,8,9);
-b=__rlwimi(b,index+7,24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=b;
-a=0;
-a=__rlwimi(a,(s32)(1024.0f*mtx[2]),0,21,31);
-a=__rlwimi(a,(s32)(1024.0f*mtx[5]),11,10,20);
-a=__rlwimi(a,((u32)scale>>4)&3,22,8,9);
-a=__rlwimi(a,index+8,24,0,7);
-GXWGFifo.u8=0x61; GXWGFifo.u32=a;
-__GXData[1]=0;
+void fn_80223500(s32 mtx_id, const f32 offset[2][3], s8 scale_exp) {
+    s32 mtx[6];
+    u32 reg;
+    s32 id;
+
+    switch (mtx_id) {
+    case 1:
+    case 2:
+    case 3:
+        id = mtx_id - 1;
+        break;
+    case 5:
+    case 6:
+    case 7:
+        id = mtx_id - 5;
+        break;
+    case 9:
+    case 10:
+    case 11:
+        id = mtx_id - 9;
+        break;
+    default:
+        id = 0;
+        break;
+    }
+
+    mtx[0] = (s32)(1024.0f * offset[0][0]);
+    mtx[1] = (s32)(1024.0f * offset[1][0]);
+    scale_exp += 17;
+
+    reg = 0;
+    reg = __rlwimi(reg, mtx[0], 0, 21, 31);
+    reg = __rlwimi(reg, mtx[1], 11, 10, 20);
+    reg = __rlwimi(reg, scale_exp & 3, 22, 8, 9);
+    reg = __rlwimi(reg, id * 3 + 6, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg;
+
+    mtx[2] = (s32)(1024.0f * offset[0][1]);
+    mtx[3] = (s32)(1024.0f * offset[1][1]);
+
+    reg = 0;
+    reg = __rlwimi(reg, mtx[2], 0, 21, 31);
+    reg = __rlwimi(reg, mtx[3], 11, 10, 20);
+    reg = __rlwimi(reg, (scale_exp >> 2) & 3, 22, 8, 9);
+    reg = __rlwimi(reg, id * 3 + 7, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg;
+
+    mtx[4] = (s32)(1024.0f * offset[0][2]);
+    mtx[5] = (s32)(1024.0f * offset[1][2]);
+
+    reg = 0;
+    reg = __rlwimi(reg, mtx[4], 0, 21, 31);
+    reg = __rlwimi(reg, mtx[5], 11, 10, 20);
+    reg = __rlwimi(reg, (scale_exp >> 4) & 3, 22, 8, 9);
+    reg = __rlwimi(reg, id * 3 + 8, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
+    GXWGFifo.u32 = reg;
+
+    __GXData[1] = 0;
 }
 
 void fn_80223678(s32 arg0,s32 arg1,s32 arg2) {
@@ -979,7 +1009,7 @@ void __GXFlushTextureState(void)
 void GXSetNumTexGens(s32 arg0, u32 arg1)
 {
     extern u8 lbl_8029E2E0[];
-    u8 *table;
+    u32 *table;
     u32 *p;
     u32 *q;
     u8 *gx;
@@ -987,14 +1017,14 @@ void GXSetNumTexGens(s32 arg0, u32 arg1)
     u32 value;
     u32 other;
 
-    table = lbl_8029E2E0;
+    table = (u32 *)lbl_8029E2E0;
 
     if (arg0 == 0) {
-        p = (u32 *)(table + (arg1 << 2));
-        q = (u32 *)((u8 *)p + 0x28);
+        p = table + arg1;
+        q = p + 0xA;
     } else {
-        p = (u32 *)(table + (arg1 << 2) + 0x14);
-        q = (u32 *)(table + (arg1 << 2) + 0x3C);
+        q = table + arg1 + 0xF;
+        p = table + arg1 + 5;
     }
 
     gx = (u8 *)__GXData;

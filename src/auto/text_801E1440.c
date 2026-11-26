@@ -2479,7 +2479,7 @@ static inline void MemStream_Init_801E38E0(MemStream_801E38E0 *w, void *data) {
 }
 
 void fn_801E38E0(void *unused, void *data) {
-    struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
+    MemStream_801E38E0 w;
     extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
     extern u16 gStreamBaseVtbl[];
     void fn_8017A38C(void *, void *);
@@ -2492,16 +2492,7 @@ void fn_801E38E0(void *unused, void *data) {
     void UnitPair_Write(void *, void *);
     void fn_800C4588(void *);
 
-    w.vtbl = gStreamBaseVtbl;
-    w.cur = 0;
-    w.start = 0;
-    w.size = 0;
-    w.owned = 0;
-    w.vtbl = gMemStreamVtbl;
-    w.owned = 0;
-    w.start = data;
-    w.cur = data;
-    w.size = 0x100000;
+    MemStream_Init_801E38E0(&w, data);
     fn_8017A38C(&w, gSaveStrings + 0x14F);
     BattleState_Write(gBattleState, &w);
     fn_8017A38C(&w, gSaveStrings + 0x154);

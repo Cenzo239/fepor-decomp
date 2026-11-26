@@ -511,8 +511,8 @@ void fn_80080698(void *arg0) {
     Color color2;
     s32 arrB[4];
     s32 arrA[4];
-    u8 *unit;
     u8 *unit2;
+    u8 *unit;
     f32 tx, sh, sw, h, w, wx, wy;
     f32 by, bx, x, y;
     u16 *tex;
@@ -521,7 +521,6 @@ void fn_80080698(void *arg0) {
     s32 i;
     void *letter, *text;
     s32 icon;
-    u8 *strings;
 
     y = lbl_80369580 + *(f32 *)((u8 *)arg0 + 0x18);
     unit = *(u8 **)((u8 *)*(void **)((u8 *)arg0 + 0x58) + 0x18C);
@@ -533,6 +532,7 @@ void fn_80080698(void *arg0) {
     Prim2D_PrepareTex();
 
     if (*(u16 *)(unit + 0x3A) & 0x20) {
+        u8 *strings;
         str = Msg_Expand(gUiStrings + 0x26B);
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x12);

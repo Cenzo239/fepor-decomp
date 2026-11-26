@@ -6412,7 +6412,7 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
 s32 fn_8010F3F4(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4)
 {
     extern u8 gBattleMap[];
-    extern u8 lbl_80273B78[];
+    extern s16 lbl_80273B78[];
 
     extern s32 fn_800F7994(void *, s32, s32);
     extern s32 fn_800F7838(void *, s32, s32);
@@ -6429,7 +6429,7 @@ s32 fn_8010F3F4(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4)
     s32 i;
 
     base = gBattleMap;
-    direction = (const s16 *)lbl_80273B78;
+    direction = lbl_80273B78;
     ax = arg1;
     ay = arg2;
     bestScore = (s32)0x80000000;

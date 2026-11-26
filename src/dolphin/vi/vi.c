@@ -1055,7 +1055,7 @@ static inline s32 cntlzd(u64 bit) {
 #pragma push
 #pragma optimization_level 3
 #pragma global_optimizer off
-#pragma opt_dead_assignments off
+#pragma opt_common_subs off
 void VIFlush(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -1067,15 +1067,15 @@ void VIFlush(void) {
         u8 pad[0x30];
         void *unk120;
     } *vi = (void *)lbl_8033A068;
-    u32 enabled;
+    s32 enabled;
     s32 regIndex;
     u16 *p;
 
     enabled = OSDisableInterrupts();
-    *(s32 *)&lbl_80368638 |= *(s32 *)&lbl_80368628;
-    *(s32 *)&lbl_80368628 = 0;
-    *(s32 *)&lbl_80368644 |= *(s32 *)&lbl_80368634;
-    *(s32 *)&lbl_80368640 |= *(s32 *)&lbl_80368630;
+    *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
+    *(u32 *)&lbl_80368628 = 0;
+    *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
+    *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
 
     while (*(u64 *)&lbl_80368630 != 0) {
         regIndex = cntlzd(*(u64 *)&lbl_80368630);

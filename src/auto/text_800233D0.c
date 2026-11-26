@@ -878,8 +878,8 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     };
     struct { u8 *ptr; } holder;
 
-    s32 index;
-    s32 total;
+    struct { s32 value; } cursor;
+    struct { s32 value; } accumulator;
     u8 *object;
     s32 status;
     void *item;
@@ -890,50 +890,50 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     s32 height;
     s32 neg;
 
-    object = (u8 *)Process_CreateEx(lbl_80284548);
+    object = (u8 *)Process_CreateEx(lbl_80284548, arg1);
 
     if ((u8)arg2 != 0) {
         object[0x2B] = (u8)arg2;
-        index = total = 0;
+    }
+        accumulator.value = 0;
+        cursor.value = accumulator.value;
         neg = -1;
-        object[0x60] = total;
+        object[0x60] = accumulator.value;
         *(s8 *)(object + 0x62) = neg;
 
         while (1) {
-            item = ((Menu *)arg0)->v15(index);
+            item = ((Menu *)arg0)->v15(cursor.value);
 
             if (item == NULL) {
                 break;
             }
 
-            status = ((Item *)item)->i7(item, (u8)index);
+            status = ((Item *)item)->i7(item, (u8)cursor.value);
 
-            if ((u8)status == 3) {
-                break;
-            }
+            if ((u8)status != 3) {
 
             if ((u8)status == 1) {
-                if ((s8)object[0x62] < 0) {
-                    object[0x62] = object[0x60];
-                    status = 0;
-                }
+                if ((s8)object[0x62] < 0) object[0x62] = object[0x60];
+                status = 0;
+
+            }
 
                 holder.ptr = (u8 *)Process_Create(lbl_80284588, object);
 
                 *(void **)(holder.ptr + 0x34) = item;
-                holder.ptr[0x3A] = (u8)index;
+                holder.ptr[0x3A] = (u8)cursor.value;
                 holder.ptr[0x3B] = object[0x60];
                 holder.ptr[0x39] = (u8)status;
 
                 *(s16 *)(holder.ptr + 0x30) = ((Menu *)arg0)->v16();
 
                 value = ((Menu *)arg0)->v17();
-                *(s16 *)(holder.ptr + 0x32) = total + value;
+                *(s16 *)(holder.ptr + 0x32) = accumulator.value + value;
 
                 *(u32 *)(holder.ptr + 0x3C) = 0;
 
                 value = ((Menu *)arg0)->v20();
-                total += value;
+                accumulator.value += value;
 
                 value = fn_8000B920(holder.ptr);
 
@@ -943,13 +943,12 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
                     object[0x40 + slot] = (u8)value;
                 }
             }
-
-            index++;
+            cursor.value++;
         }
-    }
 
     if ((s8)object[0x62] < 0) {
         object[0x62] = 0;
+    }
         *(void **)(object + 0x3C) = arg0;
 
         *(s16 *)(object + 0x30) = ((Menu *)arg0)->v21();
@@ -960,12 +959,10 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
         if ((s16)value != 0) {
             *(s16 *)(object + 0x36) = ((Menu *)arg0)->v19();
         } else {
-            total = ((Menu *)arg0)->v20();
-            total *= (s8)object[0x60];
+            accumulator.value = ((Menu *)arg0)->v20() * (s8)object[0x60];
             height = ((Menu *)arg0)->v17();
-            *(s16 *)(object + 0x36) = height + total;
+            *(s16 *)(object + 0x36) = height + accumulator.value;
         }
-    }
 
     object[0x63] = object[0x62];
     *(s16 *)(object + 0x38) = -1;

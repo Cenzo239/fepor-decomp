@@ -4098,8 +4098,9 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 }
 
 #pragma push
-#pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma optimization_level 3
+#pragma opt_lifetimes off
+#pragma opt_pointer off
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
