@@ -1,12 +1,5 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
-static inline void Model_CopyBaseMatrices(u8 *dst, void *model) {
-    void PSMTXCopy(void *, void *);
-    s32 i;
-    u8 *src = M2C_FIELD(model, u8 **, 0xC);
-    for (i = 0; i < M2C_FIELD(model, s32 *, 8); dst += 0x30, i++, src += 0xF4)
-        PSMTXCopy(src + 0xBC, dst);
-}
 #include "global.h"
 #pragma push
 #pragma inline on
