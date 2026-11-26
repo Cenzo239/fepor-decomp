@@ -695,9 +695,9 @@ anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
 #pragma optimization_level 3
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
-    void fn_8000A388(void *, void *, void *);
-    void *fn_8000CAF0(void *, u32);
-    void fn_80185078(void *, void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_Create(void *, u32);
+    void MuFade_UnlinkSame(void *, void *);
     extern u8 lbl_80295B64[];
     u8 sp8[0x34];
     u32 var_r31;
@@ -709,11 +709,11 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
-    fn_8000A388(lbl_80295B64, fn_80185078, sp8);
+    GfxEnt_ForEachKey(lbl_80295B64, MuFade_UnlinkSame, sp8);
     if (var_r31 == 0U) {
         var_r31 = 3U;
     }
-    temp_r3 = fn_8000CAF0(lbl_80295B64, var_r31);
+    temp_r3 = Process_Create(lbl_80295B64, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     a = arg1[0];
     b = arg1[1];
@@ -4461,20 +4461,20 @@ void fn_8018C9CC(void *arg0) {
 extern u8 LightScale_script[];
 #pragma opt_strength_reduction off
 void fn_8018CA68(u32 arg0) {
-    void *Process_Find(void *);
+    struct LightScaleProc {
+        u8 pad[0x44];
+        u32 count;
+        u32 items[16];
+    };
+    struct LightScaleProc *Process_Find(void *);
     void fn_80050BA8(u32, s32, s32);
     extern u8 LightScale_script[];
-    void *proc;
-    u32 idx;
-    u32 *p;
+    struct LightScaleProc *proc;
 
     proc = Process_Find(LightScale_script);
     if ((proc != NULL) && (arg0 != 0U)) {
-        idx = *(u32 *)((u8 *)proc + 0x44);
-        p = (u32 *)((u8 *)proc + (idx << 2));
-        p[0x12] = arg0;
-        idx = *(u32 *)((u8 *)proc + 0x44);
-        *(u32 *)((u8 *)proc + 0x44) = idx + 1;
+        proc->items[proc->count] = arg0;
+        proc->count++;
         fn_80050BA8(arg0, 1, 1);
     }
 }
