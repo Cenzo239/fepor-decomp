@@ -1126,9 +1126,6 @@ static inline s32 Ui_PanelOffset(s32 distance, s32 adjustment) {
     return distance + adjustment;
 }
 
-static inline void Ui_PanelInset(s32 *distance, s32 adjustment) {
-    *distance += adjustment;
-}
 
 #pragma push
 #pragma optimization_level 4
@@ -1166,6 +1163,8 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     s32 right;
     s32 bottom;
     u32 edge;
+    s32 top;
+    s32 height;
     s16 x;
     s16 y;
     s16 ww;
@@ -1228,7 +1227,9 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     edge = t6.w;
     right = ww - edge;
     right += 4;
-    Prim2D_SetRect((f32)(x + right), (f32)(y + t9.h), (f32)edge, (f32)(hh - (t9.h + tA.h)));
+    top = y + t9.h;
+    height = hh - (t9.h + tA.h);
+    Prim2D_SetRect((f32)(x + right), (f32)top, (f32)edge, (f32)height);
     Prim2D_EndPrim();
 
     Prim2D_Begin();
