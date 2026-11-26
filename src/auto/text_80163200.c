@@ -1,4 +1,6 @@
 #include "common.h"
+static inline s16 Ui_AverageCursorCoord(s16 target, s16 current) { return (current + (target + 1)) >> 1; }
+
 static inline s16 Ui_GetCursorSlot_80163C98(void *self) { return *(s16 *)((u8 *)self + 0x4C); }
 static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
     u8 fn_80105BC0(void *, u8);
@@ -853,104 +855,82 @@ void fn_80163E9C(void *arg0) {
     }
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 2
+#pragma opt_propagation off
 #pragma use_lmw_stmw on
-void fn_80164350(void *arg0, void *arg1) {
-    extern f32 lbl_8036A89C;
-    extern f32 lbl_8036A8A0;
-    extern f32 lbl_8036A890;
+extern "C" void fn_80164350(void *arg0, void *arg1) {
+    extern f32 lbl_8036A89C,lbl_8036A8A0,lbl_8036A890;
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    void Ui_DrawRouteIconEx(s16, s32, u8);
+    s32 Text_MeasureHeight(s32,f32);
+    void Ui_DrawRouteIconEx(s16,s32,u8);
     void Prim2D_SetAlphaByte(s32);
-    s16 temp_r24;
-    s16 temp_r27;
-    s16 var_r28;
-    s16 var_r29;
-    u8 var_r30;
-    s32 var_r0;
-    s16 temp_r0;
-    s16 temp_r31;
-    s16 var_r24;
-    s16 temp_r26_2;
-    s32 var_r3;
-
-    ((void (*)(void *))((void **)M2C_FIELD(arg0, void **, 0x00))[5])(arg0);
-
-    if (M2C_FIELD(arg0, s16 *, 0x4C) >= 0) {
-        var_r29 = 0;
-        var_r28 = 0;
-        temp_r31 = M2C_FIELD(arg0, s16 *, 0x54);
-        var_r29 = temp_r31;
-        temp_r24 = M2C_FIELD(arg0, s16 *, 0x64);
-        var_r28 = temp_r24;
-        temp_r0 = M2C_FIELD(arg0, s16 *, 0x4C);
-        temp_r27 = (s16)((s32)((s32)temp_r0 * (s32)temp_r31) + (s32)M2C_FIELD(arg0, s16 *, 0x66));
-        if (temp_r0 >= 4 && temp_r0 <= 7) {
-            temp_r27 = (s16)((s32)temp_r27 + (s32)(s16)((s16 (*)(void *))((void **)M2C_FIELD(arg0, void **, 0x00))[11])(arg0));
-        }
-        if (M2C_FIELD(arg0, s16 *, 0x52) < 0) {
-            M2C_FIELD(arg0, s16 *, 0x50) = temp_r24;
-            M2C_FIELD(arg0, s16 *, 0x52) = temp_r27;
+    s16 height;
+    s32 savedHeight;
+    s32 savedX;
+    s32 y;
+    s16 x;
+    u8 active;
+    s32 slot;
+    s32 row;
+    s32 rowY;
+    s32 rowHeight;
+    s32 offset;
+    u8 enabled;
+    void *selected;
+    ((CursorRenderView *)arg0)->update(arg1);
+    slot=M2C_FIELD(arg0,s16 *,0x4C);
+    if ((slot=(s16)slot)>=0) {
+        height=M2C_FIELD(arg0,s16 *,0x54);
+        savedHeight=height;
+        x=M2C_FIELD(arg0,s16 *,0x64);
+        savedX=x;
+        y=(s16)(slot*height+M2C_FIELD(arg0,s16 *,0x66));
+        if(slot>=4 && slot<=7) y+=((ItemCursorView *)arg0)->getRowOffset();
+        if(M2C_FIELD(arg0,s16 *,0x52)<0) {
+            M2C_FIELD(arg0,s16 *,0x50)=x;
+            M2C_FIELD(arg0,s16 *,0x52)=y;
         } else {
-            M2C_FIELD(arg0, s16 *, 0x50) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x50) + temp_r24 + 1) >> 1);
-            M2C_FIELD(arg0, s16 *, 0x52) = (s16)((s32)(M2C_FIELD(arg0, s16 *, 0x52) + temp_r27 + 1) >> 1);
+            M2C_FIELD(arg0,s16 *,0x50)=(M2C_FIELD(arg0,s16 *,0x50)+((s16)x+1))>>1;
+            M2C_FIELD(arg0,s16 *,0x52)=(M2C_FIELD(arg0,s16 *,0x52)+((s16)y+1))>>1;
         }
-        if (M2C_FIELD(arg0, u8 *, 0x48) != 0) {
-            var_r30 = 0;
-            var_r3 = 0;
-            if (M2C_FIELD(arg1, u8 *, 0x2D) == 0 && M2C_FIELD(arg1, u8 *, 0x2E) == 0) {
-                var_r3 = 1;
-                if (M2C_FIELD(arg1, u32 *, 0x34) != 0) {
-                    var_r0 = (u32)M2C_FIELD((void *)M2C_FIELD(arg1, u32 *, 0x38), u32 *, 0x08);
-                } else {
-                    var_r0 = 0;
-                }
-                if (var_r0 == (u32)arg0) {
-                    var_r30 = 1;
-                }
+        if(M2C_FIELD(arg0,u8 *,0x48)) {
+            active=0;
+            enabled=active;
+            if(!M2C_FIELD(arg1,u8 *,0x2D)&&!M2C_FIELD(arg1,u8 *,0x2E)) enabled=1;
+            if(enabled) {
+                if(M2C_FIELD(arg1,u32 *,0x34)) selected=M2C_FIELD(M2C_FIELD(arg1,void **,0x38),void **,8);
+                else selected=0;
+                if(selected==arg0) active=1;
             }
-            Prim2D_Begin();
-            Prim2D_AddZ(lbl_8036A89C);
-            Prim2D_PrepareTex();
-            Ui_DrawRouteIconEx(M2C_FIELD(arg0, s16 *, 0x50),
-                        (s32)(s16)M2C_FIELD(arg0, s16 *, 0x52) + ((s32)(s16)M2C_FIELD(arg0, s16 *, 0x64) - (s32)var_r3) >> 1,
-                        var_r30);
-            Prim2D_Begin();
-            Prim2D_AddZ(lbl_8036A8A0);
-            Prim2D_PrepareTex();
-            ((void (*)(void *, s16, s16, s16, s16, u8))((void **)M2C_FIELD(arg0, void **, 0x00))[16])(arg0, 0, temp_r27,
-                             (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)),
-                             temp_r31, var_r30);
+            Prim2D_Begin(); Prim2D_AddZ(lbl_8036A89C); Prim2D_PrepareTex();
+            x=M2C_FIELD(arg0,s16 *,0x54);
+            offset=Text_MeasureHeight(-1,lbl_8036A8A0);
+            Ui_DrawRouteIconEx(M2C_FIELD(arg0,s16 *,0x50),M2C_FIELD(arg0,s16 *,0x52)+(s16)(((s16)x-offset)>>1),active);
+            Prim2D_Begin(); Prim2D_AddZ(lbl_8036A8A0); Prim2D_PrepareTex();
+            ((CursorRenderView *)arg0)->drawRow(0,y,(s16)(M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12)),height,active);
         }
     }
-
-    if (M2C_FIELD(arg0, u8 *, 0x49) != 0) {
-        ((void (*)(void *, void *))((void **)M2C_FIELD(arg0, void **, 0x00))[5])(arg0, arg1);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A890);
-        Prim2D_PrepareTex();
-        temp_r27 = M2C_FIELD(arg0, s16 *, 0x4E);
-        var_r24 = (s16)((s32)((s32)temp_r27 * (s32)var_r29) + (s32)M2C_FIELD(arg0, s16 *, 0x66));
-        var_r3 = Text_MeasureHeight(-1, lbl_8036A8A0);
-        temp_r26_2 = (s16)(((s32)M2C_FIELD(arg0, s16 *, 0x54) - var_r3) >> 1);
-        if (temp_r27 >= 4 && temp_r27 <= 7) {
-            var_r24 = (s16)((s32)var_r24 + (s32)(s16)((s16 (*)(void *))((void **)M2C_FIELD(arg0, void **, 0x00))[11])(arg0));
-        }
-        Prim2D_Begin();
-        Prim2D_SetAlphaByte(0x40);
-        Prim2D_PrepareTex();
-        Ui_DrawRouteIconEx(var_r28, (s32)(s16)var_r24 + (s32)(s16)temp_r26_2, 0);
-        Prim2D_Begin();
-        Prim2D_SetAlphaByte(0x80);
-        Prim2D_PrepareTex();
+    if(M2C_FIELD(arg0,u8 *,0x49)) {
+        ((CursorRenderView *)arg0)->update(arg1);
+        Prim2D_Begin(); Prim2D_AddZ(lbl_8036A890); Prim2D_PrepareTex();
+        row=M2C_FIELD(arg0,s16 *,0x4E);
+        rowY=(s16)(row*savedHeight+M2C_FIELD(arg0,s16 *,0x66));
+        rowHeight=M2C_FIELD(arg0,s16 *,0x54);
+        offset=Text_MeasureHeight(-1,lbl_8036A8A0);
+        rowHeight=(s16)(((s16)rowHeight-offset)>>1);
+        if((s16)row>=4 && (s16)row<=7) rowY+=((ItemCursorView *)arg0)->getRowOffset();
+        Prim2D_Begin(); Prim2D_SetAlphaByte(0x40); Prim2D_PrepareTex();
+        Ui_DrawRouteIconEx((s16)savedX,(s16)rowY+rowHeight,0);
+        Prim2D_Begin(); Prim2D_SetAlphaByte(0x80); Prim2D_PrepareTex();
     }
 }
-
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma pop
 #pragma cplusplus on
+#pragma use_lmw_stmw on
 extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -14093,9 +14073,10 @@ void *fn_80179800(void *arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s16 arg5) 
     return arg0;
 }
 
+#pragma push
+#pragma opt_common_subs off
 #pragma cplusplus on
-#pragma use_lmw_stmw on
-extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
+extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 gUiPanelCVtbl[];
@@ -14103,8 +14084,8 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     extern u8 lbl_80285CCC[];
     extern u8 gUiPanelCMidVtbl[];
     extern u8 gEmptyVtbl[];
-    extern f32 gF32_1;
-    extern f32 lbl_8036AB70;
+    extern const f32 gF32_1;
+    extern const f32 lbl_8036AB70;
     struct Sub {
         virtual void v0() {}
         virtual void v1() {}
@@ -14112,7 +14093,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         virtual void v3() {}
         virtual void v4() {}
         virtual void v5() {}
-        virtual s16 v6() { return 0; }
+        virtual s32 v6() { return 0; }
         u8 data[0x24];
     };
     struct Mid {
@@ -14132,7 +14113,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         virtual void v12() {}
         virtual void v13() {}
         virtual void v14() {}
-        virtual s16 v15() { return 0; }
+        virtual s32 v15() { return 0; }
     };
     struct Parent {
         u8 pad[0x40];
@@ -14163,7 +14144,7 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     self = (Parent *)arg0;
     vtdc = gUiPanelCVtbl;
     vt30 = lbl_80292230;
-    e1 = arg1;
+    e1 = (s16)arg1;
     r8 = self;
     r29 = (Parent *)r8;
     *(void **)self = lbl_8028FDB0;
@@ -14245,24 +14226,25 @@ extern "C" void *fn_8017992C(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
         *(f32 *)((u8 *)self + 0xD4) = f0;
         self->sub2.v1();
     }
-    tmp = self->mid.v15();
+    tmp = (s16)self->mid.v15();
     {
         s32 t = tmp;
         *(s16 *)((u8 *)self + 0x10) = (s16)(*(s16 *)((u8 *)self + 0xC) + t);
     }
     t29 = (s16)((s16)(*(s16 *)((u8 *)self + 0x10) - *(s16 *)((u8 *)self + 0xC)) >> 1);
-    tmp = self->sub1.v6();
+    tmp = (s16)self->sub1.v6();
     *(s16 *)((u8 *)self + 0x96) = (s16)(-(tmp >> 1));
     *(s16 *)((u8 *)self + 0x98) = t29;
     *(s16 *)((u8 *)self + 0x9A) = 0;
     t30 = (s16)(*(s16 *)((u8 *)self + 0xE) - *(s16 *)((u8 *)self + 0xA));
-    tmp = self->sub1.v6();
+    tmp = (s16)self->sub1.v6();
     *(s16 *)((u8 *)self + 0xBE) = (s16)(t30 + (tmp >> 1));
     *(s16 *)((u8 *)self + 0xC0) = t29;
     *(s16 *)((u8 *)self + 0xC2) = 0;
     return self;
 }
-
+#pragma pop
+#pragma cplusplus on
 extern "C" void *fn_80179BC8(void *p,s32 x,s32 y,s32 w,s32 h,s32 style) {
 void fn_80142060(void *);
 void fn_80143B24(void *);
