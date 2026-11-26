@@ -1,5 +1,11 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+static inline u32 ResetSW_MicrosecondsToTicks(u32 us) {
+return (((*(u32 *)0x800000F8 >> 2) / 125000) * us) >> 3;
+}
+static inline u32 ResetSW_MillisecondsToTicks(u32 ms) {
+return ((*(u32 *)0x800000F8 >> 2) / 1000) * ms;
+}
 static inline s64 ResetSW_TimeFromWords(u32 hi, u32 lo) {
 return (s64)(((u64)hi << 32) | lo);
 }
