@@ -23563,12 +23563,8 @@ static inline void Cleanup_800F2E70_Entries(void *arg) {
 
 void fn_800F2E70(void) {
     void fn_800616A0(void *);
-    s32 var_r31;
 
-    for (var_r31 = 0; var_r31 < 4; var_r31++) {
-        fn_800616A0(lbl_8032AC58 + var_r31 * 0xA0 + 0x328);
-        fn_800616A0(lbl_8032AC58 + var_r31 * 0xA0 + 8);
-    }
+    Cleanup_800F2E70_Entries(&lbl_8032AC58);
     fn_800616A0(lbl_8032AC58 + 0x288);
 }
 
