@@ -1,6 +1,14 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void *GActor_FindMatrices(void *p) {
+    while (p) {
+        void *matrices = *(void **)((u8 *)p + 0x60);
+        if (matrices) return matrices;
+        p = *(void **)((u8 *)p + 4);
+    }
+    return 0;
+}
 #pragma cplusplus on
 struct UiSelectionHandler {
 virtual void v0() = 0;
@@ -465,6 +473,7 @@ src+=2;dst+=2;
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma inline_depth(8)
+#pragma opt_lifetimes off
 void fn_80060060(void *arg0) {
     s32 fn_80064FC4(void *, void *, void *);
     s32 fn_800651FC(void *, void *, f32, f32);
@@ -506,16 +515,7 @@ void fn_80060060(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x58) = hi;
 
     if (*(u32 *)arg0 & 0x80) {
-        found = 0;
-        if (*(u16 *)((u8 *)arg0 + 0x7C) == 4) {
-            found = 1;
-        } else if (*(u16 *)((u8 *)arg0 + 0x7E) == 4) {
-            found = 1;
-        } else if (*(u16 *)((u8 *)arg0 + 0x80) == 4) {
-            found = 1;
-        } else if (*(u16 *)((u8 *)arg0 + 4 + 0x7E) == 4) {
-            found = 1;
-        }
+        found = GActor_HasFrameEvent((u8 *)arg0);
         if (found) {
             *(f32 *)((u8 *)arg0 + 0x58) = (f32)fn_8006555C(GActor_FindAnimation((u8 *)arg0), (s32)hi, 3);
         }
