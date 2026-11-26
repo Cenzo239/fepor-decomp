@@ -16,7 +16,7 @@ typedef struct CamPathInitialEntry { u8 kind; s32 duration; Vec3_800193D8 pos; }
 static inline void CamPath_AppendInitial(u8 *p, s32 kind, s32 duration, Vec3_800193D8 v) {
  Vec3_800193D8 copy; Vec3_800193D8 *dest;
  *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=kind;
- *(s32 *)(*(u8 **)(p+0x40)+p[0x44]*20+4)=duration;
+ (*(CamPathInitialEntry **)(p+0x40))[p[0x44]].duration=duration;
  copy=v;
  dest=(Vec3_800193D8 *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
  dest->x=copy.x;dest->y=copy.y;dest->z=copy.z;
@@ -729,8 +729,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
             sp14 = *(Vec3_800193D8 *)((u8 *)cam + 0x40);
             *((u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14) = (u8)found;
             idx = *((u8 *)arg0 + 0x44);
-            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
-            *(s32 *)((u8 *)slot + 4) = found;
+            (*(CamPathInitialEntry **)((u8 *)arg0 + 0x40))[idx].duration = found;
             idx = *((u8 *)arg0 + 0x44);
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
             *(f32 *)((u8 *)slot + 0) = sp14.x;
@@ -756,7 +755,6 @@ void fn_800180F4(void *arg0, u8 arg1) {
         found = CamPath_FindZeroKey(c46, (u8 **)((u8 *)arg0 + 0x4c));
         if ((u8)found == 0) {
 
-            s32 duration = 0;
             idx = *((u8 *)arg0 + 0x44);
             found = 0;
             sp2C.x = *(f32 *)((u8 *)cam + 4);
@@ -765,7 +763,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
             *((u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14) = 1;
             idx = *((u8 *)arg0 + 0x44);
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
-            *(s32 *)((u8 *)slot + 4) = duration;
+            *(s32 *)((u8 *)slot + 4) = found;
             idx = *((u8 *)arg0 + 0x44);
             sp8 = sp2C;
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
