@@ -17,6 +17,11 @@ static inline s32 GetKey_8000B39C(u32 *base)
     return (u8)(*base >> 16);
 }
 
+static inline s32 DecCounter_8000B39C(s32 counter)
+{
+    return counter - 1;
+}
+
 static inline u32 Process_CompareNameExt(const u8 *a, const u8 *b)
 {
     s32 c2;
@@ -537,14 +542,14 @@ s32 fn_8000B37C(void *arg0) {
 #pragma global_optimizer off
 s32 fn_8000B39C(void *arg0)
 {
+    u32 *base;
     s32 counter;
     s32 key;
-    u32 *base;
     u32 *ptr;
     u32 node;
 
     base = *(u32 **)((u8 *)arg0 + 4);
-    key = (u8)(*base >> 16);
+    key = GetKey_8000B39C(base);
     counter = *(s16 *)((u8 *)arg0 + 0x28);
     if (counter >= 0) {
         *(s16 *)((u8 *)arg0 + 0x28) = (s16)(counter - 1);
