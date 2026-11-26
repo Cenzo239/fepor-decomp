@@ -985,47 +985,59 @@ void fn_801222A4(void *arg0)
     }
 }
 
-void fn_80122314(void *arg0) {
-    extern u16 lbl_80367A58;
-    extern u32 lbl_80367110;
-    f32 fn_800067BC(s32, f32, f32, f32, f32);
-    void fn_80120CFC(void *);
+#pragma cplusplus on
+extern "C" void fn_80122314(void *arg0) {
+    extern u16 gUiPanelFlags;
+    extern u32 gUiInputFlags;
+    f32 Math_Ease(s32, f32, f32, f32, f32);
+    void UiPanel_PollSkip(void *);
+    void Process_ClearFunc(void *);
+    struct Item {
+        u8 unk0;
+        u8 pad1[0x3F];
+        void *unk40;
+        inline void reset() {
+            unk0 = 0;
+            unk40 = this;
+        }
+    };
+    struct Panel {
+        u8 pad0[0x30];
+        Item *items[5];
+        u8 unk44;
+        s8 count;
+        u8 unk46;
+        u8 unk47;
+        u8 unk48;
+        inline void clear() {
+            s32 i;
+            for (i = 0; i < count; i++) {
+                if (items[i] != NULL) {
+                    items[i]->reset();
+                }
+            }
+            unk46 = 0;
+            unk47 = 0;
+            unk48 = 0;
+        }
+    };
     s32 cur;
     s32 total;
 
-    fn_80120CFC(&lbl_80367A58);
+    UiPanel_PollSkip(&gUiPanelFlags);
     M2C_FIELD(arg0, s32 *, 0x34)++;
     cur = M2C_FIELD(arg0, s32 *, 0x34);
     total = M2C_FIELD(arg0, s32 *, 0x38);
-    if (cur > total || (lbl_80367110 & 3)) {
-        fn_8000C188(arg0);
+    if (cur > total || (gUiInputFlags & 3)) {
+        Process_ClearFunc(arg0);
         if (M2C_FIELD(arg0, s32 *, 0x40) == 0) {
-            struct {
-                u8 pad0[0x30];
-                void *items[5];
-                u8 unk44;
-                s8 count;
-                u8 unk46;
-                u8 unk47;
-                u8 unk48;
-            } *p = M2C_FIELD(arg0, void **, 0x30);
-            s32 i;
-            for (i = 0; i < p->count; i++) {
-                void *q = p->items[i];
-                if (q != NULL) {
-                    M2C_FIELD(q, u8 *, 0) = 0;
-                    M2C_FIELD(q, void **, 0x40) = q;
-                }
-            }
-            p->unk46 = 0;
-            p->unk47 = 0;
-            p->unk48 = 0;
+            ((Panel *)M2C_FIELD(arg0, void **, 0x30))->clear();
         }
     } else {
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) fn_800067BC(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), u8 *, 0x68) = (u8) Math_Ease(0, (f32) M2C_FIELD(arg0, s32 *, 0x3C), (f32) M2C_FIELD(arg0, s32 *, 0x40), (f32) cur, (f32) total);
     }
 }
-
+#pragma cplusplus off
 void TalkUi_SpawnKeyWait2(void *talk) {
     /* Spawn E_TalkKeyWait2 at the talk cursor and fade its sound in from silence. */
     void *Process_CreateChild(void *);
@@ -3687,6 +3699,8 @@ void ScriptCmd_Config_TutSet_unitInfo(s32 arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
 void ScriptCmd_Config_Tutorial(void) {
     struct Work {
         u8 pad0[0x9C];
@@ -3721,36 +3735,33 @@ void ScriptCmd_Config_Tutorial(void) {
         s32 unkB0;
     };
     extern struct Work gBattleState;
-    struct Work *p;
-    int one;
-    p = &gBattleState;
-    one = 1;
-    p->a0 = one;
-    p->a1 = 0;
-    p->a2 = one;
-    p->a3 = 0;
-    p->a4 = 0;
-    p->a5 = 0;
-    p->b0 = 0;
-    p->b1 = 0;
-    p->b2 = 0;
-    p->b3 = 2;
-    p->b4 = 0;
-    p->b5 = 0;
-    p->c0 = 0;
-    p->c1 = 0;
-    p->c2 = one;
-    p->c3 = one;
-    p->c5 = 0;
-    p->unkA0 = 0x14;
-    p->unkA8 = 0;
-    p->unkAC = 0;
-    p->unkA9 = 0;
-    p->unkAA = 0;
-    p->unkB0 = 0;
-    p->unkA6 = one;
-}
 
+    gBattleState.a0 = 1;
+    gBattleState.a1 = 0;
+    gBattleState.a2 = 1;
+    gBattleState.a3 = 0;
+    gBattleState.a4 = 0;
+    gBattleState.a5 = 0;
+    gBattleState.b0 = 0;
+    gBattleState.b1 = 0;
+    gBattleState.b2 = 0;
+    gBattleState.b3 = 2;
+    gBattleState.b4 = 0;
+    gBattleState.b5 = 0;
+    gBattleState.c0 = 0;
+    gBattleState.c1 = 0;
+    gBattleState.c2 = 1;
+    gBattleState.c3 = 1;
+    gBattleState.c5 = 0;
+    gBattleState.unkA0 = 0x14;
+    gBattleState.unkA8 = 0;
+    gBattleState.unkAC = 0;
+    gBattleState.unkA9 = 0;
+    gBattleState.unkAA = 0;
+    gBattleState.unkB0 = 0;
+    gBattleState.unkA6 = 1;
+}
+#pragma pop
 extern u16 lbl_80290564[];
 s32 ScriptCmd_TutorialInitialize(void)
 {
