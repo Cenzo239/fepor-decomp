@@ -4911,7 +4911,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
