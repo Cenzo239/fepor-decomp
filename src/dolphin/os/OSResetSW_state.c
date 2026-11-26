@@ -1,6 +1,10 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
 
+static inline s32 ResetTimeIsSet(u64 time, s32 yes, s32 no) {
+    return time != 0 ? yes : no;
+}
+
 #include <dolphin/os.h>
 #include "global.h"
 extern u16 Scb_80339420[];
@@ -156,6 +160,7 @@ s32 fn_80208D18(void) {
     s64 __div2i(s64, s64);
     s32 state;
     s32 enabled;
+    s32 pad;
     s64 now;
     s32 soft;
     u32 freq;
@@ -166,6 +171,7 @@ s32 fn_80208D18(void) {
 
     enabled = OSDisableInterrupts();
     now = __OSGetSystemTime();
+    pad = 0;
 
     if (!(*(u32 *)0xCC003000 & 0x10000)) {
         if (lbl_803684FC == 0) {
@@ -221,7 +227,7 @@ s32 fn_80208D18(void) {
         freq = *(u32 *)0x800000F8 >> 2;
         t = __OSStartTime + (s64)(n * 60) * freq;
         if (t < now) {
-            q = (s64)(now - t) / freq;
+            q = __div2i(now - t, (u64)freq);
             q = __div2i(q, 2);
             if ((q & 1) == 0) {
                 state = 1;
@@ -231,6 +237,7 @@ s32 fn_80208D18(void) {
         }
     }
 
+    (void)pad;
     OSRestoreInterrupts(enabled);
     return state;
 }
