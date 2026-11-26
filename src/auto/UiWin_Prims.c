@@ -806,19 +806,23 @@ extern "C" void fn_8006F54C(void *arg0, void *arg1) {
         virtual void v0() = 0;
         virtual void *v1() = 0;
     };
+    struct Group {
+        u8 pad[0x40];
+        u8 ids[0x20];
+        s8 count;
+        inline s8 GetCount() { return count; }
+    };
     u8 *self = (u8 *)arg0;
-    u8 *group = (u8 *)arg1;
+    Group *group = (Group *)arg1;
     s16 height;
-    u8 count;
     s32 i;
     s16 x;
     s32 y;
 
     *(s16 *)(self + 0xC) = 0;
-    count = group[0x60];
-    height = (s8)count * ((Obj *)arg0)->v20();
-    for (i = 0; i < (s8)group[0x60]; i++) {
-        TextObj *obj = *(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34);
+    height = group->GetCount() * ((Obj *)arg0)->v20();
+    for (i = 0; i < group->count; i++) {
+        TextObj *obj = *(TextObj **)((u8 *)GfxEnt_Get(group->ids[i]) + 0x34);
         s16 width = Text_MeasureWidth(obj->v1(), -1, 1.0f);
         if (width >= *(s16 *)(self + 0xC)) {
             *(s16 *)(self + 0xC) = width;
@@ -828,11 +832,11 @@ extern "C" void fn_8006F54C(void *arg0, void *arg1) {
     *(s16 *)(self + 0x10) = (((Obj *)arg0)->v19() - height) >> 1;
     x = *(s16 *)(self + 0xE);
     y = *(s16 *)(self + 0x10);
-    for (i = 0; i < (s8)group[0x60];) {
+    for (i = 0; i < group->count;) {
         u8 *ent;
-        ent = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        ent = (u8 *)GfxEnt_Get(group->ids[i]);
         *(s16 *)(ent + 0x30) = x;
-        ent = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        ent = (u8 *)GfxEnt_Get(group->ids[i]);
         *(s16 *)(ent + 0x32) = y;
         i++;
         y += ((Obj *)arg0)->v20();
