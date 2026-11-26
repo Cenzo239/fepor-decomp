@@ -45,14 +45,16 @@ void *fn_800195F4(void) {
     return (u8 *)lbl_80268330 + 0x1B3;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_80019604(void *arg0) {
     extern void *lbl_80367240;
-    extern f32 lbl_80368C88;
+    extern const f32 lbl_80368C88;
     extern f32 lbl_80368CA4;
     extern f32 lbl_80368CEC;
     extern f32 lbl_80368CF0;
-    extern f32 lbl_80368CF4;
+    extern const f32 lbl_80368CF4;
     extern f32 lbl_80368CF8;
     extern f32 lbl_80368CFC;
     extern f32 lbl_80368D00;
@@ -78,12 +80,11 @@ extern "C" void fn_80019604(void *arg0) {
         *(f32 *)((u8 *)arg0 + 0xC) = ((VObj *)arg0)->v2(*(s32 *)((u8 *)arg0 + 0x20));
     }
 
-    z = lbl_80368C88;
     field = *(f32 *)((u8 *)arg0 + 8);
     adj = (f32)(s8)*(u8 *)(*(u8 **)lbl_80367240 + 5) / lbl_80368CEC;
     *(f32 *)((u8 *)arg0 + 8) = field - adj;
     temp_f1 = *(f32 *)((u8 *)arg0 + 8);
-    if (temp_f1 < z) {
+    if (temp_f1 < lbl_80368C88) {
         *(f32 *)((u8 *)arg0 + 8) = temp_f1 * lbl_80368CA4;
     }
     temp_f1 = *(f32 *)((u8 *)arg0 + 8);
@@ -92,12 +93,11 @@ extern "C" void fn_80019604(void *arg0) {
         *(f32 *)((u8 *)arg0 + 8) = temp_f1 * lbl_80368CA4;
     }
 
-    z = lbl_80368CF4;
     field = *(f32 *)((u8 *)arg0 + 4);
     adj = (f32)(s8)*(u8 *)(*(u8 **)lbl_80367240 + 4) / lbl_80368CEC;
     *(f32 *)((u8 *)arg0 + 4) = field - adj;
     temp_f2 = *(f32 *)((u8 *)arg0 + 4);
-    if (temp_f2 < z) {
+    if (temp_f2 < lbl_80368CF4) {
         temp_f1 = temp_f2 - lbl_80368CF8;
         *(f32 *)((u8 *)arg0 + 4) = temp_f1 * lbl_80368CA4;
     }
@@ -116,7 +116,7 @@ extern "C" void fn_80019604(void *arg0) {
         }
     }
 }
-#pragma cplusplus reset
+#pragma pop
 
 f32 fn_800197B4(s32 unused, s32 idx) {
     u32 local[4];
@@ -930,6 +930,9 @@ void fn_8001AC18(void) {
 #pragma pop
 
 #pragma global_optimizer off
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_8001B134(void) {
     void Archive_Load();
     void DebugPrint(char *, ...);
@@ -1015,8 +1018,8 @@ void fn_8001B134(void) {
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_803671F8 = n;
-    rec = fn_8022C414(Heap_AllocRaw(n * 0x14 + 0x10), fn_8001B9DC, 0, 0x14, n);
-    lbl_803671F4 = rec;
+    lbl_803671F4 = fn_8022C414(Heap_AllocRaw(n * 0x14 + 0x10), fn_8001B9DC, 0, 0x14, n);
+    rec = lbl_803671F4;
     for (i = 0; i < lbl_803671F8; i++) {
         if (src == 0) {
             val = 0;
@@ -1071,8 +1074,8 @@ void fn_8001B134(void) {
     src = p + 4;
     n = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
     lbl_80367200 = n;
-    rec = fn_8022C414(Heap_AllocRaw(n * 0xC + 0x10), 0, 0, 0xC, n);
-    lbl_803671FC = rec;
+    lbl_803671FC = fn_8022C414(Heap_AllocRaw(n * 0xC + 0x10), 0, 0, 0xC, n);
+    rec = lbl_803671FC;
     for (i = 0; i < lbl_80367200; i++) {
         if (src == 0) {
             val = 0;
@@ -1125,6 +1128,7 @@ void fn_8001B134(void) {
     DebugPrint(lbl_80268510 + 0x2A3);
     DebugPrint(lbl_80268510 + 0x2CD);
 }
+#pragma pop
 #pragma scheduling off
 #pragma global_optimizer off
 f32 fn_8001B84C(u8 **arg0) {
