@@ -4913,7 +4913,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs on
-#pragma opt_strength_reduction off
+#pragma opt_strength_reduction on
 #pragma use_lmw_stmw on
 extern "C" void fn_80142ED0(Menu42 *self, s32 arg) {
 void fn_8013F748(void *,s16 *,s16 *);
@@ -4937,7 +4937,7 @@ Menu42Callback cb;
 s16 rows, scroll, x, y;
 s32 sign;
 s32 page;
-u8 *table, *slot, *node;
+u8 *node, *slot, *table;
 s16 count;
 self->prepare();
 self->draw(arg);
