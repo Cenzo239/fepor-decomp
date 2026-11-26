@@ -1480,12 +1480,10 @@ void Unit_Promote(void *arg0) {
     void *child;
     void *flags;
     s32 code;
-    s32 i;
-    s32 ctr;
-    u8 t;
-    u32 tmp;
+    u8 *ip;
     u8 *dp;
-    Item *ip;
+    s32 i;
+    u32 tmp;
 
     self = (Unit *)arg0;
     item = self->unk18C;
@@ -1510,40 +1508,12 @@ void Unit_Promote(void *arg0) {
     if (Status_Test(flags, code) == 0) {
         Status_Set(&self->unk1BC, 0x45);
     }
-    i = 0;
-    for (ctr = 2; ctr != 0; ctr--) {
-        item = self->unk18C;
-        ip = (Item *)((u8 *)item + (u8)i);
+    for (i = 0; i < 8; i++) {
+        ip = (u8 *)self->unk18C + (u8)i;
         dp = (u8 *)self + (u8)i;
-        t = ip->unk2C[0];
-        if (dp[0x20C] < t) {
-            dp[0x20C] = t;
+        if (dp[0x20C] < ip[0x2C]) {
+            dp[0x20C] = ip[0x2C];
         }
-        i = (s32)i + 1;
-        item = self->unk18C;
-        ip = (Item *)((u8 *)item + (u8)i);
-        dp = (u8 *)self + (u8)i;
-        t = ip->unk2C[0];
-        if (dp[0x20C] < t) {
-            dp[0x20C] = t;
-        }
-        i = i + 1;
-        item = self->unk18C;
-        ip = (Item *)((u8 *)item + (u8)i);
-        dp = (u8 *)self + (u8)i;
-        t = ip->unk2C[0];
-        if (dp[0x20C] < t) {
-            dp[0x20C] = t;
-        }
-        i = i + 1;
-        item = self->unk18C;
-        ip = (Item *)((u8 *)item + (u8)i);
-        dp = (u8 *)self + (u8)i;
-        t = ip->unk2C[0];
-        if (dp[0x20C] < t) {
-            dp[0x20C] = t;
-        }
-        i = i + 1;
     }
     self->unk19A = 1;
     fn_8003868C(self, 0);
@@ -1842,67 +1812,46 @@ s32 fn_8003DD7C(s32 arg0, s32 arg1) {
     return (temp_r31 <= (temp_r4 - 2));
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 void fn_8003DDF8(void *arg0, s8 *arg1, s8 *arg2) {
-    extern u8 gBattleMap[];
-    void Map_SelectRangeBuffer(void *, s32);
-    void fn_800227F8(void *, void *);
-    void fn_80022748(void *, s32);
-    void Map_FloodMoveRange(void *, u8, u8, s32, s32, s32);
-    s16 fn_8002134C(u8 *, s8, s8);
-
-    s32 x;
-    s32 y;
-    u16 bestCost;
-    u8 *layer;
-    u8 *mapHi;
-    u8 *row;
-    u8 *map;
-    s32 rowOff;
-    void *unit;
-    s8 *outX;
-    s8 *outY;
-    s16 cost;
-
-    unit = arg0;
-    outX = arg1;
-    outY = arg2;
-
-    layer = gBattleMap + 0xD;
-    map = *(u8 **)((u8 *)unit + 0x194);
-    layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = 0;
-    Map_SelectRangeBuffer(gBattleMap, 5);
-    fn_800227F8(gBattleMap, *(void **)((u8 *)unit + 0x18C));
-    fn_80022748(gBattleMap, 0);
-    Map_FloodMoveRange(gBattleMap, *((u8 *)unit + 0x19E), *((u8 *)unit + 0x19F), 0x3E8, 0, 0);
-    fn_800227F8(gBattleMap, *(void **)(map + 0x18C));
-    fn_80022748(gBattleMap, *(s32 *)(map + 0x190));
-
-    *outX = -1;
-    map = gBattleMap;
-    bestCost = 0x7FFF;
-    *outY = -1;
-    mapHi = map + 0x10000;
-
-    for (y = (s8)map[9]; y <= (s8)map[0xB] - 1; y++) {
-        rowOff = (s8)y << 6;
-        row = map + rowOff;
-        for (x = (s8)map[8]; x <= (s8)map[0xA] - 1; x++) {
-            if ((s16)fn_8002134C(map, (s8)x, (s8)y) <= 0x7530) {
-                if (row[(s8)x + 0xD] == 0 && row[(s8)x + 0x100D] != 0x37) {
-                    cost = (*(s16 **)(mapHi + 0x4190))[(s8)x + rowOff];
-                    if (bestCost > (u16)cost) {
-                        *outX = (s8)x;
-                        bestCost = (u16)cost;
-                        *outY = (s8)y;
-                    }
-                }
-            }
-        }
-    }
-
-    layer[((s8)*((u8 *)unit + 0x19E)) + (((s8)*((u8 *)unit + 0x19F)) << 6)] = *((u8 *)unit + 0x198);
+extern u8 gBattleMap[];
+void Map_SelectRangeBuffer(void *, s32);
+void fn_800227F8(void *, void *);
+void fn_80022748(void *, s32);
+void Map_FloodMoveRange(void *, u8,u8,s32,s32,s32);
+s16 fn_8002134C(u8 *,s8,s8);
+s32 rowOff;
+u8 *map,*row,*mapHi,*layer;
+u16 bestCost;
+s32 y,x;
+void *unit;
+s8 *outX,*outY;
+s16 cost;
+unit=arg0;outX=arg1;outY=arg2;
+layer=gBattleMap+13;
+map=*(u8 **)((u8 *)unit+0x194);
+layer[(s8)*((u8 *)unit+0x19E)+((s8)*((u8 *)unit+0x19F)<<6)]=0;
+Map_SelectRangeBuffer(gBattleMap,5);
+fn_800227F8(gBattleMap,*(void **)((u8 *)unit+0x18C));
+fn_80022748(gBattleMap,0);
+Map_FloodMoveRange(gBattleMap,*((u8 *)unit+0x19E),*((u8 *)unit+0x19F),1000,0,0);
+fn_800227F8(gBattleMap,*(void **)(map+0x18C));
+fn_80022748(gBattleMap,*(s32 *)(map+0x190));
+*outX=-1;map=gBattleMap;bestCost=0x7FFF;*outY=-1;mapHi=map+0x10000;
+for(y=((s8 *)map)[9];y<=((s8 *)map)[11]-1;y++){
+rowOff=(s8)y<<6;
+x=((s8 *)map)[8];
+row=map+rowOff;
+for(;x<=((s8 *)map)[10]-1;x++){
+if(fn_8002134C(map,(s8)x,(s8)y)<=30000){
+if(row[(s8)x+13]==0 && row[(s8)x+0x100D]!=0x37){
+cost=(*(s16 **)(mapHi+0x4190))[(s8)x+rowOff];
+if(bestCost>(u16)cost){*outX=x;bestCost=(u16)cost;*outY=y;}
+}}}}
+layer[(s8)*((u8 *)unit+0x19E)+((s8)*((u8 *)unit+0x19F)<<6)]=*((u8 *)unit+0x198);
 }
+#pragma pop
 void fn_8003DFB8(void *arg0) {
     void fn_800156A0(void *, void *);
     void fn_80015718(void *, void *);
@@ -1928,9 +1877,9 @@ void fn_8003DFB8(void *arg0) {
     void *self = arg0;
     void *partner = *(void **)((u8 *)self + 0x194);
     s32 flags;
-    void *other;
-    s32 a, b;
     void *p;
+    s32 b, a;
+    void *other;
     void *next;
 
     if (partner == NULL) {
@@ -2124,8 +2073,8 @@ void fn_8003DFB8(void *arg0) {
 finish:
     fn_8004EA60(self, 1);
     if (*(u8 *)(*(u8 **)((u8 *)self + 0x190) + 8) == 0) {
-        fn_800156A0(fn_8003F1C8(self), self);
-        fn_800157DC(fn_8003F1AC(5), self);
+        fn_800156A0(*(void **)((u8 *)self + 0x190), self);
+        fn_800157DC(gUnitLists + 0x3C, self);
         *(s32 *)((u8 *)self + 0x1A0) |= 0x4000;
     } else {
         fn_800156A0(*(void **)((u8 *)self + 0x190), self);
@@ -2208,7 +2157,9 @@ void Unit_Rescue(void *arg0, void *arg1) {
     *(void**)((u8*)arg1 + 0x194) = arg0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
 void Unit_InitFromDispos(void *arg0, void *arg1) {
     void *Res_GetByName(void *);
     void fn_80104410(void *);
@@ -2312,8 +2263,8 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     struct ItemFlag { u8 pad : 1; u8 flag : 1; u8 rest : 6; };
 
     u8 sp8[8];
-    struct Src *src = arg1;
-    struct Self *self = arg0;
+    struct Src *src = (struct Src *)arg1;
+    struct Self *self = (struct Self *)arg0;
     s32 i;
     struct Src *walk;
     u8 t;
@@ -2509,7 +2460,8 @@ void Unit_InitFromDispos(void *arg0, void *arg1) {
     fn_801E35EC(gSystemSave, self->unk188);
     self->unk1A0 |= 0x80000;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
+#pragma cplusplus off
 
 void *fn_8003F1AC(s32 arg0) {
     extern u8 gUnitLists[];
