@@ -14,9 +14,10 @@ typedef struct Vec3_800193D8 {
 
 typedef struct CamPathInitialEntry { u8 kind; s32 duration; Vec3_800193D8 pos; } CamPathInitialEntry;
 static inline void CamPath_AppendInitial(u8 *p, s32 duration, s32 kind, Vec3_800193D8 v) {
- Vec3_800193D8 copy; Vec3_800193D8 *dest;
+ Vec3_800193D8 copy; Vec3_800193D8 *dest; CamPathInitialEntry *entry;
  *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=kind;
- (*(CamPathInitialEntry **)(p+0x40))[p[0x44]].duration=duration;
+ entry = *(CamPathInitialEntry **)(p+0x40) + p[0x44];
+ entry->duration=duration;
  copy=v;
  dest=(Vec3_800193D8 *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
  dest->x=copy.x;dest->y=copy.y;dest->z=copy.z;
@@ -664,7 +665,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 #pragma use_lmw_stmw reset
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_common_subs off
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
@@ -760,7 +761,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
             sp2C.x = *(f32 *)((u8 *)cam + 4);
             sp2C.y = *(f32 *)((u8 *)cam + 8);
             sp2C.z = *(f32 *)((u8 *)cam + 0xc);
-            CamPath_AppendInitial((u8 *)arg0, 1, 0, sp2C);
+            CamPath_AppendInitial((u8 *)arg0, 0, 1, sp2C);
         }
     }
     fn_80018594(arg0);
