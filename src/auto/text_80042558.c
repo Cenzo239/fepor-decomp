@@ -4613,6 +4613,7 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma optimization_level 3
 void fn_8004B588(u8 *arg0)
 {
     f32 fn_80059F64(f32, f32, f32, f32);
@@ -4645,22 +4646,12 @@ void fn_8004B588(u8 *arg0)
     u8 spCC[0x30];
     u8 sp9C[0x30];
     u8 sp6C[0x30];
-    u8 sp4C[0x50];
-    u32 sp48;
-    f32 sp44;
-    f32 sp40;
-    u32 sp3C;
-    f32 sp38;
-    f32 sp34;
-    u32 sp30;
-    u32 sp2C;
-    u32 sp28;
-    u32 sp24;
-    f32 sp20;
-    f32 sp1C;
-    u32 sp18;
-    f32 sp14;
-    f32 sp10;
+    u8 sp4C[0x20];
+    Vec sp40;
+    Vec sp34;
+    Vec sp28;
+    Vec sp1C;
+    Vec sp10;
     u32 spC;
     u32 sp8;
     f32 scale;
@@ -4692,29 +4683,17 @@ void fn_8004B588(u8 *arg0)
     }
     fn_80222C50(sp4C, 0);
     angle = (f32)*(s16 *)(arg0 + 2);
-    y = *(f32 *)(arg0 + 8);
-    x = *(f32 *)(arg0 + 4);
-    sp38 = *(f32 *)(tbl + 0x20);
-    sp44 = *(f32 *)(tbl + 0x2C);
-    sp40 = *(f32 *)(tbl + 0x28);
-    sp34 = *(f32 *)(tbl + 0x1C);
-    sp34 = x;
-    sp38 = y;
-    sp44 = y;
+    sp34 = *(Vec *)(tbl + 0x1C);
+    sp40 = *(Vec *)(tbl + 0x28);
+    sp34.x = *(f32 *)(arg0 + 4);
+    sp34.y = *(f32 *)(arg0 + 8);
+    sp40.y = *(f32 *)(arg0 + 8);
     spC = lbl_80368FB4;
-    sp40 = x;
+    sp40.x = *(f32 *)(arg0 + 4);
     ((u8 *)&spC)[3] = (u8)alpha;
-    sp3C = *(u32 *)(tbl + 0x24);
     sp10 = sp34;
-    sp14 = sp38;
-    sp18 = *(u32 *)(tbl + 0x24);
-    sp48 = *(u32 *)(tbl + 0x30);
     sp1C = sp40;
-    sp20 = sp44;
-    sp24 = *(u32 *)(tbl + 0x30);
-    sp28 = *(u32 *)(tbl + 0x34);
-    sp2C = *(u32 *)(tbl + 0x38);
-    sp30 = *(u32 *)(tbl + 0x3C);
+    sp28 = *(Vec *)(tbl + 0x34);
     if (lbl_80368FCC != angle) {
         fn_80202300(spCC, 0x5A, lbl_80368FD8 * angle);
         fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
@@ -5201,8 +5180,9 @@ void fn_8004C148(void)
   fn_80066D00(-1);
 }
 
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_8004C444(void *arg0) {
     s32 Game_GetFrameCount(void);
     f32 fn_80059EB8(s32, s32, f32, f32);
@@ -5228,22 +5208,8 @@ void fn_8004C444(void *arg0) {
     u8 spBC[0x30];
     u8 sp8C[0x30];
     u8 sp5C[0x30];
-    u8 sp4C[0x28];
-    u32 sp48;
-    volatile f32 sp44;
-    volatile f32 sp40;
-    u32 sp3C;
-    volatile f32 sp38;
-    volatile f32 sp34;
-    u32 sp30;
-    u32 sp2C;
-    u32 sp28;
-    u32 sp24;
-    u32 sp20;
-    u32 sp1C;
-    u32 sp18;
-    u32 sp14;
-    u32 sp10;
+    u8 sp4C[0x10];
+    Vec b, a, up, target, eye;
     u32 spC;
     u32 sp8;
     f32 x, y, angle, f1;
@@ -5257,29 +5223,17 @@ void fn_8004C444(void *arg0) {
     f1 = fn_80059EB8(0x80, Game_GetFrameCount(), lbl_80368FD4, lbl_80369000);
 
     alpha = (s32)(((f32)((u8 *)arg0)[0x27] * f1) / lbl_80369000);
-    *(u32 *)&sp34 = *(u32 *)(tbl + 0x1C);
-    *(u32 *)&sp38 = *(u32 *)(tbl + 0x20);
-    *(u32 *)&sp40 = *(u32 *)(tbl + 0x28);
-    *(u32 *)&sp44 = *(u32 *)(tbl + 0x2C);
-    sp34 = x;
-    sp38 = y;
-    sp40 = x;
-    sp44 = y;
-    sp3C = *(u32 *)(tbl + 0x24);
-    *(u32 *)&sp10 = *(u32 *)&sp34;
-    *(u32 *)&sp14 = *(u32 *)&sp38;
-    sp18 = sp3C;
-    sp48 = *(u32 *)(tbl + 0x30);
-    *(u32 *)&sp1C = *(u32 *)&sp40;
-    *(u32 *)&sp20 = *(u32 *)&sp44;
-    sp24 = sp48;
-    sp28 = *(u32 *)(tbl + 0x34);
-    sp2C = *(u32 *)(tbl + 0x38);
-    sp30 = *(u32 *)(tbl + 0x3C);
+    a = *(Vec *)(tbl + 0x1C);
+    a.x = x; a.y = y;
+    eye = a;
+    b = *(Vec *)(tbl + 0x28);
+    b.x = x; b.y = y;
+    target = b;
+    up = *(Vec *)(tbl + 0x34);
 
     if (lbl_80368FCC != angle) {
         PSMTXRotRad(spBC, 0x5A, lbl_80368FD8 * angle);
-        fn_802026E4(sp8C, &sp1C, &sp28, &sp10);
+        fn_802026E4(sp8C, &target, &up, &eye);
         C_MTXLightOrtho(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
                     lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(sp5C, sp8C, sp11C);
@@ -5289,7 +5243,7 @@ void fn_8004C444(void *arg0) {
         PSMTXConcat(spEC, spBC, spBC);
         PSMTXConcat(spBC, sp11C, sp11C);
     } else {
-        fn_802026E4(sp8C, &sp1C, &sp28, &sp10);
+        fn_802026E4(sp8C, &target, &up, &eye);
         C_MTXLightOrtho(sp5C, -lbl_80368FC4, lbl_80368FC4, -lbl_80368FC4, lbl_80368FC4,
                     lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
         PSMTXConcat(sp5C, sp8C, sp11C);
@@ -5345,8 +5299,7 @@ void fn_8004C444(void *arg0) {
     sp8 = spC;
     fn_80051564(&sp8, 0, x, y);
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 /* Set up GX and draw a ground shadow for each visible unit. */
 void Unit_DrawShadows(void) {
@@ -6710,30 +6663,34 @@ void fn_8004FE90(void *arg0, s8 arg1) {
 }
 
 #pragma use_lmw_stmw on
-void fn_8004FE98(s32 arg0, s8 arg1) {
-    char *fn_8004AFD4(void *, s8);
-    void fn_8005FA14(void *, s32);
-    void fn_8005F5B4(void *, void *);
-
-    u32 res;
-    u32 result;
-    u8 *dest;
-    s32 item;
-
-    if (M2C_FIELD(arg0, u8 *, 3) & 2) {
-        item = get_4F128_id((void *)arg0);
-        res = (u32)get_4F128_resource((void *)arg0, item);
-        M2C_FIELD(arg0, void **, 0x17C) = (void *)res;
-        dest = (u8 *)arg0 + 0x1C;
-        item = get_4F128_id((void *)arg0);
-        res = (u32)get_4F128_resource((void *)arg0, item);
-        result = (u32)fn_8004AFD4((void *)res, arg1);
-        if (result != 0) {
-            fn_8005FA14(dest, 1);
-            fn_8005F5B4(dest, (void *)result);
-            M2C_FIELD(arg0, s8 *, 2) = arg1;
-        }
+void fn_8004FE98(s32 arg0, s8 arg1)
+{
+  unsigned int new_var2;
+  char *fn_8004AFD4(void *, s8);
+  void fn_8005FA14(void *, s32);
+  char *new_var;
+  void fn_8005F5B4(void *, void *);
+  void *res;
+  void *result;
+  void *dest;
+  s32 item;
+  if (((*((u8 *) (((s8 *) arg0) + 3))) & 2) != 0)
+  {
+    item = get_4F128_id((void *) arg0);
+    res = get_4F128_resource((void *) arg0, item);
+    *((void **) (((s8 *) arg0) + 0x17C)) = res;
+    dest = ((u8 *) arg0) + 0x1C;
+    item = (new_var2 = get_4F128_id((void *) arg0));
+    res = get_4F128_resource((void *) arg0, item);
+    new_var = fn_8004AFD4(res, arg1);
+    result = new_var;
+    if (result != 0)
+    {
+      fn_8005FA14(dest, 1);
+      fn_8005F5B4(dest, result);
+      *((s8 *) (((s8 *) arg0) + 2)) = arg1;
     }
+  }
 }
 
 #pragma opt_common_subs off
@@ -7242,9 +7199,12 @@ void fn_80050E80(void)
     fn_8006D8E8(b);
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
 void Map_InitGfx(void) {
-    #pragma opt_common_subs off
     void *fn_8006D948(void *);
     void *Heap_Alloc(s32);
     void *Heap_AllocRaw(s32);
@@ -7370,7 +7330,7 @@ void Map_InitGfx(void) {
 
     Allegiance_FillMask(5, sp8);
     {
-        u8 id = 1;
+        s32 id = 1;
         s32 ctr;
         void *unit;
         height = lbl_80368FCC;
@@ -7401,7 +7361,8 @@ void Map_InitGfx(void) {
 
     lbl_803672BC = 1;
 }
-#pragma global_optimizer reset
+#pragma pop
+#pragma opt_common_subs off
 
 void fn_80051328(u8 arg0, void *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
     void fn_802029C4(void *, void *, void *);
