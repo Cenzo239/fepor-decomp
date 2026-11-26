@@ -2088,6 +2088,7 @@ String_Destroy(&str,-1);return count;
 #pragma optimization_level 4
 #pragma opt_loop_invariants off
 #pragma opt_strength_reduction off
+#pragma opt_propagation off
 s32 fn_800C802C(void *arg0, s32 arg1) {
  typedef struct { u32 a,b,c,d,e,f,g,h; } Block;
  void String_Init(void *, char *, void *);
@@ -2096,14 +2097,14 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  Block value, temp, fallback;
  String str;
  u8 alloc;
- s32 offset;
- u8 *entry;
- s32 j,k;
- s32 listOffset;
- u8 *self;
  s32 result;
+ u8 *self;
+ u8 *entry;
+ s32 offset;
+ s32 j,k;
  s32 index;
  u8 *list;
+ s32 listOffset;
  u8 equal;
  self=arg0; result=1;
  if (*(s8 *)(self+0x28)==0) {
@@ -2132,7 +2133,7 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  value=temp;
  String_Destroy(&str,-1);
  equal=1;
- { s8 *p=(s8 *)&value; for(k=0;k<32;k++,p++) {if(*p!=*(s8 *)(self+0x40+k)){equal=0;break;}} }
+ { s8 *p=(s8 *)&value; for(k=0;k<32;p++,k++) {if(*p!=*(s8 *)(self+0x40+k)){equal=0;break;}} }
  if(equal){*(u8 **)(self+0x1c)=list;*(s32 *)(self+0x20)=index;break;}
  }
  if(index>=*(s32 *)(self+0x18)){*(void **)(self+0x1c)=0;*(s32 *)(self+0x20)=-1;result=0;}
@@ -14512,6 +14513,7 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
     u32 len;
     s32 width;
     s32 height;
+    f32 dimension;
     f32 scale;
 
     parent = arg2;
@@ -14632,33 +14634,33 @@ void *fn_800E2370(void *arg0, void *arg1, void *arg2)
     String_Destroy(&name5, -1);
 
     if (enabled != 0) {
-        resource = fn_800E7FB4(
+        enabled = (s32)fn_800E7FB4(
             owner,
             (String *)(self + 0x54)
         );
 
-        scale = *(f32 *)(self + 0x6C);
-
-        if (lbl_80369EC8 == scale) {
-            width = fn_800E2E68(resource);
+        if (lbl_80369EC8 == *(f32 *)(self + 0x6C)) {
+            width = fn_800E2E68((void *)enabled);
 
             *(s32 *)(self + 0x70) =
                 width / 2;
 
-            height = fn_800E2E60(resource);
+            height = fn_800E2E60((void *)enabled);
 
             *(s32 *)(self + 0x74) =
                 height / 2;
         } else {
-            width = fn_800E2E68(resource);
+            width = fn_800E2E68((void *)enabled);
 
-            *(s32 *)(self + 0x70) =
-                (s32)((*(f32 *)(self + 0x6C) * (f32)width) * lbl_80369EE0);
+            dimension = (f32)width;
+            scale = *(f32 *)(self + 0x6C) * dimension;
+            *(s32 *)(self + 0x70) = (s32)(scale * lbl_80369EE0);
 
-            height = fn_800E2E60(resource);
+            height = fn_800E2E60((void *)enabled);
 
-            *(s32 *)(self + 0x74) =
-                (s32)((*(f32 *)(self + 0x6C) * (f32)height) * lbl_80369EE0);
+            dimension = (f32)height;
+            scale = *(f32 *)(self + 0x6C) * dimension;
+            *(s32 *)(self + 0x74) = (s32)(scale * lbl_80369EE0);
         }
     } else {
         *(s32 *)(self + 0x74) = 0;
