@@ -6843,6 +6843,9 @@ void fn_801D8E18(void *arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
     M2C_FIELD(arg0, s16 *, 0xA) = arg2;
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_801D8E80(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_UnlinkByKey(void *);
@@ -6883,21 +6886,21 @@ void fn_801D8E80(void *arg0) {
     extern const f32 lbl_8036B628;
     extern const f32 lbl_8036B62C;
     extern const f32 lbl_8036B630;
-    extern f32 lbl_8036B634;
+    extern const f32 lbl_8036B634;
     extern const f32 lbl_8036B638;
-    extern f32 lbl_8036B63C;
-    extern f32 lbl_8036B640;
-    extern f32 lbl_8036B644;
-    extern f32 lbl_8036B648;
-    extern f32 lbl_8036B64C;
-    extern f32 lbl_8036B650;
-    extern f32 lbl_8036B654;
-    extern f32 lbl_8036B658;
-    extern f32 lbl_8036B65C;
-    extern f32 lbl_8036B660;
-    extern f32 lbl_8036B664;
-    extern f32 lbl_8036B668;
-    extern f32 lbl_8036B66C;
+    extern const f32 lbl_8036B63C;
+    extern const f32 lbl_8036B640;
+    extern const f32 lbl_8036B644;
+    extern const f32 lbl_8036B648;
+    extern const f32 lbl_8036B64C;
+    extern const f32 lbl_8036B650;
+    extern const f32 lbl_8036B654;
+    extern const f32 lbl_8036B658;
+    extern const f32 lbl_8036B65C;
+    extern const f32 lbl_8036B660;
+    extern const f32 lbl_8036B664;
+    extern const f32 lbl_8036B668;
+    extern const f32 lbl_8036B66C;
     extern const f64 lbl_8036B670;
     extern f64 lbl_8036B678;
 
@@ -6912,7 +6915,7 @@ void fn_801D8E80(void *arg0) {
     u8 *a;
     s32 n;
     u8 *cur;
-    s16 flags;
+    s32 flags;
     u32 color0;
     u32 color1;
     u32 color2;
@@ -7281,7 +7284,7 @@ void fn_801D8E80(void *arg0) {
         Ui_DrawCaptionBar(st + 0x1a, 0);
     }
 }
-
+#pragma pop
 void fn_801D9FA4(void *arg0)
 {
     void Prim2D_Begin(void);
@@ -9854,7 +9857,9 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     return (size <= limit) ? size : 0;
 }
   
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_801DFE60(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
@@ -9879,7 +9884,7 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
     i = 0;
     self = arg1;
 
-    for (ctr = 3; ctr != 0; ctr--) {
+    for (i = 0; i < 6; i++) {
         slot = *arg0 + off;
         if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
             hdrOk = 0;
@@ -9895,29 +9900,12 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
                 minSize = save_slot_size(slot);
             }
         }
-        slot = *arg0 + (off + 0x4000);
         off += 0x4000;
-        if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(slot + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
-                best = slot;
-                minSize = save_slot_size(slot);
-            }
-        }
-        off += 0x4000;
-        i += 1;
     }
 
     i = 0;
     off = 0x2000;
-    for (ctr = 2; ctr != 0; ctr--) {
+    for (i = 0; i < 6; i++) {
         found = *arg0 + off;
         if (*(u32 *)(found + 0x40) != 0x4645384AU) {
             hdrOk = 0;
@@ -9929,32 +9917,7 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
         if (hdrOk != 0) {
             goto found_slot;
         }
-        found = *arg0 + (off + 0x4000);
         off += 0x4000;
-        if (*(u32 *)(found + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(found + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk != 0) {
-            goto found_slot;
-        }
-        found = *arg0 + (off + 0x4000);
-        off += 0x4000;
-        if (*(u32 *)(found + 0x40) != 0x4645384AU) {
-            hdrOk = 0;
-        } else if (*(u32 *)(found + 0x44) != 0x20050201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk != 0) {
-            goto found_slot;
-        }
-        off += 0x4000;
-        i += 2;
     }
 
     found = NULL;
@@ -9972,6 +9935,7 @@ found_slot:
     diff = (s32)best - (s32)gSaveDataBase;
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
 }
+#pragma pop
   extern u8 lbl_80299F1C[];
 void fn_801E00EC(void *arg0, void *arg1) { void Process_CreateChild(void *); extern u8 lbl_80299F1C[]; (void)arg0; (void)arg1; Process_CreateChild(lbl_80299F1C); }
 
@@ -10305,6 +10269,35 @@ do_init:
 
 #pragma opt_strength_reduction reset
 #pragma use_lmw_stmw reset
+
+static inline u8 *Save_FindLinkedSlotIn(u8 **save, s32 id) {
+    s32 off; u8 *slot; s32 i; u8 valid;
+    i=0; off=0x2000;
+    for (;i<6;i++) {
+        slot=*save+off;
+        if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+        else if (*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+        else valid=1;
+        if (valid && id==slot[0x62]) return slot;
+        off+=0x4000;
+    }
+    return 0;
+}
+static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
+    u8 *best; s32 i; u32 minSize; s32 off; u8 *slot; u8 valid;
+    best=0; i=0; minSize=-1; off=0x2000;
+    for (;i<6;i++) {
+        slot=*save+off;
+        if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+        else if (*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+        else valid=1;
+        if (!valid && minSize>save_slot_size(slot)) {
+            best=slot; minSize=save_slot_size(slot);
+        }
+        off+=0x4000;
+    }
+    return best;
+}
 
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
