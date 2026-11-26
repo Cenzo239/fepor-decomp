@@ -114,7 +114,7 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-#pragma global_optimizer off
+#pragma global_optimizer on
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[0x48];
@@ -126,7 +126,7 @@ void fn_800895B8(void) {
     void *tmp;
 
     base = &lbl_80289950[0];
-    lbl_803674E0 = Process_Create(base, 7);
+    lbl_803674E0 = Process_Create(&((u32 *)base)[0], 7);
     lbl_803674E4 = Process_Create(base + 0x58, 7);
     tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
