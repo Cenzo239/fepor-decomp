@@ -1943,28 +1943,29 @@ void fn_80022748(u8 *map, u8 *arg1) {
 void fn_800227D0(s32 arg0, s32 arg1, s8 arg2) { s32 base; s16 value; s32 offset; base=arg0+0x10000; offset=arg1<<1; value=arg2; arg0=base+offset; *(s16 *)(arg0+0x4214)=value; if(arg2<0) *(s16 *)(arg0+0x4214)=0x7FFE; }
 #pragma scheduling reset
 #pragma optimization_level reset
-void fn_800227F8(void *arg0,void *arg1) {
-struct Map { u8 pad[0x14214]; s16 costs[77]; };
-struct Terrain { u32 unk0,unk4; s8 *data; };
-struct Terrain *Terrain_GetEntry(s32);
-u8 Status_Test(void *,s32);
-struct Map *map=arg0;
-u8 *unit=arg1;
-struct Terrain *terrain;
-s32 i;
-terrain=Terrain_GetEntry(0);
-if(unit==0){
-for(i=1;i<77;i++) map->costs[i]=1;
-map->costs[0]=0x7FFF;
-((u8 *)map)[0x24EEA]=1;
-} else {
-for(i=0;i<77;i++,terrain++){
-s32 cost=0x7FFF;
-if(terrain->data[unit[0x42]+8]>=0) cost=terrain->data[unit[0x42]+8];
-map->costs[i]=cost;
-}
-((u8 *)map)[0x24EEA]=Status_Test(unit+0x1C,4)!=0;
-}
+void fn_800227F8(void *arg0, void *arg1) {
+    struct Map { u8 pad[0x14214]; s16 costs[77]; };
+    struct Terrain { u32 unk0, unk4; s8 *data; };
+    struct Terrain *Terrain_GetEntry(s32);
+    u8 Status_Test(void *, s32);
+    struct Map *map = arg0;
+    u8 *unit = arg1;
+    struct Terrain *terrain;
+    terrain = Terrain_GetEntry(0);
+    if (unit == 0) {
+        int i;
+        for (i = 1; i < 77; i++) {
+            map->costs[i] = 1;
+        }
+        map->costs[0] = 0x7FFF;
+        ((u8 *)map)[0x24EEA] = 1;
+    } else {
+        int i;
+        for (i = 0; i < 77; i++, terrain++) {
+            map->costs[i] = (terrain->data[unit[0x42] + 8] >= 0) ? terrain->data[unit[0x42] + 8] : 0x7FFF;
+        }
+        ((u8 *)map)[0x24EEA] = Status_Test(unit + 0x1C, 4) != 0;
+    }
 }
 
 void Map_RefreshUnitMap(void *arg0)
