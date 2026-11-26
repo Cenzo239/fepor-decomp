@@ -4357,7 +4357,7 @@ extern "C" void fn_801422C0(void *arg0)
     u8 *entry;
     u8 *node;
     s32 index;
-    s16 count;
+    s32 count;
     s32 offset;
     s32 idx2;
     
@@ -4393,7 +4393,9 @@ extern "C" void fn_801422C0(void *arg0)
         if (*(void **)entry == 0) {
             selected = 0;
         } else {
-            selected = MenuPopup_AdvanceNode(*(u8 **)(entry + 8), *(s16 *)(child + idx2));
+            count = *(s16 *)(child + idx2);
+            node = *(u8 **)(entry + 8);
+            selected = MenuPopup_AdvanceNode(count, node);
         }
 
         if (selected != 0) {
