@@ -4,6 +4,17 @@
 #include "global.h"
 #include "structs.h"
 
+static inline u32 GX_ReadMemCounter(volatile u16 *high, volatile u16 *low) {
+    u32 lo, old, hi;
+    hi = *high;
+    do {
+        old = hi;
+        hi = *high;
+        lo = *low;
+    } while (hi != old);
+    return (hi << 16) | lo;
+}
+
 extern void* lbl_80368784;
 extern s32 gSaveDataBase;
 extern s32 fn_80013E50(s32);
@@ -160,6 +171,8 @@ void *fn_8021D8F8(u32 arg0)
     return result;
 }
 
+#pragma push
+#pragma optimization_level 4
 s32 fn_8021D91C(s32 arg0) {
     s64 OSGetTime(void);
     void fn_8021F260(s32);
@@ -174,12 +187,12 @@ s32 fn_8021D91C(s32 arg0) {
     extern s64 lbl_80368760;
     extern u32 lbl_80368768;
     volatile u32 *fifo;
+    volatile u16 *high;
     u32 lo;
     u32 val;
     u32 old;
     unsigned int hi;
     s64 now;
-    volatile u16 *high;
     volatile u16 *low;
     u8 pad[8];
 
@@ -237,7 +250,7 @@ s32 fn_8021D91C(s32 arg0) {
     }
     return 1;
 }
-
+#pragma pop
 #pragma opt_propagation off
 #pragma opt_common_subs off
 void __GXInitRevisionBits(void) {
