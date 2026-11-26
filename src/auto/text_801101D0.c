@@ -1910,20 +1910,25 @@ void fn_80113F88(void *arg0) {
     }
     SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
-void fn_80114078(void *arg0) {
-    void *self = arg0;
-    s32 n;
-
-    *(u8 *)((u8 *)self + 0x184) = 1;
-    Actor_LoadAnim(self, (u8 *)&gActorXmlStrs + 0x498, *(s32 *)((u8 *)self + 0x188) * 2, 0, 1);
-    n = strlen((char *)&gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)self + 0x160, (char *)&gActorXmlStrs + 0x1C, n);
-    n = strlen((char *)&gActorXmlStrs + 0x1C);
-    String_AssignCStr((u8 *)self + 0x16C, (char *)&gActorXmlStrs + 0x1C, n);
-    *(u8 *)((u8 *)self + 0x1A4) = 1;
-    *(u8 *)((u8 *)self + 0x1A6) = 1;
+#pragma push
+#pragma optimization_level 1
+void fn_80114078(void *arg0)
+{
+  void *self = arg0;
+  s32 n;
+  u8 *new_var;
+  void *new_var2;
+  *((u8 *) (((u8 *) self) + 0x184)) = 1;
+  new_var2 = self;
+  new_var = (u8 *) new_var2;
+  Actor_LoadAnim(self, ((u8 *) (&gActorXmlStrs)) + 0x498, (*((s32 *) (((u8 *) self) + 0x188))) * 2, 0, 1);
+  n = strlen(((char *) (&gActorXmlStrs)) + 0x1C);
+  String_AssignCStr(((u8 *) new_var2) + 0x160, ((char *) (&gActorXmlStrs)) + 0x1C, n);
+  n = strlen(((char *) (&gActorXmlStrs)) + 0x1C);
+  String_AssignCStr(new_var + 0x16C, ((char *) (&gActorXmlStrs)) + 0x1C, n);
+  *((u8 *) (new_var + 0x1A6)) = (*((u8 *) (new_var + 0x1A4)) = 1);
 }
-
+#pragma pop
 #pragma cplusplus on
 #pragma global_optimizer off
 extern "C" void fn_80114124(void *arg0, s32 arg1) {
