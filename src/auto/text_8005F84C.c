@@ -8766,11 +8766,11 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2) {
 }
 #pragma global_optimizer off
 static inline void Ui_SetupMenuEntries(s32 *table, void **entries, s32 a0, s32 a1) {
-    entries[0] = (void *)table;
-    table[1] = a0;
-    entries[1] = (void *)(table + 2);
-    table[3] = a1;
-    entries[2] = 0;
+    ((volatile void **)entries)[0] = (void *)table;
+    ((volatile s32 *)table)[1] = a0;
+    ((volatile void **)entries)[1] = (void *)(table + 2);
+    ((volatile s32 *)table)[3] = a1;
+    ((volatile void **)entries)[2] = 0;
 }
 
 void fn_8006F10C(s32 arg0, s32 arg1) {
