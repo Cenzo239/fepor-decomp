@@ -16,7 +16,7 @@ s32 fn_80055C84(s32 *arg0) {
 void *Process_CreateChild(void *, s32, void *);             /* extern */
 s32 strcpy(void *, s32);                       /* extern */
 extern u16 lbl_80285BD0[16];
-extern f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
+extern const f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 void fn_80055C8C(s32 arg0, s32 arg1, s32 arg2) {
     void *Process_CreateChild(void *, s32);
     void *temp_r3;
