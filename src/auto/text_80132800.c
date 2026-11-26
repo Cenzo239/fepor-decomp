@@ -3889,12 +3889,6 @@ void *fn_80137EA8(void *arg0, s16 arg1) {
 #pragma cplusplus on
 #pragma optimization_level 4
 #pragma opt_common_subs off
-static inline u8 Ui_ClampPortraitColor(s32 input) {
-    s32 value, low, high;
-    high = 255; low = 0; value = input;
-    s32 *p = value > low ? &value : &low;
-    return *(*p < high ? p : &high);
-}
 extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
