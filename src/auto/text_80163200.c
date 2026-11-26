@@ -8656,8 +8656,6 @@ void fn_80171004(void *arg0)
     slot = (u8 *)gConvoy;
 
     do {
-        list = *(u8 **)(self + 0x54);
-
         if (*(u32 *)slot != 0) {
             fn_801439F0(list, slot, NULL);
         }
@@ -13645,9 +13643,9 @@ extern "C" void fn_80178D88(void *arg0) {
     Prim2D_PrepareTex();
 }
 
-#pragma cplusplus on
-#pragma use_lmw_stmw on
-extern "C" void fn_80178DCC(void *arg0, void *arg1) {
+#pragma push
+#pragma opt_lifetimes off
+extern "C" void fn_80178DCC(s32 a0, void *arg1) {
     void Prim2D_SetAlphaByte(u8);
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -13707,7 +13705,6 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     s16 y;
     s16 textW;
     s32 a1;
-    s32 a0;
     void *obj;
     s16 x;
     s32 t;
@@ -13716,7 +13713,6 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     u8 *p;
     void *str;
 
-    a0 = (s32)arg0;
     a1 = (s32)arg1;
     p = (u8 *)a1;
     p += (s8)p[0x62];
@@ -13746,14 +13742,18 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     }
     Prim2D_SetAlphaByte(flag ? 0x80 : 0x40);
     Prim2D_PrepareTex();
-    flag2 = 0;
-    if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
-        flag2 = 1;
+    {
+        s32 flag3 = 0;
+        s16 iconX = *(s16 *)((u8 *)a1 + 0x38);
+        s16 iconY = *(s16 *)((u8 *)a1 + 0x3A);
+        if (*((u8 *)a1 + 0x2D) == 0 && *((u8 *)a1 + 0x2E) == 0) {
+            flag3 = 1;
+        }
+        Ui_DrawRouteIconEx(iconX, iconY, flag3);
     }
-    Ui_DrawRouteIconEx(*(s16 *)((u8 *)a1 + 0x38), *(s16 *)((u8 *)a1 + 0x3A), flag2);
     {
         s32 w = ((Obj *)a0)->v35();
-        s32 h = ((Obj *)a0)->v20();
+        a0 = ((Obj *)a0)->v20();
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036AB74);
         Prim2D_PrepareTex();
@@ -13762,7 +13762,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
             flag2 = 1;
         }
         fn_8008AB7C(*(s16 *)((u8 *)a1 + 0x38) + (textW >> 1),
-                    *(s16 *)((u8 *)a1 + 0x3A) + ((s16)h >> 1),
+                    *(s16 *)((u8 *)a1 + 0x3A) + ((s16)a0 >> 1),
                     (s16)w, 0x18, 0x19, 0x4C, flag2);
     }
     Prim2D_Begin();
@@ -13772,8 +13772,7 @@ extern "C" void fn_80178DCC(void *arg0, void *arg1) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma pop
 /* Move a horizontal UI row cursor with left/right, refresh unit-info text, and focus/unfocus slots. */
 extern "C" void Ui_HandleRowCursorInput(void *unused, void *menu) {
     void *GfxEnt_Get(u8);
