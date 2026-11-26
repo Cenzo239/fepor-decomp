@@ -7,6 +7,7 @@ extern u16 lbl_80285BD0[16];
 extern const f64 lbl_80369160;    /* 0.5 double constant, .sdata2 */
 
 static inline f64 HalfD(f32 d) { return (f64)d * lbl_80369160; }
+static inline f32 HermiteStartTangent(f32 t, f32 one) { f32 a = one - t; return (a * a) * t; }
 
 #pragma optimization_level reset
 
@@ -55,6 +56,8 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   t_m1 = farg4 - one;
   h01 = ((lbl_8036915C - two_t) * (farg4 * farg4));
   h00 = ((one + two_t) * (t_m1 * t_m1));
-  return (f32) ((((f64) ((t_m1 * farg4) * farg4)) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (((one - farg4) * (one - farg4)) * farg4)) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
+  return (f32)((f64)((t_m1*farg4)*farg4) * ((f64)(farg3-farg1)*0.5)
+      + (((f64)(farg2-farg0)*0.5) * (f64)(((one-farg4)*(one-farg4))*farg4)
+      + (f64)(h00*farg1+h01*farg2)));
 }
 #pragma optimization_level reset
