@@ -1,10 +1,5 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
-static inline void Map_ClearRangeCell(void *map, s32 index)
-{
-    *(s16 *)((u8 *)(*(s16 **)((u8 *)map + 0x14190)) + index) = -1;
-    *(s16 *)((u8 *)map + (index + 0xC18E)) = 0;
-}
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -117,12 +112,12 @@ void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
         u8 pad[0x4190];
         s16 *costs;
     };
+    u8 *base;
     s32 yoff;
     u8 *row;
     struct MapHi *mapHi;
     s32 dir;
-    s32 ox_s;
-    s32 oy_s;
+    
     s32 off;
     s32 idx;
     s32 y;
@@ -130,16 +125,17 @@ void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
     s32 xv;
     s16 *costs;
 
+    base = gBattleMap;
     dir = (u8)facing;
-    mapHi = (struct MapHi *)(gBattleMap + 0x10000);
-    ox_s = (s8)ox;
-    oy_s = (s8)oy;
-    y = (s8)gBattleMap[9];
+    mapHi = (struct MapHi *)(base + 0x10000);
+    ox = (s8)ox;
+    oy = (s8)oy;
+    y = (s8)base[9];
     goto outer_test;
 outer:
     yoff = (s8)y << 6;
-    x = (s8)gBattleMap[8];
-    row = gBattleMap + yoff;
+    x = (s8)base[8];
+    row = base + yoff;
     goto inner_test;
 inner:
     xv = (s8)x;
@@ -151,25 +147,25 @@ inner:
             if (Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0) {
                 switch (dir) {
                 case 1:
-                    if (ox_s < x) {
+                    if (ox < x) {
                         *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
                     }
                     break;
                 case 2:
-                    if (x < ox_s) {
+                    if (x < ox) {
                         *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
                     }
                     break;
                 case 8:
-                    if (oy_s < y) {
+                    if (oy < y) {
                         *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
                     }
                     break;
                 case 4:
-                    if (y < oy_s) {
+                    if (y < oy) {
                         *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
                         *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
                     }
@@ -180,12 +176,12 @@ inner:
     }
     x += 1;
 inner_test:
-    if (x <= (s8)gBattleMap[0xA] - 1) {
+    if (x <= (s8)base[0xA] - 1) {
         goto inner;
     }
     y += 1;
 outer_test:
-    if (y <= (s8)gBattleMap[0xB] - 1) {
+    if (y <= (s8)base[0xB] - 1) {
         goto outer;
     }
 }
