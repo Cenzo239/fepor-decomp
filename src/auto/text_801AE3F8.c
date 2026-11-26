@@ -2560,13 +2560,11 @@ void fn_801B27A0(void *arg0) {
 }
 
 #pragma cplusplus on
-#pragma use_lmw_stmw on
 extern "C" void fn_801B27B0(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
     void Ui_UpdatePanelWidgets(void *);
     void *Ui_FindChild(void *, s32, s32);
-    void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoText(void *, s32, f32, f32);
@@ -2583,9 +2581,11 @@ extern "C" void fn_801B27B0(void *arg0) {
         s16 x;
         s16 y;
         Vec2s() {}
+        Vec2s(s16 a, s16 b): x(a), y(b) {}
         Vec2s(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; }
         Vec2s &operator=(const Vec2s &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
+    void Ui_SlideWidgetChild(void *, void *, const Vec2s &, s32);
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -2646,10 +2646,7 @@ extern "C" void fn_801B27B0(void *arg0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         } else if ((btn & 0x200) && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             *(u8 *)((u8 *)obj + 0x3C) = 0;
-            tmp = *(s16 *)((u8 *)p + 0xC);
-            sp8[0] = 0x260;
-            sp8[1] = tmp;
-            Ui_SlideWidgetChild(self, p, sp8, 0);
+            Ui_SlideWidgetChild(self, p, Vec2s(0x260, *(s16 *)((u8 *)p + 0xC)), 0);
             Process_Goto(self, 0x24);
             Ui_PlaySeCue(gFShopStrings + 0x3a0, 0x64);
         }
@@ -2657,8 +2654,7 @@ extern "C" void fn_801B27B0(void *arg0) {
     (void)sp10;
     (void)spC;
 }
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma cplusplus off
 
 void fn_801B2A80(void *arg0) {
     void *Heap_Alloc(s32);
