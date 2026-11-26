@@ -1506,10 +1506,6 @@ void Unit_AddGrowthProgress(void *unit, void *deltas) {
     M2C_FIELD(unit, u8 *, 0x1BB) = (u8) res;
 }
 
-static inline s8 Unit_GetLevel_19A(void *u) {
-    return ((s8 *)u)[0x19A];
-}
-
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
@@ -1542,9 +1538,9 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
         arg1 += fn_800386B0(arg0);
         if (arg1 >= 0x64) {
             arg1 -= 0x64;
-            ((u8 *)arg0)[0x19A] = ((u8 *)arg0)[0x19A] + 1;
+            ((s8 *)arg0)[0x19A]++;
             *(u32 *)(gBattle + 0xCAC) |= 0x800;
-            if (0x14 < ((s8 *)arg0)[0x19A]) {
+            if (Unit_GetLevel_19A(arg0) > 0x14) {
                 *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
                 *(u32 *)(gBattle + 0xCAC) |= 0x10;
             } else {
@@ -1726,9 +1722,9 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     arg1 += fn_800386B0(arg0);
     if (arg1 >= 0x64) {
         arg1 -= 0x64;
-        ((u8 *)arg0)[0x19A] = ((u8 *)arg0)[0x19A] + 1;
+        ((s8 *)arg0)[0x19A]++;
         *(u32 *)(gBattle + 0xCAC) |= 0x800;
-        if (0x14 < ((s8 *)arg0)[0x19A]) {
+        if (Unit_GetLevel_19A(arg0) > 0x14) {
             *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
             *(u32 *)(gBattle + 0xCAC) |= 0x10;
         } else {
