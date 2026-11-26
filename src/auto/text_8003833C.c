@@ -1504,16 +1504,15 @@ result=(s8)(value+bonus); if(result<0) result=0; return result;
 
 s8 fn_8003AEB0(void *arg0) {
     s8 fn_80038A48(void *);
+    s32 p;
     s8 var_r31;
     s8 var_r3;
-    u8 temp_r6_2;
-    void *temp_r6;
 
-    temp_r6 = M2C_FIELD(arg0, void **, 0x18C);
-    temp_r6_2 = M2C_FIELD(temp_r6, u8 *, 0x50);
-    var_r31 = M2C_FIELD(temp_r6, u8 *, 0x48) + (M2C_FIELD(arg0, u8 *, 0x1AF) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x21));
-    if (var_r31 > (s8) temp_r6_2) {
-        var_r31 = (s8) temp_r6_2;
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x21) + *(u8 *)(p + 0x48)) + *(u8 *)((u8 *)arg0 + 0x1AF);
+    p = *(s8 *)(p + 0x50);
+    if (var_r31 > (s8)p) {
+        var_r31 = (s8)p;
     }
     if (var_r31 < 0) {
         var_r31 = 0;
