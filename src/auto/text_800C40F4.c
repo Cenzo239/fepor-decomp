@@ -14193,8 +14193,8 @@ static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortI
     void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
     void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
     SortIterator fn_800E0398(s32 *, s32 *, s32 *, s32 *, SortIterator, SortCompare);
-            s32 half;
             s32 *middle;
+            s32 half;
             s32 n = ((s32)end - (s32)begin) / 4;
             if (n > 1) {
                 if (n == 2) {
@@ -17051,8 +17051,8 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         void *data;
     } st;
 
-    void *pSrc;
     void *pVec;
+    void *pSrc;
     u32 room;
     void *newData;
     void *end;
