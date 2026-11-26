@@ -183,6 +183,9 @@ void Ui_DrawUnitInfo(void *proc) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_8000A258(void);
@@ -213,11 +216,26 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     extern f32 lbl_8036951C;
     extern f32 lbl_803695AC;
 
-    Color c0, c1, c2, c3, c4, c5, c6, c7;
-    f32 fx, fy, fw, fh;
-    f32 sh, sw, th, tw;
-    f32 x2, y2, x3, y3, x4, y4;
-    f32 edgeL, edgeR, edgeT, edgeB;
+    Color c4, c5, c6, c7, c0, c1, c2, c3;
+    f32 edgeB;
+    f32 edgeT;
+    f32 edgeR;
+    f32 edgeL;
+    f32 y4;
+    f32 x4;
+    f32 y3;
+    f32 x3;
+    f32 y2;
+    f32 x2;
+    f32 th;
+    f32 tw;
+    f32 sw;
+    f32 sh;
+    f32 fh;
+    f32 fw;
+    f32 fy;
+    f32 fx;
+    f32 top;
     u16 *tex;
     s32 id;
     s16 ix, iy;
@@ -227,7 +245,8 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     fw = w;
     fh = h;
     ix = (s16)(lbl_8036951C + fx);
-    iy = (s16)(lbl_8036951C + fy);
+    top = lbl_8036951C + fy;
+    iy = (s16)top;
     fn_8000A258();
     fn_8000A174(0, 0x12);
     fn_8000A248();
@@ -332,7 +351,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     fn_80007870(lbl_80369418);
     edgeL = lbl_80369480 + fx;
     {
-        f32 yb = lbl_8036951C + fy;
+        f32 yb = top;
         fn_80007838(edgeL, yb, lbl_80369418, lbl_80369418);
         x3 = edgeL + ((fw - lbl_80369480) - lbl_80369480);
         fn_80007818(x3, yb + lbl_803694D0, tw, th);
@@ -397,7 +416,7 @@ void fn_8008563C(u8 *arg0, f32 x, f32 y, f32 w, f32 h) {
     fn_80009C0C(lbl_80369430);
     fn_8000A248();
 }
-
+#pragma pop
 void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -664,21 +683,60 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     (void)lbl_80369440;
 }
 
-void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
-    void fn_800075D8(void);
-    void fn_800076AC(s32, s32, s32, s32);
-    void fn_80007818(f32, f32, f32, f32);
-    void fn_80007838(f32, f32, f32, f32);
-    void fn_80007870(f32);
-    void fn_80007884(void);
-    void fn_80007898(s32);
-    void fn_80009C0C(f32);
-    void fn_80009F90(void *, s32, s32);
-    void fn_8000A248(void);
-    void fn_8000A258(void);
+static inline void Ui_DrawTexQuad_80086C14(void *atlas, s32 id, f32 x, f32 y, f32 w, f32 h, u8 colorIdx, s32 alpha) {
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
+    void Prim2D_SetPrimParam(f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_BindTexture(void *, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
     void **fn_8006EDD8(void *, s32);
-    s32 *fn_8018D900(u8);
-    extern void *lbl_803674F4;
+    s32 *Ui_GetColor(u8);
+    extern f32 lbl_80369418;
+    s32 color = *Ui_GetColor(colorIdx);
+    u16 *tex = (u16 *)*fn_8006EDD8(atlas, id);
+    f32 th = (f32)tex[1];
+    f32 tw = (f32)tex[0];
+    Prim2D_Begin();
+    Prim2D_BindTexture(atlas, id, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
+    Prim2D_SetQuadMin(x, y, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(x + w, y + h, th, tw);
+    Prim2D_SetColor(((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2], alpha);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
+}
+
+static inline void Ui_DrawCorner_80086C14(void *atlas, s32 id, f32 x, f32 y) {
+    void **fn_8006EDD8(void *, s32);
+    extern f32 lbl_80369430;
+    u16 *tex = (u16 *)*fn_8006EDD8(atlas, id);
+    f32 sw = (f32)tex[0] * lbl_80369430;
+    f32 sh = (f32)tex[1] * lbl_80369430;
+    Ui_DrawTexQuad_80086C14(atlas, id, x, y, sh, sw, 1, 0xFF);
+}
+
+void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
+    void Prim2D_EmitQuad(void);
+    void Prim2D_SetColor(s32, s32, s32, s32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
+    void Prim2D_SetQuadMin(f32, f32, f32, f32);
+    void Prim2D_SetPrimParam(f32);
+    void Prim2D_EndPrim(void);
+    void Prim2D_AddPrim(s32);
+    void Prim2D_AddZ(f32);
+    void Prim2D_BindTexture(void *, s32, s32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_Begin(void);
+    void **fn_8006EDD8(void *, s32);
+    s32 *Ui_GetColor(u8);
+    extern void *gUiAtlas;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
@@ -711,188 +769,192 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     f32 xL2, yT2;
     f32 tmp;
 
-    sp28 = *fn_8018D900((u8)(arg1 + 0x24));
-    mgr = lbl_803674F4;
+    sp28 = *Ui_GetColor((u8)(arg1 + 0x24));
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0x21);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 0x21, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 0x21, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     x1 = lbl_8036951C + x;
     y1 = lbl_8036951C + y;
-    fn_80007838(x1, y1, lbl_80369418, lbl_80369418);
-    fn_80007818(x1 + (w - lbl_8036943C), y1 + (h - lbl_8036943C), th, tw);
-    fn_800076AC(((u8 *)&sp28)[0], ((u8 *)&sp28)[1], ((u8 *)&sp28)[2], arg0);
-    fn_800075D8();
-    fn_80007884();
-    fn_8000A258();
-    fn_80009C0C(lbl_8036942C);
-    fn_8000A248();
+    Prim2D_SetQuadMin(x1, y1, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(x1 + (w - lbl_8036943C), y1 + (h - lbl_8036943C), th, tw);
+    Prim2D_SetColor(((u8 *)&sp28)[0], ((u8 *)&sp28)[1], ((u8 *)&sp28)[2], arg0);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036942C);
+    Prim2D_PrepareTex();
 
-    tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 6);
-    sw = (f32)tex[0] * lbl_80369430;
-    sh = (f32)tex[1] * lbl_80369430;
-    sp14 = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    tex = (u16 *)*fn_8006EDD8(gUiAtlas, 6);
+    sw = lbl_80369430 * (f32)tex[0];
+    sh = lbl_80369430 * (f32)tex[1];
+    sp14 = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 6);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 6, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
-    fn_80007838(x, y, lbl_80369418, lbl_80369418);
-    fn_80007818(x + sh, y + sw, th, tw);
-    fn_800076AC(((u8 *)&sp14)[0], ((u8 *)&sp14)[1], ((u8 *)&sp14)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 6, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
+    Prim2D_SetQuadMin(x, y, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(x + sh, y + sw, th, tw);
+    Prim2D_SetColor(((u8 *)&sp14)[0], ((u8 *)&sp14)[1], ((u8 *)&sp14)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 7);
-    sw = (f32)tex[0] * lbl_80369430;
-    sh = (f32)tex[1] * lbl_80369430;
-    sp10 = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    tex = (u16 *)*fn_8006EDD8(gUiAtlas, 7);
+    sw = lbl_80369430 * (f32)tex[0];
+    sh = lbl_80369430 * (f32)tex[1];
+    sp10 = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 7);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 7, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 7, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     xR = x + w;
     xR2 = xR - lbl_80369518;
-    fn_80007838(xR2, y, lbl_80369418, lbl_80369418);
-    fn_80007818(xR2 + sh, y + sw, th, tw);
-    fn_800076AC(((u8 *)&sp10)[0], ((u8 *)&sp10)[1], ((u8 *)&sp10)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_SetQuadMin(xR2, y, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(xR2 + sh, y + sw, th, tw);
+    Prim2D_SetColor(((u8 *)&sp10)[0], ((u8 *)&sp10)[1], ((u8 *)&sp10)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 8);
-    sw = (f32)tex[0] * lbl_80369430;
-    sh = (f32)tex[1] * lbl_80369430;
-    spC = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    tex = (u16 *)*fn_8006EDD8(gUiAtlas, 8);
+    sw = lbl_80369430 * (f32)tex[0];
+    sh = lbl_80369430 * (f32)tex[1];
+    spC = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 8);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 8, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 8, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     yB = y + h;
     yB2 = yB - lbl_803694CC;
-    fn_80007838(x, yB2, lbl_80369418, lbl_80369418);
-    fn_80007818(x + sh, yB2 + sw, th, tw);
-    fn_800076AC(((u8 *)&spC)[0], ((u8 *)&spC)[1], ((u8 *)&spC)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_SetQuadMin(x, yB2, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(x + sh, yB2 + sw, th, tw);
+    Prim2D_SetColor(((u8 *)&spC)[0], ((u8 *)&spC)[1], ((u8 *)&spC)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    tex = (u16 *)*fn_8006EDD8(lbl_803674F4, 9);
-    sw = (f32)tex[0] * lbl_80369430;
-    sh = (f32)tex[1] * lbl_80369430;
-    sp8 = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    tex = (u16 *)*fn_8006EDD8(gUiAtlas, 9);
+    sw = lbl_80369430 * (f32)tex[0];
+    sh = lbl_80369430 * (f32)tex[1];
+    sp8 = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 9);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 9, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
-    fn_80007838(xR2, yB2, lbl_80369418, lbl_80369418);
-    fn_80007818(xR2 + sh, yB2 + sw, th, tw);
-    fn_800076AC(((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 9, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
+    Prim2D_SetQuadMin(xR2, yB2, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(xR2 + sh, yB2 + sw, th, tw);
+    Prim2D_SetColor(((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    sp24 = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    sp24 = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xA);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 0xA, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 0xA, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     xL2 = lbl_80369464 + x;
-    fn_80007838(xL2, y, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMin(xL2, y, lbl_80369418, lbl_80369418);
     tmp = xL2 + ((w - lbl_80369464) - lbl_80369518);
-    fn_80007818(tmp, y + lbl_803694D0, th, tw);
-    fn_800076AC(((u8 *)&sp24)[0], ((u8 *)&sp24)[1], ((u8 *)&sp24)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_SetQuadMax(tmp, y + lbl_803694D0, th, tw);
+    Prim2D_SetColor(((u8 *)&sp24)[0], ((u8 *)&sp24)[1], ((u8 *)&sp24)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    sp20 = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    sp20 = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xB);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 0xB, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 0xB, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     yT2 = yB - lbl_80369450;
-    fn_80007838(xL2, yT2, lbl_80369418, lbl_80369418);
-    fn_80007818(tmp, yT2 + lbl_803694D0, th, tw);
-    fn_800076AC(((u8 *)&sp20)[0], ((u8 *)&sp20)[1], ((u8 *)&sp20)[2], 0xFF);
-    fn_800075D8();
-    fn_80007884();
+    Prim2D_SetQuadMin(xL2, yT2, lbl_80369418, lbl_80369418);
+    Prim2D_SetQuadMax(tmp, yT2 + lbl_803694D0, th, tw);
+    Prim2D_SetColor(((u8 *)&sp20)[0], ((u8 *)&sp20)[1], ((u8 *)&sp20)[2], 0xFF);
+    Prim2D_EmitQuad();
+    Prim2D_EndPrim();
 
-    sp1C = *fn_8018D900(1);
-    mgr = lbl_803674F4;
+    sp1C = *Ui_GetColor(1);
+    mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 5);
     th = (f32)tex[1];
     tw = (f32)tex[0];
-    fn_8000A258();
-    fn_80009F90(mgr, 5, 0x11);
-    fn_8000A248();
-    fn_80007898(1);
-    fn_80007870(lbl_80369418);
+    Prim2D_Begin();
+    Prim2D_BindTexture(mgr, 5, 0x11);
+    Prim2D_PrepareTex();
+    Prim2D_AddPrim(1);
+    Prim2D_SetPrimParam(lbl_80369418);
     {
         f32 xa = lbl_80369430 + x;
         f32 ya = lbl_803695AC + y;
-        fn_80007838(xa, ya, lbl_80369418, lbl_80369418);
+        Prim2D_SetQuadMin(xa, ya, lbl_80369418, lbl_80369418);
         {
             f32 yb = ya + ((h - lbl_803694CC) - lbl_803694CC);
-            fn_80007818(xa + lbl_803694D0, yb, th, tw);
-            fn_800076AC(((u8 *)&sp1C)[0], ((u8 *)&sp1C)[1], ((u8 *)&sp1C)[2], 0xFF);
-            fn_800075D8();
-            fn_80007884();
+            Prim2D_SetQuadMax(xa + lbl_803694D0, yb, th, tw);
+            Prim2D_SetColor(((u8 *)&sp1C)[0], ((u8 *)&sp1C)[1], ((u8 *)&sp1C)[2], 0xFF);
+            Prim2D_EmitQuad();
+            Prim2D_EndPrim();
 
-            sp18 = *fn_8018D900(1);
-            mgr = lbl_803674F4;
+            sp18 = *Ui_GetColor(1);
+            mgr = gUiAtlas;
             tex = (u16 *)*fn_8006EDD8(mgr, 5);
             tw = (f32)tex[0];
             th = (f32)tex[1];
-            fn_8000A258();
-            fn_80009F90(mgr, 5, 0x11);
-            fn_8000A248();
-            fn_80007898(1);
-            fn_80007870(lbl_80369418);
+            Prim2D_Begin();
+            Prim2D_BindTexture(mgr, 5, 0x11);
+            Prim2D_PrepareTex();
+            Prim2D_AddPrim(1);
+            Prim2D_SetPrimParam(lbl_80369418);
             {
                 f32 xb = xR - lbl_80369484;
-                fn_80007838(xb, ya, th, lbl_80369418);
-                fn_80007818(xb + lbl_803694D0, yb, lbl_80369418, tw);
-                fn_800076AC(((u8 *)&sp18)[0], ((u8 *)&sp18)[1], ((u8 *)&sp18)[2], 0xFF);
-                fn_800075D8();
-                fn_80007884();
+                Prim2D_SetQuadMin(xb, ya, th, lbl_80369418);
+                Prim2D_SetQuadMax(xb + lbl_803694D0, yb, lbl_80369418, tw);
+                Prim2D_SetColor(((u8 *)&sp18)[0], ((u8 *)&sp18)[1], ((u8 *)&sp18)[2], 0xFF);
+                Prim2D_EmitQuad();
+                Prim2D_EndPrim();
             }
         }
     }
-    fn_8000A258();
-    fn_80009C0C(lbl_80369430);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_80369430);
+    Prim2D_PrepareTex();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -931,16 +993,16 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     s32 *colp;
     void *mgr;
     u16 *tex;
-    f32 tw, th;
-    f32 x1, y1;
-    f32 sw, sh;
-    f32 xR, yB;
-    f32 xR2, yB2;
-    f32 xL2;
-    f32 yT2;
-    f32 edge;
-    f32 xa, ya, yb, xb;
     f32 t0, t1;
+    f32 xb, yb, ya, xa;
+    f32 edge;
+    f32 yT2;
+    f32 xL2;
+    f32 xR2, yB2;
+    f32 yB, xR;
+    f32 sw, sh;
+    f32 y1, x1;
+    f32 th, tw;
 
     colp = Ui_GetColor((u8)(arg1 + 0x24));
     mgr = gUiAtlas;
@@ -965,10 +1027,8 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0);
-    t0 = (f32)tex[0];
-    t1 = (f32)tex[1];
-    sw = t0 * lbl_80369430;
-    sh = t1 * lbl_80369430;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     colp = Ui_GetColor(1);
     mgr = gUiAtlas;
     sp14 = *colp;
@@ -987,10 +1047,8 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 1);
-    t0 = (f32)tex[0];
-    t1 = (f32)tex[1];
-    sw = t0 * lbl_80369430;
-    sh = t1 * lbl_80369430;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     colp = Ui_GetColor(1);
     mgr = gUiAtlas;
     sp10 = *colp;
@@ -1011,10 +1069,8 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 2);
-    t0 = (f32)tex[0];
-    t1 = (f32)tex[1];
-    sw = t0 * lbl_80369430;
-    sh = t1 * lbl_80369430;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     colp = Ui_GetColor(1);
     mgr = gUiAtlas;
     spC = *colp;
@@ -1035,10 +1091,8 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 3);
-    t0 = (f32)tex[0];
-    t1 = (f32)tex[1];
-    sw = t0 * lbl_80369430;
-    sh = t1 * lbl_80369430;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     colp = Ui_GetColor(1);
     mgr = gUiAtlas;
     sp8 = *colp;
@@ -1136,12 +1190,7 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_PrepareTex();
     (void)lbl_80369440;
 }
-
-#pragma push
-#pragma optimization_level 4
-#pragma use_lmw_stmw on
-#pragma opt_common_subs off
-#pragma opt_lifetimes off
+#pragma pop
 void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1230,7 +1279,9 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         }
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_register_coloring off
 void fn_80088300(void *arg0) {
 typedef struct { u8 pad[8]; s8 dir[4]; s8 next; u8 type; u8 pad2[6]; } LocalEntry;
 u32 *Unit_GetItemSlot(void *, s32);
@@ -1257,7 +1308,8 @@ s32 valid;
 base = (LocalEntry (*)[37])lbl_80288FE8;
 for (;;) {
 row = base[M2C_FIELD(self,s8 *,9)];
-if ((index = row[index].dir[0]) == -1) return;
+index = row[index].dir[0];
+if(index==-1) return;
 type = row[index].type;
 if(type>=10 && type<=14) {
 if(M2C_FIELD((u8 *)self + (type-10)*2, s16 *, 0x24)==-1) valid=0; else valid=1;
@@ -1281,7 +1333,8 @@ s32 valid;
 base = (LocalEntry (*)[37])lbl_80288FE8;
 for (;;) {
 row = base[M2C_FIELD(self,s8 *,9)];
-if ((index = row[index].dir[1]) == -1) return;
+index = row[index].dir[1];
+if(index==-1) return;
 type = row[index].type;
 if(type>=10 && type<=14) {
 if(M2C_FIELD((u8 *)self + (type-10)*2, s16 *, 0x24)==-1) valid=0; else valid=1;
@@ -1305,7 +1358,8 @@ s32 valid;
 base = (LocalEntry (*)[37])lbl_80288FE8;
 for (;;) {
 row = base[M2C_FIELD(self,s8 *,9)];
-if ((index = row[index].dir[2]) == -1) return;
+index = row[index].dir[2];
+if(index==-1) return;
 type = row[index].type;
 if(type>=10 && type<=14) {
 if(M2C_FIELD((u8 *)self + (type-10)*2, s16 *, 0x24)==-1) valid=0; else valid=1;
@@ -1329,7 +1383,8 @@ s32 valid;
 base = (LocalEntry (*)[37])lbl_80288FE8;
 for (;;) {
 row = base[M2C_FIELD(self,s8 *,9)];
-if ((index = row[index].dir[3]) == -1) return;
+index = row[index].dir[3];
+if(index==-1) return;
 type = row[index].type;
 if(type>=10 && type<=14) {
 if(M2C_FIELD((u8 *)self + (type-10)*2, s16 *, 0x24)==-1) valid=0; else valid=1;
@@ -1345,7 +1400,7 @@ fn_8007DAC4(self,(u8 *)lbl_80288FE8+M2C_FIELD(self,s8 *,9)*0x2e4+M2C_FIELD(self,
 Ui_PlaySeCue(gUiStrings+0x19b,100);
 }
 }
-
+#pragma pop
 #pragma optimization_level 3
 #pragma opt_strength_reduction off
 static inline void Menu888_InitSelection(void *self) {
