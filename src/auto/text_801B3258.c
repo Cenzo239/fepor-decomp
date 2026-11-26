@@ -1,16 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline void Video_DistributeOuter(u16 amount, u8 *dst) {
-    extern f32 lbl_8036B480;
-    extern f32 lbl_8036B478;
-    s32 i;
-    for (i = 0; i < 4; i++, dst++) {
-        if (i < amount % 4)
-            *dst = (u8)(s32)((f32)amount * lbl_8036B480 + lbl_8036B478);
-        else
-            *dst = (u8)(s32)((f32)amount * lbl_8036B480);
-    }
-}
 static inline s32 AchieveList_GoldAt(void *arg0,s32 i) { return *(s32*)((u8*)arg0+0x200+i*4); }
 static inline s32 AchieveList_SumGoldNested(void *arg0,s32 start) {
 s32 sum=start, i;
@@ -10894,7 +10883,6 @@ void fn_801C7C08(void *arg0) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_propagation off
 void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     void *fn_8006E658(void);
     void VIConfigure(void *);
@@ -10929,6 +10917,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     s32 temp_r0;
     u16 temp_r8;
     u8 *var_r6;
+    s32 center;
     s32 var_r9;
     s32 count;
     s32 temp_r9;
@@ -10955,7 +10944,8 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     var_r6 = (u8 *)&spC;
     var_r9 = 0;
     temp_r0 = (s32)((f32)(s8)lbl_80366E9C * var_f2);
-    temp_r8 = (s8)lbl_80366E9C - (u16)temp_r0;
+    center = (u16)temp_r0;
+    temp_r8 = (s8)lbl_80366E9C - center;
     count = temp_r8 % 4;
     for (var_ctr = 2; var_ctr != 0; var_ctr--) {
         if (var_r9 < count) {
@@ -10975,7 +10965,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     var_r6_2 = (u8 *)&sp8;
     var_r8 = 0;
     for (var_ctr = 3; var_ctr != 0; var_ctr--) {
-        if (var_r8 < (s32)((u16)temp_r0 % 3)) {
+        if (var_r8 < (center % 3)) {
             *var_r6_2 = (u8)(s32)(lbl_8036B478 + (f32)(u16)temp_r0 / lbl_8036B484);
         } else {
             *var_r6_2 = (u8)(s32)((f32)(u16)temp_r0 / lbl_8036B484);
