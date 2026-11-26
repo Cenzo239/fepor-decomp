@@ -4471,8 +4471,9 @@ u8 Ai_TrySeekHealTerrain(void *arg0) {
     extern u8 gBattleMap[151280];
     extern u8 Ai_UnitIsHostileToActive[];
     void *self;
-    s8 bx;
     s8 by;
+    s8 bx;
+    u8 *cell;
     s32 xShift;
     u8 *row;
     u8 *row2;
@@ -4500,11 +4501,13 @@ u8 Ai_TrySeekHealTerrain(void *arg0) {
     bx = *(s8 *)((u8 *)self + 0x19E);
     by = *(s8 *)((u8 *)self + 0x19F);
     {
-        s32 x0 = bx;
-        s32 y0 = by;
+        s32 y0;
+        s32 x0;
         s8 range;
         s32 lim;
         s32 yMin;
+        x0 = bx;
+        y0 = by;
         range = Unit_GetMov(self);
         xMin = x0 - range;
         if (xMin < (s8)gBattleMap[8]) {
@@ -4537,7 +4540,7 @@ outer:
 inner:
     t = (s8)x + xShift;
     if (((s16 *)(map2 + 0x610E))[t] >= 0) {
-        u8 *cell = row + (s8)x;
+        cell = row + (s8)x;
         if ((s8)cell[0xE18E] == 0 && Map_IsAiTerrainBlocked((s8)x, (s8)y) == 0 && cell[0xD] == 0) {
             void *tmp = Terrain_GetEntry(*(row2 + ((s8)x + 0x100D)));
             if (*(u8 *)(*(u8 **)((u8 *)tmp + 8) + 6) != 0) {
