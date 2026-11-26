@@ -2,6 +2,13 @@
 #include "common.h"
 #include "global.h"
 
+static inline void TabMenu_DrawCenteredText(s16 x, s16 y, u8 selected, void *text) {
+    void fn_8001019C(s16, s16, u8, void *, ...);
+    s32 mode = 0x16;
+    if (selected) mode = 0x15;
+    fn_8001019C(x, y, (u8)mode, text);
+}
+
 struct UnkStruct {
     u32 field_0[0x10];
     u32 field_8;
