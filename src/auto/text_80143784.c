@@ -2600,17 +2600,29 @@ void *fn_80145EBC(void *arg0) {
 }
 
 s32 fn_80145F58(void *arg0, void **arg1) {
- extern u8 lbl_80276BC8[];
- void *Hash_Lookup(void *); s32 Str_Cmp(void *, void *);
- s32 count; u8 *entry; s32 matches; s32 index; u8 *table;
- table=Hash_Lookup(lbl_80276BC8+0x9D);
- entry=table+4;
- count=*((s32 *)(table=entry)-1);
- matches=0; index=0;
- while(index<count) {
- if(*(void **)entry && Str_Cmp(*(void **)entry,arg0)==0) { *arg1++=entry; matches++; }
- index++; entry+=0x10;
- } return matches;
+    extern u8 lbl_80276BC8[];
+    void *Hash_Lookup(void *);
+    s32 Str_Cmp(void *, void *);
+    s32 count;
+    u8 *entry;
+    s32 matches;
+    s32 index;
+    s32 *p;
+
+    p = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x9D);
+    count = *p++;
+    entry = (u8 *)p;
+    matches = 0;
+    index = 0;
+    while (index < count) {
+        if (*(void **)entry && Str_Cmp(*(void **)entry, arg0) == 0) {
+            *arg1++ = entry;
+            matches++;
+        }
+        index++;
+        entry += 0x10;
+    }
+    return matches;
 }
 
 void *fn_80145FE8(void) {
