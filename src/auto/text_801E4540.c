@@ -567,15 +567,13 @@ static inline void fn_801E4FB8_InsertLoop(void *arg0, u8 *entry) {
     }
 }
 
-static inline void fn_801E4FB8_Impl(void *arg0, s32 index, u8 *entry) {
+static inline void fn_801E4FB8_Impl(void *arg0, u8 *entry, void *end, s32 index) {
     void List_Insert(void *, void *, void *, void *);
     struct { u8 value; } keyCopy, key;
     void *sp[5];
-    void *end;
     void *node;
     u8 found;
 
-    end = (u8 *)arg0 + 0x54;
     sp[4] = *(void **)((u8 *)arg0 + 0x58);
     for (;;) {
         keyCopy.value = index + 1;
