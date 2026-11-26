@@ -374,51 +374,32 @@ u32 OSGetConsoleType(void);
 #pragma scheduling off
 #pragma use_lmw_stmw on
 BOOL EXISync(s32 chan) {
-    u8 filler[8];
-    s32 i;
-    s32 len;
-    u8 *buf;
-    u32 data;
-    BOOL enabled;
-    BOOL ret;
     EXIControl *exi;
+    BOOL ret;
+    BOOL enabled;
 
-    (void)filler;
     exi = &Ecb_8033E188[chan];
     ret = 0;
 
-wait:
-    while (__EXIRegs[chan * 5 + 3] & 1) {
-    }
-
-    enabled = OSDisableInterrupts();
-    if (exi->state & 4) {
-        if (exi->state & 3) {
-            if (exi->state & 2) {
-                if ((len = exi->immLen) != 0) {
-                    buf = exi->immBuf;
-                    data = __EXIRegs[chan * 5 + 4];
-                    for (i = 0; i < len; i++) {
-                        *buf++ = (u8)(data >> (8 * (3 - i)));
-                    }
+    while (exi->state & 4) {
+        if ((__EXIRegs[chan * 5 + 3] & 1) == 0) {
+            enabled = OSDisableInterrupts();
+            if (exi->state & 4) {
+                CompleteTransfer(chan);
+                if (fn_80204410() != 0xFF ||
+                    (OSGetConsoleType() & 0xF0000000) == 0x20000000 ||
+                    exi->immLen != 4 ||
+                    (__EXIRegs[chan * 5] & 0x70) != 0 ||
+                    (__EXIRegs[chan * 5 + 4] != 0x01010000 &&
+                     __EXIRegs[chan * 5 + 4] != 0x05070000 &&
+                     __EXIRegs[chan * 5 + 4] != 0x04220001) ||
+                    *(u16 *)0x800030E6 == 0x8200) {
+                    ret = 1;
                 }
             }
-            exi->state &= ~3;
+            OSRestoreInterrupts(enabled);
+            break;
         }
-        if (fn_80204410() == 0xFF &&
-            (OSGetConsoleType() & 0xF0000000) != 0x20000000 &&
-            exi->immLen == 4 &&
-            (__EXIRegs[chan * 5] & 0x70) == 0 &&
-            (__EXIRegs[chan * 5 + 4] == 0x01010000 ||
-             __EXIRegs[chan * 5 + 4] == 0x05070000 ||
-             (__EXIRegs[chan * 5 + 4] == 0x04220001 &&
-              *(u16 *)0x800030E6 == 0x8200))) {
-            ret = 1;
-        }
-    }
-    OSRestoreInterrupts(enabled);
-    if (exi->state & 4) {
-        goto wait;
     }
     return ret;
 }
@@ -852,7 +833,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     s32 enabled;
     u32 cmd;
     s32 ok;
-    register void (*handler)(s32,void *);
+    void (*handler)(s32,void *);
     extern u32 IDSerialPort1_80368800;
     void UnlockedHandler(s32, void *);
     BOOL EXIClearInterrupts(s32, BOOL, BOOL, BOOL);
