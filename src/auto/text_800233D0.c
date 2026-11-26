@@ -584,8 +584,8 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
         virtual s32 v23() = 0;
         virtual s32 v24() = 0;
     };
-    extern f32 gUiMenuIdentityScale;
-    extern f32 lbl_80368DAC;
+    extern const f32 gUiMenuIdentityScale;
+    extern const f32 lbl_80368DAC;
     s32 t;
     s32 n;
     u8 mode;
@@ -598,9 +598,11 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
     case 1:
         n = ((Model *)*(void **)((char *)arg0 + 0x3C))->v23() + 1;
         return (gUiMenuIdentityScale / (f32)n) * (f32)(n - t);
-    case 2:
+    case 2: {
         n = ((Model *)*(void **)((char *)arg0 + 0x3C))->v24() + 1;
-        return (gUiMenuIdentityScale / (f32)n) * (f32)t;
+        f32 d = gUiMenuIdentityScale / (f32)n;
+        return d * (f32)t;
+    }
     default:
         return lbl_80368DAC;
     }
