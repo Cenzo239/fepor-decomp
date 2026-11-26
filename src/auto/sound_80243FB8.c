@@ -2120,9 +2120,7 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
         if (cursor != 0) {
             first = cursor[0];
             second = cursor[1];
-            if (first == 0x80 && second == 0) {
-                cursor = 0;
-            } else {
+            if (first != 0x80 || second != 0) {
                 if (first & 0x80) {
                     value = ((first & 0x7F) << 8) | second;
                     cursor += 2;
@@ -2142,6 +2140,8 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
                     cursor++;
                     *(s16 *)(channel + 0x22) = temp;
                 }
+            } else {
+                cursor = 0;
             }
             *(u32 *)(channel + 0x1C) = (u32)cursor;
             if (cursor != 0) {
