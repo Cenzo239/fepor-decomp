@@ -1,13 +1,5 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
-static inline void Fn_800DBAB8_Store(f32 *dst, void *src) {
-    f32 z = *(f32 *)((u8 *)src + 0x68);
-    f32 y = *(f32 *)((u8 *)src + 0x64);
-    f32 x = *(f32 *)((u8 *)src + 0x60);
-    dst[0] = x;
-    dst[1] = y;
-    dst[2] = z;
-}
 #include "structs.h"
 #pragma cplusplus on
 class WindowDrawInterface {
@@ -10579,8 +10571,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma optimization_level 4
-#pragma peephole on
+#pragma global_optimizer on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
