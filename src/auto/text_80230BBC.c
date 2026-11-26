@@ -739,6 +739,34 @@ s32 fn_80231748(void *arg0) {
  return result;
 }
 
+static inline s32 __unicode_to_UTF8_helper(char *s, u16 wchar) {
+    extern u32 lbl_8036BDF8;
+    u32 prefixes = lbl_8036BDF8;
+    s32 number_of_bytes;
+    char *target_ptr;
+
+    if (wchar < 0x80) {
+        number_of_bytes = 1;
+    } else if (wchar < 0x800) {
+        number_of_bytes = 2;
+    } else {
+        number_of_bytes = 3;
+    }
+
+    target_ptr = s + number_of_bytes;
+    switch (number_of_bytes) {
+        case 3:
+            *--target_ptr = (wchar & 0x3F) | 0x80;
+            wchar >>= 6;
+        case 2:
+            *--target_ptr = (wchar & 0x3F) | 0x80;
+            wchar >>= 6;
+        case 1:
+            *--target_ptr = wchar | ((u8 *)&prefixes)[number_of_bytes];
+    }
+    return number_of_bytes;
+}
+
 u32 wcstombs(char *dest, const u16 *src, u32 limit)
 {
   char *Str_CopyPad(char *, const char *, s32);
