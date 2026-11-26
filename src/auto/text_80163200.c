@@ -5796,10 +5796,10 @@ void fn_8016C1EC(void *arg0) {
     if (Process_FindByName(lbl_80277EA0 + 0xED) != 0) {
 #pragma scheduling off
         sp[0] = 0x3E7;
-        fn_801DE0EC(sp, arg0);
-#pragma scheduling reset
-        fn_80145828();
     }
+#pragma scheduling reset
+    fn_801DE0EC(sp, arg0);
+    fn_80145828();
     *((u8 *)arg0 + 0x34) = 0;
     *(s32 *)((u8 *)arg0 + 0x38) = 0;
 }
@@ -14910,6 +14910,9 @@ extern "C" void fn_8017AAA0(void *arg0) {
     ((Obj *)arg0)->v6();
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 extern "C" void fn_8017AACC(void *arg0) {
     void *fn_80105C5C(void *, u8);
@@ -14938,12 +14941,13 @@ extern "C" void fn_8017AACC(void *arg0) {
     if (gate == 0) {
         count = 0;
         saved = *(s16 *)((u8 *)arg0 + 0x3E);
+        idx = (s32)count;
         held = *(s32 *)((u8 *)gPadInput + 4);
         prev = *(s32 *)((u8 *)gPadInput + 8);
         buttons = *(s32 *)((u8 *)gPadInput + 0xC);
         edge = held & (prev ^ held);
         baseAddr = *(s32 *)((u8 *)arg0 + 0x4C);
-        for (idx = (s32)count; idx < 0x62; idx++) {
+        do {
             item = fn_80105C5C((void *)(baseAddr + 0x1BC), (u8)idx);
             if (item != NULL) {
                 if (*(u8 *)((u8 *)item + 0x19) != 0) {
@@ -14968,7 +14972,8 @@ extern "C" void fn_8017AACC(void *arg0) {
                     }
                 }
             }
-        }
+            idx += 1;
+        } while (idx < 0x62);
 
         if (count == 0) {
             *(s16 *)((u8 *)arg0 + 0x3E) = -1;
@@ -14998,11 +15003,7 @@ extern "C" void fn_8017AACC(void *arg0) {
         }
     }
 }
-
-#pragma push
-#pragma optimization_level 3
-#pragma opt_loop_invariants off
-#pragma cplusplus on
+#pragma pop
 extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
@@ -15558,7 +15559,10 @@ s32 fn_8017B8F8(s32 unused, s32 arg1) {
     return arg1 != 0;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
 void *fn_8017B908(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -15606,9 +15610,9 @@ void *fn_8017B908(void *arg0) {
     if (count == 0 || (s16)*(s16 *)((u8 *)self + 0x3E) < 0) {
         return NULL;
     }
+    count = (u32)*(void **)((u8 *)self + 0x4C);
     match = 0;
     i = 0;
-    count = (u32)*(void **)((u8 *)self + 0x4C);
     do {
         p = fn_80105C5C((void *)(count + 0x1BC), (u8)i);
         if (p != NULL) {
@@ -15641,6 +15645,7 @@ void *fn_8017B908(void *arg0) {
     } while (i < 0x62);
     return NULL;
 }
+#pragma pop
 void fn_8017BA98(s32 *arg0, void *arg1) {
     void *fn_80105C5C(void *, u8);
     u8 fn_80105BC0(void *, u8);
@@ -16285,12 +16290,13 @@ void fn_8017C4BC(void *arg0) {
         *((u8 *)self + 0x79) = 1;
     }
 }
-#pragma pop
 #pragma dont_inline on
 #pragma global_optimizer off
 #pragma optimization_level 3
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void fn_8017CC50(void *arg0, void *arg1) {
     f32 Unit_CalcBaseGoldCost(s32, u8);
     u8 fn_8003D13C(s32);
@@ -16323,12 +16329,10 @@ extern "C" void fn_8017CC50(void *arg0, void *arg1) {
     s16 qty;
     s16 next;
     s32 diff;
-    s32 *pActive;
 
-    pActive = &active;
-    *pActive = 0;
+    active = 0;
     panel = arg0;
-    check = *pActive;
+    check = active;
     if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
         check = 1;
     }
@@ -16366,7 +16370,7 @@ extern "C" void fn_8017CC50(void *arg0, void *arg1) {
                     cost = 1;
                 }
             }
-            can = cost <= funds;
+            can = funds >= (s32)cost ? 1 : 0;
         }
     }
     *(u8 *)((u8 *)panel + 0x50) = can;
@@ -16381,7 +16385,7 @@ extern "C" void fn_8017CC50(void *arg0, void *arg1) {
     ((Obj *)((u8 *)panel + 0x44))->v9(*(void **)((u8 *)panel + 0x34));
     ((Obj *)((u8 *)panel + 0x6C))->v9(*(void **)((u8 *)panel + 0x34));
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 #pragma cplusplus reset
 #pragma optimization_level reset
 #pragma global_optimizer reset
@@ -18987,7 +18991,7 @@ extern "C" void fn_80181454(void *arg0, void *arg1) {
     extern f32 lbl_8036ACAC;
     extern f32 lbl_8036ACA8;
     extern f32 lbl_8036ACB0;
-    void *self = arg0;
+    void *self;
     s16 temp_r31;
     s16 temp_r30;
     s16 temp_r29;
@@ -19003,10 +19007,9 @@ extern "C" void fn_80181454(void *arg0, void *arg1) {
     s16 t16;
     s32 prod;
     s16 height;
-    void *other;
 
-    ((void (*)(void *))(*(void ***)self)[5])(self);
-    other = arg1;
+    self = arg0;
+    ((void (*)(void *))(*(void ***)arg0)[5])(arg0);
 
     t4e = *(s16 *)((u8 *)self + 0x4E);
     temp_r31 = *(s16 *)((u8 *)self + 0x54);
@@ -19032,12 +19035,12 @@ extern "C" void fn_80181454(void *arg0, void *arg1) {
     if (*(u8 *)((u8 *)self + 0x4C) != 0 && *(u32 *)((u8 *)self + 0x5C) != 0) {
         flag = 0;
         check = flag;
-        if (*(u8 *)((u8 *)other + 0x2D) == 0 && *(u8 *)((u8 *)other + 0x2E) == 0) {
+        if (*(u8 *)((u8 *)arg1 + 0x2D) == 0 && *(u8 *)((u8 *)arg1 + 0x2E) == 0) {
             check = 1;
         }
         if (check != 0) {
-            if (*(u32 *)((u8 *)other + 0x34) != 0) {
-                ptr = (void *)*(u32 *)((u8 *)*(void **)((u8 *)other + 0x38) + 8);
+            if (*(u32 *)((u8 *)arg1 + 0x34) != 0) {
+                ptr = (void *)*(u32 *)((u8 *)*(void **)((u8 *)arg1 + 0x38) + 8);
             } else {
                 ptr = 0;
             }
@@ -19128,7 +19131,7 @@ extern "C" void fn_80181608(void *arg0, s32 arg1) {
     s16 rows;
     s16 x0;
     s16 y0;
-    s32 arg;
+    s32 arg = arg1;
     void *unit;
     s32 flag;
     s16 *rect;
@@ -19136,7 +19139,6 @@ extern "C" void fn_80181608(void *arg0, s32 arg1) {
     s16 h;
 
     self = (Obj *)arg0;
-    arg = arg1;
     self->v12();
     self->v3(arg);
 
@@ -19186,7 +19188,6 @@ extern "C" void fn_80181608(void *arg0, s32 arg1) {
 #pragma scheduling reset
 #pragma cplusplus reset
 }
-
 #pragma cplusplus reset
 
 #pragma cplusplus on
