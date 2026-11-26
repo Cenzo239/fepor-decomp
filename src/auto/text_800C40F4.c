@@ -1,13 +1,6 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-
-static inline void AiStateStore(u8 *base, s32 index, s32 value) {
-    s32 i;
-    for (i = 0; i < 1; i++) {
-        *(s32 *)(base + (index << 2) + 8) = value;
-    }
-}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -10575,21 +10568,18 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
-    extern const f32 lbl_80369E70;
-    extern const f32 lbl_80369E80;
-    extern const f32 lbl_80369E84;
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
-    f32 mtx[3][4];
     f32 vec[3];
-    f32 x;
+    f32 mtx[3][4];
     f32 y;
     f32 z;
+    f32 x;
 
-    vec[0] = lbl_80369E70;
-    vec[1] = lbl_80369E70;
-    vec[2] = lbl_80369E80;
-    PSMTXRotRad(mtx, 0x59, lbl_80369E84 * *(f32 *)((u8 *)arg1 + 0x58));
+    vec[0] = 0.0f;
+    vec[1] = 0.0f;
+    vec[2] = 1.0f;
+    PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
     *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
     *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
