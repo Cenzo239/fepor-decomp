@@ -1,16 +1,5 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
-#pragma push
-#pragma global_optimizer off
-static inline void Map_LoadOptional(void *map, char *path, s32 offset) {
- u16 FileCache_Probe(void *); s32 Archive_Load(void *);
- if(FileCache_Probe(path) != 0x8000) *(s32 *)((u8 *)map + offset) = Archive_Load(path);
-}
-static inline void Map_LoadOptionalFlags(void *map, char *path) {
- u16 FileCache_Probe(void *); void *Archive_LoadFlags(void *,u32);
- if(FileCache_Probe(path) != 0x8000) *(void **)((u8 *)map+0x18) = Archive_LoadFlags(path,8);
-}
-#pragma pop
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
@@ -410,8 +399,7 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma opt_lifetimes on
 
 #pragma push
-#pragma opt_strength_reduction off
-#pragma global_optimizer off
+#pragma opt_loop_transforms off
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
@@ -488,7 +476,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     s64 ms;
     u8 sp18[0x30];
 
-    s8 *p;
+    char *p;
     char *dst;
     u8 c;
     u8 mode;
@@ -518,9 +506,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
-    p = (s8 *)arg1 + strlen(arg1);
+    p = arg1 + strlen(arg1);
     p--;
-    while (p != (s8 *)arg1) {
+    while (p != arg1) {
         c = *--p;
         if ((s8)c == '/' || (s8)c == '\\') {
             p++;
