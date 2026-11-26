@@ -1366,7 +1366,9 @@ void fn_800888A4(void *arg0) {
     extern Menu888Entry lbl_80288FE8[][37];
     extern void *gPadInput;
     extern f32 lbl_80369670, lbl_80369674, lbl_80369678;
+    s32 sp8[3];
     Menu888Entry (*base)[37];
+    s32 *select;
     s32 *initial;
     u32 repeat;
     u32 pressed, buttons;
@@ -1416,10 +1418,8 @@ void fn_800888A4(void *arg0) {
         return;
     }
     if (pressed & 0x800) {
-        s32 sp8[3] = {29,19,17};
+        Menu888_InitSelection(self);
         base = lbl_80288FE8;
-        M2C_FIELD(self, s16 *, 4) = 1;
-        M2C_FIELD(self, s32 *, 0x1C) = sp8[M2C_FIELD(self, s8 *, 9)];
         goto check;
     next:
         row = (Menu888Entry *)((s32)base + M2C_FIELD(self, s8 *, 9) * 0x2E4);
