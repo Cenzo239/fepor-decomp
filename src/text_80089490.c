@@ -24,6 +24,7 @@ typedef struct {
 } Struct_80089490;
 
 extern s32 gSaveDataBase;
+static inline u32 fn_80089490_Ptr(u8 *base, s32 off) { return (u32)&((u8 (*)[1])base)[off]; }
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
 extern f32 gScreenOrigin;
