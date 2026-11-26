@@ -38,6 +38,9 @@ extern u8 Proc_GActorNodeLink[16];
 
 #pragma optimization_level reset
 
+#pragma push
+#pragma use_lmw_stmw on
+#pragma optimization_level 4
 void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void fn_80059C2C(s32, s32, s32, s32, s32);
     void fn_80066D00(s32);
@@ -63,10 +66,10 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     void fn_802245D8(s32, s32, s32, s32);
     void GXSetZMode(s32, s32, s32);
     void fn_80224E50(void *, s32, s32);
-    extern f32 gF32_0;
-    extern f64 lbl_80369118;
-    extern f32 lbl_80369128;
-    extern f32 lbl_8036912C;
+    extern const f32 gF32_0;
+    extern const f64 lbl_80369118;
+    extern const f32 lbl_80369128;
+    extern const f32 lbl_8036912C;
 
     u8 sp58[0x30];
     u8 sp28[0x30];
@@ -74,7 +77,6 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     f32 scale;
     f32 fz;
     f32 f0;
-    register f32 f1;
     s32 x1;
     s32 y1;
     s32 a0;
@@ -139,34 +141,34 @@ void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     y1 = a1 + a3;
     (void)lbl_80369118;
     f0 = gF32_0;
-    f1 = lbl_8036912C;
 
     *(volatile f32 *)0xCC008000 = (f32)a0;
     *(volatile f32 *)0xCC008000 = (f32)a1;
     *(volatile f32 *)0xCC008000 = fz;
-    *(volatile f32 *)0xCC008000 = f0;
-    *(volatile f32 *)0xCC008000 = f0;
+    *(volatile f32 *)0xCC008000 = gF32_0;
+    *(volatile f32 *)0xCC008000 = gF32_0;
 
     *(volatile f32 *)0xCC008000 = (f32)x1;
     *(volatile f32 *)0xCC008000 = (f32)a1;
     *(volatile f32 *)0xCC008000 = fz;
-    *(volatile f32 *)0xCC008000 = f1;
-    *(volatile f32 *)0xCC008000 = f0;
+    *(volatile f32 *)0xCC008000 = lbl_8036912C;
+    *(volatile f32 *)0xCC008000 = gF32_0;
 
     *(volatile f32 *)0xCC008000 = (f32)x1;
     *(volatile f32 *)0xCC008000 = (f32)y1;
     *(volatile f32 *)0xCC008000 = fz;
-    *(volatile f32 *)0xCC008000 = f1;
-    *(volatile f32 *)0xCC008000 = f1;
+    *(volatile f32 *)0xCC008000 = lbl_8036912C;
+    *(volatile f32 *)0xCC008000 = lbl_8036912C;
 
     *(volatile f32 *)0xCC008000 = (f32)a0;
     *(volatile f32 *)0xCC008000 = (f32)y1;
     *(volatile f32 *)0xCC008000 = fz;
-    *(volatile f32 *)0xCC008000 = f0;
-    *(volatile f32 *)0xCC008000 = f1;
+    *(volatile f32 *)0xCC008000 = gF32_0;
+    *(volatile f32 *)0xCC008000 = lbl_8036912C;
 
     fn_80066D00(-1);
 }
+#pragma pop
 void fn_800599D0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void fn_8022124C(s32, s32, s32, s32);
     void fn_802212FC(s32, s32, s32, s32);
