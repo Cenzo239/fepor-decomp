@@ -2280,13 +2280,16 @@ void TRKPostInterruptEvent(void) {
     fn_80225F4C(event, type);
     fn_80225F64(event);
 }
-#pragma optimization_level 1
-s32 TRKTargetAccessExtended2(u32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma opt_propagation on
+s32 TRKTargetAccessExtended2(u32 first, u32 arg1, s32 arg2, s32 *arg3, s32 arg4) {
 void fn_802264B4(s32, s32 *);
-s32 fn_80226700(s32, s32, s32);
+s32 fn_80226700(s32, u64);
 void fn_80228858(u32 *, s32);
-extern u32 lbl_80282760[];
-extern u32 lbl_80282788[];
+extern const u32 lbl_80282760[];
+extern const u32 lbl_80282788[];
 extern u8 gTRKExceptionStatus_8029E574[];
 extern u8 lbl_8033CFB4[];
 
@@ -2300,16 +2303,16 @@ extern u8 lbl_8033CFB4[];
         u32 buf2[10];
         u32 buf1[10];
         u32 buf0[10];
-        u32 gap[4];
     } st;
     u8 *status;
+    u32 tr;
     u32 *tmpl;
     u32 *p4;
-    u32 tr;
     s32 s3, s2, s1, s0;
     u32 op;
     s32 err;
-    u32 *src;
+    const u32 *src;
+    u32 arg0;
 
     if (arg1 > 0x1F) {
         return 0x701;
@@ -2317,7 +2320,7 @@ extern u8 lbl_8033CFB4[];
 
     status = gTRKExceptionStatus_8029E574;
     {
-        u32 *t = lbl_80282760;
+        const u32 *t = lbl_80282760;
         st.buf0[0] = t[0];
         s0 = *(s32 *)status;
         s3 = *(s32 *)(status + 0xC);
@@ -2345,9 +2348,9 @@ extern u8 lbl_8033CFB4[];
     }
 
     {
-        u32 *t = lbl_80282760;
-        st.buf1[1] = t[1];
+        const u32 *t = lbl_80282760;
         st.buf1[0] = t[0];
+        st.buf1[1] = t[1];
         st.buf1[9] = t[9];
         st.sp8 |= 0xA0000000;
         st.buf1[2] = t[2];
@@ -2365,9 +2368,9 @@ extern u8 lbl_8033CFB4[];
     }
 
     {
-        u32 *t = lbl_80282760;
-        st.buf2[1] = t[1];
+        const u32 *t = lbl_80282760;
         st.buf2[0] = t[0];
+        st.buf2[1] = t[1];
         st.buf2[9] = t[9];
         st.sp8 = 0;
         st.buf2[2] = t[2];
@@ -2384,6 +2387,7 @@ extern u8 lbl_8033CFB4[];
         ((Thunk)st.buf2)(&st.sp8, lbl_8033CFB4);
     }
 
+    arg0 = first;
     tr = arg0 << 21;
     *arg3 = 0;
     tmpl = st.buf3;
@@ -2409,8 +2413,8 @@ extern u8 lbl_8033CFB4[];
             st.buf3[0] = op;
             st.buf3[9] = 0x4E800020;
             fn_80228858(tmpl, 0x28);
-            ((Thunk)tmpl)(st.vals, lbl_8033CFB4);
-            err = fn_80226700(arg2, st.vals[0], st.vals[1]);
+            ((Thunk)st.buf3)(st.vals, lbl_8033CFB4);
+            err = fn_80226700(arg2, *(u64 *)st.vals);
         } else {
             fn_802264B4(arg2, st.vals);
             src = lbl_80282788;
@@ -2431,7 +2435,7 @@ extern u8 lbl_8033CFB4[];
             st.buf4[0] = op;
             st.buf4[9] = 0x4E800020;
             fn_80228858(p4, 0x28);
-            ((Thunk)p4)(st.vals, lbl_8033CFB4);
+            ((Thunk)st.buf4)(st.vals, lbl_8033CFB4);
             err = 0;
         }
         tr += 0x200000;
@@ -2448,62 +2452,131 @@ extern u8 lbl_8033CFB4[];
     *(s32 *)(status + 4) = st.saved[1];
     *(s32 *)(status + 8) = st.saved[2];
     *(s32 *)(status + 0xC) = st.saved[3];
-    return err + (s32)(st.gap[0] & 0);
+    return err;
 }
-#pragma optimization_level reset
-s32 TRKTargetAccessExtended1(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
-{
-  extern u8 gTRKExceptionStatus_8029E574[];
-  u32 *new_var;
-  u8 *new_var3;
-  int new_var2;
-  extern u8 gTRKRestoreFlags[];
-  typedef struct {
-    u32 words[4];
-  } ExceptionStatus;
-  ExceptionStatus saved;
-  u8 *status;
-  u32 *registers;
-  s32 count;
-  if (arg1 > 0x60) {
-    return 0x701;
-  }
-  status = gTRKExceptionStatus_8029E574;
-  saved = *((ExceptionStatus *)status);
-  status[0xd] = 0;
-  *arg3 = 0;
-  if (arg0 <= arg1) {
-    count = (arg1 - arg0) + 1;
-    new_var3 = gTRKCPUState;
-    registers = (u32 *)((gTRKCPUState + (arg0 * 4)) + 0x1a8);
-    *arg3 += count * 4;
-    if (arg4) {
-      arg0 = fn_8022659C(arg2, registers, count);
-    } else {
-      if ((registers <= ((u32 *)(gTRKCPUState + 0x1ec))) &&
-          (((registers + count) - 1) >= ((u32 *)(gTRKCPUState + 0x1e8)))) {
-        gTRKRestoreFlags[0] = 1;
-        arg0 += 0;
-        if (arg3) {
-        }
-      }
-      new_var2 = count;
-      if ((registers <= ((u32 *)(gTRKCPUState + 0x278))) &&
-          (((new_var = registers + new_var2) - 1) >= ((u32 *)(new_var3 + 0x278)))) {
-        gTRKRestoreFlags[1] = 1;
-      }
-      arg0 = fn_8022632C(arg2, registers, count);
+#pragma pop
+s32 TRKTargetAccessExtended1(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4) {
+    extern u8 gTRKExceptionStatus_8029E574[];
+    extern u8 gTRKRestoreFlags[];
+    typedef struct {
+        u32 words[4];
+    } ExceptionStatus;
+    ExceptionStatus saved;
+    u8 *status;
+
+    if (arg1 > 0x60) {
+        return 0x701;
     }
-  }
-  if (status[0xd]) {
-    arg0 = 0x702;
+    status = gTRKExceptionStatus_8029E574;
+    saved = *(ExceptionStatus *)status;
+    status[0xd] = 0;
     *arg3 = 0;
-  }
-  *((ExceptionStatus *)gTRKExceptionStatus_8029E574) = saved;
-  return arg0;
+    if (arg0 <= arg1) {
+        s32 count = (arg1 - arg0) + 1;
+        u32 *registers = (u32 *)(gTRKCPUState + 0x1a8) + arg0;
+        *arg3 += count * 4;
+        if (arg4) {
+            arg0 = fn_8022659C(arg2, registers, count);
+        } else {
+            if (registers <= (u32 *)(gTRKCPUState + 0x1ec) &&
+                registers + count - 1 >= (u32 *)(gTRKCPUState + 0x1e8)) {
+                gTRKRestoreFlags[0] = 1;
+            }
+            if (registers <= (u32 *)(gTRKCPUState + 0x278) &&
+                registers + (u32)count - 1 >= (u32 *)(gTRKCPUState + 0x278)) {
+                gTRKRestoreFlags[1] = 1;
+            }
+            arg0 = fn_8022632C(arg2, registers, count);
+        }
+    }
+    if (status[0xd]) {
+        arg0 = 0x702;
+        *arg3 = 0;
+    }
+    *(ExceptionStatus *)gTRKExceptionStatus_8029E574 = saved;
+    return arg0;
 }
 
-s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
+static inline s32 TRKAccessFPRegister(u32 reg,u64 *value,s32 read) {
+extern u32 lbl_802827B0[],lbl_80282760[]; extern u8 lbl_8033CFB4[];
+void fn_80228858(void *,s32);void fn_80228CDC(f64 *);void fn_80228D00(f64 *);
+typedef void (*Thunk)(void *,void *);
+u32 special[10];u32 fpr[10];u32 *source;u32 opcode;u32 regBits=reg<<21;u32 *vals=(u32*)value;
+            source = lbl_802827B0;
+
+            fpr[0] = source[0];
+            fpr[1] = source[1];
+            fpr[2] = source[2];
+            fpr[3] = source[3];
+            fpr[4] = source[4];
+            fpr[5] = source[5];
+            fpr[6] = source[6];
+            fpr[7] = source[7];
+            fpr[8] = source[8];
+            fpr[9] = source[9];
+
+            if (reg < 0x20) {
+                opcode = regBits | 0xC8030000;
+
+                if (read != 0) {
+                    opcode = regBits | 0xD8030000;
+                }
+
+                fpr[0] = opcode;
+                fpr[9] = 0x4E800020;
+
+                fn_80228858(fpr, 0x28);
+
+                ((Thunk)fpr)(vals, lbl_8033CFB4);
+            } else if (reg == 0x20) {
+                if (read != 0) {
+                    fn_80228CDC((f64 *)vals);
+                } else {
+                    fn_80228D00((f64 *)vals);
+                }
+
+                *(u64*)vals &= 0xFFFFFFFFULL;
+            } else if (reg == 0x21) {
+                if (read == 0) {
+                    vals[0] = vals[1];
+                }
+
+                source = lbl_80282760;
+
+                special[0] = source[0];
+                special[1] = source[1];
+                special[2] = source[2];
+                special[3] = source[3];
+                special[4] = source[4];
+                special[5] = source[5];
+                special[6] = source[6];
+                special[7] = source[7];
+                special[8] = source[8];
+                special[9] = source[9];
+
+                if (read != 0) {
+                    special[0] = 0x7C9FFAA6;
+                    special[1] = 0x90830000;
+                } else {
+                    special[0] = 0x80830000;
+                    special[1] = 0x7C9FFBA6;
+                }
+
+                special[9] = 0x4E800020;
+
+                fn_80228858(special, 0x28);
+
+                ((Thunk)special)(vals, lbl_8033CFB4);
+
+                if (read != 0) {
+                    *(u64*)vals = (u64)vals[0] & 0xFFFFFFFFULL;
+                }
+            }
+
+return 0;
+}
+
+s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
 {
     extern u8 gTRKExceptionStatus_8029E574[];
     extern u32 lbl_802827B0[];
@@ -2522,10 +2595,10 @@ s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
 
     u32 vals[2];
     u32 saved[4];
-    u32 specialWrite[10];
-    u32 specialRead[10];
-    u32 fprWrite[10];
     u32 fprRead[10];
+    u32 fprWrite[10];
+    u32 specialRead[10];
+    u32 specialWrite[10];
 
     u32 *tmpl;
     u32 *source;
@@ -2593,8 +2666,7 @@ s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
                     fn_80228D00((f64 *)vals);
                 }
 
-                vals[0] &= 0;
-                vals[1] &= 0xFFFFFFFF;
+                *(u64*)vals &= 0xFFFFFFFFULL;
             } else if (arg0 == 0x21) {
                 if (arg4 == 0) {
                     vals[0] = vals[1];
@@ -2628,8 +2700,7 @@ s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
                 ((Thunk)specialRead)(vals, lbl_8033CFB4);
 
                 if (arg4 != 0) {
-                    vals[1] = vals[0] & 0xFFFFFFFF;
-                    vals[0] = 0;
+                    *(u64*)vals = (u64)vals[0] & 0xFFFFFFFFULL;
                 }
             }
 
@@ -2673,8 +2744,7 @@ s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
                     fn_80228D00((f64 *)vals);
                 }
 
-                vals[0] &= 0;
-                vals[1] &= 0xFFFFFFFF;
+                *(u64*)vals &= 0xFFFFFFFFULL;
             } else if (arg0 == 0x21) {
                 if (arg4 == 0) {
                     vals[0] = vals[1];
@@ -2708,8 +2778,7 @@ s32 TRKTargetAccessFP(u16 arg0, u16 arg1, void *arg2, s32 *arg3, s32 arg4)
                 ((Thunk)specialWrite)(vals, lbl_8033CFB4);
 
                 if (arg4 != 0) {
-                    vals[1] = vals[0] & 0xFFFFFFFF;
-                    vals[0] = 0;
+                    *(u64*)vals = (u64)vals[0] & 0xFFFFFFFFULL;
                 }
             }
 
@@ -3071,45 +3140,54 @@ s32 TRKInitializeTarget(void) {
     return 0;
 }
 
-void fn_8022AD08(void) {
-    extern u32 lbl_8033CFC8[];
-    extern u32 lbl_8029E598[];
-    extern u8 gTRKInterruptVectorTable[];
-    extern void fn_80003488(u32, void *, u32);
-    extern void fn_80228858(u32, u32);
-
-    u32 *var_r5;
-    s32 var_r30;
-    u32 temp_r29;
-    u32 temp_r6;
-    u32 var_r27;
-
-    if (lbl_8033CFC8[0] <= 0x44 && lbl_8033CFC8[0] + 0x4000 > 0x44 &&
-        (*(u32 *)((u8 *)gTRKCPUState + 0x238) & 3)) {
-        var_r5 = (u32 *)0x44;
-    } else {
-        var_r5 = (u32 *)0x80000044;
+#pragma push
+#pragma opt_common_subs off
+void fn_8022AD08(void)
+{
+  extern u32 lbl_8033CFC8[];
+  extern u32 lbl_8029E598[];
+  extern u8 gTRKInterruptVectorTable[];
+  extern void fn_80003488(u32, void *, u32);
+  extern void fn_80228858(u32, u32);
+  u32 *var_r5;
+  u32 temp_r29;
+  u32 var_r27;
+  s32 var_r30;
+  u32 temp_r6;
+  if (((lbl_8033CFC8[0] <= 0x44) && ((lbl_8033CFC8[0] + 0x4000) > 0x44)) && ((*((u32 *) (((u8 *) gTRKCPUState) + 0x238))) & 3))
+  {
+    var_r5 = (u32 *) 0x44;
+  }
+  else
+  {
+    var_r5 = (u32 *) 0x80000044;
+  }
+  temp_r29 = *var_r5;
+  for (var_r30 = 0; var_r30 <= 0xE; var_r30++)
+  {
+    if ((temp_r29 & (1 << var_r30)) && (var_r30 != 4))
+    {
+      temp_r6 = lbl_8029E598[var_r30];
+      if (((temp_r6 >= lbl_8033CFC8[0]) && (temp_r6 < (lbl_8033CFC8[0] + 0x4000))) && ((*((u32 *) (((u8 *) gTRKCPUState) + 0x238))) & 3))
+      {
+        var_r27 = temp_r6;
+      }
+      else
+        if ((temp_r6 >= 0x7e000000U) && (temp_r6 <= 0x80000000U))
+      {
+        var_r27 = temp_r6;
+      }
+      else
+      {
+        var_r27 = (temp_r6 & 0x3FFFFFFF) | 0x80000000;
+      }
+      fn_80003488(var_r27, (void *) (((u8 *) gTRKInterruptVectorTable) + temp_r6), 0x100);
+      fn_80228858(var_r27, 0x100);
     }
-    temp_r29 = *var_r5;
+  }
 
-    for (var_r30 = 0; var_r30 <= 0xE; var_r30++) {
-        if ((temp_r29 & (1 << var_r30)) && var_r30 != 4) {
-            temp_r6 = lbl_8029E598[var_r30];
-            if (temp_r6 >= lbl_8033CFC8[0] &&
-                temp_r6 < lbl_8033CFC8[0] + 0x4000 &&
-                (*(u32 *)((u8 *)gTRKCPUState + 0x238) & 3)) {
-                var_r27 = temp_r6;
-            } else if (temp_r6 >= 0x7e000000U && temp_r6 <= 0x80000000U) {
-                var_r27 = temp_r6;
-            } else {
-                var_r27 = (temp_r6 & 0x3FFFFFFF) | 0x80000000;
-            }
-            fn_80003488(var_r27, (void *)((u8 *)gTRKInterruptVectorTable + temp_r6), 0x100);
-            fn_80228858(var_r27, 0x100);
-        }
-    }
 }
-
+#pragma pop
 u32 fn_8022AE34(u32 arg0) {
     extern u32 lbl_8033CFC8[];
     extern u8 gTRKCPUState[1072];
