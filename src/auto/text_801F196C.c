@@ -3708,12 +3708,11 @@ void fn_801F8E30(void *arg0) {
     extern f32 lbl_8036BA60, lbl_8036BA64, lbl_8036BA68, lbl_8036BA6C, lbl_8036BA70;
     extern f64 lbl_8036BA28, lbl_8036BA30;
 
-    f32 sp8[2];
-    u8 sp14[0x30];
+    f32 sp8[3];
+    StaffRollTexture texture;
     u8 sp44[0x30];
-    u8 sp74[0x20];
-    volatile u16 sp94, sp96;
-    f32 f26, f27, f28, f29, f30, f31;
+    u8 sp14[0x30];
+    f32 f28, f27, f26, f31, f30, f29;
     f32 scroll, period, y, limit, step, y2;
     void *obj, *node, *end, *unit, *draw;
     void **p;
@@ -3751,12 +3750,13 @@ clear:
         *(void **)((u8 *)arg0 + 0x4C) = NULL;
     }
     f30 = f27 + lbl_8036BA04;
-    f30 = f30 + lbl_8036BA38 * (f32)(0x50 - Text_MeasureHeight(-1, lbl_8036BA20));
-    p = *(void ***)((u8 *)arg0 + 0x34);
-    p = (void **)*p;
-    p = (void **)*p;
-    p = (void **)*p;
-    end = *p;
+    y = lbl_8036BA38 * (f32)(0x50 - Text_MeasureHeight(-1, lbl_8036BA20));
+    f30 += y;
+    end = *(void **)((u8 *)arg0 + 0x34);
+    end = *(void **)end;
+    end = *(void **)end;
+    end = *(void **)end;
+    end = *(void **)end;
     node = *(void **)((u8 *)arg0 + 0x38);
     f31 = lbl_8036BA00;
     f29 = lbl_8036BA40;
@@ -3768,30 +3768,32 @@ clear:
             }
         }
         if (flag) {
-            unit = *(void **)((u8 *)node + 8);
             Prim2D_Begin();
             Prim2D_SetTex(NULL, 0x13);
             Prim2D_PrepareTex();
-            Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, Msg_ResolveName(*(void **)((u8 *)unit + 0x188)));
-            Text_Draw((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)unit + 0x18C)));
+            Text_Draw((s32)lbl_8036BA44, (s32)f30, 2, Msg_ResolveName(*(void **)((u8 *)*(void **)((u8 *)node + 8) + 0x188)));
+            Text_Draw((s32)lbl_8036BA48, (s32)f30, 2, fn_800A8978(*(void **)((u8 *)*(void **)((u8 *)node + 8) + 0x18C)));
+            unit = *(void **)((u8 *)node + 8);
             if (*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8) != 6) {
                 Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, StaffRoll_str + 0x29F,
-                    Msg_Expand(StaffRoll_str + 0x2A6), (s8)*(u8 *)((u8 *)unit + 0x19A));
+                    Msg_Expand(StaffRoll_str + 0x2A6), *(s8 *)((u8 *)unit + 0x19A));
+                { u16 value = *(u16 *)((u8 *)*(void **)((u8 *)node + 8) + 0x22A);
                 Text_Draw((s32)lbl_8036BA50, (s32)f30, 2, StaffRoll_str + 0x2B1,
-                    *(u16 *)((u8 *)unit + 0x22A), Msg_Expand(StaffRoll_str + 0x2B8));
+                    value, Msg_Expand(StaffRoll_str + 0x2B8)); }
             } else {
-                sprintf(StaffRoll_str + 0x2C4, StaffRoll_str + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
-                Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(StaffRoll_str + 0x2C4));
+                u8 *buffer = StaffRoll_str + 0x2C4;
+                sprintf(buffer, StaffRoll_str + 0x2D4, *(u8 *)((u8 *)unit + 0x234));
+                Text_Draw((s32)lbl_8036BA4C, (s32)f30, 2, Msg_Expand(buffer));
             }
             f28 = f30 + (f32)Text_MeasureHeight(-1, lbl_8036BA20);
-            Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x50), sp74, 2);
-            sp94 = GXGetTexObjWidth(sp74);
-            sp96 = GXGetTexObjHeight(sp74);
+            Ui_LoadAtlasTex(*(void **)((u8 *)arg0 + 0x50), &texture, 2);
+            texture.width = GXGetTexObjWidth(&texture);
+            texture.height = GXGetTexObjHeight(&texture);
             Prim2D_Begin();
-            Prim2D_SetTex(sp74, 0x10);
+            Prim2D_SetTex(&texture, 0x10);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRect(lbl_8036BA54, f28, (f32)sp94, (f32)sp96);
+            Prim2D_SetRect(lbl_8036BA54, f28, (f32)texture.width, (f32)texture.height);
             Prim2D_EndPrim();
         }
     }
@@ -3806,16 +3808,16 @@ clear:
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036BA58);
     Prim2D_PrepareTex();
-    p = *(void ***)((u8 *)arg0 + 0x34);
-    p = (void **)*p;
-    p = (void **)*p;
-    p = (void **)*p;
-    end = *p;
-    node = *(void **)((u8 *)arg0 + 0x38);
+    end = *(void **)((u8 *)arg0 + 0x34);
+    end = *(void **)end;
+    end = *(void **)end;
+    end = *(void **)end;
+    end = *(void **)end;
+    arg0 = *(void **)((u8 *)arg0 + 0x38);
     f29 = lbl_8036BA5C;
     f31 = lbl_8036BA00;
     f30 = lbl_8036BA40;
-    for (; node != end; node = *(void **)((u8 *)node + 4), f26 += f30) {
+    for (; arg0 != end; arg0 = *(void **)((u8 *)arg0 + 4), f26 += f30) {
         y2 = f26 - f29;
         flag = 0;
         if (y2 <= f31) {
@@ -3828,11 +3830,13 @@ clear:
             PSMTXRotRad(sp14, 0x78, lbl_8036BA68);
             PSMTXConcat(sp14, sp44, sp14);
             fn_802025E8(sp14, sp14, lbl_8036BA6C, lbl_8036BA6C, lbl_8036BA6C);
-            draw = *(void **)((u8 *)node + 0xC);
+            draw = *(void **)((u8 *)arg0 + 0xC);
             f28 = lbl_8036BA40 + f26;
             f27 = lbl_8036BA70;
-            fn_8004BD1C(*(void **)((u8 *)node + 8), sp8, lbl_8036BA6C);
-            fn_80202574(sp14, (u8 *)draw + 0x10, f27 + sp8[0], f28 + sp8[1], lbl_8036BA1C);
+            fn_8004BD1C(*(void **)((u8 *)arg0 + 8), sp8, lbl_8036BA6C);
+            f27 += sp8[0];
+            f28 += sp8[1];
+            fn_80202574(sp14, (u8 *)draw + 0x10, f27, f28, lbl_8036BA1C);
             Model_SetColor(draw, 0x80, 0x80, 0x80);
             Model_SetAlpha(draw, 0xFF);
             fn_8005F780(draw, 0xFF);
