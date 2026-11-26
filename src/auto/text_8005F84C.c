@@ -2611,13 +2611,6 @@ M2C_UNK fn_80063954(char *arg0) {
 
 #pragma cplusplus on
 extern "C" void fn_80063A14(SomeStruct *);
-static inline SomeStruct *fn_800639B4_Helper(char *path, SomeStruct *result) {
-    if (!(FileCache_GetFlags(path) & 0x4000)) {
-        fn_80063A14(result);
-        FileCache_MarkRelocated(path);
-    }
-    return result;
-}
 extern "C" SomeStruct *fn_800639B4(char *arg0) {
     SomeStruct *temp_r31 = (SomeStruct *)fn_8005C82C(arg0, 0);
     if (!(FileCache_GetFlags(arg0) & 0x4000)) {
