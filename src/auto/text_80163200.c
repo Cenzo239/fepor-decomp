@@ -148,8 +148,8 @@ extern u8 gBattleState[];
   extern void *lbl_803680E8;
   extern f32 lbl_8036AC2C;
 extern f32 lbl_8036AC30;
-extern f32 lbl_8036AC34;
-extern f32 lbl_8036AC40;
+extern const f32 lbl_8036AC34;
+extern const f32 lbl_8036AC40;
 extern f32 lbl_8036AC48;
 extern f32 lbl_8036AC5C;
 extern f32 lbl_8036AC60;
@@ -6566,7 +6566,12 @@ void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     fn_80009C0C(lbl_8036AAB4);
     fn_8000A248();
 }
-#pragma use_lmw_stmw reset
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_strength_reduction off
 void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(u8, u8, u8, u8);
@@ -6604,29 +6609,27 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
     extern f32 lbl_8036AAC0;
     extern f64 lbl_8036AAF8;
     extern f32 lbl_8036AB1C;
-    extern f32 lbl_8036AB20;
+    extern const f32 lbl_8036AB20;
 
-    f32 sp2C[3][4];
-    f32 sp20[2];
-    s32 pad;
+    f32 sp2C[2][4];
+    f32 sp20[3];
     u8 sp18[8];
     s32 sp14;
     s32 sp10;
     s32 spC;
     s32 sp8;
-    f32 f24;
-    f32 f25;
     f32 f26;
-    f32 scale;
-    f32 f30;
+    f32 f25;
+    f32 f24;
     f32 f31;
+    f32 f30;
+    f32 scale;
     void **tex;
     void *unit;
     void *node;
-    u8 mode;
+    u32 mode;
     s32 i;
 
-    pad = 0;
     fn_800431EC(Map_Get(), sp2C);
     mode = 1;
     Prim2D_Begin();
@@ -6656,16 +6659,16 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
     scale = scale * lbl_8036AAC0;
     do {
         if ((u8)i != 0) {
-            unit = gUnits + ((i - 1) * 0x280);
+            unit = gUnits + (((u8)i - 1) * 0x280);
         } else {
             unit = NULL;
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0) {
-            u8 kind = *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8);
+            s32 kind = *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8);
             if (sp18[kind] != 0) {
                 s32 fl = *(s32 *)((u8 *)arg0 + 0x30);
-                if ((((fl & 1) != 0 && kind == 0) || ((fl & 2) != 0 && kind == 3) ||
-                     ((fl & 4) != 0 && kind == 1) || ((fl & 8) != 0 && kind == 2)) &&
+                if ((((fl & 1) != 0 && (u32)kind == 0) || ((fl & 2) != 0 && (u32)kind == 3) ||
+                     ((fl & 4) != 0 && (u32)kind == 1) || ((fl & 8) != 0 && (u32)kind == 2)) &&
                     (*(u32 *)((u8 *)unit + 0x1A0) & 0x010000DC) == 0 &&
                     fn_8004C0A0(unit) == 0) {
                     switch ((s32)kind) {
@@ -6678,22 +6681,16 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
                                 (s8)*(u8 *)((u8 *)unit + 0x19F), sp20);
                     node = *(void **)((u8 *)arg0 + 0x3C);
                     while (node != NULL) {
-                        u8 k = *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8);
-                        if (!((k == 0 && *(u8 *)node == 1) ||
-                              (k == 3 && *(u8 *)node == 2) ||
-                              (k == 1 && *(u8 *)node == 3) ||
-                              (k == 2 && *(u8 *)node == 4))) {
-                            node = *(void **)((u8 *)node + 0x38);
-                            continue;
+                        u8 *allegiance = *(u8 **)((u8 *)unit + 0x190);
+                        u8 k;
+                        if ((allegiance[8] == 0 && (s32)*(u8 *)node == 1) ||
+                            ((k = allegiance[8]) == 3 && (s32)*(u8 *)node == 2) ||
+                            (k == 1 && (s32)*(u8 *)node == 3) ||
+                            (k == 2 && (s32)*(u8 *)node == 4)) {
+                            kind = fn_800377D8(unit);
+                            if (Str_Cmp(Msg_Expand((u8 *)node + 0x14), kind) == 0) break;
                         }
-                        {
-                            s32 name = fn_800377D8(unit);
-                            if (Str_Cmp(Msg_Expand((u8 *)node + 0x14), name) != 0) {
-                                node = *(void **)((u8 *)node + 0x38);
-                                continue;
-                            }
-                        }
-                        break;
+                        node = *(void **)((u8 *)node + 0x38);
                     }
                     if (unit == *(void **)((u8 *)node + 0x2C)) {
                         sp14 = *Ui_GetColor(mode);
@@ -6706,7 +6703,7 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
                                 *(f32 *)(*(u8 **)((u8 *)obj + 0x30) + 0x18) = f31;
                                 spC = lbl_8036A9E8;
                                 gfx = *(void **)((u8 *)obj + 0x30);
-                                ((u8 *)&spC)[0] = (u8)((u8)sp14 >> 1);
+                                ((u8 *)&spC)[0] = (u8)(((u8 *)&sp14)[0] >> 1);
                                 ((u8 *)&spC)[1] = (u8)(((u8 *)&sp14)[1] >> 1);
                                 ((u8 *)&spC)[2] = (u8)(((u8 *)&sp14)[2] >> 1);
                                 sp10 = spC;
@@ -6752,8 +6749,7 @@ void MapOverlay_DrawMapUnits(void *arg0, f32 farg0, f32 farg1) {
     Prim2D_AddZ(lbl_8036AAB4);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw reset
-#pragma global_optimizer on
+#pragma pop
 /* Draw the fullscreen map overlay: dim backdrop, then map and unit markers. */
 void MapOverlay_Draw(void *self) {
     M2C_UNK Prim2D_SetColor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
@@ -17337,25 +17333,26 @@ void fn_8017E8A0(void) {
     fn_8017E8C0();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_8017E8C0(void *arg0) {
     M2C_UNK Prim2D_EmitQuad();
     M2C_UNK Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     M2C_UNK Prim2D_ResetState();
     M2C_UNK Prim2D_BindTexture(u32, s32, M2C_UNK);
-    M2C_UNK Text_Draw(s16, M2C_UNK, M2C_UNK, u32);
+    M2C_UNK Text_Draw(s16, M2C_UNK, M2C_UNK, u32, ...);
     s32 Text_MeasureWidth(u32, M2C_UNK, f32);
     M2C_UNK fn_8005926C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32);
     f32 fn_80059EB8(u8, u8, f32, f32);
-    f32 Math_Lerp(u8, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     u32 fn_80098170(void *);
-    s32 fn_800981D0();
+    s32 fn_800981D0(void *);
     M2C_UNK fn_8017EE3C(u32, u8, M2C_UNK, s32, s32, M2C_UNK, f32, f32);
     M2C_UNK fn_802380D0(f32);
-    M2C_UNK sin();
+    f64 sin(f64);
     extern f32 lbl_8036AC2C;
     extern f32 lbl_8036AC30;
-    extern f32 lbl_8036AC34;
-    extern f32 lbl_8036AC40;
     extern f32 lbl_8036AC48;
     extern f32 lbl_8036AC5C;
     extern f32 lbl_8036AC60;
@@ -17365,42 +17362,45 @@ void fn_8017E8C0(void *arg0) {
     extern f32 lbl_8036AC70;
     extern f32 lbl_8036AC74;
     extern f32 lbl_8036AC78;
+    f32 coordX;
     f32 temp_f1;
     f32 temp_f31;
     f32 temp_f31_2;
     f32 temp_f3;
-    s32 temp_r24;
-    s32 temp_r25;
-    s32 temp_r26;
-    s32 temp_r27;
-    s32 temp_r29;
-    s32 temp_r31;
-    u32 temp_r23;
-    u32 temp_r26_2;
-    u32 temp_r28;
-    u32 temp_r30;
     u32 temp_r31_2;
-    u32 temp_r3_2;
-    u8 temp_r26_3;
-    u8 temp_r28_2;
+    s32 temp_r31;
     u8 temp_r30_2;
+    u32 temp_r30;
+    s32 temp_r29;
+    u32 temp_r28;
+    u8 temp_r28_2;
+    s32 temp_r27;
+    s32 temp_r26;
+    u32 temp_r26_2;
+    u8 temp_r26_3;
+    s32 temp_r25;
+    s32 temp_r24;
+    u32 temp_r23;
+    u32 temp_r3_2;
     u8 temp_r3;
     u8 temp_r4_2;
     void *temp_r4;
 
     if (((void *) M2C_FIELD(arg0, void **, 0x38) != NULL) && ((u32) M2C_FIELD(arg0, u32 *, 0x3C) != 0U) && ((u8) M2C_FIELD(arg0, u8 *, 0x40) != 0)) {
-        temp_r29 = fn_800981D0();
+        temp_r29 = fn_800981D0(M2C_FIELD(arg0, void **, 0x38));
         temp_r28 = fn_80098170(M2C_FIELD(arg0, void **, 0x38));
+        coordX = M2C_FIELD(arg0, f32 *, 0x30);
+        temp_f3 = lbl_8036AC30;
         temp_r4 = M2C_FIELD(arg0, void **, 0x38);
         temp_r27 = (s32) M2C_FIELD(temp_r4, f32 *, 4);
         temp_r26 = (s32) M2C_FIELD(temp_r4, f32 *, 8);
-        temp_r25 = (s32) (M2C_FIELD(arg0, f32 *, 0x30) + lbl_8036AC30);
-        temp_r24 = (s32) (M2C_FIELD(arg0, f32 *, 0x34) + lbl_8036AC30);
+        temp_r25 = (s32) (coordX + temp_f3);
+        temp_r24 = (s32) (M2C_FIELD(arg0, f32 *, 0x34) + temp_f3);
         if ((u8) M2C_FIELD(arg0, u8 *, 0x42) != 0) {
             M2C_FIELD(arg0, u8 *, 0x41) = (u8) (M2C_FIELD(arg0, u8 *, 0x41) + 1);
             temp_r4_2 = M2C_FIELD(arg0, u8 *, 0x42);
-            temp_f31 = Math_Lerp(temp_r4_2, (lbl_8036AC34 * (f32) temp_r4_2) / lbl_8036AC40, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, u8 *, 0x41));
-            sin();
+            temp_f31 = Math_Lerp(temp_f3, (lbl_8036AC34 * (f32) temp_r4_2) / lbl_8036AC40, (f32) temp_r4_2, (f32) M2C_FIELD(arg0, u8 *, 0x41));
+            sin(temp_f31);
             fn_802380D0(temp_f31);
             if ((u8) M2C_FIELD(arg0, u8 *, 0x41) >= (u8) M2C_FIELD(arg0, u8 *, 0x42)) {
                 M2C_FIELD(arg0, u8 *, 0x42) = 0U;
@@ -17417,7 +17417,7 @@ void fn_8017E8C0(void *arg0) {
                 temp_r30 = M2C_FIELD(arg0, u32 *, 0x3C);
                 temp_f31_2 = lbl_8036AC5C - lbl_8036AC48;
                 temp_r31 = (s32) ((temp_f3 * temp_f1) / lbl_8036AC2C);
-                Prim2D_Begin(temp_r3, lbl_8036AC2C, temp_f3);
+                Prim2D_Begin();
                 Prim2D_SetTransform((f32) temp_r25, (f32) temp_r24, temp_f31_2, lbl_8036AC48);
                 Prim2D_BindTexture(temp_r30, temp_r29, 0x21);
                 Prim2D_SetColorByte((u8) temp_r31);
@@ -17475,9 +17475,7 @@ void fn_8017E8C0(void *arg0) {
         Prim2D_ResetState();
     }
 }
-
-#pragma push
-#pragma opt_lifetimes off
+#pragma pop
 void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1) {
     void fn_800076AC(u8, u8, u8, u8);
     void fn_80009B8C(u8);
@@ -18202,7 +18200,7 @@ void fn_8017FEF8(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_propagation off
-extern "C" void fn_80180084(void *arg0)
+extern "C" void fn_80180084(void *self)
 {
     void Process_Goto(void *, s32);
     void *Unit_FindByPerson(u32);
@@ -18247,7 +18245,6 @@ extern "C" void fn_80180084(void *arg0)
     register int btn;
     void *nodeVal;
     void *unit;
-    void *self;
     register u8 gate;
     register int flags;
     u32 sp10;
@@ -18256,7 +18253,6 @@ extern "C" void fn_80180084(void *arg0)
     f32 fy;
     f32 fx;
 
-    self = arg0;
     unit = Ui_FindChild(self, 0x82, 0);
     {
         s32 index = *(s16 *)((u8 *)unit + 0x4E);
