@@ -14720,7 +14720,6 @@ void *fn_8017A294(void *arg0, s16 arg1) {
     }
     return arg0;
 }
-#pragma opt_lifetimes on
 
 #pragma cplusplus on
 extern "C" void fn_8017A310(void *arg0, void *arg1) {
