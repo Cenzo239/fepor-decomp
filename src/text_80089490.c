@@ -91,11 +91,13 @@ static inline s32 IsSpecialAddr(u32 v, u8 *base, s32 off) {
     return v == (u32)(base + off);
 }
 
-#pragma opt_common_subs off
+#pragma push
+#pragma optimization_level 1
+#pragma opt_propagation off
 void fn_80089490(void *arg0) {
-    extern u32 lbl_80289950[18];
+    extern u8 lbl_80289950[];
     void fn_8000A408(void *);
-    u8 *tbl = (u8 *)lbl_80289950;
+    u8 *tbl = lbl_80289950;
     u8 *p;
     u32 v;
 
@@ -107,5 +109,12 @@ void fn_80089490(void *arg0) {
         }
     }
 }
-#pragma opt_common_subs reset
-
+#pragma pop
+static inline void ResetUnlessSpecial_80089490(void *obj, u8 *base, s32 a, s32 b, s32 c, s32 d) {
+    void fn_8000A408(void *);
+    u32 v;
+    if (*((u8 *)obj + 0x2B) != 0x7B) {
+        v = *(u32 *)obj;
+        if (v != (u32)(base+a) && v != (u32)(base+b) && v != (u32)(base+c) && v != (u32)(base+d)) fn_8000A408(obj);
+    }
+}
