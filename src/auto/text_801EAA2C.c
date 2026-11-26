@@ -148,6 +148,17 @@ typedef struct AramSlot {
     u32 addr;                 /* 0x68 */
 } AramSlot;
 
+static inline void AramCache_ClearUnusedSlotsZero(void *pool, s32 empty) {
+    u32 flags;
+    AramSlot *scan;
+    s32 j;
+    scan = (AramSlot *)pool;
+    for (j = 0; j < 256; scan++, j++) {
+        flags = scan->flags;
+        if (flags & 1) scan->flags = flags & ~1;
+        else { scan->size = empty; scan->flags = empty; }
+    }
+}
 static inline void AramCache_ClearUnusedSlots(void *pool) {
     s32 empty;
     u32 flags;
