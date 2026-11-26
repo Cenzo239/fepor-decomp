@@ -23,13 +23,6 @@ virtual void deselect(void *, void *) = 0;
 #pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
-static inline void Fill_8006F10C(s32 *table, void **entries, s32 a, s32 b) {
-    entries[0] = table;
-    table[1] = a;
-    entries[1] = table + 2;
-    table[3] = b;
-    entries[2] = 0;
-}
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
         u8 *anim = *(u8 **)(p + 0x44);
