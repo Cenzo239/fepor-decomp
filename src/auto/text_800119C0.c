@@ -1,6 +1,18 @@
 /* Functions from 0x800119C0 to 0x80016EE8, found by decomp-toolkit. */
 #include "common.h"
 
+static inline s32 Script_ReadSignedShort(void) {
+    extern void *lbl_80367180;
+    s32 value;
+    value = *(*(s8 **)((u8 *)lbl_80367180 + 0xC))++;
+    return (value << 8) + *(*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
+}
+static inline void Script_PushWord(s32 value) {
+    extern void *lbl_80367180;
+    s32 *stack = (*(s32 **)((u8 *)lbl_80367180 + 0x18))++;
+    *stack = value;
+}
+
 u16 *fn_800119C0(void) {
     extern u16 lbl_80267DC8[];
     return (u16 *)((u32)lbl_80267DC8 + 0x43);
@@ -105,6 +117,9 @@ break;
 }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80011D20(void) {
     extern void *lbl_80367180;
     extern void *lbl_803671A4;
@@ -112,6 +127,7 @@ void fn_80011D20(void) {
     void *Res_GetByName(void *);
     void fn_80011A5C(void *);
     void fn_800142B0(s32);
+    s32 index;
     void *ctx;
     void *script;
     void *inner;
@@ -124,18 +140,15 @@ void fn_80011D20(void) {
     s32 zero;
     void *table;
     s32 val;
-    s32 index;
     s32 count;
-    s16 size;
+    s32 size;
     s32 sp;
     s32 tidx;
 
-    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
-    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
+    code = (*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
     index = (s8)*code;
 
-    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
-    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
+    code = (*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
     index = (index << 8) + *code;
 
     inner = *(void **)((u8 *)lbl_80367180 + 8);
@@ -143,17 +156,17 @@ void fn_80011D20(void) {
     resource = *(void **)((u8 *)resource + 0x24);
     script = Res_GetByName((u8 *)resource + index);
 
-    code = *(u8 **)((u8 *)lbl_80367180 + 0xC);
-    *(u8 **)((u8 *)lbl_80367180 + 0xC) = code + 1;
+    code = (*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
     count = (s8)*code;
 
     if (script == NULL) {
         ctx = lbl_80367180;
+        zero = 0;
         *(s32 *)((u8 *)ctx + 0x18) = *(s32 *)((u8 *)ctx + 0x18) - (count << 2);
         ctx = lbl_80367180;
         stack = *(s32 **)((u8 *)ctx + 0x18);
         *(s32 **)((u8 *)ctx + 0x18) = stack + 1;
-        *stack = 0;
+        *stack = zero;
         fn_800142B0(0);
         return;
     }
@@ -214,7 +227,7 @@ void fn_80011D20(void) {
     *(void **)((u8 *)ctx + 0x10) = table;
     *(s32 *)((u8 *)ctx + 0x14) = base;
 }
-
+#pragma pop
 void fn_80011EDC(void *arg0)
 {
     void fn_800142B0(s32);
@@ -3704,7 +3717,7 @@ void fn_80016628(s32 arg0) {
     u8 Unit_Read(void *, s32);
     extern u8 gUnits[];
     extern u8 gUnitLists[];
-    struct Ctx { s32 context; u8 *units; } c;
+    struct Ctx { u8 *units; s32 context; } c;
     s32 var_r29;
     register u8 *var_r28;
     u8 *temp_r27;
@@ -3757,7 +3770,7 @@ void fn_80016628(s32 arg0) {
         c.units += 0x280;
     } while (var_r27 < 0x9F);
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level 3
 void fn_800167E4(void *arg0)
 {
     extern u8 gUnits[];
@@ -3771,18 +3784,17 @@ void fn_800167E4(void *arg0)
     void Array_Destroy(void *, void *, s32, s32);
     void Item_Destroy(void);
 
-    u8 flags[8];
     u8 savedIds[8];
+    u8 flags[8];
     void *savedUnits[8];
-    u8 list1[0x20];
-    u8 list2[0x20];
-    u8 temp[0x1CC];
+    u8 temp[0x280];
 
+    s32 j;
+    s32 k;
     u8 *unit;
     u8 *unitData;
-    s32 i;
-    s32 type;
     s32 savedCount;
+    s32 i;
 
     savedCount = 0;
 
@@ -3800,8 +3812,7 @@ void fn_800167E4(void *arg0)
             if (flags[unitData[8]] != 0) {
                 if ((u8)Status_Test(unit + 0x1BC, 0x59) != 0) {
                     savedUnits[savedCount] = unit;
-                    savedIds[savedCount] = *(*(u8 **)(unit + 0x190) + 8);
-                    savedCount++;
+                    savedIds[savedCount++] = *(*(u8 **)(unit + 0x190) + 8);
 
                     Unit_MoveToList(unit, 7);
                 }
@@ -3812,32 +3823,33 @@ void fn_800167E4(void *arg0)
     fn_80016F78(temp);
     Unit_Clear(temp, -1);
 
-    for (i = 0; i < 0x9F; i++) {
-        unit = gUnits + i * 0x280;
+    for (j = 0; j < 0x9F; j++) {
+        unit = gUnits + j * 0x280;
         unitData = *(u8 **)(unit + 0x190);
-        type = unitData[8];
-
-        if (type >= 5) {
-            if (type < 8) {
-                Unit_Write(unit, arg0);
-            }
-        } else {
-            if (type == 0) {
-                Unit_Write(unit, arg0);
-            } else if (type >= 1) {
-                Unit_Write(temp, arg0);
-            }
+        switch (unitData[8]) {
+        case 0:
+        case 5:
+        case 6:
+        case 7:
+            Unit_Write(unit, arg0);
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            Unit_Write(temp, arg0);
+            break;
         }
     }
 
-    for (i = 0; i < savedCount; i++) {
-        Unit_MoveToList(savedUnits[i], savedIds[i]);
+    for (k = 0; k < savedCount; k++) {
+        Unit_MoveToList(savedUnits[k], savedIds[k]);
     }
 
-    Array_Destroy(list1, Item_Destroy, 8, 4);
-    Array_Destroy(list2, Item_Destroy, 8, 4);
+    Array_Destroy(temp + 0x1EC, Item_Destroy, 8, 4);
+    Array_Destroy(temp + 0x1CC, Item_Destroy, 8, 4);
 }
-
+#pragma optimization_level reset
 void *fn_800169A8(void *arg0, s16 arg1)
 {
     void Heap_Free(void *);
