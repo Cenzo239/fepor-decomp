@@ -14165,55 +14165,6 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 }
 
 #pragma cplusplus on
-static inline void Sort_ReverseCopy(s32 *first, s32 *last, SortIterator result) {
-    s32 it_mem[2];
-    *(SortIterator *)it_mem = result;
-    while (first != last) {
-        --last;
-        *(*(SortIterator *)it_mem) = *last;
-        ((SortIterator *)it_mem)->ptr++;
-    }
-}
-static inline void Sort_Copy(s32 *first, s32 *last, SortIterator result) {
-    s32 it_mem[2];
-    *(SortIterator *)it_mem = result;
-    for (; first != last; ++first) {
-        *(*(SortIterator *)it_mem) = *first;
-        ((SortIterator *)it_mem)->ptr++;
-    }
-}
-static inline void Sort_StableSortHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare comp) {
-    s32 fn_800E0340(void *, void *, void *);
-    void fn_800E2180(s32 *, s32 *);
-    void fn_800E0F2C(s32 *, s32 *, SortCompare);
-    s32 fn_800E2168(SortIterator *, SortIterator *);
-    SortIterator fn_800E2138(const SortIterator *, s32);
-    void fn_800E18B4(s32 *, s32 *, SortIterator, SortCompare);
-    void fn_800E1340(SortIterator, SortIterator, SortIterator, SortIterator, s32 *, SortCompare);
-    void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
-    void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
-    s32 n = ((s32)end - (s32)begin) / 4;
-    if (n <= 1) return;
-    if (n == 2) {
-        if ((u8)fn_800E0340(&comp, (void *)end[-1], (void *)*begin)) {
-            fn_800E2180(begin, end - 1);
-        }
-    } else if (n <= 20) {
-        fn_800E0F2C(begin, end, comp);
-    } else {
-        s32 half = n / 2;
-        s32 *mid = begin + half;
-        if (n <= fn_800E2168(&b, &a)) {
-            fn_800E18B4(begin, mid, a, comp);
-            fn_800E18B4(mid, end, SortIterator(fn_800E2138(&a, half)), comp);
-            fn_800E1340(a, SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, half)), SortIterator(fn_800E2138(&a, n)), begin, comp);
-        } else {
-            StableSort(begin, mid, a, b, comp);
-            StableSort(mid, end, a, b, comp);
-            fn_800E14E4(begin, mid, end, comp, ((s32)mid - (s32)begin) / 4, ((s32)end - (s32)mid) / 4, a, b);
-        }
-    }
-}
 #pragma use_lmw_stmw on
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
     s32 Sort_GetKey(void *);
@@ -17149,8 +17100,8 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *pVec;
     u32 room;
     u32 cnt;
-    void *pPos;
     void *dst;
+    void *pPos;
     void *cur;
     u32 len;
     u32 cap;
