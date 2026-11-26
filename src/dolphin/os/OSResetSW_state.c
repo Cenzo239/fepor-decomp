@@ -137,7 +137,7 @@ extern s32 currentDirectory;
 extern u16 Scb_803394;
 
 static inline s32 ResetTimeIsSet(s64 time) { if (time != 0) return 1; return 0; }
-static inline s32 ResetSwitchDebounced(s64 now) {
+static inline u8 ResetSwitchDebounced(s64 now) {
     return *(s64 *)&lbl_80368508 != 0 ||
         (s64)((((*(u32 *)0x800000F8 >> 2) / 125000) * 100) >> 3) < now - *(s64 *)&lbl_80368510;
 }
