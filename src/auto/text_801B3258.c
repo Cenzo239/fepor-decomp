@@ -1,6 +1,6 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline s16 Ui_ScrollDirection(s16 value) {
+static inline s32 Ui_ScrollDirection(s16 value) {
     if (value < 0) return -1;
     return value > 0;
 }
@@ -2832,19 +2832,18 @@ void fn_801B8B94(void *arg0) {
     void Prim2D_SetPrimParam(f32);
     void Prim2D_SetColor(u8, u8, u8, s32);
     void *fn_801B77F0(void *, s32);
-    extern const f32 lbl_8036B278, lbl_8036B27C, lbl_8036B280, lbl_8036B284, lbl_8036B288;
-    extern const f32 lbl_8036B28C, lbl_8036B290, lbl_8036B294, lbl_8036B298, lbl_8036B29C;
-    extern const f32 lbl_8036B2A0, lbl_8036B2A4, lbl_8036B2A8, lbl_8036B2AC, lbl_8036B2B0;
-    extern const f32 lbl_8036B2B4, lbl_8036B2B8;
+    extern f32 lbl_8036B278, lbl_8036B27C, lbl_8036B280, lbl_8036B284, lbl_8036B288;
+    extern f32 lbl_8036B28C, lbl_8036B290, lbl_8036B294, lbl_8036B298, lbl_8036B29C;
+    extern f32 lbl_8036B2A0, lbl_8036B2A4, lbl_8036B2A8, lbl_8036B2AC, lbl_8036B2B0;
+    extern f32 lbl_8036B2B4, lbl_8036B2B8;
     extern u8 lbl_8027C5E8[];
 
     u8 color[4];
     u8 color2[4];
     void *self;
     void *str;
-    f32 h;
-    f32 w;
     f32 baseY;
+    f32 w, h;
     u16 tw, th;
     u16 tw2, th2;
     s32 i;
@@ -13727,11 +13726,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
         }
     }
 
-    if ((s16)scroll < 0) {
-        sign = -1;
-    } else {
-        sign = (s16)((s16)scroll > 0);
-    }
+    sign = Ui_ScrollDirection((s16)scroll);
 
     if (*(u32 *)((u8 *)arg + 0x34) != 0) {
         ptr = (*(void ***)((u8 *)arg + 0x38))[2];
