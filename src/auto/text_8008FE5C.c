@@ -5,8 +5,10 @@ static inline void UnitInfo_DrawIcons(u8 *unit, s32 y, void *drawer) {
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
-    s32 i = 0;
-    s32 x = 0x48;
+    s32 x;
+    s32 i;
+    i = 0;
+    x = 0x48;
     while (i < fn_8010424C(unit + 0x1A4)) {
         Ui_DrawIcon(drawer, x, y, fn_8010418C(unit + 0x1A4, i));
         x += 0x1A;
@@ -162,14 +164,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     fn_8001003C(0x86, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
     fn_8001003C(0x10, 0x48, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
-    b = 0;
-    t = (s32)gUiIconDrawer;
-    x = 0x48;
-    while (b < fn_8010424C(self + 0x1A4)) {
-        Ui_DrawIcon((void *)t, x, 0x4A, fn_8010418C(self + 0x1A4, b));
-        x += 0x1A;
-        b += 1;
-    }
+    UnitInfo_DrawIcons(self, 0x4A, gUiIconDrawer);
     self = *(u8 **)(self + 0x194);
     UnitInfo_DrawPanel(9, 0x68, ((u8 *)*(void **)(self + 0x190))[8]);
     fn_8008CD64(lbl_80369768);
@@ -186,13 +181,6 @@ void UnitInfo_DrawPair(u8 *arg0) {
     fn_8001003C(0x86, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
     fn_8001003C(0x10, 0xAC, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
-    b = 0;
-    t = (s32)gUiIconDrawer;
-    x = 0x48;
-    while (b < fn_8010424C(self + 0x1A4)) {
-        Ui_DrawIcon((void *)t, x, 0xAE, fn_8010418C(self + 0x1A4, b));
-        x += 0x1A;
-        b += 1;
-    }
+    UnitInfo_DrawIcons(self, 0xAE, gUiIconDrawer);
 }
 #pragma pop
