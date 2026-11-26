@@ -31,6 +31,13 @@ static inline void *GActor_FindNodeTableIn(void *p) {
     return 0;
 }
 
+static inline void GActor_CopyMatrixArray(void *from, void *to, void *table, s32 i) {
+    void PSMTXCopy(void *, void *);
+    s32 off = i * 0x30;
+    for (; i < *(s32 *)((u8 *)table + 8); ++i, off += 0x30)
+        PSMTXCopy((u8 *)from + off, (u8 *)to + off);
+}
+
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
