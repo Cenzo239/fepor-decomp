@@ -5337,9 +5337,9 @@ void fn_8016B800(void *arg0) {
     void Process_Unlink(void *);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern u32 gUiInputFlags;
-    extern f32 lbl_8036AA34;
-    extern f32 lbl_8036AA38;
-    extern f32 lbl_8036AA3C;
+    extern const f32 lbl_8036AA34;
+    extern const f32 lbl_8036AA38;
+    extern const f32 lbl_8036AA3C;
 
     void *self;
     u8 delta;
@@ -5347,7 +5347,6 @@ void fn_8016B800(void *arg0) {
     u8 neg;
     s16 t;
     f32 f;
-    f32 ft;
 
     self = arg0;
     delta = *(u8 *)((u8 *)arg0 + 0x5B);
@@ -5379,8 +5378,7 @@ void fn_8016B800(void *arg0) {
         } else {
             t = *(s16 *)((u8 *)self + 0x36);
             *(s16 *)((u8 *)self + 0x36) = t + 1;
-            ft = (f32)*(s16 *)((u8 *)self + 0x36);
-            f = Math_Ease(0, lbl_8036AA34, lbl_8036AA38, ft, lbl_8036AA3C);
+            f = Math_Ease(0, lbl_8036AA34, lbl_8036AA38, (f32)*(s16 *)((u8 *)self + 0x36), lbl_8036AA3C);
             *(u8 *)((u8 *)self + 0x58) = (u8)f;
             if (*(s16 *)((u8 *)self + 0x36) >= 0x1E) {
                 *(u8 *)((u8 *)self + 0x35) = 5;
@@ -5397,8 +5395,7 @@ void fn_8016B800(void *arg0) {
         } else {
             t = *(s16 *)((u8 *)self + 0x36);
             *(s16 *)((u8 *)self + 0x36) = t + 1;
-            ft = (f32)*(s16 *)((u8 *)self + 0x36);
-            f = Math_Ease(0, lbl_8036AA38, lbl_8036AA34, ft, lbl_8036AA3C);
+            f = Math_Ease(0, lbl_8036AA38, lbl_8036AA34, (f32)*(s16 *)((u8 *)self + 0x36), lbl_8036AA3C);
             *(u8 *)((u8 *)self + 0x58) = (u8)f;
             if (*(s16 *)((u8 *)self + 0x36) >= 0x1E) {
                 Process_ClearFunc(self);
