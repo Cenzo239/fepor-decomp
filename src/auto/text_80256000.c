@@ -4671,15 +4671,11 @@ static inline void Sound_ApplyVoiceParams_8025DBF4(u8 *voice, f32 fvol, f32 fpan
     if ((u8)ft <= 0x7F) v = (s32)ft;
     Sound_SetParamU8(handle, 0x83, v);
     ft = lbl_8036C31C * fvar;
-    if (ft > lbl_8036C310) v = 0x3FFF;
-    else v = (s32)ft;
-    Sound_SetParamU16(handle, 0x84, v);
+    Sound_SetParamU16(handle, 0x84, ft > lbl_8036C310 ? 0x3FFF : (s32)ft);
     if (*(u32 *)(voice + 0xC) & 0x180) {
         if (lbl_8036C2E0 != ftime) {
             ft = lbl_8036C310 * ftime;
-            if (ft > lbl_8036C310) v = 0x3FFF;
-            else v = (s32)ft;
-            Sound_SetParamU16(handle, 0x1F, v);
+            Sound_SetParamU16(handle, 0x1F, ft > lbl_8036C310 ? 0x3FFF : (s32)ft);
             Sound_SetParamU8(handle, 0x4F, 0x7F);
         } else {
             Sound_SetParamU8(handle, 0x4F, 0);
@@ -4849,8 +4845,8 @@ void fn_8025DBF4(void) {
                         if (*(f32 *)(cur + 4) >= *(f32 *)(node + 4)) {
                             slot = lbl_8035C318 + lbl_80368AAC * 0xC;
                             *(void **)(slot + 8) = voice;
-                            ((struct SoundEntry *)lbl_8035BF18)[i].list = slot;
                             *(f32 *)(slot + 4) = *(f32 *)(node + 4);
+                            ((struct SoundEntry *)lbl_8035BF18)[i].list = slot;
                             *(u8 **)slot = cur;
                             ((struct SoundEntry *)lbl_8035BF18)[i].count = ((struct SoundEntry *)lbl_8035BF18)[i].count + 1;
                             lbl_80368AAC += 1;
