@@ -9,7 +9,7 @@ typedef struct {
 static inline s32 Convoy_FindEmpty_inline(void *convoy) {
     u8 *p = (u8 *)convoy;
     s32 i;
-    for (i = 0; i < 200; i++, p += 8) {
+    for (i = 0; i < 200; p += 8, i++) {
         if (*(void **)p == NULL) {
             return i;
         }
@@ -621,21 +621,10 @@ void fn_800C3468(void *arg0) {
 }
 #pragma dont_inline off
 void Convoy_AddItem(void *convoy, void *item) {
-    void Item_Copy(void *, void *);
     void Item_Clear(void *);
     s32 fn_8001CA2C(void *);
-    s32 slot;
-    u8 ok;
 
-    ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
-    slot = Convoy_FindEmpty_inline(convoy);
-    if (slot < 0) {
-        ok = 0;
-    } else {
-        Item_Copy((u8 *)convoy + slot * 8, item);
-        ok = 1;
-    }
-    if (!ok) {
+    if (!Convoy_TryAddItem_inline(convoy, item)) {
         s32 minVal = 999999;
         s32 minIdx = -1;
         s32 i;
@@ -649,11 +638,7 @@ void Convoy_AddItem(void *convoy, void *item) {
             }
         }
         Item_Clear((u8 *)convoy + minIdx * 8);
-        ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
-        slot = Convoy_FindEmpty_inline(convoy);
-        if (slot >= 0) {
-            Item_Copy((u8 *)convoy + slot * 8, item);
-        }
+        Convoy_TryAddItem_inline(convoy, item);
     }
 }
 #pragma dont_inline reset
