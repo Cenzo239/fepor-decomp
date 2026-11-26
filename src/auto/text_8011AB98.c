@@ -3663,6 +3663,32 @@ return 1;
 return 2;
 }
 
+static inline void *TalkUi_ResolveNamedUnit(s32 arg) {
+    s32 Str_Cmp(s32, void *);
+    void *Unit_FindByName(void *);
+    void *fn_8003A114(void *);
+    void *fn_8003A064(void *);
+    extern u16 TalkUi_str[];
+    void *tmp;
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x9F) == 0) {
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
+        if (tmp) return fn_8003A114(tmp);
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
+        if (tmp) return fn_8003A064(tmp);
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
+        if (tmp) return fn_8003A114(tmp);
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
+        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
+        if (tmp) return fn_8003A064(tmp);
+    }
+    return (void *)arg;
+}
+
 void fn_8011FB58(void *arg0, s32 arg1) {
     s32 Str_Cmp(s32, void *);
     void *fn_8003A114(void *);
@@ -3697,7 +3723,6 @@ void fn_8011FB58(void *arg0, s32 arg1) {
 
     self = arg0;
     arg = arg1;
-    unit = (void *)arg;
     if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x90) == 0) {
         unit = fn_8003A114(*(void **)gUiContext);
         goto got_unit;
@@ -3712,25 +3737,29 @@ void fn_8011FB58(void *arg0, s32 arg1) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
-    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
         tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);
             goto got_unit;
         }
-    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
         tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A114(tmp);
             goto got_unit;
         }
-    } else if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
+    }
+    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
         tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
         if (tmp != NULL) {
             unit = fn_8003A064(tmp);
             goto got_unit;
         }
     }
+    unit = (void *)arg;
 got_unit:
     flags = gUiInputFlags & 3;
     if (flags != 0) {
@@ -4004,9 +4033,10 @@ void fn_80120354(void *arg0) {
     s32 btn;
     register unsigned int trigger;
     s8 delay;
+    s32 slot;
+    register s32 want;
     void *tmp;
     struct Item *child;
-    register s32 slot;
 
     self = (struct Obj *)arg0;
     self->unk5F = self->unk5F - 1;
@@ -4121,24 +4151,24 @@ after_trig:
             }
         }
     }
-    slot = (s8)self->unk5E;
-    if (0 > slot) {
+    want = (s8)self->unk5E;
+    if (0 > want) {
         slot = -1;
     } else {
         child = self->items[0];
-        if (child != NULL && child->unk43 == slot) {
+        if (child != NULL && child->unk43 == want) {
             slot = 0;
         } else {
             child = self->items[1];
-            if (child != NULL && child->unk43 == slot) {
+            if (child != NULL && child->unk43 == want) {
                 slot = 1;
             } else {
                 child = self->items[2];
-                if (child != NULL && child->unk43 == slot) {
+                if (child != NULL && child->unk43 == want) {
                     slot = 2;
                 } else {
                     child = self->items[3];
-                    if (child != NULL && child->unk43 == slot) {
+                    if (child != NULL && child->unk43 == want) {
                         slot = 3;
                     } else {
                         slot = -1;
