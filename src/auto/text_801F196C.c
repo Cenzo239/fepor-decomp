@@ -776,6 +776,9 @@ void Options_LoadSelectedEntry(void *proc) {
     strcpy(work->path, buf);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_801F3338(void *arg0) {
     s32 Person_GetByPid(s32);
     M2C_UNK fn_8008A290(M2C_UNK, M2C_UNK);
@@ -784,23 +787,24 @@ void fn_801F3338(void *arg0) {
     extern u8 gOptionsStrs[];
     extern u8 gOptionsList1[];
     extern u8 gSystemSave[];
-    extern f32 lbl_8036B850;
-    extern f32 lbl_8036B854;
+    extern const f32 lbl_8036B850;
+    extern const f32 lbl_8036B854;
     s32 temp_r27;
-    s16 temp_r29;
-    void *temp_r30;
     s32 temp_r31;
+    void *temp_r30;
+    s16 temp_r29;
     s32 temp_r3;
     s16 temp_r3_2;
     s16 temp_r4;
-    s16 temp_r4_2;
-    s16 temp_r4_3;
+    s32 temp_r4_2;
+    s32 temp_r4_3;
     s16 temp_r5;
     s16 temp_r7;
     s32 temp_r5_2;
     s32 temp_r5_3;
     u32 temp_r6;
     u32 var_r3;
+    s32 count;
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x30);
     temp_r3 = M2C_FIELD(gPadInput, s32 *, 4);
@@ -808,14 +812,16 @@ void fn_801F3338(void *arg0) {
     temp_r29 = M2C_FIELD(temp_r30, s16 *, 0xE);
     temp_r27 = temp_r3 & (M2C_FIELD(gPadInput, s32 *, 8) ^ temp_r3);
     if ((temp_r27 & 0x100) && (fn_8008A59C() == 0)) {
+        s32 *entry = (s32 *)(gOptionsList1 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8);
         if (M2C_FIELD(temp_r30, u8 *, 0x11) == 1) {
-            if (fn_801E3570(gSystemSave, Person_GetByPid(*(s32 *)(gOptionsList1 + M2C_FIELD(temp_r30, s16 *, 0xE) * 8))) != 0) {
+            if (fn_801E3570(gSystemSave, Person_GetByPid(*entry)) == 0) return;
+        }
+        {
                 Ui_PlaySeCue(gOptionsStrs + 0x121C, 0x64);
                 Process_Goto(arg0, 2);
                 fn_8008A290(3, 0xB4);
-                return;
-            }
         }
+        return;
     }
     if ((temp_r27 & 0x200) && (fn_8008A59C() == 0)) {
         Ui_PlaySeCue(gOptionsStrs + 0x11BD, 0x64);
@@ -840,8 +846,9 @@ void fn_801F3338(void *arg0) {
             M2C_FIELD(temp_r30, s16 *, 0xE) = temp_r4_2;
             temp_r5 = M2C_FIELD(temp_r30, s16 *, 0x2C);
             if ((s32)((M2C_FIELD(temp_r30, s16 *, 0xE) / 3) - temp_r5) >= 7) {
-                var_r3 = M2C_FIELD(temp_r30, u8 *, 0x29) / 3;
-                if ((M2C_FIELD(temp_r30, u8 *, 0x29) % 3) > 0) {
+                count = M2C_FIELD(temp_r30, u8 *, 0x29);
+                var_r3 = count / 3;
+                if ((count % 3) > 0) {
                     var_r3 += 1;
                 }
                 if (temp_r5 < (s32)(var_r3 - 8)) {
@@ -873,7 +880,7 @@ void fn_801F3338(void *arg0) {
         Ui_PlaySeCue(gOptionsStrs + 0x122C, 0x64);
     }
 }
-
+#pragma pop
 /* Initialize an options panel: select entry list, compute layout, build title. */
 void Options_InitPanel(void *proc) {
     struct OptEntry {
