@@ -120,7 +120,12 @@ static inline void init_80179DEC_base(void *p, s32 x, s32 y, s32 style) {
     *(f32 *)((u8 *)p + 0x30) = gF32_1;
     *(s32 *)((u8 *)p + 0x34) = 0;
     *(s32 *)((u8 *)p + 0x38) = 0;
-    fn_80142060((u8 *)p + 0x3C);
+    {
+        s32 i;
+        for (i = 0; i < 1; i++) {
+            fn_80142060((u8 *)p + 0x3C);
+        }
+    }
 }
 
 extern u32 gUiContext[];
