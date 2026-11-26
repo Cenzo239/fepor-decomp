@@ -8594,11 +8594,11 @@ void fn_80171004(void *arg0)
 
     u8 *self;
     u8 *child;
-    u8 *list;
-    u8 *obj;
-    u8 *slot;
-    void *p;
     s32 i;
+    u8 *list;
+    u8 *slot;
+    u8 *obj;
+    void *p;
     s16 pos[2];
     s16 slide[2];
     s16 height;
@@ -14548,16 +14548,65 @@ extern "C" void *fn_80179F8C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     ((Obj *)arg0)->m28();
     return arg0;
 }
-extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
+static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
+    void fn_80142060(void *);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80292208[];
+    extern const f32 gF32_1;
+    void *self;
+    s16 y0;
+    s16 x1;
+    s16 x0;
+    s16 y1;
+    s32 zero;
+    f32 one;
+    void *tmp;
+
+    zero = 0;
+    self = arg0;
+    y0 = arg1[1];
+    x1 = arg2[0];
+    x0 = arg1[0];
+    *(void **)self = lbl_8028FDB0;
+    *(s32 *)((u8 *)self + 4) = zero;
+    *(void **)self = lbl_80292230;
+    one = gF32_1;
+    tmp = self;
+    *(s16 *)((u8 *)self + 8) = -1;
+    y1 = arg2[1];
+    *(s16 *)((u8 *)self + 0xA) = x0;
+    *(s16 *)((u8 *)self + 0xC) = y0;
+    *(s16 *)((u8 *)self + 0xE) = (s16)(x0 + x1);
+    *(s16 *)((u8 *)self + 0x10) = (s16)(y0 + y1);
+    *(s16 *)((u8 *)self + 0x12) = zero;
+    *(s16 *)((u8 *)self + 0x14) = zero;
+    *(s16 *)((u8 *)self + 0x16) = x1;
+    *(s16 *)((u8 *)self + 0x18) = y1;
+    *(s16 *)((u8 *)self + 0x1A) = zero;
+    *(s16 *)((u8 *)self + 0x1C) = zero;
+    *(u8 *)((u8 *)self + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)self + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)self + 0x20) = 0xFF;
+    *(u8 *)((u8 *)self + 0x21) = 0xFF;
+    *(s16 *)((u8 *)self + 0x22) = arg3;
+    *(s16 *)((u8 *)self + 0x24) = zero;
+    *(f32 *)((u8 *)self + 0x28) = one;
+    *(f32 *)((u8 *)self + 0x2C) = one;
+    *(f32 *)((u8 *)self + 0x30) = one;
+    *(s32 *)((u8 *)self + 0x34) = zero;
+    *(s32 *)((u8 *)self + 0x38) = zero;
+    *(void **)self = lbl_80292208;
+    fn_80142060((u8 *)tmp + 0x3C);
+}
+extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     void fn_80142060(void *);
     void fn_8013BBF8(void *);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80292208[];
-    extern u8 lbl_80291B70[];
-    extern u8 lbl_80295478[];
-    extern f32 lbl_8036AB6C;
-    extern f32 lbl_8036AB70;
+    extern u8 gUiPanelMidVtbl[];
+    extern u8 gEmptyVtbl[];
+    extern const f32 gF32_1;
+    extern const f32 lbl_8036AB70;
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -14590,7 +14639,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(void **)self = lbl_8028FDB0;
     *(s32 *)((u8 *)self + 4) = zero;
     *(void **)self = lbl_80292230;
-    one = lbl_8036AB6C;
+    one = gF32_1;
     tmp = self;
     *(s16 *)((u8 *)self + 8) = -1;
     y1 = arg2[1];
@@ -14617,7 +14666,7 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s32 *)((u8 *)self + 0x38) = zero;
     *(void **)self = lbl_80292208;
     fn_80142060((u8 *)tmp + 0x3C);
-    *(void **)self = lbl_80291B70;
+    *(void **)self = gUiPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(u8 *)((u8 *)self + 0x4C) = 1;
     *(u8 *)((u8 *)self + 0x4D) = 0;
@@ -14633,9 +14682,9 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
     *(s16 *)((u8 *)self + 0x64) = 0;
     fn_8013BBF8((u8 *)self + 0x70);
     *(s32 *)((u8 *)self + 0x7C) = 0;
-    *(void **)((u8 *)self + 0x84) = lbl_80295478;
+    *(void **)((u8 *)self + 0x84) = gEmptyVtbl;
     {
-        f32 f1 = lbl_8036AB6C;
+        f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0x88) = 0;
         *(s32 *)((u8 *)self + 0x8C) = 2;
@@ -14652,9 +14701,9 @@ extern "C" void *fn_8017A000(void *arg0, s16 *arg1, s16 *arg2, s16 arg3) {
         *(f32 *)((u8 *)self + 0xA8) = f0;
         ((Sub *)((u8 *)self + 0x84))->v1();
     }
-    *(void **)((u8 *)self + 0xAC) = lbl_80295478;
+    *(void **)((u8 *)self + 0xAC) = gEmptyVtbl;
     {
-        f32 f1 = lbl_8036AB6C;
+        f32 f1 = gF32_1;
         f32 f0 = lbl_8036AB70;
         *(s32 *)((u8 *)self + 0xB0) = 0;
         *(s32 *)((u8 *)self + 0xB4) = 3;
