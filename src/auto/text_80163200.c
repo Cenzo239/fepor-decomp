@@ -5524,12 +5524,12 @@ void fn_8016BBB8(void *self) {
     extern u16 lbl_80277EA0[];
     extern const f32 lbl_8036AA34, lbl_8036AA38, lbl_8036AA48, lbl_8036AA4C, lbl_8036AA50;
     void *pad;
-    u32 held;
-    u32 trig;
-    u32 stick;
-    u32 mask;
-    u8 delta;
     u8 cur;
+    s32 mask;
+    s32 stick;
+    s32 trig;
+    s32 held;
+    u8 delta;
     s32 z;
     void *n;
     void *prev;
