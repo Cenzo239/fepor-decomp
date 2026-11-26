@@ -2617,7 +2617,6 @@ static inline void *fn_800639B4_Body(void *res, char *p) {
     }
     return res;
 }
-#pragma inline_depth(0)
 #pragma cplusplus on
 extern "C" void fn_80063A14(SomeStruct *);
 extern "C" void *fn_800639B4(char *arg0) {
