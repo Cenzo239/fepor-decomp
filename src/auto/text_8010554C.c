@@ -78,6 +78,28 @@ struct Arg0 {
     u8 unk61;
 };
 
+static inline void Cycler_Draw(struct UnkCycler *outer, f32 pos) {
+    s32 i;
+    s32 rem;
+    f32 f1_2;
+
+    if (outer->unk5 == 0) {
+        for (i = outer->unk4 - 1; i >= 0; i--) {
+            outer->unk14[i]->v1(0xFF);
+        }
+    } else if (outer->unk5 == 2) {
+        i = (s32)pos;
+        rem = (i + 1) % outer->unk4;
+        f1_2 = lbl_8036A134 * (pos - (f32)i);
+        if (f1_2 != lbl_8036A130) {
+            outer->unk14[rem]->v1((s32)f1_2);
+        }
+        outer->unk14[i]->v1(0xFF);
+    } else if (outer->unk5 == 1) {
+        outer->unk14[(s32)pos]->v1(0xFF);
+    }
+}
+
 extern u16 lbl_802737A0[];
 
 static inline void *GetUnitIfBitSet(u32 *bits, u8 id) {
@@ -2808,74 +2830,65 @@ check:
 void Prim2D_SetAlphaByte(s8 arg0);
 void Prim2D_SetColorByte(s8 arg0);
 void fn_80009C20(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8);
+#pragma push
+#pragma optimization_level 3
 void fn_80109244(struct Arg0 *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_PrepareTex(void);
     void Prim2D_SetColorByte(u8);
     void Prim2D_SetAlphaByte(u8);
-    extern f64 lbl_8036A128;
-    extern f64 lbl_8036A120;
     extern f32 lbl_8036A134;
     extern const f32 lbl_8036A130;
-    struct UnkCycler *outer;
-    struct Arg0 *self;
+
     s32 i;
-    s32 temp_r31;
-    s32 next;
-    s32 count;
     s32 rem;
     f32 f1_2;
     f32 pos;
     f32 f0;
     f32 f1;
-    u8 *p;
-    struct UnkObject *obj;
+    struct Cycler2 {
+        u8 pad0[4];
+        u8 unk4;
+        u8 unk5;
+        u16 unk6;
+        u8 pad8[0xC];
+        struct UnkObject *objs[1];
+    } *outer;
 
-    self = arg0;
-    self->unk3C = self->unk3C + self->unk38;
-    f0 = self->unk3C;
-    f1 = self->unk34;
+    arg0->unk3C = arg0->unk3C + arg0->unk38;
+    f0 = arg0->unk3C;
+    f1 = arg0->unk34;
     if (f0 >= f1) {
-        self->unk3C = f0 - f1;
+        arg0->unk3C = f0 - f1;
     }
     Prim2D_Begin();
-    fn_80009C20(self->unk30, self->unk40, self->unk44, self->unk48 + (f32)self->unk30->unk6, self->unk4C, self->unk50, self->unk54, self->unk58, self->unk5C);
-    Prim2D_SetColorByte(self->unk60);
-    Prim2D_SetAlphaByte(self->unk61);
+    fn_80009C20(arg0->unk30, arg0->unk40, arg0->unk44, arg0->unk48 + (f32)arg0->unk30->unk6, arg0->unk4C, arg0->unk50, arg0->unk54, arg0->unk58, arg0->unk5C);
+    Prim2D_SetColorByte(arg0->unk60);
+    Prim2D_SetAlphaByte(arg0->unk61);
     Prim2D_PrepareTex();
-    outer = self->unk30;
-    pos = self->unk3C;
+    outer = (struct Cycler2 *)arg0->unk30;
+    pos = arg0->unk3C;
     if (outer->unk5 == 0) {
-        i = outer->unk4 - 1;
-        p = (u8 *)outer + (i << 2);
-        while (i >= 0) {
-            obj = *(struct UnkObject **)(p + 0x14);
-            obj->v1(0xFF);
-            p -= 4;
-            i--;
+        for (i = outer->unk4 - 1; i >= 0; i--) {
+            outer->objs[i]->v1(0xFF);
         }
     } else if (outer->unk5 == 2) {
-        temp_r31 = (s32)pos;
-        count = outer->unk4;
-        next = temp_r31 + 1;
-        f1_2 = lbl_8036A134 * (pos - (f32)temp_r31);
-        rem = next - (next / count) * count;
+        i = (s32)pos;
+        rem = (i + 1) % outer->unk4;
+        f1_2 = lbl_8036A134 * (pos - (f32)i);
         if (f1_2 != lbl_8036A130) {
-            obj = *(struct UnkObject **)((u8 *)outer + (rem << 2) + 0x14);
-            obj->v1((s32)f1_2);
+            outer->objs[rem]->v1((s32)f1_2);
         }
-        obj = *(struct UnkObject **)((u8 *)outer + (temp_r31 << 2) + 0x14);
-        obj->v1(0xFF);
+        outer->objs[i]->v1(0xFF);
     } else if (outer->unk5 == 1) {
-        obj = *(struct UnkObject **)((u8 *)outer + (((s32)pos) << 2) + 0x14);
-        obj->v1(0xFF);
+        outer->objs[(s32)pos]->v1(0xFF);
     }
     Prim2D_Begin();
     Prim2D_SetColorByte(0xFF);
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 void Sound_TweenParam(void *arg0, s32 arg1, s32 arg2, f32 arg3, f32 arg4, f32 arg5) {
 extern const f32 lbl_8036A138;
 extern const f32 lbl_8036A130;
