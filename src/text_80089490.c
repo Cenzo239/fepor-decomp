@@ -19,7 +19,7 @@ typedef struct {
     void *f48;
     u8 pad50[0xC];
     void *f58;
-    u8 pad60[0x24];
+    u8 pad5C[0x20];
     void *f7C;
 } Struct_80089490;
 
@@ -94,7 +94,7 @@ void fn_80089490(void *arg0) {
     if (*(u8 *)((u8 *)arg0 + 0x2B) != 0x7B) {
         v = *(u32 *)arg0;
         p = tbl + 0x7C;
-        if (v != (u32)(tbl + 0x7C) && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34)) {
+        if (v != (u32)p && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34)) {
             fn_8000A408(arg0);
         }
     }
