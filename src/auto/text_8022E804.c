@@ -7,6 +7,31 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
+static s32 count_trailing_zero_u32(u32 x) {
+    u32 xbits = 0xFFFFU;
+    s32 n = 0;
+    s32 j = 32;
+    s32 m = 16;
+    s32 k = m;
+    while (j != 0) {
+        if ((x & xbits) == 0) {
+            n += k;
+            x >>= k;
+            j -= k;
+        } else if (xbits == 1) {
+            break;
+        }
+        if (m > 1) {
+            m /= 2;
+        }
+        if (xbits > 1) {
+            xbits >>= m;
+            k -= m;
+        }
+    }
+    return n;
+}
+
 extern f32 lbl_80367068;
 extern f64 lbl_8036BE20;
 extern f64 lbl_8036BE28;
@@ -207,16 +232,15 @@ f64 fn_802380A8(f64, f64);
 
 #pragma use_lmw_stmw on
 
+#pragma opt_common_subs off
 void fn_8022E804(void *dst, f64 x) {
-    u64 __div2u(u32, u32, u32, u32);
-    u64 __mod2u(u32, u32, u32, u32);
     u64 fn_8022CC2C(f64);
     void fn_8022F1C0(void *, s32);
     void fn_80230944(void *, void *, void *);
     f64 fn_802382EC(s32 *, f64);
     f64 fn_80238378(s32, f64);
     void fn_8023853C(f64 *);
-    extern f64 lbl_8036BDC8;
+    extern const f64 lbl_8036BDC8;
     u8 dig[0x2C];
     u8 sp38[0x2C];
     f64 sp30;
@@ -226,26 +250,21 @@ void fn_8022E804(void *dst, f64 x) {
     f64 sp10;
     f64 sp8;
     s8 sign;
-    u8 *digp;
-    s32 zero;
-    u32 hi;
-    u32 ul;
     f64 f31;
     s32 hx;
     s32 clas;
     s32 clas2;
     u32 xbits;
     s32 k;
-    s32 n;
     s32 m;
     s32 j;
-    u32 xb;
+    s32 n;
     u32 lo;
+    u32 hi;
     u64 uq;
-    u8 *p;
-    u8 *q;
     u8 t;
-    u8 idx;
+    u8 *q;
+    u8 *p;
     s32 expadj;
     s8 ch;
 
@@ -321,8 +340,8 @@ void fn_8022E804(void *dst, f64 x) {
         m = 0x10;
         xbits = 0xFFFFU;
         n = 0;
-        j = 0x20;
         k = m;
+        j = 0x20;
         while (j != 0) {
             if ((lo & xbits) == 0) {
                 n += k;
@@ -332,7 +351,7 @@ void fn_8022E804(void *dst, f64 x) {
                 break;
             }
             if (m > 1) {
-                m = (s32)(((u32)m >> 31) + m) >> 1;
+                m /= 2;
             }
             if (xbits > 1) {
                 xbits >>= m;
@@ -340,55 +359,45 @@ void fn_8022E804(void *dst, f64 x) {
             }
         }
     } else {
-        m = 0x10;
+        k = 0x10;
+        xbits = 0xFFFFU;
         n = 0;
-        k = m;
-        xbits = (*(u32 *)&sp18) | 0x100000;
-        xb = 0xFFFFU;
+        m = k;
+        hi = (*(u32 *)&sp18) | 0x100000;
         j = 0x20;
         while (j != 0) {
-            if ((xbits & xb) == 0) {
+            if ((hi & xbits) == 0) {
                 n += k;
-                xbits >>= k;
+                hi >>= k;
                 j -= k;
-            } else if (xb == 1) {
+            } else if (xbits == 1) {
                 break;
             }
             if (m > 1) {
-                m = (s32)(((u32)m >> 31) + m) >> 1;
+                m /= 2;
             }
-            if (xb > 1) {
-                xb >>= m;
+            if (xbits > 1) {
+                xbits >>= m;
                 k -= m;
             }
         }
         n += 0x20;
     }
     expadj = 0x35 - n;
-    ul = (u32)expadj;
-    fn_8022F1C0(sp38, *(s32 *)&sp10 - (s32)ul);
-    fn_80238378((s32)ul, f31);
+    fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
+    fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
     uq = fn_8022CC2C(sp30);
-    zero = *(s32 *)&lbl_8036BDC8;
-    hi = (u32)(uq >> 32);
-    ul = (u32)uq;
-    dig[0] = (u8)zero;
-    if (((ul ^ (u32)zero) | (hi ^ (u32)zero)) == 0) {
-        *(s16 *)(dig + 2) = (s16)zero;
+    dig[0] = 0;
+    if (uq == 0) {
+        *(s16 *)(dig + 2) = 0;
         dig[4] = 1;
-        dig[5] = (u8)zero;
+        dig[5] = 0;
     } else {
-        dig[4] = (u8)zero;
-        digp = dig;
-        while (((ul ^ (u32)zero) | (hi ^ (u32)zero)) != 0) {
-            uq = __mod2u(hi, ul, 0, 10);
-            idx = dig[4];
-            dig[4] = idx + 1;
-            digp[idx + 5] = (u8)(u32)uq;
-            uq = __div2u(hi, ul, 0, 10);
-            ul = (u32)uq;
-            hi = (u32)(uq >> 32);
+        dig[4] = 0;
+        while (uq != 0) {
+            dig[5 + dig[4]++] = (u8)(uq % 10);
+            uq /= 10;
         }
         p = dig + 5;
         q = dig + dig[4] + 5;
@@ -404,3 +413,4 @@ void fn_8022E804(void *dst, f64 x) {
     fn_80230944(dst, dig, sp38);
     *(s8 *)dst = sign;
 }
+#pragma opt_common_subs on
