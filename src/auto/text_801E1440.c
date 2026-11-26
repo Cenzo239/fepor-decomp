@@ -893,6 +893,12 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
+static inline u8 Save_FindFreeId(s8 *hist) {
+    s32 i;
+    for (i=1;i<40;i++) if (hist[i]==0) return (u8)i;
+    return 0;
+}
+
 static inline u8 *Save_FindLinkedSlotAt(u8 *base, s32 id) {
     s32 i;
     s32 off=0x2000;
@@ -1082,6 +1088,7 @@ void fn_801E14F4(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_lifetimes off
 void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -1177,17 +1184,7 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
 
     i = 0;
     do {
-        off = 0x2000;
-        for (ctr=0;ctr<6;ctr++) {
-            found=(u8 *)gSaveDataBase+off;
-            if (*(u32 *)(found+0x40)!=0x4645384AU) hdrOk=0;
-            else if (*(u32 *)(found+0x44)!=0x20050201U) hdrOk=0;
-            else hdrOk=1;
-            if(hdrOk && i==(s32)found[0x62]) goto found_id;
-            off+=0x4000;
-        }
-        found = NULL;
-    found_id:
+        found=Save_FindLinkedSlotAt((u8 *)gSaveDataBase,i);
         if (found != NULL) {
             b = found[0x61];
             if (b < 0x28U) {
