@@ -1051,6 +1051,28 @@ void fn_802567B0(void *arg0)
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
+static inline void Sound_InitSlotLists(SoundBuf *base, u8 *sound) {
+    extern u16 lbl_80368A4C;
+    extern u8 lbl_80368A4E, lbl_80368A4F, lbl_80368A50, lbl_80368A51;
+    u32 i;
+    
+
+    for (i = 0; i < sound[0x210]; i++) {
+        base->nodes[i].prev = (u8)(i - 1);
+        base->nodes[i].next = (u8)(i + 1);
+        base->nodes[i].one = 1;
+    }
+    base->nodes[0].prev = 0xFF;
+    lbl_80368A51 = 0;
+    base->nodes[sound[0x210] - 1].next = 0xFF;
+    lbl_80368A50 = (u8)(sound[0x210] - 1);
+    for (i = 0; i < sound[0x210]; i++) base->zeros[i].val = 0;
+    for (i = 0; i < 256; i++) base->p1[i] = 0xFF;
+    lbl_80368A4F = 0;
+    lbl_80368A4C = 0xFFFF;
+    lbl_80368A4E = 0;
+}
+
 void fn_80256974(void) {
     extern u8 gSoundData[];
     extern u16 lbl_80368A4C;
@@ -7509,8 +7531,10 @@ entry=gSoundVoices+offset; *(u16 *)(entry+0xD0)=ten;
 entry=gSoundVoices+offset; *(u16 *)(entry+0xD2)=ten;
 } else { entry=gSoundVoices+arg0*0xF8; *(u32 *)(entry+0xF4)&=0x7FFFFFFF; }
 }
-#pragma global_optimizer reset
-void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
+#pragma global_optimizer on
+#pragma push
+#pragma opt_common_subs off
+void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2, s32 arg6,
                  f32 arg3, f32 arg4, f32 arg5)
 {
     extern u8 *gSoundVoices;
@@ -7527,6 +7551,7 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     u32 flags;
     u32 index;
     u32 value;
+    u32 complement;
     u32 sign;
     u32 option;
     s32 x;
@@ -7553,7 +7578,7 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
     sign = flags >> 31;
     option = (*(u32 *)(table + 0x54) == 1);
 
-    fn_8025CC38(arg1, values, arg2, 0, sign, option,
+    fn_8025CC38(arg1, values, arg2, arg6, sign, option,
                   arg3, arg4, arg5);
 
     x = (s32)(lbl_8036C370 * values[0]);
@@ -7612,13 +7637,16 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2,
 
         value = *(u16 *)((u8 *)lbl_802831E0 + index);
 
+        complement = 0x20 - *(u16 *)((u8 *)lbl_802831E0 + index);
         *(u16 *)(entry + 0xD0) = (u16)value;
-        *(u16 *)(entry + 0xD2) = (u16)(0x20 - value);
+        *(u16 *)(entry + 0xD2) = (u16)complement;
 
         *(u32 *)(entry + 0x24) |= 0x200;
     }
 }
-
+#pragma pop
+#pragma global_optimizer on
+#pragma opt_common_subs on
 void fn_8026212C(u8 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u16 gSoundStudios[];
     void *temp_r3;
