@@ -32679,4 +32679,4 @@ extern void *D_8036A150; // The struct 0E60 is likely a pointer to data, or a la
 
 extern char lbl_802704F8[];
 extern f32 lbl_80369E30, lbl_80369E34, lbl_80369E38, lbl_80369E3C, lbl_80369E40, lbl_80369E44, lbl_80369E48, lbl_80369E4C;
-typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
+
