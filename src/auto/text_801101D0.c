@@ -1014,6 +1014,7 @@ extern "C" void fn_80111C8C(void *arg0, void *arg1) {
 #pragma cplusplus reset
 #pragma optimization_level reset
 #pragma use_lmw_stmw reset
+#pragma opt_common_subs reset
 
 extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
  void Prim2D_Begin(void); void Prim2D_SetTransform(f32,f32,f32,f32); void Prim2D_SetTex(s32,s32); void Prim2D_PrepareTex(void);
