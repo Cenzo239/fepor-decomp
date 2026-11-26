@@ -14,8 +14,10 @@ u8 r=color[0],g=color[1],b=color[2],a=color[3];
 static inline void fn_80050E14_Body(u8 *obj, s32 zero) {
  s32 i, offset, tableOffset, n;
  u8 *table, *base;
- i = offset = tableOffset = zero;
- *(s32 *)(obj+0x14) = zero;
+ i = zero;
+ *(s32 *)(obj+0x14) = i;
+ offset = i;
+ tableOffset = i;
  while (i < (n = *(s32 *)(obj+0x18))) {
   base = *(u8 **)obj;
   i++;
