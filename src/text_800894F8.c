@@ -1,6 +1,10 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void *MenuCreateAt(u8 *base, s32 offset) {
+    void *Process_Create(void *, s32);
+    return Process_Create(base + offset, 7);
+}
 typedef struct {
     f32 x, y;
     u8 unk8[4];
@@ -118,23 +122,24 @@ void fn_80089554(void) {
 #pragma global_optimizer off
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
+    extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    s8 *base = (s8 *)lbl_80289950;
-    u8 *tmp;
-
-    lbl_803674E0 = Process_Create(base + 0, 7);
+    u8 *base;
+    void *tmp;
+    base = lbl_80289950;
+    lbl_803674E0 = Process_Create(base, 7);
     lbl_803674E4 = Process_Create(base + 0x58, 7);
     tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
-    *(s16 *)(tmp + 0x32) = 0;
+    *(s16 *)((u8 *)tmp + 0x32) = 0;
     tmp = Process_Create(base + 0x30, 7);
     lbl_803674EC = tmp;
-    *(s16 *)(tmp + 0x32) = 0;
+    *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
-#pragma global_optimizer on
+#pragma global_optimizer reset
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
