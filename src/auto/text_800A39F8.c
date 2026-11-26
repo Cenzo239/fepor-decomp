@@ -5,6 +5,10 @@ static inline s32 Movie_FrameDataOffset(u32 count) {
     return count * 4 + 8;
 }
 
+static inline s32 Movie_FrameData(void *base, s32 offset) {
+    return (s32)base + offset;
+}
+
 static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
     s32 fn_8023C56C(s32, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
@@ -457,7 +461,7 @@ s32 fn_800A424C(s32 arg0) {
     u8 *ready;
     u8 *buffers;
     s32 r27;
-    s32 r26;
+    u32 r26;
     s32 *r25;
     struct Obj *r23;
     s32 r24;
