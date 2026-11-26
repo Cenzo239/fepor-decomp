@@ -158,11 +158,6 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 
-typedef struct Vec2sU {
-    s16 x;
-    u16 y;
-} Vec2sU;
-
 typedef struct {
     u8 unk0;
 } Unk1;
