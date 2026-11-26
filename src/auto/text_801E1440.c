@@ -985,6 +985,67 @@ static inline u32 Save_FindMaxSizeIn(u8 *base) {
     if (best < save_slot_size(base + 0x20000)) best = save_slot_size(base + 0x20000);
     return best;
 }
+static inline u8 *Save_FindSystemSlot(void **arg0) {
+    u8 *best;
+    s32 off;
+    u8 *sys;
+    u32 bestc;
+    s32 j;
+    u8 ok;
+    u32 capped;
+    bestc = 0;
+    best = NULL;
+    off = 0x2000;
+    for (j = 0; j < 6; j++) {
+        sys = (u8 *)*arg0 + off;
+        if (*(u32 *)(sys + 0x70) != 0x53595346U) {
+            ok = 0;
+        } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
+            ok = 0;
+        } else {
+            ok = 1;
+        }
+        if (ok != 0) {
+            capped = save_slot_size(sys);
+            if (bestc < capped) {
+                best = sys;
+                bestc = save_slot_size(sys);
+            }
+        }
+        off += 0x4000;
+    }
+    sys = (u8 *)*arg0 + 0x1A000;
+    if (*(u32 *)(sys + 0x70) != 0x53595346U) {
+        ok = 0;
+    } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
+        ok = 0;
+    } else {
+        ok = 1;
+    }
+    if (ok != 0) {
+        capped = save_slot_size(sys);
+        if (bestc < capped) {
+            best = sys;
+            bestc = save_slot_size(sys);
+        }
+    }
+    sys = (u8 *)*arg0 + 0x20000;
+    if (*(u32 *)(sys + 0x70) != 0x53595346U) {
+        ok = 0;
+    } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
+        ok = 0;
+    } else {
+        ok = 1;
+    }
+    if (ok != 0) {
+        capped = save_slot_size(sys);
+        if (bestc < capped) {
+            best = sys;
+        }
+    }
+
+    return best;
+}
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
     return (size <= limit) ? size : 0;
@@ -1609,13 +1670,13 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 hist[6];
     u8 *slots[2];
     u64 seed;
-    void *buf;
     s32 i;
     s32 off;
     u8 *blk;
     u8 *sys;
     u8 ok;
     u8 ok2;
+    void *buf;
     u32 hash;
     u8 *dst;
     u8 *src;
@@ -1669,21 +1730,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
             ok = 1;
         }
         if (ok != 0) {
-            if (*(u32 *)(blk + 0x50) == 0x12345678U) {
-                ok2 = 1;
-            } else if (blk[0x60] == 1) {
-                ok2 = 1;
-            } else {
-                buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
-                Crc32_InitTable();
-                hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
-                fn_800C4588(buf);
-                if (*(u32 *)(blk + 0x50) != hash) {
-                    ok2 = 0;
-                } else {
-                    ok2 = 1;
-                }
-            }
+            ok2 = Save_CheckSlotCrc(blk);
             if (ok2 == 0) {
                 *(u32 *)(blk + 0x40) = 0;
                 fn_800EB760(-0x42);
@@ -1770,21 +1817,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
                 ok = 1;
             }
             if (ok != 0) {
-                if (*(u32 *)(blk + 0x50) == 0x12345678U) {
-                    ok2 = 1;
-                } else if (blk[0x60] == 1) {
-                    ok2 = 1;
-                } else {
-                    buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
-                    Crc32_InitTable();
-                    hash = Crc32_Calc(buf, blk + 0x70, *(s32 *)(blk + 0x4C) - 0x70);
-                    fn_800C4588(buf);
-                    if (*(u32 *)(blk + 0x50) != hash) {
-                        ok2 = 0;
-                    } else {
-                        ok2 = 1;
-                    }
-                }
+                ok2 = Save_CheckSlotCrc(blk);
                 if (ok2 == 0) {
                     *(u32 *)(slots[i] + 0x40) = 0;
                     fn_800EB760(-0x42);
