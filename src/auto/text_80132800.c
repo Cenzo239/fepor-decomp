@@ -172,7 +172,7 @@ typedef struct MenuGridLayout {
     s16 yOffset;
 } MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
-static inline s16 MenuGridRowOffset(s32 height, s32 row, s32 offset) {
+static inline s16 MenuGridRowOffset(s32 offset, s32 row, s32 height) {
     return height * row + offset;
 }
 
