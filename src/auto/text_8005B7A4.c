@@ -1,6 +1,31 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
+    char *src; u8 *dst; s32 i; u8 c;
+    src = arg1;
+    if (*arg1 == '/') {
+        src++;
+    }
+    dst = arg0;
+    *(s32 *)(arg0 + 0x2C) = 0;
+    for (i = 0x29; i > 0; i--) {
+        c = *src;
+        if ((s8)c >= 'A' && (s8)c <= 'Z') {
+            *src = (char)(c + 0x20);
+        }
+        *dst = *src;
+        c = *src;
+        if ((s8)c == 0) {
+            break;
+        }
+        dst++;
+        src++;
+        *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
+    }
+
+}
+
 static inline u8 FileCache_HasExtension(char *name, char *ext) {
     u8 c;
     char *p = name;
@@ -1432,9 +1457,10 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     char *ext;
     s32 match;
     u8 c;
-    s8 drive;
     s32 size;
+    s8 drive;
     s32 off;
+    u32 handle;
 
     src = arg1;
     if (*arg1 == '/') {
@@ -1481,14 +1507,15 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
         drive = arg0[0x29];
         size = *(s32 *)(arg0 + 0x3C);
         if (fn_800C44F4(drive) < (u32)size) {
-            *(u32 *)(arg0 + 0x38) = 0;
+            handle = 0;
         } else {
             off = (s32)strlen(arg1) - 0xF;
             if (off < 0) {
                 off = 0;
             }
-            *(u32 *)(arg0 + 0x38) = fn_800C4604(drive, size, arg1 + off, size);
+            handle = fn_800C4604(drive, size, arg1 + off, size);
         }
+        *(u32 *)(arg0 + 0x38) = handle;
     }
     if (*(u32 *)(arg0 + 0x38) == 0) {
         *(u32 *)(arg0 + 0x38) = fn_8005E594((s8)arg0[0x29], *(s32 *)(arg0 + 0x3C), arg1);
