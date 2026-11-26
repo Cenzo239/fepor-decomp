@@ -394,8 +394,9 @@ typedef struct String {
       SortIterator operator+(s32 n) const { return SortIterator(*this) += n; }
       SortOutputProxy operator*() const { return SortOutputProxy(ptr,state); }
       SortIterator &operator++() { ++ptr; return *this; }
-      SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
-  };
+          SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
+};
+static inline SortIterator Sort_MakeIter(s32 *p, s32 s) { return SortIterator(p, s); }
 static inline s32 *Sort_CopyBackwardIter(SortIterator first, SortIterator last, s32 *result) {
     while (last.ptr != first.ptr) {
         --last.ptr;
@@ -8409,8 +8410,9 @@ extern char lbl_80271010[];
 #pragma cplusplus on
 class Object { public: char data[64]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void setup(s32,s32); };
 class Owner { public: char data[16]; virtual void v0(); virtual void v1(); virtual Object *get(char *,char *); };
+struct Entry { u32 f[32]; };
+struct Self { u8 pad[0x14]; Entry e[8]; };
 s32 i;
-u8 *p;
 *(void **)(self+0xC)=lbl_8028DDC8;
 fn_800E8154(owner,arg4);
 *(Object **)(self+0x10)=((Owner *)owner)->get(lbl_80271010,String_CStr(name));
@@ -8419,15 +8421,14 @@ fn_800E8154(owner,arg4);
 *(u32 *)self=0;
 self[0x420]=fn_800DF6A8(*(void **)(self+0x10));
 for(i=0;i<8;i++) {
-p=self+(i<<7);
-*(u32 *)(p+0x14)=0; *(u32 *)(p+0x18)=0; *(u32 *)(p+0x1c)=0; *(u32 *)(p+0x20)=0;
-*(u32 *)(p+0x24)=0; *(u32 *)(p+0x28)=0; *(u32 *)(p+0x2c)=0; *(u32 *)(p+0x30)=0;
-*(u32 *)(p+0x34)=0; *(u32 *)(p+0x38)=0; *(u32 *)(p+0x3c)=0; *(u32 *)(p+0x40)=0;
-*(u32 *)(p+0x44)=0; *(u32 *)(p+0x48)=0; *(u32 *)(p+0x4c)=0; *(u32 *)(p+0x50)=0;
-*(u32 *)(p+0x54)=0; *(u32 *)(p+0x58)=0; *(u32 *)(p+0x5c)=0; *(u32 *)(p+0x60)=0;
-*(u32 *)(p+0x64)=0; *(u32 *)(p+0x68)=0; *(u32 *)(p+0x6c)=0; *(u32 *)(p+0x70)=0;
-*(u32 *)(p+0x74)=0; *(u32 *)(p+0x78)=0; *(u32 *)(p+0x7c)=0; *(u32 *)(p+0x80)=0;
-*(u32 *)(p+0x84)=0; *(u32 *)(p+0x88)=0; *(u32 *)(p+0x8c)=0; *(u32 *)(p+0x90)=0;
+    ((Self *)self)->e[i].f[0]=0; ((Self *)self)->e[i].f[1]=0; ((Self *)self)->e[i].f[2]=0; ((Self *)self)->e[i].f[3]=0;
+    ((Self *)self)->e[i].f[4]=0; ((Self *)self)->e[i].f[5]=0; ((Self *)self)->e[i].f[6]=0; ((Self *)self)->e[i].f[7]=0;
+    ((Self *)self)->e[i].f[8]=0; ((Self *)self)->e[i].f[9]=0; ((Self *)self)->e[i].f[10]=0; ((Self *)self)->e[i].f[11]=0;
+    ((Self *)self)->e[i].f[12]=0; ((Self *)self)->e[i].f[13]=0; ((Self *)self)->e[i].f[14]=0; ((Self *)self)->e[i].f[15]=0;
+    ((Self *)self)->e[i].f[16]=0; ((Self *)self)->e[i].f[17]=0; ((Self *)self)->e[i].f[18]=0; ((Self *)self)->e[i].f[19]=0;
+    ((Self *)self)->e[i].f[20]=0; ((Self *)self)->e[i].f[21]=0; ((Self *)self)->e[i].f[22]=0; ((Self *)self)->e[i].f[23]=0;
+    ((Self *)self)->e[i].f[24]=0; ((Self *)self)->e[i].f[25]=0; ((Self *)self)->e[i].f[26]=0; ((Self *)self)->e[i].f[27]=0;
+    ((Self *)self)->e[i].f[28]=0; ((Self *)self)->e[i].f[29]=0; ((Self *)self)->e[i].f[30]=0; ((Self *)self)->e[i].f[31]=0;
 }
 *(u32 *)(self+0x414)=0;
 *(u32 *)(self+0x418)=0;
