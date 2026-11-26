@@ -18,6 +18,20 @@ public:
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
+static inline void SetupCardStatus(CardFileStatus *s) {
+    s->commentAddress = 0x2000;
+    s->iconAddress = 0;
+    s->bannerFormat = (s->bannerFormat & ~3) | 1;
+    s->iconFormat = (s->iconFormat & ~3) | 1;
+    s->iconSpeed = (s->iconSpeed & ~3) | 3;
+    s->iconFormat = (s->iconFormat & ~0xC) | 4;
+    s->iconSpeed = (s->iconSpeed & ~0xC) | 8;
+    s->iconFormat = (s->iconFormat & ~0x30) | 0x10;
+    s->iconSpeed = (s->iconSpeed & ~0x30) | 0x30;
+    s->iconFormat = s->iconFormat & ~0xC0;
+    s->iconSpeed = s->iconSpeed & ~0xC0;
+    s->bannerFormat = (s->bannerFormat & ~4) | 4;
+}
 typedef struct MapVisibilityCell { u8 pad[0x200D]; u8 value; } MapVisibilityCell;
 typedef struct MapCostCell { u8 pad[0x610E]; s16 cost; } MapCostCell;
 typedef struct F43Pos { u8 x, y; u16 id; } F43Pos;
@@ -20309,43 +20323,38 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     }
     size = Stream_LoadFile(stream, arg0);
     DebugPrint(gCardStrings + 0x288, size);
-    if (size <= 0) {
-        goto cleanup;
+    if (size > 0) {
+        fn_800EBF58();
+        fn_8021CDC4(gCardWork.chan, arg1);
+        fileInfo = gCardWork.fileInfo;
+        gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
+        ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+        if (ok != 0) {
+            gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
+            ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+            if (ok != 0) {
+                gCardWork.result = fn_8021C02C(fileInfo);
+                ok = (gCardWork.result == 0 && gCardWork.busy == 0);
+                if (ok != 0) {
+                    fileNo = *(s32 *)&gCardWork.fileInfo[4];
+                    fn_8021D004(gCardWork.chan, fileNo, &status);
+                    status.commentAddress = 0x2000;
+                    status.iconAddress = 0;
+                    status.bannerFormat = (status.bannerFormat & ~3) | 1;
+                    status.iconFormat = (status.iconFormat & ~3) | 1;
+                    status.iconSpeed = (status.iconSpeed & ~3) | 3;
+                    status.iconFormat = (status.iconFormat & ~0xC) | 4;
+                    status.iconSpeed = (status.iconSpeed & ~0xC) | 8;
+                    status.iconFormat = (status.iconFormat & ~0x30) | 0x10;
+                    status.iconSpeed = (status.iconSpeed & ~0x30) | 0x30;
+                    status.iconFormat = status.iconFormat & ~0xC0;
+                    status.iconSpeed = status.iconSpeed & ~0xC0;
+                    status.bannerFormat = (status.bannerFormat & ~4) | 4;
+                    fn_8021D28C(gCardWork.chan, fileNo, &status);
+                }
+            }
+        }
     }
-    fn_800EBF58();
-    fn_8021CDC4(gCardWork.chan, arg1);
-    fileInfo = gCardWork.fileInfo;
-    gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
-    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-    if (ok == 0) {
-        goto cleanup;
-    }
-    gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
-    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-    if (ok == 0) {
-        goto cleanup;
-    }
-    gCardWork.result = fn_8021C02C(fileInfo);
-    ok = (gCardWork.result == 0 && gCardWork.busy == 0);
-    if (ok == 0) {
-        goto cleanup;
-    }
-    fileNo = *(s32 *)&gCardWork.fileInfo[4];
-    fn_8021D004(gCardWork.chan, fileNo, &status);
-    status.commentAddress = 0x2000;
-    status.iconAddress = 0;
-    status.bannerFormat = (status.bannerFormat & ~3) | 1;
-    status.iconFormat = (status.iconFormat & ~3) | 1;
-    status.iconSpeed = (status.iconSpeed & ~3) | 3;
-    status.iconFormat = (status.iconFormat & ~0xC) | 4;
-    status.iconSpeed = (status.iconSpeed & ~0xC) | 8;
-    status.iconFormat = (status.iconFormat & ~0x30) | 0x10;
-    status.iconSpeed = (status.iconSpeed & ~0x30) | 0x30;
-    status.iconFormat = status.iconFormat & ~0xC0;
-    status.iconSpeed = status.iconSpeed & ~0xC0;
-    status.bannerFormat = (status.bannerFormat & ~4) | 4;
-    fn_8021D28C(gCardWork.chan, fileNo, &status);
-cleanup:
     delete stream;
 }
 #pragma dont_inline off
@@ -28515,10 +28524,18 @@ void fn_800FC560(void) {
     fn_800FEC0C();
 }
 
+#pragma global_optimizer off
 void fn_800FC580(void)
 {
-    extern u8 lbl_8032B3C0[];
-    extern u8 lbl_802CA518[];
+    struct AiState {
+        u8 pad[4];
+        volatile u16 f4;
+        volatile u8 f6;
+        u8 pad7;
+        u8 f8[0x10];
+    };
+    extern struct AiState gAiState;
+    extern u8 gBattleMap[];
     extern u8 lbl_802731D0[];
     extern void *lbl_80367904;
 
@@ -28527,27 +28544,17 @@ void fn_800FC580(void)
     extern void *fn_80022FC4(void *);
     extern void *fn_800C4638(s32, void *, s32);
 
-    u8 *obj;
     void *result;
 
-    obj = lbl_8032B3C0;
+    gAiState.f4 = 0xFFFF;
+    gAiState.f6 = 2;
 
-    *(u16 *)(obj + 4) = 0xFFFF;
-    *(u8 *)(obj + 6) = 2;
-
-    fn_80100B08(obj);
-
-    memset(obj + 8, 0, 0x10);
-
-    result = fn_80022FC4(lbl_802CA518);
-
-    lbl_80367904 = fn_800C4638(
-        (s32)result,
-        lbl_802731D0 + 0x2C,
-        0
-    );
+    fn_80100B08(&gAiState);
+    memset(gAiState.f8, 0, 0x10);
+    result = fn_80022FC4(gBattleMap);
+    lbl_80367904 = fn_800C4638((s32)result, lbl_802731D0 + 0x2C, 0);
 }
-
+#pragma global_optimizer on
 s32 fn_800FC5F8(void) {
     extern s32 lbl_80367904;
     return lbl_80367904;
