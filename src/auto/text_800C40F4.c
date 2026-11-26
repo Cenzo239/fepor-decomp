@@ -16163,7 +16163,6 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
-    return;
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
@@ -23548,6 +23547,18 @@ void fn_800F2E50(s8 arg0) {
 u8 fn_800F2E60(void) {
     extern s8 lbl_8032AC58[];
     return lbl_8032AC58[0x65C];
+}
+
+static inline void Cleanup_800F2E70_Entries(void *arg) {
+    void fn_800616A0(void *);
+    u8 *base = (u8 *)arg;
+    s32 i = 0;
+
+    do {
+        fn_800616A0(base + i * 0xA0 + 0x328);
+        fn_800616A0(base + i * 0xA0 + 8);
+        i++;
+    } while (i < 4);
 }
 
 void fn_800F2E70(void) {
