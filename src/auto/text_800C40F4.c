@@ -10590,22 +10590,22 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
+    f32 *self = (f32 *)arg1 + 24;
     f32 mtx[3][4];
     f32 y;
     f32 z;
     f32 x;
-
     vec[0] = 0.0f;
     vec[1] = 0.0f;
     vec[2] = 1.0f;
     PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
-    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
-    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
-    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
-    z = *(f32 *)((u8 *)arg1 + 0x68);
-    y = *(f32 *)((u8 *)arg1 + 0x64);
-    x = *(f32 *)((u8 *)arg1 + 0x60);
+    self[0] = vec[0];
+    self[1] = vec[1];
+    self[2] = vec[2];
+    z = self[2];
+    y = self[1];
+    x = self[0];
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
@@ -17067,6 +17067,10 @@ void *fn_800E6418(void *self, void *owner, s32 a2, s32 a3, void *str, s32 a5) {
     *(f32 *)((u8 *)self + 0x110) = fzero;
     *(s32 *)((u8 *)self + 0x114) = zero;
     return self;
+}
+
+static inline int CheckPos_800E6554(u32 n, u32 pos) {
+    return pos > n;
 }
 
 #pragma global_optimizer off
@@ -26370,36 +26374,36 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     extern u8 gBattleMap[];
 
     u8 *tbl;
-    s8 best_slot;
+    s16 best_x;
+    s32 best_slot;
     s32 best;
-    s8 slot;
+    s32 slot;
     void **itemp;
+    void *self;
     s32 x1;
     s32 y;
     s32 x;
-    void *self;
     s32 score;
     s32 row;
-    s32 py;
     s32 px;
+    s32 py;
     s16 best_y;
-    u8 *map;
     s8 range;
-    u8 dd;
-    u8 unk1d;
+    s32 dd;
     s32 x0;
+    s32 y0;
     s32 y1;
-    s16 best_x;
+
     u8 owner;
     s32 cand;
+    s16 cx, cy;
 
     tbl = gBattleMap;
     self = arg0;
     Map_BuildUnitMoveRange(self, 5, -1);
-    map = gBattleMap;
     best = 0x80000000;
-    for (slot = 0; slot < 4; slot++) {
-        itemp = Unit_GetHeldItemSlot(self, slot);
+    for (slot = 0; (s8)slot < 4; slot++) {
+        itemp = Unit_GetHeldItemSlot(self, (s8)slot);
         if (*itemp == NULL) {
             break;
         }
@@ -26408,29 +26412,29 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
         }
         Map_FillLayer(tbl, 6, -1);
         dd = GetItemDD54(*itemp, self);
-        unk1d = GetItemUnk1D(*itemp);
-        fn_800FDDBC(arg1, arg2, unk1d, dd, 6);
+        fn_800FDDBC(arg1, arg2, (u8)GetItemUnk1D(*itemp), (u8)dd, 6);
         px = *(s8 *)((u8 *)self + 0x19E);
         py = *(s8 *)((u8 *)self + 0x19F);
         range = Unit_GetMov(self);
         x0 = px - range;
-        if (x0 < (s8)map[8]) {
-            x0 = (s8)map[8];
+        if (x0 < (s8)gBattleMap[8]) {
+            x0 = (s8)gBattleMap[8];
         }
-        y = py - range;
-        if (y < (s8)map[9]) {
-            y = (s8)map[9];
+        y0 = py - range;
+        if (y0 < (s8)gBattleMap[9]) {
+            y0 = (s8)gBattleMap[9];
         }
         x1 = px + range;
-        if (x1 > (s8)map[0xA] - 1) {
-            x1 = (s8)map[0xA] - 1;
+        if (x1 > (s8)gBattleMap[0xA] - 1) {
+            x1 = (s8)gBattleMap[0xA] - 1;
         }
         y1 = py + range;
-        if (y1 > (s8)map[0xB] - 1) {
-            y1 = (s8)map[0xB] - 1;
+        if (y1 > (s8)gBattleMap[0xB] - 1) {
+            y1 = (s8)gBattleMap[0xB] - 1;
         }
-        for (; y <= y1; y++) {
+        for (y = y0; y <= y1; y++) {
             row = (s8)y << 6;
+            cy = y;
             for (x = x0; x <= x1; x++) {
                 if (*(s16 *)((u8 *)gBattleMap + ((s8)x + row) * 2 + 0x610E) < 0) {
                     continue;
@@ -26448,14 +26452,15 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
                 if (owner != 0 && owner == *(u8 *)((u8 *)self + 0x198)) {
                     continue;
                 }
-                score = fn_800F7994(self, x, y);
-                score += fn_800F7838(self, x, y);
-                score -= *(s16 *)((u8 *)gBattleMap + ((s8)(s16)x + ((s8)(s16)y << 6)) * 2 + 0x610E);
-                score -= (fn_800FCF48((s8)(s16)x, (s8)(s16)y) >> 4) & 0xFFF;
+                cx = x;
+                score = fn_800F7994(self, cx, cy);
+                score += fn_800F7838(self, cx, cy);
+                score -= *(s16 *)((u8 *)gBattleMap + ((s8)cx + ((s8)cy << 6)) * 2 + 0x610E);
+                score -= (fn_800FCF48((s8)cx, (s8)(s16)y) >> 4) & 0xFFF;
                 if (score < 0) {
                     score = 0;
                 }
-                cand = fn_8001D500(itemp) + (score != 0);
+                cand = (score != 0) + fn_8001D500(itemp);
                 if (cand > best) {
                     best = cand;
                     best_x = x;
@@ -30335,7 +30340,7 @@ void fn_800FF9A8(void *arg0) {
     }
     BattleState_SetCamPos(gBattleState, *(f32 *)((u8 *)arg0 + 0x30), *(f32 *)((u8 *)arg0 + 0x34));
 }
-#pragma optimization_level 1
+#pragma global_optimizer off
 void fn_800FFA78(void *arg0) {
     void fn_801848D8(void *, s32, s32, s32);
     extern u8 gMapBlendMode;
@@ -30343,34 +30348,31 @@ void fn_800FFA78(void *arg0) {
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
 
-    void *self;
     void *saved;
-    u8 f;
-    s32 t;
-    u8 *base;
-    s8 x;
-    s8 y;
+    s32 flag;
+    u32 t;
+    u8 *map;
+    u8 *ctx;
+    MapVisibilityCell *cell;
 
-    f = 1;
-    self = arg0;
+    flag = 1;
     saved = *(void **)gUiContext;
-    t = (u8)(gMapBlendMode - 1);
-    if (((u32)((1 | ~t) - ((u32)(1 - t) >> 1)) >> 31) == 0) {
-        f = 0;
+    t = ((u8)(gMapBlendMode - 1) <= (u32)flag);
+    if (!t) {
+        flag = 0;
     }
-    if (f != 0) {
-        if (gBattleState[0x11] == 1) {
-            base = gUiContext;
-            x = (s8)base[0xD];
-            y = (s8)base[0xE];
-            if (gBattleMap[x + (y << 6) + 0x200D] == 0) {
-                return;
-            }
+    if ((u8)flag && gBattleState[0x11] == 1) {
+        map = gBattleMap;
+        ctx = gUiContext;
+        cell = (MapVisibilityCell *)(map + (s8)ctx[0xD]);
+        cell = (MapVisibilityCell *)((u8 *)cell + ((s8)ctx[0xE] << 6));
+        if (cell->value == 0) {
+            return;
         }
     }
-    fn_801848D8(saved, (s32)*(f32 *)((u8 *)self + 0x30), (s32)*(f32 *)((u8 *)self + 0x34), 0x10);
+    fn_801848D8(saved, (s32)*(f32 *)((u8 *)arg0 + 0x30), (s32)*(f32 *)((u8 *)arg0 + 0x34), 0x10);
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 void fn_800FFB4C(void *arg0, s16 arg1, s16 arg2) {
     void fn_8002F728(void *);
     void fn_8002C6F4(void *, s8, s8);
