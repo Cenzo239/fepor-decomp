@@ -55,9 +55,8 @@ typedef struct {
     MapObj_80042558 *objs;
 } Map_80042558;
 
-static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
+static inline u8 *FindMapObj_80042558(Map_80042558 *map, s32 x, s32 y, u32 forbid, u32 require)
 {
-    Map_80042558 *map = (Map_80042558 *)arg0;
     s32 i;
     for (i = map->count - 1; i >= 0; i--) {
         if (forbid != 0 && (M2C_FIELD(map->objs[i].unk10, u32 *, 0xBC) & forbid)) continue;
@@ -69,9 +68,9 @@ static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 
     return 0;
 }
 
-static inline u8 *FindMapObjNear_80042558(void *arg0, s32 x, s32 y, u32 require)
+static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 require)
 {
-    u8 *found = FindMapObj_80042558(arg0, x, y, 0, require);
+    u8 *found = FindMapObj_80042558(map, x, y, 0, require);
     if (found != 0) {
         return found;
     }
@@ -79,7 +78,7 @@ static inline u8 *FindMapObjNear_80042558(void *arg0, s32 x, s32 y, u32 require)
         s32 dir;
         for (dir = 0; dir < 4; dir++) {
             u8 d = DirFromIndex_80042558(dir);
-            found = FindMapObj_80042558(arg0, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
+            found = FindMapObj_80042558(map, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
             if (found != 0) {
                 return found;
             }
