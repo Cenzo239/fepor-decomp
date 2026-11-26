@@ -10,6 +10,15 @@ static inline s8 Unit_39408BaseStat(void *self, s32 index) {
     if (value < 0) value = 0;
     return value;
 }
+static inline s8 Unit_GetCappedStatIn(u8 *self, s32 classOffset, s32 unitOffset, s32 bonusOffset) {
+    u8 *c=*(u8 **)(self+0x18C);
+    u8 *u=*(u8 **)(self+0x188);
+    s8 value=(s8)(u[unitOffset]+(c[classOffset]+self[bonusOffset]));
+    s8 limit=(s8)c[classOffset+8];
+    if(value>limit) value=limit;
+    if(value<0) value=0;
+    return value;
+}
 static inline s8 Unit_FindEquippedIndexIn(u8 *self, s32 offset) {
     s32 i;
     for (i=0; i<4; ++i) {
@@ -709,7 +718,7 @@ s8 fn_80038A48(void *arg0) {
         lim = (s8)(lim + *(u8 *)((u8 *)*(void **)ptr + 0x1F));
     }
     tmp = (s8)(var_r5 + lim);
-    if (var_r4 <= (s8)(tmp / 2) && (u8)fn_80105BC0((u8 *)arg0 + 0x1BC, 0x10) != 0) {
+    if (var_r4 <= tmp / 2 && (u8)fn_80105BC0((u8 *)arg0 + 0x1BC, 0x10) != 0) {
         class = *(void **)((u8 *)arg0 + 0x18C);
         unit = *(void **)((u8 *)arg0 + 0x188);
         s = *(u8 *)((u8 *)class + 0x48);
@@ -789,7 +798,7 @@ s8 fn_80038A48(void *arg0) {
         item = *(void **)ptr;
         var_r31 += *(u8 *)((u8 *)item + 0x23);
         bits = (u64 *)fn_8001CB64((void *)ptr);
-        if ((*bits & 2ULL) != 0) {
+        if ((*bits & 0x200000000ULL) != 0) {
             other = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (other != 0) {
                 other = fn_8000D354(other);
@@ -805,18 +814,18 @@ s8 fn_80038A48(void *arg0) {
 }
 #pragma pop
 s8 fn_80038F28(void *arg0) {
-void *Item_GetFlagsPtr(void *);
-void *Res_GetByName(void *);
-u8 Status_Test(void *,s32);
+void *fn_8001CB64(void *);
+void *fn_8000D354(void *);
+u8 fn_80105BC0(void *,s32);
 s8 result=0, hp, value, idx;
 u8 cap,current;
 s8 bonus;
 void *base,*person,**slot,*item,*flags,*other;
 base=M2C_FIELD(arg0,void **,0x18C);
 person=M2C_FIELD(arg0,void **,0x188);
-hp=(M2C_FIELD(base,u8 *,0x44)+M2C_FIELD(arg0,u8 *,0x1AB))+M2C_FIELD(person,u8 *,0x1D);
 cap=M2C_FIELD(base,u8 *,0x4C);
 current=M2C_FIELD(arg0,u8 *,0x1A8);
+hp=M2C_FIELD(person,u8 *,0x1D)+(M2C_FIELD(base,u8 *,0x44)+M2C_FIELD(arg0,u8 *,0x1AB));
 if(hp>(s8)cap)hp=(s8)cap;
 if(hp<0)hp=0;
 bonus=0;
@@ -834,17 +843,17 @@ else if(((M2C_FIELD(arg0,u8 *,521)>>7)&1)&&M2C_FIELD(arg0,void **,516))idx=3;
 else idx=-1;
 if(idx<0)slot=0;else slot=(void **)((u8 *)arg0+492+idx*8);
 if(slot)bonus=(s8)(bonus+M2C_FIELD(*slot,u8 *,0x1F));
-if((s8)current<=(s8)(hp+bonus)/2 && Status_Test((u8 *)arg0+0x1BC,0x10)){
+if((s8)current<=(s8)(hp+bonus)/2 && fn_80105BC0((u8 *)arg0+0x1BC,0x10)){
 base=M2C_FIELD(arg0,void **,0x18C);
 person=M2C_FIELD(arg0,void **,0x188);
-value=(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE))+M2C_FIELD(person,u8 *,0x20);
+value=M2C_FIELD(person,u8 *,0x20)+(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE));
 if(value>(s8)M2C_FIELD(base,u8 *,0x4F))value=(s8)M2C_FIELD(base,u8 *,0x4F);
 if(value<0)value=0;
 result=value/2;}
-if((M2C_FIELD(arg0,u32 *,0x1A0)&2)&&!Status_Test((u8 *)arg0+0x1BC,0x16)){
+if((M2C_FIELD(arg0,u32 *,0x1A0)&2)&&!fn_80105BC0((u8 *)arg0+0x1BC,0x16)){
 base=M2C_FIELD(arg0,void **,0x18C);
 person=M2C_FIELD(arg0,void **,0x188);
-value=(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE))+M2C_FIELD(person,u8 *,0x20);
+value=M2C_FIELD(person,u8 *,0x20)+(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE));
 if(value>(s8)M2C_FIELD(base,u8 *,0x4F))value=(s8)M2C_FIELD(base,u8 *,0x4F);
 if(value<0)value=0;
 result-=(result+value)/2;}
@@ -863,10 +872,10 @@ else idx=-1;
 if(idx<0)slot=0;else slot=(void **)((u8 *)arg0+492+idx*8);
 if(slot){
 item=*slot;result+=M2C_FIELD(item,u8 *,0x22);
-flags=Item_GetFlagsPtr(item);
+flags=fn_8001CB64(item);
 if((M2C_FIELD(flags,u64 *,0)&2)!=0){
 base=M2C_FIELD(arg0,void **,0x18C);
-if(M2C_FIELD(base,void **,0xC))other=Res_GetByName(M2C_FIELD(base,void **,0xC));else other=0;
+if(M2C_FIELD(base,void **,0xC))other=fn_8000D354(M2C_FIELD(base,void **,0xC));else other=0;
 base=M2C_FIELD(arg0,void **,0x18C);
 result-=((s8)M2C_FIELD(base,u8 *,0x47)-(s8)M2C_FIELD(other,u8 *,0x47))/2;
 }}
@@ -950,9 +959,7 @@ s32 fn_80039408(void *arg0) {
     if ((s8)index < 0) {
         ptr = 0;
     } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1EC;
-        ptr = ptr + (s32)arg0;
+        ptr = (s32)((u8 *)arg0 + (s8)index * 8 + 0x1EC);
     }
     if ((u32)ptr != 0) {
         var_r6 = (s8)(var_r6 + *(s8 *)((u8 *)*(void **)ptr + 0x1F));
@@ -1008,9 +1015,7 @@ s32 fn_80039408(void *arg0) {
     if ((s8)index < 0) {
         ptr = 0;
     } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1EC;
-        ptr = ptr + (s32)arg0;
+        ptr = (s32)((u8 *)arg0 + (s8)index * 8 + 0x1EC);
     }
     if ((u32)ptr != 0) {
         item = *(void **)ptr;
