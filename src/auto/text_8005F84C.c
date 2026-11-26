@@ -8763,7 +8763,7 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
   table[1] = arg0;
   entries->e1 = (void *) (table + 2);
   ((s32 *) entries->e1)[1] = arg1;
-  entries->e2 = (void *)(table + 4);
+  entries->e2 = table + 4;
   ((s32 *) entries->e2)[1] = arg2;
   entries->e3 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
