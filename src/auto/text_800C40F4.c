@@ -1576,6 +1576,8 @@ GXSetViewport(lbl_80369D8C,lbl_80369D8C,lbl_80369D90,lbl_80369D94,lbl_80369D98,l
 }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_800C6E44(void *arg0) {
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void GXSetCopyClear(void *, s32);
@@ -1614,10 +1616,10 @@ void fn_800C6E44(void *arg0) {
     void GXSetCurrentMtx(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void GXBegin(s32, s32, s32);
-    extern f32 lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C;
-    extern f32 lbl_80369DA0, lbl_80369DA4, lbl_80369DA8;
+    extern const f32 lbl_80369D8C, lbl_80369D90, lbl_80369D94, lbl_80369D98, lbl_80369D9C;
+    extern const f32 lbl_80369DA0, lbl_80369DA4, lbl_80369DA8;
     extern f64 lbl_80369DB0;
-    extern f32 lbl_80369DB8, lbl_80369DBC;
+    extern const f32 lbl_80369DB8, lbl_80369DBC;
     extern u32 lbl_8036C4B4, lbl_8036C4B8, lbl_8036C4BC;
     extern u32 lbl_80369D7C, lbl_80369D80;
 
@@ -1628,7 +1630,6 @@ void fn_800C6E44(void *arg0) {
     u32 sp1C, sp18, sp14, sp10, spC, sp8;
     u32 alpha;
     u16 w, h;
-    u16 ws, hs;
     u32 rem;
     volatile s16 *fifo;
     f32 sx, sy;
@@ -1669,10 +1670,8 @@ void fn_800C6E44(void *arg0) {
     w = GXGetTexObjWidth(sp20);
     h = GXGetTexObjHeight(sp20);
     GXSetNumChans(1);
-    ws = w;
-    hs = h;
-    sx = lbl_80369D9C / (f32)ws;
-    sy = lbl_80369D9C / (f32)hs;
+    sx = lbl_80369D9C / (f32)(u16)w;
+    sy = lbl_80369D9C / (f32)(u16)h;
     PSMTXScale(sp70, sx, sy);
     fn_80224E50(sp70, 0x1E, 1);
     fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1720,10 +1719,8 @@ void fn_800C6E44(void *arg0) {
         w = GXGetTexObjWidth(sp20);
         h = GXGetTexObjHeight(sp20);
         GXSetNumChans(1);
-        ws = w;
-        hs = h;
-        sx = lbl_80369D9C / (f32)ws;
-        sy = lbl_80369D9C / (f32)hs;
+        sx = lbl_80369D9C / (f32)(u16)w;
+        sy = lbl_80369D9C / (f32)(u16)h;
         PSMTXScale(sp40, sx, sy);
         fn_80224E50(sp40, 0x1E, 1);
         fn_802201A8(0, 1, 4, 0x1E, 0, 0x7D);
@@ -1751,7 +1748,7 @@ void fn_800C6E44(void *arg0) {
         fifo[0] = 0x30;
     }
 }
-
+#pragma pop
 void fn_800C73F0(s32 arg0) {
     FileCache_ReleaseSlot(arg0 + 0x30);
 }
@@ -4952,8 +4949,11 @@ fn_800CA18C((void *)(self+0x1D4),M2C_FIELD(self,u8 **,0x1DC)+M2C_FIELD(self,s32 
 fn_800C9120(f,1);fn_800C9A60(&sp60,-1);fn_800C9A60(&sp6C,-1);
 }
 
+#pragma push
 #pragma cplusplus on
-#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     void DebugPrint(const char *, ...);
     u16 FileCache_Probe(void);
@@ -5139,8 +5139,8 @@ extern "C" void *fn_800CCEBC(void *self, char *path, char *name, void *arg3) {
     String_Destroy(&spDC, -1);
     return obj;
 }
-#pragma global_optimizer reset
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma use_lmw_stmw reset
 #pragma cplusplus on
@@ -6846,6 +6846,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_800D06BC(u8 *self) {
     void String_Init(void *, char *, void *);
     void String_Destroy(void *, s32);
@@ -6865,9 +6866,9 @@ void fn_800D06BC(u8 *self) {
     f32 fn_80113658(s32, s32);
     typedef void (*GetPosFn)(f32 *, void *);
     extern char lbl_802704F8[];
-    extern f32 lbl_80369DCC;
-    extern f32 lbl_80369DC8;
-    extern f32 lbl_80369E08;
+    extern const f32 lbl_80369DCC;
+    extern const f32 lbl_80369DC8;
+    extern const f32 lbl_80369E08;
     extern u8 *gGame;
 
     f32 xf1[24];
@@ -6889,6 +6890,8 @@ void fn_800D06BC(u8 *self) {
     f32 yOff, z1, y1, x1;
     f32 x2, y2, z2;
     f32 half;
+    f32 minFov, maxFov;
+    u8 *game;
     s32 handle;
     s32 state;
     void *obj;
@@ -7033,12 +7036,15 @@ void fn_800D06BC(u8 *self) {
         fn_800E9020(handle, tmp2, 0);
         if (self[0x278] != 0) {
             scaled = fn_80113658(*(s32 *)(self + 0x84), *(s32 *)(self + 0x88));
-            scaled = lbl_80369E08 * scaled + *(f32 *)(gGame + 0x1BC);
-            if (scaled < *(f32 *)(gGame + 0x1C0)) {
-                scaled = *(f32 *)(gGame + 0x1C0);
+            game = gGame;
+            scaled = lbl_80369E08 * scaled + *(f32 *)(game + 0x1BC);
+            minFov = *(f32 *)(game + 0x1C0);
+            if (scaled < minFov) {
+                scaled = minFov;
             }
-            if (scaled > *(f32 *)(gGame + 0x1C4)) {
-                scaled = *(f32 *)(gGame + 0x1C4);
+            maxFov = *(f32 *)(game + 0x1C4);
+            if (scaled > maxFov) {
+                scaled = maxFov;
             }
             {
                 f32 z = lbl_80369DC8;
@@ -9816,12 +9822,12 @@ extern "C" void *fn_800D9B10(void *arg0) {
     String_Destroy(&sp38, -1);
 
     sp14.cap = 0;
+    sp20.cap = 0;
     sp14.size = 0;
     sp14.data = 0;
-    sp20.cap = 0;
+    sp14.cap = 0;
     sp20.size = 0;
     sp20.data = 0;
-    sp14.cap = 0;
     sp20.cap = 0;
     String_Assign(&sp14, *(void **)((u8 *)self + 0x54), 0, -1);
     ((Host *)*(void **)((u8 *)self + 4))->v6(lbl_802711B0 + 0x1B7, lbl_802711B0 + 0x1C5);
@@ -12154,6 +12160,10 @@ if(arg1>0) Heap_Free(self);
 return self;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma opt_register_coloring off
 void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void DebugPrint(char *, char *, ...);
     u16 FileCache_Probe(void);
@@ -12177,7 +12187,7 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void String_Concat(String *, String *, String *);
     void String_ConcatCStr(String *, String *, char *);
     void *StringMap_FindOrInsert(void *, String *);
-    void String_Substr(String *, String *, s32, char *);
+    void String_Substr(String *, String *, s32, u32);
     void fn_800D6878(void *, void *, void *);
     void *fn_800DE73C(void *, String *);
     void fn_800DEF4C(void *, void *, void *);
@@ -12225,23 +12235,26 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     void *scratch10;
     void *scratchC;
     void *scratch8;
-    void *entry;
-    char *name;
-    char *pBuf;
-    char *strBase;
-    s32 flag_word;
-    u8 ok;
-    u8 match;
     void *self;
     void *iter;
+    char *compareBase;
+    char *strBase;
+    char *childBuf;
+    char *pBuf;
+    s32 flag_word;
+    u8 match;
+    void *entry;
+    char *name;
+    u8 ok;
+    void *owner;
+    char *resourceName;
 
     self = arg0;
     iter = arg2;
     fn_800DF7A0(self);
     {
-        void *p58 = (u8 *)self + 0x58;
         *(void **)((u8 *)self + 0x40) = lbl_8028DFA8;
-        fn_800DEF4C(p58, &scratch10, &scratch14);
+        fn_800DEF4C((u8 *)self + 0x58, &scratch10, &scratch14);
     }
     fn_800D6878((u8 *)self + 0x68, &scratch8, &scratchC);
 
@@ -12251,8 +12264,8 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     str120.cap = 0;
     str114.cap = 0;
     str150.size = 0;
-    str150.data = 0;
     str150.cap = 0;
+    str150.data = 0;
     str144.size = 0;
     str144.data = 0;
     str144.cap = 0;
@@ -12274,7 +12287,8 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
 
     String_Init(&strFC, lbl_80271860 + 5, &scratch20);
     Xml_GetNamedValue(buf1DC, iter, &strFC);
-    String_AssignCStr(&str138, buf1DC, strlen(buf1DC));
+    pBuf = buf1DC;
+    String_AssignCStr(&str138, pBuf, strlen(pBuf));
     String_Destroy(&strFC, -1);
 
     if (String_Compare(&str138, 0, str138.size, lbl_80271860, strlen(lbl_80271860)) != 0) {
@@ -12285,7 +12299,8 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
 
     String_Init(&strE4, lbl_80271860 + 0xE, &scratch1C);
     Xml_GetNamedValue(buf1BC, iter, &strE4);
-    String_AssignCStr(&str12C, buf1BC, strlen(buf1BC));
+    pBuf = buf1BC;
+    String_AssignCStr(&str12C, pBuf, strlen(pBuf));
     String_Destroy(&strE4, -1);
 
     String_Init(&strD8, lbl_80271860 + 0x14, &scratch18);
@@ -12339,7 +12354,8 @@ void *fn_800DDE28(void *arg0, void *unused, void *arg2) {
     str108.data = 0;
     str108.cap = 0;
     strBase = lbl_80271860;
-    pBuf = buf17C;
+    childBuf = buf17C;
+    compareBase = strBase;
 
     goto loop_check;
 loop_body:
@@ -12347,12 +12363,13 @@ loop_body:
     String_Assign(&str108, &str6C, 0, -1);
     String_Destroy(&str6C, -1);
     Xml_GetChildValue(buf17C, iter);
-    String_ConcatCStr(&str60, &str144, buf17C);
+    String_ConcatCStr(&str60, &str144, childBuf);
     String_ConcatCStr(&str54, &str60, strBase + 1);
     String_Assign(&str120, &str54, 0, -1);
     String_Destroy(&str54, -1);
     String_Destroy(&str60, -1);
 
+    owner = *(void **)self;
     str24.cap = 0;
     str30.cap = 0;
     str24.size = 0;
@@ -12362,16 +12379,16 @@ loop_body:
     str30.data = 0;
     str30.cap = 0;
 
-    fn_800E788C(&str3C, *(void **)self);
+    fn_800E788C(&str3C, owner);
     String_Assign(&str24, &str3C, 0, -1);
     String_Destroy(&str3C, -1);
 
-    if (String_Compare(&str24, 0, str24.size, strBase, strlen(strBase)) == 0) {
+    if (String_Compare(&str24, 0, str24.size, compareBase, strlen(strBase)) == 0) {
         String_Destroy(&str30, -1);
         String_Destroy(&str24, -1);
         ok = 1;
     } else {
-        String_Substr(&str48, &str108, 0, str24.data);
+        String_Substr(&str48, &str108, 0, str24.size);
         String_Assign(&str30, &str48, 0, -1);
         String_Destroy(&str48, -1);
         match = 0;
@@ -12392,15 +12409,16 @@ loop_body:
     if (ok != 0) {
         String_CStr(&str120);
         if ((u16)FileCache_Probe() != 0x8000) {
-            name = String_CStr(&str120);
+            resourceName = String_CStr(&str120);
             entry = fn_800DE73C((u8 *)self + 0x58, &str108);
-            *(s32 *)((u8 *)entry + 0xC) = fn_800639B4(name);
+            *(s32 *)((u8 *)entry + 0xC) = fn_800639B4(resourceName);
         } else {
             DebugPrint(lbl_80271860 + 0x2F, String_CStr(&str120));
         }
         Xml_GetChildValue(buf15C, iter);
+        pBuf = buf15C;
         name = (char *)((u8 *)StringMap_FindOrInsert((u8 *)self + 0x68, &str108) + 0xC);
-        String_AssignCStr((String *)name, buf15C, strlen(buf15C));
+        String_AssignCStr((String *)name, pBuf, strlen(pBuf));
     }
 
 loop_check:
@@ -12417,7 +12435,7 @@ loop_check:
     fn_800CA6C8(&str150, 0);
     return self;
 }
-
+#pragma pop
 void *fn_800DE4F0(u8 *self, void *arg1, String *arg2, String *arg3)
 {
     void *String_Init(void *, char *, void *);
@@ -21825,6 +21843,9 @@ void fn_800EE6BC(void) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -21844,7 +21865,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     void *GMaterial_GetNode(void);
     void *GMaterial_GetCurrent(void *);
     void fn_8006A384(void *);
-    void PSMTXCopy(void *);
+    void PSMTXCopy(void *, void *);
     void PSMTXConcat(void *, void *, void *);
     void fn_802026E4(void *, void *, void *, void *);
     void fn_80202870(void *, f32, f32, f32, f32, f32, f32);
@@ -21886,7 +21907,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
 
     f32 sp25C[12];
     f32 sp22C[12];
-    f32 sp1EC[12];
+    f32 sp1EC[16];
     f32 sp1BC[12];
     f32 sp18C[12];
     f32 sp15C[12];
@@ -21904,7 +21925,6 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     f32 sp10[3];
     f32 sp1C[3];
     f32 sp28[3];
-    u8 pad20[0x20];
     u32 spC;
     u32 sp8;
     u8 *tbl;
@@ -21974,13 +21994,13 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     sp70[3] = lbl_80369FB8;
     sp70[5] = lbl_80369FB8;
     *(s32 *)&sp70[1] = *(s32 *)(tbl + 0x20);
-    sp4C[0] = sp70[0];
+    *(s32 *)&sp4C[0] = *(s32 *)&sp70[0];
     *(s32 *)&sp4C[1] = *(s32 *)(tbl + 0x20);
-    sp4C[2] = sp70[2];
+    *(s32 *)&sp4C[2] = *(s32 *)&sp70[2];
     *(s32 *)&sp70[4] = *(s32 *)(tbl + 0x2C);
-    sp58[0] = sp70[3];
+    *(s32 *)&sp58[0] = *(s32 *)&sp70[3];
     *(s32 *)&sp58[1] = *(s32 *)(tbl + 0x2C);
-    sp58[2] = sp70[5];
+    *(s32 *)&sp58[2] = *(s32 *)&sp70[5];
     *(s32 *)&sp64[0] = *(s32 *)(tbl + 0x34);
     *(s32 *)&sp64[1] = *(s32 *)(tbl + 0x38);
     *(s32 *)&sp64[2] = *(s32 *)(tbl + 0x3C);
@@ -22007,8 +22027,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         t28 = GMaterial_AllocTexMap();
         t27 = GMaterial_AllocMtx();
         fn_80202870(sp1EC, lbl_80369FCC, lbl_80369FD0, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8, lbl_80369FC8);
-        Camera_GetViewMtx();
-        PSMTXCopy(sp1BC);
+        PSMTXCopy(Camera_GetViewMtx(), sp1BC);
         PSMTXConcat(sp1BC, sp22C, sp18C);
         PSMTXConcat(sp1EC, sp18C, sp18C);
         fn_80224E50(sp18C, t27, 0);
@@ -22016,7 +22035,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
         fn_80222C50(spAC, t28);
         GXSetTevOrder(t25, t26, t28, 4);
         tmpf = Math_Lerp(lbl_80369FA4, lbl_80369FA8, lbl_80369FC4, scaleY);
-        alpha = (s32)(tmpf * *(f32 *)((u8 *)unk2C + 0x38));
+        alpha = (s32)((s32)tmpf * *(f32 *)((u8 *)unk2C + 0x38));
         if (alpha < 0) {
             alpha = 0;
         }
@@ -22060,13 +22079,13 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     sp34[3] = lbl_80369FB8;
     sp34[5] = lbl_80369FB8;
     *(s32 *)&sp34[1] = *(s32 *)(tbl + 0x20);
-    sp10[0] = sp34[0];
+    *(s32 *)&sp10[0] = *(s32 *)&sp34[0];
     *(s32 *)&sp10[1] = *(s32 *)(tbl + 0x20);
-    sp10[2] = sp34[2];
+    *(s32 *)&sp10[2] = *(s32 *)&sp34[2];
     *(s32 *)&sp34[4] = *(s32 *)(tbl + 0x2C);
-    sp1C[0] = sp34[3];
+    *(s32 *)&sp1C[0] = *(s32 *)&sp34[3];
     *(s32 *)&sp1C[1] = *(s32 *)(tbl + 0x2C);
-    sp1C[2] = sp34[5];
+    *(s32 *)&sp1C[2] = *(s32 *)&sp34[5];
     *(s32 *)&sp28[0] = *(s32 *)(tbl + 0x34);
     *(s32 *)&sp28[1] = *(s32 *)(tbl + 0x38);
     *(s32 *)&sp28[2] = *(s32 *)(tbl + 0x3C);
@@ -22086,7 +22105,7 @@ s32 fn_800EE72C(void *arg0, s32 arg1) {
     fn_80223914(t30, t26b, 1, 0, 1);
     return 1;
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
@@ -29297,13 +29316,15 @@ s32 fn_800FCF74(void *arg0, s32 arg1) {
 #pragma global_optimizer reset
 #pragma dont_inline reset
 void fn_800FD774(void *arg0) {
+    typedef struct { void *unit; u8 x, y, z, pad; u32 u8_, uC; } T16;
+    typedef struct { void *unit; s8 a, b; u8 c, d; } OutEnt;
     u8 Allegiance_Compare(void *, void *);
     s32 fn_8001D500(void *);
     s32 Item_GetRangeForUnit(void *, void *);
     void Map_FillLayer(void *, s32, s32);
     void **Unit_GetHeldItemSlot(void *, s32);
     s32 Unit_GetActiveItemSlot(void *);
-    u8 fn_8009339C(void *);
+    u8 fn_8009339C(void *, void *);
     u8 fn_80100F10(void *, void *, void *);
     void fn_801A6F34(void *, s32);
     void Battle_SetupFromParams(void *, void *, void *);
@@ -29311,17 +29332,14 @@ void fn_800FD774(void *arg0) {
     extern u8 lbl_8032B5E0[];
     extern u32 gBattle[];
     extern u8 gUnits[];
-    extern u32 lbl_80273220[];
-    extern u32 lbl_80273210[];
+    extern const T16 lbl_80273220;
+    extern const T16 lbl_80273210;
     extern u16 lbl_80366E70;
     extern u16 lbl_80366E72;
     extern void *lbl_80367908;
-    extern f32 lbl_8036A0B0;
-    extern f32 lbl_8036A0B4;
-    extern f32 lbl_8036A0B8;
-
-    typedef struct { void *unit; u8 x, y, z, pad; u32 u8_, uC; } T16;
-    typedef struct { void *unit; s8 a, b; u8 c, d; } OutEnt;
+    extern const f32 lbl_8036A0B0;
+    extern const f32 lbl_8036A0B4;
+    extern const f32 lbl_8036A0B8;
 
     T16 sp3C;
     T16 sp2C;
@@ -29329,7 +29347,7 @@ void fn_800FD774(void *arg0) {
     T16 spC;
     u16 spA;
     u16 sp8;
-    u8 *map = gBattleMap;
+    s8 *map = (s8 *)gBattleMap;
     OutEnt *out = (OutEnt *)lbl_8032B5E0;
     u8 *ui = (u8 *)gBattle;
     void *self = arg0;
@@ -29344,22 +29362,23 @@ void fn_800FD774(void *arg0) {
     void **slotLo;
     s32 i;
     void **slot;
-    u8 t1;
-    u8 t2;
+    void *item;
     u8 v;
     u8 a;
     u8 b;
+    u8 t1;
+    u8 t2;
     s32 diff;
     f32 f1;
     f32 f2;
     u16 *pA;
     u16 *pB;
 
-    y = (s8)map[9];
-    while (y <= (s8)map[0xB] - 1) {
-        x = (s8)map[8];
-        row = map + ((s8)y << 6);
-        while (x <= (s8)map[0xA] - 1) {
+    y = map[9];
+    while (y <= map[0xB] - 1) {
+        x = map[8];
+        row = (u8 *)map + ((s8)y << 6);
+        while (x <= map[0xA] - 1) {
             id = row[(s8)x + 0xD];
             if (id != 0) {
                 if (id != 0) {
@@ -29375,10 +29394,11 @@ void fn_800FD774(void *arg0) {
                     slotLo = NULL;
                     for (i = 0; i < 4; i++) {
                         slot = Unit_GetHeldItemSlot(unit, i);
-                        if (*slot == NULL) {
+                        item = *slot;
+                        if (item == NULL) {
                             break;
                         }
-                        if (fn_8009339C(unit) != 0) {
+                        if (fn_8009339C(unit, item) != 0) {
                             if (*slot != NULL) {
                                 v = Item_GetRangeForUnit(*slot, unit);
                             } else {
@@ -29438,12 +29458,12 @@ void fn_800FD774(void *arg0) {
                         spA = 0;
                         sp8 = 0;
                         if (slotHi != NULL && (u8)fn_80100F10(self, unit, slotHi) == 1) {
-                            sp3C = *(T16 *)lbl_80273220;
+                            sp3C = lbl_80273220;
                             sp3C.unit = self;
                             sp3C.x = ((u8 *)self)[0x19E];
                             sp3C.y = ((u8 *)self)[0x19F];
                             sp3C.z = (u8)Unit_GetActiveItemSlot(self);
-                            sp2C = *(T16 *)lbl_80273210;
+                            sp2C = lbl_80273210;
                             sp2C.unit = unit;
                             sp2C.x = ((u8 *)unit)[0x19E];
                             sp2C.y = ((u8 *)unit)[0x19F];
@@ -29457,7 +29477,8 @@ void fn_800FD774(void *arg0) {
                             f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)gBattle + 0x2A2);
                             if (*(s16 *)((u8 *)gBattle + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
                                 f2 = lbl_8036A0B4 - f1;
-                                diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2 * f2));
+                                f2 = f2 * f2;
+                                diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2));
                             } else {
                                 diff = (s32)((f32)diff * f1);
                             }
@@ -29467,12 +29488,12 @@ void fn_800FD774(void *arg0) {
                             }
                         }
                         if (slotLo != NULL && (u8)fn_80100F10(self, unit, slotLo) == 1) {
-                            sp1C = *(T16 *)lbl_80273220;
+                            sp1C = lbl_80273220;
                             sp1C.unit = self;
                             sp1C.x = ((u8 *)self)[0x19E];
                             sp1C.y = ((u8 *)self)[0x19F];
                             sp1C.z = (u8)Unit_GetActiveItemSlot(self);
-                            spC = *(T16 *)lbl_80273210;
+                            spC = lbl_80273210;
                             spC.unit = unit;
                             spC.x = ((u8 *)unit)[0x19E];
                             spC.y = ((u8 *)unit)[0x19F];
@@ -29486,7 +29507,8 @@ void fn_800FD774(void *arg0) {
                             f1 = lbl_8036A0B0 * (f32)*(s16 *)((u8 *)gBattle + 0x2A2);
                             if (*(s16 *)((u8 *)gBattle + 0x29C) >= *(s16 *)(ui + 0x57C) + 4) {
                                 f2 = lbl_8036A0B4 - f1;
-                                diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2 * f2));
+                                f2 = f2 * f2;
+                                diff = (s32)(lbl_8036A0B8 * (f32)diff * (lbl_8036A0B4 - f2));
                             } else {
                                 diff = (s32)((f32)diff * f1);
                             }
@@ -32657,3 +32679,4 @@ extern void *D_8036A150; // The struct 0E60 is likely a pointer to data, or a la
 
 extern char lbl_802704F8[];
 extern f32 lbl_80369E30, lbl_80369E34, lbl_80369E38, lbl_80369E3C, lbl_80369E40, lbl_80369E44, lbl_80369E48, lbl_80369E4C;
+typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
