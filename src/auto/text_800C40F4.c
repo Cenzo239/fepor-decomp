@@ -55,15 +55,17 @@ static inline void *Ai_ActionTileUnit(u8 id) {
     if (id) return gUnits + (id - 1) * 0x280;
     return NULL;
 }
-static inline s32 Ai_CountHostileNeighborsIn(AiActionMap *map, s16 x, s16 y, s16 *nb) {
+static inline s32 Ai_CountHostileNeighborsIn(AiActionMap *map, s16 x, s16 y, s16 *table) {
     extern u8 gBattleMap[];
     u8 Ai_UnitIsHostileToActive(void *);
     s32 count = 0;
-    while (nb[0] != 0x7fff) {
-        u8 oob;
+    s16 *nb = table;
+    s32 dx;
+    while ((dx = nb[0]) != 0x7fff) {
         s32 nx;
         s32 ny;
-        nx = x + nb[0];
+        u8 oob;
+        nx = x + dx;
         ny = y + nb[1];
         oob = 0;
         if (nx < map->xMin || map->xMax - 1 < nx || ny < map->yMin || map->yMax - 1 < ny)
@@ -30747,8 +30749,8 @@ s32 fn_80100284(void *self, u8 mode, u32 arg2, s16 *out_x, s16 *out_y) {
     s32 y, x;
     u8 *costcell;
     s32 short_y, byte_x, short_x;
-    s32 nx, ny;
     s32 dx;
+    s32 nx, ny;
     u8 out_of_bounds, cell;
     void *unit;
     s16 cost, alt;
