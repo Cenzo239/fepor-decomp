@@ -1,9 +1,9 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
+static inline s32 Map_AiTerrainTest(s32 seed, s8 x, s8 y) {
 extern u8 gBattleMap[];
-s32 c=a,b=a;
+s32 c=seed,a=seed,b=seed;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
 if (!((u8)(t-0x26)<=1)) c=0;
 if ((u8)c==0 && t!=0x28) b=0;
@@ -29637,7 +29637,7 @@ Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
 Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
-s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(arg0,arg1,1); }
+s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(1,arg0,arg1); }
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
     return (u32) M2C_FIELD(arg0, u32 *, 0x24C) < (u32) M2C_FIELD(arg1, u32 *, 0x24C);
