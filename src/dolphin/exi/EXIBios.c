@@ -838,6 +838,11 @@ void UnlockedHandler(s32 chan, void *context) {
     EXIGetID(chan, 0, &id);
 }
 
+static inline void (*EXIGetIDHandler(s32 useHandler))(s32, void *) {
+    if (useHandler) return UnlockedHandler;
+    return 0;
+}
+
 #pragma push
 #pragma optimization_level 4
 #pragma scheduling off
