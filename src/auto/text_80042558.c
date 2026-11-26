@@ -26,16 +26,6 @@ static inline void Map_SetHeights444(u8 *map, s32 index, const s16 *heights)
     }
 }
 
-static inline void Map_SetLowerHeights444(u8 *map, s32 index, const s16 *heights)
-{
-    s32 k;
-    MapHeightCell444 *cell;
-    for (k = 0; k < 4; k++) {
-        cell = (MapHeightCell444 *)(map + 2 * (index * 4 + k));
-        cell->lower = heights[k];
-    }
-}
-
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
@@ -1477,12 +1467,11 @@ extern u8 gBattleMap[];
     for (row = 0; row < *(s16 *)((u8 *)arg0 + 2); row++) {
         rowSl = (s8)row << 6;
         rowPtr = ca + rowSl;
-        for (col = 0; col < *(s16 *)((u8 *)arg0 + 0); ) {
+        for (col = 0; col < *(s16 *)((u8 *)arg0 + 0); col++) {
             tileA = (u8 *)tblA + *idxA++ * 0xC;
             tileB = (u8 *)tblB + *idxB++ * 0xC;
             ok = fn_8005B7A4(*(void **)(tileA + 8));
             c = (s8)col;
-            col += 1;
             off = c + 0x100D;
             rowPtr[off] = ok;
             t = c + rowSl;
@@ -1535,17 +1524,16 @@ extern u8 gBattleMap[];
                 idxA = Hash_Lookup(lbl_8026A660 + 0x27A);
                 ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
+                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
-                    for (; xx <= x1; ) {
+                    for (; xx <= x1; xx++) {
                         ia = *src;
                         src += 1;
                         tile = (u8 *)tblA + ia * 0xC;
                         ok = fn_8005B7A4(*(void **)(tile + 8));
                         c = (s8)xx;
-                        xx += 1;
                         off = c + 0x100D;
                         rowPtr[off] = ok;
                         t = c + rowSl;
@@ -1560,17 +1548,16 @@ extern u8 gBattleMap[];
                 idxA = Hash_Lookup(lbl_8026A660 + 0x27A);
                 ca = gBattleMap;
                 for (yy = y0; yy <= y1; yy++) {
+                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
-                    for (; xx <= x1; ) {
+                    for (; xx <= x1; xx++) {
                         ia = *src;
                         src += 1;
                         tile = (u8 *)tblA + ia * 0xC;
                         ok = fn_8005B7A4(*(void **)(tile + 8));
                         c = (s8)xx;
-                        xx += 1;
                         off = c + 0x100D;
                         rowPtr[off] = ok;
                         t = c + rowSl;
@@ -1578,14 +1565,11 @@ extern u8 gBattleMap[];
                         p = ca + sh;
                         *(s16 *)(p + 0x142D4) = *(s16 *)tile;
                         q = t << 2;
-                        q1 = q + 1;
-                        p = ca + (q1 << 1);
+                        p = ca + ((q + 1) << 1);
                         *(s16 *)(p + 0x142D4) = *(s16 *)(tile + 2);
-                        q1 = q + 2;
-                        p = ca + (q1 << 1);
+                        p = ca + ((q + 2) << 1);
                         *(s16 *)(p + 0x142D4) = *(s16 *)(tile + 4);
-                        q1 = q + 3;
-                        p = ca + (q1 << 1);
+                        p = ca + ((q + 3) << 1);
                         *(s16 *)(p + 0x142D4) = *(s16 *)(tile + 6);
                     }
                 }
@@ -4115,7 +4099,8 @@ void fn_8004A2EC(void *arg0) {
     f32 sp8[12];
     s8 y;
     s8 x;
-    f32 fy, x0, y0, x1, y1, margin, z;
+    register f32 fy;
+    f32 x0, y0, x1, y1, margin, z;
 
     if (fn_800AA188() != 0) {
         GXClearVtxDesc();
