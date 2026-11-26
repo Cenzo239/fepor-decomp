@@ -748,31 +748,31 @@ s32 fn_800A49F4(u8 *arg0) {
 }
 
 s32 fn_800A4BC4(void) {
-    extern u8 lbl_803123A0[];
-    u8 *p = lbl_803123A0;
-    s32 v44;
-    s32 w;
-    u32 prod;
-    s32 aligned;
-    s32 sum;
-    s32 t0;
-    u8 a7;
+    extern struct {
+        u8 pad0[0x44];
+        u32 v44;
+        u32 v48;
+        u8 pad4C[0x34];
+        u32 v80;
+        u32 v84;
+        u8 pad88[0x18];
+        s32 vA0;
+        u8 padA4[3];
+        u8 vA7;
+    } lbl_803123A0;
 
-    if (*(s32 *)(p + 0xA0) != 0) {
-        v44 = *(s32 *)(p + 0x44);
-        w = *(s32 *)(p + 0x80);
-        prod = w * *(s32 *)(p + 0x84);
-        a7 = p[0xA7];
-        aligned = (v44 + 0x1F) & ~0x1F;
-        sum = aligned * 0xA;
-        sum += (prod + 0x1F) & ~0x1F;
-        t0 = ((prod >> 2) + 0x1F) & ~0x1F;
-        sum = sum + t0;
-        sum = sum + t0;
-        if (a7 != 0) {
-            sum += ((((*(s32 *)(p + 0x48) << 2) + 0x1F) & ~0x1F) * 3);
+    if (lbl_803123A0.vA0) {
+        u32 size = ((lbl_803123A0.v44 + 0x1F) & ~0x1F) * 10;
+        u32 prod = lbl_803123A0.v80 * lbl_803123A0.v84;
+        u32 uvsize;
+        size += (prod + 0x1F) & ~0x1F;
+        uvsize = ((prod >> 2) + 0x1F) & ~0x1F;
+        size += uvsize;
+        size += uvsize;
+        if (lbl_803123A0.vA7) {
+            size += (((lbl_803123A0.v48 << 2) + 0x1F) & ~0x1F) * 3;
         }
-        return sum + 0x1000;
+        return size + 0x1000;
     }
     return 0;
 }
