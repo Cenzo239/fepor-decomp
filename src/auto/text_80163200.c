@@ -14470,7 +14470,6 @@ extern "C" void *fn_80179DEC(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     ((Obj *)self)->m28();
     return self;
 }
-#pragma opt_common_subs on
 #pragma global_optimizer reset
 #pragma cplusplus reset
 
