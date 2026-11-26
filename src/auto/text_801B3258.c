@@ -2019,18 +2019,16 @@ s32 ScriptCmd_PlayerDeadCheck(void)
 static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
     s32 sum = start;
     s32 i;
-    for (i = start; i < *(s32 *)((u8 *)arg0 + 0x224); ++i)
-        sum += *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
+    s32 value;
+    for (i = start; i < *(s32 *)((u8 *)arg0 + 0x224); ++i) {
+        value = *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
+        sum += value;
+    }
     return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
 s32 AchieveList_GetTotalGold(void *arg0) {
-    s32 sum = 0;
-    s32 i;
-    for (i = 0; i < *(s32 *)((u8 *)arg0 + 0x224); ++i) {
-        sum += *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
-    }
-    return *(s32 *)((u8 *)arg0 + 0x228) + sum;
+    return AchieveList_SumGoldFrom(arg0, 0);
 }
 
 s32 AchieveList_SumBonuses(void *arg0) {
