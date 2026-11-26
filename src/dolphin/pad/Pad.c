@@ -1357,8 +1357,9 @@ mtlr r0
 blr
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma peephole off
-#pragma opt_strength_reduction off
 void fn_80213E30(void) {
 s64 OSGetTime(void);
 extern s64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
@@ -1368,17 +1369,17 @@ s64 now = 0;
 u32 done = 0;
 s64 delay = 0;
 u32 sample;
-do {
+while (!done) {
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~0x20) | 0x20;
 (*(volatile u32 *)0xCC006C00) &= ~2;
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
-sample = OS_AIRegs[2];
-while (sample == OS_AIRegs[2]) {}
+sample = ((volatile u32 *)0xCC006C00)[2];
+while (sample == ((volatile u32 *)0xCC006C00)[2]) {}
 start = OSGetTime();
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~2) | 2;
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
-sample = OS_AIRegs[2];
-while (sample == OS_AIRegs[2]) {}
+sample = ((volatile u32 *)0xCC006C00)[2];
+while (sample == ((volatile u32 *)0xCC006C00)[2]) {}
 now = OSGetTime();
 elapsed = now - start;
 (*(volatile u32 *)0xCC006C00) &= ~2;
@@ -1388,12 +1389,11 @@ delay = lbl_803686C0; done = 1;
 } else if (elapsed >= lbl_803686B0 + lbl_803686D0 && elapsed < lbl_803686B8 - lbl_803686D0) {
 delay = lbl_803686C8; done = 1;
 } else done = 0;
-} while (!done);
+}
 start = now + delay;
 while (OSGetTime() < start) {}
 }
-#pragma opt_strength_reduction reset
-#pragma peephole on
+#pragma pop
 extern s32 lbl_803686D8;
 s32 fn_80214014(s32 arg0) {
     extern s32 lbl_803686D8;
@@ -1564,6 +1564,11 @@ void DCFlushRange(void *, u32);
 void DCInvalidateRange(void *, u32);
 void *memset(void *, int, u32);
 void PPCSync(void);
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma scheduling off
+#pragma opt_strength_reduction off
 void fn_80214368(void)
 {
 typedef volatile u16 MMIO16;
@@ -1586,23 +1591,23 @@ r0=r0&0x1U;cr_eq=(r0==0);
 if(cr_eq)return;
 r23=0xCC000000U;
 r0=r23+0x5000U;
-*(MMIO32*)((r1+0x248U)) =r0;
-r23=*(MMIO32*)((r1+0x248U))-0x5000U;
+*(u32*)((r1+0x248U)) =r0;
+r23=*(u32*)((r1+0x248U))-0x5000U;
 r3=0x1000000U;
 r0=r1+0x1F3U;
 lbl_803686E0=r3;
 L_25AC:
 r5=0xDEAE0000U;
-r4=*(MMIO32*)((r1+0x248U));
+r4=*(u32*)((r1+0x248U));
 r22=r0&0xFFFFFFE0U;
 r0=r1+0x1B3U;
 r4=*(MMIO16*)((r4+0x12U));
 r7=r1+0xB3U;
 r7=r7&0xFFFFFFE0U;
 r4=r4&0xFFFFFFC0U;
-*(MMIO32*)((r1+0x21CU)) =r7;
+*(u32*)((r1+0x21CU)) =r7;
 r6=r4|0x23U;
-r4=*(MMIO32*)((r1+0x248U));
+r4=*(u32*)((r1+0x248U));
 r10=r1+0x173U;
 *(MMIO16*)((r4+0x12U))=(u16)r6;
 r5=r5+0xFFFFBEEFU;
@@ -1620,7 +1625,7 @@ r6=r6&0xFFFFFFE0U;
 r9=r1+0x133U;
 r8=r1+0xF3U;
 *(MMIO32*)((r22+0x8U)) =r5;
-r19=*(volatile u32*)&lbl_803686E0;
+r19=lbl_803686E0;
 r3=r22+0x0U;
 *(MMIO32*)((r21+0x8U)) =r0;
 r24=r10&0xFFFFFFE0U;
@@ -1635,15 +1640,15 @@ r20=r8&0xFFFFFFE0U;
 *(MMIO32*)((r22+0x18U)) =r5;
 *(MMIO32*)((r21+0x18U)) =r0;
 *(MMIO32*)((r22+0x1CU)) =r5;
-r5=*(MMIO32*)((r1+0x248U));
-*(MMIO32*)((r1+0x214U)) =r4;
+r5=*(u32*)((r1+0x248U));
+*(u32*)((r1+0x214U)) =r4;
 r4=0x3U;
 r5=r5+0x12U;
-*(MMIO16*)((r1+0x270U))=(u16)r4;
+*(u16*)((r1+0x270U))=(u16)r4;
 r4=0x20U;
-*(MMIO32*)((r1+0x218U)) =r6;
+*(u32*)((r1+0x218U)) =r6;
 *(MMIO32*)((r21+0x1CU)) =r0;
-*(MMIO32*)((r1+0x248U)) =r5;
+*(u32*)((r1+0x248U)) =r5;
 DCFlushRange((void*)r3,r4);
 r3=r21+0x0U;
 r4=0x20U;
@@ -1655,10 +1660,10 @@ r4=0x20U;
 DCInvalidateRange((void*)r3,r4);
 r3=r28>>16;
 r0=*(MMIO16*)((r23+0x5020U));
-*(MMIO32*)((r1+0x23CU)) =r3;
+*(u32*)((r1+0x23CU)) =r3;
 r25=r23+0x5000U;
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r26=r23+0x5000U;
 r17=r19>>16;
 r0=r3|r0;
@@ -1667,10 +1672,10 @@ r3=r28&0xFFFFU;
 r27=r23+0x5000U;
 r0=*(MMIO16*)((r23+0x5022U));
 r18=r19&0xFFFFU;
-*(MMIO32*)((r1+0x24CU)) =r3;
+*(u32*)((r1+0x24CU)) =r3;
 r28=r23+0x5000U;
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r30=r23+0x5000U;
 r29=r23+0x5000U;
 r0=r3|r0;
@@ -1706,16 +1711,16 @@ L_2768:
 PPCSync();
 r0=r22>>16;
 r3=*(MMIO16*)(r25);
-*(MMIO32*)((r1+0x244U)) =r0;
+*(u32*)((r1+0x244U)) =r0;
 r3=r3&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x244U));
+r0=*(u32*)((r1+0x244U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=r22&0xFFFFU;
-*(MMIO32*)((r1+0x250U)) =r0;
+*(u32*)((r1+0x250U)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x250U));
+r0=*(u32*)((r1+0x250U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -1754,16 +1759,16 @@ r4=0x20U;
 DCFlushRange((void*)r3,r4);
 r0=r24>>16;
 r3=*(MMIO16*)(r25);
-*(MMIO32*)((r1+0x240U)) =r0;
+*(u32*)((r1+0x240U)) =r0;
 r3=r3&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x240U));
+r0=*(u32*)((r1+0x240U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=r24&0xFFFFU;
-*(MMIO32*)((r1+0x254U)) =r0;
+*(u32*)((r1+0x254U)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x254U));
+r0=*(u32*)((r1+0x254U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -1803,19 +1808,19 @@ r4=0x20U;
 DCInvalidateRange((void*)r3,r4);
 r0=r20>>16;
 r4=*(MMIO16*)(r25);
-*(MMIO32*)((r1+0x234U)) =r0;
+*(u32*)((r1+0x234U)) =r0;
 r3=r19+0x200000U;
 r4=r4&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x234U));
+r0=*(u32*)((r1+0x234U));
 r16=r3>>16;
 r23=r3&0xFFFFU;
 r0=r4|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=r20&0xFFFFU;
-*(MMIO32*)((r1+0x258U)) =r0;
+*(u32*)((r1+0x258U)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x258U));
+r0=*(u32*)((r1+0x258U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -1846,26 +1851,26 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 PPCSync();
 L_29A4:
-r3=*(MMIO32*)((r1+0x21CU));
+r3=*(u32*)((r1+0x21CU));
 r4=0x20U;
 DCInvalidateRange((void*)r3,r4);
-r0=*(MMIO32*)((r1+0x21CU));
+r0=*(u32*)((r1+0x21CU));
 r3=r19+0x1000000U;
 r4=*(MMIO16*)(r25);
 r14=r3>>16;
 r0=r0>>16;
-*(MMIO32*)((r1+0x22CU)) =r0;
+*(u32*)((r1+0x22CU)) =r0;
 r4=r4&0xFFFFFC00U;
 r15=r3&0xFFFFU;
-r0=*(MMIO32*)((r1+0x22CU));
+r0=*(u32*)((r1+0x22CU));
 r0=r4|r0;
 *(MMIO16*)(r25)=(u16)r0;
-r0=*(MMIO32*)((r1+0x21CU));
+r0=*(u32*)((r1+0x21CU));
 r0=r0&0xFFFFU;
-*(MMIO32*)((r1+0x25CU)) =r0;
+*(u32*)((r1+0x25CU)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x25CU));
+r0=*(u32*)((r1+0x25CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -1896,38 +1901,38 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 PPCSync();
 L_2A6C:
-r3=*(MMIO32*)((r1+0x218U));
+r3=*(u32*)((r1+0x218U));
 r4=0x20U;
 DCInvalidateRange((void*)r3,r4);
-r0=*(MMIO32*)((r1+0x218U));
+r0=*(u32*)((r1+0x218U));
 r3=r19+0x200U;
 r4=*(MMIO16*)(r25);
 r0=r0>>16;
-*(MMIO32*)((r1+0x224U)) =r0;
+*(u32*)((r1+0x224U)) =r0;
 r4=r4&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x224U));
+r0=*(u32*)((r1+0x224U));
 r0=r4|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=r3>>16;
 r3=r3&0xFFFFU;
-*(MMIO32*)((r1+0x230U)) =r0;
-r0=*(MMIO32*)((r1+0x218U));
-*(MMIO32*)((r1+0x264U)) =r3;
+*(u32*)((r1+0x230U)) =r0;
+r0=*(u32*)((r1+0x218U));
+*(u32*)((r1+0x264U)) =r3;
 r0=r0&0xFFFFU;
-*(MMIO32*)((r1+0x260U)) =r0;
+*(u32*)((r1+0x260U)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x260U));
+r0=*(u32*)((r1+0x260U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x230U));
+r0=*(u32*)((r1+0x230U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x264U));
+r0=*(u32*)((r1+0x264U));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -1950,38 +1955,38 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 PPCSync();
 L_2B44:
-r3=*(MMIO32*)((r1+0x214U));
+r3=*(u32*)((r1+0x214U));
 r4=0x20U;
 DCInvalidateRange((void*)r3,r4);
-r0=*(MMIO32*)((r1+0x214U));
+r0=*(u32*)((r1+0x214U));
 r3=r19+0x400000U;
 r4=*(MMIO16*)(r25);
 r0=r0>>16;
-*(MMIO32*)((r1+0x220U)) =r0;
+*(u32*)((r1+0x220U)) =r0;
 r4=r4&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x220U));
+r0=*(u32*)((r1+0x220U));
 r0=r4|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=r3>>16;
 r3=r3&0xFFFFU;
-*(MMIO32*)((r1+0x228U)) =r0;
-r0=*(MMIO32*)((r1+0x214U));
-*(MMIO32*)((r1+0x26CU)) =r3;
+*(u32*)((r1+0x228U)) =r0;
+r0=*(u32*)((r1+0x214U));
+*(u32*)((r1+0x26CU)) =r3;
 r0=r0&0xFFFFU;
-*(MMIO32*)((r1+0x268U)) =r0;
+*(u32*)((r1+0x268U)) =r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x268U));
+r0=*(u32*)((r1+0x268U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x228U));
+r0=*(u32*)((r1+0x228U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x26CU));
+r0=*(u32*)((r1+0x26CU));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2006,10 +2011,10 @@ PPCSync();
 L_2C1C:
 r0=r21>>16;
 r3=*(MMIO16*)(r25);
-*(MMIO32*)((r1+0x238U)) =r0;
+*(u32*)((r1+0x238U)) =r0;
 r20=r21&0xFFFFU;
 r3=r3&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x238U));
+r0=*(u32*)((r1+0x238U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
@@ -2045,12 +2050,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_2CBC:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x244U));
+r0=*(u32*)((r1+0x244U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x250U));
+r0=*(u32*)((r1+0x250U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2089,12 +2094,12 @@ r4=0x20U;
 DCFlushRange((void*)r3,r4);
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x240U));
+r0=*(u32*)((r1+0x240U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x254U));
+r0=*(u32*)((r1+0x254U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2131,12 +2136,12 @@ cr_eq=(r3==r0);
 if(!cr_eq)goto L_2ED8;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2172,7 +2177,7 @@ lbl_803686E4=r0;
 goto L_3D4C;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x238U));
+r0=*(u32*)((r1+0x238U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
@@ -2209,12 +2214,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_2F48:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x244U));
+r0=*(u32*)((r1+0x244U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x250U));
+r0=*(u32*)((r1+0x250U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2253,12 +2258,12 @@ r4=0x20U;
 DCFlushRange((void*)r3,r4);
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x240U));
+r0=*(u32*)((r1+0x240U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x254U));
+r0=*(u32*)((r1+0x254U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2295,12 +2300,12 @@ cr_eq=(r3==r0);
 if(!cr_eq)goto L_3204;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2332,12 +2337,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3134:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x234U));
+r0=*(u32*)((r1+0x234U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x258U));
+r0=*(u32*)((r1+0x258U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2369,14 +2374,14 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 L_31C8:
 r19=r19+0x400000U;
-r0=*(MMIO16*)((r1+0x270U));
+r0=*(u16*)((r1+0x270U));
 lbl_803686E4=r3;
 r0=r0|0x8U;
-*(MMIO16*)((r1+0x270U))=(u16)r0;
+*(u16*)((r1+0x270U))=(u16)r0;
 goto L_3D4C;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x238U));
+r0=*(u32*)((r1+0x238U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
@@ -2386,12 +2391,12 @@ r0=r0|r20;
 L_3204:
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x230U));
+r0=*(u32*)((r1+0x230U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x264U));
+r0=*(u32*)((r1+0x264U));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2415,12 +2420,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_327C:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x244U));
+r0=*(u32*)((r1+0x244U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x250U));
+r0=*(u32*)((r1+0x250U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2459,22 +2464,22 @@ r4=0x20U;
 DCFlushRange((void*)r3,r4);
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x240U));
+r0=*(u32*)((r1+0x240U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x254U));
+r0=*(u32*)((r1+0x254U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x230U));
+r0=*(u32*)((r1+0x230U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x264U));
+r0=*(u32*)((r1+0x264U));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2503,12 +2508,12 @@ cr_eq=(r3==r0);
 if(!cr_eq)goto L_35D4;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2540,12 +2545,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3470:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x234U));
+r0=*(u32*)((r1+0x234U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x258U));
+r0=*(u32*)((r1+0x258U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2577,12 +2582,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3504:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x22CU));
+r0=*(u32*)((r1+0x22CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x25CU));
+r0=*(u32*)((r1+0x25CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2614,14 +2619,14 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 L_3598:
 r19=r19+0x800000U;
-r0=*(MMIO16*)((r1+0x270U));
+r0=*(u16*)((r1+0x270U));
 lbl_803686E4=r3;
 r0=r0|0x10U;
-*(MMIO16*)((r1+0x270U))=(u16)r0;
+*(u16*)((r1+0x270U))=(u16)r0;
 goto L_3D4C;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x238U));
+r0=*(u32*)((r1+0x238U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
@@ -2631,12 +2636,12 @@ r0=r0|r20;
 L_35D4:
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x228U));
+r0=*(u32*)((r1+0x228U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x26CU));
+r0=*(u32*)((r1+0x26CU));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2660,12 +2665,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_364C:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x244U));
+r0=*(u32*)((r1+0x244U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x250U));
+r0=*(u32*)((r1+0x250U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2704,22 +2709,22 @@ r4=0x20U;
 DCFlushRange((void*)r3,r4);
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x240U));
+r0=*(u32*)((r1+0x240U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x254U));
+r0=*(u32*)((r1+0x254U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x228U));
+r0=*(u32*)((r1+0x228U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x26CU));
+r0=*(u32*)((r1+0x26CU));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2748,12 +2753,12 @@ cr_eq=(r0==r3);
 if(!cr_eq)goto L_3A40;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2785,12 +2790,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3840:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x234U));
+r0=*(u32*)((r1+0x234U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x258U));
+r0=*(u32*)((r1+0x258U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2822,12 +2827,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_38D4:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x22CU));
+r0=*(u32*)((r1+0x22CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x25CU));
+r0=*(u32*)((r1+0x25CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2859,22 +2864,22 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3968:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x224U));
+r0=*(u32*)((r1+0x224U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x260U));
+r0=*(u32*)((r1+0x260U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x230U));
+r0=*(u32*)((r1+0x230U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x264U));
+r0=*(u32*)((r1+0x264U));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -2898,19 +2903,19 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 L_3A04:
 r19=r19+0x1000000U;
-r0=*(MMIO16*)((r1+0x270U));
+r0=*(u16*)((r1+0x270U));
 lbl_803686E4=r3;
 r0=r0|0x18U;
-*(MMIO16*)((r1+0x270U))=(u16)r0;
+*(u16*)((r1+0x270U))=(u16)r0;
 goto L_3D4C;
 r0=*(MMIO16*)(r25);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x23CU));
+r0=*(u32*)((r1+0x23CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x24CU));
+r0=*(u32*)((r1+0x24CU));
 r0=r3|r0;
 L_3A40:
 *(MMIO16*)(r26)=(u16)r0;
@@ -2943,12 +2948,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3AB4:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x234U));
+r0=*(u32*)((r1+0x234U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x258U));
+r0=*(u32*)((r1+0x258U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -2980,12 +2985,12 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3B48:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x22CU));
+r0=*(u32*)((r1+0x22CU));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x25CU));
+r0=*(u32*)((r1+0x25CU));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
@@ -3017,22 +3022,22 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3BDC:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x224U));
+r0=*(u32*)((r1+0x224U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x260U));
+r0=*(u32*)((r1+0x260U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x230U));
+r0=*(u32*)((r1+0x230U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x264U));
+r0=*(u32*)((r1+0x264U));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -3056,22 +3061,22 @@ r0=r0|0x20U;
 r0=*(MMIO16*)(r25);
 L_3C78:
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x220U));
+r0=*(u32*)((r1+0x220U));
 r0=r3|r0;
 *(MMIO16*)(r25)=(u16)r0;
 r0=*(MMIO16*)(r26);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x268U));
+r0=*(u32*)((r1+0x268U));
 r0=r3|r0;
 *(MMIO16*)(r26)=(u16)r0;
 r0=*(MMIO16*)(r27);
 r3=r0&0xFFFFFC00U;
-r0=*(MMIO32*)((r1+0x228U));
+r0=*(u32*)((r1+0x228U));
 r0=r3|r0;
 *(MMIO16*)(r27)=(u16)r0;
 r0=*(MMIO16*)(r28);
 r3=r0&0xFFFF001FU;
-r0=*(MMIO32*)((r1+0x26CU));
+r0=*(u32*)((r1+0x26CU));
 r0=r3|r0;
 *(MMIO16*)(r28)=(u16)r0;
 r0=*(MMIO16*)(r30);
@@ -3095,16 +3100,16 @@ r0=r0|0x20U;
 *(MMIO16*)(r31)=(u16)r0;
 L_3D14:
 r19=r19+0x2000000U;
-r0=*(MMIO16*)((r1+0x270U));
+r0=*(u16*)((r1+0x270U));
 lbl_803686E4=r3;
 r0=r0|0x20U;
-*(MMIO16*)((r1+0x270U))=(u16)r0;
-r3=*(MMIO32*)((r1+0x248U));
+*(u16*)((r1+0x270U))=(u16)r0;
+r3=*(u32*)((r1+0x248U));
 r0=*(MMIO16*)(r3);
 r3=r0&0xFFFFFFC0U;
-r0=*(MMIO16*)((r1+0x270U));
+r0=*(u16*)((r1+0x270U));
 r0=r3|r0;
-r3=*(MMIO32*)((r1+0x248U));
+r3=*(u32*)((r1+0x248U));
 *(MMIO16*)(r3)=(u16)r0;
 r3=0xC0000000U;
 *(MMIO32*)((r3+0xD0U)) =r19;
@@ -3114,7 +3119,7 @@ return;
 L_exit:
 return;
 }
-
+#pragma pop
 void fn_80215B5C(void) {
 extern u32 *lbl_80368700, *lbl_8036870C;
 extern u32 lbl_80368714, lbl_80368718;
@@ -3594,6 +3599,10 @@ void fn_80216534(void *arg0, void *arg1) {
 #pragma inline_depth reset
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void fn_802166D4(void *arg0) {
 #pragma inline_depth(0)
     u32 fn_80215F50(void);
@@ -3603,51 +3612,62 @@ void fn_802166D4(void *arg0) {
     void fn_802160C0(char *, ...);
     extern char lbl_8029D860[];
     volatile u32 tmp;
-    u32 label = (u32)lbl_8029D860;
+    char *label = lbl_8029D860;
     void *self = arg0;
 
-    if (fn_80215F50() != 0U) {
+    while (fn_80215F50() == 0U) {}
+    {
         tmp = fn_80215F60();
         fn_80215F78(0x80F3A001);
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(*(s32 *)((u8 *)self + 0xC));
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(0x80F3C002);
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78((s32)(u16)*(u32 *)((u8 *)self + 0x14));
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(0x80F3A002);
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(*(s32 *)((u8 *)self + 0x10));
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(0x80F3B002);
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(0);
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(0x80F3D001);
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
             fn_80215F78(*(u16 *)((u8 *)self + 0x24));
         }
-        if (fn_80215F40() == 0U) {
+        while (fn_80215F40() != 0U) {}
+        {
         }
     }
-    fn_802160C0((char *)label, self);
-    fn_802160C0((char *)label + 0x20, *(s32 *)((u8 *)self + 0xC));
-    fn_802160C0((char *)label + 0x50, *(s32 *)((u8 *)self + 0x14));
-    fn_802160C0((char *)label + 0x80, *(s32 *)((u8 *)self + 0x10));
-    fn_802160C0((char *)label + 0xB0, *(s32 *)((u8 *)self + 0x1C));
-    fn_802160C0((char *)label + 0xE0, (s32)*(u16 *)((u8 *)self + 0x24));
+    fn_802160C0(label, self);
+    fn_802160C0(label + 0x20, *(s32 *)((u8 *)self + 0xC));
+    fn_802160C0(label + 0x50, *(s32 *)((u8 *)self + 0x14));
+    fn_802160C0(label + 0x80, *(s32 *)((u8 *)self + 0x10));
+    fn_802160C0(label + 0xB0, *(s32 *)((u8 *)self + 0x1C));
+    fn_802160C0(label + 0xE0, (s32)*(u16 *)((u8 *)self + 0x24));
 #pragma inline_depth reset
 }
-
+#pragma pop
 void fn_80216860(void *arg0) {
     extern void *lbl_80368734;
     extern void *lbl_80368738;
@@ -3736,3 +3756,7 @@ void fn_80216900(void *arg0) {
 }
 #include "common.h"
 #include <dolphin/os.h>
+static inline void AI_WaitSampleChange(volatile u32 *regs) {
+    u32 sample = regs[2];
+    while (sample == regs[2]) {}
+}
