@@ -1440,10 +1440,24 @@ static inline u8 Battle_RollChance_801A55D4(s32 chance) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
-    u8 Rand_Chance(s32);
+    struct BattleHitTbl {
+        u8 pad[0x20];
+        u16 flags[0x20];
+        u8 idx;
+    };
+    struct StatusBits8 {
+        u8 hi : 3;
+        u8 mid : 3;
+        u8 lo : 2;
+    };
+    struct StatusBits16 {
+        u16 hi : 6;
+        u16 mid : 3;
+        u16 lo : 7;
+    };
     u64 *Item_GetFlagsPtr(void *);
     u8 fn_8001DDC4(u8);
-    void BattleAnim_Queue(void *, s32, s32);
+    void BattleAnim_Queue(void *, s32, s8);
     u32 *fn_80037C20(void *);
     u8 fn_8003863C(void *);
     s8 Unit_GetCon(void *);
@@ -1456,18 +1470,14 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     void **BattleUnit_GetWeaponSlot(void *);
     void fn_801A8010(void *);
     extern u8 gBattleHitTbl[];
-    extern u16 gBattle[];
 
-    s32 chance;
     u8 *tbl;
     u16 *fl;
-    u8 hp;
-    s8 tmp_s8;
+    s32 con;
     s16 tmp_s16;
-    s32 i;
     s32 lim;
-    u8 ok;
-    s8 half;
+    u8 hp;
+    s32 i;
     void *p;
     u64 *bits;
     u32 *w;
@@ -1475,20 +1485,17 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if (arg3 == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x10) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
-            half = Unit_GetMaxHp(arg1);
-            if ((s8)hp <= half / 2) {
+            if ((s8)hp <= Unit_GetMaxHp(arg1) / 2) {
                 BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3C, 0);
             }
         }
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2B) != 0) {
             hp = *(u8 *)((u8 *)arg1 + 0x1A8);
-            half = Unit_GetMaxHp(arg1);
-            if ((s8)hp <= half / 2) {
+            if ((s8)hp <= Unit_GetMaxHp(arg1) / 2) {
                 BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3E, 0);
             }
         }
-        tbl = gBattleHitTbl;
-        if (((*(u16 *)((tbl + (tbl[0x60] << 1)) + 0x20)) & 8) != 0) {
+        if ((((struct BattleHitTbl *)gBattleHitTbl)->flags[((struct BattleHitTbl *)gBattleHitTbl)->idx] & 8) != 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3A, 0);
         }
     }
@@ -1509,19 +1516,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     if ((fl[tbl[0x60]] & 0x10) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x33) != 0) {
-            if (*(u8 *)((u8 *)arg1 + 0x295) != 0x51) {
-                chance = 0;
-            } else if (Unit_HasHitBlockStatus(arg2) != 0) {
-                chance = 0;
-            } else {
-                chance = 0x32;
-            }
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(chance);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4((*(u8 *)((u8 *)arg1 + 0x295) != 0x51) ? 0 : (Unit_HasHitBlockStatus(arg2) != 0 ? 0 : 0x32)) != 0) {
                 goto block_luna;
             }
         }
@@ -1534,21 +1529,14 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 4) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x30) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
-            half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
                 goto block_colossus;
             }
         }
     } else {
     block_colossus:
-        tmp_s16 = *(s16 *)((u8 *)arg2 + 0x29A);
         *(s16 *)((u8 *)arg1 + 0x2AA) =
-            (s16)(*(s16 *)((u8 *)arg1 + 0x298) - tmp_s16 / 2);
+            (s16)(*(s16 *)((u8 *)arg1 + 0x298) - *(s16 *)((u8 *)arg2 + 0x29A) / 2);
         if (*(s16 *)((u8 *)arg1 + 0x2AA) < 0) {
             *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
         }
@@ -1556,23 +1544,11 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if (Status_Test((u8 *)arg1 + 0x1BC, 0x5A) != 0) {
-        half = fn_8003AF28(arg1);
-        if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-            ok = 0;
-        } else {
-            ok = Rand_Chance(half);
-        }
-        if (ok != 0) {
+        if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
             p = *BattleUnit_GetWeaponSlot(arg1);
-            if (p != NULL) {
-                hp = *(u8 *)((u8 *)p + 0x13);
-            } else {
-                hp = 0xC;
-            }
-            if (fn_8001DDC4(hp) != 0) {
-                tmp_s16 = *(s16 *)((u8 *)arg2 + 0x29A);
+            if (fn_8001DDC4(p ? *(u8 *)((u8 *)p + 0x13) : 0xC) != 0) {
                 *(s16 *)((u8 *)arg1 + 0x2AA) =
-                    (s16)(*(s16 *)((u8 *)arg1 + 0x298) - tmp_s16 / 2);
+                    (s16)(*(s16 *)((u8 *)arg1 + 0x298) - *(s16 *)((u8 *)arg2 + 0x29A) / 2);
                 if (*(s16 *)((u8 *)arg1 + 0x2AA) < 0) {
                     *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
                 }
@@ -1583,38 +1559,24 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     if ((fl[tbl[0x60]] & 0x20) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x38) != 0) {
-            tmp_s8 = Unit_GetCon(arg2);
-            if (Unit_GetCon(arg1) > tmp_s8 && Unit_GetCarryWtLimit(arg1) >= 4
+            con = Unit_GetCon(arg2);
+            if (Unit_GetCon(arg1) > con && Unit_GetCarryWtLimit(arg1) >= 4
                 && Status_Test((u8 *)arg2 + 0x1BC, 0x5F) == 0) {
-                half = fn_8003AF28(arg1);
-                if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                    ok = 0;
-                } else {
-                    ok = Rand_Chance(half);
-                }
-                if (ok != 0) {
+                if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
                     goto block_adept;
                 }
             }
         }
     } else {
     block_adept:
-        tmp_s8 = Unit_GetCarryWtLimit(arg1);
-        chance = tmp_s8 / 4;
-        *(s16 *)((u8 *)arg1 + 0x2AA) =
-            (s16)(*(s16 *)((u8 *)arg1 + 0x2AA) + (s16)chance);
-        BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x42, (s8)(s16)chance);
+        tmp_s16 = Unit_GetCarryWtLimit(arg1) / 4;
+        *(s16 *)((u8 *)arg1 + 0x2AA) += tmp_s16;
+        BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x42, tmp_s16);
     }
 
     if ((fl[tbl[0x60]] & 0x2000) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x34) != 0) {
-            half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
                 goto block_guard;
             }
         }
@@ -1629,14 +1591,8 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
 
     if ((fl[tbl[0x60]] & 0x800) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x39) != 0) {
-            half = fn_8003AF28(arg1);
-            chance = half / 2;
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(chance);
-            }
-            if (ok != 0 && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg1) / 2) != 0
+                && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0
                 && Unit_HasHitBlockStatus(arg2) == 0) {
                 goto block_stun;
             }
@@ -1644,21 +1600,13 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     } else {
     block_stun:
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x48, 0);
-        *(u8 *)((u8 *)arg2 + 0x1A4) =
-            (*(u8 *)((u8 *)arg2 + 0x1A4) & ~0x1C) | 8;
+        ((struct StatusBits8 *)((u8 *)arg2 + 0x1A4))->mid = 2;
     }
 
     if ((fl[tbl[0x60]] & 0x1000) == 0) {
         if (Status_Test((u8 *)arg2 + 0x1BC, 0x37) != 0
             && Status_Test((u8 *)arg1 + 0x1BC, 0x5F) == 0) {
-            half = fn_8003AF28(arg2);
-            chance = half / 2;
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(chance);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg2) / 2) != 0) {
                 goto block_cancel;
             }
         }
@@ -1670,38 +1618,29 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     bits = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(arg1));
     if ((*bits & 0x800ULL) != 0 && Unit_HasHitBlockStatus(arg2) == 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4E, 0);
-        *(u8 *)((u8 *)arg2 + 0x1A4) =
-            (*(u8 *)((u8 *)arg2 + 0x1A4) & ~0xE0) | 0xA0;
+        ((struct StatusBits8 *)((u8 *)arg2 + 0x1A4))->hi = 5;
     }
 
     w = fn_80037C20(arg2);
-    if (w != NULL && *w != 0) {
+    if (w && *w != 0) {
         bits = Item_GetFlagsPtr(w);
         if ((*bits & 0x20000ULL) != 0
             && Status_Test((u8 *)arg1 + 0x1BC, 8) != 0) {
-            tmp_s16 = *(s16 *)((u8 *)arg1 + 0x2AA);
-            *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)(tmp_s16 / 2);
+            *(s16 *)((u8 *)arg1 + 0x2AA) /= 2;
         }
     }
 
     if ((fl[tbl[0x60]] & 0x200) == 0) {
         if (Status_Test((u8 *)arg2 + 0x1BC, 0x2E) != 0
             && ((s8)*(u8 *)((u8 *)arg2 + 0x1A8) - *(s16 *)((u8 *)arg1 + 0x2AA)) <= 0) {
-            half = fn_8003ACF8(arg2);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003ACF8(arg2)) != 0) {
                 goto block_resolve;
             }
         }
     } else {
     block_resolve:
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x46, 0);
-        hp = *(u8 *)((u8 *)arg2 + 0x1A8);
-        *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)((s8)hp / 2);
+        *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)(*(s8 *)((u8 *)arg2 + 0x1A8) / 2);
     }
 
     if (Status_Test((u8 *)arg2 + 0x1BC, 0x53) != 0) {
@@ -1710,26 +1649,19 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if ((fl[tbl[0x60]] & 0x400) != 0) {
-        hp = *(u8 *)((u8 *)arg2 + 0x1A8);
-        if ((s8)hp <= *(s16 *)((u8 *)arg1 + 0x2AA)) {
-            if ((s8)hp == 1) {
+        if (*(s8 *)((u8 *)arg2 + 0x1A8) <= *(s16 *)((u8 *)arg1 + 0x2AA)) {
+            if (*(s8 *)((u8 *)arg2 + 0x1A8) == 1) {
                 *(u8 *)((u8 *)arg1 + 0x295) = 0x52;
                 *(s16 *)((u8 *)arg1 + 0x2AA) = 0;
             } else {
-                *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)((s8)hp - 1);
+                *(s16 *)((u8 *)arg1 + 0x2AA) = (s16)(*(s8 *)((u8 *)arg2 + 0x1A8) - 1);
             }
         }
     }
 
     if ((fl[tbl[0x60]] & 0x80) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2C) != 0) {
-            half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
                 goto block_nihil;
             }
         }
@@ -1740,29 +1672,16 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     if (Status_Test((u8 *)arg1 + 0x1BC, 0x35) != 0) {
-        half = fn_8003AF28(arg1);
-        chance = half / 2;
-        if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-            ok = 0;
-        } else {
-            ok = Rand_Chance(chance);
-        }
-        if (ok != 0 && Unit_HasHitBlockStatus(arg2) == 0) {
+        if (Battle_RollChance_801A55D4(fn_8003AF28(arg1) / 2) != 0
+            && Unit_HasHitBlockStatus(arg2) == 0) {
             BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x3D, 0);
-            *(u16 *)((u8 *)arg2 + 0x1A4) =
-                (*(u16 *)((u8 *)arg2 + 0x1A4) & ~0x380) | 0x280;
+            ((struct StatusBits16 *)((u8 *)arg2 + 0x1A4))->mid = 5;
         }
     }
 
     if ((fl[tbl[0x60]] & 0x100) == 0) {
         if (Status_Test((u8 *)arg2 + 0x1BC, 0x2D) != 0) {
-            half = fn_8003AF28(arg2);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg2)) != 0) {
                 goto block_wrath;
             }
         }
@@ -1773,7 +1692,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     }
 
     bits = Item_GetFlagsPtr(BattleUnit_GetWeaponSlot(arg1));
-    if ((*bits & 0x10ULL) != 0) {
+    if ((*bits & 0x0000001000000000ULL) != 0) {
         BattleAnim_Queue((u8 *)arg0 + 0x8A0, 0x4C, 0);
         *(s16 *)((u8 *)arg1 + 0x2AC) = *(s16 *)((u8 *)arg1 + 0x2AA);
     }
@@ -1781,13 +1700,7 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     if ((fl[tbl[0x60]] & 2) == 0) {
         if (Status_Test((u8 *)arg1 + 0x1BC, 0x2F) != 0
             && (*(u32 *)((u8 *)arg0 + 0xCAC) & 0x100) == 0) {
-            half = fn_8003AF28(arg1);
-            if (*(u32 *)((u8 *)gBattle + 0xCAC) & 0x4000) {
-                ok = 0;
-            } else {
-                ok = Rand_Chance(half);
-            }
-            if (ok != 0) {
+            if (Battle_RollChance_801A55D4(fn_8003AF28(arg1)) != 0) {
                 goto block_vantage;
             }
         }
