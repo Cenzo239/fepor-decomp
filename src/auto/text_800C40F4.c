@@ -1,9 +1,9 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-static inline s32 Map_AiTerrainTest(s8 x, s8 y, s32 c) {
+static inline s32 Map_AiTerrainTest(s8 x, s8 y, s32 a) {
 extern u8 gBattleMap[];
-s32 b=c,a=c;
+s32 c=a,b=a;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
 if (!((u8)(t-0x26)<=1)) c=0;
 if ((u8)c==0 && t!=0x28) b=0;
