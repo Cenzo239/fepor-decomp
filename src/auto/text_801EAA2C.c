@@ -2471,14 +2471,7 @@ void fn_801EDF7C(void *arg0) {
 #pragma opt_lifetimes off
 void fn_801EDFCC(void) {
     extern u8 gFxChannels[];
-    void fn_80146AF0(void);
-    void Fx_FadeIn(void *, s32);
-    void fn_8014876C(void *, s32, s32);
-    void *p = gFxChannels;
-
-    fn_80146AF0();
-    Fx_FadeIn(p, 0x3E8);
-    fn_8014876C(p, 0x64, 0x3E8);
+    Fx_801EDFCC_Body(gFxChannels);
 }
 #pragma pop
 void fn_801EE018(void *arg0) {
