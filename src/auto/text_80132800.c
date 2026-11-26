@@ -1791,7 +1791,6 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma global_optimizer off
 #pragma optimization_level 3
 #pragma peephole off
-struct Fn80134C24Obj { u8 pad0[0x12]; s16 f12; u8 pad14[2]; s16 f16; u8 pad18[0x26]; s16 f3E; u8 pad40[4]; s16 f44; s16 f46; s16 f48; s16 f4A; };
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
