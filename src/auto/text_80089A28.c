@@ -597,6 +597,8 @@ u32 fn_8008A59C(void) {
     return lbl_803674E0[0x19] & 1;
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_8008A5AC(void *arg0) {
     void fn_800C4588(void *);
     void PSMTXTrans(void *, f32, f32, f32);
@@ -630,7 +632,7 @@ void fn_8008A5AC(void *arg0) {
     extern f32 gOrthoFar;
     extern f32 gFadeQuadZ;
     extern f32 gViewportFar;
-    extern f32 lbl_803696BC;
+    extern const f32 lbl_803696BC;
     u8 spC[0x44];
     s32 sp8;
     f32 temp_f5;
@@ -734,8 +736,7 @@ void fn_8008A5AC(void *arg0) {
         }
     }
 }
-
-#pragma optimization_level 3
+#pragma pop
 void fn_8008A998(s32 x, s32 y, s32 width) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
