@@ -3354,6 +3354,7 @@ void fn_801676AC(u8 *self, s32 arg1) {
     }
     Prim2D_Begin(); Prim2D_ClearCallbacks(); Prim2D_PrepareTex();
 }
+#pragma global_optimizer on
 #pragma pop
 void fn_80168D3C(s32 arg0) {
     void fn_801676AC(void *, s32);
