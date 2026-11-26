@@ -112,7 +112,7 @@ extern s32 StopAtNextInt_80368530;
 extern u16 lbl_80368550;
 
 extern u32 lbl_80368514;
-extern u32 lbl_80368510;
+extern s64 lbl_80368510;
 extern s32 lbl_803684FC;
 extern s32 lbl_80368500;
 extern s32 lbl_80368508;
