@@ -1,4 +1,5 @@
 #include "common.h"
+static inline s16 Ui_GetCursorSlot_80163C98(void *self) { return *(s16 *)((u8 *)self + 0x4C); }
 static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
     u8 fn_80105BC0(void *, u8);
     u32 *fn_8001CB64(u32);
