@@ -19,6 +19,24 @@ static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
     return NULL;
 }
 
+static inline void map_select(void *obj, void *entry) {
+    *(void **)((u8 *)obj + 0x40) = entry;
+    if (entry) *(void **)((u8 *)obj + 0x44) = entry;
+}
+
+static inline void map_move_cursor(void *obj, f32 x, f32 y, s32 *base) {
+    extern const f32 lbl_80368E08;
+    u8 *p = (u8 *)obj;
+    p[0x3C] = p[0x3E];
+    p[0x3D] = p[0x3F];
+    *(f32 *)(p + 0x34) = lbl_80368E08 + x;
+    *(f32 *)(p + 0x38) = lbl_80368E08 + y;
+    p[0x3E] = (s32)*(f32 *)(p + 0x34);
+    p[0x3F] = (s32)*(f32 *)(p + 0x38);
+    if ((s8)p[0x3C] != (s8)p[0x3E] || (s8)p[0x3D] != (s8)p[0x3F])
+        map_select(obj, map_find_xy(base, (s8)p[0x3E], (s8)p[0x3F]));
+}
+
 static inline u8 *map_first(s32 *m) {
     s32 c;
     u8 *e;
@@ -3870,15 +3888,18 @@ void Ui_CalcSlideFadeIn(s32 *frame, s32 *outY, s32 *outX, s32 *outAlpha) {
     *outAlpha = (s32)Math_Ease(0, 0.0f, 255.0f, (f32)t, 8.0f);
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma cplusplus on
+#pragma opt_common_subs off
 extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
-    void *Process_CreateChild(void *);
+    void *Process_CreateChild(void *, u32);
     void *Process_Create(void *, s32);
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 lbl_80285028[];
     extern s32 gTargetList[];
     extern u8 gBattleState[];
-    extern f32 lbl_80368E00;
+    extern const f32 lbl_80368E08;
     struct Obj {
         u8 pad[4];
         virtual void v0(void *) = 0;
@@ -3890,11 +3911,11 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     };
     void *obj;
     s32 *base;
-    u32 i;
+    s32 i;
     s32 *walk;
     s32 n;
-    u32 pm;
-    u32 qm;
+    s32 pm;
+    s32 qm;
     u8 *p;
     u8 *q;
     void *found;
@@ -3905,7 +3926,7 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     f32 fy;
 
     if (arg1 != 0U) {
-        obj = Process_CreateChild(lbl_80285028);
+        obj = Process_CreateChild(lbl_80285028, arg1);
     } else {
         obj = Process_Create(lbl_80285028, 3);
     }
@@ -3914,7 +3935,7 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     i = 0;
     walk = base;
     ((u8 *)obj)[0x49] = (u8)(s32)*(f32 *)(gBattleState + 0x528);
-    for (n = base[0]; i < n; n = base[0]) {
+    for (; i < (n = base[0]); ) {
         pm = (i + n - 1) % n;
         qm = (i + 1) % n;
         i += 1;
@@ -3929,27 +3950,17 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
         walk = (s32 *)((u8 *)walk + 0x14);
     }
     *(void **)((u8 *)obj + 0x30) = arg0;
-    p = (u8 *)gTargetList + 8;
-    if (gTargetList[0] <= 0) {
-        p = (u8 *)0;
-    }
+    p = map_first(gTargetList);
     *(void **)((u8 *)obj + 0x40) = p;
     if (p != (u8 *)0) {
         *(void **)((u8 *)obj + 0x44) = p;
     }
-    q = (u8 *)gTargetList + 8;
-    n = gTargetList[0];
-    if (n <= 0) {
-        q = (u8 *)0;
-    }
-    p = (u8 *)gTargetList + 8;
-    if (n <= 0) {
-        p = (u8 *)0;
-    }
+    q = map_first(gTargetList);
+    p = map_first(gTargetList);
     temp0 = ((u8 *)obj)[0x3E];
-    fx = lbl_80368E00 + (f32)(s8)p[0];
+    fx = lbl_80368E08 + (f32)(s8)p[0];
     temp1 = ((u8 *)obj)[0x3F];
-    fy = lbl_80368E00 + (f32)(s8)q[1];
+    fy = lbl_80368E08 + (f32)(s8)q[1];
     ((u8 *)obj)[0x3C] = temp0;
     ((u8 *)obj)[0x3D] = temp1;
     *(f32 *)((u8 *)obj + 0x34) = fx;
@@ -3964,15 +3975,8 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
             *(void **)((u8 *)obj + 0x44) = found;
         }
     }
-    q = (u8 *)gTargetList + 8;
-    n = gTargetList[0];
-    if (n <= 0) {
-        q = (u8 *)0;
-    }
-    p = (u8 *)gTargetList + 8;
-    if (n <= 0) {
-        p = (u8 *)0;
-    }
+    q = map_first(gTargetList);
+    p = map_first(gTargetList);
     BattleState_SetCamPos(gBattleState, (f32)(s8)q[0], (f32)(s8)p[1]);
     ((Obj *)arg0)->v1(obj);
     *(s32 *)arg0 = 0;
@@ -3980,6 +3984,7 @@ extern "C" void *fn_8002EB54(void *arg0, u32 arg1) {
     gBattleState[0x51D] = 0x10;
     return obj;
 }
+#pragma pop
 #pragma cplusplus reset
 
 #pragma cplusplus on
