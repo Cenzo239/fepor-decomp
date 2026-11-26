@@ -93,7 +93,7 @@ extern u8 gMapObjEventList[];
 extern u8 gBattleState[];
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 s8 fn_8014CC5C(Obj *arg0, s32 arg1) {
 s32 fn_80106DC8(s32,void*);
 u8 buffer[128];
