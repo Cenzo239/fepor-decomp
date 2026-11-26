@@ -37,7 +37,18 @@ typedef struct {
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
-extern u8 lbl_80289998[];
+extern u8 lbl_8026CC6E[], lbl_8026CC7A[];
+void fn_800898E4(void);
+void fn_80089680(void);
+void fn_80089554(void);
+void fn_800893E0(void);
+void fn_800892E8(void);
+void fn_80089460(void);
+void fn_80088FFC(void);
+void fn_80088F8C(void);
+u32 lbl_80289998[10] = {0x100A,0x200F,(u32)fn_800898E4,0,0x2003,(u32)lbl_8026CC6E,0x54911001,0x201A,(u32)fn_80089680,0};
+u32 lbl_802899C0[3] = {0x201A,(u32)fn_80089554,0};
+u32 lbl_802899CC[18] = {0x2003,(u32)lbl_8026CC7A,0x54911001,0x2004,(u32)fn_800893E0,0x200F,(u32)fn_800892E8,0x100A,0x200F,(u32)fn_80089460,0x100A,0x2005,(u32)fn_80088FFC,0x6101B,0x201A,(u32)fn_80088F8C,0x100B,0};
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
