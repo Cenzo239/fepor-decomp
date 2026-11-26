@@ -4364,15 +4364,12 @@ outer_cmp:
     if ((u32)(bestDist - 0x7FFF0000) != 0xFFFFU) {
         s32 bx;
         s32 by;
-        s32 p;
         u8 tile;
         u8 v;
         bx = (s8)bestX;
         by = (s8)bestY;
-        p = (s32)(map + bx);
         v = ((u8 *)self)[0x198];
-        p += by << 6;
-        tile = ((u8 *)p)[0xD];
+        tile = map[bx + (by << 6) + 0xD];
         if (tile != v) {
             Ai_SetUnitMoveTo(self, bestX, bestY, 1, 0xFFFF, 0, 0, -1);
         }
