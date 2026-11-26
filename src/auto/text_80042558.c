@@ -11,7 +11,7 @@ static inline u8 DirFromIndex_80042558(s32 i)
     }
 }
 
-static inline s32 DirGetDX_80042558(u8 dir)
+static inline s32 DirGetDX_80042558(s32 dir)
 {
     switch (dir) {
     case 1: return -1;
@@ -20,7 +20,7 @@ static inline s32 DirGetDX_80042558(u8 dir)
     }
 }
 
-static inline s32 DirGetDY_80042558(u8 dir)
+static inline s32 DirGetDY_80042558(s32 dir)
 {
     switch (dir) {
     case 4: return 1;
