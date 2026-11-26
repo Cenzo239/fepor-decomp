@@ -1,7 +1,8 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
-static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return *(s16 *)(cell + 0x610E); }
+typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
+static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
 extern u8 gBattleMap[];
 s32 c=a,b=a;
@@ -26509,6 +26510,7 @@ void fn_800F94D4(void *arg0) {
 
 #pragma push
 #pragma optimization_level 3
+#pragma opt_strength_reduction off
 void fn_800F9574(void *arg0)
 {
     extern u8 gAiState[];
