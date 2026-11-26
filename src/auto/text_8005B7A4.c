@@ -30,7 +30,6 @@ static inline void Terrain_HashAll(void *entries_void, u32 *out) {
         u32 unk8;
     };
     struct TerrainEntry *entries = (struct TerrainEntry *)entries_void;
-    u8 b;
     u8 *s;
     u32 acc;
     s32 i;
@@ -38,9 +37,8 @@ static inline void Terrain_HashAll(void *entries_void, u32 *out) {
     for (i = 0; i < 0x4D; i++) {
         s = entries->name;
         acc = 0;
-        while ((b = *s, (s8)b != 0)) {
-            acc += b;
-            s++;
+        while ((s8)*s != 0) {
+            acc += *s++;
             acc <<= 4;
         }
         *out++ = acc;
@@ -252,31 +250,10 @@ return 0;
 }
 
 void fn_8005B820(void) {
-    struct TerrainEntry {
-        u8 *name;
-        u32 unk4;
-        u32 unk8;
-    };
-    struct TerrainEntry *Terrain_GetEntry(u8);
+    void *Terrain_GetEntry(u8);
     extern u32 lbl_802F03A8[];
-    struct TerrainEntry *entries;
-    u32 *out;
-    s32 i;
-
-    entries = Terrain_GetEntry(0);
-    out = lbl_802F03A8;
-    for (i = 0; i < 0x4D; i++) {
-        u8 *s = entries->name;
-        u32 acc = 0;
-        u8 b;
-        while ((b = *s, (s8)b != 0)) {
-            acc += b;
-            s++;
-            acc <<= 4;
-        }
-        *out++ = acc;
-        entries++;
-    }
+    void *entries = Terrain_GetEntry(0);
+    Terrain_HashAll(entries, lbl_802F03A8);
 }
 
 u8 fn_8005B888(s32 arg0) {
