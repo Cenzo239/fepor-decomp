@@ -39,13 +39,14 @@ static inline u8 IsInRect_80042558(u8 *ent, s32 x, s32 y)
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
+    u8 *base;
+    u8 *ent;
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        u8 *base = M2C_FIELD(arg0, u8 **, 0x14);
-        u8 *ent = base + i * 0xB4;
-        u32 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
-        if (forbid != 0 && (flags & forbid)) continue;
-        if ((flags & require) != require) continue;
+        base = M2C_FIELD(arg0, u8 **, 0x14);
+        ent = base + i * 0xB4;
+        if (forbid != 0 && (M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC) & forbid)) continue;
+        if ((M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC) & require) != require) continue;
         if (IsInRect_80042558(ent, x, y)) {
             return base + i * 0xB4;
         }
@@ -532,8 +533,8 @@ void fn_80042558(void *arg0)
     extern u8 lbl_80367290[3];
 
     void *list[8];
-    s32 eventIndex;
     u8 *rec;
+    s32 eventIndex;
 
     rec = gMapObjEventList;
     eventIndex = 0;
@@ -644,10 +645,7 @@ void fn_80042558(void *arg0)
         u8 validBlend;
         fn_800C1BDC();
         fn_800C1984();
-        validBlend = 1;
-        if ((u8)(gMapBlendMode - 1) > 1) {
-            validBlend = 0;
-        }
+        validBlend = (gMapBlendMode == 1 || gMapBlendMode == 2);
         if (validBlend) {
             fn_8014716C(1);
         } else {
