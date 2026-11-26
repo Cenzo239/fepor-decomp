@@ -1,5 +1,13 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline void Map_LoadOptional(void *map, char *path, s32 offset) {
+ u16 FileCache_Probe(void *); s32 Archive_Load(void *);
+ if(FileCache_Probe(path) != 0x8000) *(s32 *)((u8 *)map + offset) = Archive_Load(path);
+}
+static inline void Map_LoadOptionalFlags(void *map, char *path) {
+ u16 FileCache_Probe(void *); void *Archive_LoadFlags(void *,u32);
+ if(FileCache_Probe(path) != 0x8000) *(void **)((u8 *)map+0x18) = Archive_LoadFlags(path,8);
+}
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
@@ -398,6 +406,9 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma global_optimizer off
 #pragma opt_lifetimes on
 
+#pragma push
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
@@ -448,14 +459,14 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     s64 __div2i(s64, s64);
     extern u8 lbl_802EFE20[];
     extern u8 lbl_8026A660[];
-    extern f32 lbl_80368F18;
-    extern f32 lbl_80368F1C;
-    extern f32 lbl_80368F10;
-    extern f32 lbl_80368F14;
-    extern f32 lbl_80368F20;
-    extern f32 lbl_80368F24;
-    extern f32 lbl_80368F28;
-    extern f32 lbl_80368EF4;
+    extern const f32 lbl_80368F18;
+    extern const f32 lbl_80368F1C;
+    extern const f32 lbl_80368F10;
+    extern const f32 lbl_80368F14;
+    extern const f32 lbl_80368F20;
+    extern const f32 lbl_80368F24;
+    extern const f32 lbl_80368F28;
+    extern const f32 lbl_80368EF4;
     extern u8 gBattleMap[];
     extern u8 lbl_8036729C;
     extern u8 lbl_80367298;
@@ -469,21 +480,21 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     extern u8 lbl_80367AF6;
     extern u8 gMapBlendMode;
 
-    volatile s64 t0;
+    s64 t0;
     s64 t1;
     s64 ms;
     u8 sp18[0x30];
-    void *cursor;
-    char *p;
+
+    s8 *p;
     char *dst;
-    s8 c;
+    u8 c;
     u8 mode;
     u8 enabled;
     f32 scale;
     s32 i;
     void *entry;
-    void *sub;
     void *name;
+    void *sub;
     void *tmp;
     u8 *bytes;
     s32 b;
@@ -504,28 +515,28 @@ void Map_LoadTerrain(void *arg0, char *arg1)
 
     fn_80041254(arg0);
     dst = (char *)arg0 + 0x3C;
-    p = arg1 + strlen(arg1);
+    p = (s8 *)arg1 + strlen(arg1);
     p--;
-    while (p != arg1) {
+    while (p != (s8 *)arg1) {
         c = *--p;
-        if (c == '/' || c == '\\') {
+        if ((s8)c == '/' || (s8)c == '\\') {
             p++;
             break;
         }
     }
-    c = *p;
-    while (c != 0) {
-        if (c == '/' || c == '\\') {
+    while ((s8)(c = *p) != 0) {
+        if ((s8)c == '/' || (s8)c == '\\') {
             break;
         }
         *dst++ = *p++;
-        c = *p;
     }
     *dst = 0;
 
     t0 = OSGetTime();
     switch (((u8 *)arg0)[0x68]) {
     case 0: {
+ s16 *header;
+ void *cursor;
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x161);
         M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
@@ -536,45 +547,45 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F1C;
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
 
-        dst = (char *)lbl_802EFE20;
-        strcpy(lbl_802EFE20, arg1);
+                strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x122);
+        dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
             M2C_FIELD(arg0, void **, 0x18) = Archive_LoadFlags(dst, 8);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x12D);
+        dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x1C) = Archive_Load(dst);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x13A);
+        dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x20) = Archive_Load(dst);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x147);
+        dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x24) = Archive_Load(dst);
         }
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x154);
+        dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
             M2C_FIELD(arg0, s32 *, 0x28) = Archive_Load(dst);
         }
 
         scale = lbl_80368F10;
         if (Res_GetByName(lbl_8026A660 + 0x171) != 0) {
-            cursor = Hash_Lookup(lbl_8026A660 + 0x171);
-            M2C_FIELD(arg0, s16 *, 0) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 2) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 4) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 6) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            scale = lbl_80368F10 / fn_8001B84C(&cursor);
+            header = Hash_Lookup(lbl_8026A660 + 0x171);
+            M2C_FIELD(arg0, s16 *, 0) = *header++;
+            M2C_FIELD(arg0, s16 *, 2) = *header++;
+            M2C_FIELD(arg0, s16 *, 4) = *header++;
+            M2C_FIELD(arg0, s16 *, 6) = *header++;
+            scale = lbl_80368F10 / fn_8001B84C(&header);
         }
         *(f32 *)(gBattleMap + 0x1C2D4) = scale;
 
@@ -673,7 +684,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         if (Res_GetByName(lbl_8026A660 + 0x1C1) != 0) {
             bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1C1);
             b = (s8)bytes[0] != 0;
-            lbl_8036728C = (u8)(((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
+            lbl_8036728C = (u8)((u8)((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
             lbl_8036728D = bytes[2];
             lbl_8036728E = bytes[3];
             (&lbl_80367290)[0] = bytes[4];
@@ -710,6 +721,8 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         break;
     }
     case 1: {
+ s16 *header;
+ void *cursor;
         strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x1D0);
         M2C_FIELD(arg0, s32 *, 8) = FileCache_Load(lbl_802EFE20);
@@ -721,16 +734,12 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
 
         if (Res_GetByName(lbl_8026A660 + 0x1D7) != 0) {
-            cursor = Hash_Lookup(lbl_8026A660 + 0x1D7);
-            M2C_FIELD(arg0, s16 *, 0) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 2) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 4) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            M2C_FIELD(arg0, s16 *, 6) = *(s16 *)cursor;
-            cursor = (u8 *)cursor + 2;
-            fn_8001B84C(&cursor);
+            header = Hash_Lookup(lbl_8026A660 + 0x1D7);
+            M2C_FIELD(arg0, s16 *, 0) = *header++;
+            M2C_FIELD(arg0, s16 *, 2) = *header++;
+            M2C_FIELD(arg0, s16 *, 4) = *header++;
+            M2C_FIELD(arg0, s16 *, 6) = *header++;
+            fn_8001B84C(&header);
         }
         if (Res_GetByName(lbl_8026A660 + 0x1E4) != 0) {
             bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x1E4);
@@ -825,7 +834,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         if (Res_GetByName(lbl_8026A660 + 0x214) != 0) {
             bytes = (u8 *)Hash_Lookup(lbl_8026A660 + 0x214);
             b = (s8)bytes[0] != 0;
-            lbl_8036728C = (u8)(((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
+            lbl_8036728C = (u8)((u8)((s8)bytes[1] + 1) & ((s32)(-b | b) >> 31));
             lbl_8036728D = bytes[2];
             lbl_8036728E = bytes[3];
             (&lbl_80367290)[0] = bytes[4];
@@ -846,12 +855,12 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     M2C_FIELD(arg0, s32 *, 0x30) = fn_80123BA8();
     M2C_FIELD(arg0, s32 *, 0x64) |= 0x40000000;
     fn_8012391C(M2C_FIELD(arg0, s32 *, 0x30));
-    if (((u8 *)arg0)[0x68] == 0) {
+    switch (((u8 *)arg0)[0x68]) { case 0:
         fn_800C1BDC();
         fn_800C1984();
         enabled = 1;
         mode = gMapBlendMode - 1;
-        if (((u32)((enabled | ~mode) - ((u32)(1 - mode) >> 1)) >> 31) == 0) {
+        if (((u32)((1U | ~mode) - ((u32)(1 - mode) >> 1)) >> 31) == 0) {
             enabled = 0;
         }
         if (enabled) {
@@ -859,6 +868,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         } else {
             fn_8014716C(0);
         }
+    break;
     }
     fn_80067460(0);
     fn_80066F64();
@@ -871,8 +881,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)light)[4] = (&lbl_80367298)[0];
     ((u8 *)light)[5] = (&lbl_80367298)[1];
     ((u8 *)light)[6] = (&lbl_80367298)[2];
-    tmp = Light_GetChannel(2);
-    Light_CopyChannel(Light_GetChannel(0), tmp);
+    Light_CopyChannel(Light_GetChannel(0), Light_GetChannel(2));
     fn_8006720C((u8 *)arg0 + 0x70);
     fn_800675C8(0);
     fog = Fog_GetColor();
@@ -888,5 +897,4 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ms = __div2i(t1 - (s64)t0, (s64)((*(u32 *)0x800000F8 >> 2) / 1000));
     DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
-#pragma global_optimizer on
-#pragma use_lmw_stmw on
+#pragma pop
