@@ -6,6 +6,28 @@ typedef struct {
     u8 unk : 7;
 } ItemFlagBits;
 
+static inline s32 Convoy_FindEmpty_inline(void *convoy) {
+    s32 i;
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((u8 *)convoy + i * 8) == NULL) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
+    void Item_Copy(void *, void *);
+    s32 slot;
+    ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
+    slot = Convoy_FindEmpty_inline(convoy);
+    if (slot < 0) {
+        return 0;
+    }
+    Item_Copy((u8 *)convoy + slot * 8, item);
+    return 1;
+}
+
 typedef struct {
     u8 unk0[8];
     u8 param;
@@ -597,108 +619,52 @@ void fn_800C3468(void *arg0) {
     DebugPrint(lbl_80270088 + 0x25, count);
 }
 #pragma use_lmw_stmw reset
-void Convoy_AddItem(u32 *arg0, void *arg1) {
-    void fn_8001C4FC(void *, void *);
-    s32 fn_8001CA2C(u32 *);
-    s32 temp_r3;
-    s32 ctr;
-    s32 ctr2;
-    s32 var_r27;
-    s32 var_r28;
-    s32 var_r29;
-    s32 idx;
-    s32 idx2;
-    u8 *itm;
-    u8 *base;
-    u8 *p;
-    u32 *q;
+void Convoy_AddItem(void *convoy, void *item) {
+    void Item_Copy(void *, void *);
+    void Item_Clear(void *);
+    s32 fn_8001CA2C(void *);
+    s32 i;
     u8 ok;
 
-    itm = (u8 *)arg1;
-    base = (u8 *)arg0;
-    idx = 0;
-    *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx << 7) & 0x80);
-    p = base;
-    for (ctr = 20; ctr != 0; ctr--) {
-        if (*(u32 *)(p + 0x0) != 0) goto c1; else goto done1;
-    c1: idx++;
-        if (*(u32 *)(p + 0x8) != 0) goto c2; else goto done1;
-    c2: idx++;
-        if (*(u32 *)(p + 0x10) != 0) goto c3; else goto done1;
-    c3: idx++;
-        if (*(u32 *)(p + 0x18) != 0) goto c4; else goto done1;
-    c4: idx++;
-        if (*(u32 *)(p + 0x20) != 0) goto c5; else goto done1;
-    c5: idx++;
-        if (*(u32 *)(p + 0x28) != 0) goto c6; else goto done1;
-    c6: idx++;
-        if (*(u32 *)(p + 0x30) != 0) goto c7; else goto done1;
-    c7: idx++;
-        if (*(u32 *)(p + 0x38) != 0) goto c8; else goto done1;
-    c8: idx++;
-        if (*(u32 *)(p + 0x40) != 0) goto c9; else goto done1;
-    c9: idx++;
-        if (*(u32 *)(p + 0x48) != 0) goto c10; else goto done1;
-    c10: idx++;
-        p += 0x50;
-        idx++;
+    ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((u8 *)convoy + i * 8) == NULL) {
+            goto found1;
+        }
     }
-    idx = -1;
-done1:
-    if (idx < 0) {
+    i = -1;
+found1:
+    if (i < 0) {
         ok = 0;
     } else {
-        fn_8001C4FC(arg0 + (idx * 2), arg1);
+        Item_Copy((u8 *)convoy + i * 8, item);
         ok = 1;
     }
-    if (ok == 0) {
-        q = arg0;
-        var_r27 = 0xF423F;
-        var_r28 = -1;
-        var_r29 = 0;
-        do {
-            if ((u32)*q != 0U) {
-                temp_r3 = fn_8001CA2C(q);
-                if (var_r27 > temp_r3) {
-                    var_r27 = temp_r3;
-                    var_r28 = var_r29;
+    if (!ok) {
+        s32 minVal = 999999;
+        s32 minIdx = -1;
+        u8 *p = (u8 *)convoy;
+        for (i = 0; i < 200; i++) {
+            if (*(void **)p != NULL) {
+                s32 val = fn_8001CA2C(p);
+                if (minVal > val) {
+                    minVal = val;
+                    minIdx = i;
                 }
             }
-            var_r29++;
-            q++;
-        } while (var_r29 < 0xC8);
-        fn_8001D580(arg0 + (var_r28 * 2));
-        idx2 = 0;
-        p = base;
-        *(u8 *)(itm + 5) = (*(u8 *)(itm + 5) & ~0x80) | ((idx2 << 7) & 0x80);
-        for (ctr2 = 20; ctr2 != 0; ctr2--) {
-            if (*(u32 *)(p + 0x0) != 0) goto d1; else goto done2;
-        d1: idx2++;
-            if (*(u32 *)(p + 0x8) != 0) goto d2; else goto done2;
-        d2: idx2++;
-            if (*(u32 *)(p + 0x10) != 0) goto d3; else goto done2;
-        d3: idx2++;
-            if (*(u32 *)(p + 0x18) != 0) goto d4; else goto done2;
-        d4: idx2++;
-            if (*(u32 *)(p + 0x20) != 0) goto d5; else goto done2;
-        d5: idx2++;
-            if (*(u32 *)(p + 0x28) != 0) goto d6; else goto done2;
-        d6: idx2++;
-            if (*(u32 *)(p + 0x30) != 0) goto d7; else goto done2;
-        d7: idx2++;
-            if (*(u32 *)(p + 0x38) != 0) goto d8; else goto done2;
-        d8: idx2++;
-            if (*(u32 *)(p + 0x40) != 0) goto d9; else goto done2;
-        d9: idx2++;
-            if (*(u32 *)(p + 0x48) != 0) goto d10; else goto done2;
-        d10: idx2++;
-            p += 0x50;
-            idx2++;
+            p += 8;
         }
-        idx2 = -1;
-    done2:
-        if (idx2 >= 0) {
-            fn_8001C4FC(arg0 + (idx2 * 2), arg1);
+        Item_Clear((u8 *)convoy + minIdx * 8);
+        ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
+        for (i = 0; i < 200; i++) {
+            if (*(void **)((u8 *)convoy + i * 8) == NULL) {
+                goto found2;
+            }
+        }
+        i = -1;
+    found2:
+        if (i >= 0) {
+            Item_Copy((u8 *)convoy + i * 8, item);
         }
     }
 }
