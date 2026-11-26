@@ -13855,10 +13855,12 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer on
+#pragma opt_common_subs off
 s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFields *from, SortIteratorFields *to) {
-    void fn_800E0EE0(s32 *, s32 *, s32 *);
+    void fn_800E0EE0(s32 *, s32 *, s32 *, void *);
     SortIteratorFields outA, stopA, curA, outB, curB, stopB;
     SortIteratorFields tmpA, tmpB, proxyA, proxyB;
+    struct Category { u8 tag; } category, categoryCopy;
     s32 available = to->a - from->a;
     if (n1 <= n2 && n1 <= available) {
         s32 *src=first;
@@ -13911,7 +13913,8 @@ s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFi
             return dst;
         }
     } else {
-        fn_800E0EE0(first,mid,last);
+        categoryCopy = category;
+        fn_800E0EE0(first,mid,last,&categoryCopy);
         return first+n2;
     }
 }
