@@ -8742,15 +8742,6 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     d->table[4] = 0;
     Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
-static inline void fn_8006F09C_init(s32 *table, void **entries, s32 a0, s32 a1, s32 a2) {
-    entries[0] = table;
-    table[1] = a0;
-    entries[1] = table + 2;
-    table[3] = a1;
-    entries[2] = table + 4;
-    table[5] = a2;
-    entries[3] = 0;
-}
 #pragma opt_common_subs off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
 {
