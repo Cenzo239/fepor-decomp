@@ -13,6 +13,19 @@ static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, cons
     }
 }
 
+static inline void Map_SetHeights444(u8 *map, s32 index, const s16 *heights)
+{
+    s32 k;
+    MapHeightCell444 *cell;
+    s16 height;
+    for (k = 0; k < 4; k++) {
+        height = heights[k];
+        cell = (MapHeightCell444 *)(map + 2 * (index * 4 + k));
+        cell->lower = height;
+        cell->upper = height;
+    }
+}
+
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
@@ -1394,7 +1407,7 @@ return 0;
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
 #pragma global_optimizer off
-void fn_80044450(u8 *arg0, u8 arg1) {
+void fn_80044450(void *arg0, s32 arg1) {
 void *Hash_Lookup(void *);
 u32 Res_GetByName(void *);
 void fn_80015DEC(void);
@@ -1451,10 +1464,10 @@ extern u8 gBattleMap[];
         idxB = Hash_Lookup(lbl_8026A660 + 0x2B0);
     }
     ca = gBattleMap;
-    for (row = 0; row < *(s16 *)(arg0 + 2); row++) {
+    for (row = 0; row < *(s16 *)((u8 *)arg0 + 2); row++) {
         rowSl = (s8)row << 6;
         rowPtr = ca + rowSl;
-        for (col = 0; col < *(s16 *)(arg0 + 0); ) {
+        for (col = 0; col < *(s16 *)((u8 *)arg0 + 0); ) {
             tileA = (u8 *)tblA + *idxA++ * 0xC;
             tileB = (u8 *)tblB + *idxB++ * 0xC;
             ok = fn_8005B7A4(*(void **)(tileA + 8));
@@ -1463,16 +1476,12 @@ extern u8 gBattleMap[];
             off = c + 0x100D;
             rowPtr[off] = ok;
             t = c + rowSl;
-            for(k=0;k<4;k++) {
-                cell=(MapHeightCell444*)(ca+2*(t*4+k));
-                cell->lower=((s16*)tileA)[k];
-                cell->upper=((s16*)tileB)[k];
-            }
+            Map_CopyHeights444(ca, t, (s16*)tileA, (s16*)tileB);
         }
     }
-    if (*(u32 *)(arg0 + 0x64) & 0x10000000) {
-        node = *(void **)(arg0 + 0x14);
-        for (i = 0; i < *(s16 *)(arg0 + 6); i++, node = (u8 *)node + 0xB4) {
+    if (*(u32 *)((u8 *)arg0 + 0x64) & 0x10000000) {
+        node = *(void **)((u8 *)arg0 + 0x14);
+        for (i = 0; i < *(s16 *)((u8 *)arg0 + 6); i++, node = (u8 *)node + 0xB4) {
             flags = *(u32 *)(*(u8 **)((u8 *)node + 0x10) + 0xBC);
             if (flags & 0x10) {
                 ok = 0;
@@ -1500,11 +1509,11 @@ extern u8 gBattleMap[];
             if (y0 < 0) {
                 y0 = 0;
             }
-            lim = *(s16 *)(arg0 + 0) - 1;
+            lim = *(s16 *)((u8 *)arg0 + 0) - 1;
             if (x1 >= lim) {
                 x1 = lim;
             }
-            lim = *(s16 *)(arg0 + 2) - 1;
+            lim = *(s16 *)((u8 *)arg0 + 2) - 1;
             if (y1 >= lim) {
                 y1 = lim;
             }
@@ -1519,7 +1528,7 @@ extern u8 gBattleMap[];
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)(arg0 + 0));
+                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
                     for (; xx <= x1; ) {
                         ia = *src;
                         src += 1;
@@ -1549,7 +1558,7 @@ extern u8 gBattleMap[];
                     rowSl = (s8)yy << 6;
                     rowPtr = ca + rowSl;
                     xx = x0;
-                    src = idxA + (x0 + yy * *(s16 *)(arg0 + 0));
+                    src = idxA + (x0 + yy * *(s16 *)((u8 *)arg0 + 0));
                     for (; xx <= x1; ) {
                         ia = *src;
                         src += 1;
@@ -1583,7 +1592,7 @@ extern u8 gBattleMap[];
     fn_80023A4C(gBattleMap);
     if ((u8)arg1 != 0) {
         fn_80015DEC();
-        *(u32 *)(arg0 + 0x64) |= 1;
+        *(u32 *)((u8 *)arg0 + 0x64) |= 1;
     }
 }
 #pragma pop
