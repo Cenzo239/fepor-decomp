@@ -2,6 +2,91 @@
 #include "common.h"
 #include "global.h"
 
+static inline s32 TabMenu_AdjustVisible(void *arg0, u8 *arg1, s32 var_r8) {
+    s32 top, bottom, position;
+    
+    u8 var_r7;
+    void *var_r5;
+    s32 var_r0;
+    s32 temp_r7;
+    s32 scroll;
+    u8 temp_r8;
+    s32 temp_r9;
+    s32 temp_r6;
+    s8 var_r6_2;
+
+    position = *(s16 *)((u8 *)arg0 + 0x36);
+    top = (s8)(position / 32);
+    bottom = top + 8;
+    if (position % 32) bottom = top + 9;
+    bottom = (s8)bottom;
+    var_r7 = *arg1;
+    if ((s8)var_r7 <= top) {
+        var_r5 = *(void **)((u8 *)arg0 + 0x58);
+        var_r0 = 0;
+        if ((s8)var_r7 >= 0) {
+            while ((s8)var_r7 > 0) {
+                var_r5 = *(void **)((u8 *)var_r5 + 4);
+                var_r7 -= 1;
+            }
+        } else {
+            while ((s8)var_r7 < 0) {
+                var_r5 = *(void **)var_r5;
+                var_r7 += 1;
+            }
+        }
+        do {
+            temp_r8 = *arg1;
+            if ((((s8)temp_r8 >= 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) < 0))
+                || (((s8)temp_r8 > 0) && ((s8)(temp_r8 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 0))) {
+                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r0 = 1;
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)(temp_r7 - ((s8)(((s8)(temp_r7 / 32) - temp_r8) + 1) << 5));
+            }
+            if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
+                break;
+            }
+            var_r5 = *(void **)var_r5;
+            *arg1 -= 1;
+        } while (1);
+        var_r8 = var_r0;
+    } else if (bottom <= (s8)var_r7) {
+        var_r5 = *(void **)((u8 *)arg0 + 0x58);
+        var_r8 = 0;
+        if ((s8)var_r7 >= 0) {
+            while ((s8)var_r7 > 0) {
+                var_r5 = *(void **)((u8 *)var_r5 + 4);
+                var_r7 -= 1;
+            }
+        } else {
+            while ((s8)var_r7 < 0) {
+                var_r5 = *(void **)var_r5;
+                var_r7 += 1;
+            }
+        }
+        do {
+            temp_r9 = *(s8 *)arg1;
+            temp_r6 = *(s32 *)((u8 *)arg0 + 0x50) - 1;
+            if ((((u32)temp_r9 <= (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
+                || (((u32)temp_r9 < (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r6_2 = (s8)(temp_r9 - ((s8)(scroll / 32) + 8));
+                if ((u32)temp_r9 < (u32)temp_r6) {
+                    var_r6_2 += 1;
+                }
+                var_r8 = 1;
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6_2 << 5) + scroll);
+            }
+            if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
+                break;
+            }
+            var_r5 = *(void **)((u8 *)var_r5 + 4);
+            *arg1 += 1;
+        } while (1);
+    }
+    return var_r8;
+}
+
 static inline s32 TabMenu_ScrollUp(void *arg0, u8 *arg1, u8 var_r7) {
     void *var_r5;
     s32 var_r0;
@@ -2672,7 +2757,7 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     
     u8 var_r7;
     void *var_r5;
-    u8 var_r0;
+    s32 var_r0;
     s32 var_r8;
     s32 temp_r7;
     s32 scroll;
@@ -2682,12 +2767,12 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     s8 var_r6_2;
 
     position = *(s16 *)((u8 *)arg0 + 0x36);
-    var_r8 = 0;
     top = (s8)(position / 32);
     bottom = top + 8;
     if (position % 32) bottom = top + 9;
     bottom = (s8)bottom;
     var_r7 = *arg1;
+    var_r8 = 0;
     if ((s8)var_r7 <= top) {
         var_r5 = *(void **)((u8 *)arg0 + 0x58);
         var_r0 = 0;
