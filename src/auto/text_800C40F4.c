@@ -6660,6 +6660,7 @@ extern "C" void fn_800CFDDC(void *arg0) {
     void *obj;
     char *msg;
     void *vt;
+    s32 textLength;
     u8 *self = (u8 *)arg0;
 
     if (lbl_80367894 == 0) {
@@ -6738,7 +6739,8 @@ extern "C" void fn_800CFDDC(void *arg0) {
             lbl_80367890 = 0;
         }
     }
-    if (String_Compare(self + 0xB8, 0, *(s32 *)(self + 0xB8), lbl_802704F8 + 0x1B0, strlen(lbl_802704F8 + 0x1B0)) != 0) {
+    textLength = strlen(lbl_802704F8 + 0x1B0);
+    if (String_Compare(self + 0xB8, 0, *(s32 *)(self + 0xB8), lbl_802704F8 + 0x1B0, textLength) != 0) {
         obj = fn_800E7F60(*(void **)(self + 4), self + 0xB8);
         if (obj != NULL) {
             if (fn_800E8FB4(obj) != 0) {
