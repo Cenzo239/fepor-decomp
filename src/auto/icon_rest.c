@@ -671,31 +671,20 @@ s32 fn_800C39A4(void *convoy, void *item) {
  return -1;
 }
 
+#pragma dont_inline off
 s32 fn_800C3AB0(void *convoy, s32 name) {
     void Item_Init(void *);
     void Item_SetByName(void *, s32);
     void Item_Copy(void *, void *);
     void Item_Destroy(void *, s32);
     u8 item[8];
-    s32 i;
     s32 result;
     s32 slot;
-    u8 t;
 
     Item_Init(item);
     Item_SetByName(item, name);
-    i = 0;
-    t = item[5];
-    item[5] = (u8)__rlwimi(t, i, 7, 24, 24);
-
-    for (; i < 200; i++) {
-        if (*(void **)((char *)convoy + i * 8) == NULL) {
-            slot = i;
-            goto found;
-        }
-    }
-    slot = -1;
-found:
+    item[5] = (u8)__rlwimi(item[5], 0, 7, 24, 24);
+    slot = Convoy_FindItem_inline(convoy, NULL);
     if (slot < 0) {
         result = 0;
     } else {
@@ -705,32 +694,20 @@ found:
     Item_Destroy(item, -1);
     return result;
 }
-
+#pragma push
+#pragma dont_inline off
 s32 fn_800C3C1C(void *arg0, void *arg1) {
     void Item_Copy(void *, void *);
-    s32 i;
     s32 slot;
-    u8 t;
-
-    i = 0;
-    t = *((u8 *)arg1 + 5);
-    *((u8 *)arg1 + 5) = (u8)__rlwimi(t, i, 7, 24, 24);
-
-    for (; i < 200; i++) {
-        if (*(void **)((char *)arg0 + i * 8) == NULL) {
-            slot = i;
-            goto found;
-        }
-    }
-    slot = -1;
-found:
+    ((ItemFlagBits *)((u8 *)arg1 + 5))->flag = 0;
+    slot = Convoy_FindEmpty_inline(arg0);
     if (slot < 0) {
         return 0;
     }
-    Item_Copy((char *)arg0 + (slot << 3), arg1);
+    Item_Copy((u8 *)arg0 + slot * 8, arg1);
     return 1;
 }
-
+#pragma pop
 s32 Convoy_FindEmpty(void *convoy) {
     s32 i;
 
