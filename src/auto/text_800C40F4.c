@@ -1,8 +1,21 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+typedef struct AiActionMap {
+        s32 width;
+        s32 height;
+        s8 xMin;
+        s8 yMin;
+        s8 xMax;
+        s8 yMax;
+        u8 pad0C;
+        u8 unitMap[8][64][64];
+        u8 pad800D[0x181];
+        s16 costMap[3][64 * 64];
+        s8 fogMap[64][64];
+    } AiActionMap;
 static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
-    extern u8 gBattleMap[];
+    extern AiActionMap gBattleMap;
     extern u8 gUnits[];
     u8 Ai_UnitIsHostileToActive(void *);
     s32 count;
@@ -14,7 +27,7 @@ static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
                     nx = x16 + nb[0];
                     ny = y16 + nb[1];
                     oob = 0;
-                    if (nx < ((s8 *)gBattleMap)[8] || ((s8 *)gBattleMap)[10] - 1 < nx || ny < ((s8 *)gBattleMap)[9] || ((s8 *)gBattleMap)[11] - 1 < ny) {
+                    if (nx < gBattleMap.xMin || gBattleMap.xMax - 1 < nx || ny < gBattleMap.yMin || gBattleMap.yMax - 1 < ny) {
                         oob = 1;
                     }
                     if (!oob) {
@@ -22395,18 +22408,19 @@ s32 fn_800EFC2C(void *arg0, s32 arg1) {
     }
     {
         u8 *m = (u8 *)Map_Get();
-        s32 t60;
+        f32 v5F = (f32)m[0x5F];
+        f32 v5E = (f32)m[0x5E];
+        s32 t60 = m[0x60];
+        half = (f32)(t60 >> 1);
         *(s32 *)&sp2C[0] = *(s32 *)(tbl + 0x1C);
         *(s32 *)&sp2C[2] = *(s32 *)(tbl + 0x24);
         *(s32 *)&sp2C[3] = *(s32 *)(tbl + 0x28);
         *(s32 *)&sp2C[5] = *(s32 *)(tbl + 0x30);
-        sp2C[2] = (f32)m[0x5F];
-        sp2C[0] = (f32)m[0x5E];
-        sp2C[5] = (f32)m[0x5F];
-        sp2C[3] = (f32)m[0x5E];
+        sp2C[0] = v5E;
+        sp2C[2] = v5F;
+        sp2C[3] = v5E;
+        sp2C[5] = v5F;
         *(s32 *)&sp2C[1] = *(s32 *)(tbl + 0x20);
-        t60 = m[0x60];
-        half = (f32)(t60 >> 1);
         *(s32 *)&sp8[0] = *(s32 *)&sp2C[0];
         *(s32 *)&sp8[1] = *(s32 *)(tbl + 0x20);
         *(s32 *)&sp8[2] = *(s32 *)&sp2C[2];
