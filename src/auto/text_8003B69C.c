@@ -1200,38 +1200,67 @@ void Unit_Write(void *arg0, s32 arg1) {
     fn_8004BCCC(self, out);
     Stream_WriteU16(out, 0);
 }
-void fn_8003CCB0(void *arg0,u8 *arg1,u8 *arg2) {
- extern u8 gBattleMap[],lbl_8026A520[];
- void Map_SelectRangeBuffer(void *,s32); void fn_80022748(void *,s32); void fn_800227F8(void *,void *);
- void *Job_GetByJid(void *); void Map_FloodMoveRange(void *,u8,u8,s32,s32,s32);
- u8 Map_IsAiTerrainBlocked(s8,s8); s16 fn_8002134C(u8 *,s8,s8);
- u8 *outY,*outX; void *unit; u8 *map; u8 saved; u8 *layer,*mapHi,*row,*tile;
- s32 rowOff,index; u16 best; register s32 y,x; s16 cost;
- outY=arg2; outX=arg1; unit=arg0;
- map=gBattleMap; layer=map+13;
- index=(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6);
- saved=layer[index]; layer[index]=0;
- Map_SelectRangeBuffer(map,5);
- fn_80022748(gBattleMap,0);
- fn_800227F8(gBattleMap,Job_GetByJid(lbl_8026A520+0x50));
- Map_FloodMoveRange(gBattleMap,*outX,*outY,64,0,0);
- fn_800227F8(gBattleMap,M2C_FIELD(unit,void **,0x18C));
- map=gBattleMap; best=9999; mapHi=map+0x10000;
- for(y=(s8)map[9];y<=(s8)map[11]-1;y++) {
- rowOff=(s8)y<<6; row=map+rowOff;
- for(x=(s8)map[8];x<=(s8)map[10]-1;x++) {
- index=(s8)x+rowOff;
- if((*(s16 **)(mapHi+0x4190))[index]>=0) {
- tile=row+(s8)x;
- if((s8)tile[0xE18E]==0 && !Map_IsAiTerrainBlocked((s8)x,(s8)y) && tile[13]==0 &&
- fn_8002134C(gBattleMap,(s8)x,(s8)y)<=30000) {
- cost=(*(s16 **)(mapHi+0x4190))[index];
- if(best>(u16)cost) { *outX=x; best=(u16)cost; *outY=y; }
- }
- }
- }
- }
- layer[(s8)M2C_FIELD(unit,u8 *,0x19E)+((s8)M2C_FIELD(unit,u8 *,0x19F)<<6)]=saved;
+void fn_8003CCB0(void *arg0, u8 *arg1, u8 *arg2) {
+    extern u8 gBattleMap[], lbl_8026A520[];
+    void Map_SelectRangeBuffer(void *, s32);
+    void fn_80022748(void *, s32);
+    void fn_800227F8(void *, void *);
+    void *Job_GetByJid(void *);
+    void Map_FloodMoveRange(void *, u8, u8, s32, s32, s32);
+    u8 Map_IsAiTerrainBlocked(s8, s8);
+    s16 fn_8002134C(u8 *, s8, s8);
+    u8 *outY, *outX;
+    void *unit;
+    u8 *map;
+    u8 saved;
+    s32 rowOff;
+    u8 *row;
+    u8 *mapHi;
+    u8 *layer;
+    u8 *tile;
+    s32 byteOff;
+    u16 best;
+    s32 y, x;
+    s32 initIdx;
+    s32 endIdx;
+
+    outY = arg2;
+    outX = arg1;
+    unit = arg0;
+    map = gBattleMap;
+    layer = map + 13;
+    initIdx = (s8)M2C_FIELD(unit, u8 *, 0x19E) + ((s8)M2C_FIELD(unit, u8 *, 0x19F) << 6);
+    saved = layer[initIdx];
+    layer[initIdx] = 0;
+    Map_SelectRangeBuffer(map, 5);
+    fn_80022748(gBattleMap, 0);
+    fn_800227F8(gBattleMap, Job_GetByJid(lbl_8026A520 + 0x50));
+    Map_FloodMoveRange(gBattleMap, *outX, *outY, 64, 0, 0);
+    fn_800227F8(gBattleMap, M2C_FIELD(unit, void **, 0x18C));
+    map = gBattleMap;
+    best = 9999;
+    mapHi = map + 0x10000;
+    for (y = ((s8 *)map)[9]; y <= ((s8 *)map)[11] - 1; y++) {
+        rowOff = (s8)y << 6;
+        x = ((s8 *)map)[8];
+        row = map + rowOff;
+        for (; x <= ((s8 *)map)[10] - 1; x++) {
+            byteOff = ((s8)x + rowOff) << 1;
+            if (*(s16 *)(*(u8 **)(mapHi + 0x4190) + byteOff) >= 0) {
+                tile = row + (s8)x;
+                if ((s8)tile[0xE18E] == 0 && !Map_IsAiTerrainBlocked((s8)x, (s8)y) && tile[13] == 0 &&
+                    fn_8002134C(gBattleMap, (s8)x, (s8)y) <= 30000) {
+                    if (best > (u16)*(s16 *)(*(u8 **)(mapHi + 0x4190) + byteOff)) {
+                        best = *(s16 *)(*(u8 **)(mapHi + 0x4190) + byteOff);
+                        *outX = x;
+                        *outY = y;
+                    }
+                }
+            }
+        }
+    }
+    endIdx = (s8)M2C_FIELD(unit, u8 *, 0x19E) + ((s8)M2C_FIELD(unit, u8 *, 0x19F) << 6);
+    layer[endIdx] = saved;
 }
 
 #pragma push
