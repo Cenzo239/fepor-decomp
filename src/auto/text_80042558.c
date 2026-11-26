@@ -823,7 +823,6 @@ void fn_800432D8(void *arg0) {
     u8 *ent;
     s32 i;
     u8 *sub;
-    void *self;
     u8 flags;
     f32 f31v, f30v, f29v, f28v;
     f32 t30;
@@ -832,12 +831,11 @@ void fn_800432D8(void *arg0) {
     f32 scale;
     f32 temp_f0;
 
-    self = arg0;
     fn_80067708(0, 1, fn_80043E88, arg0);
-    if (*(u32 *)((u8 *)self + 0xC) != 0) {
+    if (*(u32 *)((u8 *)arg0 + 0xC) != 0) {
         s32 n;
         u8 *e;
-        e = *(u8 **)((u8 *)self + 0x14);
+        e = *(u8 **)((u8 *)arg0 + 0x14);
         n = 0;
         goto clear_test;
     clear_body:
@@ -849,12 +847,12 @@ void fn_800432D8(void *arg0) {
             e += 0xB4;
         }
     clear_test:
-        if (n < *(s16 *)((u8 *)self + 6)) {
+        if (n < *(s16 *)((u8 *)arg0 + 6)) {
             goto clear_body;
         }
     }
-    if ((*(u32 *)((u8 *)self + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)self + 0x64) & 0x40000000) != 0) {
-        ent = *(u8 **)((u8 *)self + 0x14);
+    if ((*(u32 *)((u8 *)arg0 + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)arg0 + 0x64) & 0x40000000) != 0) {
+        ent = *(u8 **)((u8 *)arg0 + 0x14);
         i = 0;
         goto loop1_test;
     loop1_body:
@@ -872,9 +870,9 @@ void fn_800432D8(void *arg0) {
                     t30 = (f32)(s8)ent[1];
                     f31v = *(f32 *)(ent + 8) + lbl_80368EE4;
                     f30v = t30 + lbl_80368EE4;
-                    if (*(u8 *)((u8 *)self + 0x68) == 1) {
-                        a = *(s16 *)self;
-                        h = *(s16 *)((u8 *)self + 2);
+                    if (*(u8 *)((u8 *)arg0 + 0x68) == 1) {
+                        a = *(s16 *)arg0;
+                        h = *(s16 *)((u8 *)arg0 + 2);
                         a = ((u32)a >> 31) + a;
                         a >>= 1;
                         f28v -= (f32)a;
@@ -885,13 +883,13 @@ void fn_800432D8(void *arg0) {
                     PSMTXConcat(sp128, sp158, sp128);
                     PSMTXTrans(sp158, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                     PSMTXConcat(sp158, sp128, spC8);
-                    scale = *(f32 *)((u8 *)self + 0x6C);
+                    scale = *(f32 *)((u8 *)arg0 + 0x6C);
                     PSMTXScale(spF8, scale, scale, scale);
                     PSMTXConcat(spF8, spC8, spC8);
-                    temp_f0 = *(f32 *)((u8 *)self + 0x6C);
+                    temp_f0 = *(f32 *)((u8 *)arg0 + 0x6C);
                     PSMTXTrans(sp158, lbl_80368EF4 * (f28v * temp_f0), lbl_80368EF4 * (f29v * temp_f0), lbl_80368EF4 * (f30v * temp_f0));
                     PSMTXConcat(sp158, spC8, spC8);
-                    PSMTXConcat((u8 *)self + 0x70, spC8, ent + 0x24);
+                    PSMTXConcat((u8 *)arg0 + 0x70, spC8, ent + 0x24);
                 }
                 if ((mask & 0x10000) != 0) {
                     fn_8006785C(2, fn_80048518, ent);
@@ -903,17 +901,17 @@ void fn_800432D8(void *arg0) {
         i += 1;
         ent += 0xB4;
     loop1_test:
-        if (i < *(s16 *)((u8 *)self + 6)) {
+        if (i < *(s16 *)((u8 *)arg0 + 6)) {
             goto loop1_body;
         }
     }
-    if (*(u32 *)((u8 *)self + 0xC) != 0 && (*(u32 *)((u8 *)self + 0x64) & 0x80000000) == 0) {
-        fn_8006785C(2, fn_800449C8, self);
+    if (*(u32 *)((u8 *)arg0 + 0xC) != 0 && (*(u32 *)((u8 *)arg0 + 0x64) & 0x80000000) == 0) {
+        fn_8006785C(2, fn_800449C8, arg0);
     }
-    if ((*(u32 *)((u8 *)self + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)self + 0x64) & 0x40000000) != 0) {
+    if ((*(u32 *)((u8 *)arg0 + 0x64) & 0x80000000) == 0 && (*(u32 *)((u8 *)arg0 + 0x64) & 0x40000000) != 0) {
         u32 m;
         s32 n;
-        ent = *(u8 **)((u8 *)self + 0x14);
+        ent = *(u8 **)((u8 *)arg0 + 0x14);
         n = 0;
         goto loop2_test;
     loop2_body:
@@ -931,9 +929,9 @@ void fn_800432D8(void *arg0) {
                     t30 = (f32)(s8)ent[1];
                     f28v = *(f32 *)(ent + 8) + lbl_80368EE4;
                     f29v = t30 + lbl_80368EE4;
-                    if (*(u8 *)((u8 *)self + 0x68) == 1) {
-                        a = *(s16 *)self;
-                        h = *(s16 *)((u8 *)self + 2);
+                    if (*(u8 *)((u8 *)arg0 + 0x68) == 1) {
+                        a = *(s16 *)arg0;
+                        h = *(s16 *)((u8 *)arg0 + 2);
                         a = ((u32)a >> 31) + a;
                         a >>= 1;
                         f31v -= (f32)a;
@@ -944,13 +942,13 @@ void fn_800432D8(void *arg0) {
                     PSMTXConcat(sp68, sp98, sp68);
                     PSMTXTrans(sp98, lbl_80368EF0, lbl_80368EE4, lbl_80368EF0);
                     PSMTXConcat(sp98, sp68, sp8);
-                    scale = *(f32 *)((u8 *)self + 0x6C);
+                    scale = *(f32 *)((u8 *)arg0 + 0x6C);
                     PSMTXScale(sp38, scale, scale, scale);
                     PSMTXConcat(sp38, sp8, sp8);
-                    temp_f0 = *(f32 *)((u8 *)self + 0x6C);
+                    temp_f0 = *(f32 *)((u8 *)arg0 + 0x6C);
                     PSMTXTrans(sp98, lbl_80368EF4 * (f31v * temp_f0), lbl_80368EF4 * (f30v * temp_f0), lbl_80368EF4 * (f29v * temp_f0));
                     PSMTXConcat(sp98, sp8, sp8);
-                    PSMTXConcat((u8 *)self + 0x70, sp8, ent + 0x24);
+                    PSMTXConcat((u8 *)arg0 + 0x70, sp8, ent + 0x24);
                 }
                 if ((m & 0x10000) != 0) {
                     fn_8006785C(2, fn_80048518, ent);
@@ -962,11 +960,11 @@ void fn_800432D8(void *arg0) {
         n += 1;
         ent += 0xB4;
     loop2_test:
-        if (n < *(s16 *)((u8 *)self + 6)) {
+        if (n < *(s16 *)((u8 *)arg0 + 6)) {
             goto loop2_body;
         }
     }
-    fn_80067708(2, 3, fn_80043DEC, self);
+    fn_80067708(2, 3, fn_80043DEC, arg0);
 }
 
 void fn_80043838(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7)
@@ -3079,6 +3077,8 @@ void fn_80048478(void *arg0, void *arg1, u32 arg2, u32 arg3) {
     }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_80048518(void *arg0) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void fn_80222C50(void *, s32);
@@ -3225,8 +3225,7 @@ draw:
     fn_80051538(&color, 1, fx, fy);
     fn_80066D00(-1);
 }
-
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma opt_peephole reset
 #pragma opt_loop_invariants reset
@@ -6515,9 +6514,11 @@ void fn_8004EB14(void *arg0, u32 arg1) {
 #pragma use_lmw_stmw reset
 
 #pragma push
-#pragma optimization_level 3
-s32 Unit_IsDisplayReady(void *arg0) {
+#pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_loop_invariants off
+s32 Unit_IsDisplayReady(void *arg0) {
+
   void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
@@ -6545,7 +6546,7 @@ s32 Unit_IsDisplayReady(void *arg0) {
  res=get_4F128_resource(obj,id);
  if(!FileCache_IsReady(fn_8004B158(res))) return 0;
  if(!fn_8004AF74(res,M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8))) {
- res=get_4F128_resource(arg0,get_4F128_id(arg0));
+ res=Unit_ResolveDisplayResource(get_4F128_id(arg0),arg0);
  switch(M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8)) {
  case 0: res=fn_8004B078(res,0);break;
 case 1: res=fn_8004B078(res,1);break;
@@ -6614,8 +6615,11 @@ static inline void *get_4F5EC_resource(void *arg0) {
  }
  return resolved;
 }
-void fn_8004F5EC(void *arg0,u32 arg1) {
+#pragma push
+#pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
+void fn_8004F5EC(void *arg0,u32 arg1) {
  void fn_800056A0(s32);
  void DebugPrint(void *, ...);
  void *Res_GetByName(void *);
@@ -6641,44 +6645,13 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  arg1=(u16)arg1|8;
  fn_8005C870(name,arg1);
  if(!fn_8004AF74(res,M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8))) {
- char buf2[0x20];
- s32 value2;
- s32 idx2;
- void *name2;
- void *base2;
- void *resolved2;
- value2=get_4F5EC_id(arg0);
- base2=M2C_FIELD(arg0,void **,0x18C);
- if(M2C_FIELD(arg0,u8 *,3)&4) base2=M2C_FIELD(base2,void **,0xC)?Res_GetByName(M2C_FIELD(base2,void **,0xC)):0;
- idx2=0;
- if(Status_Test((u8 *)arg0+0x1BC,8)) {
- if(Status_Test((u8 *)base2+0x1C,9)) idx2=1;
- } else if(Status_Test((u8 *)base2+0x1C,2)) idx2=1;
- name2=M2C_FIELD(arg0,void **,0x188);
- name2=(u8 *)name2+idx2*4;
- name2=M2C_FIELD(name2,void **,0x5C);
- if(!name2) name2=M2C_FIELD(base2,void **,0x18);
- if(!name2) {fn_800056A0(0);name2=lbl_8026AB18+0x52;}
- if(!name2||!*(s8 *)name2) res=Res_GetByName(lbl_8026AB18+0x53);
- else {
- sprintf(buf2,lbl_8026AB18+0x5F,name2,fn_8004B1A0(value2));
- resolved2=Res_GetByName(buf2);
- if(!resolved2) {
- fn_800056A0(0);res=Res_GetByName(lbl_8026AB18+0x53);
- } else {
- sprintf(buf2,lbl_8026AB18+0x64,fn_8004B158(resolved2));
- if(FileCache_Probe(buf2)==0x8000U) {
- DebugPrint(lbl_8026AB18+0x67,buf2);
- res=Res_GetByName(lbl_8026AB18+0x53);
- } else res=resolved2;
- }
- }
+ name = get_4F5EC_resource(arg0);
  switch(M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8)) {
- case 0: res=fn_8004B078(res,0);break;
- case 1: res=fn_8004B078(res,1);break;
- case 2: res=fn_8004B078(res,2);break;
- case 3: res=fn_8004B078(res,3);break;
- default: res=fn_8004B078(res,0);break;
+ case 0: res=fn_8004B078(name,0);break;
+ case 1: res=fn_8004B078(name,1);break;
+ case 2: res=fn_8004B078(name,2);break;
+ case 3: res=fn_8004B078(name,3);break;
+ default: res=fn_8004B078(name,0);break;
  }
  if(!res||FileCache_Probe(res)==0x8000U) res=lbl_80366DC8;
  if(res!=lbl_80366DC8) fn_8005C870(res,arg1);
@@ -6686,7 +6659,7 @@ void fn_8004F5EC(void *arg0,u32 arg1) {
  M2C_FIELD(arg0,u8 *,3)|=1;
  }
 }
-
+#pragma pop
 u8 fn_8004FA88(void *arg0, s32 arg1) {
 char *fn_8004AFD4(void *,s32);
 u8 FileCache_IsReady(void *);
