@@ -1,6 +1,23 @@
 /* Functions from 0x801A2AC4 to 0x801A7D3C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline s32 Battle_CollectStatus(void **members, s32 status) {
+extern void *gUnitLists[25]; u8 Status_Test(void *,s32);
+void *node=gUnitLists[0]; s32 count=0;
+while(node) { void *next=M2C_FIELD(node,void **,0x184);
+if(Status_Test((u8*)node+0x1bc,status) && count<3) members[count++]=node;
+node=next;
+} return count;
+}
+static inline u8 Battle_CrossInside(s32 *cross) {
+if(cross[0]==0 && cross[1]==0) return 0;
+if(cross[0]<=0 && cross[1]<=0 && cross[2]<=0) return 1;
+if(cross[0]>=0 && cross[1]>=0 && cross[2]>=0) return 1;
+return 0;
+}
+static inline u8 Battle_ItemReach(void *data) { if(data) return M2C_FIELD(data,u8 *,0x1d); return 0; }
+static inline u8 Battle_ItemRange(void *data,void *unit) { u8 Item_GetRangeForUnit(void *,void *); if(data) return Item_GetRangeForUnit(data,unit); return 0; }
+
 static inline u8 Battle_ItemClass(s32 unit) {
     u8 *item = *(u8 **)(unit + 0x28C);
     return item ? item[0x13] : 0xC;
@@ -627,8 +644,12 @@ s32 Item_GetHealAmount(void *itemDef) {
     return (itemDef == Item_GetByIid(gMapAnimStr + 0x21D)) ? 0x50 : 0;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma global_optimizer on
 s32 fn_801A3F14(void *self) {
 extern void *gUnitLists[25]; extern u8 gBattleMap[];
 u8 Status_Test(void *,s32); u8 Unit_GetDistance(void *,void *);
@@ -709,7 +730,7 @@ if(members[1]!=M2C_FIELD(self,void **,0x280)){*(void **)((u8 *)self+0xcbc+out)=m
 if(members[2]!=M2C_FIELD(self,void **,0x280)) *(void **)((u8 *)self+0xcbc+out)=members[2];
 return 1;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_801A442C(void *arg0) {
     s32 fn_8005B580(s32, u8 *, s32);
     s32 fn_8005B4D8(u8);
@@ -1786,9 +1807,10 @@ void fn_801A55D4(void *arg0, void *arg1, void *arg2, s32 arg3) {
     *(s16 *)((u8 *)arg1 + 0x2CE) =
         (s16)(*(s16 *)((u8 *)arg1 + 0x2CE) + *(s16 *)((u8 *)arg1 + 0x2AA));
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
-void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
+void fn_801A601C(s32 self, s32 u1, s32 u2, u8 flag) {
     u64 *Item_GetFlagsPtr(void *);
     void fn_80033E70(s32);
     void fn_80033E90(s32, s32);
@@ -1805,19 +1827,11 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     extern s8 lbl_80297240[];
     extern u16 gBattle[];
 
-    s32 self;
-    s32 u1;
-    s32 u2;
-    u8 flag;
     void *p;
     s8 *row;
     u8 cur;
     u8 cls;
 
-    self = arg0;
-    u1 = arg1;
-    u2 = arg2;
-    flag = arg3;
 
     if (!(*(u32 *)(self + 0xCAC) & 1)) {
         row = lbl_80297240;
@@ -1827,42 +1841,22 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         *(s16 *)(u2 + 0x2C4) = 0;
         if (*(void **)(u1 + 0x28C) != NULL) {
             if (*(void **)(u2 + 0x28C) != NULL) {
-                goto loop_incr;
+                goto loop_test;
             }
         }
         goto after_table;
     loop_body:
-        p = *(void **)(u1 + 0x28C);
-        if (p != NULL) {
-            cls = ((u8 *)p)[0x13];
-        } else {
-            cls = 0xC;
-        }
-        if ((s8)cur == cls) {
-            p = *(void **)(u2 + 0x28C);
-            if (p != NULL) {
-                cls = ((u8 *)p)[0x13];
-            } else {
-                cls = 0xC;
-            }
-            if (*(s8 *)(row + 1) == (s32)cls) {
+        cls = Battle_ItemClass(u1);
+        if (cls == (s8)cur) {
+            cls = Battle_ItemClass(u2);
+            if ((s32)cls == *(s8 *)(row + 1)) {
                 *(s16 *)(u1 + 0x2C2) = *(s8 *)(row + 3);
                 *(s16 *)(u1 + 0x2C4) = *(s8 *)(row + 2);
             }
         }
-        p = *(void **)(u2 + 0x28C);
-        if (p != NULL) {
-            cls = ((u8 *)p)[0x13];
-        } else {
-            cls = 0xC;
-        }
-        if (*(s8 *)(row + 0) == (s32)cls) {
-            p = *(void **)(u1 + 0x28C);
-            if (p != NULL) {
-                cls = ((u8 *)p)[0x13];
-            } else {
-                cls = 0xC;
-            }
+        cls = Battle_ItemClass(u2);
+        if ((s32)cls == *(s8 *)(row + 0)) {
+            cls = Battle_ItemClass(u1);
             if (*(s8 *)(row + 1) == (s32)cls) {
                 *(s16 *)(u2 + 0x2C2) = *(s8 *)(row + 3);
                 *(s16 *)(u2 + 0x2C4) = *(s8 *)(row + 2);
@@ -1870,6 +1864,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         }
     loop_incr:
         row += 4;
+    loop_test:
         cur = *(u8 *)row;
         if ((s8)cur >= 0) {
             goto loop_body;
@@ -1912,7 +1907,7 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
     }
     if (flag == 0) {
         fn_80033E90(self + 0x8A0, 0x55);
-        if (*(u8 *)(u1 + 0x2B7) != Unit_GetMaxHp(u1)) {
+        if (*(u8 *)(u1 + 0x2B7) != (s8)Unit_GetMaxHp(u1)) {
             BattleAnim_Queue(self + 0x8A0, 0x59, Unit_GetMaxHp(u1));
         }
         {
@@ -1923,30 +1918,34 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         }
         {
             s16 a = *(s16 *)(u1 + 0x2BA);
-            if (a != *(s16 *)(u1 + 0x298)) {
-                BattleAnim_Queue(self + 0x8A0, 0x5B, *(s16 *)(u1 + 0x298));
+            s16 b = *(s16 *)(u1 + 0x298);
+            if (a != b) {
+                BattleAnim_Queue(self + 0x8A0, 0x5B, (s8)b);
             }
         }
         {
             s16 a = *(s16 *)(u1 + 0x2BC);
-            if (a != *(s16 *)(u1 + 0x29A)) {
-                BattleAnim_Queue(self + 0x8A0, 0x5C, *(s16 *)(u1 + 0x29A));
+            s16 b = *(s16 *)(u1 + 0x29A);
+            if (a != b) {
+                BattleAnim_Queue(self + 0x8A0, 0x5C, (s8)b);
             }
         }
         {
             s16 a = *(s16 *)(u1 + 0x2BE);
-            if (a != *(s16 *)(u1 + 0x2A2)) {
-                BattleAnim_Queue(self + 0x8A0, 0x5D, *(s16 *)(u1 + 0x2A2));
+            s16 b = *(s16 *)(u1 + 0x2A2);
+            if (a != b) {
+                BattleAnim_Queue(self + 0x8A0, 0x5D, (s8)b);
             }
         }
         {
             s16 a = *(s16 *)(u1 + 0x2C0);
-            if (a != *(s16 *)(u1 + 0x2A8)) {
-                BattleAnim_Queue(self + 0x8A0, 0x5E, *(s16 *)(u1 + 0x2A8));
+            s16 b = *(s16 *)(u1 + 0x2A8);
+            if (a != b) {
+                BattleAnim_Queue(self + 0x8A0, 0x5E, (s8)b);
             }
         }
         if (!(*(u32 *)(self + 0xCAC) & 1)) {
-            if (*(u8 *)(u2 + 0x2B7) != Unit_GetMaxHp(u2)) {
+            if (*(u8 *)(u2 + 0x2B7) != (s8)Unit_GetMaxHp(u2)) {
                 BattleAnim_Queue(self + 0x8A0, 0x60, Unit_GetMaxHp(u2));
             }
             {
@@ -1957,26 +1956,30 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
             }
             {
                 s16 a = *(s16 *)(u2 + 0x2BA);
-                if (a != *(s16 *)(u2 + 0x298)) {
-                    BattleAnim_Queue(self + 0x8A0, 0x62, *(s16 *)(u2 + 0x298));
+                s16 b = *(s16 *)(u2 + 0x298);
+                if (a != b) {
+                    BattleAnim_Queue(self + 0x8A0, 0x62, (s8)b);
                 }
             }
             {
                 s16 a = *(s16 *)(u2 + 0x2BC);
-                if (a != *(s16 *)(u2 + 0x29A)) {
-                    BattleAnim_Queue(self + 0x8A0, 0x63, *(s16 *)(u2 + 0x29A));
+                s16 b = *(s16 *)(u2 + 0x29A);
+                if (a != b) {
+                    BattleAnim_Queue(self + 0x8A0, 0x63, (s8)b);
                 }
             }
             {
                 s16 a = *(s16 *)(u2 + 0x2BE);
-                if (a != *(s16 *)(u2 + 0x2A2)) {
-                    BattleAnim_Queue(self + 0x8A0, 0x64, *(s16 *)(u2 + 0x2A2));
+                s16 b = *(s16 *)(u2 + 0x2A2);
+                if (a != b) {
+                    BattleAnim_Queue(self + 0x8A0, 0x64, (s8)b);
                 }
             }
             {
                 s16 a = *(s16 *)(u2 + 0x2C0);
-                if (a != *(s16 *)(u2 + 0x2A8)) {
-                    BattleAnim_Queue(self + 0x8A0, 0x65, *(s16 *)(u2 + 0x2A8));
+                s16 b = *(s16 *)(u2 + 0x2A8);
+                if (a != b) {
+                    BattleAnim_Queue(self + 0x8A0, 0x65, (s8)b);
                 }
             }
             fn_801A859C(u2);
@@ -1985,9 +1988,10 @@ void fn_801A601C(s32 arg0, s32 arg1, s32 arg2, u8 arg3) {
         fn_80033E70(self + 0x8A0);
     }
 }
-
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma pop
+#pragma optimization_level reset
+#pragma global_optimizer reset
+#pragma use_lmw_stmw reset
 void Battle_PerformAttacks(void *arg0, void *arg1, void *arg2) {
     u8 Rand_Chance(s32);
     u64 *Item_GetFlagsPtr(void *);
