@@ -3727,14 +3727,8 @@ static inline void *fn_80065EE8_Body(void *res, char *p) {
     return res;
 }
 #pragma inline_depth(4)
-void *fn_80065EE8(void *arg0) {
-    void fn_80065F48(void *);
-    void *result = (void *)fn_8005C82C(arg0, 0);
-    if ((FileCache_GetFlags((char *)arg0) & 0x4000) == 0) {
-        fn_80065F48(result);
-        FileCache_MarkRelocated((char *)arg0);
-    }
-    return result;
+void *fn_80065EE8(char *arg0) {
+    return fn_80065EE8_Body((void *)fn_8005C82C(arg0, 0), arg0);
 }
 #pragma inline_depth(0)
 
