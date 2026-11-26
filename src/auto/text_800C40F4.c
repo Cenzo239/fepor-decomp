@@ -14784,25 +14784,23 @@ void fn_800E29EC(void *arg0, s32 *arg1) {
 extern f32 lbl_80369F00;
 extern f32 lbl_80369F04;
 extern f64 lbl_80369F08;
-void fn_800E2A00(Unit *unit, void *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
-    s32 temp_r24;
-    s32 temp_r25;
-    s32 temp_r26;
-    s32 temp_r27;
-    s32 temp_r3;
+void fn_800E2A00(Unit *unit, const s32 *arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5) {
+    s32 w;
+    s32 h;
+    s32 x;
+    s32 y;
 
-    temp_r24 = *(s32 *)((u8 *)arg1 + 4);
-    temp_r25 = *(s32 *)((u8 *)arg1 + 0);
-    temp_r3 = *(s32 *)((u8 *)arg1 + 8);
-    temp_r26 = *(s32 *)((u8 *)arg1 + 0xC) - temp_r24;
-    temp_r27 = temp_r3 - temp_r25;
-    
-    Prim2D_Begin(0x1E);
+    y = arg1[1];
+    h = arg1[3] - y;
+    x = arg1[0];
+    w = arg1[2] - x;
+
+    Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369F00, lbl_80369F00, (f32) *(s32 *)((u8 *)unit + 0x44), lbl_80369F04);
     Prim2D_SetTex(0, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32) temp_r25, (f32) temp_r24, (f32) temp_r27, (f32) temp_r26);
+    Prim2D_SetRect((f32) x, (f32) y, (f32) w, (f32) h);
     Prim2D_SetColor(arg2, arg3, arg4, arg5);
     Prim2D_EndPrim();
 }
@@ -15826,8 +15824,12 @@ extern "C" void *fn_800E45EC(void *arg0, s16 arg1) {
 }
 #pragma cplusplus reset
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 #pragma use_lmw_stmw off
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void fn_800E2CF4(void);
     void String_Init(String *, char *, void *);
@@ -15837,7 +15839,7 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     s32 String_Compare(String *, u32, u32, char *, u32);
     char *String_CStr(String *);
     void *Heap_Alloc(s32);
-    void ObjList_Init(void *);
+    void *ObjList_Init(void *);
     void fn_800DF6B8(String *, void *);
     void String_Assign(String *, String *, s32, s32);
     u32 strlen(char *);
@@ -15867,9 +15869,9 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     void *alloc10;
     void *allocC;
     void *alloc8;
-    void *cb;
-    void *path;
     void *self;
+    void *path;
+    void *cb;
     s32 r28;
     char *p2;
     void *obj;
@@ -15901,18 +15903,22 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     len = strlen((char *)r28);
     String_AssignCStr(&str44, (char *)r28, len);
     String_Destroy(&str2C, -1);
-    if (String_Compare(&str50, 0, str50.size, lbl_80271FC0 + 0x19, strlen(lbl_80271FC0 + 0x19)) == 0) {
+    len = strlen(lbl_80271FC0 + 0x19);
+    p2 = lbl_80271FC0;
+    if (String_Compare(&str50, 0, str50.size, p2 + 0x19, len) == 0) {
         String_AssignCStr(&str50, lbl_80271FC0 + 0x1A, strlen(lbl_80271FC0 + 0x1A));
     }
-    if (String_Compare(&str44, 0, str44.size, lbl_80271FC0 + 0x19, strlen(lbl_80271FC0 + 0x19)) != 0) {
-        p2 = String_CStr(&str44);
-        obj = ((Obj10 *)cb)->v2(String_CStr(&str50), p2);
+    len = strlen(lbl_80271FC0 + 0x19);
+    p2 = lbl_80271FC0;
+    if (String_Compare(&str44, 0, str44.size, p2 + 0x19, len) != 0) {
+        r28 = (s32)String_CStr(&str44);
+        obj = ((Obj10 *)cb)->v2(String_CStr(&str50), (char *)r28);
         *(void **)((u8 *)self + 0x54) = obj;
         cb = *(void **)((u8 *)self + 0x54);
         if (*(void **)((u8 *)cb + 0xA0) == NULL) {
             list = Heap_Alloc(0x14);
             if (list != NULL) {
-                ObjList_Init(list);
+                list = ObjList_Init(list);
             }
             *(void **)((u8 *)cb + 0xA0) = list;
         }
@@ -15947,8 +15953,8 @@ extern "C" void *fn_800E4688(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&str50, -1);
     return self;
 }
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 u8 fn_800E49D0(void) {
     u8 *Light_GetChannel(s32);
@@ -23865,18 +23871,21 @@ ret=*(void **)(out+4)!=0;
 Item_Destroy(weapon,-1);return ret;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
-  extern u8 gAiState[],gUiContext[],gBattleMap[];
-  int Abs(int);
-  void *Item_Destroy(void *,s16);
-  u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
-  void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
-  void fn_800FDDBC(s8,s8,u8,u8,s32);
+void fn_800FDDBC(s32,s32,s32,s32,s32);
+int Abs(int);
+void *Item_Destroy(void *,s32);
+extern u8 gAiState[],gUiContext[],gBattleMap[];
+u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
+void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
 struct {u8 x,y;u16 item;u8 *unit;s32 score;} result;
 struct {void *ptr;u32 state;} weapon;
 u8 flags[8];
-u8 *ctx=gUiContext; u8 *map; u8 *self;
-s32 score; u8 *best; u8 bx,by;u16 item; s32 id; u8 b; s32 a=(s32)gBattleMap; u8 outside,cx,cy,r,t,range; int dy,dist; u8 ret;
+u8 *ctx=gUiContext; u8 *map; u8 *self; u8 *unit;
+u8 ret; s32 score; u8 *best; u8 bx,by;u16 item; s32 id; s32 a=(s32)gBattleMap; u8 b; u8 outside,cx,cy,r,t; s32 range; int dy,dist;
 score=(s32)0x80000000; best=0;
 ctx[8]=arg2; self=*(u8 **)ctx;
 if((gAiState[1]&2)||(M2C_FIELD(self,u32 *,0x254)&0x3000000)){
@@ -23888,26 +23897,27 @@ result.item=M2C_FIELD(weapon.ptr,u16 *,14);
 Allegiance_FillMask(1,flags);
 map=gBattleMap;
 for(id=1;id<=159;id++){
-u8 *unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
+unit=(u8)id?gUnits+((u8)id-1)*0x280:0;
 if(!M2C_FIELD(unit,u32 *,0x188)||!flags[M2C_FIELD(M2C_FIELD(unit,u8 **,0x190),u8 *,8)]||!arg0(unit))continue;
 a=unit[0x19E];b=self[0x19E];
 dy=Abs((s8)self[0x19F]-(s8)unit[0x19F]);
-a=dy+Abs((s8)b-(s8)a);
+dist=Abs((s8)b-(s8)a);
+a=dist+dy;
 range=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,self):0;
-if(a>range+(s8)Unit_GetMov(self) || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
+if(a>(s8)Unit_GetMov(self)+(u8)range || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
 outside=0;cx=unit[0x19E];cy=unit[0x19F];
 if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
 if(outside)continue;
 r=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
-fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
+cx=unit[0x19E];cy=unit[0x19F];
+fn_800FDDBC((s8)cx,(s8)cy,t,r,6);
 result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
 if(best)fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19E],best[0x19F],(s8)item,0,0);
-a=gAiState[0x21C];Item_Destroy(&weapon,-1);return a;
+ret=gAiState[0x21C];Item_Destroy(&weapon,-1);return ret;
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
     void Map_FillLayer(void *, s32, s32);
     void Map_SelectRangeBuffer(void *, s32);
@@ -27436,7 +27446,7 @@ if(!gAiCmdIsAlt) obj[0x250]=index; else obj[0x251]=index;
 void fn_800FAD94(void *arg0) {
     extern s8 gUiContext[];
     extern u8 *gAiCmd;
-    extern u8 gAiState[];
+    extern struct { s32 pad[2]; s32 arr[1]; } gAiState;
     extern s32 gAiCmdIsAlt;
     extern u8 gTargetList[];
     s32 fn_80102DFC(s32, s32, s32, s32);
@@ -27448,14 +27458,16 @@ void fn_800FAD94(void *arg0) {
     s32 cmdC;
     s32 x;
     s32 y;
+    s32 cond;
 
     unit = (u8 *)arg0;
     cmd = gAiCmd;
     x = gUiContext[0xD];
     y = gUiContext[0xE];
+    cond = *(s32 *)(cmd + 0x10) != 0;
     cmdC = *(s32 *)(cmd + 0xC);
 
-    if ((u8)fn_80102DFC(x, y, cmdC, *(s32 *)(cmd + 0x10) != 0)) {
+    if ((u8)fn_80102DFC(x, y, cmdC, cond)) {
         s32 ty = y;
         if (*(s32 *)(cmd + 0x10) != 0) {
             x = TargetList_GetCurrent(gTargetList)[0];
@@ -27463,7 +27475,7 @@ void fn_800FAD94(void *arg0) {
         }
         Ai_SetDecision((u8)cmdC, (s32)unit, x, ty, -1, 0, 0);
     } else {
-        *(s32 *)(gAiState + (*(s32 *)(cmd + 4) << 2) + 8) = 9;
+        gAiState.arr[*(s32 *)(cmd + 4)] = 9;
     }
 
     if (gAiCmdIsAlt == 0) {
