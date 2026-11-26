@@ -44,11 +44,12 @@ static inline void PAD_ResetNext(u8 *base) {
     void fn_802121E0(s32, u32);
     void fn_8023C188(s32, void (*)(s32, u32));
     void *memset(void *, int, u32);
+    u8 *origin;
     u32 pending = lbl_80368670;
     lbl_80366FA4 = __cntlzw(pending);
     if (lbl_80366FA4 != 32) {
-        u8 *origin = base + lbl_80366FA4 * 12;
         lbl_80368670 = pending & ~(0x80000000U >> lbl_80366FA4);
+        origin = base + lbl_80366FA4 * 12;
         memset(origin + 16, 0, 12);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
@@ -354,7 +355,6 @@ void fn_80212108(s32 chan, u32 type) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma opt_strength_reduction off
 void fn_802121E0(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     void fn_8023B804(s32, u32);
@@ -380,6 +380,7 @@ void fn_802121E0(s32 chan, u32 type) {
     u8 *origin;
     u8 *command;
     s32 chanIdx;
+    u32 savedType;
     u32 chanBit;
     u32 mask;
     s32 result;
@@ -393,36 +394,18 @@ void fn_802121E0(s32 chan, u32 type) {
     mask &= chanBit;
     result = 1;
     if (type & 0xF) {
-        lbl_80366FA4 = __cntlzw(lbl_80368670);
-        if (lbl_80366FA4 != 0x20) {
-            lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-            origin = padType + lbl_80366FA4 * 0xC;
-            memset(origin + 0x10, 0, 0xC);
-            fn_8023C188(lbl_80366FA4, fn_802121E0);
-        }
+        PAD_ResetNext(padType);
     } else {
         type &= 0xFFFFFF00;
         ((u32 *)padType)[chanIdx] = type;
         if (((type & 0x18000000) != 0x08000000) || !(type & 0x01000000)) {
-            lbl_80366FA4 = __cntlzw(lbl_80368670);
-            if (lbl_80366FA4 != 0x20) {
-                lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-                origin = padType + lbl_80366FA4 * 0xC;
-            memset(origin + 0x10, 0, 0xC);
-                fn_8023C188(lbl_80366FA4, fn_802121E0);
-            }
+            PAD_ResetNext(padType);
         } else if (lbl_80366FB0 < 2) {
             EnabledBits |= chanBit;
             fn_8023BA70(chanIdx, sr);
             fn_8023B804(chanIdx, PADSpec | 0x400000);
             fn_8023B894(EnabledBits);
-            lbl_80366FA4 = __cntlzw(lbl_80368670);
-            if (lbl_80366FA4 != 0x20) {
-                lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-                origin = padType + lbl_80366FA4 * 0xC;
-            memset(origin + 0x10, 0, 0xC);
-                fn_8023C188(lbl_80366FA4, fn_802121E0);
-            }
+            PAD_ResetNext(padType);
         } else {
             if (!(type & 0x80000000) || (type & 0x04000000)) {
                 if (mask) {
