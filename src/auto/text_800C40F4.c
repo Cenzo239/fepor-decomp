@@ -10228,16 +10228,9 @@ void fn_800DB228(void *arg0) {
     s32 Text_MeasureWidth(void *, s32, f32);
     extern const f32 lbl_80369E60;
 
-    u8 *self;
-    u8 *obj;
-    s32 halfWidth;
-    s32 offset;
-    s32 y;
-    void **vtable;
-
-    self = (u8 *)arg0;
-    obj = fn_800E7E4C(*(void **)self, self + 0x1C);
-    halfWidth = 0;
+    u8 *self = (u8 *)arg0;
+    u8 *obj = fn_800E7E4C(*(void **)self, self + 0x1C);
+    s32 halfWidth = 0;
 
     if (self[0xB9] != 0) {
         halfWidth = -Text_MeasureWidth(
@@ -10247,15 +10240,10 @@ void fn_800DB228(void *arg0) {
         ) / 2;
     }
 
-    offset = (s32)((f32)halfWidth + (*(f32 *)(*(u8 **)(self + 0x38) + 0x68) + (f32)(*(s32 *)(self + 0x48) + *(s32 *)(obj + 0x60))));
-    y = *(s32 *)(self + 0x4C) + *(s32 *)(obj + 0x64);
-    vtable = *(void ***)(self + 0x40);
-
-    ((void (*)(void *, s32, s32, void *, u8, s32, f32))
-        vtable[8])(
+    ((void (*)(void *, s32, s32, void *, u8, s32, f32))(*(void ***)(self + 0x40))[8])(
         self,
-        offset,
-        y,
+        (s32)((f32)halfWidth + (*(f32 *)(*(u8 **)(self + 0x38) + 0x68) + (f32)(*(s32 *)(self + 0x48) + *(s32 *)(obj + 0x60)))),
+        *(s32 *)(self + 0x4C) + *(s32 *)(obj + 0x64),
         self + 0xAC,
         self[0xB8],
         6,
@@ -22929,32 +22917,32 @@ void MapCursor_InitTrail(s8 arg0, s8 arg1, s8 arg2) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 void fn_800F0C54(u8 *arg0) {
-void fn_8006ECCC(s32,void *,s32); void fn_802025C0(void *,f32,f32,f32); void fn_80202540(void *,f32,f32,f32);
-void *fn_80067FDC(void); void fn_80202024(void *,void *,void *); f32 fn_8002300C(void *,u8,u8,s32);
-extern s32 lbl_803674F0; extern const f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 lbl_802CA518[];
+void Ui_LoadAtlasTex(s32,void *,s32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
+void *Camera_GetViewMtx(void); void PSMTXConcat(void *,void *,void *); f32 Map_GetTileCornerHeight(void *,u8,u8,s32);
+extern s32 gUiRouteAtlas; extern const f32 lbl_8036A020,lbl_8036A024,lbl_8036A028,lbl_8036A02C; extern u8 gBattleMap[];
 f32 sp58[12],sp28[12]; u8 sp8[32]; u8 *p; u8 x,y; s32 i; 
 f32 one,fx,fy,fx1,fy1,z;
-fn_8006ECCC(lbl_803674F0,sp8,0);
-fn_8021FBB8();fn_8021F4E4(9,1);fn_8021F4E4(13,1);fn_8021FBF0(0,9,1,4,0);fn_8021FBF0(0,13,1,1,0);
-fn_80222334(1);fn_80222370(4,0,0,0,0,0,2);fn_802240C8(1);fn_802239D0(0,3);fn_80223F2C(0,0,0,255);
-fn_80220428(1);fn_802201A8(0,1,4,30,0,125);
-fn_802025C0(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
-fn_80202540(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);fn_80202024(fn_80067FDC(),sp28,sp28);
-fn_80224D7C(sp28,0);fn_80224E1C(0);fn_802245D8(1,4,5,0);
+Ui_LoadAtlasTex(gUiRouteAtlas,sp8,0);
+GXClearVtxDesc();GXSetVtxDesc(9,1);GXSetVtxDesc(13,1);GXSetVtxAttrFmt(0,9,1,4,0);GXSetVtxAttrFmt(0,13,1,1,0);
+GXSetCullMode(1);GXSetBlendMode(4,0,0,0,0,0,2);GXSetNumTevStages(1);GXSetNumTexGens(0,3);GXSetTevOrder(0,0,0,255);
+GXSetNumChans(1);fn_802201A8(0,1,4,30,0,125);
+PSMTXScale(sp58,lbl_8036A020,lbl_8036A024,lbl_8036A024);fn_80224E50(sp58,30,1);fn_8022100C(0);fn_80222C50(sp8,0);
+PSMTXTrans(sp28,lbl_8036A028,lbl_8036A028,lbl_8036A02C);PSMTXConcat(Camera_GetViewMtx(),sp28,sp28);
+GXLoadPosMtxImm(sp28,0);GXSetCurrentMtx(0);fn_802245D8(1,4,5,0);
 
 for(i=0;i<=(s8)arg0[0x100];i++){
 p=arg0+i; x=p[0];y=p[0x40]; fx=(s8)x;fy=(s8)y;fx1=lbl_8036A024+fx;fy1=lbl_8036A024+fy;
-fn_80220DEC(0x98,0,4);
-z=fn_8002300C(lbl_802CA518,x,y,0);
+GXBegin(0x98,0,4);
+z=Map_GetTileCornerHeight(gBattleMap,x,y,0);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=0;
-z=fn_8002300C(lbl_802CA518,x,y,1);
+z=Map_GetTileCornerHeight(gBattleMap,x,y,1);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=0;
-z=fn_8002300C(lbl_802CA518,x,y,2);
+z=Map_GetTileCornerHeight(gBattleMap,x,y,2);
 *(f32 *)0xCC008000=fx;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0];*(u8 *)0xCC008000=1;
-z=fn_8002300C(lbl_802CA518,x,y,3);
+z=Map_GetTileCornerHeight(gBattleMap,x,y,3);
 *(f32 *)0xCC008000=fx1;*(f32 *)0xCC008000=fy1;*(f32 *)0xCC008000=z;
 *(u8 *)0xCC008000=p[0xC0]+1;*(u8 *)0xCC008000=1;
 }fn_80066D00(-1);
@@ -29750,9 +29738,10 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     s32 *j;
     s32 *a;
     s32 *b;
-    s32 n;
-    s32 quarter;
     s32 r;
+    s32 quarter;
+    s32 n;
+    s32 threeQuarter;
     s32 tmp;
 
     while (1) {
@@ -29776,8 +29765,8 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
             lbl_80367910 = -4;
         }
         r = lbl_80367910;
-        n = (n * 3) / 4;
-        b = begin + (n + (r % 5));
+        threeQuarter = (n * 3) / 4;
+        b = begin + (threeQuarter + (r % 5));
         lbl_80367910 = r + 1;
         if (r + 1 >= 5) {
             lbl_80367910 = -4;
