@@ -4399,8 +4399,4 @@ extern void* lbl_8027EE08;
 #include "common.h"
 
 s32 gUiInputFlags;
-static inline s32 PopupFromWidgets_801EC6D4(const char *msg, void *a, void *b) {
-void Ui_CreateMsgPopup(const char *, void *, f32, f32);
-Ui_CreateMsgPopup(msg,a,(f32)(*(s16*)((u8*)a+0x30)+*(s16*)((u8*)b+0x30)),(f32)(*(s16*)((u8*)a+0x32)+*(s16*)((u8*)b+0x32)));
-return 0x10;
-}
+
