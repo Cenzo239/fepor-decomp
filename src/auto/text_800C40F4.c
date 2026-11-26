@@ -11151,8 +11151,8 @@ void fn_800DC7C4(void *arg0, s32 arg1, s32 arg2) {
     s32 temp_r5;
     u8 hit;
 
-    M2C_FIELD(arg0, s32 *, 0x80) = M2C_FIELD(arg0, s32 *, 0x104);
     hit = 0;
+    M2C_FIELD(arg0, s32 *, 0x80) = M2C_FIELD(arg0, s32 *, 0x104);
     temp_r4 = arg1 - M2C_FIELD(arg0, s32 *, 0x48);
     temp_r5 = arg2 - M2C_FIELD(arg0, s32 *, 0x4C);
 
@@ -12176,7 +12176,7 @@ loop_check:
     return self;
 }
 
-void *fn_800DE4F0(void *arg0, void *arg1, String *arg2, String *arg3)
+void *fn_800DE4F0(u8 *self, void *arg1, String *arg2, String *arg3)
 {
     void *String_Init(void *, char *, void *);
     void *String_Destroy(void *, s32);
@@ -12210,10 +12210,8 @@ void *fn_800DE4F0(void *arg0, void *arg1, String *arg2, String *arg3)
     u32 scratchC;
     u32 scratch8;
 
-    u8 *self;
     String *name;
 
-    self = (u8 *)arg0;
     name = arg3;
 
     String_Init(
@@ -26160,99 +26158,55 @@ void fn_800F8994(void *arg0) {
 #pragma dont_inline on
 #pragma global_optimizer off
 void fn_800F8C3C(void *unit) {
-    s8 Unit_GetMov(void *);
-    void fn_80101014(int, int, void *, int, int, u8, int, u8, u8, int);
-    u8 *fn_8001FC7C(void *, u8 *, s8, s8);
-    void fn_800FB96C(u8, s8, s8, s32, s8, s8, s32, s32, s32);
-    extern u8 gAiState[];
-    extern u8 *gAiCmd;
-    extern u8 gUiContext[];
-    extern u8 gBattleMap[];
-    extern s32 gAiCmdIsAlt;
-    u8 *cmd;
-    u8 *map;
-    u8 *ctx;
-    u8 *ai;
-    u8 *ptr;
-    s16 *path;
-    s16 mov;
-    s8 x;
-    s8 y;
-    s8 bx;
-    s8 by;
-    s16 px;
-    s16 py;
-    u8 flag;
-    s32 dx;
-    s32 dy;
-    u16 idx;
-    s32 cmdVal;
-    u8 *entry;
-
-    cmd = gAiCmd;
-    if (!(gAiState[1] & 2) && !(*(u32 *)((u8 *)unit + 0x254) & 0x03000000)) {
-        ptr = (u8 *)unit + 0x260;
-        path = *(s16 **)(cmd + 0x14);
-        cmdVal = *(s32 *)(cmd + 0xc);
-        if ((s16)cmdVal < 0) {
-            mov = (s8)Unit_GetMov(unit);
-        } else {
-            mov = (s16)cmdVal;
-        }
-        x = ((u8 *)unit)[0x19E];
-        y = ((u8 *)unit)[0x19F];
-        ai = gAiState;
-        ctx = gUiContext;
-        map = gBattleMap;
-        flag = 0;
-    loop:
-        idx = *(u16 *)((u8 *)unit + 0x25A);
-        entry = (u8 *)path + ((u16)idx << 2);
-        px = *(s16 *)entry;
-        py = *(s16 *)(entry + 2);
-        fn_80101014(x, y, unit, px, py, 1, *(u16 *)(ai + 4), 1, 0, mov);
-        if (ai[0x21C] != 0) {
-            bx = x;
-            by = y;
-            x = (s8)ctx[0xD];
-            y = (s8)ctx[0xE];
-            flag = 1;
-            if ((s16)bx != x || (s16)by != y) {
-                fn_8001FC7C(map, ptr, x, y);
-                while (*ptr != 0x10) {
-                    ptr++;
-                }
-                dy = py - y;
-                if (dy < 0) {
-                    dy = -dy;
-                }
-                dx = px - x;
-                if (dx < 0) {
-                    dx = -dx;
-                }
-                if (dx + dy <= *(s32 *)(cmd + 4)) {
-                    idx = *(u16 *)((u8 *)unit + 0x25A);
-                    idx = idx + 1;
-                    if (*(s16 *)((u8 *)path + ((u16)idx << 2)) < 0) {
-                        idx = 0;
-                    }
-                    *(u16 *)((u8 *)unit + 0x25A) = idx;
-                    mov = mov - *(s16 *)(map + ((x + (y << 6)) * 2) + 0x610E);
-                    if (mov > 0) {
-                        goto loop;
-                    }
-                }
-            }
-        }
-        if (flag != 0) {
-            fn_800FB96C(ctx[8], x, y, 0, x, y, -1, 0, 0);
-        }
-    }
-    if (gAiCmdIsAlt == 0) {
-        ((u8 *)unit)[0x250]++;
-    } else {
-        ((u8 *)unit)[0x251]++;
-    }
+s8 Unit_GetMov(void *);
+void fn_80101014(int,int,void*,int,int,u8,int,u8,u8,int);
+u8 *fn_8001FC7C(void*,u8*,s8,s8);
+void fn_800FB96C(u8,s8,s8,s32,s8,s8,s32,s32,s32);
+extern u8 gAiState[],gUiContext[],gBattleMap[];
+extern u8 *gAiCmd;
+extern s32 gAiCmdIsAlt;
+u8 *cmd,*map,*ctx,*ai,*ptr;
+s16 *path;
+s16 mov;
+s32 x,y;
+s32 bx,by;
+s16 px,py;
+u8 flag;
+s32 dx,dy;
+u16 idx;
+s32 cmdVal;
+u8 *entry;
+cmd=gAiCmd;
+if (!(gAiState[1]&2) && !(*(u32*)((u8*)unit+0x254)&0x03000000)) {
+ptr=(u8*)unit+0x260;
+path=*(s16**)(cmd+0x14);
+cmdVal=*(s32*)(cmd+0xc);
+mov=(s16)((s16)cmdVal<0 ? (s8)Unit_GetMov(unit):(s16)cmdVal);
+x=*(s8*)((u8*)unit+0x19e); y=*(s8*)((u8*)unit+0x19f);
+ai=gAiState;ctx=gUiContext;map=gBattleMap;flag=0;
+loop:
+idx=*(u16*)((u8*)unit+0x25a);
+entry=(u8*)path+(idx<<2);
+px=*(s16*)entry;py=*(s16*)(entry+2);
+fn_80101014(x,y,unit,px,py,1,*(u16*)(ai+4),1,0,mov);
+if(ai[0x21c]) {
+bx=x;by=y;x=*(s8*)(ctx+0xd);y=*(s8*)(ctx+0xe);flag=1;
+if((s16)bx!=x || (s16)by!=y) {
+fn_8001FC7C(map,ptr,x,y);
+while(*ptr!=0x10)ptr++;
+dy=py-y;if(dy<0)dy=-dy;
+dx=px-x;if(dx<0)dx=-dx;
+if(dx+dy<=*(s32*)(cmd+4)) {
+idx=*(u16*)((u8*)unit+0x25a);idx++;
+if(*(s16*)((u8*)path+(idx<<2))<0)idx=0;
+*(u16*)((u8*)unit+0x25a)=idx;
+mov-=Map_ReadAiRange_800F9574(map+((x+(y<<6))*2));
+if(mov>0)goto loop;
+}}}
+if(flag)fn_800FB96C(gUiContext[8],x,y,0,x,y,-1,0,0);
+}
+if(gAiCmdIsAlt==0)((u8*)unit)[0x250]++;
+else ((u8*)unit)[0x251]++;
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
@@ -26511,130 +26465,56 @@ void fn_800F94D4(void *arg0) {
 #pragma push
 #pragma optimization_level 3
 #pragma opt_strength_reduction off
-void fn_800F9574(void *arg0)
-{
-    extern u8 gAiState[];
-    extern u8 gBattleMap[];
-    extern s32 gAiCmdIsAlt;
-
-    void Map_BuildUnitMoveRange(void *, s32, s32);
-    s8 Unit_GetMov(void *);
-    u8 Map_IsAiTerrainBlocked(s8, s8);
-    s32 Rand_Range(s32);
-    void fn_800FB96C(s8, s8, s8, s32, s8, s8, s8, s8, u8);
-
-    u8 *unit;
-    u8 *map;
-    u8 *cell;
-    u8 *row;
-    s32 x;
-    s32 y;
-    s32 ux, uy;
-    s32 mov;
-    s32 minX;
-    s32 minY;
-    s32 maxX;
-    s32 maxY;
-    s32 best;
-    s32 random;
-    s16 bestX;
-    s16 bestY;
-
-    unit = (u8 *)arg0;
-
-    if ((gAiState[1] & 2) == 0 &&
-        (*(u32 *)(unit + 0x254) & 0x03000000) == 0) {
-
-        Map_BuildUnitMoveRange(unit, 5, -1);
-
-        ux = *(s8 *)(unit+0x19E);
-        uy = *(s8 *)(unit+0x19F);
-
-        best = -1;
-
-        mov = (s8)Unit_GetMov(unit);
-
-
-        minX = ux - mov;
-
-        if (minX < (s8)gBattleMap[8]) {
-            minX = (s8)gBattleMap[8];
-        }
-
-        minY = uy - mov;
-
-        if (minY < (s8)gBattleMap[9]) {
-            minY = (s8)gBattleMap[9];
-        }
-
-        maxX = ux + mov;
-
-        if (maxX > (s8)gBattleMap[0xA] - 1) {
-            maxX = (s8)gBattleMap[0xA] - 1;
-        }
-
-        maxY = uy + mov;
-
-        if (maxY > (s8)gBattleMap[0xB] - 1) {
-            maxY = (s8)gBattleMap[0xB] - 1;
-        }
-
-        map = gBattleMap;
-        y = minY;
-
-        while (y <= maxY) {
-            x = minX;
-
-            row = map + (s8)y * 0x40;
-
-            while (x <= maxX) {
-                if (((s16 *)(map + ((s8)x + (s8)y * 0x40)*2))[0x3087] >= 0) {
-
-                    cell = row + (s8)x;
-
-                    if ((s8)cell[0xE18E] == 0) {
-                        if (!Map_IsAiTerrainBlocked(
-                                (s8)x, (s8)y)) {
-
-                            if (cell[0xD] == 0) {
-                                random = (s16)Rand_Range(0x7FFF);
-
-                                if (random >= (s16)best) {
-                                    best = random;
-                                    bestX = (s16)x;
-                                    bestY = (s16)y;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                x++;
-            }
-
-            y++;
-        }
-
-        if ((s16)best != -1) {
-            fn_800FB96C(
-                1,
-                (s8)bestX,
-                (s8)bestY,
-                0,
-                (s8)bestX,
-                (s8)bestY,
-                -1,
-                0,
-                0
-            );
-        }
-    }
-
-    if (gAiCmdIsAlt == 0) {
-        unit[0x250]++;
-    } else {
-        unit[0x251]++;
-    }
+void fn_800F9574(void *arg0) {
+extern u8 gAiState[], gBattleMap[];
+extern s32 gAiCmdIsAlt;
+void Map_BuildUnitMoveRange(void *, s32, s32);
+s8 Unit_GetMov(void *);
+u8 Map_IsAiTerrainBlocked(s8,s8);
+s32 Rand_Range(s32);
+void fn_800FB96C(s8,s8,s8,s32,s8,s8,s8,s8,u8);
+u8 *map;
+s32 row;
+u8 *rowp;
+u8 *tile;
+s32 uy;
+s16 bestX,bestY;
+s32 best;
+s32 minX,maxX,maxY,y,x,ux;
+s32 mov,minY,sx,random;
+if ((gAiState[1]&2)==0 && !(M2C_FIELD(arg0,u32 *,0x254)&0x03000000)) {
+Map_BuildUnitMoveRange(arg0,5,-1);
+ux=M2C_FIELD(arg0,s8 *,0x19e);
+uy=M2C_FIELD(arg0,s8 *,0x19f);
+best=-1;
+mov=Unit_GetMov(arg0);
+minX=ux-mov;
+if(minX<(s8)gBattleMap[8]) minX=(s8)gBattleMap[8];
+minY=uy-mov;
+if(minY<(s8)gBattleMap[9]) minY=(s8)gBattleMap[9];
+maxX=ux+mov;
+if(maxX>(s8)gBattleMap[10]-1) maxX=(s8)gBattleMap[10]-1;
+maxY=uy+mov;
+if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
+map=gBattleMap;
+for(y=minY;y<=maxY;y++){
+row=(s8)y<<6;
+rowp=map+row;
+for(x=minX;x<=maxX;x++){
+sx=(s8)x;
+if(*(s16 *)(map+2*(sx+row)+0x610e)<0) continue;
+tile=rowp+sx;
+if(*(s8 *)(tile+0xe18e)) continue;
+if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
+if(tile[13]) continue;
+random=(s16)Rand_Range(0x7fff);
+if(random<(s16)best) continue;
+best=random;bestX=x;bestY=y;
+}}
+if((s16)best!=-1) fn_800FB96C(1,(s8)bestX,(s8)bestY,0,(s8)bestX,(s8)bestY,-1,0,0);
+}
+if(gAiCmdIsAlt==0) M2C_FIELD(arg0,u8 *,0x250)++;
+else M2C_FIELD(arg0,u8 *,0x251)++;
 }
 #pragma pop
 void fn_800F977C(void *arg0) {
@@ -30497,38 +30377,42 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     return count;
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma dont_inline on
-#pragma global_optimizer off
 s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
     extern u8 gBattleMap[], gMapObjEventList[], gUnits[];
     extern s16 lbl_802732A0[];
     s32 fn_8010FF88(void *);
     u8 Ai_UnitIsHostileToActive(void *);
-    s16 *outY = arg3, *outX = arg2;
     s32 y, x, i;
-    s16 bestY, bestX, best;
     s16 *cost;
+    s16 bestY, bestX, best;
     u32 flag;
     u8 *event;
+    u8 *events;
     s32 count;
-    s16 *nb;
+    s32 j;
     u8 *map;
+    s16 *outX = arg2, *outY = arg3;
     s32 dx;
     fn_800FE074(arg0, 6, ((s32 *)gBattleMap)[0] * ((s32 *)gBattleMap)[1]);
+    event=gMapObjEventList;
+    events=event;
     map=gBattleMap;
     best = 0x7FFF;
     flag = flags & 2;
-    for (i=0, event=gMapObjEventList; i<fn_8010FF88(gMapObjEventList); i++, event+=8) {
+    for (i=0; i<fn_8010FF88(events); i++, event+=8) {
         if (event[2] != 4 || event[4] == 0) continue;
-        y=(s8)event[1]; x=(s8)event[0];
+        y=*(s8 *)(event+1); x=*(s8 *)event;
         cost=(s16 *)(gBattleMap + 0x818E + 2*(x+(y<<6)));
         if (*cost < 0) continue;
         if (flag) {
             count=0;
-            nb=lbl_802732A0;
-            while ((dx=nb[0]) != 0x7FFF) {
-                s32 oob; s32 ny; s32 nx;
-                nx=x+dx; ny=y+nb[1]; oob=0;
+            j=0;
+            while ((dx=lbl_802732A0[j]) != 0x7FFF) {
+                s32 ny; s32 oob; s32 nx;
+                nx=x+dx; ny=y+lbl_802732A0[j+1]; oob=0;
                 if (nx<(s8)map[8] || (s8)map[10]-1<nx || ny<(s8)map[9] || (s8)map[11]-1<ny) oob=1;
                 if ((u8)oob == 0) {
                     u8 id=*(gBattleMap+(s8)nx+((s8)ny<<6)+0xD);
@@ -30538,7 +30422,7 @@ s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
                         if(Ai_UnitIsHostileToActive(unit)) count++;
                     }
                 }
-                nb+=2;
+                j+=2;
             }
             if(count) continue;
         }
@@ -30547,8 +30431,7 @@ s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
     if(best!=0x7FFF) { *outX=bestX; *outY=bestY; }
     return best!=0x7FFF;
 }
-#pragma global_optimizer reset
-#pragma dont_inline reset
+#pragma pop
 void fn_80100104(s32 a0, s32 a1, s32 a2, s32 a3) {
     extern void Ai_FindActionTile(s32, s32, s32, s32, s32);
     Ai_FindActionTile(a0, a1, 0x25, a2, a3);
