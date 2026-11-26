@@ -3177,7 +3177,6 @@ s32 fn_8014716C(u8 arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 extern "C" void fn_80147188(s32 arg0) {
     void fn_800B3194(void);
     extern f32 gMsPerFrame;
