@@ -23,6 +23,13 @@ typedef struct {
     void *f7C;
 } Struct_80089490;
 
+typedef struct {
+    u8 f00[0x18];
+    u8 f18[0x18];
+    u8 f30[0x28];
+    u8 f58[4];
+} Struct_80289950;
+
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
@@ -124,11 +131,9 @@ void fn_800895B8(void) {
     extern void *lbl_803674EC;
     u8 *base = lbl_80289950;
     void *tmp;
-    s32 i;
+    s32 off = 0;
 
-    for (i = 0; i < 1; i++) {
-        lbl_803674E0 = Process_Create(base + i, 7);
-    }
+    lbl_803674E0 = Process_Create(base + off, 7);
     lbl_803674E4 = Process_Create(base + 0x58, 7);
     tmp = Process_Create(base + 0x18, 7);
     lbl_803674E8 = tmp;
