@@ -14443,6 +14443,86 @@ struct Fn_80179DEC_Ctor {
         (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
     }
 };
+struct Fn_80179DEC_Run {
+    static inline void body(void *p0, void *p1, void *p2, s32 x, s32 y, s32 z) {
+        void fn_80142060(void *);
+        extern u8 lbl_8028FDB0[];
+        extern u8 lbl_80292230[];
+        extern u8 lbl_80292208[];
+        extern u8 lbl_80293BB8[];
+        extern u8 lbl_80293B30[];
+        extern f32 gF32_1;
+        struct Obj {
+            virtual void m08() = 0;
+            virtual void m0C() = 0;
+            virtual void m10() = 0;
+            virtual void m14() = 0;
+            virtual void m18() = 0;
+            virtual void m1C() = 0;
+            virtual void m20() = 0;
+            virtual void m24() = 0;
+            virtual void m28() = 0;
+        };
+        u8 *p = (u8 *)p0;
+        u8 *pCall = (u8 *)p1;
+        u8 *pMid = (u8 *)p2;
+        s32 e1 = (s16)x;
+        s32 e2 = (s16)y;
+        s32 i;
+        for (i = 0; i < 1; i++) {
+            *(void **)p = lbl_8028FDB0;
+            *(s32 *)(p + 4) = 0;
+            *(void **)p = lbl_80292230;
+            *(s16 *)(p + 8) = -1;
+            *(s16 *)(p + 0xA) = (s16)x;
+            *(s16 *)(p + 0xC) = (s16)y;
+            *(s16 *)(p + 0xE) = (s16)(e1 + 0x108);
+            *(s16 *)(p + 0x10) = (s16)(e2 + 0x110);
+            *(s16 *)(p + 0x12) = 0;
+            *(s16 *)(p + 0x14) = 0;
+            *(s16 *)(p + 0x16) = 0x108;
+            *(s16 *)(p + 0x18) = 0x110;
+            *(s16 *)(p + 0x1A) = 0;
+            *(s16 *)(p + 0x1C) = 0;
+            *(u8 *)(p + 0x1E) = 0xFF;
+            *(u8 *)(p + 0x1F) = 0xFF;
+            *(u8 *)(p + 0x20) = 0xFF;
+            *(u8 *)(p + 0x21) = 0xFF;
+            *(s16 *)(p + 0x22) = (s16)z;
+            *(s16 *)(p + 0x24) = 0;
+            *(f32 *)(p + 0x28) = gF32_1;
+            *(f32 *)(p + 0x2C) = gF32_1;
+            *(f32 *)(p + 0x30) = gF32_1;
+            *(s32 *)(p + 0x34) = 0;
+            *(s32 *)(p + 0x38) = 0;
+            *(void **)pCall = lbl_80292208;
+            fn_80142060(pCall + 0x3C);
+
+            *(void **)pMid = lbl_80293BB8;
+            *(u8 *)(pMid + 0x48) = 1;
+            *(u8 *)(pMid + 0x49) = 0;
+            *(u8 *)(pMid + 0x4A) = 1;
+            *(u8 *)(pMid + 0x4B) = 0;
+            *(s16 *)(pMid + 0x50) = -1;
+            *(s16 *)(pMid + 0x52) = -1;
+            *(s16 *)(pMid + 0x54) = 0x20;
+            *(s32 *)(pMid + 0x58) = 0;
+            *(s32 *)(pMid + 0x5C) = 0;
+            *(s32 *)(pMid + 0x60) = 3;
+            *(s16 *)(pMid + 0x64) = 0x14;
+            *(s16 *)(pMid + 0x66) = 0;
+            *(s32 *)(pMid + 0x70) = 0;
+            ((Obj *)pMid)->m28();
+
+            *(void **)p = lbl_80293B30;
+            *(u8 *)(p + 0x78) = 0;
+            *(s16 *)(p + 0x64) = 0x14;
+            *(s16 *)(p + 0x66) = 0xA;
+            *(s16 *)(p + 0x54) = 0x1C;
+            ((Obj *)p)->m28();
+        }
+    }
+};
 extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -14462,66 +14542,62 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    struct Ctor {
-        static inline void initBase(void *p, s32 x, s32 y, s32 z) {
-            s32 e1 = (s16)x;
-            s32 e2 = (s16)y;
-            *(void **)p = lbl_8028FDB0;
-            *(s32 *)((u8 *)p + 4) = 0;
-            *(void **)p = lbl_80292230;
-            *(s16 *)((u8 *)p + 8) = -1;
-            *(s16 *)((u8 *)p + 0xA) = (s16)x;
-            *(s16 *)((u8 *)p + 0xC) = (s16)y;
-            *(s16 *)((u8 *)p + 0xE) = (s16)(e1 + 0x108);
-            *(s16 *)((u8 *)p + 0x10) = (s16)(e2 + 0x110);
-            *(s16 *)((u8 *)p + 0x12) = 0;
-            *(s16 *)((u8 *)p + 0x14) = 0;
-            *(s16 *)((u8 *)p + 0x16) = 0x108;
-            *(s16 *)((u8 *)p + 0x18) = 0x110;
-            *(s16 *)((u8 *)p + 0x1A) = 0;
-            *(s16 *)((u8 *)p + 0x1C) = 0;
-            *(u8 *)((u8 *)p + 0x1E) = 0xFF;
-            *(u8 *)((u8 *)p + 0x1F) = 0xFF;
-            *(u8 *)((u8 *)p + 0x20) = 0xFF;
-            *(u8 *)((u8 *)p + 0x21) = 0xFF;
-            *(s16 *)((u8 *)p + 0x22) = (s16)z;
-            *(s16 *)((u8 *)p + 0x24) = 0;
-            *(f32 *)((u8 *)p + 0x28) = gF32_1;
-            *(f32 *)((u8 *)p + 0x2C) = gF32_1;
-            *(f32 *)((u8 *)p + 0x30) = gF32_1;
-            *(s32 *)((u8 *)p + 0x34) = 0;
-            *(s32 *)((u8 *)p + 0x38) = 0;
-            *(void **)p = lbl_80292208;
-            fn_80142060((u8 *)p + 0x3C);
-        }
-        static inline void initMid(void *p) {
-            *(void **)p = lbl_80293BB8;
-            *(u8 *)((u8 *)p + 0x48) = 1;
-            *(u8 *)((u8 *)p + 0x49) = 0;
-            *(u8 *)((u8 *)p + 0x4A) = 1;
-            *(u8 *)((u8 *)p + 0x4B) = 0;
-            *(s16 *)((u8 *)p + 0x50) = -1;
-            *(s16 *)((u8 *)p + 0x52) = -1;
-            *(s16 *)((u8 *)p + 0x54) = 0x20;
-            *(s32 *)((u8 *)p + 0x58) = 0;
-            *(s32 *)((u8 *)p + 0x5C) = 0;
-            *(s32 *)((u8 *)p + 0x60) = 3;
-            *(s16 *)((u8 *)p + 0x64) = 0x14;
-            *(s16 *)((u8 *)p + 0x66) = 0;
-            *(s32 *)((u8 *)p + 0x70) = 0;
-            (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
-        }
-    };
+    u8 *p = (u8 *)arg0;
+    u8 *pCall = p;
+    u8 *pMid = p;
+    s32 e1 = (s16)arg1;
+    s32 e2 = (s16)arg2;
 
-    Ctor::initBase(arg0, arg1, arg2, arg3);
-    Ctor::initMid(arg0);
+    *(void **)p = lbl_8028FDB0;
+    *(s32 *)(p + 4) = 0;
+    *(void **)p = lbl_80292230;
+    *(s16 *)(p + 8) = -1;
+    *(s16 *)(p + 0xA) = (s16)arg1;
+    *(s16 *)(p + 0xC) = (s16)arg2;
+    *(s16 *)(p + 0xE) = (s16)(e1 + 0x108);
+    *(s16 *)(p + 0x10) = (s16)(e2 + 0x110);
+    *(s16 *)(p + 0x12) = 0;
+    *(s16 *)(p + 0x14) = 0;
+    *(s16 *)(p + 0x16) = 0x108;
+    *(s16 *)(p + 0x18) = 0x110;
+    *(s16 *)(p + 0x1A) = 0;
+    *(s16 *)(p + 0x1C) = 0;
+    *(u8 *)(p + 0x1E) = 0xFF;
+    *(u8 *)(p + 0x1F) = 0xFF;
+    *(u8 *)(p + 0x20) = 0xFF;
+    *(u8 *)(p + 0x21) = 0xFF;
+    *(s16 *)(p + 0x22) = (s16)arg3;
+    *(s16 *)(p + 0x24) = 0;
+    *(f32 *)(p + 0x28) = gF32_1;
+    *(f32 *)(p + 0x2C) = gF32_1;
+    *(f32 *)(p + 0x30) = gF32_1;
+    *(s32 *)(p + 0x34) = 0;
+    *(s32 *)(p + 0x38) = 0;
+    *(void **)p = lbl_80292208;
+    fn_80142060(pCall + 0x3C);
 
-    *(void **)arg0 = lbl_80293B30;
-    *(u8 *)((u8 *)arg0 + 0x78) = 0;
-    *(s16 *)((u8 *)arg0 + 0x64) = 0x14;
-    *(s16 *)((u8 *)arg0 + 0x66) = 0xA;
-    *(s16 *)((u8 *)arg0 + 0x54) = 0x1C;
-    ((Obj *)arg0)->m28();
+    *(void **)pMid = lbl_80293BB8;
+    *(u8 *)(pMid + 0x48) = 1;
+    *(u8 *)(pMid + 0x49) = 0;
+    *(u8 *)(pMid + 0x4A) = 1;
+    *(u8 *)(pMid + 0x4B) = 0;
+    *(s16 *)(pMid + 0x50) = -1;
+    *(s16 *)(pMid + 0x52) = -1;
+    *(s16 *)(pMid + 0x54) = 0x20;
+    *(s32 *)(pMid + 0x58) = 0;
+    *(s32 *)(pMid + 0x5C) = 0;
+    *(s32 *)(pMid + 0x60) = 3;
+    *(s16 *)(pMid + 0x64) = 0x14;
+    *(s16 *)(pMid + 0x66) = 0;
+    *(s32 *)(pMid + 0x70) = 0;
+    ((Obj *)pMid)->m28();
+
+    *(void **)p = lbl_80293B30;
+    *(u8 *)(p + 0x78) = 0;
+    *(s16 *)(p + 0x64) = 0x14;
+    *(s16 *)(p + 0x66) = 0xA;
+    *(s16 *)(p + 0x54) = 0x1C;
+    ((Obj *)p)->m28();
     return arg0;
 }
 #pragma global_optimizer reset
