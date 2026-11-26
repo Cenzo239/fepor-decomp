@@ -4098,11 +4098,6 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 
 #pragma push
 #pragma optimization_level 2
-static inline void StaffRoll_InitVectorWords(u32 *vec, u32 zero) {
-    vec[0] = zero;
-    vec[1] = zero;
-    vec[2] = zero;
-}
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
