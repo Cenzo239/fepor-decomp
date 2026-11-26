@@ -1614,34 +1614,22 @@ void fn_80062920(void *, s32, f32 *, u8 *, void *, void *);
 void fn_80063614(void *, void *, s16, f32 *, f32);
 void QUATMtx(f32 *, void *);
 void QUATSlerp(f32 *, f32 *, f32 *, f32);
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 #pragma inline_depth(0)
 void fn_80061A08(void *arg0)
 {
-    f32 sp258[4];
-    f32 sp24C[3];
-    f32 sp240[3];
-    f32 sp234[3];
-    f32 sp228[3];
-    f32 sp21C[3];
-    f32 sp210[3];
-    f32 sp204[3];
-    f32 sp1F8[3];
     f32 sp1EC[0x2B];
     f32 sp140[0x2B];
-    u8 sp100[0x50];
+    u8 sp100[0x40];
     u8 spD0[0x30];
     u8 spA0[0x30];
     u8 sp70[0x30];
     u8 sp40[0x30];
-    void *sp30[5];
-    f32 sp2C;
-    f32 sp28;
-    f32 sp24;
-    f32 sp20;
-    f32 sp1C;
-    f32 sp18;
-    f32 sp14;
-    f32 sp10;
+    void *sp30[4];
+    f32 quatA[4];
+    f32 quatB[4];
     s16 spC;
     s16 sp8;
     void *self = arg0;
@@ -1667,6 +1655,7 @@ void fn_80061A08(void *arg0)
     s32 k;
     u16 rot;
     f32 fx, fy, fz;
+    f32 rx, ry, rz;
     f32 w;
     f32 f27;
     void *curObj;
@@ -1689,31 +1678,31 @@ void fn_80061A08(void *arg0)
             if (flags & 8) {
                 fn_800062CC(sp1EC, (u8 *)entry + 0x40, 0xC);
                 if (flags & 0x100) {
-                    fn_800062CC(sp228, (u8 *)entry + 0x7C, 0xC);
+                    fn_800062CC((sp1EC + 15), (u8 *)entry + 0x7C, 0xC);
                     if (flags & 0x400) {
-                        fn_800062CC(sp240, (u8 *)entry + 0x94, 0xC);
+                        fn_800062CC((sp1EC + 21), (u8 *)entry + 0x94, 0xC);
                     }
                 }
             }
             if (flags & 0x20) {
-                fn_800062CC(sp204, (u8 *)entry + 0x58, 0xC);
+                fn_800062CC((sp1EC + 6), (u8 *)entry + 0x58, 0xC);
             }
             if (flags & 0x10) {
-                fn_800062CC(sp1F8, (u8 *)entry + 0x4C, 0xC);
+                fn_800062CC((sp1EC + 3), (u8 *)entry + 0x4C, 0xC);
                 if (flags & 0x40) {
-                    fn_800062CC(sp210, (u8 *)entry + 0x64, 0xC);
+                    fn_800062CC((sp1EC + 9), (u8 *)entry + 0x64, 0xC);
                 }
                 if (flags & 0x800) {
-                    fn_800062CC(sp24C, (u8 *)entry + 0xA0, 0xC);
+                    fn_800062CC((sp1EC + 24), (u8 *)entry + 0xA0, 0xC);
                 }
                 if (flags & 0x80) {
-                    fn_800062CC(sp21C, (u8 *)entry + 0x70, 0xC);
+                    fn_800062CC((sp1EC + 12), (u8 *)entry + 0x70, 0xC);
                     if (flags & 0x200) {
-                        fn_800062CC(sp234, (u8 *)entry + 0x88, 0xC);
+                        fn_800062CC((sp1EC + 18), (u8 *)entry + 0x88, 0xC);
                     }
                 }
                 if (M2C_FIELD(obj, s32 *, 0xC) & 2) {
-                    fn_800062EC(sp258, (u8 *)entry + 0xAC, 0x10);
+                    fn_800062EC((sp1EC + 27), (u8 *)entry + 0xAC, 0x10);
                 }
             }
             fn_80063614(obj, row, spC, sp1EC, f26);
@@ -1785,41 +1774,7 @@ void fn_80061A08(void *arg0)
         }
         orFlags |= M2C_FIELD(entry, s32 *, 0xC);
 
-        src = (f32 *)((u8 *)entry + 0x40);
-        dst = sp1EC;
-        j = 0;
-        for (i = 0; i < 2; i++) {
-            j += 0x15;
-            dst[0] = src[0];
-            dst[1] = src[1];
-            dst[2] = src[2];
-            dst[3] = src[3];
-            dst[4] = src[4];
-            dst[5] = src[5];
-            dst[6] = src[6];
-            dst[7] = src[7];
-            dst[8] = src[8];
-            dst[9] = src[9];
-            dst[10] = src[10];
-            dst[11] = src[11];
-            dst[12] = src[12];
-            dst[13] = src[13];
-            dst[14] = src[14];
-            dst[15] = src[15];
-            dst[16] = src[16];
-            dst[17] = src[17];
-            dst[18] = src[18];
-            dst[19] = src[19];
-            dst[20] = src[20];
-            src = (f32 *)((u8 *)src + 0x54);
-            dst += 0x15;
-        }
-        src = (f32 *)((u8 *)entry + j * 4 + 0x40);
-        dst = sp1EC + j;
-        while (j < 0x2B) {
-            *dst++ = *src++;
-            j++;
-        }
+        for (j = 0; j < 0x2B; j++) sp1EC[j] = ((f32 *)((u8 *)entry + 0x40))[j];
 
         bit10 = orFlags & 0x10;
         if (bit10) {
@@ -1907,12 +1862,12 @@ void fn_80061A08(void *arg0)
                     Game_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                     break;
                 }
-                QUATMtx(&sp20, spD0);
+                QUATMtx(&quatA[0], spD0);
             } else if (flags & 2) {
-                sp20 = M2C_FIELD(entry, f32 *, 0xAC);
-                sp24 = M2C_FIELD(entry, f32 *, 0xB0);
-                sp28 = M2C_FIELD(entry, f32 *, 0xB4);
-                sp2C = M2C_FIELD(entry, f32 *, 0xB8);
+                quatA[0] = M2C_FIELD(entry, f32 *, 0xAC);
+                quatA[1] = M2C_FIELD(entry, f32 *, 0xB0);
+                quatA[2] = M2C_FIELD(entry, f32 *, 0xB4);
+                quatA[3] = M2C_FIELD(entry, f32 *, 0xB8);
             }
         }
 
@@ -1926,41 +1881,7 @@ void fn_80061A08(void *arg0)
                 if (M2C_FIELD(entry, s32 *, 0xC) & 0x40000000) {
                     w = lbl_803691E0;
                 }
-                src = (f32 *)((u8 *)entry + 0x40);
-                dst = sp140;
-                j = 0;
-                for (k = 0; k < 2; k++) {
-                    j += 0x15;
-                    dst[0] = src[0];
-                    dst[1] = src[1];
-                    dst[2] = src[2];
-                    dst[3] = src[3];
-                    dst[4] = src[4];
-                    dst[5] = src[5];
-                    dst[6] = src[6];
-                    dst[7] = src[7];
-                    dst[8] = src[8];
-                    dst[9] = src[9];
-                    dst[10] = src[10];
-                    dst[11] = src[11];
-                    dst[12] = src[12];
-                    dst[13] = src[13];
-                    dst[14] = src[14];
-                    dst[15] = src[15];
-                    dst[16] = src[16];
-                    dst[17] = src[17];
-                    dst[18] = src[18];
-                    dst[19] = src[19];
-                    dst[20] = src[20];
-                    src = (f32 *)((u8 *)src + 0x54);
-                    dst += 0x15;
-                }
-                src = (f32 *)((u8 *)entry + j * 4 + 0x40);
-                dst = sp140 + j;
-                while (j < 0x2B) {
-                    *dst++ = *src++;
-                    j++;
-                }
+                for (j = 0; j < 0x2B; j++) sp140[j] = ((f32 *)((u8 *)entry + 0x40))[j];
                 if (sel != NULL) {
                     sp8 = (s16)f27;
                     fn_80063614(curObj, sel, sp8, sp140, f27);
@@ -1982,79 +1903,79 @@ void fn_80061A08(void *arg0)
                     if (flags & 1) {
                         rot = M2C_FIELD(entry, u16 *, 0xEE);
                         PSMTXIdentity(sp70);
-                        fx = sp140[3];
-                        fy = sp140[4];
-                        fz = sp140[5];
+                        rx = sp140[3];
+                        ry = sp140[4];
+                        rz = sp140[5];
                         switch (rot) {
                         case 1:
-                            if (lbl_803691E4 != fx)
-                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * fx);
-                            if (lbl_803691E4 != fy) {
-                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
+                            if (lbl_803691E4 != rx)
+                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * rx);
+                            if (lbl_803691E4 != ry) {
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * ry);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fz) {
-                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
+                            if (lbl_803691E4 != rz) {
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * rz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 2:
-                            if (lbl_803691E4 != fy)
-                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * fy);
-                            if (lbl_803691E4 != fz) {
-                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
+                            if (lbl_803691E4 != ry)
+                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * ry);
+                            if (lbl_803691E4 != rz) {
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * rz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fx) {
-                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
+                            if (lbl_803691E4 != rx) {
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * rx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 3:
-                            if (lbl_803691E4 != fz)
-                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * fz);
-                            if (lbl_803691E4 != fx) {
-                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
+                            if (lbl_803691E4 != rz)
+                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * rz);
+                            if (lbl_803691E4 != rx) {
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * rx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fy) {
-                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
+                            if (lbl_803691E4 != ry) {
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * ry);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 4:
-                            if (lbl_803691E4 != fx)
-                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * fx);
-                            if (lbl_803691E4 != fz) {
-                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
+                            if (lbl_803691E4 != rx)
+                                PSMTXRotRad(sp70, 0x58, lbl_803691E8 * rx);
+                            if (lbl_803691E4 != rz) {
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * rz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fy) {
-                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
+                            if (lbl_803691E4 != ry) {
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * ry);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 5:
-                            if (lbl_803691E4 != fy)
-                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * fy);
-                            if (lbl_803691E4 != fx) {
-                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
+                            if (lbl_803691E4 != ry)
+                                PSMTXRotRad(sp70, 0x59, lbl_803691E8 * ry);
+                            if (lbl_803691E4 != rx) {
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * rx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fz) {
-                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * fz);
+                            if (lbl_803691E4 != rz) {
+                                PSMTXRotRad(sp40, 0x5A, lbl_803691E8 * rz);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
                         case 6:
-                            if (lbl_803691E4 != fz)
-                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * fz);
-                            if (lbl_803691E4 != fy) {
-                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * fy);
+                            if (lbl_803691E4 != rz)
+                                PSMTXRotRad(sp70, 0x5A, lbl_803691E8 * rz);
+                            if (lbl_803691E4 != ry) {
+                                PSMTXRotRad(sp40, 0x59, lbl_803691E8 * ry);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
-                            if (lbl_803691E4 != fx) {
-                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * fx);
+                            if (lbl_803691E4 != rx) {
+                                PSMTXRotRad(sp40, 0x58, lbl_803691E8 * rx);
                                 PSMTXConcat(sp40, sp70, sp70);
                             }
                             break;
@@ -2062,26 +1983,27 @@ void fn_80061A08(void *arg0)
                             Game_Assert(lbl_8026B658 + 0x1B, 0xED, lbl_8026B658 + 0x23);
                             break;
                         }
-                        QUATMtx(&sp10, sp70);
+                        QUATMtx(&quatB[0], sp70);
                     } else if (flags & 2) {
-                        sp10 = sp140[0x1B];
-                        sp14 = sp140[0x1C];
-                        sp18 = sp140[0x1D];
-                        sp1C = sp140[0x1E];
+                        quatB[0] = sp140[0x1B];
+                        quatB[1] = sp140[0x1C];
+                        quatB[2] = sp140[0x1D];
+                        quatB[3] = sp140[0x1E];
                     }
-                    QUATSlerp(&sp20, &sp10, &sp20, w);
+                    QUATSlerp(&quatA[0], &quatB[0], &quatA[0], w);
                 }
             }
         }
 
         if (bit10) {
-            fn_80202640(spD0, &sp20);
+            fn_80202640(spD0, &quatA[0]);
             fn_80062920(entry, orFlags, sp1EC, ctx, spD0, obj);
         } else {
             fn_80062920(entry, orFlags, sp1EC, ctx, NULL, obj);
         }
     }
 }
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *arg5)
@@ -7067,7 +6989,10 @@ void fn_8006CAB0(s32 arg0) {
     fn_8006C2A4(arg0, 0);
 }
 
+#pragma push
 #pragma optimization_level 1
+#pragma opt_lifetimes on
+static inline u32 Node_TestFlags(u32 flags, u32 mask) { return flags & mask; }
 void fn_8006CAD4(u32 *node) {
     u32 fn_80060638(void *);
     void fn_80067708(s32, s32, void *, void *);
@@ -7136,7 +7061,7 @@ void fn_8006CAD4(u32 *node) {
         fn_8014E824(node);
     }
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_8006CC6C(s32 arg0) {
     M2C_UNK fn_8003F670(s32);
     M2C_UNK fn_8003FCF0();
@@ -7893,7 +7818,7 @@ void DEMOInitGX(void *rmode)
 
 void fn_8006DDDC(void) {
     void fn_80225D6C(s32 *, s32 *, s32 *, s32 *);
-    void fn_8021F168(void *, void *, u8 *, u8 *, void *, s32, s32);
+    void fn_8021F168(void *, void *, u8 *, u8 *, void *);
     void OSReport(char *, ...);
     extern char DEMOInit_str[];
     s32 sp28;
@@ -7907,23 +7832,20 @@ void fn_8006DDDC(void) {
     u8 spA;
     u8 sp9;
     u8 sp8;
-    s32 d;
     u8 eq28_18;
     u8 eq24_14;
-    u32 ne20_10;
-    u32 ne1C_C;
+    u8 ne20_10;
+    u8 ne1C_C;
 
     fn_80225D6C(&sp24, &sp28, &sp1C, &sp20);
     fn_80225D6C(&sp14, &sp18, &spC, &sp10);
 
-    d = sp10 - sp20;
-    ne20_10 = ((u32)(d | -d)) >> 31;
+    ne20_10 = ((sp10 - sp20) != 0);
     eq28_18 = (sp28 == sp18);
-    d = spC - sp1C;
-    ne1C_C = ((u32)(d | -d)) >> 31;
+    ne1C_C = ((spC - sp1C) != 0);
     eq24_14 = (sp24 == sp14);
 
-    fn_8021F168(&sp8, &sp8, &spA, &sp9, &sp8, sp14, sp24);
+    fn_8021F168(&sp8, &sp8, &spA, &sp9, &sp8);
     OSReport(DEMOInit_str + 0x29, spA, sp9, eq28_18, eq24_14, ne20_10, ne1C_C);
     if (eq24_14 == 0 && ne20_10 != 0) {
         OSReport(DEMOInit_str + 0x45);
