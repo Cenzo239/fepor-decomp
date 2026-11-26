@@ -139,7 +139,7 @@ extern u16 Scb_803394;
 static inline s32 ResetTimeIsSet(s64 time) { return time != 0 ? 1 : 0; }
 static inline s32 ResetSwitchDebounced(s64 now) {
     return *(s64 *)&lbl_80368508 != 0 ||
-        now - *(s64 *)&lbl_80368510 > (s64)((((*(u32 *)0x800000F8 >> 2) / 125000) * 100) >> 3);
+        (s64)((((*(u32 *)0x800000F8 >> 2) / 125000) * 100) >> 3) < now - *(s64 *)&lbl_80368510;
 }
 static inline s32 ResetTimeExpired(s64 now, s64 start, u32 ticks) { return now - start > ticks; }
 u32 __OSGetResetSWState(void);
