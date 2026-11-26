@@ -1,6 +1,9 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline int TypeEquals_80089490(u32 value, u8 *base, s32 offset) {
+    return value == (u32)(base + offset);
+}
 typedef struct {
     f32 x, y;
     u8 unk8[4];
