@@ -466,7 +466,6 @@ void fn_8007FF58(void *arg0) {
     Prim2D_PrepareTex();
 }
 
-#pragma global_optimizer off
 void fn_80080698(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
