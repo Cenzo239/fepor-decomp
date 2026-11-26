@@ -2,14 +2,6 @@
 #include "common.h"
 #include "process.h"
 
-static inline s32 Proc_StrLen(const s8 *s)
-{
-    const s8 *p = s;
-    while (*p++ != 0) {
-    }
-    return p - s;
-}
-
 static inline u32 Process_CompareName(const s8 *a, const s8 *b)
 {
     while (*a | *b) {
