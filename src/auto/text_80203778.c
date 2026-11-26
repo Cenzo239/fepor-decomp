@@ -2736,41 +2736,12 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
 
 s32 fn_80207628(s32 arg0, s32 arg1) {
     s32 fn_80207304(s32, s32, s32);
-    void fn_80207768(void);
-    extern u16 lbl_80366F48;
     extern s32 lbl_803684B8;
     extern s32 lbl_803684BC;
-    extern void *lbl_803684C0;
     s32 var_r31;
-    s32 temp_r0;
     u16 mode;
-    void *cb;
 
-    if (lbl_80366F48 != 0xFFFF) {
-        mode = lbl_80366F48;
-        goto do_switch;
-    }
-    temp_r0 = *(s32 *)0x800000CC;
-    if (temp_r0 > 0) {
-        goto set_zero;
-    }
-    if (temp_r0 < 0) {
-        goto set_zero;
-    }
-    if (*(u16 *)0xCC00206E & 2) {
-        temp_r0 = 1;
-    } else {
-        temp_r0 = 0;
-    }
-    lbl_80366F48 = (u16)temp_r0;
-    goto set_cb;
-set_zero:
-    lbl_80366F48 = 0;
-set_cb:
-    cb = (void *)fn_80207768;
-    mode = lbl_80366F48;
-    lbl_803684C0 = cb;
-do_switch:
+    mode = fn_802072A0();
     switch (mode) {
     case 0:
         lbl_803684B8 = arg0;
@@ -2780,7 +2751,9 @@ do_switch:
         lbl_803684BC = arg0;
         var_r31 = fn_80207304(arg1, 1, lbl_803684BC);
         break;
-    case 3: case 4: case 5:
+    case 3:
+    case 4:
+    case 5:
         lbl_803684B8 = arg0;
         var_r31 = fn_80207304(arg1, 0, lbl_803684B8);
         if (var_r31 != 0) {
@@ -2788,7 +2761,8 @@ do_switch:
             var_r31 += fn_80207304(arg1, 1, lbl_803684BC);
         }
         break;
-    case 2: default:
+    case 2:
+    default:
         var_r31 = 0;
         break;
     }
