@@ -82,17 +82,19 @@ void fn_80089490(void *);
 #pragma opt_strength_reduction off
 
 #pragma opt_propagation on
-u8 lbl_80289950[0x80];
-
+static inline u8 *fn_80089490_add(u8 *base, s32 off) { return base + off; }
 #pragma opt_dead_code off
 void fn_80089490(void *arg0) {
+    extern u8 lbl_80289950[];
     void fn_8000A408(void *);
     u8 *tbl = lbl_80289950;
+    u8 *p;
     u32 v;
 
     if (*(u8 *)((u8 *)arg0 + 0x2B) != 0x7B) {
         v = *(u32 *)arg0;
-        if (v != (u32)(tbl + 0x7C) && v != (u32)(tbl + 0) && v != (u32)(tbl + 0x58) && v != (u32)(tbl + 0x48)) {
+        p = tbl + 0x7C;
+        if (v != (u32)p && v != (u32)(p - 0x7C) && v != (u32)(p - 0x24) && v != (u32)(p - 0x34)) {
             fn_8000A408(arg0);
         }
     }
