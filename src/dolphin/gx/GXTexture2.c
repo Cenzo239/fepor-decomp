@@ -1034,16 +1034,6 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
-static inline u32 __GxFifoTevOp(u32 value, u8 *gxbase, u32 fifo, u8 cmd, s32 t4, s32 t5, u32 shift) {
-    *(volatile u8 *)fifo = cmd;
-    value = __rlwimi(value, t4, 19, 12, 12);
-    value = __rlwimi(value, t5, 22, 8, 9);
-    *(volatile u32 *)fifo = value;
-    *(u32 *)((u8 *)gxbase + shift + 0x130) = value;
-    *(u16 *)(gxbase + 2) = 0;
-    return value;
-}
-
 #pragma opt_propagation off
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
