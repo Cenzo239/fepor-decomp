@@ -18,9 +18,6 @@ typedef union {
 
 volatile PPCWGPipe GXWGFifo : 0xCC008000;
 
-static inline void GXFifoWrite8(volatile PPCWGPipe *fifo, u8 cmd) { fifo->u8 = cmd; }
-static inline void GXFifoWrite32(volatile PPCWGPipe *fifo, u32 value) { fifo->u32 = value; }
-
 // GXTexObj structure (from headers or similar functions)
 typedef struct {
     u32 dummy[4];
