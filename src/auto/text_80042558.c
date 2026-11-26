@@ -3506,24 +3506,26 @@ create:
 }
 
 void fn_80049238(void *arg0) {
-f32 Math_Lerp(f32,f32,f32,f32);
-void Model_SetColor(void *,u8,u8,u8);
-void Model_SetAlpha(void *,u8);
-void Process_ClearFunc(void *);
-struct Color { u8 r,g,b,a; } color,copy;
-struct Proc { u8 pad[0x30]; u8 *model; s32 frame,duration; u8 start[4],end[4]; };
-struct Proc *proc=(struct Proc*)arg0;
-void *model;
-++proc->frame;
-color.r=(s32)Math_Lerp((f32)proc->start[0],(f32)proc->end[0],(f32)proc->duration,(f32)proc->frame);
-color.g=(s32)Math_Lerp((f32)proc->start[1],(f32)proc->end[1],(f32)proc->duration,(f32)proc->frame);
-color.b=(s32)Math_Lerp((f32)proc->start[2],(f32)proc->end[2],(f32)proc->duration,(f32)proc->frame);
-color.a=(s32)Math_Lerp((f32)proc->start[3],(f32)proc->end[3],(f32)proc->duration,(f32)proc->frame);
-model=proc->model+0x14;
-copy=color;
-Model_SetColor(model,copy.r,copy.g,copy.b);
-Model_SetAlpha(model,copy.a);
-if(proc->duration==proc->frame) Process_ClearFunc(arg0);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void Model_SetColor(void *, u8, u8, u8);
+    void Model_SetAlpha(void *, u8);
+    void Process_ClearFunc(void *);
+    struct Color { u8 r, g, b, a; } color, copy;
+    struct Proc { u8 pad[0x30]; u8 *model; s32 frame, duration; u8 start[4], end[4]; };
+    struct Proc *proc = (struct Proc *)arg0;
+    void *model;
+    ++proc->frame;
+    color.r = Math_Lerp((f32)proc->start[0], (f32)proc->end[0], (f32)proc->duration, (f32)proc->frame);
+    color.g = Math_Lerp((f32)proc->start[1], (f32)proc->end[1], (f32)proc->duration, (f32)proc->frame);
+    color.b = Math_Lerp((f32)proc->start[2], (f32)proc->end[2], (f32)proc->duration, (f32)proc->frame);
+    color.a = Math_Lerp((f32)proc->start[3], (f32)proc->end[3], (f32)proc->duration, (f32)proc->frame);
+    model = proc->model + 0x14;
+    copy = color;
+    Model_SetColor(model, copy.r, copy.g, copy.b);
+    Model_SetAlpha(model, copy.a);
+    if (proc->duration == proc->frame) {
+        Process_ClearFunc(arg0);
+    }
 }
 
 void fn_8004949C(void *arg0) {
