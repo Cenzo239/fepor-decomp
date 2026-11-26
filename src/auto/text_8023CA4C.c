@@ -80,10 +80,6 @@ u16 value = (p[0] << 8) | p[1];
 *cursor = p + 2;
  return value;
  }
-static inline u8 ThpCursorByte(void) {
-extern ThpDecodeState *volatile lbl_80368950;
-return *lbl_80368950->cursor++;
-}
  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
@@ -367,7 +363,6 @@ extern f64 lbl_8036C148;
 
 #pragma optimization_level 4
 s32 fn_8023CA4C(void) {
-    static const f64 lbl_8036C190 = 4503599627370496.0;
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
@@ -386,14 +381,14 @@ s32 fn_8023CA4C(void) {
         zig = lbl_80282FD8;
         p = zig;
         for (i = 0; (u16)i < 64; i += 8, p += 8) {
-            table[*p] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 3)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 4)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 5)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
-            table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[*p] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 1)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 2)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 3)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 4)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 5)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 6)]] = (f32)(u32)ThpCursorByte();
+            table[zig[(u16)(i + 7)]] = (f32)(u32)ThpCursorByte();
         }
         state = (u8 *)lbl_80368950;
         i = 0;
