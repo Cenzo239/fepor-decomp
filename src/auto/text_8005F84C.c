@@ -1,5 +1,12 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
+static inline void Model_CopyBaseMatrices(u8 *dst, void *model) {
+    void PSMTXCopy(void *, void *);
+    s32 i;
+    u8 *src = M2C_FIELD(model, u8 **, 0xC);
+    for (i = 0; i < M2C_FIELD(model, s32 *, 8); dst += 0x30, i++, src += 0xF4)
+        PSMTXCopy(src + 0xBC, dst);
+}
 #include "global.h"
 #pragma push
 #pragma inline on
@@ -890,6 +897,8 @@ void fn_800608AC(void *arg0) {
 #pragma cplusplus reset
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
 void fn_800609DC(void *arg0) {
     void fn_80061A08(void *);
     void fn_80065AF8(s32, void *, void *, void *);
@@ -905,12 +914,6 @@ void fn_800609DC(void *arg0) {
             for (; p; p = M2C_FIELD(p, void **, 4)) {
                 void *v = M2C_FIELD(p, void **, 0x40);
                 if (v) return v;
-            }
-            return 0;
-        }
-        static void *unk44(void *p) {
-            for (; p; p = M2C_FIELD(p, void **, 4)) {
-                if (M2C_FIELD(p, void **, 0x44)) return p;
             }
             return 0;
         }
@@ -955,15 +958,14 @@ void fn_800609DC(void *arg0) {
     if (!arg0) Game_Assert(lbl_8026B590 + 0x28, 0x120, lbl_8026B590 + 0xAB);
     if (!M2C_FIELD(arg0, void **, 0x60)) return;
     model = Lookup::model(arg0);
-    p = Lookup::unk44(arg0);
+    for (p = arg0; p; p = M2C_FIELD(p, void **, 4)) if (M2C_FIELD(p, void **, 0x44)) break;
     mesh = Lookup::mesh(arg0);
     geometry = Lookup::geometry(arg0);
     matrices = Lookup::matrices(arg0);
     matrices2 = Lookup::matrices2(arg0);
     src = M2C_FIELD(model, u8 **, 0xC);
-    dst = (u8 *)matrices;
-    for (i = 0; i < M2C_FIELD(model, s32 *, 8); dst += 0x30, i++, src += 0xF4)
-        PSMTXCopy(src + 0xBC, dst);
+    for (i = 0; i < M2C_FIELD(model, s32 *, 8); i++, src += 0xF4)
+        PSMTXCopy(src + 0xBC, (u8 *)matrices + i * 0x30);
     fn_80061A08(arg0);
     fn_80065AF8((s32)arg0, M2C_FIELD(model, void **, 0xC), matrices, matrices2);
     if (geometry) fn_8006CF60(arg0);
@@ -971,7 +973,7 @@ void fn_800609DC(void *arg0) {
     if (M2C_FIELD(arg0, void **, 0x54)) fn_801506AC(arg0);
 #pragma cplusplus reset
 }
-
+#pragma pop
 f32 fn_80060BA4(u8 *actor, s32 index)
 {
     void PSMTXRotRad(void *, s32, f32);
@@ -6991,7 +6993,7 @@ void fn_8006CAB0(s32 arg0) {
 
 #pragma push
 #pragma optimization_level 1
-#pragma opt_lifetimes on
+#pragma opt_common_subs off
 void fn_8006CAD4(u32 *node) {
     u32 fn_80060638(void *);
     void fn_80067708(s32, s32, void *, void *);
@@ -7007,6 +7009,7 @@ void fn_8006CAD4(u32 *node) {
     s32 v2;
     s32 idx;
     u32 *child;
+    u32 mask;
     u32 flags;
 
     child = *(u32 **)((u8 *)node + 0x8C);
@@ -7022,7 +7025,8 @@ void fn_8006CAD4(u32 *node) {
     v0 = 0;
     v1 = 1;
     v2 = 2;
-    if (flags & 0x380020U) {
+    mask = 0x380020U;
+    if (flags & mask) {
         if (flags & 0x80000U) {
             v1 = 0;
             v2 = v0;
@@ -7033,7 +7037,8 @@ void fn_8006CAD4(u32 *node) {
             v2 = 1;
             v0 = v1;
         }
-        if (flags & 0x200020U) {
+        mask = 0x200020U;
+        if (flags & mask) {
             v1 = 2;
             v2 = 2;
             v0 = v1;
@@ -7816,6 +7821,8 @@ void DEMOInitGX(void *rmode)
     fn_800C4588(buf);
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_8006DDDC(void) {
     void fn_80225D6C(s32 *, s32 *, s32 *, s32 *);
     void fn_8021F168(void *, void *, u8 *, u8 *, void *);
@@ -7832,10 +7839,10 @@ void fn_8006DDDC(void) {
     u8 spA;
     u8 sp9;
     u8 sp8;
-    u8 ne1C_C;
-    u8 ne20_10;
-    u8 eq24_14;
     u8 eq28_18;
+    u8 eq24_14;
+    u32 ne20_10;
+    u32 ne1C_C;
 
     fn_80225D6C(&sp24, &sp28, &sp1C, &sp20);
     fn_80225D6C(&sp14, &sp18, &spC, &sp10);
@@ -7865,10 +7872,7 @@ void fn_8006DDDC(void) {
     }
     OSReport(DEMOInit_str + 0xE0);
 }
-
-#pragma push
-#pragma optimization_level 3
-#pragma opt_loop_invariants off
+#pragma pop
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
