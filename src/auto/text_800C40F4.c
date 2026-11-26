@@ -331,6 +331,12 @@ typedef struct String {
       SortIterator &operator++() { ++ptr; return *this; }
       SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
   };
+static inline void Sort_CopyToIterator(s32 *begin, s32 *end, SortIterator out) {
+ while (begin != end) { *out = *begin; ++out; ++begin; }
+}
+static inline void Sort_ReverseToIterator(s32 *begin, s32 *end, SortIterator out) {
+ while (begin != end) { --end; *out = *end; ++out; }
+}
 class SortCompare {
 public:
     u8 value;
@@ -10585,8 +10591,8 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma optimization_level 2
-void fn_800DBAB8(void *arg0, void *arg1) {
+#pragma opt_strength_reduction off
+void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -10606,11 +10612,11 @@ void fn_800DBAB8(void *arg0, void *arg1) {
     z = *(f32 *)((u8 *)arg1 + 0x68);
     y = *(f32 *)((u8 *)arg1 + 0x64);
     x = *(f32 *)((u8 *)arg1 + 0x60);
-    *(f32 *)((u8 *)arg0 + 0) = x;
-    *(f32 *)((u8 *)arg0 + 4) = y;
-    *(f32 *)((u8 *)arg0 + 8) = z;
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
 }
-#pragma optimization_level reset
+#pragma opt_strength_reduction reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -14240,8 +14246,10 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         s32 half_n = n / 2;
         mid = begin + half_n;
         {
-            s32 b_tmp[2];
-            *(SortIterator *)b_tmp = out + half_n;
+            s32 b_tmp0[2], b_tmp[2];
+            *(SortIterator *)b_tmp0 = out;
+            ((SortIterator *)b_tmp0)->ptr += half_n;
+            *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
             SortIterator a(out);
             SortIterator b(*(SortIterator *)b_tmp);
             SortCompare c(comp);
@@ -14269,9 +14277,13 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         }
         {
-            s32 a_tmp[2], b_tmp[2];
-            *(SortIterator *)a_tmp = out + half_n;
-            *(SortIterator *)b_tmp = out + n;
+            s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
+            *(SortIterator *)b_tmp0 = out;
+            ((SortIterator *)b_tmp0)->ptr += n;
+            *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
+            *(SortIterator *)a_tmp0 = out;
+            ((SortIterator *)a_tmp0)->ptr += half_n;
+            *(SortIterator *)a_tmp = *(SortIterator *)a_tmp0;
             SortIterator a(*(SortIterator *)a_tmp);
             SortIterator b(*(SortIterator *)b_tmp);
             SortCompare c(comp);
@@ -17026,25 +17038,29 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     } st;
 
     void *pSrc;
-    void *end;
     void *pVec;
     u32 room;
+    void *end;
     u32 cnt;
-    void *dst;
-    void *pPos;
     void *cur;
+    void *pPos;
+    void *dst;
+    void *shift;
     u32 len;
+    u32 assignLen;
+    u8 tag;
+    u32 copyCap;
     u32 cap;
     u32 need;
     u32 size;
     u32 bytes;
+    u32 n;
     void *lim;
     u32 *plen;
     char *err;
     char *begin;
     char *endptr;
     void *srcC;
-    u32 n;
     u32 one;
     u32 remaining;
 
@@ -17074,15 +17090,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             dst = end;
             while (cnt > room) {
                 if (dst != 0) {
-                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
+                    copyCap = *(u32 *)((u8 *)pSrc + 4);
+                    tag = st.pad[0x5C];
+                    *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)pSrc + 8);
                     endptr = begin + *(u32 *)pSrc;
-                    st.pad[0x58] = st.pad[0x5C];
+                    st.pad[0x58] = tag;
                     String_InitFromRange(dst, begin, endptr, &st.pad[0x8C], &st.pad[0x58]);
-                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)pSrc + 0x10);
+                    copyCap = *(u32 *)((u8 *)pSrc + 0x10);
+                    tag = st.pad[0x54];
+                    *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)pSrc + 0x14);
                     endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
-                    st.pad[0x50] = st.pad[0x54];
+                    st.pad[0x50] = tag;
                     String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x88], &st.pad[0x50]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
                 }
@@ -17094,15 +17114,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             cur = pPos;
             while ((u8 *)cur < (u8 *)end) {
                 if (dst != 0) {
-                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                    copyCap = *(u32 *)((u8 *)cur + 4);
+                    tag = st.pad[0x4C];
+                    *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
-                    st.pad[0x48] = st.pad[0x4C];
+                    st.pad[0x48] = tag;
                     String_InitFromRange(dst, begin, endptr, &st.pad[0x84], &st.pad[0x48]);
-                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                    copyCap = *(u32 *)((u8 *)cur + 0x10);
+                    tag = st.pad[0x44];
+                    *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
-                    st.pad[0x40] = st.pad[0x44];
+                    st.pad[0x40] = tag;
                     String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x80], &st.pad[0x40]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
@@ -17117,15 +17141,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
             while ((u8 *)cur < (u8 *)end) {
                 if (dst != 0) {
-                    *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                    copyCap = *(u32 *)((u8 *)cur + 4);
+                    tag = st.pad[0x3C];
+                    *(u32 *)((u8 *)dst + 4) = copyCap;
                     begin = *(char **)((u8 *)cur + 8);
                     endptr = begin + *(u32 *)cur;
-                    st.pad[0x38] = st.pad[0x3C];
+                    st.pad[0x38] = tag;
                     String_InitFromRange(dst, begin, endptr, &st.pad[0x7C], &st.pad[0x38]);
-                    *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                    copyCap = *(u32 *)((u8 *)cur + 0x10);
+                    tag = st.pad[0x34];
+                    *(u32 *)((u8 *)dst + 0x10) = copyCap;
                     begin = *(char **)((u8 *)cur + 0x14);
                     endptr = begin + *(u32 *)((u8 *)cur + 0xC);
-                    st.pad[0x30] = st.pad[0x34];
+                    st.pad[0x30] = tag;
                     String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x78], &st.pad[0x30]);
                     *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
                 }
@@ -17140,49 +17168,41 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
 
             err = __files + 0xA0;
-            cur = (u8 *)pPos + n;
-            while ((u8 *)cur > (u8 *)pPos) {
+            shift = (u8 *)pPos + n;
+            while ((u8 *)shift > (u8 *)pPos) {
                 end = (u8 *)end - 0x1C;
                 *(u32 *)&st.pad[0x98] = (u32)-1;
-                cur = (u8 *)cur - 0x1C;
-                n = *(u32 *)cur;
-                if (CheckPos_800E6554(n, 0)) {
+                shift = (u8 *)shift - 0x1C;
+                if (CheckPos_800E6554(*(u32 *)shift, 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
-                *(u32 *)&st.pad[0x9C] = n;
-                plen = (u32 *)&st.pad[0x98];
-                if (*(u32 *)&st.pad[0x9C] < *(u32 *)&st.pad[0x98]) {
-                    plen = (u32 *)&st.pad[0x9C];
-                }
+                *(u32 *)&st.pad[0x9C] = *(u32 *)shift;
+                plen = *(u32 *)&st.pad[0x9C] < *(u32 *)&st.pad[0x98] ? (u32 *)&st.pad[0x9C] : (u32 *)&st.pad[0x98];
                 len = *plen;
-                if (end == cur) {
+                if (end == shift) {
                     fn_800C94F8(end, 0, 0, 0, 0);
                     String_Resize(end, len, 1);
                 } else {
                     String_Resize(end, len, 0);
-                    memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)cur + 8), len);
+                    memcpy(*(void **)((u8 *)end + 8), *(void **)((u8 *)shift + 8), len);
                 }
                 *(u32 *)&st.pad[0x90] = (u32)-1;
-                n = *(u32 *)((u8 *)cur + 0xC);
-                if (CheckPos_800E6554(n, 0)) {
+                if (CheckPos_800E6554(*(u32 *)((u8 *)shift + 0xC), 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
-                *(u32 *)&st.pad[0x94] = n;
-                plen = (u32 *)&st.pad[0x90];
-                if (*(u32 *)&st.pad[0x94] < *(u32 *)&st.pad[0x90]) {
-                    plen = (u32 *)&st.pad[0x94];
-                }
+                *(u32 *)&st.pad[0x94] = *(u32 *)((u8 *)shift + 0xC);
+                plen = *(u32 *)&st.pad[0x94] < *(u32 *)&st.pad[0x90] ? (u32 *)&st.pad[0x94] : (u32 *)&st.pad[0x90];
                 len = *plen;
-                if ((u8 *)end + 0xC == (u8 *)cur + 0xC) {
+                if ((u8 *)end + 0xC == (u8 *)shift + 0xC) {
                     fn_800C94F8((u8 *)end + 0xC, 0, 0, 0, 0);
                     String_Resize((u8 *)end + 0xC, len, 1);
                 } else {
                     String_Resize((u8 *)end + 0xC, len, 0);
-                    memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)cur + 0x14), len);
+                    memcpy(*(void **)((u8 *)end + 0x14), *(void **)((u8 *)shift + 0x14), len);
                 }
-                *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)cur + 0x18);
+                *(u32 *)((u8 *)end + 0x18) = *(u32 *)((u8 *)shift + 0x18);
             }
         }
 
@@ -17192,42 +17212,34 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         remaining = cnt;
         while (remaining != 0) {
             *(u32 *)&st.pad[0xA8] = (u32)-1;
-            n = *(u32 *)pSrc;
-            if (CheckPos_800E6554(n, 0)) {
+            if (CheckPos_800E6554(*(u32 *)pSrc, 0)) {
                 fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
-            *(u32 *)&st.pad[0xAC] = n;
-            plen = (u32 *)&st.pad[0xA8];
-            if (*(u32 *)&st.pad[0xAC] < *(u32 *)&st.pad[0xA8]) {
-                plen = (u32 *)&st.pad[0xAC];
-            }
-            len = *plen;
+            *(u32 *)&st.pad[0xAC] = *(u32 *)pSrc;
+            plen = *(u32 *)&st.pad[0xAC] < *(u32 *)&st.pad[0xA8] ? (u32 *)&st.pad[0xAC] : (u32 *)&st.pad[0xA8];
+            assignLen = *plen;
             if (dst == pSrc) {
                 fn_800C94F8(dst, 0, 0, 0, 0);
-                String_Resize(dst, len, 1);
+                String_Resize(dst, assignLen, 1);
             } else {
-                String_Resize(dst, len, 0);
-                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), len);
+                String_Resize(dst, assignLen, 0);
+                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), assignLen);
             }
             *(u32 *)&st.pad[0xA0] = (u32)-1;
-            n = *(u32 *)((u8 *)pSrc + 0xC);
-            if (CheckPos_800E6554(n, 0)) {
+            if (CheckPos_800E6554(*(u32 *)((u8 *)pSrc + 0xC), 0)) {
                 fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
-            *(u32 *)&st.pad[0xA4] = n;
-            plen = (u32 *)&st.pad[0xA0];
-            if (*(u32 *)&st.pad[0xA4] < *(u32 *)&st.pad[0xA0]) {
-                plen = (u32 *)&st.pad[0xA4];
-            }
-            len = *plen;
+            *(u32 *)&st.pad[0xA4] = *(u32 *)((u8 *)pSrc + 0xC);
+            plen = *(u32 *)&st.pad[0xA4] < *(u32 *)&st.pad[0xA0] ? (u32 *)&st.pad[0xA4] : (u32 *)&st.pad[0xA0];
+            assignLen = *plen;
             if ((u8 *)dst + 0xC == (u8 *)srcC) {
                 fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
-                String_Resize((u8 *)dst + 0xC, len, 1);
+                String_Resize((u8 *)dst + 0xC, assignLen, 1);
             } else {
-                String_Resize((u8 *)dst + 0xC, len, 0);
-                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
+                String_Resize((u8 *)dst + 0xC, assignLen, 0);
+                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), assignLen);
             }
             remaining -= 1;
             *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
@@ -17267,15 +17279,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while ((u8 *)cur < (u8 *)pPos) {
             if (dst != 0) {
-                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                copyCap = *(u32 *)((u8 *)cur + 4);
+                tag = st.pad[0x2C];
+                *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
-                st.pad[0x28] = st.pad[0x2C];
+                st.pad[0x28] = tag;
                 String_InitFromRange(dst, begin, endptr, &st.pad[0x74], &st.pad[0x28]);
-                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                copyCap = *(u32 *)((u8 *)cur + 0x10);
+                tag = st.pad[0x24];
+                *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
-                st.pad[0x20] = st.pad[0x24];
+                st.pad[0x20] = tag;
                 String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x70], &st.pad[0x20]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
@@ -17286,15 +17302,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while (cnt != 0) {
             if (dst != 0) {
-                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)pSrc + 4);
+                copyCap = *(u32 *)((u8 *)pSrc + 4);
+                tag = st.pad[0x1C];
+                *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)pSrc + 8);
                 endptr = begin + *(u32 *)pSrc;
-                st.pad[0x18] = st.pad[0x1C];
+                st.pad[0x18] = tag;
                 String_InitFromRange(dst, begin, endptr, &st.pad[0x6C], &st.pad[0x18]);
-                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)pSrc + 0x10);
+                copyCap = *(u32 *)((u8 *)pSrc + 0x10);
+                tag = st.pad[0x14];
+                *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)pSrc + 0x14);
                 endptr = begin + *(u32 *)((u8 *)pSrc + 0xC);
-                st.pad[0x10] = st.pad[0x14];
+                st.pad[0x10] = tag;
                 String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x68], &st.pad[0x10]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
             }
@@ -17305,15 +17325,19 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 
         while ((u8 *)cur < (u8 *)end) {
             if (dst != 0) {
-                *(u32 *)((u8 *)dst + 4) = *(u32 *)((u8 *)cur + 4);
+                copyCap = *(u32 *)((u8 *)cur + 4);
+                tag = st.pad[0xC];
+                *(u32 *)((u8 *)dst + 4) = copyCap;
                 begin = *(char **)((u8 *)cur + 8);
                 endptr = begin + *(u32 *)cur;
-                st.pad[0x8] = st.pad[0xC];
+                st.pad[0x8] = tag;
                 String_InitFromRange(dst, begin, endptr, &st.pad[0x64], &st.pad[0x8]);
-                *(u32 *)((u8 *)dst + 0x10) = *(u32 *)((u8 *)cur + 0x10);
+                copyCap = *(u32 *)((u8 *)cur + 0x10);
+                tag = st.pad[0x4];
+                *(u32 *)((u8 *)dst + 0x10) = copyCap;
                 begin = *(char **)((u8 *)cur + 0x14);
                 endptr = begin + *(u32 *)((u8 *)cur + 0xC);
-                st.pad[0x0] = st.pad[0x4];
+                st.pad[0x0] = tag;
                 String_InitFromRange((u8 *)dst + 0xC, begin, endptr, &st.pad[0x60], &st.pad[0x0]);
                 *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)cur + 0x18);
             }
