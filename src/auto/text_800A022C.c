@@ -72,6 +72,12 @@ void *fn_800A0250(void) {
 }
 
 #pragma optimization_level 3
+static inline u8 MenuToggle_GetState(void) {
+    extern u8 lbl_80366E24;
+    u32 state = 2;
+    if (lbl_80366E24 != 0) state = 0;
+    return state;
+}
 static inline void MenuToggle_800A0260(u32 state, void *item) {
     extern u8 lbl_80366E24;
     u32 t = lbl_80366E24 ^ 1;
@@ -79,6 +85,8 @@ static inline void MenuToggle_800A0260(u32 state, void *item) {
     if ((u8)t != 0) state = 0;
     *(u8 *)((u8 *)item + 0x39) = state;
 }
+#pragma push
+#pragma opt_dead_code off
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
     void fn_8000BCA4(void *);
     void fn_8018DC98(void);
@@ -102,7 +110,7 @@ s32 fn_800A0260(s32 a, s32 b, void *arg2) {
     }
     return 0;
 }
-#pragma optimization_level reset
+#pragma pop
 u32 fn_800A02C8(void) {
     extern u8 lbl_80366E24;
     u32 var_r3;
