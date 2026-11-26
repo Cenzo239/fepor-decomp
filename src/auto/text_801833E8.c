@@ -3716,79 +3716,79 @@ void MuFade_UpdateScale(void *proc) {
 }
 
 #pragma cplusplus off
-void fn_8018A91C(void *arg0, f32 angle) {
-    void fn_80203320(void *,void *,f32);
-    void fn_80203604(void *,void *,void *,f32);
-    void fn_80202640(void *,void *);
-    void fn_802029C4(void *,void *,void *);
-    f32 fn_80023430(void *,f32,f32);
+void fn_8018A91C(void *arg0) {
+    void fn_80203320(void *, void *, f32);
+    void fn_80203604(void *, void *, void *, f32);
+    void fn_80202640(void *, void *);
+    void fn_802029C4(void *, void *, void *);
+    f32 fn_80023430(void *, f32, f32);
     extern u8 lbl_80278D70[];
     extern u8 lbl_802CA518[];
     extern u8 lbl_802B14E4[];
     f32 matrix[12];
-    extern const f32 lbl_8036ACD8,lbl_8036ACEC,lbl_8036AD2C,lbl_8036AD30,lbl_8036AD34,lbl_8036AD38;
+    extern const f32 lbl_8036ACD8, lbl_8036ACEC, lbl_8036AD2C, lbl_8036AD30, lbl_8036AD34, lbl_8036AD38;
     u32 angles[4];
-    f32 q1[4],q2[4],qout[4];
+    f32 q1[4], q2[4], qout[4];
     u8 *data = lbl_80278D70;
-    u32 axis[3],vec[3];
+    u32 axis[3], vec[3];
     u8 *self = arg0;
-    f32 angle2;
-    s32 from,to;
-    f32 minusX,minusY,dx,x,dy,y,plusX,plusY,h1,h2,d1,d2,height;
+    f32 angle, angle2;
+    s32 from, to;
+    f32 minusX, minusY, dx, x, dy, y, plusX, plusY, h1, h2, d1, d2, height;
     u8 id;
     void *unit;
-    *(f32 *)(self+0x40)=*(f32 *)(*(u8 **)(self+0x30)+4);
-    *(f32 *)(self+0x44)=*(f32 *)(*(u8 **)(self+0x30)+8);
-    *(f32 *)(self+0x48)=*(f32 *)(*(u8 **)(self+0x30)+12);
-    *(u32 *)(self+0x34)=0;
-    from=*(s32 *)(self+0x38);
-    angles[0]=*(u32 *)(data+0x8C);angles[1]=*(u32 *)(data+0x90);angles[2]=*(u32 *)(data+0x94);angles[3]=*(u32 *)(data+0x98);
-    switch(from) {case 1:angle=*(f32 *)&angles[0];break;case 2:angle=*(f32 *)&angles[1];break;case 8:angle=*(f32 *)&angles[2];break;case 4:angle=*(f32 *)&angles[3];break;}
-    to=*(s32 *)(self+0x3C);
-    switch(to) {case 1:angle2=*(f32 *)&angles[0];break;case 2:angle2=*(f32 *)&angles[1];break;case 8:angle2=*(f32 *)&angles[2];break;case 4:angle2=*(f32 *)&angles[3];break;}
-    if(from==to) angle2+=lbl_8036AD2C;
-    axis[0]=*(u32 *)(data+0x9C);axis[1]=*(u32 *)(data+0xA0);axis[2]=*(u32 *)(data+0xA4);
-    fn_80203320(q2,axis,lbl_8036AD30*angle2);
-    fn_80203320(q1,axis,lbl_8036AD30*angle);
-    fn_80203604(q1,q2,qout,lbl_8036ACD8);
-    fn_80202640(matrix,qout);
-    vec[0]=*(u32 *)(data+0xA8);vec[1]=*(u32 *)(data+0xAC);vec[2]=*(u32 *)(data+0xB0);
-    fn_802029C4(matrix,vec,vec);
-    *(f32 *)(self+0x5C)=lbl_8036AD34* *(f32 *)&vec[0];
-    *(f32 *)(self+0x60)=lbl_8036AD34* *(f32 *)&vec[1];
-    x=*(f32 *)(self+0x40);dx=*(f32 *)(self+0x5C);minusX=x-dx;
-    if(minusX>=lbl_8036ACEC) {
-        y=*(f32 *)(self+0x44);dy=*(f32 *)(self+0x60);minusY=y-dy;
-        if(minusY>=lbl_8036ACEC && minusX<(f32)*(s32 *)lbl_802CA518 && minusY<(f32)*(s32 *)(lbl_802CA518+4)) {
-            plusX=x+dx;
-            if(plusX<lbl_8036ACEC || (plusY=y+dy)<lbl_8036ACEC || plusX>=(f32)*(s32 *)lbl_802CA518 || plusY>=(f32)*(s32 *)(lbl_802CA518+4)) {
-                *(f32 *)(self+0x5C)*=lbl_8036AD34;
-                *(f32 *)(self+0x60)*=lbl_8036AD34;
+    *(f32 *)(self + 0x40) = *(f32 *)(*(u8 **)(self + 0x30) + 4);
+    *(f32 *)(self + 0x44) = *(f32 *)(*(u8 **)(self + 0x30) + 8);
+    *(f32 *)(self + 0x48) = *(f32 *)(*(u8 **)(self + 0x30) + 12);
+    *(u32 *)(self + 0x34) = 0;
+    from = *(s32 *)(self + 0x38);
+    angles[0] = *(u32 *)(data + 0x8C); angles[1] = *(u32 *)(data + 0x90); angles[2] = *(u32 *)(data + 0x94); angles[3] = *(u32 *)(data + 0x98);
+    switch (from) { case 1: angle = *(f32 *)&angles[0]; break; case 2: angle = *(f32 *)&angles[1]; break; case 8: angle = *(f32 *)&angles[2]; break; case 4: angle = *(f32 *)&angles[3]; break; }
+    to = *(s32 *)(self + 0x3C);
+    switch (to) { case 1: angle2 = *(f32 *)&angles[0]; break; case 2: angle2 = *(f32 *)&angles[1]; break; case 8: angle2 = *(f32 *)&angles[2]; break; case 4: angle2 = *(f32 *)&angles[3]; break; }
+    if (from == to) angle2 += lbl_8036AD2C;
+    axis[0] = *(u32 *)(data + 0x9C); axis[1] = *(u32 *)(data + 0xA0); axis[2] = *(u32 *)(data + 0xA4);
+    fn_80203320(q1, axis, lbl_8036AD30 * angle);
+    fn_80203320(q2, axis, lbl_8036AD30 * angle2);
+    fn_80203604(q1, q2, qout, lbl_8036ACD8);
+    fn_80202640(matrix, qout);
+    vec[0] = *(u32 *)(data + 0xA8); vec[1] = *(u32 *)(data + 0xAC); vec[2] = *(u32 *)(data + 0xB0);
+    fn_802029C4(matrix, vec, vec);
+    *(f32 *)(self + 0x5C) = lbl_8036AD34 * *(f32 *)&vec[0];
+    *(f32 *)(self + 0x60) = lbl_8036AD34 * *(f32 *)&vec[1];
+    x = *(f32 *)(self + 0x40); dx = *(f32 *)(self + 0x5C); minusX = x - dx;
+    if (minusX >= lbl_8036ACEC) {
+        y = *(f32 *)(self + 0x44); dy = *(f32 *)(self + 0x60); minusY = y - dy;
+        if (minusY >= lbl_8036ACEC && minusX < (f32)*(s32 *)lbl_802CA518 && minusY < (f32)*(s32 *)(lbl_802CA518 + 4)) {
+            plusX = x + dx;
+            if (plusX < lbl_8036ACEC || (plusY = y + dy) < lbl_8036ACEC || plusX >= (f32)*(s32 *)lbl_802CA518 || plusY >= (f32)*(s32 *)(lbl_802CA518 + 4)) {
+                *(f32 *)(self + 0x5C) *= lbl_8036AD34;
+                *(f32 *)(self + 0x60) *= lbl_8036AD34;
             } else {
-                id=*(u8 *)(lbl_802CA518+(s8)plusX+((s8)plusY<<6)+0xD);
-                if(id) unit=lbl_802B14E4+(id-1)*0x280;
-                else unit=0;
-                if(unit) {
-                    *(f32 *)(self+0x5C)*=lbl_8036AD34;
-                    *(f32 *)(self+0x60)*=lbl_8036AD34;
+                id = *(u8 *)(lbl_802CA518 + (s8)plusX + ((s8)plusY << 6) + 0xD);
+                if (id) unit = lbl_802B14E4 + (id - 1) * 0x280;
+                else unit = 0;
+                if (unit) {
+                    *(f32 *)(self + 0x5C) *= lbl_8036AD34;
+                    *(f32 *)(self + 0x60) *= lbl_8036AD34;
                 }
-                h1=fn_80023430(lbl_802CA518,*(f32 *)(self+0x40)+*(f32 *)(self+0x5C),*(f32 *)(self+0x44)+*(f32 *)(self+0x60));
-                h2=fn_80023430(lbl_802CA518,*(f32 *)(self+0x40)-*(f32 *)(self+0x5C),*(f32 *)(self+0x44)-*(f32 *)(self+0x60));
-                height=*(f32 *)(self+0x48);
-                h1=height-h1;
-                h2=height-h2;
+                h1 = fn_80023430(lbl_802CA518, *(f32 *)(self + 0x40) + *(f32 *)(self + 0x5C), *(f32 *)(self + 0x44) + *(f32 *)(self + 0x60));
+                h2 = fn_80023430(lbl_802CA518, *(f32 *)(self + 0x40) - *(f32 *)(self + 0x5C), *(f32 *)(self + 0x44) - *(f32 *)(self + 0x60));
+                height = *(f32 *)(self + 0x48);
+                h1 = height - h1;
+                h2 = height - h2;
                 h1 *= h1;
                 h2 *= h2;
-                if(h1>h2) {
-                    *(f32 *)(self+0x5C)*=lbl_8036AD34;
-                    *(f32 *)(self+0x60)*=lbl_8036AD34;
+                if (h1 > h2) {
+                    *(f32 *)(self + 0x5C) *= lbl_8036AD34;
+                    *(f32 *)(self + 0x60) *= lbl_8036AD34;
                 }
             }
         }
     }
-    *(f32 *)(self+0x54)=lbl_8036ACEC;*(f32 *)(self+0x58)=lbl_8036ACEC;
-    *(f32 *)(self+0x4C)=lbl_8036AD38* *(f32 *)(self+0x5C);
-    *(f32 *)(self+0x50)=lbl_8036AD38* *(f32 *)(self+0x60);
+    *(f32 *)(self + 0x54) = lbl_8036ACEC; *(f32 *)(self + 0x58) = lbl_8036ACEC;
+    *(f32 *)(self + 0x4C) = lbl_8036AD38 * *(f32 *)(self + 0x5C);
+    *(f32 *)(self + 0x50) = lbl_8036AD38 * *(f32 *)(self + 0x60);
 }
 /* Poll pad button IDs 0x14-0x1B to start/stop GActor node-link anims using MoveAnim_str names. */
 void MoveAnim_PollPadNodeLinks(void *self) {
@@ -10943,7 +10943,9 @@ void fn_80196F10(void *arg0, s32 arg1) {
     Prim2D_EndPrim();
 }
 
-#pragma global_optimizer reset
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
 void fn_801976A4(void *arg0, s32 arg1) {
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -10964,12 +10966,7 @@ void fn_801976A4(void *arg0, s32 arg1) {
     extern f64 lbl_8036AE90;
     extern f64 lbl_8036AE98;
 
-    s32 rect1[4];
-    s32 rect2[4];
-    s32 copyb[4];
-    s32 rect1b[4];
-    s32 rect2b[4];
-    s32 copy[4];
+    UiDrawRect copy, copyb, rect2, rect1, rect2b, rect1b;
     void *self;
     s32 arg;
     s32 a, b, d, pad;
@@ -10980,63 +10977,66 @@ void fn_801976A4(void *arg0, s32 arg1) {
     self = arg0;
     arg = arg1;
 
-    rect1[3] = 0; rect1[2] = 0; rect1[1] = 0; rect1[0] = 0;
-    rect2[3] = 0; rect2[2] = 0; rect2[1] = 0; rect2[0] = 0;
+    copy.v[3]=0;copy.v[2]=0;copy.v[1]=0;copy.v[0]=0;
+    pad = *(s32 *)((u8 *)self + 0x70);
+    rect1.v[3] = 0; rect1.v[2] = 0; rect1.v[1] = 0; rect1.v[0] = 0;
+    rect2.v[3] = 0; rect2.v[2] = 0; rect2.v[1] = 0; rect2.v[0] = 0;
     a = fn_800E2E58(*(void **)((u8 *)self + 0x60));
     b = fn_800E2E50(*(void **)((u8 *)self + 0x60));
     fn_800E2E68(*(void **)((u8 *)self + 0x60));
     d = fn_800E2E60(*(void **)((u8 *)self + 0x60));
-    pad = *(s32 *)((u8 *)self + 0x70) * 5 + 1;
-    rect1[1] = b;
-    rect1[2] = a;
-    rect1[3] = d + b;
-    rect1[0] = pad + a;
+    pad = pad * 5 + 1;
+    rect1.v[0] = a;
+    rect1.v[1] = b;
+    rect1.v[2] = pad + a;
+    rect1.v[3] = d + b;
     obj38 = *(void **)((u8 *)self + 0x38);
     b = (s32)((f32)(*(s32 *)((u8 *)self + 0x48) + *(s32 *)((u8 *)obj38 + 0x60)) + *(f32 *)((u8 *)obj38 + 0x68));
-    rect2[0] = b;
+    rect2.v[0] = b;
     b = *(s32 *)((u8 *)self + 0x4C) + *(s32 *)((u8 *)obj38 + 0x64);
-    rect2[2] = rect2[0] + pad;
-    rect2[1] = b - 1;
-    rect2[3] = rect2[1] + d;
+    rect2.v[2] = rect2.v[0] + pad;
+    rect2.v[1] = b;
+    rect2.v[1] -= 1;
+    rect2.v[3] = rect2.v[1] + d;
     sp8 = (s32)(lbl_8036AEA0 * *(f32 *)((u8 *)obj38 + 0x6C));
     spC = 0;
-    SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1, rect2,
+    SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1.v, rect2.v,
                 *(s32 *)((u8 *)self + 0x44), 0x5A, 0x5A, 0x5A, sp8, 0);
 
     *(s32 *)((u8 *)self + 0x44) = *(s32 *)((u8 *)self + 0x44) - 1;
 
-    rect1b[3] = 0; rect1b[2] = 0; rect1b[1] = 0; rect1b[0] = 0;
-    rect2b[3] = 0; rect2b[2] = 0; rect2b[1] = 0; rect2b[0] = 0;
+    pad = *(s32 *)((u8 *)self + 0x78);
+    rect1b.v[3] = 0; rect1b.v[2] = 0; rect1b.v[1] = 0; rect1b.v[0] = 0;
+    rect2b.v[3] = 0; rect2b.v[2] = 0; rect2b.v[1] = 0; rect2b.v[0] = 0;
     a = fn_800E2E58(*(void **)((u8 *)self + 0x60));
     b = fn_800E2E50(*(void **)((u8 *)self + 0x60));
     fn_800E2E68(*(void **)((u8 *)self + 0x60));
     d = fn_800E2E60(*(void **)((u8 *)self + 0x60));
-    pad = *(s32 *)((u8 *)self + 0x78) * 5 + 1;
-    rect1b[1] = b;
-    rect1b[2] = a;
-    rect1b[3] = d + b;
-    rect1b[0] = pad + a;
+    pad = pad * 5 + 1;
+    rect1b.v[0] = a;
+    rect1b.v[1] = b;
+    rect1b.v[2] = pad + a;
+    rect1b.v[3] = d + b;
     obj38 = *(void **)((u8 *)self + 0x38);
     b = (s32)((f32)(*(s32 *)((u8 *)self + 0x48) + *(s32 *)((u8 *)obj38 + 0x60)) + *(f32 *)((u8 *)obj38 + 0x68));
-    rect2b[0] = b;
+    rect2b.v[0] = b;
     b = *(s32 *)((u8 *)self + 0x4C) + *(s32 *)((u8 *)obj38 + 0x64);
-    rect2b[2] = rect2b[0] + pad;
-    rect2b[1] = b - 1;
-    rect2b[3] = rect2b[1] + d;
+    rect2b.v[2] = rect2b.v[0] + pad;
+    rect2b.v[1] = b;
+    rect2b.v[1] -= 1;
+    rect2b.v[3] = rect2b.v[1] + d;
     sp8 = (s32)(lbl_8036AEA0 * *(f32 *)((u8 *)obj38 + 0x6C));
     spC = 0;
-    SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1b, rect2b,
+    SpriteSheet_DrawUvRect(*(void **)((u8 *)self + 0x60), arg, rect1b.v, rect2b.v,
                 *(s32 *)((u8 *)self + 0x44), 0xFF, 0xFF, 0xFF, sp8, 0);
 
-    copy[0] = rect2b[0];
+    copy = rect2b;
+    alpha = (s32)(*(f32 *)(*(u8 **)((u8 *)self + 0x38) + 0x6C) * (f32)*(u8 *)((u8 *)self + 0x53));
     bl = *(u8 *)((u8 *)self + 0x52);
-    copy[1] = rect2b[1];
     g = *(u8 *)((u8 *)self + 0x51);
-    copy[2] = rect2b[2];
     r = *(u8 *)((u8 *)self + 0x50);
-    copy[3] = rect2b[3];
-    h = rect2b[3] - rect2b[1];
-    alpha = (s32)(*(f32 *)((u8 *)obj38 + 0x6C) * (f32)*(u8 *)((u8 *)self + 0x53));
+    copyb = copy;
+    h = copyb.v[3] - copyb.v[1];
     Prim2D_Begin();
     {
         s32 t = *(s32 *)((u8 *)self + 0x44) - 1;
@@ -11045,13 +11045,12 @@ void fn_801976A4(void *arg0, s32 arg1) {
     Prim2D_SetTex(0, 0x20);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)copy[0], (f32)copy[1], (f32)(copy[2] - copy[0]), (f32)h);
+    Prim2D_SetRect((f32)copyb.v[0], (f32)copyb.v[1], (f32)(copyb.v[2] - copyb.v[0]), (f32)h);
     Prim2D_SetColor(r, g, bl, (u8)alpha);
     Prim2D_EndPrim();
 }
-
+#pragma pop
 #pragma cplusplus on
-#pragma global_optimizer off
 extern "C" void fn_80197A78(void *arg0, s32 arg1)
 {
     extern void Prim2D_SetColor(u8, u8, u8, u8);
