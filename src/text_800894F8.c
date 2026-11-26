@@ -136,6 +136,7 @@ void fn_800895B8(void) {
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
+#pragma opt_strength_reduction on
 #pragma global_optimizer on
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
