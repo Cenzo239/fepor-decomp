@@ -10917,7 +10917,6 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     s32 temp_r0;
     u16 temp_r8;
     u8 *var_r6;
-    s32 center;
     s32 var_r9;
     s32 count;
     s32 temp_r9;
@@ -10944,8 +10943,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     var_r6 = (u8 *)&spC;
     var_r9 = 0;
     temp_r0 = (s32)((f32)(s8)lbl_80366E9C * var_f2);
-    center = (u16)temp_r0;
-    temp_r8 = (s8)lbl_80366E9C - center;
+    temp_r8 = (s8)lbl_80366E9C - (u16)temp_r0;
     count = temp_r8 % 4;
     for (var_ctr = 2; var_ctr != 0; var_ctr--) {
         if (var_r9 < count) {
@@ -10965,7 +10963,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     var_r6_2 = (u8 *)&sp8;
     var_r8 = 0;
     for (var_ctr = 3; var_ctr != 0; var_ctr--) {
-        if (var_r8 < (center % 3)) {
+        if (var_r8 < (s32)((u16)temp_r0 % 3)) {
             *var_r6_2 = (u8)(s32)(lbl_8036B478 + (f32)(u16)temp_r0 / lbl_8036B484);
         } else {
             *var_r6_2 = (u8)(s32)((f32)(u16)temp_r0 / lbl_8036B484);
@@ -11018,8 +11016,8 @@ void *fn_801C7FE8(void *arg0) {
 #pragma cplusplus on
     void *Heap_Alloc(s32);
     extern void *gEmptyVtbl[];
-    extern f32 lbl_8036B478;
-    extern f32 lbl_8036B498;
+    extern const f32 lbl_8036B478;
+    extern const f32 lbl_8036B498;
     struct Obj {
         virtual void v0()=0;
         virtual void v1()=0;
@@ -11031,9 +11029,9 @@ void *fn_801C7FE8(void *arg0) {
     *(u8 *)(self + 0x34) = 0;
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 2;
         *(void **)child = gEmptyVtbl;
@@ -11060,9 +11058,9 @@ void *fn_801C7FE8(void *arg0) {
 
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 3;
         *(void **)child = gEmptyVtbl;
@@ -11089,9 +11087,9 @@ void *fn_801C7FE8(void *arg0) {
 
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 0;
         *(void **)child = gEmptyVtbl;
@@ -11118,9 +11116,9 @@ void *fn_801C7FE8(void *arg0) {
 
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 1;
         *(void **)child = gEmptyVtbl;
@@ -11147,9 +11145,9 @@ void *fn_801C7FE8(void *arg0) {
 
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 2;
         *(void **)child = gEmptyVtbl;
@@ -11176,9 +11174,9 @@ void *fn_801C7FE8(void *arg0) {
 
     child = (u8 *)Heap_Alloc(0x28);
     if (child) {
+        s32 zero, id;
+        u8 one, ff;
         f32 f1, f0;
-        u8 ff, one;
-        s32 id, zero;
         zero = 0;
         id = 3;
         *(void **)child = gEmptyVtbl;
