@@ -858,8 +858,8 @@ void fn_8020D5BC(void) {
     DVDLowStopMotor(fn_8020D5E4);
 }
 
-#pragma global_optimizer off
-#pragma opt_common_subs off
+#pragma push
+#pragma global_optimizer on
 void fn_8020D5E4(u32 arg0) {
     void __DVDStoreErrorCode(u32);
     void DVDReset(void);
@@ -900,9 +900,9 @@ void fn_8020D5E4(u32 arg0) {
     }
 
     if (lbl_803685B8 != 0) {
-        ResumeFromHere_803685C0 = 2;
+        *(volatile s32 *)&ResumeFromHere_803685C0 = 2;
         finished = (DVDReadyCommand *)executing_80368598;
-        executing_80368598 = DummyCommandBlock_80339F80;
+        *(void * volatile *)&executing_80368598 = DummyCommandBlock_80339F80;
         lbl_803685B8 = 0;
         finished->state = 10;
 
@@ -925,8 +925,7 @@ void fn_8020D5E4(u32 arg0) {
         fn_8020DD7C();
     }
 }
-#pragma opt_common_subs reset
-#pragma global_optimizer reset
+#pragma pop
 void fn_8020D724(void) {
     /* stateCheckID */
     extern u16 BB2_80339F40[];
