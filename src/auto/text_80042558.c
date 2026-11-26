@@ -75,11 +75,11 @@ static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 r
         return found;
     }
     {
+        s32 dx;
+        s32 dy;
         s32 dir;
         for (dir = 0; dir < 4; dir++) {
             u8 d = DirFromIndex_80042558(dir);
-            s32 dx;
-            s32 dy;
             switch (d) {
             case 1: dx = -1; break;
             case 2: dx = 1; break;
