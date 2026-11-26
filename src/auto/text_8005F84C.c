@@ -8762,7 +8762,15 @@ void fn_8006F09C(void *arg0, void *arg1, void *arg2) {
     d->entries[3] = 0;
     Ui_CreateMenu((u8 *)d + 0x80, fn_800C0658(), 0);
 }
-#pragma global_optimizer off
+#pragma inline_depth(8)
+#pragma global_optimizer on
+static inline void FillMenu2(s32 *table, void **entries, s32 arg0, s32 arg1) {
+    entries[0] = table;
+    table[1] = arg0;
+    entries[1] = table + 2;
+    table[3] = arg1;
+    entries[2] = 0;
+}
 void fn_8006F10C(s32 arg0, s32 arg1) {
     extern u8 lbl_80311CA8[];
     s32 fn_800C0658(void);
@@ -8779,6 +8787,7 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
     entries[2] = 0;
     Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
+#pragma global_optimizer off
 
 void fn_8006F170(void *arg0, void *arg1, void *arg2) {
     void Prim2D_AddPrim(s32);
