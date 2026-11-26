@@ -82,8 +82,9 @@ static inline void Ai_TryFallbackMove(void *arg0) {
         Ai_SetUnitMoveTo(arg0, x2, y2, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
         if (gAiState[0x21C]) {
             if (x2 == (s8)gUiContext[13] && y2 == (s8)gUiContext[14]) {
+                u8 tx = ((u8 *)TargetList_GetAt(gTargetList, 0))[0];
                 fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4),
-                    ((s8 *)TargetList_GetAt(gTargetList, 0))[0],
+                    (s8)tx,
                     ((s8 *)TargetList_GetAt(gTargetList, 0))[1],
                     -1, 0, 0);
             }
@@ -480,14 +481,7 @@ s32 fn_801287B8(void) {
 u8 fn_801287C0(void *arg0)
 {
     u8 Status_Test(void *, s32);
-    u8 fn_801001B8(void *, s32, s16 *, s16 *);
-    void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
-    void *TargetList_GetAt(void *, s32);
-    void fn_800FB96C(s32, u8, u8, void *, s32, s32, s32, s32, s32);
-
     extern u8 gAiState[];
-    extern u8 gUiContext[];
-    extern u8 gTargetList[];
 
     u8 *self;
     u32 oldFlags;
@@ -502,21 +496,7 @@ u8 fn_801287C0(void *arg0)
     *(u32 *)(self + 0x254) |= 0x30000000;
 
     if (!Ai_TryMoveAndAttack(self, -1)) {
-        if (*(u32 *)(self + 0x254) & 0x10000000) {
-            s16 x2;
-            s16 y2;
-            if (fn_801001B8(self, 0, &x2, &y2)) {
-                Ai_SetUnitMoveTo(self, x2, y2, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
-                if (gAiState[0x21C]) {
-                    if (x2 == (s8)gUiContext[13] && y2 == (s8)gUiContext[14]) {
-                        fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4),
-                            ((s8 *)TargetList_GetAt(gTargetList, 0))[0],
-                            ((s8 *)TargetList_GetAt(gTargetList, 0))[1],
-                            -1, 0, 0);
-                    }
-                }
-            }
-        }
+        Ai_TryFallbackMove(self);
     }
 
     *(u32 *)(self + 0x254) = oldFlags;
