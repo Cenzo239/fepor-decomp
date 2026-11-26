@@ -1930,6 +1930,7 @@ void fn_800ABE74(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_800AC0C0(void *arg0) {
     void fn_801475FC(void *, s32);
     u8 fn_80166D8C(void *);
@@ -1946,10 +1947,10 @@ void fn_800AC0C0(void *arg0) {
     u32 temp_r3;
     s32 var_r6;
     u8 *var_r5;
-    s32 temp_r8;
+    s32 var_r7_2;
     s32 temp_r5;
     s32 temp_r4;
-    s32 var_r7_2;
+    s32 temp_r8;
     u8 *var_r5_2;
     u8 *var_r4;
     u8 *temp_r7;
@@ -2018,32 +2019,32 @@ void fn_800AC0C0(void *arg0) {
         temp_r5 = *(s8 *)((u8 *)self + 0x40);
         temp_r4 = var_r6 - temp_r5;
         if (temp_r4 < 0 || temp_r4 > 3) {
-            s32 index;
             if (!(temp_r3 & 0x08000008)) {
                 return;
             }
-            index = temp_r5 + 3;
+            var_r7_2 = temp_r5 + 3;
             temp_r5 = temp_r8 << 7;
-            var_r5_2 = lbl_80312ACC + temp_r5 + index * 0x10;
+            var_r5_2 = lbl_80312ACC + temp_r5 + var_r7_2 * 0x10;
             while (1) {
-                if (index < 0) {
+                if (var_r7_2 < 0) {
                     break;
                 }
                 if (var_r5_2[0xC] != 0) {
                     break;
                 }
                 var_r5_2 -= 0x10;
-                index -= 1;
+                var_r7_2 -= 1;
             }
-            var_r6 = index;
+            var_r6 = var_r7_2;
         }
         *(u8 *)((u8 *)self + 0x3D) = (u8)var_r6;
         var_r7 = 1;
     }
     if (temp_r0 & 0x04000004) {
-        temp_r5 = *(s8 *)((u8 *)self + 0x3D);
+        temp_r5 = *(u8 *)((u8 *)self + 0x3D);
         temp_r8 = *(s8 *)((u8 *)self + 0x3C);
-        var_r7_2 = temp_r5 + 1;
+        temp_r4 = (s8)temp_r5;
+        var_r7_2 = temp_r4 + 1;
         temp_r5 = temp_r8 << 7;
         var_r4 = lbl_80312ACC + temp_r5 + var_r7_2 * 0x10;
         while (1) {
