@@ -15,15 +15,6 @@ struct Record {
 };
 
 #pragma global_optimizer off
-static inline void ResetRecordTables(u8 *base) {
-    void **slot1 = (void **)(base + 0xC);
-    void **slot0 = (void **)base;
-    slot1[1] = lbl_80285050;
-    slot0[1] = lbl_80285050;
-    slot1[1] = lbl_80285458;
-    slot0[1] = lbl_80285458;
-    slot1[1] = lbl_80285424;
-}
 
 #pragma opt_propagation off
 void fn_80033080(void) {
