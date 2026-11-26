@@ -2,8 +2,8 @@
 #include "common.h"
 static inline void Map_ClearRangeCell(void *map, s32 index)
 {
-    (*(s16 **)((u8 *)map + 0x14190))[index] = -1;
-    ((s16 *)((u8 *)map + 0xC18E))[index] = 0;
+    *(s16 *)((u8 *)(*(s16 **)((u8 *)map + 0x14190)) + index) = -1;
+    *(s16 *)((u8 *)map + (index + 0xC18E)) = 0;
 }
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
