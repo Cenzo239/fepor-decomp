@@ -2640,14 +2640,8 @@ s32 fn_8013FBC0(s32);
 s32 fn_80138AB8(void *);
 
 Vec2s *fn_8013FC64(Vec2s *);
-static inline s32 *FBC8Ret(s32 *dst, s32 *src) {
-    fn_8013FBC8(dst, src);
-    return dst;
-}
-static inline s16 *FBDCRet(s16 *dst, s16 *src) {
-    fn_8013FBDC(dst, src);
-    return dst;
-}
+#define FBC8Ret(dst, src) (fn_8013FBC8((dst), (src)), (dst))
+#define FBDCRet(dst, src) (fn_8013FBDC((dst), (src)), (dst))
 #pragma inline_depth(0)
 Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     Vec2s sp3C;
@@ -2691,10 +2685,9 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
             fn_8013FC00((s16 *)&sp24, (s16 *)&sp1C);
         }
         fn_8013FC28((s32 *)&sp2C, (s32 *)&sp24, (s16 *)fn_8013FBC0((s32)parent));
-        p8 = (s32 *)&sp8;
-        fn_8013FBC8(p8, (s32 *)&sp2C);
-        fn_8013FBDC((s16 *)p8, (s16 *)&sp3C);
-        fn_8013FBC8((s32 *)&sp28, p8);
+        p8 = FBC8Ret((s32 *)&sp8, (s32 *)&sp2C);
+        FBDCRet((s16 *)p8, (s16 *)&sp3C);
+        FBC8Ret((s32 *)&sp28, p8);
         sp3C.x = sp28.x;
         sp3C.y = sp28.y;
     }
