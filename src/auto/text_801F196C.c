@@ -3469,9 +3469,12 @@ void fn_801F8A18(void *arg0) {
     }
 }
 
-#pragma optimization_level 2
-#pragma use_lmw_stmw on
-#pragma opt_pointer_aliasing off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_loop_invariants off
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_801F8A98(void *arg0) {
     void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
     void fn_800506E0(void *, s32, void *);
@@ -3535,8 +3538,8 @@ void fn_801F8A98(void *arg0) {
                     fn_800616A0(pair.obj);
                 }
                 pair.obj = GActor_Create();
-                p = (u32 *)pair.obj;
                 *(void **)((u8 *)pair.obj + 4) = (u8 *)unit + 0x1C;
+                p = (u32 *)pair.obj;
                 *p |= 0x50028400;
                 fn_800506E0(unit, 0, p);
                 *(s32 *)((u8 *)pair.obj + 0x44) = fn_800639B4();
@@ -3567,8 +3570,8 @@ void fn_801F8A98(void *arg0) {
     }
     memset((u8 *)self + 0x58, 0, 0x10);
     {
-        f32 lim = lbl_8036BA00;
         f32 f = lbl_8036BA04 + *(f32 *)((u8 *)self + 0x3C);
+        f32 lim = lbl_8036BA00;
         s32 count = ((s32 *)self)[0xC];
         *(f32 *)((u8 *)self + 0x40) = f + (f32)(u32)((count - 5) * 0x50);
         *(s32 *)((u8 *)self + 0x48) = (s32)((*(f32 *)((u8 *)self + 0x40) / lim) * (f32)*(s32 *)((u8 *)self + 0x48));
@@ -3578,9 +3581,7 @@ void fn_801F8A98(void *arg0) {
     }
     fn_8006EEFC((u8 *)self + 0x50, lbl_8029B378[1]);
 }
-#pragma opt_pointer_aliasing reset
-#pragma optimization_level reset
-#pragma use_lmw_stmw on
+#pragma pop
 
 /* Compare two staff-roll units: allegiance 6 first, then chapter/battles/class id. */
 u32 StaffRoll_CompareUnits(void **lhs, void **rhs) {
@@ -5337,10 +5338,10 @@ s32 fn_801FB9E0(u8 *arg0)
     }
 }
 #pragma global_optimizer reset
-s32 fn_801FBAD4(u8 *arg0) {
+s32 fn_801FBAD4(s8 *arg0) {
     u16 fn_802072A0(s32);
-    void *fn_801FBF98(void *,void *,u16 *,u32 (*)(void *,u16));
-    u32 fn_801FB9CC(void *,u16);
+    void *fn_801FBF98(void *, void *, u16 *, u32 (*)(void *, u16));
+    u32 fn_801FB9CC(void *, u16);
     extern u32 lbl_80368410[2];
     u16 code;
     u8 *end;
@@ -5348,39 +5349,46 @@ s32 fn_801FBAD4(u8 *arg0) {
     u32 *table;
     s32 maximum;
     s32 width;
-    register u8 *p;
-    u8 ch,a,b,multibyte;
+    register s8 *p;
+    s8 ch;
+    u8 a, b, multibyte;
     s32 c;
     u8 *found;
-    maximum=0;
-    p=arg0;
-    width=0;
-    table=lbl_80368410;
-    while((s8)(ch=*p)!=0) {
-        if((s8)ch==10) {
-            if(maximum<width) maximum=width;
-            width=0;
+    maximum = 0;
+    p = arg0;
+    width = 0;
+    table = lbl_80368410;
+    while ((ch = *p) != 0) {
+        if (ch == 10) {
+            if (maximum < width) maximum = width;
+            width = 0;
             p++;
             continue;
         }
-        if(fn_802072A0(ch)!=1) {
-            { c=*(s8*)p; p++; }
+        if (fn_802072A0((u8)ch) != 1) {
+            c = *p++;
         } else {
-            a=p[0];
-            if(((a>=0x81U && a<=0x9FU)||(a>=0xE0U && a<=0xFCU)) &&
-               (((b=p[1],b>=0x40U)&&b<=0x7EU)||(b>=0x80U && b<=0xFCU))) multibyte=1;
-            else multibyte=0;
-            if(!multibyte) { c=*(s8*)p; p++; }
-            else { c=*(u16*)p; p+=2; }
+            a = ((u8 *)p)[0];
+            if (((a >= 0x81U && a <= 0x9FU) || (a >= 0xE0U && a <= 0xFCU)) &&
+                (((b = ((u8 *)p)[1], b >= 0x40U) && b <= 0x7EU) || (b >= 0x80U && b <= 0xFCU)))
+                multibyte = 1;
+            else
+                multibyte = 0;
+            if (!multibyte) {
+                c = *p++;
+            } else {
+                c = *(u16 *)p;
+                p += 2;
+            }
         }
-        base=(u8*)lbl_80368410[0];
-        end=base+table[1]*0x140;
-        code=c;
-        found=fn_801FBF98(base,end,&code,fn_801FB9CC);
-        if(end==found || *(u16*)(found+0x120)!=code) found=base;
-        width+=*(u16*)(found+0x122);
+        base = (u8 *)lbl_80368410[0];
+        end = base + table[1] * 0x140;
+        code = c;
+        found = fn_801FBF98(base, end, &code, fn_801FB9CC);
+        if (end == found || *(u16 *)(found + 0x120) != code) found = base;
+        width += *(u16 *)(found + 0x122);
     }
-    return maximum<width?width:maximum;
+    return maximum < width ? width : maximum;
 }
 
 #pragma opt_common_subs on
