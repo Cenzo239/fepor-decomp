@@ -73,10 +73,10 @@ return *p;
 }
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *lbl_80368950;
-u8 *p = lbl_80368950->cursor;
-u16 value = p[0] << 8;
-value |= p[1];
-lbl_80368950->cursor = p + 2;
+u8 **pp = &lbl_80368950->cursor;
+u8 *p = *pp;
+u16 value = (p[0] << 8) | p[1];
+*pp = p + 2;
 return value;
 }
 
@@ -369,13 +369,12 @@ s32 fn_8023CA4C(void) {
     u8 *zig;
     u8 *p;
     const f64 *aan;
-    u32 size;
+    u32 size = (u16)ThpReadWord();
     s32 id;
     u32 i;
     u32 j;
     u16 row;
 
-    size = (u16)ThpReadWord();
     size -= 2;
     aan = (const f64 *)(lbl_80282FD8 + 0x50);
     for (;;) {
