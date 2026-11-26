@@ -1872,50 +1872,13 @@ s32 fn_80257C2C(u8 *arg0, u32 arg1) {
 }
 
 s32 fn_80257D7C(u8 *arg0) {
-    u32 __cvt_fp2unsigned(f32, f32, f32);
-    extern u8 gSoundLevelCurve[];
-    extern f32 lbl_8036C298;
-    f32 temp_f2;
-    u32 temp_r3;
-    u32 temp_r4;
-    u8 temp_r0;
-
-    temp_r0 = arg0[0];
-    if ((s32)temp_r0 >= 2) goto zero;
-    if ((s32)temp_r0 < 0) goto zero;
-    temp_r4 = *(u32 *)(arg0 + 0x20);
-    switch ((s32)temp_r0) {
+    switch (arg0[0]) {
     case 0:
-        arg0[1] = 4;
-        *(u32 *)(arg0 + 4) = temp_r4;
-        if (temp_r4 == 0) {
-            *(u32 *)(arg0 + 4) = 1;
-            *(s32 *)(arg0 + 0x10) = 0;
-            return 1;
-        }
-        *(s32 *)(arg0 + 0x10) = -(s32)(*(u32 *)(arg0 + 8) / temp_r4);
-        break;
     case 1:
-        if (arg0[0x26] == 0 && arg0[1] == 1) {
-            *(s32 *)(arg0 + 0xC) = (0xC1 - gSoundLevelCurve[*(s32 *)(arg0 + 8) >> 21]) << 16;
-        }
-        temp_f2 = lbl_8036C298 * (f32)*(s32 *)(arg0 + 0xC);
-        *(u32 *)(arg0 + 4) = __cvt_fp2unsigned(temp_f2 * (f32)temp_r4, temp_f2, lbl_8036C298) >> 12;
-        arg0[1] = 4;
-        temp_r3 = *(u32 *)(arg0 + 4);
-        if (temp_r3 == 0) {
-            *(u32 *)(arg0 + 4) = 1;
-            *(u32 *)(arg0 + 8) = 0;
-            *(s32 *)(arg0 + 0xC) = 0;
-            *(s32 *)(arg0 + 0x10) = 0;
-            return 1;
-        }
-        *(s32 *)(arg0 + 0x10) = -(s32)((u32)*(s32 *)(arg0 + 0xC) / temp_r3);
-        break;
+        return fn_80257C2C(arg0, *(u32 *)(arg0 + 0x20));
+    default:
+        return 0;
     }
-    return 0;
-zero:
-    return 0;
 }
 
 s32 Sound_TickAdsr(u8 *env, s16 *outVol, s16 *outDelta) {
