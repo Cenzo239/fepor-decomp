@@ -4026,37 +4026,37 @@ void fn_8018B3DC(void *arg0) {
     Model_SetAlpha(temp_r31, M2C_FIELD(arg0, u8 *, 0x3B));
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_8018B434(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void Model_SetColor(void *, u8, u8, u8);
-    void Model_SetAlpha(void *, u8);
-    void Process_ClearFunc(void *);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    void fn_8005F7E0(void *, u8, u8, u8);
+    void fn_8005F7B0(void *, u8);
+    void fn_8000C188(void *);
 
     u8 sp8[4];
+    void *base;
     void *obj;
     f32 f_from;
     f32 f_to;
-    u8 fromByte;
-    void *base;
 
     *(s32 *)((u8 *)arg0 + 0x40) += 1;
-    fromByte = *(u8 *)((u8 *)arg0 + 0x34);
-    f_from = (f32)fromByte;
+    f_from = (f32)*(u8 *)((u8 *)arg0 + 0x34);
     f_to = (f32)*(u8 *)((u8 *)arg0 + 0x38);
     obj = *(void **)((u8 *)arg0 + 0x30);
     *(s32 *)sp8 = *(s32 *)((u8 *)obj + 0x24);
     base = (u8 *)obj + 0x1C;
-    sp8[0] = (u8)(s32)Math_Lerp(f_from, f_to, (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
-    sp8[1] = (u8)(s32)Math_Lerp((f32)*(u8 *)((u8 *)arg0 + 0x35), (f32)*(u8 *)((u8 *)arg0 + 0x39), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
-    sp8[2] = (u8)(s32)Math_Lerp((f32)*(u8 *)((u8 *)arg0 + 0x36), (f32)*(u8 *)((u8 *)arg0 + 0x3A), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
-    sp8[3] = (u8)(s32)Math_Lerp((f32)*(u8 *)((u8 *)arg0 + 0x37), (f32)*(u8 *)((u8 *)arg0 + 0x3B), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
-    Model_SetColor(base, sp8[0], sp8[1], sp8[2]);
-    Model_SetAlpha(base, sp8[3]);
+    sp8[0] = (u8)(s32)fn_80059F64(f_from, f_to, (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
+    sp8[1] = (u8)(s32)fn_80059F64((f32)*(u8 *)((u8 *)arg0 + 0x35), (f32)*(u8 *)((u8 *)arg0 + 0x39), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
+    sp8[2] = (u8)(s32)fn_80059F64((f32)*(u8 *)((u8 *)arg0 + 0x36), (f32)*(u8 *)((u8 *)arg0 + 0x3A), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
+    sp8[3] = (u8)(s32)fn_80059F64((f32)*(u8 *)((u8 *)arg0 + 0x37), (f32)*(u8 *)((u8 *)arg0 + 0x3B), (f32)*(s32 *)((u8 *)arg0 + 0x3C), (f32)*(s32 *)((u8 *)arg0 + 0x40));
+    fn_8005F7E0(base, sp8[0], sp8[1], sp8[2]);
+    fn_8005F7B0(base, sp8[3]);
     if (*(s32 *)((u8 *)arg0 + 0x40) >= *(s32 *)((u8 *)arg0 + 0x3C)) {
-        Process_ClearFunc(arg0);
+        fn_8000C188(arg0);
     }
 }
-
+#pragma pop
 void fn_8018B698(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x40) = 0;
 }
@@ -4332,7 +4332,9 @@ void fn_8018C680(void *arg0)
     DebugPrint((char *)(MoveAnim_str + 0x97b), Msg_ResolveName(p), MoveAnim_str);
 }
 
+#pragma push
 #pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 void fn_8018C6C0(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
@@ -4392,19 +4394,8 @@ void fn_8018C6C0(void *arg0) {
             fn_800506E0(*(void **)((u8 *)mode + 0x30), kind);
             obj = fn_800639B4();
             count = 0;
-            if (kind < 8) {
-                if (kind < 2) {
-                    if (kind >= 0) {
-                        goto do_extra;
-                    }
-                }
-            } else if (kind == 8) {
-                goto do_extra;
-            } else if (kind == 0xF) {
-                goto do_extra;
-            }
-            goto after_extra;
-do_extra:
+            switch (kind) {
+            case 0: case 1: case 8: case 15:
             {
                 void *node = *(void **)((u8 *)mode + 0x34);
                 void *link = *(void **)((u8 *)node + 0x44);
@@ -4417,14 +4408,15 @@ do_extra:
                         *(f32 *)((u8 *)node + 0x58) - base);
                 }
             }
-after_extra:
+                break;
+            }
             fn_8005FC74(*(void **)((u8 *)mode + 0x34), obj, 1);
             fn_8005FEE8(*(void **)((u8 *)mode + 0x34), (f32)count);
             fn_8004FE90(*(void **)((u8 *)mode + 0x30), (u8)*(s32 *)((u8 *)mode + 0x38));
         }
     }
 }
-#pragma opt_strength_reduction on
+#pragma pop
 
 void fn_8018C964(void *arg0) {
     u8 Mu_IsAnimDone(s32);
