@@ -497,7 +497,8 @@ extern "C" void fn_80121754(void) {
 }
 #pragma cplusplus reset
 
-void fn_801217AC(void) {
+#pragma cplusplus on
+extern "C" void fn_801217AC(void) {
     void fn_80057880(void *, s32);
     void fn_80057898(void *, s32);
     void fn_800578A0(void *, f32);
@@ -506,19 +507,20 @@ void fn_801217AC(void) {
     void *Heap_Alloc(u32);
     extern u8 lbl_8032BDE8[];
     extern f32 lbl_8036A278;
+    struct H {
+        static inline s32 clamp(s32 x) {
+            if (x >= 0x100) return 0x100;
+            return x;
+        }
+    };
     void *obj;
-    u32 n;
 
     *(s16 *)&lbl_8032BDE8[0x4014] = 0;
     *(s16 *)&lbl_8032BDE8[0x4016] = 0x20;
     *(u8 *)&lbl_8032BDE8[0x4013] = 0;
     *(u8 *)&lbl_8032BDE8[0x4012] = 0;
     *(s16 *)&lbl_8032BDE8[0x4010] = 0;
-    n = 0x100;
-    if (*(s32 *)&lbl_8032BDE8[0x4000] < 0x100) {
-        n = *(s32 *)&lbl_8032BDE8[0x4000];
-    }
-    *(s16 *)&lbl_8032BDE8[0x400E] = (n - 0xF) * 0x19;
+    *(s16 *)&lbl_8032BDE8[0x400E] = (H::clamp(*(s32 *)&lbl_8032BDE8[0x4000]) - 0xF) * 0x19;
     if (*(s16 *)&lbl_8032BDE8[0x400E] < 0) {
         *(s16 *)&lbl_8032BDE8[0x400E] = 0;
     }
@@ -536,7 +538,7 @@ void fn_801217AC(void) {
         *(void **)&lbl_8032BDE8[0x4018] = NULL;
     }
 }
-
+#pragma cplusplus off
 void fn_801218B4(void *proc) {
     extern void *gPadInput;
     extern u32 gUiInputFlags;
@@ -2283,7 +2285,9 @@ void fn_80123D1C(void *arg0) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma push
 #pragma use_lmw_stmw on
+#pragma opt_unroll off
 void fn_80124424(void *self) {
     s32 Game_GetFrameCount(void);
     u32 Rand_Next(void);
@@ -2303,9 +2307,10 @@ void fn_80124424(void *self) {
     rangeY = ((s8)*((u8 *)self + 0x51) + 0x10) << 8;
     {
         s32 t = Game_GetFrameCount();
+        s32 offset;
         u8 flag = *((u8 *)self + 0x4D);
-        t = *(u16 *)((u8 *)self + 0x54) * (t & 7);
-        pts = (s16 *)((u8 *)*(s16 **)((u8 *)self + 0x5C) + t * 6);
+        offset = *(u16 *)((u8 *)self + 0x54) * (t & 7);
+        pts = (s16 *)((u8 *)*(s16 **)((u8 *)self + 0x5C) + offset * 6);
         if (flag != 0) {
             i = 0;
             while (i < *(u16 *)((u8 *)self + 0x54)) {
@@ -2352,34 +2357,34 @@ void fn_80124424(void *self) {
     }
 
     if ((Game_GetFrameCount() & 3) == 0) {
-        register s32 off;
-        register s32 j;
+
+
         s32 ctr;
         f32 z;
-        j = 0;
-        off = j;
+        i = 0;
+        rangeX = i;
         ctr = *((u8 *)self + 0x52);
-        z = lbl_8036A30C;
+        z = 0.0f;
         for (; ctr > 0; ctr--) {
             f32 v;
             pairs = *(f32 **)((u8 *)self + 0x64);
-            v = *(f32 *)((u8 *)pairs + off + 4);
-            if (!(z <= v)) {
-                pairs = (f32 *)((u8 *)pairs + (j << 3));
+            v = *(f32 *)((u8 *)pairs + rangeX + 4);
+            if (!(v >= z)) {
+                pairs = (f32 *)((u8 *)pairs + (i << 3));
                 pairs[1] = lbl_8036A32C;
                 {
                     u32 rnd = Rand_Next();
                     pairs = *(f32 **)((u8 *)self + 0x64);
-                    *(f32 *)((u8 *)pairs + (j << 3)) = (f32)(u32)(rnd % 0x168U);
+                    *(f32 *)((u8 *)pairs + (i << 3)) = (f32)(u32)(rnd % 0x168U);
                 }
                 return;
             }
-            off += 8;
-            j += 1;
+            rangeX += 8;
+            i += 1;
         }
     }
 }
-
+#pragma pop
 void fn_801246FC(void *arg0) {
     void *Map_Get(void);
     void *fn_8006D948(void *);
@@ -2658,74 +2663,89 @@ void fn_8012497C(void *arg0) {
     fn_80067708(2, 3, fn_80125388, self);
 }
 #pragma peephole reset
-void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2) {
-    u32 Rand_Next(void);
-    extern f32 lbl_8036A35C;
-    extern f32 lbl_8036A360;
-    extern f32 lbl_8036A30C;
-    void *list;
-    void *node;
-    void *prev;
-    u32 rnd;
-    s16 scale;
-    s16 spC, spA, sp8;
-    f32 dx, dy, dz;
-    f32 px, py, pz;
-    f32 ax, ay;
-    u32 gqr;
-
-    list = *(void **)((u8 *)arg0 + 0x58);
-    node = **(void ***)((u8 *)list + 0x8);
-    if (node == NULL) {
-        node = NULL;
-    } else {
-        *(void **)((u8 *)node + 4) = *(void **)((u8 *)list + 0x10);
-        *(void **)node = NULL;
-        prev = *(void **)((u8 *)list + 0x10);
-        if (prev != NULL) {
-            *(void **)prev = node;
-        }
-        if (*(void **)((u8 *)list + 0xC) == NULL) {
-            *(void **)((u8 *)list + 0xC) = node;
-        }
-        *(void **)((u8 *)list + 0x10) = node;
-        *(u8 **)((u8 *)list + 0x8) = *(u8 **)((u8 *)list + 0x8) + 4;
-        *(s32 *)((u8 *)list + 0x14) = *(s32 *)((u8 *)list + 0x14) + 1;
+void fn_80124E58(void *arg0, f32 *arg1, f32 *arg2)
+{
+  u32 fn_8000CD60(void);
+  f32 new_var2;
+  extern f32 lbl_8036A35C;
+  extern f32 lbl_8036A360;
+  f32 new_var4[2];
+  void *list;
+  u8 **new_var;
+  void *node;
+  void *prev;
+  u32 rnd;
+  s16 scale;
+  s16 spC;
+  volatile unsigned int spA;
+  s16 sp8;
+  f32 dx;
+  f32 dy;
+  f32 dz;
+  f32 px;
+  f32 new_var3;
+  f32 py;
+  f32 pz;
+  f32 ay;
+  list = *((void **) (((u8 *) arg0) + 0x58));
+  node = *(*((void ***) (((u8 *) list) + 0x8)));
+  if (node == NULL)
+  {
+    node = NULL;
+  }
+  else
+  {
+    *((void **) (((u8 *) node) + 4)) = *((void **) (((u8 *) list) + 0x10));
+    *((void **) node) = NULL;
+    prev = *((void **) (((u8 *) list) + 0x10));
+    new_var = (u8 **) (((u8 *) list) + 0x8);
+    if (prev != NULL)
+    {
+      *((void **) prev) = node;
     }
-    if (node == NULL) {
-        return;
+    if ((*((void **) (((u8 *) list) + 0xC))) == NULL)
+    {
+      *((void **) (((u8 *) list) + 0xC)) = node;
     }
-    rnd = Rand_Next();
-    rnd = (rnd % 200) + 0xC8;
-    scale = (s16)((*(u8 *)((u8 *)arg0 + 0x4D) * rnd) / 100);
-    gqr = 0x00070007;
-    __builtin_mtspr(917, gqr);
-    dx = arg2[0] - arg1[0];
-    dy = arg2[1] - arg1[1];
-    dz = arg2[2] - arg1[2];
-    spC = (s16)dx;
-    spA = (s16)dy;
-    sp8 = (s16)dz;
-    spC = (s16)(Rand_Next() % (u32)(spC * 10));
-    spA = (s16)(Rand_Next() % (u32)(spA * 10));
-    sp8 = (s16)(Rand_Next() % (u32)(sp8 * 10));
-    px = lbl_8036A35C * (f32)spC + arg1[0];
-    pz = lbl_8036A35C * (f32)sp8 + arg1[2];
-    py = lbl_8036A35C * (f32)spA + arg1[1];
-    spC = (s16)(Rand_Next() % 100);
-    sp8 = (s16)(Rand_Next() % 100);
-    *(f32 *)((u8 *)node + 0x14) = px;
-    ax = lbl_8036A360 * (f32)spC;
-    *(f32 *)((u8 *)node + 0x18) = pz;
-    ay = lbl_8036A360 * (f32)sp8;
-    *(f32 *)((u8 *)node + 0x1C) = py;
-    gqr = 0x08070007;
-    __builtin_mtspr(917, gqr);
-    *(s16 *)((u8 *)node + 0xE) = (s16)ax;
-    *(s16 *)((u8 *)node + 0x10) = (s16)lbl_8036A30C;
-    *(s16 *)((u8 *)node + 0x12) = (s16)ay;
-    *(s16 *)((u8 *)node + 0xA) = scale;
-    *(s16 *)((u8 *)node + 0x8) = 0;
+    *((void **) (((u8 *) list) + 0x10)) = node;
+    *new_var = (*new_var) + 4;
+    *((s32 *) (((u8 *) list) + 0x14)) = (*((s32 *) (((u8 *) list) + 0x14))) + 1;
+  }
+  if (node == NULL)
+  {
+    return;
+  }
+  rnd = fn_8000CD60();
+  rnd = (rnd % 200) + 0xC8;
+  scale = (s16) (((*((u8 *) (((u8 *) arg0) + 0x4D))) * rnd) / 100);
+  __builtin_mtspr(917, 0x00070007);
+  dx = arg2[0] - arg1[0];
+  new_var3 = arg1[2];
+  dy = arg2[1] - arg1[1];
+  dz = arg2[2] - new_var3;
+  new_var2 = lbl_8036A35C;
+  spC = (s16) dx;
+  spA = (s16) dy;
+  sp8 = (s16) dz;
+  spC = (s16) (fn_8000CD60() % ((u32) (spC * 10)));
+  spA = (s16) (fn_8000CD60() % ((u32) (spA * 10)));
+  sp8 = (s16) (fn_8000CD60() % ((u32) (sp8 * 10)));
+  px = (new_var2 * ((f32) spC)) + arg1[0];
+  pz = (new_var2 * ((f32) sp8)) + new_var3;
+  py = (lbl_8036A35C * ((f32) spA)) + arg1[1];
+  spC = (s16) (fn_8000CD60() % 100);
+  sp8 = (s16) (fn_8000CD60() % 100);
+  *((f32 *) (((u8 *) node) + 0x14)) = px;
+  new_var4[0] = lbl_8036A360 * ((f32) spC);
+  *((f32 *) (((u8 *) node) + 0x18)) = (new_var2 * ((f32) ((((sp8 & 0xFFFFFFFFFFFFFFFFu) & 0xFFFFFFFFFFFFFFFFu) & 0xFFFFFFFFFFFFFFFFu) & 0xFFFFFFFFFFFFFFFFu))) + new_var3;
+  ay = lbl_8036A360 * ((f32) sp8);
+  *((s16 *) (((u8 *) node) + 0x8)) = 0;
+  *((f32 *) (((u8 *) node) + 0x1C)) = py;
+  __builtin_mtspr(917, 0x08070007);
+  *((s16 *) (((u8 *) node) + 0xE)) = (s16) new_var4[0];
+  *((s16 *) (((u8 *) node) + 0x10)) = (s16) new_var4[1];
+  *((s16 *) (((u8 *) node) + 0x12)) = (s16) ay;
+  *(((u8 *) node) + 0xA) = scale;
 }
 
 #pragma use_lmw_stmw reset
