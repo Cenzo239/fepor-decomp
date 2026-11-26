@@ -60,7 +60,7 @@ static inline u8 *FindAudioResource(void *data, u16 id, u32 offset) {
     }
     return NULL;
 }
-typedef struct SynthStateLink { u8 pad[0xEC]; s32 next; u8 padF0[0x458 - 0xF0]; } SynthStateLink;
+typedef struct SynthStateLink { u8 pad[0xEC]; s32 next; s32 prev; s32 id; void *vid; void *root; u8 pad100[0x458 - 0x100]; } SynthStateLink;
 typedef s32 Fn80256FF0Arg;
 typedef struct ThpDecodeState { f32 tables[3][64]; u8 pad[0x398]; u16 count; u16 pad69A; u8 *cursor; u32 pad6A0; u32 bits; } ThpDecodeState;
 static inline u32 ThpReadByte(void) {
@@ -6093,6 +6093,9 @@ void fn_80255A40(void)
  prev->next=NULL;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80255B20(void *arg0) {
     void fn_80257668(void *);
     extern s32 gSynthVoices;
@@ -6257,7 +6260,7 @@ void fn_80255B20(void *arg0) {
         *(void **)((u8 *)arg0 + 0xFC) = NULL;
     }
 }
-
+#pragma pop
 s32 fn_80255E88(void *arg0) {
     M2C_FIELD(arg0, void **, 0xFC) = (void *) M2C_FIELD(arg0, void **, 0xF8);
     return M2C_FIELD(M2C_FIELD(arg0, void **, 0xF8), s32 *, 8);
