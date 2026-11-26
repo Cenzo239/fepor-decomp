@@ -485,6 +485,7 @@ s32 fn_8021264C(u32 mask) {
     return 1;
 }
 
+extern u8 gPadRecalFlag : 0x800030E3;
 s32 fn_8021275C(u32 mask) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -497,24 +498,22 @@ s32 fn_8021275C(u32 mask) {
     extern s32 lbl_80366FA4;
     s32 interrupts;
     u32 disable;
-    u32 flags;
-    interrupts=OSDisableInterrupts();
+    interrupts = OSDisableInterrupts();
     mask |= lbl_80368680;
-    lbl_80368680 = 0;
     mask &= ~(WaitingBits | CheckingBits);
-    flags = *(u8 *)0x800030E3;
     lbl_80368670 |= mask;
-    disable=lbl_80368670 & EnabledBits;
+    lbl_80368680 = 0;
+    disable = lbl_80368670 & EnabledBits;
     EnabledBits &= ~mask;
     __PADFixBits &= ~mask;
-    if (!(flags & 0x40)) lbl_80368674 |= mask;
+    if (!(gPadRecalFlag & 0x40)) lbl_80368674 |= mask;
     fn_8023B930(disable);
-    if (lbl_80366FA4==32) {
-        lbl_80366FA4=__cntlzw(lbl_80368670);
-        if (lbl_80366FA4!=32) {
+    if (lbl_80366FA4 == 32) {
+        lbl_80366FA4 = __cntlzw(lbl_80368670);
+        if (lbl_80366FA4 != 32) {
             lbl_80368670 &= ~(0x80000000U >> lbl_80366FA4);
-            memset(Origin+lbl_80366FA4*12,0,12);
-            fn_8023C188(lbl_80366FA4,fn_802121E0);
+            memset(Origin + lbl_80366FA4 * 12, 0, 12);
+            fn_8023C188(lbl_80366FA4, fn_802121E0);
         }
     }
     OSRestoreInterrupts(interrupts);
@@ -556,8 +555,10 @@ OSRegisterResetFunction(&lbl_8029D6F8);
 return fn_8021264C(0xf0000000);
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 #pragma opt_strength_reduction off
+#pragma use_lmw_stmw on
 u32 fn_802129C0(PADStatus *status)
 {
   s32 OSDisableInterrupts(void);
@@ -582,7 +583,7 @@ u32 fn_802129C0(PADStatus *status)
   extern u32 lbl_80368680;
   extern void (*lbl_80366FB4)(s32, PADStatus *, u32 *);
   u64 response;
-  u8 *origin;
+  PADStatus *origin;
   s32 enabled;
   s32 chan;
   u32 result;
@@ -591,7 +592,7 @@ u32 fn_802129C0(PADStatus *status)
   enabled = OSDisableInterrupts();
   chan = (result = 0);
   offset = chan * 12;
-  origin = Origin + offset;
+  origin = (PADStatus *)(Origin + offset);
   do
   {
     bit = 0x80000000U >> chan;
@@ -669,15 +670,14 @@ u32 fn_802129C0(PADStatus *status)
       }
     }
     chan++;
-    origin += 12;
+    origin++;
     status++;
   }
   while (chan < 4);
   OSRestoreInterrupts(enabled);
   return result;
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_80212CC0(s32 arg0, u32 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
