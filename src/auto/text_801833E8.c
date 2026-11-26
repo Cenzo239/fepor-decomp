@@ -1,8 +1,6 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline s16 fn_80190BBC_Add16(s32 x) { return (s16)(x + 0x10); }
-static inline s16 fn_80190BBC_Add2(s32 a, s32 b) { return (s16)(a + b + 0x10); }
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 
