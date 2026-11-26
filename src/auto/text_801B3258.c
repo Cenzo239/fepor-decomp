@@ -1,5 +1,13 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 Ui_TickMarker(void *pos, s16 *life) {
+    void fn_80067708(s32, s32, void (*)(void), s32);
+    void fn_801C65E0(void);
+    --*life;
+    if (*life <= 0) return 0;
+    fn_80067708(2, 1, fn_801C65E0, (s32)pos);
+    return 1;
+}
 #pragma cplusplus on
 extern "C" void *Heap_Alloc(s32);
 #pragma cplusplus off
