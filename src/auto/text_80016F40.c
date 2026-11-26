@@ -664,8 +664,9 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 #pragma use_lmw_stmw reset
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
@@ -778,7 +779,7 @@ void fn_8001840C(void *arg0)
     extern u16 gBattleState[700];
     extern u8 lbl_802CA2C8[];
 
-    extern f32 lbl_80368CA4;
+    extern const f32 lbl_80368CA4;
     extern f32 lbl_80368CA0;
     extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
@@ -801,9 +802,7 @@ void fn_8001840C(void *arg0)
     f32 v0;
     f32 v1;
     f32 v2;
-    f32 off;
 
-    off = lbl_80368CA4;
     obj = (u8 *)arg0;
     src = (u8 *)gActiveCam;
 
@@ -812,7 +811,7 @@ void fn_8001840C(void *arg0)
     y = *(f32 *)&p1.b;
     z = *(f32 *)&p1.c;
 
-    BattleState_SetCamPos((void *)gBattleState, x - off, y - off);
+    BattleState_SetCamPos((void *)gBattleState, x - lbl_80368CA4, y - lbl_80368CA4);
 
     *(f32 *)(lbl_802CA2C8 + 0x28) = lbl_80368CA0;
     *(f32 *)(lbl_802CA2C8 + 0x34) = lbl_80368CA0;
