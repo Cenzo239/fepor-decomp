@@ -4109,6 +4109,7 @@ extern u8 lbl_80292258[];
 extern f32 lbl_8036A740;
 void *result,*self,*child,*end,*node;
 u32 key;
+void *searchKey;
 void *pos;
 u32 ret;
 f32 alpha[1],t;
@@ -4119,26 +4120,27 @@ self=result;
 if(result!=0) {
 *(u8 *)((u8 *)self+0x30)=0;
 fn_80142060((u8 *)self+0x34);
+}
 key=(u32)arg1;
 if(arg1!=0) {
 end=fn_80140B04((u8 *)self+0x34);
 node=fn_80140B04((u8 *)self+0x34);
 node=*(void **)((u8 *)node+4);
+searchKey=(void *)key;
 goto check;
 for(;;) {
 node=*(void **)((u8 *)node+4);
 check:
 if(node!=end) {
-if(*(void **)((u8 *)node+8)!=(void *)key) continue;
+if(*(void **)((u8 *)node+8)!=searchKey) continue;
 }
 break;
 }
+if(node==(u8 *)self+0x38) {
 pos=(u8 *)self+0x38;
-if(node==pos) {
 List_Insert(&ret,(u8 *)self+0x34,&pos,&key);
 if(key!=0) {
 *(s32 *)((u8 *)key+4)+=1;
-}
 }
 }
 }
