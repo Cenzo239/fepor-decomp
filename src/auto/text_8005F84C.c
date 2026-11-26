@@ -2082,7 +2082,8 @@ void fn_80061A08(void *arg0)
         }
     }
 }
-#pragma inline_depth(8)
+#pragma push
+#pragma optimization_level 4
 void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *arg5)
 {
     void fn_80201FC4(void *);
@@ -2113,7 +2114,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
         } else {
             flags = *(s32 *)((u8 *)arg5 + 0xC);
             if (flags & 1) {
-                f32 rz, ry, rx;
+                f32 rx, ry, rz;
                 rz = arg2[5];
                 ry = arg2[4];
                 rx = arg2[3];
@@ -2427,8 +2428,7 @@ void fn_80062920(void *arg0, s32 arg1, f32 *arg2, u8 *arg3, void *arg4, void *ar
     }
     fn_80201FF0(mD8, arg3 + *(u16 *)((u8 *)arg0 + 0xEC) * 0x30);
 }
-
-#pragma opt_strength_reduction off
+#pragma pop
 void fn_80063614(void *arg0, void *arg1, s16 arg2, f32 *arg3, f32 farg0)
 {
     extern f32 lbl_803691E4;
@@ -3830,6 +3830,9 @@ if(p==NULL) return;
 
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_800661A8(void *arg0) {
     void fn_802029C4(void *, void *, f32 *);
     void fn_80202A18(void *, f32 *, f32 *);
@@ -3913,6 +3916,7 @@ void fn_800661A8(void *arg0) {
     s32 i;
     s32 n;
     u8 *lights;
+    u8 *fog;
 
     lights = lbl_80366DDC;
     if (lights != NULL) {
@@ -3982,8 +3986,9 @@ void fn_800661A8(void *arg0) {
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
 
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp48 = lbl_8036C440;
@@ -4002,18 +4007,15 @@ void fn_800661A8(void *arg0) {
             fn_802244B4(1, 0x140, buf1);
         }
     }
-    n = 0;
-    p = (u8 *)arg0;
-    do {
+    for (n = 0; n < 5; n++) {
+        p = (u8 *)arg0 + n * 4;
         node = *(u8 **)(p + 0x158);
         while (node != NULL) {
             cb = *(void (**)(void *))(node + 8);
             cb(*(void **)(node + 0xC));
             node = *(u8 **)node;
         }
-        n += 1;
-        p += 4;
-    } while (n < 5);
+    }
 
     lbl_80366DD0 = 0;
     fn_802245D8(0, 1, 0, 7);
@@ -4023,8 +4025,9 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp3C = lbl_8036C440;
@@ -4043,18 +4046,15 @@ void fn_800661A8(void *arg0) {
             fn_802244B4(1, 0x140, buf2);
         }
     }
-    n = 0;
-    p = (u8 *)arg0;
-    do {
+    for (n = 0; n < 5; n++) {
+        p = (u8 *)arg0 + n * 4;
         node = *(u8 **)(p + 0x11C);
         while (node != NULL) {
             cb = *(void (**)(void *))(node + 8);
             cb(*(void **)(node + 0xC));
             node = *(u8 **)node;
         }
-        n += 1;
-        p += 4;
-    } while (n < 5);
+    }
 
     lbl_80366DD0 = 1;
     fn_802245D8(0, 4, 5, 7);
@@ -4064,8 +4064,9 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp30 = lbl_8036C440;
@@ -4084,18 +4085,15 @@ void fn_800661A8(void *arg0) {
             fn_802244B4(1, 0x140, buf3);
         }
     }
-    n = 0;
-    p = (u8 *)arg0;
-    do {
+    for (n = 0; n < 5; n++) {
+        p = (u8 *)arg0 + n * 4;
         node = *(u8 **)(p + 0x130);
         while (node != NULL) {
             cb = *(void (**)(void *))(node + 8);
             cb(*(void **)(node + 0xC));
             node = *(u8 **)node;
         }
-        n += 1;
-        p += 4;
-    } while (n < 5);
+    }
 
     lbl_80366DD0 = 2;
     fn_802245D8(1, 4, 5, 7);
@@ -4105,8 +4103,9 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp24 = lbl_8036C440;
@@ -4125,18 +4124,15 @@ void fn_800661A8(void *arg0) {
             fn_802244B4(1, 0x140, buf4);
         }
     }
-    n = 0;
-    p = (u8 *)arg0;
-    do {
+    for (n = 0; n < 5; n++) {
+        p = (u8 *)arg0 + n * 4;
         node = *(u8 **)(p + 0x144);
         while (node != NULL) {
             cb = *(void (**)(void *))(node + 8);
             cb(*(void **)(node + 0xC));
             node = *(u8 **)node;
         }
-        n += 1;
-        p += 4;
-    } while (n < 5);
+    }
 
     lbl_80366DD0 = 4;
     fn_802245D8(1, 4, 5, 7);
@@ -4146,8 +4142,9 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             sp18 = lbl_8036C440;
@@ -4166,18 +4163,15 @@ void fn_800661A8(void *arg0) {
             fn_802244B4(1, 0x140, buf5);
         }
     }
-    n = 0;
-    p = (u8 *)arg0;
-    do {
+    for (n = 0; n < 5; n++) {
+        p = (u8 *)arg0 + n * 4;
         node = *(u8 **)(p + 0x16C);
         while (node != NULL) {
             cb = *(void (**)(void *))(node + 8);
             cb(*(void **)(node + 0xC));
             node = *(u8 **)node;
         }
-        n += 1;
-        p += 4;
-    } while (n < 5);
+    }
 
     lbl_80366DD8 = 6;
     sp50 = lbl_8036C440;
@@ -4189,8 +4183,9 @@ void fn_800661A8(void *arg0) {
     fn_8022462C(1);
     fn_80224658(0);
     GXSetTevSwapMode(0, 0, 0);
-    type = lbl_80366DD4[0];
+    fog = lbl_80366DD4;
     if (lbl_80366DD8 != 6) {
+        type = fog[0];
         lbl_80366DD8 = 8;
         if (type == 0) {
             spC = lbl_8036C440;
@@ -4210,7 +4205,7 @@ void fn_800661A8(void *arg0) {
         }
     }
 }
-
+#pragma pop
 void fn_80066D00(s32 mode) {
 void fn_802245D8(s32,s32,s32,s32);
 void fn_802246B8(s32);
@@ -5631,6 +5626,7 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_propagation off
+#pragma opt_dead_code off
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_8006ECCC(void *, void *, u16);
     void fn_8006DA64(void *, s32, void *);
@@ -7940,7 +7936,7 @@ void fn_8006DDDC(void) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_loop_invariants off
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
