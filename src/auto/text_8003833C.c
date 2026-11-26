@@ -545,34 +545,57 @@ found2:
 }
 #pragma pop
 s8 fn_800388C8(void *arg0) {
-    s8 index;
-    s32 result = 0;
-    void *slot;
-    u8 flag;
+    struct Slot {
+        s8 *item;
+        u8 pad;
+        u8 flags;
+        u8 pad2[2];
+    };
+    struct Unit {
+        u8 pad[0x1CC];
+        struct Slot weapons[4];
+        struct Slot acc[4];
+    };
+    struct Unit *u = (struct Unit *)arg0;
+    s8 result;
+    s8 temp;
+    s32 i;
+    struct Slot *slot;
 
-    flag = M2C_FIELD(arg0, u8 *, 0x1D1);
-    if (((flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1CC) != 0) index = 0;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x1D9)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1D4) != 0) index = 1;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x1E1)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1DC) != 0) index = 2;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x1E9)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1E4) != 0) index = 3;
-    else index = -1;
-    if (index < 0) slot = NULL;
-    else slot = (u8 *)arg0 + index * 8 + 0x1CC;
-    if (slot != NULL) result = *(s8 *)((u8 *)*(void **)slot + 0x28);
-
-    flag = M2C_FIELD(arg0, u8 *, 0x1F1);
-    if (((flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1EC) != 0) index = 0;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x1F9)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1F4) != 0) index = 1;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x201)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x1FC) != 0) index = 2;
-    else if ((((flag = M2C_FIELD(arg0, u8 *, 0x209)), flag >> 7) & 1) && M2C_FIELD(arg0, u32 *, 0x204) != 0) index = 3;
-    else index = -1;
-    if (index < 0) slot = NULL;
-    else slot = (u8 *)arg0 + index * 8 + 0x1EC;
-    if (slot != NULL) {
-        result += *(u8 *)((u8 *)*(void **)slot + 0x28);
-        result = (s8)result;
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        if (((u->weapons[i].flags >> 7) & 1) && u->weapons[i].item != 0) {
+            temp = i;
+            goto found1;
+        }
     }
-    return (s8)result;
+    temp = -1;
+found1:
+    if (temp < 0) {
+        slot = 0;
+    } else {
+        slot = &u->weapons[temp];
+    }
+    if (slot != 0) {
+        result += slot->item[0x28];
+    }
+    for (i = 0; i < 4; i++) {
+        if (((u->acc[i].flags >> 7) & 1) && u->acc[i].item != 0) {
+            temp = i;
+            goto found2;
+        }
+    }
+    temp = -1;
+found2:
+    if (temp < 0) {
+        slot = 0;
+    } else {
+        slot = &u->acc[temp];
+    }
+    if (slot != 0) {
+        result += slot->item[0x28];
+    }
+    return result;
 }
 #pragma optimization_level reset
 s8 fn_80038A48(void *arg0) {
