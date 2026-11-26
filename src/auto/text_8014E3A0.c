@@ -1,17 +1,6 @@
 /* Functions from 0x8014E3A0 to 0x801620BC, found by decomp-toolkit. */
 #include "common.h"
-#pragma cplusplus on
-struct PanelInitColor {
-    u8 r, g, b, a;
-    PanelInitColor(u8 red, u8 green, u8 blue, u8 alpha) : r(red), g(green), b(blue), a(alpha) {}
-};
-static inline void Panel_InitPalette(void *dst, const PanelInitColor &a, const PanelInitColor &b, const PanelInitColor &c, const PanelInitColor &d) {
-    ((u32 *)dst)[0] = *(const u32 *)&a;
-    ((u32 *)dst)[1] = *(const u32 *)&b;
-    ((u32 *)dst)[2] = *(const u32 *)&c;
-    ((u32 *)dst)[3] = *(const u32 *)&d;
-}
-#pragma cplusplus reset
+
 
 static inline void *MsgDebug_FilterText(void *text, u8 *dst)
 {
@@ -1723,6 +1712,10 @@ void fn_80150F38(void *arg0) {
         *(void **)((u8 *)self + 0x54) = 0;
     }
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_80150FEC(void *arg0) {
     void *fn_80060664(void *);
     void *fn_800C4638(s32, u8 *, s32);
@@ -1775,12 +1768,12 @@ void fn_80150FEC(void *arg0) {
     }
     if ((u16)*(u16 *)((u8 *)hdr + 6) == 0) return;
     *(void **)((u8 *)arg0 + 0x54) = fn_800C4638(0x40, lbl_80277320 + 0x5E, 0);
-    tag = lbl_80277320;
     entry = (u8 *)hdr + 8;
     obj = *(void **)((u8 *)arg0 + 0x54);
-    *(void **)((u8 *)obj + 0x38) = fn_800C4638((s32)*(u16 *)((u8 *)hdr + 6) * 4, tag + 0x5E, 0);
+    *(void **)((u8 *)obj + 0x38) = fn_800C4638((s32)*(u16 *)((u8 *)hdr + 6) * 4, lbl_80277320 + 0x5E, 0);
     off = 0;
     zero = (void *)off;
+    tag = lbl_80277320;
     for (i = 0; i < (s32)*(u16 *)((u8 *)hdr + 6); i++, entry += 0x34) {
         count = *(u16 *)(entry + 0x1E);
         if (!count) *(void **)((u8 *)*(void **)((u8 *)obj + 0x38) + off) = zero;
@@ -1828,6 +1821,7 @@ void fn_80150FEC(void *arg0) {
         entry += 0x34;
     }
 }
+#pragma pop
 s32 fn_801512D8(void) {
     M2C_UNK fn_800D758C(s32);
     extern s32 lbl_80367BA0;
@@ -7235,7 +7229,8 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     w = (s16)arg2;
     h = (s16)arg3;
     flags = arg4;
-    bottom2 = (s16)(y + h);
+    bottom2 = y + h;
+    bottom2 = (s16)bottom2;
     h3 = h / 3;
     bottom = (s16)(y + h3);
     right = (s16)(x + w);
@@ -7512,10 +7507,7 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     Color sp10;
     Color tmp;
     Color tmp2;
-    s32 c3;
-    unsigned c2;
-    int c1;
-    unsigned long c0;
+    s32 c0, c1, c2, c3;
     s16 t1;
     register s16 t0;
     s16 w;
@@ -7523,71 +7515,70 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
 
     w = arg2;
     h = arg3;
-    if (w) {
-        if (h) {
-            Prim2D_Begin();
-            Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg4 | 1));
-            Prim2D_PrepareTex();
-            c0 = arg6[0];
-            c1 = arg6[1];
-            c2 = arg6[2];
-            c3 = arg6[3];
-            *(s32 *)&sp2C = c0;
-            *(s32 *)&sp24 = c2;
-            *(s32 *)&sp20 = c3;
-            *(s32 *)&sp28 = c1;
-            Prim2D_AddPrim(3);
-            Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)w, (f32)h);
-            t1 = arg5[1];
-            t0 = arg5[0];
-            Prim2D_SetUvRect((f32)t0, (f32)t1, (f32)(s16)(arg5[2] - t0), (f32)(s16)(arg5[3] - t1));
-            if (arg7 & 1) {
-                Prim2D_SwapUvU();
-                *(s32 *)&tmp = *(s32 *)&sp2C;
-                if (&sp2C != &sp28) {
-                    sp2C.r = sp28.r;
-                    sp2C.g = sp28.g;
-                    sp2C.b = sp28.b;
-                    sp2C.a = sp28.a;
-                }
-                if (&sp28 != &tmp) {
-                    sp28.r = tmp.r;
-                    sp28.g = tmp.g;
-                    sp28.b = tmp.b;
-                    sp28.a = tmp.a;
-                }
-            }
-            if (arg7 & 2) {
-                Prim2D_SwapUvV();
-                *(s32 *)&tmp2 = *(s32 *)&sp24;
-                if (&sp24 != &sp20) {
-                    sp24.r = sp20.r;
-                    sp24.g = sp20.g;
-                    sp24.b = sp20.b;
-                    sp24.a = sp20.a;
-                }
-                if (&sp20 != &tmp2) {
-                    sp20.r = tmp2.r;
-                    sp20.g = tmp2.g;
-                    sp20.b = tmp2.b;
-                    sp20.a = tmp2.a;
-                }
-            }
-            Prim2D_EmitQuad();
-            if (arg7 & 0x100) {
-                Prim2D_RotateUvCcw();
-            }
-            if (arg7 & 0x200) {
-                Prim2D_RotateUvCw();
-            }
-            *(s32 *)&sp10 = *(s32 *)&sp20;
-            *(s32 *)&sp14 = *(s32 *)&sp24;
-            *(s32 *)&sp18 = *(s32 *)&sp28;
-            *(s32 *)&sp1C = *(s32 *)&sp2C;
-            Prim2D_SetCornerColors(&sp1C, &sp18, &sp14, &sp10);
-            Prim2D_EndPrim();
+    if (w == 0 || h == 0) {
+        return;
+    }
+    Prim2D_Begin();
+    Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg4 | 1));
+    Prim2D_PrepareTex();
+    c0 = arg6[0];
+    c1 = arg6[1];
+    c2 = arg6[2];
+    c3 = arg6[3];
+    *(s32 *)&sp2C = c0;
+    *(s32 *)&sp28 = c1;
+    *(s32 *)&sp24 = c2;
+    *(s32 *)&sp20 = c3;
+    Prim2D_AddPrim(3);
+    Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)w, (f32)h);
+    t1 = arg5[1];
+    t0 = arg5[0];
+    Prim2D_SetUvRect((f32)t0, (f32)t1, (f32)(s16)(arg5[2] - t0), (f32)(s16)(arg5[3] - t1));
+    if (arg7 & 1) {
+        Prim2D_SwapUvU();
+        *(s32 *)&tmp = *(s32 *)&sp2C;
+        if (&sp2C != &sp28) {
+            sp2C.r = sp28.r;
+            sp2C.g = sp28.g;
+            sp2C.b = sp28.b;
+            sp2C.a = sp28.a;
+        }
+        if (&sp28 != &tmp) {
+            sp28.r = tmp.r;
+            sp28.g = tmp.g;
+            sp28.b = tmp.b;
+            sp28.a = tmp.a;
         }
     }
+    if (arg7 & 2) {
+        Prim2D_SwapUvV();
+        *(s32 *)&tmp2 = *(s32 *)&sp24;
+        if (&sp24 != &sp20) {
+            sp24.r = sp20.r;
+            sp24.g = sp20.g;
+            sp24.b = sp20.b;
+            sp24.a = sp20.a;
+        }
+        if (&sp20 != &tmp2) {
+            sp20.r = tmp2.r;
+            sp20.g = tmp2.g;
+            sp20.b = tmp2.b;
+            sp20.a = tmp2.a;
+        }
+    }
+    Prim2D_EmitQuad();
+    if (arg7 & 0x100) {
+        Prim2D_RotateUvCcw();
+    }
+    if (arg7 & 0x200) {
+        Prim2D_RotateUvCw();
+    }
+    *(s32 *)&sp10 = *(s32 *)&sp20;
+    *(s32 *)&sp14 = *(s32 *)&sp24;
+    *(s32 *)&sp18 = *(s32 *)&sp28;
+    *(s32 *)&sp1C = *(s32 *)&sp2C;
+    Prim2D_SetCornerColors(&sp1C, &sp18, &sp14, &sp10);
+    Prim2D_EndPrim();
 }
 /* Draw a colored screen rect sized from uvRect, with optional UV flip/rotate. */
 void Ui_DrawRect(s16 x, s16 y, s32 texFlags, s16 *uvRect, s32 *color, s32 uvFlags) {
