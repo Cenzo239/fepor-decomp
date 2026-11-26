@@ -322,7 +322,7 @@ config.libs = [
             Object(NonMatching, "auto/text_80036834.c"),
             Object(NonMatching, "auto/text_80036DE0.c"),
             Object(Matching, "auto/unit_distance.c", mw_version="GC/3.0a3"),
-            Object(NonMatching, "auto/text_8003833C.c"),
+            Object(NonMatching, "auto/text_8003833C.c", mw_version="GC/1.3"),
             Object(Matching, "auto/unit_stats.c"),
             Object(NonMatching, "auto/text_8003B69C.c", mw_version="GC/1.3"),
             Object(Matching, "auto/text_8003F87C.c"),
