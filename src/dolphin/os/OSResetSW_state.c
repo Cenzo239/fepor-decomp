@@ -153,6 +153,7 @@ static inline s32 ResetSwitchBegin(s64 now) {
 static inline s32 ResetSwitchReleased(s64 now) {
     return *(s64 *)&lbl_80368508 != 0 && now - *(s64 *)&lbl_80368508 < (s64)(((*(u32 *)0x800000F8 >> 2) / 1000) * 40);
 }
+static inline s32 ResetSwitchBlink(s64 elapsed, u32 frequency) { return ((elapsed / frequency / 2) & 1) == 0; }
 u32 __OSGetResetSWState(void);
 
 extern void OSDisableInterrupts(void);
