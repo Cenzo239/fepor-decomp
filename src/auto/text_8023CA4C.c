@@ -77,9 +77,17 @@ u8 **cursor = &s->cursor;
 u8 *p = *cursor;
 u16 value = (p[0] << 8) | p[1];
 *cursor = p + 2;
-return value;
-}
-static inline u8 SynthAllocateStream(void) {
+ return value;
+ }
+ extern f64 lbl_8036C190;
+ typedef union { f64 d; struct { u32 hi, lo; } w; } ThpU32ToF64;
+ static inline f64 ThpU32ToF64Value(u32 value) {
+     ThpU32ToF64 u;
+     u.w.hi = 0x43300000;
+     u.w.lo = value;
+     return u.d - lbl_8036C190;
+ }
+ static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
 for(i=0;i<gSoundStreamCtrl[0];i++){
@@ -362,11 +370,11 @@ extern f64 lbl_8036C148;
 
 #pragma opt_strength_reduction on
 s32 fn_8023CA4C(void) {
-    extern u8 lbl_80282FD8[];
+    extern const u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
-    u8 *zig;
-    u8 *p;
+    const u8 *zig;
+    const u8 *p;
     const f64 *base;
     u32 size;
     u32 id;
