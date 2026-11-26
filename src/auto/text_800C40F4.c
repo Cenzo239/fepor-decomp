@@ -10572,9 +10572,9 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
-    f32 x;
-    f32 y;
-    f32 z;
+    register f32 y;
+    register f32 z;
+    register f32 x;
 
     vec[0] = 0.0f;
     vec[1] = 0.0f;
@@ -16130,12 +16130,12 @@ void fn_800E4E5C(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma cplusplus reset
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
-    extern const f32 lbl_80369F3C;
     extern f32 lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
@@ -16164,7 +16164,7 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[1] = y;
     arg0[2] = z;
 }
-#pragma global_optimizer on
+#pragma pop
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
@@ -25882,17 +25882,18 @@ void fn_800F8538(void *arg0) {
     extern u8 gAiState[];
     s32 Unit_GetMov(void *);
     u8 *global;
+    u8 *state;
     s32 tmp;
     s32 index;
     s32 ret;
 
     global = gAiCmd;
+    state = gAiState;
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
     ret = (s8)Unit_GetMov(arg0);
-    index = 0;
-    index |= *(s32 *)(global + 4);
-    *(s32 *)&gAiState[(index << 2) + 8] = ret;
+    index = *(s32 *)(global + 4);
+    *(s32 *)&state[(index << 2) + 8] = ret;
     if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
     } else {
