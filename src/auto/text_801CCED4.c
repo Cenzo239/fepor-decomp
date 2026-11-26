@@ -1,5 +1,9 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void Menu_SetPoint_801D2B94(s16 *point, s16 x, s16 y) {
+    point[0] = x;
+    point[1] = y;
+}
 const f64 lbl_8036B670 = 4503816931318784.0;
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
@@ -5160,8 +5164,8 @@ void fn_801D3D3C(void *arg0) {
  s32 *p24;
  s32 *p;
  u8 tmp_u8;
- s16 x, y;
- s32 v, changed, sel, flags_a, flags_b;
+ s16 y, x;
+ u8 v; s32 changed, sel, flags_a, flags_b;
  void *state, *tmp_ptr, *tmp_ptr2;
  u8 *slot;
  state = *(void **)((u8 *)arg0 + 0x30);
@@ -5194,7 +5198,7 @@ case 0:
     if (fn_801DC10C(i25) != 0) { tmp_u8 = fn_801DE368(fn_801DC10C(i25)); count++; *p24 = tmp_u8; p24++; }
     i25++;
    }
-   arr_hi[count] = 1; arr_hi[count+1] = 0x20; arr_hi[count+2] = 0x63; arr_hi[count+3] = -1;
+   arr_hi[count++] = 1; arr_hi[count++] = 0x20; arr_hi[count++] = 0x63; arr_hi[count] = -1;
    fn_801DE0EC(arr_hi, arg0);
   } else {
    count = 0; p24 = arr_lo; i25 = 0;
@@ -5207,7 +5211,7 @@ case 0:
    tmp_u8 = fn_801DE3D0(gBattleState);
    if ((s32)tmp_u8 - 1 >= 1) { tmp_u8 = fn_801DE3D0(gBattleState); arr_lo[count] = (s32)tmp_u8 - 1; count++; }
    tmp_u8 = fn_801DE3D0(gBattleState);
-   arr_lo[count] = tmp_u8; arr_lo[count+1] = 0x20; arr_lo[count+2] = 0x63; arr_lo[count+3] = -1;
+   arr_lo[count++] = tmp_u8; arr_lo[count++] = 0x20; arr_lo[count++] = 0x63; arr_lo[count] = -1;
    fn_801DE0EC(arr_lo, arg0);
   }
   switch (*(u8 *)((u8 *)state + 0x10)) {
@@ -5302,8 +5306,12 @@ break;
   break;
  case 0xb:
   v = fn_801DE360(gSystemSave); v = ((u8)v == 0); sel = *(s8 *)((u8 *)state + 0x18);
-  if (sel == 0) changed = v ? 0 : 3; else if (sel == 1) changed = v != 0; else if (sel == 2) changed = v ? 2 : 1; else changed = 0;
-  fn_801E1440(&gSaveDataBase, changed, *(s8 *)((u8 *)state + 0x19) != 0);
+  switch (sel) {
+case 0: changed = (u8)v ? 0 : 3; break;
+case 1: changed = (u8)v != 0; break;
+case 2: changed = (u8)v ? 2 : 1; break;
+}
+  fn_801E1440(&gSaveDataBase, changed, *(s8 *)((u8 *)state + 0x19));
   fn_8008A290(3, 0xfa);
   if (*(u8 *)((u8 *)state + 0x10) != 1) Game_SetState(0x1a);
   Process_ClearFunc(arg0); SaveData_Release(&gSaveDataBase); break;
@@ -5407,9 +5415,9 @@ break;
   }
   break;
  case 0x32:
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 6) { fn_801D8D68((u8 *)p24 + 0x7c); i25++; p24 = (s32 *)((u8 *)p24 + 0x34); }
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) { fn_801D8D58((u8 *)p24 + 0x1b4); i25++; p24 = (s32 *)((u8 *)p24 + 0x4c); }
   *(u8 *)((u8 *)state + 0x15) = 0;
   result = fn_801DBFF8();
@@ -5448,9 +5456,9 @@ break;
   *(s32 *)state = 0x3c;
  }
  case 0x3c:
-  if (flags_a & 0x100) { *(s32 *)state = 0x3de; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); }
-  else if (flags_a & 0x200) { *(s32 *)state = 0x384; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); }
-  else if (flags_b & 0x8000008) {
+  if (flags_a & 0x100) { *(s32 *)state = 0x3de; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64); break; }
+  else if (flags_a & 0x200) { *(s32 *)state = 0x384; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64); break; }
+  if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x11);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x34 + 0x7c); *fl = (s16)(*fl & ~2); }
    *(u8 *)((u8 *)state + 0x11) = *(u8 *)((u8 *)state + 0x11) - 1;
@@ -5458,7 +5466,7 @@ break;
    { s8 idx = *(s8 *)((u8 *)state + 0x11); s16 *fl = (s16 *)((u8 *)state + idx * 0x34 + 0x7c); *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x34 + 0x88), *(s16 *)((u8 *)state + idx * 0x34 + 0x8a), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x11)) Ui_PlaySeCue(gUiSeCues + 0x446, 0x64);
-  } else if (flags_b & 0x4000004) {
+  } if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x11);
    { s16 *fl = (s16 *)((u8 *)state + sel * 0x34 + 0x7c); *fl = (s16)(*fl & ~2); }
    *(u8 *)((u8 *)state + 0x11) = *(u8 *)((u8 *)state + 0x11) + 1;
@@ -5470,18 +5478,18 @@ break;
   break;
  case 0x64:
   fn_801DBEA8(state, 0); *(s8 *)((u8 *)state + 0x12) = -1;
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
   }
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
    if (!(*(s16 *)((u8 *)p24 + 0x1b4) & 4) && *(s8 *)((u8 *)state + 0x12) == -1) *(u8 *)((u8 *)state + 0x12) = (u8)i25;
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
   }
-  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2); }
+  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2); }
   *(s32 *)state = 0x69; fn_801DDDE8(0x14, arg0); break;
  case 0x69: {
   s8 idx = *(s8 *)((u8 *)state + 0x12); u8 *base = (u8 *)state + idx * 0x4c;
@@ -5498,20 +5506,20 @@ break;
    *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) - 1;
         if (*(s8 *)((u8 *)state + 0x12) < 0) *(u8 *)((u8 *)state + 0x12) = 4;
-   } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4);
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4);
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) + 1;
         if (*(s8 *)((u8 *)state + 0x12) > 4) *(u8 *)((u8 *)state + 0x12) = 0;
-   } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4);
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4);
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
@@ -5640,7 +5648,7 @@ break;
   fn_80006160(*(s8 *)((u8 *)state + 0x12)); Process_ClearFunc(arg0); break;
     case 0xc8:
     fn_801DBEA8(state, 1); *(s8 *)((u8 *)state + 0x12) = -1;
-    p24 = (s32 *)state; i25 = 0;
+    i25 = 0; p24 = (s32 *)state;
     while (5 > i25) {
      fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
      i25 += 1; p24 = (s32 *)((u8 *)p24 + 0x4c);
@@ -5654,7 +5662,7 @@ break;
      }
      changed += 1; tmp_ptr = (u8 *)tmp_ptr + 0x4c;
     }
-    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2); }
+    { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2); }
     *(s32 *)state = 0xcd; fn_801DDDE8(0x14, arg0); break;
  case 0xcd: {
   s8 idx = *(s8 *)((u8 *)state + 0x12); u8 *base = (u8 *)state + idx * 0x4c;
@@ -5671,20 +5679,20 @@ break;
    *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) - 1;
         if (*(s8 *)((u8 *)state + 0x12) < 0) *(u8 *)((u8 *)state + 0x12) = 4;
-   } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (!(((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4));
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) + 1;
         if (*(s8 *)((u8 *)state + 0x12) > 4) *(u8 *)((u8 *)state + 0x12) = 0;
-   } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (!(((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4));
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
@@ -5715,18 +5723,18 @@ break;
   break;
  case 0x12c:
   fn_801DBEA8(state, 2); *(s8 *)((u8 *)state + 0x12) = -1;
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
   }
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
    if ((*(s16 *)((u8 *)p24 + 0x1b4) & 8) && *(s8 *)((u8 *)state + 0x12) == -1) *(u8 *)((u8 *)state + 0x12) = (u8)i25;
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
   }
-  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2); }
+  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2); }
   *(s32 *)state = 0x131; fn_801DDDE8(0x14, arg0); break;
  case 0x131: {
   s8 idx = *(s8 *)((u8 *)state + 0x12); u8 *base = (u8 *)state + idx * 0x4c;
@@ -5760,20 +5768,20 @@ break;
   break;
  case 0x190:
   fn_801DBEA8(state, 3); *(s8 *)((u8 *)state + 0x12) = -1;
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
   }
   fn_801DDDE8(0x14, arg0); *(s32 *)state = 0x193;
  case 0x193:
-  p24 = (s32 *)state; i25 = 0;
+  i25 = 0; p24 = (s32 *)state;
   while (i25 < 5) {
    fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
    if ((*(s16 *)((u8 *)p24 + 0x1b4) & 4) && *(s8 *)((u8 *)state + 0x12) == -1) *(u8 *)((u8 *)state + 0x12) = (u8)i25;
   }
-  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2); }
+  { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2); }
   fn_801D8E08((u8 *)state + 0x52e); *(s32 *)state = 0x195; break;
  case 0x195: {
   s8 idx = *(s8 *)((u8 *)state + 0x12); u8 *base = (u8 *)state + idx * 0x4c;
@@ -5783,7 +5791,7 @@ break;
  case 0x196:
   if (flags_a & 0x100) {
    *(s8 *)((u8 *)state + 0x13) = -1;
-   p24 = (s32 *)state; i25 = 0;
+   i25 = 0; p24 = (s32 *)state;
    while (i25 < 5) {
     if (fn_801DC10C(i25) != 0) {
      { s16 *fl = (s16 *)((u8 *)p24 + 0x1b4); *fl = (s16)(*fl | 4); }
@@ -5792,27 +5800,27 @@ break;
     }
     i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
    }
-   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8E18((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    *(s32 *)state = 0x19a; Ui_PlaySeCue(gUiSeCues + 0x2d4, 0x64);
   } else if (flags_a & 0x200) {
    *(s32 *)state = 0x3b6; Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) - 1;
         if (*(s8 *)((u8 *)state + 0x12) < 0) *(u8 *)((u8 *)state + 0x12) = 4;
-   } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (!(((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4));
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x12);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x12) = *(u8 *)((u8 *)state + 0x12) + 1;
         if (*(s8 *)((u8 *)state + 0x12) > 4) *(u8 *)((u8 *)state + 0x12) = 0;
-   } while (!(*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4));
-   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (!(((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4));
+   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x51a, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x12)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
@@ -5824,20 +5832,20 @@ break;
    Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
   } else if (flags_b & 0x8000008) {
    sel = *(s8 *)((u8 *)state + 0x13);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x13) = *(u8 *)((u8 *)state + 0x13) - 1;
         if (*(s8 *)((u8 *)state + 0x13) < 0) *(u8 *)((u8 *)state + 0x13) = 4;
-   } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4) & 4);
-   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c))->files[0].flags & 4);
+   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   } else if (flags_b & 0x4000004) {
    sel = *(s8 *)((u8 *)state + 0x13);
-   { s16 *fl = (s16 *)((u8 *)state + sel * 0x4c + 0x1b4); *fl = (s16)(*fl & ~2); }
+   { s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags; *fl = (s16)(*fl & ~2); }
    do { *(u8 *)((u8 *)state + 0x13) = *(u8 *)((u8 *)state + 0x13) + 1;
         if (*(s8 *)((u8 *)state + 0x13) > 4) *(u8 *)((u8 *)state + 0x13) = 0;
-   } while (*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4) & 4);
-   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2);
+   } while (((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c))->files[0].flags & 4);
+   { s8 idx = *(s8 *)((u8 *)state + 0x13); s16 *fl = &((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags; *fl = (s16)(*fl | 2);
      fn_801D8D78((u8 *)state + 0x52e, *(s16 *)((u8 *)state + idx * 0x4c + 0x1be), *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
    if (sel != *(s8 *)((u8 *)state + 0x13)) Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
   }
@@ -5867,8 +5875,8 @@ break;
   case 0x1f4:
     fn_801DBEA8(state, 4);
     *(s8 *)((u8 *)state + 0x12) = -1;
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 5) {
       fn_801D8D58((u8 *)p24 + 0x1b4);
       fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
@@ -5879,8 +5887,8 @@ break;
     fn_801DDDE8(0x14, arg0);
     /* The original continues directly into the 0x1f7 handler. */
   case 0x1f7:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 5) {
       fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
       if ((*(s16 *)((u8 *)p24 + 0x1b4) & 4) != 0 &&
@@ -5891,7 +5899,7 @@ break;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
     sel = *(s8 *)((u8 *)state + 0x12);
-    *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) |= 2;
+    ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags |= 2;
     *(s32 *)state = 0x1f9;
     break;
   case 0x1f8:
@@ -5914,14 +5922,14 @@ break;
       Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
     } else if (flags_b & 0x8000008) {
       sel = *(s8 *)((u8 *)state + 0x12);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       do {
         *(u8 *)((u8 *)state + 0x12) -= 1;
         if (*(s8 *)((u8 *)state + 0x12) < 0)
           *(u8 *)((u8 *)state + 0x12) = 4;
-      } while ((*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4) != 0);
+      } while ((((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4) != 0);
       { s8 idx = *(s8 *)((u8 *)state + 0x12);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -5929,14 +5937,14 @@ break;
         Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
     } else if (flags_b & 0x4000004) {
       sel = *(s8 *)((u8 *)state + 0x12);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       do {
         *(u8 *)((u8 *)state + 0x12) += 1;
         if (*(s8 *)((u8 *)state + 0x12) > 4)
           *(u8 *)((u8 *)state + 0x12) = 0;
-      } while ((*(s16 *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c + 0x1b4) & 4) != 0);
+      } while ((((SaveMenuFileEntries *)((u8 *)state + *(s8 *)((u8 *)state + 0x12) * 0x4c))->files[0].flags & 4) != 0);
       { s8 idx = *(s8 *)((u8 *)state + 0x12);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -6014,23 +6022,23 @@ break;
   case 0x258:
     fn_801DBEA8(state, 5);
     *(s8 *)((u8 *)state + 0x12) = (s8)fn_801DE358(gSystemSave);
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 5) {
       fn_801D8D58((u8 *)p24 + 0x1b4);
       fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
       ++i25;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (5 > i25) {
       fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
       ++i25;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
     sel = *(s8 *)((u8 *)state + 0x12);
-    *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) |= 2;
+    ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags |= 2;
     *(s32 *)state = 0x25d;
     fn_801DDDE8(0x14, arg0);
     break;
@@ -6052,12 +6060,12 @@ break;
       Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
     } else if (flags_b & 0x8000008) {
       sel = *(s8 *)((u8 *)state + 0x12);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       *(u8 *)((u8 *)state + 0x12) -= 1;
       if (*(s8 *)((u8 *)state + 0x12) < 0)
         *(u8 *)((u8 *)state + 0x12) = 4;
       { s8 idx = *(s8 *)((u8 *)state + 0x12);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -6065,12 +6073,12 @@ break;
         Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
     } else if (flags_b & 0x4000004) {
       sel = *(s8 *)((u8 *)state + 0x12);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       *(u8 *)((u8 *)state + 0x12) += 1;
       if (*(s8 *)((u8 *)state + 0x12) > 4)
         *(u8 *)((u8 *)state + 0x12) = 0;
       { s8 idx = *(s8 *)((u8 *)state + 0x12);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -6122,15 +6130,15 @@ break;
     Process_ClearFunc(arg0);
     break;
   case 0x2bc:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 6) {
       fn_801D8D68((u8 *)p24 + 0x7c);
       ++i25;
       p24 = (s32 *)((u8 *)p24 + 0x34);
     }
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 5) {
       fn_801D8D58((u8 *)p24 + 0x1b4);
       ++i25;
@@ -6255,8 +6263,8 @@ break;
     SaveData_Release(&gSaveDataBase);
     break;
   case 0x320:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < *(s8 *)((u8 *)state + 0x15)) {
       *(s16 *)((u8 *)p24 + 0x7e) = 0xc8;
       ++i25;
@@ -6270,16 +6278,16 @@ break;
   case 0x321:
     fn_801DBEA8(state, 8);
     *(s8 *)((u8 *)state + 0x13) = -1;
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (5 > i25) {
       fn_801D8D58((u8 *)p24 + 0x1b4);
       fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
       ++i25;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < 5) {
       fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
       if ((*(s16 *)((u8 *)p24 + 0x1b4) & 4) != 0 &&
@@ -6290,7 +6298,7 @@ break;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
     sel = *(s8 *)((u8 *)state + 0x13);
-    *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) |= 2;
+    ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags |= 2;
     *(s32 *)state = 0x325;
     fn_801DDDE8(0x14, arg0);
     break;
@@ -6316,7 +6324,7 @@ break;
       Ui_PlaySeCue(gUiSeCues + 0x2e4, 0x64);
     } else if (flags_b & 0x8000008) {
       sel = *(s8 *)((u8 *)state + 0x13);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       do {
         *(u8 *)((u8 *)state + 0x13) -= 1;
         if (*(s8 *)((u8 *)state + 0x13) < 0)
@@ -6324,7 +6332,7 @@ break;
         tmp_ptr = (u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4;
       } while (!((*(s16 *)tmp_ptr & 4) != 0 && fn_801D8840(tmp_ptr)));
       { s8 idx = *(s8 *)((u8 *)state + 0x13);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -6332,7 +6340,7 @@ break;
         Ui_PlaySeCue(gUiSeCues + 0x473, 0x64);
     } else if (flags_b & 0x4000004) {
       sel = *(s8 *)((u8 *)state + 0x13);
-      *(s16 *)((u8 *)state + sel * 0x4c + 0x1b4) &= ~2;
+      ((SaveMenuFileEntries *)((u8 *)state + sel * 0x4c))->files[0].flags &= ~2;
       do {
         *(u8 *)((u8 *)state + 0x13) += 1;
         if (*(s8 *)((u8 *)state + 0x13) > 4)
@@ -6340,7 +6348,7 @@ break;
         tmp_ptr = (u8 *)state + *(s8 *)((u8 *)state + 0x13) * 0x4c + 0x1b4;
       } while (!((*(s16 *)tmp_ptr & 4) != 0 && fn_801D8840(tmp_ptr)));
       { s8 idx = *(s8 *)((u8 *)state + 0x13);
-        *(s16 *)((u8 *)state + idx * 0x4c + 0x1b4) |= 2;
+        ((SaveMenuFileEntries *)((u8 *)state + idx * 0x4c))->files[0].flags |= 2;
         fn_801D8D78((u8 *)state + 0x51a,
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1be),
                      *(s16 *)((u8 *)state + idx * 0x4c + 0x1c0), 1, 0); }
@@ -6399,8 +6407,8 @@ break;
     *(s32 *)state = 0x2bc;
     break;
   case 0x384:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < *(s8 *)((u8 *)state + 0x15)) {
       *(s16 *)((u8 *)p24 + 0x7e) = 0xc8;
       ++i25;
@@ -6416,8 +6424,8 @@ break;
     SaveData_Release(&gSaveDataBase);
     break;
   case 0x3a2:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < *(s8 *)((u8 *)state + 0x15)) {
       *(s16 *)((u8 *)p24 + 0x7e) = 0xc8;
       i25++;
@@ -6445,8 +6453,8 @@ break;
     *(s32 *)state = 0;
     break;
   case 0x3de:
-    p24 = (s32 *)state;
     i25 = 0;
+    p24 = (s32 *)state;
     while (i25 < *(s8 *)((u8 *)state + 0x15)) {
       *(s16 *)((u8 *)p24 + 0x7e) = 0xc8;
       ++i25;
