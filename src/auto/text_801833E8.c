@@ -17204,8 +17204,8 @@ void fn_801A251C(void) {
 }
 #pragma optimization_level reset
 #pragma global_optimizer off
-void fn_801A2570(void) {
-    void fn_800C1060(void);
+void fn_801A2570(void *arg0) {
+    void fn_800C1060(void *);
     extern u8 gMapBlendMode;
     s32 flag;
     u32 t;
@@ -17216,7 +17216,7 @@ void fn_801A2570(void) {
         flag = 0;
     }
     if ((u8)flag != 0) {
-        fn_800C1060();
+        fn_800C1060(arg0);
     }
 }
 #pragma global_optimizer reset
