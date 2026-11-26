@@ -190,21 +190,21 @@ void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 #pragma optimization_level 4
 #pragma opt_lifetimes off
 void fn_801A8268(void *arg0) {
-    s32 fn_800056CC(const char *, ...);
-    s32 fn_800A8A88(void *);
+    s32 DebugPrint(const char *, ...);
+    s32 Msg_ResolveName(void *);
     s32 fn_800A8978(void *);
-    s32 fn_8003B2D0(void *);
+    s32 Unit_GetMaxHp(void *);
     u8 fn_800386B0(void *);
     s32 fn_8003A778(void *);
     s32 fn_8003AA40(void *);
     s32 fn_8003ACF8(void *);
     s32 fn_8003AEB0(void *);
     s32 fn_8003AF28(void *);
-    s32 fn_8003AFA0(void *);
-    s32 fn_8003B258(void *);
-    s32 fn_8001D2C8(void *);
-    s32 fn_8001D8A8(void *);
-    extern u8 lbl_8027B650[];
+    s32 Unit_GetMagAtk(void *);
+    s32 Unit_GetCarryWtLimit(void *);
+    s32 UnitRef_GetName(void *);
+    s32 Unit_FormatAttrFlags(void *);
+    extern u8 gBattleDebugMsgs[];
     extern u16 lbl_80367218;
     s8 g, f, e, d, c, b, a;
     s8 t;
@@ -220,19 +220,19 @@ void fn_801A8268(void *arg0) {
     void *slot;
 
     p = *(void **)((u8 *)arg0 + 0x188);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x1D),
-                fn_800A8A88(p), *(void **)p);
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x1D),
+                Msg_ResolveName(p), *(void **)p);
     p = *(void **)((u8 *)arg0 + 0x18C);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x29),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x29),
                 fn_800A8978(p), *(void **)p);
 
     v1a8 = *(s8 *)((u8 *)arg0 + 0x1A8);
     v19a = *(s8 *)((u8 *)arg0 + 0x19A);
-    t = fn_8003B2D0(arg0);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x35),
+    t = Unit_GetMaxHp(arg0);
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x35),
                 v19a, fn_800386B0(arg0), v1a8, t);
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x49),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x49),
                 *(s8 *)((u8 *)arg0 + 0x19E), *(s8 *)((u8 *)arg0 + 0x19F));
 
     a = fn_8003A778(arg0);
@@ -240,18 +240,18 @@ void fn_801A8268(void *arg0) {
     c = fn_8003ACF8(arg0);
     d = fn_8003AEB0(arg0);
     e = fn_8003AF28(arg0);
-    f = fn_8003AFA0(arg0);
-    g = fn_8003B258(arg0);
-    fn_800056CC((const char *)(lbl_8027B650 + 0x57),
+    f = Unit_GetMagAtk(arg0);
+    g = Unit_GetCarryWtLimit(arg0);
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x57),
                 g, f, e, d, c, b, a);
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x82),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x82),
                 *(s16 *)((u8 *)arg0 + 0x298), *(s16 *)((u8 *)arg0 + 0x29A),
                 *(s16 *)((u8 *)arg0 + 0x29C), *(s16 *)((u8 *)arg0 + 0x29E));
-    fn_800056CC((const char *)(lbl_8027B650 + 0xA3),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xA3),
                 *(s16 *)((u8 *)arg0 + 0x2A0), *(s16 *)((u8 *)arg0 + 0x2A4),
                 *(s16 *)((u8 *)arg0 + 0x2A6));
-    fn_800056CC((const char *)(lbl_8027B650 + 0xC0),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xC0),
                 *(s16 *)((u8 *)arg0 + 0x2A2), *(s16 *)((u8 *)arg0 + 0x2A8));
 
     flag = *((u8 *)arg0 + 0x2C8);
@@ -278,10 +278,10 @@ void fn_801A8268(void *arg0) {
     } else {
         base = (u8 *)arg0 + 0x284;
     }
-    fn_800056CC((const char *)(lbl_8027B650 + 0xD9),
-                fn_8001D2C8(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xD9),
+                UnitRef_GetName(base), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0xEC),
+    DebugPrint((const char *)(gBattleDebugMsgs + 0xEC),
                 *(s16 *)((u8 *)arg0 + 0x2C2), *(s16 *)((u8 *)arg0 + 0x2C4));
 
     secondFlag = *((u8 *)arg0 + 0x2C8);
@@ -304,14 +304,14 @@ void fn_801A8268(void *arg0) {
         tmp = 0;
     }
     b26 = (u8)tmp;
-    fn_800056CC((const char *)(lbl_8027B650 + 0x100),
-                fn_8001D2C8(slot), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x100),
+                UnitRef_GetName(slot), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
-    fn_800056CC((const char *)(lbl_8027B650 + 0x114),
-                fn_8001D8A8((u8 *)arg0 + 0x2AE));
-    fn_800056CC((const char *)(lbl_8027B650 + 0x121),
-                fn_8001D8A8((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
-    fn_800056CC((const char *)(lbl_8027B650 + 0x12E));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x114),
+                Unit_FormatAttrFlags((u8 *)arg0 + 0x2AE));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x121),
+                Unit_FormatAttrFlags((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
+    DebugPrint((const char *)(gBattleDebugMsgs + 0x12E));
 }
 #pragma pop
 void fn_801A859C(void *arg0) {
