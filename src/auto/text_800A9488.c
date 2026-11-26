@@ -1932,14 +1932,14 @@ void fn_800ABE74(void *arg0) {
 #pragma opt_common_subs off
 #pragma opt_propagation off
 void fn_800AC0C0(void *arg0) {
-    void fn_801475FC(void *, s32);
-    u8 fn_80166D8C(void *);
-    void fn_80166DD0(void *, void *, f32, f32);
-    void fn_801673D0(void *);
-    extern void *lbl_80367240;
+    void Ui_PlaySeCue(void *, s32);
+    u8 Ui_IsUnitInfoPopupOpen(void *);
+    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
+    void Ui_HideUnitInfoPopup(void *);
+    extern void *gPadInput;
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
-    extern u8 lbl_80330D68[];
+    extern u8 gUnitInfoPopup[];
 
     u8 var_r7;
     u32 temp_r0;
@@ -1957,9 +1957,9 @@ void fn_800AC0C0(void *arg0) {
     void *self = arg0;
 
     var_r7 = 0;
-    temp_r0 = ((u32 *)lbl_80367240)[3];
-    temp_r6 = ((u32 *)lbl_80367240)[1];
-    temp_r3 = temp_r6 & (((u32 *)lbl_80367240)[2] ^ temp_r6);
+    temp_r0 = ((u32 *)gPadInput)[3];
+    temp_r6 = ((u32 *)gPadInput)[1];
+    temp_r3 = temp_r6 & (((u32 *)gPadInput)[2] ^ temp_r6);
     if ((temp_r0 & 0x01000001) && ((s32)*(u8 *)((u8 *)self + 0x3C) == 1)) {
         var_r6 = *(s8 *)((u8 *)self + 0x3D);
         var_r5 = lbl_80312ACC + (var_r6 * 0x10);
@@ -2070,16 +2070,16 @@ void fn_800AC0C0(void *arg0) {
         var_r7 = 1;
     }
     if (var_r7 != 0) {
-        fn_801475FC(lbl_8026E858 + 0x10F, 0x64);
-        if (fn_80166D8C(lbl_80330D68) != 0) {
+        Ui_PlaySeCue(lbl_8026E858 + 0x10F, 0x64);
+        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             temp_r7 = lbl_80312ACC + (*(s8 *)((u8 *)self + 0x3C) << 7)
                                   + (*(s8 *)((u8 *)self + 0x3D) << 4);
             if (*(u32 *)(temp_r7 + 4) != 0) {
-                fn_80166DD0(lbl_80330D68, temp_r7 + 4,
+                Ui_ShowUnitInfoPopup(gUnitInfoPopup, temp_r7 + 4,
                             (f32)*(s16 *)temp_r7,
                             (f32)(*(s16 *)(temp_r7 + 2) + 0x28));
             } else {
-                fn_801673D0(lbl_80330D68);
+                Ui_HideUnitInfoPopup(gUnitInfoPopup);
             }
         }
     }
