@@ -12,6 +12,16 @@ typedef struct Vec3_800193D8 {
     f32 z;
 } Vec3_800193D8;
 
+static inline u8 CamPath_HasInitialKey(s32 count, u8 *keys) {
+    s32 i;
+    extern f32 lbl_80368C88;
+    if (count == 0) return 0;
+    for (i = count; i > 0; --i, keys += 0x14) {
+        if ((f32)*(s32 *)(keys + 4) == lbl_80368C88) return 1;
+    }
+    return 0;
+}
+
 static inline void Vec3_Copy_800193D8(Vec3_800193D8 *dst, Vec3_800193D8 src) {
     dst->x = src.x;
     dst->y = src.y;
@@ -1155,7 +1165,11 @@ void fn_80018B18(void) {
     lbl_80366DB0 = gEventLockDepth;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 3
+#pragma opt_common_subs off
+#pragma opt_instruction_scheduling off
 extern "C" void fn_80018B24(void) {
     f32 fn_80059F64(f32, f32, f32, f32);
     void *fn_80040844(void);
@@ -1224,16 +1238,16 @@ extern "C" void fn_80018B24(void) {
     t = *(f32 *)((u8 *)r31 + 0x14);
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0x100) = t;
-    b = *(f32 *)((u8 *)r31 + 0x58);
     a = *(f32 *)((u8 *)r31 + 0x40);
+    b = *(f32 *)((u8 *)r31 + 0x58);
     t = *(f32 *)((u8 *)r31 + 0x64);
     child = *(void **)r31;
-    *(f32 *)((u8 *)child + 0xE0) = (a + b) + t;
+    *(f32 *)((u8 *)child + 0xE0) = t + (b + a);
     a = *(f32 *)((u8 *)r31 + 0x44);
     b = *(f32 *)((u8 *)r31 + 0x5C);
     t = *(f32 *)((u8 *)r31 + 0x68);
     child = *(void **)r31;
-    *(f32 *)((u8 *)child + 0xE4) = (a + b) + t;
+    *(f32 *)((u8 *)child + 0xE4) = t + (b + a);
     {
         void *cam = fn_80040844();
         register f32 z;
@@ -1244,9 +1258,10 @@ extern "C" void fn_80018B24(void) {
         t = *(f32 *)((u8 *)*(void **)((u8 *)cam + 0x30) + 0x48);
         z = lbl_80368C88;
         c0 = lbl_80368CC0;
-        c4 = lbl_80368CC4;
         child = *(void **)r31;
-        *(f32 *)((u8 *)child + 0xE8) = (a + b) - t;
+        a = (a + b) - t;
+        c4 = lbl_80368CC4;
+        *(f32 *)((u8 *)child + 0xE8) = a;
         child = *(void **)r31;
         *(f32 *)((u8 *)child + 0xEC) = z;
         child = *(void **)r31;
@@ -1262,7 +1277,7 @@ extern "C" void fn_80018B24(void) {
         child = *(void **)r31;
         fn_80202300(sp8, 0x58, c4 * *(f32 *)((u8 *)child + 0x100));
         child = *(void **)r31;
-        fn_80202300(sp38, 0x5A, c4 * *(f32 *)((u8 *)child + 0xFC));
+        fn_80202300(sp38, 0x5A, lbl_80368CC4 * *(f32 *)((u8 *)child + 0xFC));
     }
     fn_80202024(sp38, sp8, sp38);
     child = *(void **)r31;
@@ -1282,8 +1297,8 @@ extern "C" void fn_80018B24(void) {
     fn_80067FE8((u8 *)child + 0xD4, (u8 *)child + 0xEC, (u8 *)child + 0xE0);
     fn_8006785C(0, fn_800193D8, r31);
 }
-
-#pragma peephole off
+#pragma pop
+#pragma cplusplus on
 extern "C" void fn_80018E0C(void) {
 #pragma peephole on
     void Ui_PlaySeCue(void *, s32);
@@ -1344,10 +1359,8 @@ extern "C" void fn_80018EC0(void)
     }
 }
 
-#pragma global_optimizer reset
-#pragma cplusplus on
-#pragma optimization_level 2
-#pragma peephole off
+#pragma push
+#pragma opt_propagation off
 extern "C" void Camera_InitSlots(void) {
     s32 Camera_Get(void);
     extern u8 lbl_802CA2C8[];
@@ -1498,7 +1511,7 @@ extern "C" void Camera_InitSlots(void) {
     gActiveCamIndex = 0;
     gActiveCam = (s32)base;
 }
-
+#pragma pop
 extern "C" void fn_80019208(void *arg0) {
     extern u8 gEventLockDepth, lbl_803671C1, lbl_8036728B;
     extern const f32 lbl_80368CCC,lbl_80368CD0,lbl_80368CD4,lbl_80368CD8,lbl_80368CDC,lbl_80368CE0;
