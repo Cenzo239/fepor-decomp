@@ -187,7 +187,10 @@ auto/text_80055CE4.c:
 	.text       start:0x80055CE4 end:0x80059500
 
 auto/text_80059500.c:
-	.text       start:0x80059500 end:0x8005A29C
+	.text       start:0x80059500 end:0x8005956C
+
+auto/text_8005956C.c:
+	.text       start:0x8005956C end:0x8005A29C
 
 auto/text_8005A29C.c:
 	.text       start:0x8005A29C end:0x8005A2A8
