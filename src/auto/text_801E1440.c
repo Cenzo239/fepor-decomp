@@ -893,6 +893,46 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
+static inline void Save_CopySystemFields(u8 *arg0, u8 *tmpl) {
+ extern u8 gSystemSave[];
+ u8 *src=tmpl; u8 *dst; u32 w8,wC; s32 j=0,ctr;
+    *(u32 *)((u8 *)arg0 + 0x70) = *(u32 *)(tmpl + 0);
+    *(u32 *)((u8 *)arg0 + 0x74) = *(u32 *)(tmpl + 4);
+    w8 = *(u32 *)(tmpl + 8);
+    wC = *(u32 *)(tmpl + 0xC);
+    *(u32 *)((u8 *)arg0 + 0x7C) = wC;
+    *(u32 *)((u8 *)arg0 + 0x78) = w8;
+    *(u16 *)((u8 *)arg0 + 0x80) = *(u16 *)(tmpl + 0x10);
+    ((u8 *)arg0)[0xB0] = tmpl[0x40];
+    ((u8 *)arg0)[0xB1] = tmpl[0x41];
+    ((u8 *)arg0)[0xB2] = tmpl[0x42];
+    ((u8 *)arg0)[0xB3] = tmpl[0x43];
+    ((u8 *)arg0)[0xB4] = tmpl[0x44];
+    ((u8 *)arg0)[0xB7] = tmpl[0x47];
+    dst = (u8 *)arg0 + 0x70;
+    for (ctr = 5; ctr != 0; ctr--) {
+        u8 *p = dst + j + 0x12;
+        u8 *s = src + 0x12;
+        j += 6;
+        p[0] = s[0];
+        p[1] = s[1];
+        p[2] = s[2];
+        p[3] = s[3];
+        p[4] = s[4];
+        p[5] = s[5];
+        src += 6;
+    }
+    *(u32 *)(dst + 0x3C) = 0;
+    *(u32 *)(dst + 0x38) = 0;
+    *(u32 *)(dst + 0x34) = 0;
+    *(u32 *)(dst + 0x30) = 0;
+    src = gSystemSave;
+    *(u32 *)(dst + 0x30) |= *(u32 *)(src + 0x30);
+    *(u32 *)(dst + 0x34) |= *(u32 *)(src + 0x34);
+    *(u32 *)(dst + 0x38) |= *(u32 *)(src + 0x38);
+    *(u32 *)(dst + 0x3C) |= *(u32 *)(src + 0x3C);
+
+}
 static inline u32 Save_FindMaxSizeIn(u8 *base) {
     u32 best = 0;
     s32 off = 0x2000;
@@ -2548,7 +2588,7 @@ memcpy(dst+0x20,formatted,strlen(formatted));
 }
 #pragma push
 #pragma optimization_level 4
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction off
 void fn_801E3CA8(void *arg0) {
     void *Msg_Expand(void *);
     void DebugPrint(void *, s32, ...);
@@ -2622,27 +2662,14 @@ void fn_801E3CA8(void *arg0) {
     *(u32 *)(dst + 0x34) |= *(u32 *)(src + 0x34);
     *(u32 *)(dst + 0x38) |= *(u32 *)(src + 0x38);
     *(u32 *)(dst + 0x3C) |= *(u32 *)(src + 0x3C);
-    best = 0;
-    off = 0x2000;
-    base = (u8 *)gSaveDataBase;
-    for (i = 0; i < 6; i++, off += 0x4000) {
-        if (best < save_slot_size(base + off)) best = save_slot_size(base + off);
-    }
-    clamped = save_slot_size(base + 0x1A000);
-    if (best < clamped) {
-        best = save_slot_size(base + 0x1A000);
-    }
-    clamped = save_slot_size(base + 0x20000);
-    if (best < clamped) {
-        best = save_slot_size(base + 0x20000);
-    }
+    best = Save_FindMaxSizeIn(gSaveDataBase);
     *(u32 *)((u8 *)arg0 + 0x48) = best + 1;
-    for (j = 0; j < 0x40; j++) ((u8 *)arg0)[j] = 0x20;
+    for (j = 0; j < 0x40; j+=8) { u8 *p=(u8 *)arg0+j; p[0]=0x20;p[1]=0x20;p[2]=0x20;p[3]=0x20;p[4]=0x20;p[5]=0x20;p[6]=0x20;p[7]=0x20; }
     name = Msg_Expand(gSaveStrings + 0x1C7);
-    for (i = 0; i < 30; i++, tmpl++) if (!tmpl[0x12]) break;
+    for (i = 0; i < 30; ++i) { if (!tmpl[0x12]) break; ++tmpl; }
     fn_8020B294(OSGetTime(), &cal);
-    sp10[0] = 0;
     cal.mon += 1;
+    sp10[0] = 0;
     fn_80231E74(sp58, 0x20, gSaveStrings + 0x1D0, cal.mon, cal.mday, cal.year % 100, cal.hour, cal.min, &sp10);
     memcpy(arg0, name, strlen(name));
     memcpy((u8 *)arg0 + 0x20, sp58, strlen(sp58));
