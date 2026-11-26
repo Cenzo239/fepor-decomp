@@ -2017,6 +2017,8 @@ void fn_80045C68(s32 arg0)
     fn_8006720C((u8 *)arg0 + 0x70);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
 void fn_80045D50(void *arg0, void *arg1) {
     void *Hash_Lookup(void *);
@@ -2090,16 +2092,9 @@ loop1_body:
     p = sp8;
     sp8 = p + 1;
     ent[1] = *p;
-    t6 = sp8;
-    t5 = t6 + 1;
-    sp8 = t5;
-    t4 = t5 + 1;
-    tmp = (s32)(t4 + 1);
-    r26v = (u8)t6[0];
-    sp8 = t4;
-    r29v = (u8)t6[1];
-    sp8 = (u8 *)tmp;
-    ent[4] = t6[2];
+    r26v = *sp8++;
+    r29v = *sp8++;
+    ent[4] = *sp8++;
     p = sp8;
     sp8 = p + 1;
     ent[5] = *p;
@@ -2119,12 +2114,8 @@ loop1_body:
     f24v = (f32)(s8)ent[0] + f28v;
     f26v = (f32)(s8)ent[1] + f28v;
     if (*(u8 *)((u8 *)self + 0x68) == 1) {
-        a = *(s16 *)self;
-        h = *(s16 *)((u8 *)self + 2);
-        a = ((u32)a >> 31) + a;
-        a >>= 1;
-        f24v -= (f32)a;
-        f26v -= (f32)((s32)(((u32)h >> 31) + h) >> 1);
+        f24v -= (f32)(*(s16 *)self / 2);
+        f26v -= (f32)(*(s16 *)((u8 *)self + 2) / 2);
     }
     PSMTXTrans(sp9C, lbl_80368EE8, lbl_80368EE4, lbl_80368EE8);
     PSMTXRotRad(sp6C, 0x59, f29v * f27v);
@@ -2138,8 +2129,7 @@ loop1_body:
     PSMTXTrans(sp9C, f30v * (f24v * temp_f0), f30v * (f25v * temp_f0), f30v * (f26v * temp_f0));
     PSMTXConcat(sp9C, spC, spC);
     PSMTXConcat((u8 *)self + 0x70, spC, ent + 0x24);
-    tmp = r29v + 4;
-    *(void **)(sub + 4) = (u8 *)*(void **)((u8 *)self + 0x10) + tmp;
+    *(void **)(sub + 4) = (u8 *)*(void **)((u8 *)self + 0x10) + r29v + 4;
     GActor_Finalize(sub);
     r26v = *(s32 *)(*(u8 **)(ent + 0x10) + 0xBC);
     if (*(u8 *)((u8 *)self + 0x68) == 1) {
@@ -2181,41 +2171,44 @@ loop1_test:
         goto loop1_body;
     }
 
+    {
+    u8 *entry2;
+    s32 groupIndex;
+    s32 frameCount;
     r29v = 0;
     r26v = 0;
+    groupIndex = r29v;
     sub = (u8 *)r29v;
-    i = 0;
     goto loop2_test;
 loop2_body:
     base = *(u8 **)((u8 *)self + 0x14);
-    ent = base + (s32)sub;
-    if (*(u32 *)(*(u8 **)(ent + 0x10) + 0xBC) & 0x400) {
+    entry2 = base + (s32)sub;
+    if (*(u32 *)(*(u8 **)(entry2 + 0x10) + 0xBC) & 0x400) {
         if (r26v == 0) {
             m = r29v + 1;
-            ctr = count - m;
             idx = m * 0xB4;
-            if (m < count) {
-                for (; ctr != 0; ctr--) {
+            {
+                for (; m < count; m++) {
                     other = base + idx;
-                    if (*(void **)(ent + 0x10) != *(void **)(other + 0x10)
-                        || (s8)ent[0] != (s8)other[0]
-                        || (s8)ent[1] != (s8)other[1]) {
+                    if (*(void **)(entry2 + 0x10) != *(void **)(other + 0x10)
+                        || (s8)entry2[0] != (s8)other[0]
+                        || (s8)entry2[1] != (s8)other[1]) {
                         break;
                     }
                     r26v += 1;
                     idx += 0xB4;
-                    m += 1;
                 }
             }
-            i = 0;
+            groupIndex = 0;
         }
         if (r26v > 0) {
-            u8 *s2 = ent + 0x14;
+            u8 *s2 = entry2 + 0x14;
             ref = fn_80060664(s2);
+            frameCount = *(s32 *)((u8 *)ref + 0x18);
             tmp = r26v + 1;
-            fn_8005FEE8(s2, (f32)((s32)(i * *(s32 *)((u8 *)ref + 0x18)) / tmp));
-            i += 1;
-            if (i > r26v) {
+            fn_8005FEE8(s2, (f32)((groupIndex * frameCount) / tmp));
+            groupIndex += 1;
+            if (groupIndex > r26v) {
                 r26v = 0;
             }
         }
@@ -2232,7 +2225,8 @@ loop2_test:
         fn_8004781C(self);
         *(u32 *)((u8 *)self + 0x64) |= 0x20000000;
     }
-}
+}}
+#pragma pop
 #pragma global_optimizer on
 
 void fn_800462FC(void *arg0, void *arg1, void *arg2) {
@@ -6318,7 +6312,13 @@ zero=lbl_80368FCC;
 }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_strength_reduction off
+static inline void Unit_SetModelNodes(void *unit, const unsigned *nodes) {
+    M2C_FIELD(unit, u8 *, 0x168) = nodes[0];
+    M2C_FIELD(unit, u8 *, 0x169) = nodes[1];
+}
+
 void fn_8004EB14(void *arg0, u32 arg1) {
 #pragma opt_common_subs off
     void fn_800056A0(s32);
@@ -6339,7 +6339,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_8005F554(void *, s32);
     void fn_8005F7B0(void *, s32);
     void fn_8005FEE8(void *, f32);
-    void fn_80060638(void *);
+    void *fn_80060638(void *);
     s32 fn_8006135C(void *, void *);
     void *fn_80060664(void *);
     void fn_8006140C(void *);
@@ -6350,13 +6350,12 @@ void fn_8004EB14(void *arg0, u32 arg1) {
     void fn_8004B3DC(void);
     extern u8 lbl_8026AB18[];
     extern void *lbl_80366DC8;
-    extern f32 lbl_80368FCC;
+    extern const f32 lbl_80368FCC;
     extern f32 lbl_80368FFC;
     extern u8 lbl_802EFFE8[];
 
-    unsigned sp8;
+    unsigned nodes[2];
     void *res;
-    register unsigned spC;
     register void *sub;
     s32 id;
     register void *tmp;
@@ -6368,7 +6367,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         M2C_FIELD(arg0, u8 *, 3) = flags & 0xFE;
         M2C_FIELD(arg0, u8 *, 3) |= 2;
         id = get_4F128_id(arg0);
-        res = get_4F128_resource(arg0, id);
+        res = Unit_ResolveDisplayResource(id, arg0);
         sub = (u8 *)arg0 + 0x1C;
         M2C_FIELD(arg0, void **, 0x17C) = res;
         arg1 = (u16)arg1 | 8;
@@ -6378,7 +6377,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         fn_8005F4F4(sub, fn_8004B0C8(res));
         fn_8005F554(sub, fn_8004B110(res));
         id = get_4F128_id(arg0);
-        res = get_4F128_resource(arg0, id);
+        res = Unit_ResolveDisplayResource(id, arg0);
         switch (M2C_FIELD(M2C_FIELD(arg0, void **, 0x190), u8 *, 8)) {
         case 0: res = fn_8004B078(res, 0); break;
         case 1: res = fn_8004B078(res, 1); break;
@@ -6403,7 +6402,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
                     fn_8005FEE8(sub2, lbl_80368FFC);
                 }
             }
-            M2C_FIELD(arg0, u8 *, 3) &= (u8)~0x10;
+            M2C_FIELD(arg0, u8 *, 3) &= ~0x10;
         } else {
             fn_8004FE98(arg0, 0);
         }
@@ -6414,18 +6413,17 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         }
         M2C_FIELD(arg0, f32 *, 0x10) = lbl_80368FCC;
         M2C_FIELD(arg0, f32 *, 0x14) = lbl_80368FCC;
-        M2C_FIELD((short)arg0, f32 *, 0x18) = lbl_80368FCC;
+        M2C_FIELD(arg0, f32 *, 0x18) = lbl_80368FCC;
         M2C_FIELD(arg0, s16 *, 0x15E) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x160) = 0x3C;
         M2C_FIELD(arg0, s16 *, 0x162) = 0x3C;
-        sp8 = fn_8006135C(sub, lbl_8026AB18 + 0x8F);
-        spC = fn_8006135C(sub, lbl_8026AB18 + 0x92);
+        nodes[0] = fn_8006135C(sub, lbl_8026AB18 + 0x8F);
+        nodes[1] = fn_8006135C(sub, lbl_8026AB18 + 0x92);
         sub2 = (u8 *)arg0 + 0x1C;
-        M2C_FIELD(arg0, u8 *, 0x168) = sp8;
-        M2C_FIELD(arg0, u8 *, 0x169) = spC;
-        fn_80060638(sub2);
+        M2C_FIELD(arg0, u8 *, 0x168) = nodes[0];
+        M2C_FIELD(arg0, u8 *, 0x169) = nodes[1];
+        fn_800688D4(fn_80060638(sub2), 0, fn_8004B3DC, 0x4000);
         M2C_FIELD(sub2, void **, 0x90) = arg0;
-        fn_800688D4(sub2, 0, fn_8004B3DC, 0x4000);
         fn_8005F7B0(sub2, 0);
         sub2 = (u8 *)arg0 + 0xBC;
         fn_80061824(sub2);
@@ -6435,7 +6433,7 @@ void fn_8004EB14(void *arg0, u32 arg1) {
         M2C_FIELD(sub2, void **, 4) = NULL;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma push
 #pragma optimization_level 4
