@@ -110,11 +110,4 @@ void fn_80089490(void *arg0) {
     }
 }
 #pragma pop
-static inline void ResetUnlessSpecial_80089490(void *obj, u8 *base, s32 a, s32 b, s32 c, s32 d) {
-    void fn_8000A408(void *);
-    u32 v;
-    if (*((u8 *)obj + 0x2B) != 0x7B) {
-        v = *(u32 *)obj;
-        if (v != (u32)(base+a) && v != (u32)(base+b) && v != (u32)(base+c) && v != (u32)(base+d)) fn_8000A408(obj);
-    }
-}
+
