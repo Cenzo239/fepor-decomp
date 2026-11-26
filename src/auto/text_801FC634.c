@@ -1126,8 +1126,8 @@ static inline s32 Ui_PanelOffset(s32 distance, s32 adjustment) {
     return distance + adjustment;
 }
 
-static inline s32 Ui_PanelInset(s32 adjustment, s32 distance) {
-    return distance + adjustment;
+static inline void Ui_PanelInset(s32 *distance, s32 adjustment) {
+    *distance += adjustment;
 }
 
 #pragma push
