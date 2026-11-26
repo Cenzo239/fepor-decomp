@@ -1039,7 +1039,6 @@ void FileCache_ReleaseByName(char *name) {
     FileCache_Release(FindEntryByName(name));
 }
 
-#pragma global_optimizer off
 void FileCache_ReleaseByKey(u32 arg0) {
     void FileCache_Release(void *);
     extern u8 gFileCache[];
@@ -1058,6 +1057,8 @@ void FileCache_ReleaseByKey(u32 arg0) {
     }
     FileCache_Release(found);
 }
+
+#pragma global_optimizer off
 
 #pragma use_lmw_stmw on
 void fn_8005D330(char *name, u16 flags) {
