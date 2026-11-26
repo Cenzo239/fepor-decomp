@@ -7479,17 +7479,6 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
-static inline void CopyColors80161B98(s32 *src, void *d0, void *d1, void *d2, void *d3) {
-    s32 a = src[0];
-    s32 b = src[1];
-    s32 c = src[2];
-    s32 d = src[3];
-    *(s32 *)d0 = a;
-    *(s32 *)d1 = b;
-    *(s32 *)d2 = c;
-    *(s32 *)d3 = d;
-}
-
 void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s32 *arg6, s32 arg7) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(void *, u16);
