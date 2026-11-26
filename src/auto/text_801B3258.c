@@ -4937,23 +4937,20 @@ extern "C" void fn_801BBDA0(void *arg0) {
 }
 
 #pragma opt_propagation off
-extern "C" s16 fn_8017D604(s32, s32, u8 *);
-static inline s32 Unit_CheckGoldCost(s32 unit, s32 mode, u8 *state) {
-    s32 gold = *(s32 *)(state + 0x1C);
-    return fn_8017D604(unit, mode, state) <= gold ? 1 : 0;
-}
 
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
     s16 fn_8017D604(s32, s32, u8 *);
     extern u8 lbl_80330708[];
     s32 t;
+    u8 *state;
 
     if (fn_8003D13C() == 0) {
         return 0;
     }
-    t = *(s32 *)(lbl_80330708 + 0x1C);
-    return (fn_8017D604(arg0, 1, lbl_80330708) <= t) ? 1 : 0;
+    state = lbl_80330708;
+    t = ((s32 *)state)[7];
+    return (fn_8017D604(arg0, 1, state) <= t) ? 1 : 0;
 }
 #pragma opt_propagation on
 extern "C" void Ui_DetachChildSlots(void *panel) {
