@@ -723,6 +723,9 @@ void fn_801E551C(void) {
 }
 
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_loop_invariants off
 void TabMenu_DrawTab2(u8 *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
