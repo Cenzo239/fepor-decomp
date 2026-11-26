@@ -1,11 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
 
-static inline s8 Unit_StatTotalForClamp(u8 *self, s32 personOffset, s32 classOffset, s32 bonusOffset) {
-    u8 *person = *(u8 **)(self + 0x188);
-    u8 *cls = *(u8 **)(self + 0x18C);
-    return self[bonusOffset] + (person[personOffset] + cls[classOffset]);
-}
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -422,7 +417,8 @@ void fn_8003708C(void *arg0, void *arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma global_optimizer off
+#pragma opt_lifetimes off
+#pragma opt_propagation off
 void fn_8003712C(void *arg0) {
     void *cls;
     void *unit;
