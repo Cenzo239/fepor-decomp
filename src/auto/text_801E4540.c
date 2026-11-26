@@ -2148,8 +2148,6 @@ s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
     s32 v;
     s32 lower;
-    s32 upper;
-    s32 index;
     s32 q, r, lo;
     u8 ok;
     s8 count;
@@ -2160,7 +2158,7 @@ s32 fn_801E8734(void *arg0) {
     lower = (s8)q;
     lo = lower + 8;
     if (v % 32 != 0) lo = lower + 9;
-    { upper = (s8)lo; index = (s8)count;
+    { s32 upper = (s8)lo; s32 index = (s8)count;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
     }
@@ -2247,7 +2245,7 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
     void *tail;
     u8 match;
     void *node;
-    u8 *bytes;
+    void *data;
     s8 key;
     s8 count;
     s8 flag;
@@ -2275,7 +2273,7 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
         p->sp1C = (u8)arg1;
         key = (s8)(arg1 & 0xFF);
         p->sp60 = tail;
-        p->sp64 = head;
+        p->sp64 = p->sp70;
         goto cond0;
     incr0:
         p->sp64 = node;
@@ -2284,9 +2282,9 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
             break;
         match = 0;
         node = *(void **)*(void *volatile *)&p->sp64;
-        bytes = *(u8 **)((char *)node + 8);
-        if ((s8)bytes[0] >= 0) {
-            if (key == (s8)bytes[2])
+        data = *(void **)((char *)node + 8);
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 2))
                 match = 1;
         }
         if (!match)
@@ -2299,7 +2297,7 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
         p->sp14 = (u8)arg1;
         key = (s8)(arg1 & 0xFF);
         p->sp54 = tail;
-        p->sp58 = head;
+        p->sp58 = p->sp70;
         goto cond1;
     incr1:
         p->sp58 = node;
@@ -2308,9 +2306,9 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
             break;
         match = 0;
         node = *(void **)*(void *volatile *)&p->sp58;
-        bytes = *(u8 **)((char *)node + 8);
-        if ((s8)bytes[0] >= 0) {
-            if (key == (s8)bytes[1])
+        data = *(void **)((char *)node + 8);
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 1))
                 match = 1;
         }
         if (!match)
@@ -2323,7 +2321,7 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
         p->spC = (u8)arg1;
         key = (s8)(arg1 & 0xFF);
         p->sp48 = tail;
-        p->sp4C = head;
+        p->sp4C = p->sp70;
         goto cond2;
     incr2:
         p->sp4C = node;
@@ -2332,9 +2330,9 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
             break;
         match = 0;
         node = *(void **)*(void *volatile *)&p->sp4C;
-        bytes = *(u8 **)((char *)node + 8);
-        if ((s8)bytes[0] >= 0) {
-            if (key == (s8)bytes[4])
+        data = *(void **)((char *)node + 8);
+        if ((s8)*(u8 *)data >= 0) {
+            if (key == (s8)*((u8 *)data + 4))
                 match = 1;
         }
         if (!match)
@@ -2348,8 +2346,8 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
     }
 
     node = *(void **)p->sp74;
-    bytes = *(u8 **)((char *)node + 8);
-    flag = (s8)bytes[0];
+    data = *(void **)((char *)node + 8);
+    flag = (s8)*(u8 *)data;
     if (flag >= 0) {
         count = 0;
         p->sp40 = p->sp74;
@@ -2362,7 +2360,9 @@ s8 fn_801E8920(void *arg0, s32 arg1) {
     }
     return flag;
 }
-#pragma opt_propagation on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     s8 thresh;
     s32 var_r6;
@@ -2370,9 +2370,10 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     void *var_r5;
     s32 var_r0;
     s32 var_r8;
+    s32 temp_r7;
+    s32 scroll;
     u8 temp_r8;
-    s16 temp_r7;
-    u8 temp_r9;
+    s32 temp_r9;
     s32 temp_r6;
     s8 var_r6_2;
 
@@ -2423,17 +2424,17 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
             }
         }
         do {
-            temp_r9 = *arg1;
+            temp_r9 = *(s8 *)arg1;
             temp_r6 = *(s32 *)((u8 *)arg0 + 0x50) - 1;
-            if ((((u32)(s8)temp_r9 <= (u32)temp_r6) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
-                || (((u32)(s8)temp_r9 < (u32)temp_r6) && ((s8)((s8)temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
-                temp_r7 = *(s16 *)((u8 *)arg0 + 0x36);
-                var_r6_2 = (s8)((s8)temp_r9 - ((s8)(temp_r7 / 32) + 8));
-                if ((u32)(s8)temp_r9 < (u32)temp_r6) {
+            if ((((u32)temp_r9 <= (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) > 8))
+                || (((u32)temp_r9 < (u32)temp_r6) && ((s8)(temp_r9 - (*(s16 *)((u8 *)arg0 + 0x38) / 32)) == 8))) {
+                scroll = *(s16 *)((u8 *)arg0 + 0x36);
+                var_r6_2 = (s8)(temp_r9 - ((s8)(scroll / 32) + 8));
+                if ((u32)temp_r9 < (u32)temp_r6) {
                     var_r6_2 += 1;
                 }
                 var_r8 = 1;
-                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6_2 << 5) + temp_r7);
+                *(s16 *)((u8 *)arg0 + 0x38) = (s16)((var_r6_2 << 5) + scroll);
             }
             if ((s8)*(u8 *)(*(void **)((u8 *)var_r5 + 8)) >= 0) {
                 break;
@@ -2445,6 +2446,7 @@ s32 fn_801E8B38(void *arg0, u8 *arg1, s8 arg2) {
     }
     return var_r6;
 }
+#pragma pop
 #pragma optimization_level reset
 #pragma global_optimizer on
 void fn_801E8D34(u8 *arg0) {
