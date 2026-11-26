@@ -89,6 +89,17 @@ p[8]=1;*(u32*)(p+12)=0;return i;
 return 255;
 }
 typedef struct SynthFreeNode { u8 prev, next; u16 active; } SynthFreeNode;
+    typedef struct { u8 prev, next; u16 one; } FreeNode;
+    typedef struct { u16 pad, val; } ZeroNode;
+    typedef struct {
+        u8 p0[0x800];
+        ZeroNode zeros[0x40];
+        u8 p1[0x100];
+        u8 p2[0x400];
+        FreeNode nodes[0x100];
+    } SoundBuf;
+
+
 
 /* Sound ARAM DMA slot: ARQRequest plus user completion (MusyX owner 0x2A). */
 typedef struct SoundAramDmaSlot {
