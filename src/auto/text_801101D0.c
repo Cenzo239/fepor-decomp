@@ -1026,14 +1026,12 @@ extern "C" void fn_801126A4(void *arg0, s32 arg1, s32 arg2) {
  void *fn_800DDB94(void *,void *); int sprintf(char *,const char *,...);
  extern f32 lbl_8036A18C,lbl_8036A190;
  char buf[128];
- void *name;
- u8 *self=(u8 *)arg0; s32 x=arg1; s32 y=arg2;
+ s32 y=arg2; s32 x=arg1; u8 *self=(u8 *)arg0;
  Prim2D_Begin(); Prim2D_SetTransform(0.0f,0.0f,0.0f,lbl_8036A18C);
  Prim2D_SetTex(0,19); Prim2D_PrepareTex();
  sprintf(buf,(char *)gActorXmlStrs+0x38b,String_CStr(self+0xbc));
  Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)y); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
- name=fn_800DDB94(*(void **)(self+0xdc),self+0xbc);
- sprintf(buf,(char *)gActorXmlStrs+0x38b,name);
+ sprintf(buf,(char *)gActorXmlStrs+0x38b,fn_800DDB94(*(void **)(self+0xdc),self+0xbc));
  Prim2D_AddPrim(5); Prim2D_SetPos((f32)x,(f32)(y+16)); Prim2D_SetText(buf); Prim2D_SetScale(lbl_8036A190); Prim2D_SetTint(255,255,255,255); Prim2D_EndPrim();
 }
 
