@@ -1,6 +1,7 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
+struct MenuPointResult { s16 x, y; MenuPointResult(s16 a, s16 b): x(a), y(b) {} };
 struct MenuCenteredLabel {
 virtual void v0()=0;
 virtual void *getText()=0;
@@ -1791,7 +1792,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma scheduling on
 #pragma opt_lifetimes off
 
-void fn_80134C24(s32 *arg0, void *arg1) {
+void fn_80134C24(s32 *arg0, const void *arg1) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
     Vec2s out, in;
@@ -1821,7 +1822,7 @@ void fn_80134C24(s32 *arg0, void *arg1) {
     half = (s16)(((s32)(s16)rowH - t) >> 1);
     in.x = x;
     in.y = (s32)y + half;
-    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
+    *arg0 = *(s32 *)fn_8013F748((void*)arg1, &out, &in);
 }
 #pragma peephole reset
 #pragma optimization_level reset
