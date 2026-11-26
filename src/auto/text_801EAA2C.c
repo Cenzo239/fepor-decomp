@@ -1,11 +1,7 @@
 /* Functions from 0x801EAA2C to 0x801F18D4, found by decomp-toolkit. */
 #include "common.h"
 
-static inline s32 PopupFromWidgets_801EC6D4(const char *msg, void *a, void *b) {
-void Ui_CreateMsgPopup(const char *, void *, f32, f32);
-Ui_CreateMsgPopup(msg,a,(f32)(*(s16*)((u8*)a+0x30)+*(s16*)((u8*)b+0x30)),(f32)(*(s16*)((u8*)a+0x32)+*(s16*)((u8*)b+0x32)));
-return 0x10;
-}
+
 static inline void Fx_801EDFCC_Body(void *p) {
     void fn_80146AF0(void);
     void Fx_FadeIn(void *, s32);
