@@ -2945,6 +2945,12 @@ void *String_Destroy(void *arg0, s16 arg1) {
     return arg0;
 }
 
+struct String_Init_Tag { u8 b; };
+static inline struct String_Init_Tag String_Init_MakeTag(void) {
+    struct String_Init_Tag t;
+    return t;
+}
+
 void *String_Init(void *arg0, char *arg1, void *arg2)
 {
     struct Tag { u8 b; };
@@ -20290,8 +20296,8 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     };
     extern struct CardWork gCardWork;
 
-    CardFileStatus status;
     Stream_800EBACC *stream;
+    CardFileStatus status;
     void *fileInfo;
     s32 size;
     s32 fileNo;
