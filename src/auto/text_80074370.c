@@ -1107,6 +1107,8 @@ s32 fn_80075C04(void) {
     return 0;
 }
 
+#pragma push
+#pragma opt_propagation off
 s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
     s32 Msg_Expand(void *);
     void fn_80166AE8(s32, s32, s32, void *);
@@ -1147,23 +1149,21 @@ s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
     };
 
     u8 saved;
-    register s32 y;
-    register s32 vy;
-    register s32 str;
+    s32 y;
     s16 x;
     Obj *obj;
-    s32 vx;
     u8 *slot;
     u8 *parent;
     if (*((u8 *)arg2 + 0x39)) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
         x = *(s16 *)((u8 *)arg2 + 0x30);
-        str = Msg_Expand(lbl_8026C0B8 + 0x270);
-        vy = obj->v22();
-        y -= 0x3C;
-        vx = obj->v21();
-        fn_80166AE8(vx + x, vy + y, str, arg1);
+        fn_80166AE8(
+            obj->v21() + x,
+            obj->v22() + (y - 0x3C),
+            Msg_Expand(lbl_8026C0B8 + 0x270),
+            arg1
+        );
         return 0;
     }
     Ui_PlaySeCue(lbl_8026C0B8 + 0x277, 100);
@@ -1180,7 +1180,7 @@ s32 fn_80075C78(void *arg0, void *arg1, void *arg2) {
     return 5;
 #pragma cplusplus reset
 }
-
+#pragma pop
 void fn_80075DAC(void) {
     extern u16 lbl_8026C0B8[];
     Msg_Expand((u8 *)lbl_8026C0B8 + 0x28a);
@@ -2684,12 +2684,9 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
         virtual s16 v21() = 0;
         virtual s16 v22() = 0;
     };
-    s32 vy;
-    s32 str;
     s16 y;
     s16 x;
     Obj *obj;
-    s32 vx;
     u8 *event;
     void *ptr;
     u8 *item;
@@ -2699,10 +2696,7 @@ s32 fn_80078224(void *arg0, void *arg1, void *arg2) {
         obj = *(Obj **)((u8 *)arg1 + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
         x = *(s16 *)((u8 *)arg2 + 0x30);
-        str = Msg_Expand(lbl_8026C0B8 + 0x4C6);
-        vy = obj->v22();
-        vx = obj->v21();
-        fn_80166AE8(vx + x, vy + y, str, arg1);
+        fn_80166AE8(obj->v21() + x, obj->v22() + y, Msg_Expand(lbl_8026C0B8 + 0x4C6), arg1);
         return 0;
     }
 #pragma cplusplus reset
@@ -3622,45 +3616,31 @@ void fn_80079E08(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x38) = 0;
 }
 
+#pragma push
+#pragma optimization_level 2
 void fn_80079E14(void *arg0) {
     void Process_Goto(void *, s32);
-    u32 Rand_Next();
+    u32 Rand_Next(void);
     void Face_DrawEyes(void *, s32, s32);
-    s32 var_r31;
-    s32 var_r0;
+    s32 var_r31 = 0;
     u32 temp_r3;
+    s32 var_r0;
 
-    var_r31 = 0;
-    switch ((s16)M2C_FIELD(arg0, s16 *, 0x38)) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    switch (M2C_FIELD(arg0, s16 *, 0x38)) {
+    case 0: case 1: case 2: case 3: case 4: case 5:
         var_r31 = 1;
         break;
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
+    case 6: case 7: case 8: case 9: case 10: case 11:
         var_r31 = 2;
         break;
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
+    case 12: case 13: case 14: case 15: case 16: case 17:
         var_r31 = 1;
         break;
     case 18:
         Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
         temp_r3 = Rand_Next() >> 0x10U;
-        switch ((s16)M2C_FIELD(arg0, s16 *, 0x34)) {
+        switch (M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
             var_r0 = ((s32)temp_r3 >> 7) + 0x12C;
             break;
@@ -3668,7 +3648,7 @@ void fn_80079E14(void *arg0) {
             var_r0 = ((s32)temp_r3 >> 7) + 0x1E;
             break;
         case 2:
-            var_r0 = ((s32)temp_r3 >> 0xA) + 1;
+            var_r0 = ((s32)temp_r3 >> 10) + 1;
             break;
         case 4:
             var_r0 = 1;
@@ -3683,12 +3663,12 @@ void fn_80079E14(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
         break;
     }
+
     Face_DrawEyes(arg0, var_r31, 7);
     Face_DrawEyes(arg0, 0, 0xA);
-    M2C_FIELD(arg0, s16 *, 0x38) = (s16)(M2C_FIELD(arg0, s16 *, 0x38) + 1);
-    return;
+    M2C_FIELD(arg0, s16 *, 0x38)++;
 }
-
+#pragma pop
 void fn_80079F44(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x38) = 0;
 }
