@@ -489,40 +489,20 @@ void *fn_80183C6C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
 
     extern u8 lbl_80295B38[];
     extern u8 gBattleMap[];
-    extern f32 gHalf;
-    extern f64 lbl_8036ACE0;
+    extern const f32 gHalf;
 
     u8 *proc;
-    f32 x;
-    f32 y;
 
     proc = (u8 *)Process_CreateEx(lbl_80295B38, arg5);
 
     *(void **)(proc + 0x30) = arg0;
+    *(f32 *)(proc + 0x34) = gHalf + (f32)arg1;
+    *(f32 *)(proc + 0x38) = gHalf + (f32)arg2;
+    *(f32 *)(proc + 0x3C) = Map_SampleHeightRaw(gBattleMap, *(f32 *)(proc + 0x34), *(f32 *)(proc + 0x38));
 
-    x = gHalf + (f32)arg1;
-    y = gHalf + (f32)arg2;
-
-    *(f32 *)(proc + 0x34) = x;
-    *(f32 *)(proc + 0x38) = y;
-
-    *(f32 *)(proc + 0x3C) = Map_SampleHeightRaw(
-        gBattleMap,
-        *(f32 *)(proc + 0x34),
-        *(f32 *)(proc + 0x38)
-    );
-
-    x = gHalf + (f32)arg3;
-    y = gHalf + (f32)arg4;
-
-    *(f32 *)(proc + 0x40) = x;
-    *(f32 *)(proc + 0x44) = y;
-
-    *(f32 *)(proc + 0x48) = Map_SampleHeightRaw(
-        gBattleMap,
-        *(f32 *)(proc + 0x40),
-        *(f32 *)(proc + 0x44)
-    );
+    *(f32 *)(proc + 0x40) = gHalf + (f32)arg3;
+    *(f32 *)(proc + 0x44) = gHalf + (f32)arg4;
+    *(f32 *)(proc + 0x48) = Map_SampleHeightRaw(gBattleMap, *(f32 *)(proc + 0x40), *(f32 *)(proc + 0x44));
 
     return proc;
 }
