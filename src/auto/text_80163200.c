@@ -3660,7 +3660,7 @@ void fn_801690B0(s32 arg0) {
 
 #pragma cplusplus on
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 1
 extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     void fn_80142060(void *);
     void fn_8013BBF8(void *);
