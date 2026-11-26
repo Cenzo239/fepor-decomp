@@ -79,13 +79,6 @@ u16 value = (p[0] << 8) | p[1];
 *cursor = p + 2;
 return value;
 }
-extern const f64 lbl_8036C190;
-static inline f32 ThpConvByte(u32 byte) {
-    union { f64 d; struct { u32 hi, lo; } s; } cvt;
-    cvt.s.hi = 0x43300000;
-    cvt.s.lo = byte;
-    return (f32)(cvt.d - lbl_8036C190);
-}
 static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
