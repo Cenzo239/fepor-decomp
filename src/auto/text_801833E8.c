@@ -2079,7 +2079,7 @@ void fn_80186F0C(void *proc) {
 void fn_8018715C(void *arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, void *);
-    f32 Unit_GetAngleTo(void *);
+    f32 Unit_GetAngleTo(void *, void *);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
     extern f32 lbl_8036ACEC;
@@ -2106,7 +2106,7 @@ void fn_8018715C(void *arg0) {
     check = p->field34;
     temp_r30 = p->field30;
     if (check) {
-        temp_f31 = Unit_GetAngleTo(temp_r30);
+        temp_f31 = Unit_GetAngleTo(temp_r30, check);
         *(void **)(sp + 0x68) = temp_r30;
         GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
@@ -2120,7 +2120,7 @@ void fn_8018715C(void *arg0) {
     check = p->field30;
     temp_r30 = p->field34;
     if (check) {
-        temp_f31 = Unit_GetAngleTo(temp_r30);
+        temp_f31 = Unit_GetAngleTo(temp_r30, check);
         *(void **)(sp + 0x30) = temp_r30;
         GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (temp_f31 != ((f32)*(s16 *)((u8 *)temp_r30 + 0x15C) / 50.0f)) {
