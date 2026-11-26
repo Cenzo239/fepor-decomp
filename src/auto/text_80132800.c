@@ -1791,6 +1791,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma global_optimizer off
 #pragma optimization_level 3
 #pragma peephole off
+#pragma opt_lifetimes off
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
@@ -1800,7 +1801,7 @@ u32 rowH;
 s32 kind,colW;
 s32 quot;
 s32 rem,hdiv,t;
-s16 x,y,off48,off4a;
+s16 x,y,half,off48,off4a;
 colW=*(s16*)((u8*)arg1+0x44);
 kind=*(s16*)((u8*)arg1+0x3e);
 quot=kind/colW;
@@ -1819,8 +1820,8 @@ rem=t*rem;
 x=(s16)(rem+off48);
 y=(s16)(rowH*quot+off4a);
 t=Text_MeasureHeight(-1,lbl_8036A5AC);
-in.x=x;
-in.y=y+(s16)(((s32)(s16)rowH-t)>>1);
+half=(s16)(((s32)(s16)rowH-t)>>1);
+in.x=x; in.y=y+half;
 *arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
 #pragma peephole reset
