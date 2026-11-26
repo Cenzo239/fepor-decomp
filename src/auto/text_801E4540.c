@@ -1,7 +1,9 @@
 /* Functions from 0x801E4540 to 0x801EA8C0, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high);
+static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
+    return low <= value && value <= high;
+}
 
 struct UnkStruct {
     u32 field_0[0x10];
