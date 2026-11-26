@@ -6992,7 +6992,6 @@ void fn_8006CAB0(s32 arg0) {
 #pragma push
 #pragma optimization_level 1
 #pragma opt_lifetimes on
-static inline u32 Node_TestFlags(u32 flags, u32 mask) { return flags & mask; }
 void fn_8006CAD4(u32 *node) {
     u32 fn_80060638(void *);
     void fn_80067708(s32, s32, void *, void *);
@@ -7832,10 +7831,10 @@ void fn_8006DDDC(void) {
     u8 spA;
     u8 sp9;
     u8 sp8;
-    u8 eq28_18;
-    u8 eq24_14;
-    u8 ne20_10;
     u8 ne1C_C;
+    u8 ne20_10;
+    u8 eq24_14;
+    u8 eq28_18;
 
     fn_80225D6C(&sp24, &sp28, &sp1C, &sp20);
     fn_80225D6C(&sp14, &sp18, &spC, &sp10);
