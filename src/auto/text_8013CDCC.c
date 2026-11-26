@@ -165,7 +165,8 @@ struct MenuPopupPosition {
  MenuPopupPosition(s16 xx, s16 yy): x(xx), y(yy) {}
  MenuPopupPosition(const MenuPopupPosition &other) { *(u32 *)this = *(const u32 *)&other; }
 };
-static inline u8 *MenuPopup_AdvanceNode(s16 count, u8 *node) {
+static inline u8 *MenuPopup_AdvanceNode(s16 distance, u8 *node) {
+ s16 count = distance;
  if (count >= 0) {
   while (count > 0) { node = *(u8 **)(node + 4); --count; }
  } else {
@@ -4392,7 +4393,7 @@ extern "C" void fn_801422C0(void *arg0)
         if (*(void **)entry == 0) {
             selected = 0;
         } else {
-            selected = MenuPopup_AdvanceNode(*(s16 *)(child + idx2), *(u8 **)(entry + 8));
+            selected = MenuPopup_AdvanceNode(*(u8 **)(entry + 8), *(s16 *)(child + idx2));
         }
 
         if (selected != 0) {
