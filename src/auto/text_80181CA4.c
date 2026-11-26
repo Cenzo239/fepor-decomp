@@ -1,4 +1,52 @@
 #include "common.h"
+static inline u8 Support_MergeBefore(void *id2, void *id1, void **arg2) {
+    void *Unit_FindByPerson(void *);
+    s32 Unit_GetSupportRank(void *, s32);
+    s32 Unit_FindSupportPartnerIndex(void *, void *);
+    u8 fn_80036FC4(void *, s32);
+    void *unit2, *unit1;
+    s32 s2, s1;
+    s8 ss1, ss2;
+    u8 c0, c1, t, take;
+        unit2 = Unit_FindByPerson(id2);
+        unit1 = Unit_FindByPerson(id1);
+        if (unit2 != NULL) {
+            t = *(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8);
+            if (t != 0 && t != 5 && t != 6 && t != 7) {
+                unit2 = NULL;
+            }
+        }
+        if (unit1 != NULL) {
+            t = *(u8 *)(*(u8 **)((u8 *)unit1 + 0x190) + 8);
+            if (t != 0 && t != 5 && t != 6 && t != 7) {
+                unit1 = NULL;
+            }
+        }
+        if (unit2 == NULL && unit1 == NULL) {
+            take = 1;
+        } else if (unit2 == NULL) {
+            take = 0;
+        } else if (unit1 == NULL) {
+            take = 1;
+        } else {
+            s2 = Unit_FindSupportPartnerIndex(*arg2, id2);
+            s1 = Unit_FindSupportPartnerIndex(*arg2, id1);
+            ss1 = (s8)s1;
+            c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+            ss2 = (s8)s2;
+            c1 = (u8)Unit_GetSupportRank(*arg2, ss2);
+            if (c1 != c0) {
+                c0 = (u8)Unit_GetSupportRank(*arg2, ss1);
+                take = (c0 <= (u8)Unit_GetSupportRank(*arg2, ss2));
+            } else {
+                c0 = fn_80036FC4(*arg2, ss1);
+                take = (c0 <= fn_80036FC4(*arg2, ss2));
+            }
+        }
+
+    return take;
+}
+
 typedef struct SupportSortList { s32 count; void *prev; void *next; } SupportSortList;
 #pragma cplusplus on
 struct UiAnimatedSprite {
@@ -797,7 +845,7 @@ s32 fn_80181DD8(void *arg0) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_80181DF0(s32 *arg0, void **arg1) {
     void *Unit_FindByPerson(void *);
     s32 Unit_FindSupportPartnerIndex(void *, void *);
@@ -805,9 +853,7 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     u8 fn_80036FC4(void *, s32);
     void Heap_Free(void *);
     void fn_8018212C(s32 *, s32 *, void **);
-    void *sp1C;
-    void *sp18;
-    s32 sp14;
+    SupportSortList tail;
     void *sp10;
     void *spC;
     void *sp8;
@@ -861,14 +907,13 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
         sNode2 = Unit_FindSupportPartnerIndex(*arg1, idNode2);
         sNode = Unit_FindSupportPartnerIndex(*arg1, idNode);
         sNode = (s8)sNode;
-        sNode2 = (s8)sNode2;
         c0 = (u8)Unit_GetSupportRank(*arg1, sNode);
-        if ((u8)Unit_GetSupportRank(*arg1, sNode2) != c0) {
+        if ((u8)Unit_GetSupportRank(*arg1, (s8)sNode2) != c0) {
             c0 = (u8)Unit_GetSupportRank(*arg1, sNode);
-            swap = (c0 <= (u8)Unit_GetSupportRank(*arg1, sNode2));
+            swap = (c0 <= (u8)Unit_GetSupportRank(*arg1, (s8)sNode2));
         } else {
             c0 = fn_80036FC4(*arg1, sNode);
-            swap = (c0 <= fn_80036FC4(*arg1, sNode2));
+            swap = (c0 <= fn_80036FC4(*arg1, (s8)sNode2));
         }
     }
     if (swap) {
@@ -890,34 +935,34 @@ default:
     for (n = half; n != 0; --n) {
         it = (void **)it[1];
     }
-    sp14 = 0;
-    sp1C = (void *)&sp18;
-    sp18 = (void *)&sp18;
+    tail.count = 0;
+    tail.next = (void *)&tail.prev;
+    tail.prev = (void *)&tail.prev;
     left = (void **)arg0[1];
     ((void **)it[0])[1] = left[1];
     *(void **)left[1] = it[0];
-    ((void **)sp18)[1] = it;
-    it[0] = sp18;
-    sp18 = (void *)left;
-    left[1] = &sp18;
-    sp14 = *arg0 - (s32)half;
+    ((void **)tail.prev)[1] = it;
+    it[0] = tail.prev;
+    tail.prev = (void *)left;
+    left[1] = &tail.prev;
+    tail.count = *arg0 - (s32)half;
     *arg0 = (s32)half;
     sp10 = *arg1;
     fn_80181DF0(arg0, &sp10);
     spC = *arg1;
-    fn_80181DF0(&sp14, &spC);
+    fn_80181DF0(&tail.count, &spC);
     sp8 = *arg1;
-    fn_8018212C(arg0, &sp14, &sp8);
-    unitNode2 = sp1C;
-    if (unitNode2 != (void *)&sp18) {
-        ((void **)((void **)unitNode2)[0])[1] = ((void **)sp18)[1];
-        *(void **)((void **)sp18)[1] = ((void **)unitNode2)[0];
+    fn_8018212C(arg0, &tail.count, &sp8);
+    unitNode2 = tail.next;
+    if (unitNode2 != (void *)&tail.prev) {
+        ((void **)((void **)unitNode2)[0])[1] = ((void **)tail.prev)[1];
+        *(void **)((void **)tail.prev)[1] = ((void **)unitNode2)[0];
         do {
             tmp = unitNode2;
             unitNode2 = ((void **)unitNode2)[1];
             Heap_Free(tmp);
-            sp14 -= 1;
-        } while (unitNode2 != (void *)&sp18);
+            tail.count -= 1;
+        } while (unitNode2 != (void *)&tail.prev);
     }
     }
 }
