@@ -1042,19 +1042,22 @@ void FileCache_ReleaseByName(char *name) {
 void FileCache_ReleaseByKey(u32 arg0) {
     void FileCache_Release(void *);
     extern u8 gFileCache[];
-    u32 i;
-    u8 *e;
+    struct { u8 *e; unsigned long j; } s;
     u8 *found;
+    s32 ctr;
 
-    i = 0;
-    e = gFileCache;
-    found = 0;
-    for (; i < 1024; ++i, e += 124) {
-        if (*(u32 *)(e + 56) == arg0) {
-            found = gFileCache + 124 * i;
-            break;
+    s.j = 0;
+    s.e = gFileCache;
+    for (ctr = 0x400; ctr > 0; ctr--) {
+        if (*(u32 *)(s.e + 0x38) == arg0) {
+            found = gFileCache + s.j * 0x7C;
+            goto done;
         }
+        s.e += 0x7C;
+        s.j += 1;
     }
+    found = 0;
+done:
     FileCache_Release(found);
 }
 
