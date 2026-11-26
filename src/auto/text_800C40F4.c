@@ -8,6 +8,10 @@ static inline s32 Heap_FindUnusedIndex(void **table) {
     }
     return -1;
 }
+static inline s32 Heap_FindUnusedIndexFrom(void **table, s32 i) {
+    for (; i < 16; i++) if (table[i] == 0) return i;
+    return -1;
+}
 typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
 typedef struct AiActionMap {
         s32 width;
@@ -1098,9 +1102,8 @@ found4:
 #pragma use_lmw_stmw reset
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma global_optimizer off
-#pragma opt_lifetimes off
 s32 fn_800C4F30(void *arg0, s32 arg1)
 {
     extern u32 lbl_8036786C;
@@ -1113,8 +1116,8 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
-    s32 index;
     u8 *heap;
+    s32 index;
     u32 size;
     u32 end;
 
@@ -1173,11 +1176,11 @@ s32 Heap_Create(void *arg0, s32 arg1)
     void fn_8005BA08(s8);
     void DebugPrint(const char *, ...);
 
+    s32 index;
     u32 size;
     u8 *heap;
     u8 *previous;
     void **table;
-    s32 index;
     s32 groups;
 
     size = (arg1 + 0x1F) & ~0x1F;
@@ -1190,72 +1193,8 @@ s32 Heap_Create(void *arg0, s32 arg1)
         heap = lbl_80367860;
     }
 
-    table = lbl_80320B88;
-    index = 0;
+    index = Heap_FindUnusedIndex(lbl_80320B88);
 
-    for (groups = 2; groups != 0; groups--) {
-        if (*table != 0)
-            goto cont0;
-        goto found;
-        table = table;
-    cont0:
-
-        index++;
-        if (*++table != 0)
-            goto cont1;
-        goto found;
-        table = table;
-    cont1:
-
-        index++;
-        if (*++table != 0)
-            goto cont2;
-        goto found;
-        table = table;
-    cont2:
-
-        index++;
-        if (*++table != 0)
-            goto cont3;
-        goto found;
-        table = table;
-    cont3:
-
-        index++;
-        if (*++table != 0)
-            goto cont4;
-        goto found;
-        table = table;
-    cont4:
-
-        index++;
-        if (*++table != 0)
-            goto cont5;
-        goto found;
-        table = table;
-    cont5:
-
-        index++;
-        if (*++table != 0)
-            goto cont6;
-        goto found;
-        table = table;
-    cont6:
-
-        index++;
-        if (*++table != 0)
-            goto cont7;
-        goto found;
-        table = table;
-    cont7:
-
-        table++;
-        index++;
-    }
-
-    index = -1;
-
-found:
     Str_CopyPad(heap + 4, arg0, 0xB);
 
     heap[0xF] = 0;
@@ -14147,9 +14086,7 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
     s32 Sort_GetKey(void *);
     s32 key;
     while (first1.ptr != last1.ptr && first2 != last2) {
-        SortIterator t1 = first1;
-        SortIterator *pt1 = &t1;
-        s32 value = *pt1->ptr;
+        s32 value = *first1;
         key = Sort_GetKey((void *)*first2);
         if (Sort_GetKey((void *)value) > key) {
             *result = *first2++;
@@ -15199,7 +15136,8 @@ void fn_800E2E70(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     }
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 2
 void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, s32 arg11, s32 arg12) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
@@ -15246,7 +15184,7 @@ void fn_800E3040(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
         Prim2D_EndPrim();
     }
 }
-#pragma global_optimizer on
+#pragma pop
 void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 arg10, f32 scale) {
     M2C_UNK Prim2D_SetColor(u8, u8, u8, u8);
     M2C_UNK Prim2D_SetUvCorners(f32, f32, f32, f32);
@@ -23978,8 +23916,8 @@ u8 fn_800F30E0(s32 arg0, u8 arg1) {
     u8 fn_8003863C(void *);
     void fn_800FB96C(u8, s8, s8, void *, u8, u8, s8, s32, s32);
 
-    u8 *self;
     u8 *ctx;
+    u8 *self;
     s32 bestScore;
     u8 *best;
     u8 tx;
@@ -24019,7 +23957,7 @@ u8 fn_800F30E0(s32 arg0, u8 arg1) {
             unit = UnitRef_GetUnit(entry);
             uy = unit[0x19F];
             ux = unit[0x19E];
-            if (map[(s8)((s8)(ux - tx) + ux) + (((s8)((s8)(uy - ty) + uy)) << 6) + 0x300D] & 2) {
+            if (map[(s8)(ux + (s8)(ux - tx)) + (((s8)(uy + (s8)(uy - ty))) << 6) + 0x300D] & 2) {
                 score = (u8)fn_8003863C(unit);
                 if (score < bestScore) {
                     bx = tx;
