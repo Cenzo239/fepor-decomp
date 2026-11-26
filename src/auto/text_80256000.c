@@ -945,6 +945,7 @@ table += idx * 0x458;
 return 1;
 }
 
+#pragma push
 #pragma dont_inline on
 #pragma global_optimizer off
 void fn_802567B0(void *arg0)
@@ -960,9 +961,9 @@ void fn_802567B0(void *arg0)
   u8 *base;
   u8 *tbl;
   u8 prev;
-  u8 next;
+  u32 next;
   u8 id;
-  u16 p;
+  u32 p;
   u16 n;
   u8 *freeNode;
   u8 id8;
@@ -1040,6 +1041,7 @@ void fn_802567B0(void *arg0)
   }
   *((u32 *)(((u8 *)arg0) + 0xF4)) = -1;
 }
+#pragma pop
 #pragma global_optimizer reset
 #pragma dont_inline reset
 static inline void Sound_InitSlotLists(SoundBuf *base, u8 *sound) {
@@ -1098,16 +1100,10 @@ void fn_80256974(void) {
     lbl_80368A4E = 0;
 }
 
+#pragma push
+#pragma opt_propagation off
 s32 fn_80256C14(u8 arg0)
 {
-    extern u16 lbl_8035A510[];
-    extern s32 gSynthVoices;
-    extern u8 lbl_80368A50;
-    extern u8 lbl_80368A51;
-    extern u8 lbl_80368A4E;
-    extern u8 lbl_80368A4F;
-
-    s32 fn_802562A0(u8, u8, s32, u8);
     void fn_80255B20(void *);
     u32 Sound_IsHwVoiceActive(s32);
     void fn_802618E4(int);
@@ -1117,41 +1113,9 @@ s32 fn_80256C14(u8 arg0)
     s32 index;
     s32 offset;
     u8 *voice;
-    u8 *node;
 
-    index = fn_802562A0(arg0, 0xFF, 0xFFFF, 1);
-
-    if (index != -1) {
-        node = (u8 *)lbl_8035A510 + index * 4;
-
-        if (*(u16 *)(node + 2) == 1) {
-            if ((s32)node[0] != 255) {
-                ((u8 *)lbl_8035A510 + node[0] * 4)[1] = node[1];
-            } else {
-                lbl_80368A51 = node[1];
-            }
-
-            if ((s32)node[1] != 255) {
-                ((u8 *)lbl_8035A510)[node[1] * 4] = node[0];
-            }
-
-            if (index == lbl_80368A50) {
-                lbl_80368A50 = node[0];
-            }
-
-            *(u16 *)(node + 2) = 0;
-        } else {
-            offset = index * 0x458;
-            voice = (u8 *)gSynthVoices + offset;
-
-            if (*(u8 *)(voice + 0x11D) != 0) {
-                lbl_80368A4F--;
-            } else {
-                lbl_80368A4E--;
-                lbl_80368A4F++;
-            }
-        }
-
+    index = fn_80256628(arg0, 0xFF, 0xFFFF, 1);
+    if ((u32)index != 0xFFFFFFFF) {
         offset = index * 0x458;
 
         voice = (u8 *)gSynthVoices + offset;
@@ -1167,8 +1131,7 @@ s32 fn_80256C14(u8 arg0)
         fn_80255B20(voice);
 
         voice = (u8 *)gSynthVoices + offset;
-        *(u32 *)(voice + 0xF4) =
-            (u32)index | 0xFFFFFF00;
+        *(u32 *)(voice + 0xF4) = (u32)index | 0xFFFFFF00;
 
         if (Sound_IsHwVoiceActive(index) != 0) {
             fn_802618E4(index);
@@ -1186,7 +1149,7 @@ s32 fn_80256C14(u8 arg0)
 
     return index;
 }
-
+#pragma pop
 void fn_80256DD8(int arg0) {
     u32 Sound_IsHwVoiceActive(void);
     void fn_802618E4(s32);
@@ -6859,83 +6822,67 @@ void fn_8026171C(s32 arg0, s32 arg1) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_propagation off
 void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
                  u32 arg4, u32 arg5, u32 arg6, u32 arg7)
 {
-    extern u8 *gSoundVoices;
+    extern SoundHwVoice *gSoundVoices;
     extern u8 lbl_80368AD0;
 
     extern void fn_80261C40();
     extern void fn_80261C6C();
     extern void fn_80261E10();
 
-    u8 *entry;
+    SoundHwVoice *entry;
     u32 offset;
-    u32 flags;
     u8 index;
+    u32 flags;
 
     offset = arg0 * 0xF8;
     flags = 0;
 
     for (index = 0; index <= lbl_80368AD0; index++) {
-        entry = gSoundVoices + index * 4 + 0x24;
-
-        flags |= *(u32 *)(entry + offset) & 0x20;
-        *(u32 *)(entry + offset) = 0;
+        flags |= gSoundVoices[arg0].flags[index] & 0x20;
+        gSoundVoices[arg0].flags[index] = 0;
     }
 
-    entry = gSoundVoices + offset;
-    *(u32 *)(entry + 0x24) = flags;
+    gSoundVoices[arg0].flags[0] = flags;
 
-    entry = gSoundVoices + offset;
-    *(u32 *)(entry + 0x1C) = arg4;
+    gSoundVoices[arg0].field1C = arg4;
 
-    entry = gSoundVoices + offset;
-    *(u32 *)(entry + 0x18) = arg5;
+    gSoundVoices[arg0].field18 = arg5;
 
-    entry = gSoundVoices + offset;
-    *(u32 *)(entry + 0xF4) = 0;
+    gSoundVoices[arg0].fieldF4 = 0;
 
-    entry = gSoundVoices + offset;
-    *(u16 *)(entry + 0x70) = arg1;
+    gSoundVoices[arg0].field70 = arg1;
 
-    entry = gSoundVoices + offset;
-    *(SoundVoiceParams *)(entry + 0x74) = *(SoundVoiceParams *)arg2;
+    gSoundVoices[arg0].params = *(SoundVoiceParams *)arg2;
 
     if (arg3 != 0) {
-        entry = gSoundVoices + offset;
-        *(u8 *)(entry + 0xA4) = 0;
+            gSoundVoices[arg0].fieldA4 = 0;
 
-        entry = gSoundVoices + offset;
-        *(u32 *)(entry + 0xB8) = 0;
+            gSoundVoices[arg0].fieldB8 = 0;
 
-        entry = gSoundVoices + offset;
-        *(u32 *)(entry + 0xBC) = 0;
+            gSoundVoices[arg0].fieldBC = 0;
 
-        entry = gSoundVoices + offset;
-        *(u16 *)(entry + 0xC0) = 0x7FFF;
+            gSoundVoices[arg0].fieldC0 = 0x7FFF;
 
-        entry = gSoundVoices + offset;
-        *(u32 *)(entry + 0xC4) = 0;
+            gSoundVoices[arg0].fieldC4 = 0;
 
-        entry = gSoundVoices + offset;
-        *(u8 *)(entry + 0xE8) = 0xFF;
+        }
+        gSoundVoices[arg0].fieldE8 = 0xFF;
 
-        entry = gSoundVoices + offset;
-        *(u8 *)(entry + 0xE9) = 0xFF;
+            gSoundVoices[arg0].fieldE9 = 0xFF;
 
-        entry = gSoundVoices + offset;
-        *(u8 *)(entry + 0xEA) = 0xFF;
+            gSoundVoices[arg0].fieldEA = 0xFF;
 
-        entry = gSoundVoices + offset;
-        *(u8 *)(entry + 0xEB) = 0xFF;
-    }
+            gSoundVoices[arg0].fieldEB = 0xFF;
 
     if (arg6 != 0) {
         fn_80261C40(arg0, 0);
         fn_80261C6C(arg0, 1);
-        fn_80261E10(arg0, arg7);
     }
+    fn_80261E10(arg0, arg7);
 }
 #pragma pop
 void fn_802618E4(s32 arg0)
