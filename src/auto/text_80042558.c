@@ -50,16 +50,12 @@ static inline u8 IsInRect_80042558(MapObj_80042558 *ent, s32 x, s32 y)
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
-    MapObj_80042558 *base;
-    MapObj_80042558 *ent;
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
-        ent = &base[i];
-        if (forbid != 0 && (M2C_FIELD(ent->unk10, u32 *, 0xBC) & forbid)) continue;
-        if ((M2C_FIELD(ent->unk10, u32 *, 0xBC) & require) != require) continue;
-        if (IsInRect_80042558(ent, x, y)) {
-            return (u8 *)&base[i];
+        if (forbid != 0 && (M2C_FIELD(M2C_FIELD(arg0, MapObj_80042558 **, 0x14)[i].unk10, u32 *, 0xBC) & forbid)) continue;
+        if ((M2C_FIELD(M2C_FIELD(arg0, MapObj_80042558 **, 0x14)[i].unk10, u32 *, 0xBC) & require) != require) continue;
+        if (IsInRect_80042558(&M2C_FIELD(arg0, MapObj_80042558 **, 0x14)[i], x, y)) {
+            return (u8 *)&M2C_FIELD(arg0, MapObj_80042558 **, 0x14)[i];
         }
     }
     return 0;
@@ -545,18 +541,11 @@ void fn_80042558(void *arg0)
 
     void *list[8];
     s32 eventIndex;
-    u8 *rec;
-    u8 *start;
 
-    rec = gMapObjEventList;
-    start = rec;
-    eventIndex = 0;
-
-    for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
-        s32 y;
-        s32 x;
-        x = (s8)rec[0];
-        y = (s8)rec[1];
+    for (eventIndex = 0; eventIndex < fn_8010FF88(gMapObjEventList); eventIndex++) {
+        u8 *rec = gMapObjEventList + eventIndex * 8;
+        s8 x = rec[0];
+        s8 y = rec[1];
         switch (rec[2] - 0x21) {
         case 3:
         {
