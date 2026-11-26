@@ -580,7 +580,11 @@ void fn_801F2DB4(s32 arg0) {
     M2C_FIELD(temp_r31, s32 *, 0x30) = fn_800C4638(0xE8, gOptionsStrs + 0x11BC, 0);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 #pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
 void fn_801F2E08(void *arg0) {
     s32 Person_GetByPid(s32);
     void Process_Goto(void *, s32);
@@ -597,9 +601,9 @@ void fn_801F2E08(void *arg0) {
     s32 pressed;
     s32 stick;
     s32 held;
+    s16 scroll;
     s32 tmp;
     s32 pages;
-    s16 idx;
 
     obj = *(void **)((u8 *)arg0 + 0x30);
     held = *(s32 *)((u8 *)gPadInput + 4);
@@ -626,28 +630,30 @@ void fn_801F2E08(void *arg0) {
         }
         goto scroll_dec_test;
     scroll_dec_body:
-        *(s16 *)((u8 *)obj + 0x2C) = (s16)(*(s16 *)((u8 *)obj + 0x2C) - 1);
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        *(s16 *)((u8 *)obj + 0x2C) = (s16)(scroll - 1);
     scroll_dec_test:
-        idx = *(s16 *)((u8 *)obj + 0xE);
-        if ((idx / 3) - *(s16 *)((u8 *)obj + 0x2C) > 0) {
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        if (((*(s16 *)((u8 *)obj + 0xE) / 3) - scroll) > 0) {
             goto scroll_inc_test;
         }
-        if (*(s16 *)((u8 *)obj + 0x2C) > 0) {
+        if (scroll > 0) {
             goto scroll_dec_body;
         }
         goto scroll_inc_test;
     scroll_inc_body:
-        *(s16 *)((u8 *)obj + 0x2C) = (s16)(*(s16 *)((u8 *)obj + 0x2C) + 1);
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        *(s16 *)((u8 *)obj + 0x2C) = (s16)(scroll + 1);
     scroll_inc_test:
-        idx = *(s16 *)((u8 *)obj + 0xE);
-        if ((idx / 3) - *(s16 *)((u8 *)obj + 0x2C) < 7) {
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        if (((*(s16 *)((u8 *)obj + 0xE) / 3) - scroll) < 7) {
             goto scroll_done;
         }
         pages = *(u8 *)((u8 *)obj + 0x29) / 3;
         if ((*(u8 *)((u8 *)obj + 0x29) % 3) > 0) {
             pages += 1;
         }
-        if (*(s16 *)((u8 *)obj + 0x2C) < (s32)(pages - 8)) {
+        if (scroll < (s32)(pages - 8)) {
             goto scroll_inc_body;
         }
     scroll_done:
@@ -675,28 +681,30 @@ void fn_801F2E08(void *arg0) {
         }
         goto scroll2_dec_test;
     scroll2_dec_body:
-        *(s16 *)((u8 *)obj + 0x2C) = (s16)(*(s16 *)((u8 *)obj + 0x2C) - 1);
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        *(s16 *)((u8 *)obj + 0x2C) = (s16)(scroll - 1);
     scroll2_dec_test:
-        idx = *(s16 *)((u8 *)obj + 0xE);
-        if ((idx / 3) - *(s16 *)((u8 *)obj + 0x2C) > 0) {
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        if (((*(s16 *)((u8 *)obj + 0xE) / 3) - scroll) > 0) {
             goto scroll2_inc_test;
         }
-        if (*(s16 *)((u8 *)obj + 0x2C) > 0) {
+        if (scroll > 0) {
             goto scroll2_dec_body;
         }
         goto scroll2_inc_test;
     scroll2_inc_body:
-        *(s16 *)((u8 *)obj + 0x2C) = (s16)(*(s16 *)((u8 *)obj + 0x2C) + 1);
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        *(s16 *)((u8 *)obj + 0x2C) = (s16)(scroll + 1);
     scroll2_inc_test:
-        idx = *(s16 *)((u8 *)obj + 0xE);
-        if ((idx / 3) - *(s16 *)((u8 *)obj + 0x2C) < 7) {
+        scroll = *(s16 *)((u8 *)obj + 0x2C);
+        if (((*(s16 *)((u8 *)obj + 0xE) / 3) - scroll) < 7) {
             goto scroll2_done;
         }
         pages = *(u8 *)((u8 *)obj + 0x29) / 3;
         if ((*(u8 *)((u8 *)obj + 0x29) % 3) > 0) {
             pages += 1;
         }
-        if (*(s16 *)((u8 *)obj + 0x2C) < (s32)(pages - 8)) {
+        if (scroll < (s32)(pages - 8)) {
             goto scroll2_inc_body;
         }
     scroll2_done:
@@ -709,6 +717,7 @@ void fn_801F2E08(void *arg0) {
         Process_Goto(arg0, 3);
     }
 }
+#pragma pop
 void fn_801F31D0(void *arg0) {
     s32 FileCache_GetFlags(s32);
     if (FileCache_GetFlags(M2C_FIELD(arg0, s32 *, 0x30) + 0xB4) & 0x2000) {
@@ -4247,6 +4256,17 @@ loop_check:
     obj->unk4C = Sound_Create(StaffRoll_str + 0x301, obj);
 }
 
+static inline void StaffRoll_DrawTime(f32 x, f32 y, u32 time) {
+    void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
+    extern u8 lbl_80281028[];
+    extern f32 lbl_8036BA20, lbl_8036BA18;
+    u32 hours = time / 3600;
+    u32 rem = time % 3600;
+    u32 minutes = rem / 60;
+    u32 seconds = rem - minutes * 60;
+    fn_8001003C((s32)x, (s32)y, 33, 1, 0, lbl_80281028 + 0x364,
+                 lbl_8036BA20, lbl_8036BA18, hours, minutes, seconds);
+}
 #pragma global_optimizer off
 void fn_801FA00C(void *arg0) {
 void fn_8000A258(void); void fn_80009D74(f32,f32,f32,f32);
@@ -5130,7 +5150,10 @@ void fn_801FB580(u32 *arg0, void **arg1, void *arg2)
     *(u32 *)arg2 = 0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_loop_invariants off
+#pragma opt_common_subs off
 void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     void GXClearVtxDesc(void);
     void GXSetVtxDesc(s32, s32);
@@ -5162,9 +5185,9 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     void *var_r31;
     s32 var_r30;
     u32 *var_r29;
-    s32 var_r28;
-    s32 var_r27;
-    s32 var_r26;
+    s16 var_r28;
+    s16 var_r27;
+    s16 var_r26;
     s32 var_r25;
     s32 var_r24;
     s32 var_r23;
@@ -5177,7 +5200,7 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     u8 temp_r0;
     u8 temp_r0_2;
     u8 var_r0;
-    s16 var_r4;
+    u16 var_r4;
     f32 temp_f1;
     s32 conv_hi;
     s32 conv_lo;
@@ -5207,12 +5230,11 @@ void fn_801FB5D8(s32 *arg0, u8 *arg1, f32 farg0, f32 farg1, f32 farg2, f32 farg3
     fn_802201A8(0, 1, 4, 0x3C, 0, 0x7D);
 
     var_r22 = var_r20;
-    temp_f1 = lbl_8036BAB8 * farg3;
-    var_r24 = (s32)farg1;
-    var_r28 = (s16)(s32)farg2;
-    var_r23 = (s32)temp_f1;
-    var_r27 = (s16)(s32)temp_f1;
     var_r25 = (s32)farg0;
+    var_r24 = (s32)farg1;
+    var_r27 = (s16)(s32)(lbl_8036BAB8 * farg3);
+    var_r23 = (s32)(lbl_8036BAB8 * farg3);
+    var_r28 = (s16)(s32)farg2;
     var_r26 = (s16)var_r23;
     var_r30 = (s16)var_r24 + var_r26;
     var_r29 = lbl_80368410;
@@ -5227,7 +5249,7 @@ loop_body:
         goto loop_check;
     }
     if (fn_802072A0() != 1) {
-        var_r4 = (s8)var_r22[0];
+        var_r4 = *(s8 *)var_r22;
         var_r22 += 1;
     } else {
         temp_r0 = var_r22[0];
@@ -5239,10 +5261,10 @@ loop_body:
             var_r0 = 0;
         }
         if (var_r0 == 0) {
-            var_r4 = (s8)var_r22[0];
+            var_r4 = *(s8 *)var_r22;
             var_r22 += 1;
         } else {
-            var_r4 = *(s16 *)var_r22;
+            var_r4 = *(u16 *)var_r22;
             var_r22 += 2;
         }
     }
@@ -5278,9 +5300,7 @@ loop_body:
     *(volatile s16 *)(wg - 0x8000) = (s16)var_r28;
     *(wg - 0x8000) = 0;
     *(wg - 0x8000) = 1;
-    conv_hi = 0x43300000;
-    conv_lo = *(u16 *)((u8 *)found + 0x122);
-    fadv = (f32)(*(f64 *)&conv_hi - lbl_8036BAC0);
+    fadv = (f32)*(u16 *)((u8 *)found + 0x122);
     fadv = fadv * farg3;
     var_r25 = var_r25 + (s32)fadv;
 loop_check:
@@ -5289,6 +5309,7 @@ loop_check:
         goto loop_body;
     }
 }
+#pragma pop
 u32 fn_801FB9CC(void *arg0, u16 arg1) {
     return *(u16 *)((u8 *)arg0 + 0x120) < arg1;
 }
@@ -5416,7 +5437,10 @@ void fn_801FBC48(void) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_801FBC84(void) {
     void DCFlushRange(void *, u32);
     void fn_800C4588(s32);
@@ -5450,9 +5474,10 @@ void fn_801FBC84(void) {
     u16 spC[2];
     u16 code0;
     u16 code1;
+    u8 *str;
     void *list;
     void *tables;
-    u8 *str;
+    u8 *tempList;
     s32 h1;
     s32 h2;
     void *glyphs;
@@ -5462,6 +5487,7 @@ void fn_801FBC84(void) {
     u8 temp_r0;
     u8 temp_r0_2;
     u8 var_r0;
+    s32 high;
     u16 code;
     s8 tmp_ch;
 
@@ -5478,7 +5504,7 @@ outer_body:
 do_list:
     goto list_cond;
 list_body:
-    str = *(u8 **)list;
+    str = tempList;
     goto char_cond;
 char_body:
     if ((s32)(s8)temp_r3 == 0xA) {
@@ -5516,7 +5542,7 @@ char_cond:
     }
     list = (u8 *)list + 4;
 list_cond:
-    if (*(void **)list != NULL) {
+    if ((tempList = *(u8 **)list) != NULL) {
         goto list_body;
     }
 outer_next:
@@ -5542,14 +5568,15 @@ outer_cond:
     lbl = lbl_80368410;
     end = &tree.root;
     lbl_80368410[1] = tree.count;
+    glyphs = (void *)lbl_80368410[0];
     goto glyph_cond;
 glyph_body:
     code = *(u16 *)((u8 *)*(void **)sp14b + 0xC);
-    if ((code & 0xFF00) == 0) {
+    if ((high = code & 0xFF00) == 0) {
         sp1C[0] = (u8)code;
         sp1C[1] = 0;
     } else {
-        sp1C[0] = (u8)((s32)(code & 0xFF00) >> 8);
+        sp1C[0] = (u8)(high >> 8);
         sp1C[1] = (u8)code;
         sp1C[2] = 0;
     }
@@ -5569,7 +5596,7 @@ glyph_cond:
         Tree_Destroy(&tree, tree.root);
     }
 }
-#pragma opt_common_subs reset
+#pragma pop
 s32 fn_801FBF98(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
  s32 count; s32 mid_ptr; s32 mid;
  count=(arg1-arg0)/320;
@@ -5577,8 +5604,10 @@ s32 fn_801FBF98(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
  return arg0;
 }
 
-#pragma use_lmw_stmw on
-void Tree_Destroy(register void *arg0, register void *arg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma scheduling off
+void Tree_Destroy(void *context, void *node) {
     void Heap_Free(void *);
     void fn_801FC400(void *);
     void fn_801FC404(void *);
@@ -5586,6 +5615,8 @@ void Tree_Destroy(register void *arg0, register void *arg1) {
     void *fn_801FC42C(void *);
     void fn_801FC434(void *, void *);
     void *fn_801FC438(void *);
+    void *arg1 = node;
+    void *arg0 = context;
     void *v27;
     void *v28;
     void *v29;
@@ -5716,7 +5747,7 @@ void Tree_Destroy(register void *arg0, register void *arg1) {
     }
     Heap_Free(arg1);
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_801FC400(void) {
 
