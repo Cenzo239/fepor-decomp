@@ -1,6 +1,23 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
+
+static inline u8 ClearUnitSelections(void *cur)
+{
+    u8 changed = 0;
+    void *next;
+    u32 flags;
+    while (cur != NULL) {
+        flags = *(u32 *)((u8 *)cur + 0x1A0);
+        next = *(void **)((u8 *)cur + 0x184);
+        if (flags & 0x800) {
+            changed = 1;
+            *(u32 *)((u8 *)cur + 0x1A0) = flags & ~0x800;
+        }
+        cur = next;
+    }
+    return changed;
+}
 extern u8 lbl_8032FE24[];
 extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
@@ -734,6 +751,8 @@ after_3c:
 #pragma cplusplus reset
 
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_80111740(void *self) {
     s32 strlen(char *);
     void *Heap_Alloc(s32);
@@ -855,7 +874,7 @@ extern "C" void fn_80111740(void *self) {
     }
     String_Destroy(&sp54, -1);
 }
-
+#pragma pop
 #pragma use_lmw_stmw on
 #pragma optimization_level 3
 #pragma cplusplus on
@@ -4359,7 +4378,9 @@ void fn_8011868C(void *arg0) {
     fn_8016E9DC(arg0);
 }
 
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_801186E4(void *arg0)
 {
     void fn_8000C070(void *, s32);
@@ -4387,10 +4408,17 @@ void fn_801186E4(void *arg0)
     void *unit2;
     u8 flag;
     u8 skip;
+    u32 held;
     u32 buttons;
+    s32 inputFlags;
     void *iter;
+    void *next;
     u32 flags;
     u32 ret;
+    u8 changed;
+    void *cur;
+    void *following;
+    u32 clearFlags;
 
     self = arg0;
     unit = fn_800AA794();
@@ -4464,13 +4492,14 @@ void fn_801186E4(void *arg0)
             }
         }
     }
+    inputFlags = lbl_80367110;
     skip = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((inputFlags & 0x10) && !(inputFlags & 0x20)) {
         skip = 1;
     }
     if (skip == 0) {
-        buttons = *(u32 *)((u8 *)lbl_80367240 + 4);
-        buttons = buttons & (*(u32 *)((u8 *)lbl_80367240 + 8) ^ buttons);
+        held = *(u32 *)((u8 *)lbl_80367240 + 4);
+        buttons = held & (*(u32 *)((u8 *)lbl_80367240 + 8) ^ held);
         if ((unit != NULL) && (buttons & 0x800)) {
             fn_800A8400();
             if (lbl_80367110 & 0x400) {
@@ -4504,17 +4533,18 @@ void fn_801186E4(void *arg0)
                     fn_801475FC(lbl_80274508 + 0x22C, 0x64);
                 }
             } else if (unit == NULL) {
-                flag = 0;
-                iter = *(void **)(lbl_802CA264 + 0xC);
-                while (iter != NULL) {
-                    flags = *(u32 *)((u8 *)iter + 0x1A0);
-                    if (flags & 0x800) {
-                        flag = 1;
-                        *(u32 *)((u8 *)iter + 0x1A0) = flags & ~0x800;
+                changed = 0;
+                cur = *(void **)(lbl_802CA264 + 0xC);
+                while (cur != NULL) {
+                    clearFlags = *(u32 *)((u8 *)cur + 0x1A0);
+                    following = *(void **)((u8 *)cur + 0x184);
+                    if (clearFlags & 0x800) {
+                        changed = 1;
+                        *(u32 *)((u8 *)cur + 0x1A0) = clearFlags & ~0x800;
                     }
-                    iter = *(void **)((u8 *)iter + 0x184);
+                    cur = following;
                 }
-                if (flag != 0) {
+                if (changed != 0) {
                     fn_801475FC(lbl_80274508 + 0x22C, 0x64);
                     fn_8002297C(lbl_802CA518);
                 }
@@ -4539,7 +4569,7 @@ void fn_801186E4(void *arg0)
         }
     }
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_80118B7C(void *arg0) {
     void EventLock_Dec(void);
     void fn_800A8478(void);
