@@ -6409,6 +6409,71 @@ s32 fn_8010EF74(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     return best!=NULL;
 }
 
+static inline s32 fn_8010F3F4_impl(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, const s16 *direction)
+{
+    extern u8 gBattleMap[];
+    extern s32 fn_800F7994(void *, s32, s32);
+    extern s32 fn_800F7838(void *, s32, s32);
+    extern u32 fn_800FCF48(s8, s8);
+
+    u8 *base;
+    s32 ax;
+    s32 ay;
+    s16 x;
+    s16 y;
+    s32 bestScore;
+    s32 score;
+    s32 i;
+
+    base = gBattleMap;
+    ax = arg1;
+    ay = arg2;
+    bestScore = (s32)0x80000000;
+    score = 0;
+
+    for (i = 0; i < 4; i++, score = 0, direction += 2) {
+        const s16 *heightTable;
+        s32 index;
+        u32 value;
+
+        x = ax + direction[0];
+        heightTable = *(s16 **)(base + 0x14190);
+        y = ay + direction[1];
+
+        index = (s8)x + ((s8)y << 6);
+
+        if (heightTable[index] < 0) {
+            continue;
+        }
+
+        if ((s8)base[0xE18E + index] != 0) {
+            continue;
+        }
+
+        value = base[0xD + index];
+
+        if (value != 0) {
+            if (value != *((u8 *)arg0 + 0x198)) {
+                continue;
+            }
+        }
+
+        score += fn_800F7994(arg0, x, y);
+        score += fn_800F7838(arg0, x, y);
+
+        value = fn_800FCF48((s8)x, (s8)y);
+        score -= (value >> 4) & 0xFFF;
+
+        if (bestScore < score) {
+            *arg3 = x;
+            *arg4 = y;
+            bestScore = score;
+        }
+    }
+
+    return bestScore != (s32)0x80000000;
+}
+
 s32 fn_8010F3F4(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4)
 {
     extern u8 gBattleMap[];
