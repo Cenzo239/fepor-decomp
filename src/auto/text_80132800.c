@@ -1,7 +1,6 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
 #pragma cplusplus on
-struct MenuPointResult { s16 x, y; MenuPointResult(s16 a, s16 b): x(a), y(b) {} };
 struct MenuCenteredLabel {
 virtual void v0()=0;
 virtual void *getText()=0;
