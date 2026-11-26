@@ -127,6 +127,7 @@ void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
     u8 mask[8];
     u8 distance;
     u8 *other;
+    u8 *leader;
     void *self;
     s32 *pHit;
     s32 *pAvoid;
@@ -173,9 +174,9 @@ void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
     case 6:
         break;
     default:
-        other = (u8 *)Unit_FindDisposLeader(self);
-        if (other != NULL && Status_Test(other + 0x1BC, 0x3A) != 0) {
-            distance = Unit_GetDistance(self, other);
+        leader = (u8 *)Unit_FindDisposLeader(self);
+        if (leader != NULL && Status_Test(leader + 0x1BC, 0x3A) != 0) {
+            distance = Unit_GetDistance(self, leader);
             if (distance >= 1 && distance <= 3) {
                 *pHit += 5;
                 *pAvoid += 5;
@@ -2866,7 +2867,9 @@ extern "C" void Options_HandleFocusInput(void *opt) {
     }
 }
 
-#pragma peephole off
+#pragma push
+#pragma optimization_level 4
+#pragma optimization_level 3
 void fn_801ADFCC(void *arg0, void *arg1) {
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -2922,6 +2925,7 @@ void fn_801ADFCC(void *arg0, void *arg1) {
     Prim2D_PrepareTex();
 #pragma cplusplus reset
 }
+#pragma pop
 #pragma peephole reset
 extern "C" void fn_801AE154(void *arg0) {
     struct Obj {
