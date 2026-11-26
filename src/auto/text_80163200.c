@@ -87,6 +87,42 @@ M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=style; M2C_FIELD(p,s16 *,0x24)
  
 }
 #pragma opt_common_subs on
+
+/* Inlined first-level ctor body for fn_80179DEC: field init + member ctor at +0x3C. */
+static inline void init_80179DEC_base(void *p, s32 x, s32 y, s32 style) {
+    extern u8 lbl_8028FDB0[];
+    extern u8 lbl_80292230[];
+    extern const f32 gF32_1;
+    void fn_80142060(void *);
+
+    *(void **)p = lbl_8028FDB0;
+    *(s32 *)((u8 *)p + 4) = 0;
+    *(void **)p = lbl_80292230;
+    *(s16 *)((u8 *)p + 8) = -1;
+    *(s16 *)((u8 *)p + 0xA) = x;
+    *(s16 *)((u8 *)p + 0xC) = y;
+    *(s16 *)((u8 *)p + 0xE) = x + 0x108;
+    *(s16 *)((u8 *)p + 0x10) = y + 0x110;
+    *(s16 *)((u8 *)p + 0x12) = 0;
+    *(s16 *)((u8 *)p + 0x14) = 0;
+    *(s16 *)((u8 *)p + 0x16) = 0x108;
+    *(s16 *)((u8 *)p + 0x18) = 0x110;
+    *(s16 *)((u8 *)p + 0x1A) = 0;
+    *(s16 *)((u8 *)p + 0x1C) = 0;
+    *(u8 *)((u8 *)p + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)p + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)p + 0x20) = 0xFF;
+    *(u8 *)((u8 *)p + 0x21) = 0xFF;
+    *(s16 *)((u8 *)p + 0x22) = style;
+    *(s16 *)((u8 *)p + 0x24) = 0;
+    *(f32 *)((u8 *)p + 0x28) = gF32_1;
+    *(f32 *)((u8 *)p + 0x2C) = gF32_1;
+    *(f32 *)((u8 *)p + 0x30) = gF32_1;
+    *(s32 *)((u8 *)p + 0x34) = 0;
+    *(s32 *)((u8 *)p + 0x38) = 0;
+    fn_80142060((u8 *)p + 0x3C);
+}
+
 extern u32 gUiContext[];
 extern u16 gUiMsgStrings[];
 void fn_8006D8E8(void *);
