@@ -10590,22 +10590,21 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
-    f32 *self = (f32 *)arg1 + 24;
     f32 mtx[3][4];
     f32 y;
     f32 z;
     f32 x;
-    vec[0] = 0.0f;
-    vec[1] = 0.0f;
+
+    vec[1] = vec[0] = 0.0f;
     vec[2] = 1.0f;
     PSMTXRotRad(mtx, 0x59, 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
-    self[0] = vec[0];
-    self[1] = vec[1];
-    self[2] = vec[2];
-    z = self[2];
-    y = self[1];
-    x = self[0];
+    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
+    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
+    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
+    z = *(f32 *)((u8 *)arg1 + 0x68);
+    y = *(f32 *)((u8 *)arg1 + 0x64);
+    x = *(f32 *)((u8 *)arg1 + 0x60);
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
@@ -14165,6 +14164,51 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 }
 
 #pragma cplusplus on
+static inline SortIterator Sort_ReverseCopy(s32 *first, s32 *last, SortIterator result) {
+    while (first != last) {
+        *result = *--last;
+        ++result;
+    }
+    return result;
+}
+static inline SortIterator Sort_Copy(s32 *first, s32 *last, SortIterator result) {
+    for (; first != last; ++first, ++result) {
+        *result = *first;
+    }
+    return result;
+}
+static inline void Sort_StableSortHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare comp) {
+    s32 fn_800E0340(void *, void *, void *);
+    void fn_800E2180(s32 *, s32 *);
+    void fn_800E0F2C(s32 *, s32 *, SortCompare);
+    s32 fn_800E2168(SortIterator *, SortIterator *);
+    SortIterator fn_800E2138(const SortIterator *, s32);
+    void fn_800E18B4(s32 *, s32 *, SortIterator, SortCompare);
+    void fn_800E1340(SortIterator, SortIterator, SortIterator, SortIterator, s32 *, SortCompare);
+    void fn_800E14E4(s32 *, s32 *, s32 *, SortCompare, s32, s32, SortIterator, SortIterator);
+    void StableSort(s32 *, s32 *, SortIterator, SortIterator, SortCompare);
+    s32 n = ((s32)end - (s32)begin) / 4;
+    if (n <= 1) return;
+    if (n == 2) {
+        if ((u8)fn_800E0340(&comp, (void *)end[-1], (void *)*begin)) {
+            fn_800E2180(begin, end - 1);
+        }
+    } else if (n <= 20) {
+        fn_800E0F2C(begin, end, comp);
+    } else {
+        s32 half = n / 2;
+        s32 *mid = begin + half;
+        if (n <= fn_800E2168(&b, &a)) {
+            fn_800E18B4(begin, mid, a, comp);
+            fn_800E18B4(mid, end, fn_800E2138(&a, half), comp);
+            fn_800E1340(a, fn_800E2138(&a, half), fn_800E2138(&a, half), fn_800E2138(&a, n), begin, comp);
+        } else {
+            StableSort(begin, mid, a, b, comp);
+            StableSort(mid, end, a, b, comp);
+            fn_800E14E4(begin, mid, end, comp, ((s32)mid - (s32)begin) / 4, ((s32)end - (s32)mid) / 4, a, b);
+        }
+    }
+}
 #pragma use_lmw_stmw on
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
     s32 Sort_GetKey(void *);
@@ -17074,7 +17118,6 @@ static inline int CheckPos_800E6554(u32 n, u32 pos) {
 }
 
 #pragma global_optimizer off
-#pragma use_lmw_stmw on
 void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
@@ -17096,12 +17139,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         void *data;
     } st;
 
-    void *pSrc = src;
-    void *pVec = vec;
-    void *end = 0;
-    u32 cnt = count;
-    u32 room = 0;
-    void *pPos = pos;
+    void *pSrc;
+    void *pVec;
+    void *end;
+    u32 cnt;
+    u32 room;
+    void *pPos;
     void *dst;
     void *cur;
     u32 len;
@@ -17117,6 +17160,12 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *srcC;
     u32 n;
     u32 one;
+    u32 remaining;
+
+    pVec = vec;
+    pPos = pos;
+    cnt = count;
+    pSrc = src;
 
     if (cnt == 0) {
         return;
@@ -17211,7 +17260,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 *(u32 *)&st.pad[0x98] = (u32)-1;
                 lim = (u8 *)lim - 0x1C;
                 n = *(u32 *)lim;
-                if ((s32)n < 0) {
+                if (CheckPos_800E6554(n, 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
@@ -17230,7 +17279,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 }
                 *(u32 *)&st.pad[0x90] = (u32)-1;
                 n = *(u32 *)((u8 *)lim + 0xC);
-                if ((s32)n < 0) {
+                if (CheckPos_800E6554(n, 0)) {
                     fprintf(err, lbl_802720E0 + 0x52);
                     abort();
                 }
@@ -17254,10 +17303,11 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         err = __files + 0xA0;
         dst = pPos;
         srcC = (u8 *)pSrc + 0xC;
-        while (cnt != 0) {
+        remaining = cnt;
+        while (remaining != 0) {
             *(u32 *)&st.pad[0xA8] = (u32)-1;
             n = *(u32 *)pSrc;
-            if ((s32)n < 0) {
+            if (CheckPos_800E6554(n, 0)) {
                 fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
@@ -17276,7 +17326,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             }
             *(u32 *)&st.pad[0xA0] = (u32)-1;
             n = *(u32 *)((u8 *)pSrc + 0xC);
-            if ((s32)n < 0) {
+            if (CheckPos_800E6554(n, 0)) {
                 fprintf(err, lbl_802720E0 + 0x52);
                 abort();
             }
@@ -17293,7 +17343,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 String_Resize((u8 *)dst + 0xC, len, 0);
                 memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
             }
-            cnt -= 1;
+            remaining -= 1;
             *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
             dst = (u8 *)dst + 0x1C;
         }
