@@ -2284,8 +2284,13 @@ static inline void *Map_FindObjAt_80046424(void *arg0, s32 x, s32 y, u32 mask, s
         u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
         if (!(flags & excl)) {
             if (mask == 0 || mask == (mask & flags)) {
-                u8 ok = (x >= (s8)*(u8 *)(entry + 4) && x <= (s8)*(u8 *)(entry + 6) &&
-                         y >= (s8)*(u8 *)(entry + 5) && y <= (s8)*(u8 *)(entry + 7)) ? 1 : 0;
+                u8 ok;
+                if (x >= (s8)*(u8 *)(entry + 4) && x <= (s8)*(u8 *)(entry + 6) &&
+                    y >= (s8)*(u8 *)(entry + 5) && y <= (s8)*(u8 *)(entry + 7)) {
+                    ok = 1;
+                } else {
+                    ok = 0;
+                }
                 if (ok != 0) {
                     return base + i * 0xB4;
                 }
@@ -2320,218 +2325,24 @@ static inline s32 fn_80046424_step(void *arg0, void *arg1, void **arg2, s32 arg3
 }
 
 s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
-    void *Map_FindObjAt(void *, s32, s32, u32, s32);
-    void *fn_80049E1C(void *);
-    void **p;
-    s32 n;
-    s32 i;
-    s32 mid;
-    s32 edge;
     u32 mask;
-    u32 flags;
-    void *found;
-    u8 *entry;
-    u8 *base;
-    u32 nmask;
-    u8 ok;
-    s32 count;
+    s32 i;
 
     if (arg1 == NULL) {
         return arg3;
     }
-    p = arg2;
-    n = arg3;
-    for (; n > 0; n--, p++) {
-        if (*p == arg1) {
+    for (i = 0; i < arg3; i++) {
+        if (arg2[i] == arg1) {
             return arg3;
         }
     }
-    arg2[arg3] = arg1;
+    arg2[arg3++] = arg1;
     mask = *(u32 *)((u8 *)*(void **)((u8 *)arg1 + 0x10) + 0xBC) | 0x200000;
-    count = arg3 + 1;
-
-    /* left */
-    mid = ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2;
-    edge = (s8)*(u8 *)((u8 *)arg1 + 4) - 1;
-    found = NULL;
-    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        entry = base + i * 0xB4;
-        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-        if (!(flags & 0x10)) {
-            if (mask == 0 || mask == (mask & flags)) {
-                if (edge >= (s8)*(u8 *)(entry + 4) && edge <= (s8)*(u8 *)(entry + 6) &&
-                    mid >= (s8)*(u8 *)(entry + 5) && mid <= (s8)*(u8 *)(entry + 7)) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-                if (ok != 0) {
-                    found = base + i * 0xB4;
-                    break;
-                }
-            }
-        }
-    }
-    if (found != NULL) {
-        p = arg2;
-        n = count;
-        for (; n > 0; n--, p++) {
-            if (*p == found) {
-                goto right;
-            }
-        }
-        arg2[count] = found;
-        n = count + 1;
-        nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
-    } else {
-        goto right;
-    }
-right:
-    mid = ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2;
-    edge = (s8)*(u8 *)((u8 *)arg1 + 6) + 1;
-    found = NULL;
-    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        entry = base + i * 0xB4;
-        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-        if (!(flags & 0x10)) {
-            if (mask == 0 || mask == (mask & flags)) {
-                if (edge >= (s8)*(u8 *)(entry + 4) && edge <= (s8)*(u8 *)(entry + 6) &&
-                    mid >= (s8)*(u8 *)(entry + 5) && mid <= (s8)*(u8 *)(entry + 7)) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-                if (ok != 0) {
-                    found = base + i * 0xB4;
-                    break;
-                }
-            }
-        }
-    }
-    if (found != NULL) {
-        p = arg2;
-        n = count;
-        for (; n > 0; n--, p++) {
-            if (*p == found) {
-                goto up;
-            }
-        }
-        arg2[count] = found;
-        n = count + 1;
-        nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
-    } else {
-        goto up;
-    }
-up:
-    mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
-    edge = (s8)*(u8 *)((u8 *)arg1 + 5) - 1;
-    found = NULL;
-    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        entry = base + i * 0xB4;
-        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-        if (!(flags & 0x10)) {
-            if (mask == 0 || mask == (mask & flags)) {
-                if (mid >= (s8)*(u8 *)(entry + 4) && mid <= (s8)*(u8 *)(entry + 6) &&
-                    edge >= (s8)*(u8 *)(entry + 5) && edge <= (s8)*(u8 *)(entry + 7)) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-                if (ok != 0) {
-                    found = base + i * 0xB4;
-                    break;
-                }
-            }
-        }
-    }
-    if (found != NULL) {
-        p = arg2;
-        n = count;
-        for (; n > 0; n--, p++) {
-            if (*p == found) {
-                goto down;
-            }
-        }
-        arg2[count] = found;
-        n = count + 1;
-        nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
-    } else {
-        goto down;
-    }
-down:
-    mid = ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2;
-    edge = (s8)*(u8 *)((u8 *)arg1 + 7) + 1;
-    found = NULL;
-    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        entry = base + i * 0xB4;
-        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-        if (!(flags & 0x10)) {
-            if (mask == 0 || mask == (mask & flags)) {
-                if (mid >= (s8)*(u8 *)(entry + 4) && mid <= (s8)*(u8 *)(entry + 6) &&
-                    edge >= (s8)*(u8 *)(entry + 5) && edge <= (s8)*(u8 *)(entry + 7)) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-                if (ok != 0) {
-                    found = base + i * 0xB4;
-                    break;
-                }
-            }
-        }
-    }
-    if (found != NULL) {
-        p = arg2;
-        n = count;
-        for (; n > 0; n--, p++) {
-            if (*p == found) {
-                goto done;
-            }
-        }
-        arg2[count] = found;
-        n = count + 1;
-        nmask = *(u32 *)((u8 *)fn_80049E1C(found) + 0xBC) | 0x200000;
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 4) - 1, mid, nmask, 0x10), arg2, n);
-        mid = ((s8)*(u8 *)((u8 *)found + 5) + (s8)*(u8 *)((u8 *)found + 7)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, (s8)*(u8 *)((u8 *)found + 6) + 1, mid, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 5) - 1, nmask, 0x10), arg2, count);
-        mid = ((s8)*(u8 *)((u8 *)found + 4) + (s8)*(u8 *)((u8 *)found + 6)) / 2;
-        count = fn_80046424(arg0, Map_FindObjAt(arg0, mid, (s8)*(u8 *)((u8 *)found + 7) + 1, nmask, 0x10), arg2, count);
-    } else {
-        goto done;
-    }
-done:
-    return count;
+    arg3 = fn_80046424_step(arg0, Map_FindObjAt_80046424(arg0, (s8)*(u8 *)((u8 *)arg1 + 4) - 1, ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424_step(arg0, Map_FindObjAt_80046424(arg0, (s8)*(u8 *)((u8 *)arg1 + 6) + 1, ((s8)*(u8 *)((u8 *)arg1 + 5) + (s8)*(u8 *)((u8 *)arg1 + 7)) / 2, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424_step(arg0, Map_FindObjAt_80046424(arg0, ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2, (s8)*(u8 *)((u8 *)arg1 + 5) - 1, mask, 0x10), arg2, arg3);
+    arg3 = fn_80046424_step(arg0, Map_FindObjAt_80046424(arg0, ((s8)*(u8 *)((u8 *)arg1 + 4) + (s8)*(u8 *)((u8 *)arg1 + 6)) / 2, (s8)*(u8 *)((u8 *)arg1 + 7) + 1, mask, 0x10), arg2, arg3);
+    return arg3;
 }
 
 void *fn_80046EB8(void *arg0,void *arg1) { u8 *base; s32 i; if(arg1==0)return 0; for(i=*(s16*)((u8*)arg0+6)-1;i>=0;i--) {base=*(u8**)((u8*)arg0+0x14); if(arg1==*(void**)(base+i*0xB4+0x10))return base+i*0xB4;} return 0; }
