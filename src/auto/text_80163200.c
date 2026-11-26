@@ -6346,17 +6346,9 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
 }
 
 #pragma use_lmw_stmw off
-static inline void DrawSplitText_8016D5A8(const char *src, f32 x, f32 *py, f32 base, f32 dy) {
+static inline s32 SplitNewline_8016D5A8(const char *src, char *buf, register char *line1, char *line2) {
     char *strcpy(char *, const char *);
     void *memcpy(void *, const void *, s32);
-    void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
-    extern f32 lbl_8036AA34;
-    extern f32 lbl_8036AA48;
-    extern f32 lbl_8036AAB4;
-    extern f32 lbl_8036AADC;
-    char line2[0x40];
-    char line1[0x40];
-    char buf[0x40];
     s32 hasSecond = 0;
     s32 i;
     char *p;
@@ -6371,11 +6363,7 @@ static inline void DrawSplitText_8016D5A8(const char *src, f32 x, f32 *py, f32 b
             break;
         }
     }
-    *py = dy + base;
-    fn_8001003C((s32)(x + lbl_8036AADC), (s32)(*py), 2, 0, 0, line1, lbl_8036AAB4, lbl_8036AA34);
-    if (hasSecond == 1) {
-        fn_8001003C((s32)(x + lbl_8036AADC), (s32)(lbl_8036AA48 + *py), 2, 0, 0, line2, lbl_8036AAB4, lbl_8036AA34);
-    }
+    return hasSecond;
 }
 
 void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
