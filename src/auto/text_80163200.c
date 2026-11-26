@@ -1,7 +1,4 @@
 #include "common.h"
-static inline s16 Ui_TextOffsetSum(s16 margin, s32 offset) { return margin + offset; }
-static inline s16 Ui_TextOffsetRight(s16 margin, s32 width, s16 avail) { return avail - (margin + width); }
-static inline s16 Ui_TextOffsetVertical(s16 margin, s32 offset) { return (margin + offset) >> 1; }
 static inline s16 Ui_CursorRowY(s32 height, s32 row, s32 top) { return row * height + top; }
 static inline s16 Ui_AverageCursorCoord(s16 target, s16 current) { return (current + (target + 1)) >> 1; }
 
@@ -892,7 +889,7 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
         savedHeight=height;
         x=M2C_FIELD(arg0,s16 *,0x64);
         savedX=x;
-        y=Ui_CursorRowY(slot,height,M2C_FIELD(arg0,s16 *,0x66));
+        y=Ui_CursorRowY(height,slot,M2C_FIELD(arg0,s16 *,0x66));
         if(slot>=4 && slot<=7) y+=((ItemCursorView *)arg0)->getRowOffset();
         if(M2C_FIELD(arg0,s16 *,0x52)<0) {
             M2C_FIELD(arg0,s16 *,0x50)=x;
@@ -925,7 +922,7 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
         ((CursorRenderView *)arg0)->update(arg1);
         Prim2D_Begin(); Prim2D_AddZ(lbl_8036A890); Prim2D_PrepareTex();
         row=M2C_FIELD(arg0,s16 *,0x4E);
-        rowY=Ui_CursorRowY(row,savedHeight,M2C_FIELD(arg0,s16 *,0x66));
+        rowY=Ui_CursorRowY(savedHeight,row,M2C_FIELD(arg0,s16 *,0x66));
         rowHeight=M2C_FIELD(arg0,s16 *,0x54);
         offset=Text_MeasureHeight(-1,lbl_8036A8A0);
         rowHeight=(s16)(((s16)rowHeight-offset)>>1);
@@ -1541,9 +1538,9 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     s16 x;
     s32 a1;
     Obj *self;
-    s16 t;
+    u32 t;
     s16 y;
-    s16 r;
+    u32 r;
     s16 avail;
     void *str;
     void *p;
