@@ -359,41 +359,28 @@ void fn_802211D0(u16 left, u16 top, u16 wd, u16 ht) {
     } while (0);
 }
 
-void fn_8022124C(u16 arg0, u16 arg1, u16 arg2, u16 arg3)
-{
-  u8 *gx;
-  u32 w;
-  u32 zero;
-  u32 c49;
-  u32 h;
-  u32 reg;
-  gx = (u8 *) __GXData;
-  zero = 0;
-  w = arg2;
-  *((u32 *) (gx + 0x1F0)) = zero;
-  h = arg3;
-  reg = *((u32 *) (gx + 0x1F0));
-  reg = __rlwimi(reg, arg0, 0, 22, 31);
-  *((u32 *) (gx + 0x1F0)) = reg;
-  c49 = 0x49;
-  w -= 1;
-  reg = *((u32 *) (gx + 0x1F0));
-  reg = __rlwimi(reg, arg1, 10, 12, 21);
-  h -= 1;
-  *((u32 *) (gx + 0x1F0)) = reg;
-  reg = *((u32 *) (gx + 0x1F0));
-  reg = __rlwimi(reg, c49, 24, 0, 7);
-  *((u32 *) (gx + 0x1F0)) = reg;
-  *((u32 *) (gx + 0x1F4)) = zero;
-  reg = *((u32 *) (gx + 0x1F4));
-  reg = __rlwimi(reg, w, 0, 22, 31);
-  *((u32 *) (gx + 0x1F4)) = reg;
-  reg = *((u32 *) (gx + 0x1F4));
-  reg = __rlwimi(reg, h, 10, 12, 21);
-  *((u32 *) (gx + 0x1F4)) = reg;
-  reg = *((u32 *) (gx + 0x1F4));
-  reg = __rlwimi(reg, 0x4A, 24, 0, 7);
-  *((u32 *) (gx + 0x1F4)) = reg;
+void fn_8022124C(u16 left, u16 top, u16 wd, u16 ht) {
+    extern u16* const __GXData;
+    (*(GXData *const *)&__GXData)->cpTexSrc = 0;
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSrc) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSrc), (left), (0), 32 - (0) - (10), 31 - (0)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSrc) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSrc), (top), (10), 32 - (10) - (10), 31 - (10)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSrc) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSrc), (0x49), (24), 32 - (24) - (8), 31 - (24)));
+    } while (0);
+    (*(GXData *const *)&__GXData)->cpTexSize = 0;
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSize) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSize), (wd - 1), (0), 32 - (0) - (10), 31 - (0)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSize) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSize), (ht - 1), (10), 32 - (10) - (10), 31 - (10)));
+    } while (0);
+    do {
+        ((*(GXData *const *)&__GXData)->cpTexSize) = ((u32)__rlwimi((u32)((*(GXData *const *)&__GXData)->cpTexSize), (0x4A), (24), 32 - (24) - (8), 31 - (24)));
+    } while (0);
 }
 
 void fn_802212C8(s32 arg0) {
