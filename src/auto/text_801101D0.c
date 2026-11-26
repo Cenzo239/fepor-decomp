@@ -955,15 +955,20 @@ extern "C" void fn_80111AE8(void *self, String *name, u8 doSomething) {
 #pragma opt_common_subs off
 extern "C" void fn_80111C8C(void *arg0, void *arg1) {
     s32 strlen(char *);
-    s32 String_Compare(void *, s32, void *, char *, s32);
+    s32 String_Compare(void *, s32, s32, char *, s32);
     void SeCue_PlayAt(char *, u8, f32, f32, f32);
     void UiObj_SetCamerasTransition(void *, s32, s32, f32);
-    u8 *fn_80117CC0(void *, s32);
+    s8 *fn_80117CC0(void *, s32);
     extern void *gGame;
-    u8 flagA, flagB, vol;
-    s32 i;
-    #define CMPAT(off) (String_Compare((void *)((u8 *)arg0 + 0xB0), 0, (void *)*(u32 *)((u8 *)arg0 + 0xB0), (char *)((u32)gActorXmlStrs + (off)), strlen((char *)((u8 *)gActorXmlStrs + (off)))) == 0)
-    #define PLAY(off) SeCue_PlayAt((char *)((u32)gActorXmlStrs + (off)), vol, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2])
+    struct NameStr {
+        s32 len;
+    };
+    s32 vol;
+    u8 flagA;
+    u8 flagB;
+    s32 n;
+    #define CMPAT(off) (n = strlen((char *)((u8 *)gActorXmlStrs + (off))), String_Compare((void *)((u8 *)arg0 + 0xB0), 0, ((struct NameStr *)((u8 *)arg0 + 0xB0))->len, (char *)((u8 *)gActorXmlStrs + (off)), n) == 0)
+    #define PLAY(off) SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + (off)), vol, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2])
     flagA = 0;
     flagB = 0;
     vol = 0x50;
@@ -994,19 +999,18 @@ extern "C" void fn_80111C8C(void *arg0, void *arg1) {
     } else {
         PLAY(0x20A);
     }
-    i = *(s32 *)((u8 *)arg0 + 0x1D0);
-    switch (i) {
+    switch (*(s32 *)((u8 *)arg0 + 0x1D0)) {
     case 1:
-        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x291), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
-        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2A4), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        if (flagA || flagB) SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x291), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x2A4), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
         break;
     case 2:
-        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2B7), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
-        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2CB), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        if (flagA || flagB) SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x2B7), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x2CB), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
         break;
     case 3:
-        if (flagA || flagB) SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2DF), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
-        else SeCue_PlayAt((char *)((u32)gActorXmlStrs + 0x2F2), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        if (flagA || flagB) SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x2DF), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
+        else SeCue_PlayAt((char *)((u8 *)gActorXmlStrs + 0x2F2), 0x64, ((f32 *)arg1)[0], ((f32 *)arg1)[1], ((f32 *)arg1)[2]);
         break;
     }
 }
