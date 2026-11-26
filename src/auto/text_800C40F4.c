@@ -1,6 +1,12 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+
+static inline void Vec3Store3(f32 *dst, f32 x, f32 y, f32 z) {
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
 #pragma cplusplus on
 class WindowDrawInterface {
 public:
@@ -10568,11 +10574,11 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
+    void PSMTXRotRad(void *, s32, f32);
+    void fn_802029C4(void *, f32 *, f32 *);
     extern const f32 lbl_80369E70;
     extern const f32 lbl_80369E80;
     extern const f32 lbl_80369E84;
-    void PSMTXRotRad(void *, s32, f32);
-    void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
     f32 y;
@@ -16135,33 +16141,37 @@ void fn_800E4E5C(void *arg0) {
 
 #pragma push
 #pragma cplusplus on
-extern "C" void fn_800E4E7C(void *arg0, void *arg1, void *arg2)
+extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
-    extern f32 lbl_80369F5C, lbl_80369F60;
-    struct Vec3 { f32 x, y, z; };
-    struct Vec3 pos;
-    struct Vec3 *out = (struct Vec3 *)arg0;
-    f32 z, y, x;
+#pragma peephole off
+    f32 pos[3];
+    f32 z;
+    f32 y;
+    f32 x;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
         GActor_FindNode(*(void **)((u8 *)arg1 + 0xE0), arg2),
-        &pos.x
+        pos
     );
 
-    x = pos.x;
+    x = pos[0];
+
     if (x > lbl_80369F5C && x < lbl_80369F60) {
-        y = pos.y;
-        z = pos.z;
+        y = pos[1];
+        z = pos[2];
     } else {
-        x = y = z = lbl_80369F3C;
+        z = lbl_80369F3C;
+        y = z;
+        x = z;
     }
 
-    out->x = x;
-    out->y = y;
-    out->z = z;
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
+#pragma peephole on
 }
 #pragma pop
 void fn_800E4F0C(void *arg0) {
