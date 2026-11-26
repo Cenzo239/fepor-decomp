@@ -78,10 +78,16 @@ u8 **cursor = &s->cursor;
 u8 *p = *cursor;
 u16 value = (p[0] << 8) | p[1];
  *cursor = p + 2;
- return value;
+   return value;
   }
+ static inline void ThpStoreByteAsFloat(f32 *dst, u8 b) {
+     union { f64 d; u32 w[2]; } u;
+     u.w[0] = 0x43300000;
+     u.w[1] = b;
+     *dst = u.d - lbl_8036C190;
+ }
 
- static inline u8 SynthAllocateStream(void) {
+  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
 for(i=0;i<gSoundStreamCtrl[0];i++){
@@ -369,10 +375,10 @@ s32 fn_8023CA4C(void) {
     f32 table[64];
     u8 *zig;
     u8 *p;
-    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
-    s32 size;
     s32 id;
     u32 i;
+    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
+    u32 size;
     u16 row;
     u8 *state;
 
