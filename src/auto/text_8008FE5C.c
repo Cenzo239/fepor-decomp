@@ -1,6 +1,12 @@
 /* Functions from 0x8007C5E4 to 0x8009F0BC, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void UnitInfo_DrawHp(s32 y, s32 current, s32 maximum, void *label) {
+    extern char gBattleHelpStrings[];
+    extern f32 lbl_80369754, gZeroF;
+    void fn_8001003C(s32,s32,s32,s32,s32,f32,f32,const char *,...);
+    fn_8001003C(0x10,y,1,1,0,lbl_80369754,gZeroF,gBattleHelpStrings+0xFA,label,(s8)current,(s8)maximum);
+}
 static inline void UnitInfo_DrawIcons(u8 *unit, s32 y, void *drawer) {
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
@@ -134,7 +140,8 @@ void UnitInfo_DrawPair(u8 *arg0) {
     void *Msg_ResolveName(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     void Text_Draw(s16, s16, s32, void *, ...);
-    extern f32 gZeroF, lbl_80369780, lbl_80369784, lbl_80369788, lbl_80369768, lbl_80369754;
+    extern const f32 gZeroF, lbl_80369780, lbl_80369784, lbl_80369788;
+    extern f32 lbl_80369768, lbl_80369754;
     extern char gBattleHelpStrings[];
     extern u8 gUiIconDrawer[];
     u8 *self;
