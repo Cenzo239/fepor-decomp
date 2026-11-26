@@ -1,6 +1,12 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
 typedef struct TrailNode40 { f32 v[9]; u8 r, g, b, a; } TrailNode40;
+static inline void TrailNode_Copy(TrailNode40 *d, const TrailNode40 *s) {
+d->v[0]=s->v[0]; d->v[1]=s->v[1]; d->v[2]=s->v[2];
+d->v[3]=s->v[3]; d->v[4]=s->v[4]; d->v[5]=s->v[5];
+d->v[6]=s->v[6]; d->v[7]=s->v[7]; d->v[8]=s->v[8];
+d->r=s->r; d->g=s->g; d->b=s->b; d->a=s->a;
+}
 
 void *Process_CreateChild(void *, s32, void *);             /* extern */
 s32 strcpy(void *, s32);                       /* extern */
