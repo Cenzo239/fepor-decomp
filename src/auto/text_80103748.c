@@ -1023,60 +1023,15 @@ void* fn_8010494C(void* arg0) {
 
 u8 *fn_80104970(u8 *arg0)
 {
-  int flag;
-  int new_var2;
-  u8 *new_var;
-  u8 c;
-  c = arg0[0];
-  if (c < 0x81U)
-  {
-    goto fail;
-  }
-  if (c <= 0x9FU)
-  {
-    goto trail;
-  }
-  if (((((((((c & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) & 0xFFFFFFFFu) < 0xE0U)
-  {
-    goto fail;
-  }
-  if (c > 0xFCU)
-  {
-    goto fail;
-  }
-  trail:
-  c = arg0[1];
-
-  if (c < 0x40U)
-  {
-    goto fail;
-  }
-  if (c <= 0x7EU)
-  {
-    goto success;
-  }
-  c += (double) 0;
-  new_var2 = 1;
-  if (c < 0x80U)
-  {
-    goto fail;
-    c = arg0[1];
-  }
-  if (c > 0xFCU)
-  {
-    goto fail;
-  }
-  success:
-  flag = new_var2;
-
-  goto done;
-  fail:
-  flag = (c < 0x40U) * 0;
-
-  new_var = arg0;
-  done:
-  return (new_var + new_var2) + ((long long) (flag != 0));
-
+    u8 flag;
+    u8 c = arg0[0];
+    if (((c >= 0x81 && c <= 0x9F) || (c >= 0xE0 && c <= 0xFC)) &&
+        ((arg0[1] >= 0x40 && arg0[1] <= 0x7E) || (arg0[1] >= 0x80 && arg0[1] <= 0xFC))) {
+        flag = 1;
+    } else {
+        flag = 0;
+    }
+    return arg0 + (flag ? 2 : 1);
 }
 
 #pragma use_lmw_stmw on
