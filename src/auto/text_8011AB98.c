@@ -1,6 +1,20 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
+static inline s8 TalkUi_FindSlot20354(s8 want, void *object) {
+    u8 *self = object;
+    u8 *child;
+    if (want < 0) return -1;
+    child = *(u8 **)(self + 0x48);
+    if (child && *(s8 *)(child + 0x43) == want) return 0;
+    child = *(u8 **)(self + 0x4c);
+    if (child && *(s8 *)(child + 0x43) == want) return 1;
+    child = *(u8 **)(self + 0x50);
+    if (child && *(s8 *)(child + 0x43) == want) return 2;
+    child = *(u8 **)(self + 0x54);
+    if (child && *(s8 *)(child + 0x43) == want) return 3;
+    return -1;
+}
 
 typedef struct UiListRect { s32 x0, y0, x1, y1; } UiListRect;
 extern u8 lbl_8032FE24[];
