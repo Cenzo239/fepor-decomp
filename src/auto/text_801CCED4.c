@@ -1087,6 +1087,21 @@ s32 fn_801CD548(s32 k) {
     return n;
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
+static inline u8 Menu_InputBlocked(void) {
+    extern u32 gUiInputFlags;
+    u8 blocked = 0;
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) blocked = 1;
+    return blocked;
+}
+static inline s32 Menu_CountEntries(void *self) {
+    s32 i;
+    u32 *p = (u32 *)((u8 *)self + 0x3c);
+    for (i=0; *p; i++,p++) {}
+    return i;
+}
 void fn_801CD5CC(void *self) {
 extern u32 gUiInputFlags; extern u8 *gPadInput; extern s16 lbl_80366EA8,lbl_80366EAA; extern u8 lbl_8027DE18[];
 void Ui_PlaySeCue(void*,s32);
@@ -1128,7 +1143,7 @@ if((u32)(s16)v>(u32)lim) *(s16*)((u8*)self+0x70)=input==pressed?0:lim;
 if(old!=*(s16*)((u8*)self+0x70)) Ui_PlaySeCue(lbl_8027DE18+8,0x64);
 }
 }
-
+#pragma pop
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 2
@@ -1196,6 +1211,8 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
         u8 pad12[0x2A];
         u32 items[15];
         s32 iconId;
+        inline s16 width() { return right - left; }
+        inline s16 height() { return bottom - top; }
     };
 
     extern u8 gUiIconDrawer[];
@@ -1206,19 +1223,20 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     s16 y;
     s16 offset;
     u32 *str;
-    UiPanel_801CD940 *self = (UiPanel_801CD940 *)arg0;
-    void *p = arg1;
     s32 xOffset;
 
-    self->v2();
+    ((UiPanel_801CD940 *)arg0)->v2();
 
-    {
-        s16 w = self->right - self->left;
-        s16 h = self->bottom - self->top;
-        fn_801583D0(0, 0, w, h, 0xFF, 0x10);
-    }
+    fn_801583D0(
+        0,
+        0,
+        ((UiPanel_801CD940 *)arg0)->width(),
+        ((UiPanel_801CD940 *)arg0)->height(),
+        0xFF,
+        0x10
+    );
 
-    self->v3(p);
+    ((UiPanel_801CD940 *)arg0)->v3(arg1);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B4EC);
@@ -1227,8 +1245,8 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     offset = 0;
     y = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
 
-    if (self->iconId != 0) {
-        Ui_DrawIcon(gUiIconDrawer, 0, 4, self->iconId);
+    if (((UiPanel_801CD940 *)arg0)->iconId != 0) {
+        Ui_DrawIcon(gUiIconDrawer, 0, 4, ((UiPanel_801CD940 *)arg0)->iconId);
         offset = 0x18;
     }
 
@@ -1236,7 +1254,7 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
-    str = self->items;
+    str = ((UiPanel_801CD940 *)arg0)->items;
     while (*str != 0) {
         xOffset = (0x16 - fn_8001059C(str, -1, lbl_8036B4F0)) >> 1;
         Prim2D_AddPrim(6);
@@ -4125,36 +4143,35 @@ extern "C" void fn_801D283C(void *arg0) {
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
-extern "C" void fn_801D28A8(u8 *self,s32 x,s32 y,u8 *item) {
-void Prim2D_Begin(); void Prim2D_SetTex(s32,u16); void Prim2D_PrepareTex();
-s32 Text_MeasureHeight(s32,f32); u8 fn_800BE890(s32);
-void *Msg_ResolveName(void*); void *fn_800BE728(s32); void *Msg_Expand(void*);
-void Text_Draw(s32,s16,u8,void*,...); void Ui_DrawLine(s16,s16,s16,s16,s32,u8*);
-s32 fn_800BE798(s32); void fn_80152B4C(s16,s16,s32,s32);
-extern f32 lbl_8036B5E0;
-u8 color[4]; s32 pad; s32 disabled; void *text;
-s16 h1; s16 h; s16 left,width; s32 half; s32 lineY;
-Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32*)(self+0x34)|0x13)); Prim2D_PrepareTex();
-h1=*(s16*)(self+0x56);
-pad=(s16)(((s16)h1-Text_MeasureHeight(-1,lbl_8036B5E0))>>1);
-disabled=fn_800BE890(*(s32*)item)?0:1;
-if(*(void**)(item+8)) text=Msg_ResolveName(*(void**)((u8*)*(void**)(item+8)+0x188));
-else text=Msg_Expand(fn_800BE728(*(s32*)item));
-s32 yy=(s16)y;
-Text_Draw(x,(s16)(yy+pad),(u8)disabled,text);
-width=(s16)(((MenuD28*)self)->v10()-*(s16*)(self+0x60)-0x10);
-s32 xx=(s16)x;
-left=(s16)(xx-0x10);
-h=*(s16*)(self+0x56);
-half=((s16)h-Text_MeasureHeight(-1,lbl_8036B5E0))>>1;
-s32 textH=Text_MeasureHeight(-1,lbl_8036B5E0);
-lineY=(s16)(yy+(s16)(textH+half));
-s16 right=(s16)(left+width);
-color[0]=255; color[1]=255; color[2]=255; color[3]=0x33;
-Ui_DrawLine(left,lineY,right,lineY,0x10,color);
-s32 value=fn_800BE798(*(s32*)item);
-s32 baseline=yy+pad; s32 numberX=xx+0xc0;
-fn_80152B4C((s16)numberX,(s16)(baseline+6),value,0x10);
+extern "C" void fn_801D28A8(u8 *self, s32 x, s32 y, u8 *item) {
+    void Prim2D_Begin(); void Prim2D_SetTex(s32, u16); void Prim2D_PrepareTex();
+    s32 Text_MeasureHeight(s32, f32); u8 fn_800BE890(s32);
+    void *Msg_ResolveName(void *); void *fn_800BE728(s32); void *Msg_Expand(void *);
+    void Text_Draw(s32, s16, u8, void *, ...); void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
+    s32 fn_800BE798(s32); void fn_80152B4C(s16, s16, s32, s32);
+    extern f32 lbl_8036B5E0;
+    u8 color[4]; s32 pad; s32 disabled; void *text;
+    s16 h1; s16 h; s16 left, width; s32 half; s16 lineY;
+    Prim2D_Begin(); Prim2D_SetTex(0, (u16)(*(u32 *)(self + 0x34) | 0x13)); Prim2D_PrepareTex();
+    h1 = *(s16 *)(self + 0x56);
+    pad = (s16)(((s16)h1 - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1);
+    disabled = fn_800BE890(*(s32 *)item) ? 0 : 1;
+    if (*(void **)(item + 8)) text = Msg_ResolveName(*(void **)((u8 *)*(void **)(item + 8) + 0x188));
+    else text = Msg_Expand(fn_800BE728(*(s32 *)item));
+    s32 yy = (s16)y;
+    Text_Draw(x, (s16)(yy + pad), (u8)disabled, text);
+    width = (s16)(((MenuD28 *)self)->v10() - *(s16 *)(self + 0x60) - 0x10);
+    s32 xx = (s16)x;
+    left = (s16)(xx - 0x10);
+    h = *(s16 *)(self + 0x56);
+    half = ((s16)h - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1;
+    s32 textH = Text_MeasureHeight(-1, lbl_8036B5E0);
+    lineY = (s16)(yy + (s16)(textH + half));
+    color[0] = 255; color[1] = 255; color[2] = 255; color[3] = 0x33;
+    Ui_DrawLine(left, lineY, (s16)(left + width), lineY, 0x10, color);
+    s32 value = fn_800BE798(*(s32 *)item);
+    s32 baseline = yy + pad; s32 numberX = xx + 0xc0;
+    fn_80152B4C((s16)numberX, (s16)(baseline + 6), value, 0x10);
 }
 #pragma optimization_level reset
 #pragma global_optimizer reset
@@ -10278,7 +10295,7 @@ gSystemSave[0x47]=save[1][0x63];
 }
 #pragma push
 #pragma optimization_level 4
-#pragma opt_lifetimes on
+#pragma global_optimizer off
 #pragma cplusplus off
 void *fn_801E09B4(u8 **save) {
 u8 *slot;
