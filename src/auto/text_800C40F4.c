@@ -3,7 +3,7 @@
 #include "structs.h"
 typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
-static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
+static inline s32 Map_AiTerrainTest(s8 x, s32 a, s8 y) {
 extern u8 gBattleMap[];
 s32 c=a,b=a;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
@@ -5915,8 +5915,8 @@ extern "C" void fn_800CF000(void *arg0) {
     void fn_800340E4(void *);
     void fn_800D5DB0(void *, s32, s32, s32 *);
     void fn_800CE690(void *, s32 *);
-    void fn_800CE214(void *, s32 *);
     u8 fn_800CED88(void *);
+    void fn_800CE214(void *, s32 *);
     void fn_800CDFFC(void *);
     s32 stat[22];
     s32 done;
@@ -5965,7 +5965,7 @@ extern "C" void fn_800CF000(void *arg0) {
         p = *(s16 **)((u8 *)self + 0x1fc);
         idx4 = *p * 4;
         off = idx4 + 4;
-        switch ((s32)*(u8 *)((s32)p + off)) {
+        switch ((s32)*(u8 *)(p + off)) {
         case 0x55: {
             s32 j = (s8)*(s16 *)((s32)p + idx4 + 6);
             ++*p;
@@ -6019,7 +6019,7 @@ extern "C" void fn_800CF000(void *arg0) {
         if (*(s32 *)((u8 *)self + 0x274) == 0) {
             *(s32 *)((u8 *)self + 0x270) = 0;
         } else {
-            *(s32 *)((u8 *)self + 0x270) = 1;
+            *(s32 *)((u8 *)self + (u32)0x270) = 1;
         }
     } else {
         if (*(s32 *)((u8 *)self + 0x274) == 0) {
