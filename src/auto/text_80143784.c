@@ -3177,6 +3177,7 @@ s32 fn_8014716C(u8 arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 extern "C" void fn_80147188(s32 arg0) {
     void fn_800B3194(void);
     extern f32 gMsPerFrame;
@@ -3201,10 +3202,10 @@ extern "C" void fn_80147188(s32 arg0) {
     extern Entry gFxChannels[];
 
     Entry *p;
-    s32 i;
     s32 arg_save;
+    s32 i;
     Entry *base;
-    s16 ext;
+    s32 ext;
     s32 idx;
     s8 *str;
     s8 *a;
@@ -3216,7 +3217,7 @@ extern "C" void fn_80147188(s32 arg0) {
     base = gFxChannels;
     i = 0;
     p = base + 0;
-    ext = arg_save;
+    ext = (s16)arg_save;
     do {
         if (p->flags & 1) {
             if ((s16)arg_save <= 0) {
@@ -3304,8 +3305,9 @@ extern "C" void fn_80147188(s32 arg0) {
         loop:
             ca = *(s8 *)((u8 *)a);
             if (ca == 0) {
-                if ((s8)idx >= 0) {
-                    temp = (s8)idx * 0x30;
+                temp = (s8)idx;
+                if (temp >= 0) {
+                    temp = temp * 0x30;
                     {
                         Entry *hit = (Entry *)((u8 *)base + 0x2a0 + temp);
                         if (hit->flags & 1) {
