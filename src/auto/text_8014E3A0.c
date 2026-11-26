@@ -35,6 +35,7 @@ extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef struct { s32 c0, c1, c2, c3; } Color4;
 typedef struct { s32 c3, c2, c1, c0; } Color4rev;
+typedef struct UiRect { s16 f0, f2, f4, f6; } UiRect;
 
 s32 fn_8014E3A0(void) {
     return 0;
@@ -2972,51 +2973,52 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     s32 saved;
     s32 *tbl;
     f32 sp8;
-    s16 w, h, y2;
-    s16 mid_h, mid_w;
+    s16 *p;
+    s16 w1, y2, h, w;
     (void)arg3;
 
     saved = Prim2D_PushZ(&sp8);
     tbl = (s32 *)(lbl_80277488 + (s8)arg0 * 0x18);
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
     h = (s16)(lbl_80367FC0.f6 - lbl_80367FC0.f2);
-    w = (s16)(lbl_80367FC0.f4 - lbl_80367FC0.f0);
-    if (w != 0 && h != 0) {
+    w1 = (s16)(lbl_80367FC0.f4 - lbl_80367FC0.f0);
+    if (w1 != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)arg1, (f32)arg2, (f32)lbl_80367FC0.f0, (f32)lbl_80367FC0.f2, (f32)w, (f32)h);
+        Prim2D_SetRectUv((f32)arg1, (f32)arg2, (f32)lbl_80367FC0.f0, (f32)lbl_80367FC0.f2, (f32)w1, (f32)h);
         Prim2D_EndPrim();
     }
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
+    p = (s16 *)&lbl_80367FD0;
     {
         s16 h0 = (s16)(lbl_80367FC0.f6 - lbl_80367FC0.f2);
-        s16 h1 = (s16)(lbl_80367FD0.f6 - lbl_80367FD0.f2);
-        mid_w = (s16)(lbl_80367FC8.f4 - lbl_80367FC8.f0);
-        mid_h = (s16)(arg4 - (h0 + h1));
+        s16 h1 = (s16)(p[3] - p[1]);
+        w = (s16)(lbl_80367FC8.f4 - lbl_80367FC8.f0);
         y2 = (s16)(arg2 + h0);
-        if (mid_w != 0 && mid_h != 0) {
+        h = (s16)(arg4 - (h0 + h1));
+        if (w != 0 && h != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRect((f32)arg1, (f32)y2, (f32)mid_w, (f32)mid_h);
+            Prim2D_SetRect((f32)arg1, (f32)y2, (f32)w, (f32)h);
             Prim2D_SetUvRect((f32)lbl_80367FC8.f0, (f32)lbl_80367FC8.f2, (f32)(s16)(lbl_80367FC8.f4 - lbl_80367FC8.f0), (f32)(s16)(lbl_80367FC8.f6 - lbl_80367FC8.f2));
             Prim2D_EndPrim();
         }
     }
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
     {
-        s16 hb = (s16)(lbl_80367FD0.f6 - lbl_80367FD0.f2);
+        h = (s16)(p[3] - p[1]);
+        y2 = (s16)(arg2 + (arg4 - h));
         w = (s16)(lbl_80367FD0.f4 - lbl_80367FD0.f0);
-        y2 = (s16)(arg2 + (arg4 - hb));
-        if (w != 0 && hb != 0) {
+        if (w != 0 && h != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)arg1, (f32)y2, (f32)lbl_80367FD0.f0, (f32)lbl_80367FD0.f2, (f32)w, (f32)hb);
+            Prim2D_SetRectUv((f32)arg1, (f32)y2, (f32)lbl_80367FD0.f0, (f32)p[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
@@ -3025,43 +3027,44 @@ void fn_8015385C(s8 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 
     Prim2D_PrepareTex();
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
     h = (s16)(lbl_80367FA8.f6 - lbl_80367FA8.f2);
-    w = (s16)(lbl_80367FA8.f4 - lbl_80367FA8.f0);
-    if (w != 0 && h != 0) {
+    w1 = (s16)(lbl_80367FA8.f4 - lbl_80367FA8.f0);
+    if (w1 != 0 && h != 0) {
         Prim2D_Begin();
         Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)arg1, (f32)(s16)(arg2 + arg5), (f32)lbl_80367FA8.f0, (f32)lbl_80367FA8.f2, (f32)w, (f32)h);
+        Prim2D_SetRectUv((f32)arg1, (f32)(s16)(arg2 + arg5), (f32)lbl_80367FA8.f0, (f32)lbl_80367FA8.f2, (f32)w1, (f32)h);
         Prim2D_EndPrim();
     }
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl++);
+    p = (s16 *)&lbl_80367FB8;
     {
         s16 h0 = (s16)(lbl_80367FA8.f6 - lbl_80367FA8.f2);
-        s16 h1 = (s16)(lbl_80367FB8.f6 - lbl_80367FB8.f2);
-        mid_w = (s16)(lbl_80367FB0.f4 - lbl_80367FB0.f0);
-        mid_h = (s16)(arg6 - (h0 + h1));
+        s16 h1 = (s16)(p[3] - p[1]);
+        w = (s16)(lbl_80367FB0.f4 - lbl_80367FB0.f0);
         y2 = (s16)(arg2 + (arg5 + h0));
-        if (mid_w != 0 && mid_h != 0) {
+        h = (s16)(arg6 - (h0 + h1));
+        if (w != 0 && h != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRect((f32)arg1, (f32)y2, (f32)mid_w, (f32)mid_h);
+            Prim2D_SetRect((f32)arg1, (f32)y2, (f32)w, (f32)h);
             Prim2D_SetUvRect((f32)lbl_80367FB0.f0, (f32)lbl_80367FB0.f2, (f32)(s16)(lbl_80367FB0.f4 - lbl_80367FB0.f0), (f32)(s16)(lbl_80367FB0.f6 - lbl_80367FB0.f2));
             Prim2D_EndPrim();
         }
     }
     Ui_LoadAtlasTex(gUiTexAtlas, (void *)&gUiTexScratch, *tbl);
     {
-        s16 hb = (s16)(lbl_80367FB8.f6 - lbl_80367FB8.f2);
+        h = (s16)(p[3] - p[1]);
+        y2 = (s16)(arg2 + ((arg5 + arg6) - h));
         w = (s16)(lbl_80367FB8.f4 - lbl_80367FB8.f0);
-        y2 = (s16)(arg2 + ((arg5 + arg6) - hb));
-        if (w != 0 && hb != 0) {
+        if (w != 0 && h != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(arg7 | 1));
             Prim2D_PrepareTex();
             Prim2D_AddPrim(1);
-            Prim2D_SetRectUv((f32)arg1, (f32)y2, (f32)lbl_80367FB8.f0, (f32)lbl_80367FB8.f2, (f32)w, (f32)hb);
+            Prim2D_SetRectUv((f32)arg1, (f32)y2, (f32)lbl_80367FB8.f0, (f32)p[1], (f32)w, (f32)h);
             Prim2D_EndPrim();
         }
     }
@@ -6935,6 +6938,10 @@ void Ui_DrawWindowFrame(s16 arg0, s16 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg
     }
     Prim2D_PopZ(handle, sp14);
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
 void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -6961,9 +6968,9 @@ void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     extern s16 lbl_80367C28;
     extern u32 lbl_803680C0;
     extern f64 lbl_8036A868;
-    extern f32 lbl_8036A870;
-    extern f32 lbl_8036A888;
-    extern f32 lbl_8036A88C;
+    extern const f32 lbl_8036A870;
+    extern const f32 lbl_8036A888;
+    extern const f32 lbl_8036A88C;
 
     s32 sp8;
     s32 spC;
@@ -7158,8 +7165,7 @@ void fn_8016070C(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s8 arg4, s32 arg5) {
     }
     Prim2D_PopZ(saved, sp38);
 }
-
-#pragma optimization_level 3
+#pragma pop
 void fn_80160F00(s16 x, s16 y, u8 flag, s32 texFlags) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
