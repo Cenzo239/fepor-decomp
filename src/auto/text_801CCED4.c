@@ -980,6 +980,15 @@ void *fn_801CD414(void *arg0, s16 arg1) {
     return arg0;
 }
 
+static inline u8 **GetTbl(s32 k) {
+    extern u8 *lbl_802984C0[]; u8 **r = 0; switch (k) { case 0: r = lbl_802984C0; break; } return r; }
+static inline s32 Width(s32 k) {
+    s32 n = 0;
+    u8 **p = GetTbl(k);
+    while ((s32)**p != 10) { p++; n++; }
+    return n;
+}
+
 #pragma global_optimizer off
 s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2) {
     extern u8 *lbl_802984C0[];
@@ -1018,14 +1027,6 @@ s32 fn_801CD508(s32 arg0) {
 #pragma use_lmw_stmw off
 #pragma opt_common_subs on
 #pragma peephole on
-static inline u8 **GetTbl(s32 k) {
-    extern u8 *lbl_802984C0[]; u8 **r = 0; switch (k) { case 0: r = lbl_802984C0; break; } return r; }
-static inline s32 Width(s32 k) {
-    s32 n = 0;
-    u8 **p = GetTbl(k);
-    while ((s32)**p != 10) { p++; n++; }
-    return n;
-}
 s32 fn_801CD548(s32 k) {
     s32 n = 0;
     s16 w = Width(k) + 1;
