@@ -5034,8 +5034,8 @@ void *Ui_GetColor(u8 arg0)
   u32 OSGetTick(void);
   f64 sin(f64);
   u8 *color = lbl_80296088 + (arg0 * 4);
-  f32 phase;
   f32 wave;
+  f32 phase;
   u32 ticks;
   u32 millis;
   switch (arg0)
@@ -5046,10 +5046,10 @@ void *Ui_GetColor(u8 arg0)
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
       wave = ((f32) (millis % 1500)) / 1500.0f;
       phase = wave;
-      wave = 92.0f * ((0.5f * (f32) sin(6.2831855f * phase)) + 0.5f);
-      color[0] = (u8) (32.0f + wave);
-      color[1] = (u8) (160.0f + wave);
-      color[2] = (u8) (32.0f + wave);
+      wave = (0.5f * (f32) sin(6.2831855f * phase)) + 0.5f;
+      color[0] = (u8) (32.0f + 92.0f * wave);
+      color[1] = (u8) (160.0f + 92.0f * wave);
+      color[2] = (u8) (32.0f + 92.0f * wave);
       break;
 
     case 20:
@@ -5057,10 +5057,10 @@ void *Ui_GetColor(u8 arg0)
       millis = ticks / (((*((u32 *) 0x800000F8)) / 4) / 1000);
       wave = ((f32) (millis % 1500)) / 1500.0f;
       phase = wave;
-      wave = 132.0f * ((0.5f * (f32) sin(6.2831855f * phase)) + 0.5f);
-      color[0] = (u8) (32.0f + wave);
-      color[1] = (u8) (120.0f + wave);
-      color[2] = (u8) (32.0f + wave);
+      wave = (0.5f * (f32) sin(6.2831855f * phase)) + 0.5f;
+      color[0] = (u8) (32.0f + 132.0f * wave);
+      color[1] = (u8) (120.0f + 132.0f * wave);
+      color[2] = (u8) (32.0f + 132.0f * wave);
       break;
   }
 
@@ -5482,6 +5482,8 @@ extern "C" void fn_8018E98C(void *arg0, s32 arg1) {
     ((Obj *)arg0)->v14(arg1);
 }
 
+#pragma push
+#pragma optimization_level 2
 extern "C" void fn_8018E9E8(void *arg0) {
 #pragma cplusplus on
 struct Obj {
@@ -5520,7 +5522,7 @@ case 2:self->row2(y+0x38,0);break;
 }
 #pragma cplusplus reset
 }
-
+#pragma pop
 #pragma cplusplus reset
 void fn_8018EBC0(void *arg0, s32 arg1) {
     void fn_8001C76C(void *);
@@ -14598,8 +14600,8 @@ void fn_8019E8B0(void *self)
   void *parent;
   void *effect;
   void *host;
-  f32 y,x;
   f32 height;
+  f32 x,y;
   (void)lbl_8036AF78;
   if (gUiInputFlags & 1)
   {
@@ -15115,8 +15117,7 @@ s32 fn_8019F2D0(s32 x, long long y)
 }
 
 #pragma push
-#pragma optimization_level 4
-#pragma opt_lifetimes off
+#pragma optimization_level 2
 s32 fn_8019F4A8(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
