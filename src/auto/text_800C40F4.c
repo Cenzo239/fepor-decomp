@@ -1,6 +1,7 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
 typedef struct AiActionMap {
         s32 width;
         s32 height;
