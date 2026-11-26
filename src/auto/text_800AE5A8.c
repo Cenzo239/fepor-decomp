@@ -1876,20 +1876,20 @@ M2C_FIELD(p,s32 *,0x90)=10; M2C_FIELD(p,s32 *,0x94)=0; M2C_FIELD(p,s32 *,0x98)=5
 p=base+0x3f0;
 M2C_FIELD(p,s32 *,60)=150;M2C_FIELD(p,s32 *,64)=150;M2C_FIELD(p,s32 *,68)=50;M2C_FIELD(p,s32 *,72)=30;M2C_FIELD(p,s32 *,76)=30;M2C_FIELD(p,s32 *,80)=30;M2C_FIELD(p,s32 *,84)=50;M2C_FIELD(p,s32 *,88)=50;M2C_FIELD(p,s32 *,92)=50;fn_80264B7C(p);
 fn_8024BA38(0,fn_80263C94,base+0x20,255,0,fn_80264F74,base+0x354,255,0);
-fn_8024B8EC(127,0,255); M2C_FIELD(base,s32 *,0x4898)=1; fn_8024B94C(1);
-M2C_FIELD(base,s32 *,0x4e40)=fn_8021371C(fn_800AEB90);
-M2C_FIELD(base,u32 *,0x4bb8)=fn_80213800()|0x80000000;
+fn_8024B8EC(127,0,255); M2C_FIELD(base+0x4768,s32 *,0x130)=1; fn_8024B94C(1);
+M2C_FIELD(base+0x4768,s32 *,0x6d8)=fn_8021371C(fn_800AEB90);
+M2C_FIELD(base+0x4768,u32 *,0x450)=fn_80213800()|0x80000000;
 {u32 size=fn_8021381C(); p=base+0x4768; M2C_FIELD(p,u32 *,0x454)=size;
 if(size>640) {OSReport(Sound_str); for(;;) {} }}
-M2C_FIELD(p,s16 *,1100)=0;M2C_FIELD(p,s32 *,9948)=0;M2C_FIELD(p,s16 *,288)=10;M2C_FIELD(p,s16 *,290)=500;M2C_FIELD(p,s32 *,224)=0;M2C_FIELD(p,s32 *,228)=0;M2C_FIELD(p,s16 *,300)=0;M2C_FIELD(p,s16 *,316)=0;M2C_FIELD(p,s32 *,232)=0;M2C_FIELD(p,s32 *,1092)=0;M2C_FIELD(base,void **,0x4bb0)=fn_800C4638(0x20000,Sound_str+46,0);
-M2C_FIELD(base,s32 *,0x4854)=0;
-p=fn_800C4638(128,Sound_str+46,0); M2C_FIELD(base,void **,0x4858)=p;
+M2C_FIELD(p,s16 *,1100)=0;M2C_FIELD(p,s32 *,9948)=0;M2C_FIELD(p,s16 *,288)=10;M2C_FIELD(p,s16 *,290)=500;M2C_FIELD(p,s32 *,224)=0;M2C_FIELD(p,s32 *,228)=0;M2C_FIELD(p,s16 *,300)=0;M2C_FIELD(p,s16 *,316)=0;M2C_FIELD(p,s32 *,232)=0;M2C_FIELD(p,s32 *,1092)=0;M2C_FIELD(base+0x4768,void **,0x448)=fn_800C4638(0x20000,Sound_str+46,0);
+M2C_FIELD(base+0x4768,s32 *,0xec)=0;
+p=fn_800C4638(128,Sound_str+46,0); M2C_FIELD(base+0x4768,void **,0xf0)=p;
 if(!p) for(;;) {}
 for(i=0;i<8;i++){M2C_FIELD(p,s32 *,i*16)=-1; M2C_FIELD(p,s32 *,i*16+8)=0;}
-p=fn_800C4638(800,Sound_str+46,0); M2C_FIELD(base,void **,0x485c)=p;
+p=fn_800C4638(800,Sound_str+46,0); M2C_FIELD(base+0x4768,void **,0xf4)=p;
 if(!p) for(;;) {}
 for(i=0;i<40;i++,p+=20){M2C_FIELD(p,s16 *,0)=0;M2C_FIELD(p,s32 *,12)=-1;M2C_FIELD(p,s16 *,2)=0;M2C_FIELD(p,s16 *,4)=127;M2C_FIELD(p,s16 *,6)=64;}
-p=fn_800C4638(0x3b4,Sound_str+46,0); M2C_FIELD(base,void **,0x4860)=p;
+p=fn_800C4638(0x3b4,Sound_str+46,0); M2C_FIELD(base+0x4768,void **,0xf8)=p;
 if(!p) for(;;) {}
 stream=p;
 for(i=0;i<3;i++,stream+=0x13c) {
@@ -7275,99 +7275,40 @@ void fn_800BDED8(void *arg0) {
     }
 }
 
-#pragma optimization_level 1
+#pragma push
+#pragma optimization_level 4
 void fn_800BE068(void *arg0) {
-    s32 z;
-    s32 *p;
-    s32 n;
-    s32 *q;
-    s32 j;
-    s32 one;
-    s32 i;
-
-    z = 0;
-    *((u8 *)arg0 + 0x300) = z;
-    p = (s32 *)((u8 *)arg0 + 0x17C);
-    n = 0x5F;
-    *((u8 *)arg0 + 0x301) = z;
-    *((u8 *)arg0 + 0x302) = z;
-    *((u8 *)arg0 + 0x303) = z;
-    *((u8 *)arg0 + 0x304) = z;
-    *((u8 *)arg0 + 0x305) = z;
-    *((u8 *)arg0 + 0x306) = z;
-    *((u8 *)arg0 + 0x307) = z;
-    *((u8 *)arg0 + 0x308) = z;
-    *((u8 *)arg0 + 0x309) = z;
-    *((u8 *)arg0 + 0x30A) = z;
-    *((u8 *)arg0 + 0x30B) = z;
-
-    i = 12;
-loop1:
-    if ((u32)p[0] != 0) {
-        p[0] = z;
-        p[0x60] = z;
-        if ((u32)p[-1] != 0) {
-            p[-1] = z;
-            p[0x5F] = z;
-            if ((u32)p[-2] != 0) {
-                p[-2] = z;
-                p[0x5E] = z;
-                if ((u32)p[-3] != 0) {
-                    p[-3] = z;
-                    p[0x5D] = z;
-                    if ((u32)p[-4] != 0) {
-                        p[-4] = z;
-                        p[0x5C] = z;
-                        if ((u32)p[-5] != 0) {
-                            p[-5] = z;
-                            p[0x5B] = z;
-                            if ((u32)p[-6] != 0) {
-                                p[-6] = z;
-                                p[0x5A] = z;
-                                if ((u32)p[-7] != 0) {
-                                    p[-7] = z;
-                                    n -= 7;
-                                    p[0x59] = z;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    p -= 8;
-    if (--i != 0) {
-        goto loop1;
-    }
-
-    q = (s32 *)arg0;
-    j = 0;
-    one = 1;
-    i = 24;
-loop2:
-    if ((u32)q[0] == 0) {
-        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-    }
-    j += 1;
-    if ((u32)q[1] == 0) {
-        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-    }
-    j += 1;
-    if ((u32)q[2] == 0) {
-        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-    }
-    j += 1;
-    if ((u32)q[3] == 0) {
-        ((u8 *)arg0)[0x300 + (j >> 3)] &= ~(one << (j & 7));
-    }
-    q += 4;
-    j += 1;
-    if (--i != 0) {
-        goto loop2;
-    }
+ s32 i;
+ u32 *p;
+ u32 *q;
+ u32 z;
+ z=0;
+ ((u8 *)arg0)[768]=z;
+ ((u8 *)arg0)[769]=z;
+ ((u8 *)arg0)[770]=z;
+ ((u8 *)arg0)[771]=z;
+ ((u8 *)arg0)[772]=z;
+ ((u8 *)arg0)[773]=z;
+ ((u8 *)arg0)[774]=z;
+ ((u8 *)arg0)[775]=z;
+ ((u8 *)arg0)[776]=z;
+ ((u8 *)arg0)[777]=z;
+ ((u8 *)arg0)[778]=z;
+ ((u8 *)arg0)[779]=z;
+ p=(u32 *)((u8 *)arg0+0x17C);
+ i=0x5F;
+ for(;i>=0;i--) {
+  if(*p==0) break;
+  *p=z;
+  p[0x60]=z;
+  p--;
+ }
+ q=(u32 *)arg0;
+ for(i=0;i<0x60;q++,i++) {
+  if(*q==0) ((u8 *)arg0)[0x300+(i>>3)] &= ~(1<<(i&7));
+ }
 }
-#pragma optimization_level reset
+#pragma pop
 void EventFlag_Reset(s32 *flags) {
     /* Clear all 0x60 event-flag name/hash slots and the 12-byte occupancy bitset at +0x300. */
     s32 *p;
@@ -9834,6 +9775,8 @@ s32 fn_800C1F1C(void *arg0, void **arg1) {
     return count;
 }
 
+#pragma push
+#pragma optimization_level 4
 char *fn_800C2048(s8 arg0, s8 arg1) {
     void *Event_NextEntry(void *);
     u8 EventFlag_IsSet(void *, char *);
@@ -9870,11 +9813,8 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
                         value = *p++;
                         break;
                     case 29:
-                        {
-                            s16 hw = (s16) (((p[0] & 0xFF) << 8) + p[1]);
-                            p += 2;
-                            value = hw;
-                        }
+                        value = (s16) (((p[0] & 0xFF) << 8) + p[1]);
+                        p += 2;
                         break;
                     case 30:
                         value = p[0] << 24;
@@ -9899,8 +9839,7 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
     }
     return NULL;
 }
-
-#pragma global_optimizer off
+#pragma pop
 void fn_800C221C(void)
 {
     void DebugPrint(const char *, ...);
@@ -10429,6 +10368,9 @@ void fn_800AFE0C(s32 i) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 3
+#pragma opt_strength_reduction on
 void fn_800AFF28(s32 arg0, u32 arg1) {
     void fn_800062EC(void *, void *, s32);
     void fn_800B1720(void *);
@@ -10443,13 +10385,14 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
     u32 fn_800B49C8(void *);
     void fn_800B0AEC(void);
     extern f32 lbl_80369CB4;
+    u8 *e;
     s32 idx;
     u8 *sys;
-    u8 *e;
     u8 *src;
     u8 kind;
+    u32 aligned, size;
     u8 *stream;
-    u32 size, aligned;
+    StreamB *slot;
     u32 offset, limit;
     u32 base;
     u32 clear;
@@ -10463,19 +10406,16 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
     u32 ctr, rem;
 
     if (arg0 < 0) return;
-    idx = 0;
     sys = (u8 *)gSoundSys;
-    e = *(u8 **)(sys + 0xF8);
-    if (*(u16 *)e == 0 || *(u32 *)(e + 0x2C) + 0x40 != arg1) {
-        e += 0x13C;
-        idx = 1;
-        if (*(u16 *)e == 0 || *(u32 *)(e + 0x2C) + 0x40 != arg1) {
-            e += 0x13C;
-            idx = 2;
-            if (*(u16 *)e == 0 || *(u32 *)(e + 0x2C) + 0x40 != arg1) {
-                idx = 3;
-            }
+    {
+        u8 *walk = *(u8 **)(sys + 0xF8);
+        s32 i;
+        for (i = 0; i < 3; i++, walk += 0x13C) {
+            idx = i;
+            e = walk;
+            if (*(u16 *)walk && *(u32 *)(walk + 0x2C) + 0x40 == arg1) break;
         }
+        idx = i;
     }
     src = *(u8 **)(e + 0x54);
     kind = src[0];
@@ -10487,7 +10427,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
     *(u32 *)(e + 0x114) = *(u32 *)(src + 0x14);
     *(u32 *)(e + 0x90) = *(u32 *)(src + 0x18);
     *(u32 *)(e + 0x118) = *(u32 *)(src + 0x1C);
-    if (*(u32 *)(e + 0x24) + 0x10000 != 0xFFFFFFFF) {
+    if (*(u32 *)(e + 0x24) + 0x10000 != 0xFFFF) {
         *(u16 *)e = (u16)(*(u16 *)e | 0x200);
     } else {
         *(u32 *)(e + 0x24) = 0;
@@ -10532,14 +10472,29 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
         stream = e + 0x2C;
         offset = *(u32 *)(e + 0x60);
         limit = *(u32 *)(e + 0x8C);
-        size = SoundReadSizeB(offset, limit);
+        {
+            u32 step = 0x10000, n;
+            size = 0x8000;
+            if (offset + 0x8000 > limit) size = limit - offset;
+            else for (n = 2; n < 6; n++) {
+                if (offset + step > limit) {
+                    size -= (0x8000 - (limit - (offset + ((n-1)<<15)))) / n;
+                    size += 0x20 - (size & 31);
+                    break;
+                }
+                step += 0x8000;
+            }
+        }
         aligned = (size + 0x1F) & ~0x1F;
         if (!(*(u16 *)e & 0x400)) {
-            fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, *(u16 *)(e + 4) + offset, fn_800B1720);
+            slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+            fn_800B49E0(*(void **)stream, slot->buffers[0], aligned, *(u16 *)(e + 4) + offset, fn_800B1720);
         } else {
             base = *(u32 *)((u8 *)gSoundSys + *(u16 *)(e + 2) * 4 + 0x134) + offset + *(u16 *)(e + 4);
-            DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), 0x8000);
-            ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
+            slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+            DCInvalidateRange((void *)slot->buffers[0], 0x8000);
+            slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+            ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)slot->buffers[0], aligned, fn_800B16EC);
         }
         *(u32 *)(stream + 0x48) = size;
         *(u16 *)e = (u16)(*(u16 *)e | 0x1000);
@@ -10549,14 +10504,29 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
             offset = *(u32 *)(e + 0xE8);
             limit = *(u32 *)(e + 0x114);
             base = limit + (32 - (limit & 31));
-            size = SoundReadSizeB(offset, limit);
+            {
+            u32 step = 0x10000, n;
+            size = 0x8000;
+            if (offset + 0x8000 > limit) size = limit - offset;
+            else for (n = 2; n < 6; n++) {
+                if (offset + step > limit) {
+                    size -= (0x8000 - (limit - (offset + ((n-1)<<15)))) / n;
+                    size += 0x20 - (size & 31);
+                    break;
+                }
+                step += 0x8000;
+            }
+        }
             aligned = (size + 0x1F) & ~0x1F;
             if (!(*(u16 *)e & 0x400)) {
-                fn_800B49E0(*(void **)stream, *(s32 *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, *(u16 *)(e + 4) + (offset + base), fn_800B1720);
+                slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+                fn_800B49E0(*(void **)stream, slot->buffers[0], aligned, *(u16 *)(e + 4) + (offset + base), fn_800B1720);
             } else {
                 base = offset + base + *(u32 *)((u8 *)gSoundSys + *(u16 *)(e + 2) * 4 + 0x134) + *(u16 *)(e + 4);
-                DCInvalidateRange(*(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), 0x8000);
-                ARQPostRequest(stream + 4, stream, 1, 0, base, *(void **)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4 + 0x2C), aligned, fn_800B16EC);
+                slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+                DCInvalidateRange((void *)slot->buffers[0], 0x8000);
+                slot = (StreamB *)(stream + (1 - *(u16 *)(stream + 0x4C)) * 4);
+                ARQPostRequest(stream + 4, stream, 1, 0, base, (void *)slot->buffers[0], aligned, fn_800B16EC);
             }
             *(u32 *)(stream + 0x48) = size;
             *(u16 *)e = (u16)(*(u16 *)e | 0x2000);
@@ -10564,42 +10534,10 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
     }
     clear = fn_8024CE1C(0xE00, 0);
     p = *(u8 **)(e + 0x54);
-    if (clear != 0) {
-        ctr = clear >> 3;
-        if (ctr != 0) {
-            do {
-                p[0] = 0; p[1] = 0; p[2] = 0; p[3] = 0;
-                p[4] = 0; p[5] = 0; p[6] = 0; p[7] = 0;
-                p += 8;
-            } while (--ctr);
-            rem = clear & 7;
-            if (rem != 0) {
-                do { *p = 0; p += 1; } while (--rem);
-            }
-        } else {
-            rem = clear;
-            do { *p = 0; p += 1; } while (--rem);
-        }
-    }
+    for (rem = clear; rem != 0; --rem) *p++ = 0;
     if (*(u16 *)(e + 0x1E) == 2) {
         p2 = *(u8 **)(e + 0xDC);
-        if (clear != 0) {
-            ctr = clear >> 3;
-            if (ctr != 0) {
-                do {
-                    p2[0] = 0; p2[1] = 0; p2[2] = 0; p2[3] = 0;
-                    p2[4] = 0; p2[5] = 0; p2[6] = 0; p2[7] = 0;
-                    p2 += 8;
-                } while (--ctr);
-                rem = clear & 7;
-                if (rem != 0) {
-                    do { *p2 = 0; p2 += 1; } while (--rem);
-                }
-            } else {
-                rem = clear;
-                do { *p2 = 0; p2 += 1; } while (--rem);
-            }
-        }
+        for (rem = clear; rem != 0; --rem) *p2++ = 0;
     }
     r8 = 0;
     if (*(u16 *)(e + 0x1E) == 1) r8 = 0x40;
@@ -10647,7 +10585,7 @@ void fn_800AFF28(s32 arg0, u32 arg1) {
         *(u32 *)(e + 0x74) = size;
     }
 }
-
+#pragma pop
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 void fn_800B080C(s32 arg0, s32 arg1, s32 arg2) {
