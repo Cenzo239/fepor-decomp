@@ -3756,7 +3756,3 @@ void fn_80216900(void *arg0) {
 }
 #include "common.h"
 #include <dolphin/os.h>
-static inline void AI_WaitSampleChange(volatile u32 *regs) {
-    u32 sample = regs[2];
-    while (sample == regs[2]) {}
-}
