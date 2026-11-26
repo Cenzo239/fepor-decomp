@@ -31,8 +31,8 @@ static inline u8 *Battle_FindActiveSideUnit(void) {
 }
 static inline u8 *MenuResource_ClearIn(s32 clear, u8 *base) {
     void FileCache_ReleaseSlot(void *);
-    s32 i = 0;
     u8 *p;
+    s32 i = 0;
     for (p = base; i < 40; i++, p += 12) {
         if (*(u32 *)(p + 8)) FileCache_ReleaseSlot(p + 8);
         *(u32 *)(p + 8) = clear;
@@ -1153,69 +1153,70 @@ Ui_DrawLine((s16)(x2-1),(s16)y,(s16)(x2-1),y2,*(s32*)(self+0x34),color);
 #pragma use_lmw_stmw reset
 #pragma cplusplus off
 extern struct efUnit* gEfUnitArray;
-#pragma global_optimizer off
-void fn_801CD940(void *arg0, void *arg1)
+#pragma cplusplus on
+extern "C" void fn_801583D0(s16, s16, s32, s32, u8, s32);
+extern "C" void Prim2D_Begin(void);
+extern "C" void Prim2D_AddZ(f32);
+extern "C" void Prim2D_PrepareTex(void);
+extern "C" s32 Text_MeasureHeight(s32, f32);
+extern "C" s32 fn_8001059C(void *, s32, f32);
+extern "C" void Ui_DrawIcon(void *, s32, s32, s32);
+extern "C" void Prim2D_SetTex(s32, s32);
+extern "C" void Prim2D_AddPrim(s32);
+extern "C" void Prim2D_SetPos(f32, f32);
+extern "C" void Prim2D_SetTextScale(u8, f32);
+extern "C" void Prim2D_SetText(void *);
+extern "C" void Prim2D_EndPrim(void);
+extern "C" void fn_801CD940(void *arg0, void *arg1)
 {
-    void fn_801583D0(s16, s16, s32, s32, u8, s32);
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    s32 fn_8001059C(u8 *, s32, f32);
-    void Ui_DrawIcon(void *, s32, s32, s32);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetPos(f32, f32);
-    void Prim2D_SetTextScale(u8, f32);
-    void Prim2D_SetText(void *);
-    void Prim2D_EndPrim(void);
+    struct UiPanel_801CD940 {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3(void *);
+        u8 pad4[6];
+        s16 left;
+        s16 top;
+        s16 right;
+        s16 bottom;
+        u8 pad12[0x2A];
+        u32 items[15];
+        s32 iconId;
+    };
 
     extern u8 gUiIconDrawer[];
     extern f32 lbl_8036B4EC;
     extern f32 lbl_8036B4F0;
     extern f32 lbl_8036B4F4;
-    extern f64 lbl_8036B4F8;
 
-    u8 *self;
-    u8 *str;
-    s32 offset;
+    UiPanel_801CD940 *self = (UiPanel_801CD940 *)arg0;
+    s16 offset;
     s16 y;
-    s16 xOffset;
-    s32 x;
+    s32 xOffset;
+    u32 *str;
 
-    self = (u8 *)arg0;
-
-    ((void (*)(void *))(*(void ***)self)[4])(self);
+    self->v2();
 
     fn_801583D0(
         0,
         0,
-        (s16)(*(s16 *)(self + 0xE) -
-              *(s16 *)(self + 0xA)),
-        (s16)(*(s16 *)(self + 0x10) -
-              *(s16 *)(self + 0xC)),
+        (s16)(self->right - self->left),
+        (s16)(self->bottom - self->top),
         0xFF,
         0x10
     );
 
-    ((void (*)(void *, void *))(*(void ***)self)[5])(self, arg1);
+    self->v3(arg1);
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B4EC);
     Prim2D_PrepareTex();
 
     offset = 0;
-    y = (s16)((0x20 -
-        Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
+    y = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036B4F0)) >> 1);
 
-    if (*(s32 *)(self + 0x78) != 0) {
-        Ui_DrawIcon(
-            gUiIconDrawer,
-            0,
-            4,
-            *(s32 *)(self + 0x78)
-        );
-
+    if (self->iconId != 0) {
+        Ui_DrawIcon(gUiIconDrawer, 0, 4, self->iconId);
         offset = 0x18;
     }
 
@@ -1223,34 +1224,19 @@ void fn_801CD940(void *arg0, void *arg1)
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
 
-    str = self + 0x3C;
-
-    while (*(u32 *)str != 0) {
-        xOffset = (s16)((0x16 -
-            fn_8001059C(str, -1, lbl_8036B4F0)) >> 1);
-
+    str = self->items;
+    while (*str != 0) {
+        xOffset = (0x16 - fn_8001059C(str, -1, lbl_8036B4F0)) >> 1;
         Prim2D_AddPrim(6);
-
-        x = (s16)offset + xOffset;
-
-        Prim2D_SetPos(
-            (f32)x,
-            (f32)y
-        );
-
-        Prim2D_SetTextScale(
-            1,
-            lbl_8036B4F4
-        );
-
+        Prim2D_SetPos((f32)(offset + xOffset), (f32)y);
+        Prim2D_SetTextScale(1, lbl_8036B4F4);
         Prim2D_SetText(str);
         Prim2D_EndPrim();
-
-        str += 4;
+        str++;
         offset += 0x16;
     }
 }
-#pragma global_optimizer on
+#pragma cplusplus off
 void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *self;
     u8 c;
@@ -8886,16 +8872,14 @@ void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
 char path[64];
-s32 *cursor = list;
-s32 owner = parent;
-s32 clear;
-s32 i;
-u8 *p;
 u8 *base;
+u8 *p;
 s32 id;
+s32 owner = parent;
+s32 *cursor = list;
 Process_UnlinkByKey(lbl_80299C58);
 base = lbl_80299A78;
-MenuResource_ClearIn(0, base);
+MenuResource_ClearSlots(base, 0);
 for (; (id = *cursor) != -1; cursor++) {
 p = MenuResource_FindIn(base, id);
 if (p) {
