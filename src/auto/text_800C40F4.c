@@ -14178,7 +14178,7 @@ static inline void Sort_CopyStep(SortIterator &out, const s32 &value) {
  *out = value;
  ++out;
 }
-static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare c) {
+static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare &c) {
     s32 Sort_GetKey(void *);
     s32 fn_800E0340(void *, void *, void *);
     void fn_800E2180(s32 *, s32 *);
