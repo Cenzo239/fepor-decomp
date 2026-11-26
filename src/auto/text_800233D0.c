@@ -18,7 +18,7 @@ virtual void v10() = 0;
 virtual void v11(void *) = 0;
 virtual void v12(void *) = 0;
 virtual void v13(void *) = 0;
-virtual u8 v14(void *) = 0;
+virtual u32 v14(void *) = 0;
 virtual void v15() = 0;
 virtual void v16() = 0;
 virtual void v17() = 0;
@@ -148,8 +148,8 @@ f32 Map_SampleHeightRaw(void *arg0, f32 x, f32 y) {
     f32 sp8;
     f32 spC;
     u8 *tbl;
-    s32 ix_i;
     s32 iy_i;
+    s32 ix_i;
     s32 six;
     s32 siy;
     f32 scale;
@@ -351,32 +351,35 @@ outer_test:
     }
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_80023A4C(void *arg0) {
- void *Map_Get(void);
- s32 fn_80047AF8(void *);
- u8 margin=fn_80047AF8(Map_Get());
- s32 i;
- s32 off;
- u16 *p;
- for(i=margin;i<*(s32*)arg0-margin;i++) {
- off=((s8)i+((s8)margin<<6))*2+0x408e;
- p=(u16*)((u8*)arg0+off);
- *p=(u16)(*p & ~0x808)|0x80;
- off=((s8)i+((s8)(*(s32*)((u8*)arg0+4)-margin-1)<<6))*2+0x408e;
- p=(u16*)((u8*)arg0+off);
- *p=(u16)(*p & ~0x404)|0x40;
- }
- for(i=margin;i<*(s32*)((u8*)arg0+4)-margin;i++) {
- off=((s8)margin+((s8)i<<6))*2+0x408e;
- p=(u16*)((u8*)arg0+off);
- *p=(u16)(*p & ~0x101)|0x10;
- off=((s8)(*(s32*)arg0-margin-1)+((s8)i<<6))*2+0x408e;
- p=(u16*)((u8*)arg0+off);
- *p=(u16)(*p & ~0x202)|0x20;
- }
+    void *Map_Get(void);
+    s32 fn_80047AF8(void *);
+    struct Map {
+        s32 w;
+        s32 h;
+        u8 pad[0x4086];
+        u16 tiles[4096];
+    };
+    struct Map *g = (struct Map *)arg0;
+    s32 margin = (u8)fn_80047AF8(Map_Get());
+    s32 m = (s8)margin;
+    s32 x, y;
+    for (x = margin; x < g->w - margin; x++) {
+        u16 *p = &g->tiles[(s8)x + (m << 6)];
+        *p = (u16)(*p & ~0x808) | 0x80;
+        p = &g->tiles[(s8)x + ((s8)(g->h - margin - 1) << 6)];
+        *p = (u16)(*p & ~0x404) | 0x40;
+    }
+    for (y = margin; y < g->h - margin; y++) {
+        u16 *p = &g->tiles[m + ((s8)y << 6)];
+        *p = (u16)(*p & ~0x101) | 0x10;
+        p = &g->tiles[(s8)(g->w - margin - 1) + ((s8)y << 6)];
+        *p = (u16)(*p & ~0x202) | 0x20;
+    }
 }
-
-#pragma global_optimizer off
+#pragma pop
 void fn_80023B80(void *arg0) {
     void *Map_Get(void);
     void fn_800062B0(void *, s32, s32);
@@ -1045,36 +1048,43 @@ extern "C" void fn_80024734(void *arg0) {
     ((Obj *)*(void **)((u8 *)arg0 + 0x3C))->v4(arg0);
 }
 
-#pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_80024768(void *arg0) {
 void *GfxEnt_Get(u8);void Process_ClearFunc(void*);
 void Ui_PlaySeCue(void*,s32);void Ui_HideUnitInfoPopup(void*);void Ui_OpenUnitInfoPopup(void*,void*,void*,f32,f32);void Ui_OpenUnitInfoText(void*,void*,void*,f32,f32);
 extern s32 gUiInputFlags;extern u8 lbl_80367238,lbl_80367239,gMapUiResult;
 extern u8 lbl_80268D90[],lbl_80284548[],gUnitInfoPopup[];extern u32 gUnitInfoPopupFlag;
-typedef struct { u8 pad[0x40]; u8 id; } Selection;
+typedef struct { u8 pad[0x40]; u8 id[0x22]; s8 selected; } Selection;
 f32 x,y;
 MenuController24768 *ctrl;
 void *item,*q;
 u8 *node;
-u8 flags;
+Selection *selected;
+u32 flags;
 ctrl=*(MenuController24768**)((u8*)arg0+0x3c);flags=0;
 if(!(gUiInputFlags&0x80)){
 if(*(s8*)((u8*)arg0+0x62)<0){ctrl->v13(arg0);return;}
 ctrl->v11(arg0);
 (*(MenuController24768**)((u8*)arg0+0x3c))->v12(arg0);
 if(*((u8*)arg0+0x2b)!=0x7b){
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);lbl_80367238=*((u8*)item+0x3a);
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);lbl_80367239=*((u8*)item+0x3b);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);lbl_80367238=*((u8*)item+0x3a);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);lbl_80367239=*((u8*)item+0x3b);
 }
 flags=(*(MenuController24768**)((u8*)arg0+0x3c))->v14(arg0);
 if(*((u8*)arg0+0x2b)!=0x7b)gMapUiResult=flags;
 }
+flags=(u8)flags;
 if((flags&4)&&ctrl->v28())Ui_PlaySeCue(ctrl->v28(),100);
 if(flags&8)Ui_PlaySeCue(lbl_80268D90+0x43,100);
 if(flags&16)Ui_PlaySeCue(lbl_80268D90+0x53,100);
 if(flags&1){
 Process_ClearFunc(arg0);
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);
 (*(MenuItem24768**)((u8*)item+0x34))->v15(arg0,item);
 if(ctrl->v27())Ui_PlaySeCue(ctrl->v27(),100);
 }else if(flags&2){
@@ -1086,22 +1096,27 @@ if(node[0x2c]&2){node[0x2c]&=~2;((u8*)*(void**)(node+0x18))[0x2d]--;}
 node=*(u8**)(node+0x18);
 }
 }else if(flags&32){
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);
 x=(f32)(*(s16*)((u8*)arg0+0x30)+*(s16*)((u8*)item+0x30));
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);
 y=(f32)(*(s16*)((u8*)arg0+0x32)+*(s16*)((u8*)item+0x32));
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v2();
 if(q)Ui_OpenUnitInfoText(gUnitInfoPopup,arg0,q,x,y);
 else {
-item=GfxEnt_Get(((Selection *)((u8*)arg0+*(s8*)((u8*)arg0+0x62)))->id);
+selected=(Selection *)((u8 *)arg0+((Selection *)arg0)->selected);
+item=GfxEnt_Get(selected->id[0]);
 q=(*(MenuItem24768**)((u8*)item+0x34))->v16(item);
 Ui_OpenUnitInfoPopup(gUnitInfoPopup,arg0,q,x,y);
 }
 *(u32*)gUnitInfoPopup|=gUnitInfoPopupFlag;
 }else if(flags&64)Ui_HideUnitInfoPopup(gUnitInfoPopup);
 }
-
+#pragma pop
+#pragma cplusplus on
 extern "C" s32 fn_80024B6C(void *unused, u8 *obj) {
 void *GfxEnt_Get(u8);
 u8 Ui_IsUnitInfoPopupOpen(void *);
