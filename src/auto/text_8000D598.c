@@ -605,25 +605,32 @@ void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     result = (u32)fn_8010494C(lbl_802AEE20[index]);
     Text_FindFontIndex(table, result);
 }
-#pragma pop
-void fn_8000E684(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
-u32 *table;
-u32 result;
-s32 index;
-u32 *p;
-index=0;
-result=(u32)fn_8010494C(lbl_802AEE20[index]);
-table=(u32*)lbl_802AEE20;
-index=-1;
-{ s32 i; for(i=0,p=table;i<5;++i,++p) { if(*p==result) { index=i; break; } } }
-fn_8000E7FC(arg0,arg1,arg2,arg3,arg4,arg5,farg0,farg1,farg2,farg3,farg4);
-if(index==-1) index=0;
-result=(u32)fn_8010494C(lbl_802AEE20[index]);
-for(index=0,p=table;index<5;++index,++p) { if(*p==result) break; }
-}
-
+#pragma push
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+void fn_8000E684(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
+    s32 fontId;
+    s32 index;
+    u32 *table;
+    u32 result;
+
+    fontId = 0;
+    if (fontId == -1) {
+        fontId = 0;
+    }
+    result = (u32)fn_8010494C(lbl_802AEE20[fontId]);
+    table = (u32 *)lbl_802AEE20;
+    index = Text_FindFontIndex(table, result);
+
+    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5,
+                farg0, farg1, farg2, farg3, farg4);
+
+    if (index == -1) {
+        index = 0;
+    }
+    result = (u32)fn_8010494C(lbl_802AEE20[index]);
+    Text_FindFontIndex(table, result);
+}
+#pragma pop
 int fn_8000E7FC(int a0, int a1, int a2, int a3, int a4, int a5, float f0, float f1, float f2, float f3, float f4)
 {
     void *fn_801047D0(void);
