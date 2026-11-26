@@ -3806,10 +3806,3 @@ extern f32 gTabMenuOne;
 #include "ef.h"
 
 extern u16* lbl_80332020;
-static inline u8 TabMenu_IsInBand(s8 first, s8 value, s8 last) {
-    u8 result = 0;
-    if (first <= value) {
-        if (value <= last) result = 1;
-    }
-    return result;
-}
