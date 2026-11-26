@@ -2629,6 +2629,7 @@ extern "C" void *fn_800639B4(char *arg0) {
     }
     return res;
 }
+#pragma inline_depth(0)
 #pragma cplusplus off
 void fn_80063A14(SomeStruct *arg0) {
  void Game_Assert(void *,s32,void *);
