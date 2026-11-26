@@ -2621,13 +2621,7 @@ static inline void *fn_800639B4_Body(void *res, char *p) {
 extern "C" void fn_80063A14(SomeStruct *);
 extern "C" void *fn_800639B4(char *arg0) {
     void *fn_8005C82C(char *, s32);
-    void fn_80063A14(void *);
-    void *res = fn_8005C82C(arg0, 0);
-    if ((FileCache_GetFlags(arg0) & 0x4000) == 0) {
-        fn_80063A14(res);
-        FileCache_MarkRelocated(arg0);
-    }
-    return res;
+    return fn_800639B4_Body(fn_8005C82C(arg0, 0), arg0);
 }
 #pragma inline_depth(0)
 #pragma cplusplus off
