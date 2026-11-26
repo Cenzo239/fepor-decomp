@@ -731,7 +731,9 @@ void fn_8008A5AC(void *arg0) {
         }
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_8008A998(s32 x, s32 y, s32 width) {
     s32 Ui_LoadAtlasTex(s32, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -755,6 +757,7 @@ void fn_8008A998(s32 x, s32 y, s32 width) {
         u16 h;
     } sp;
     s32 mid;
+    s32 right;
 
     Ui_LoadAtlasTex(gUiRouteAtlas, sp.buf, 0x15);
     sp.w = GXGetTexObjWidth(sp.buf);
@@ -772,10 +775,12 @@ void fn_8008A998(s32 x, s32 y, s32 width) {
     Prim2D_SetUvCorners(lbl_803696D8, lbl_803696E0, lbl_803696D8, lbl_803696DC);
     Prim2D_EndPrim();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)(mid + 0x41 + x), (f32)y, (f32)(sp.w - 0x41), lbl_803696DC);
+    right = mid + 0x41;
+    Prim2D_SetRect((f32)(x + right), (f32)y, (f32)(sp.w - 0x41), lbl_803696DC);
     Prim2D_SetUvCorners(lbl_803696D8, lbl_803696E0, (f32)sp.w, lbl_803696DC);
     Prim2D_EndPrim();
 }
+#pragma pop
 #pragma global_optimizer off
 void fn_8008AB7C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     s64 OSGetTime(void);
