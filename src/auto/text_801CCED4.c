@@ -1935,10 +1935,11 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
     u8 color[4];
-    s16 old;
-    s16 target;
+    u8 *c = color;
+    s32 old;
+    s32 target;
     void *selected;
-    s32 x, y;
+    s32 y, x;
     s16 x2, y2, ym1;
 
     ((Obj *)arg0)->v3();
@@ -1964,13 +1965,13 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
     Prim2D_AddZ(lbl_8036B510);
     Prim2D_PrepareTex();
 
-    color[0] = 0x9C;
+    c[0] = 0x9C;
     x2 = (s16)(x + 0x5C);
     y2 = (s16)(y + 0x1D);
     ym1 = (s16)(y - 1);
-    color[1] = 0x2F;
-    color[2] = 0x12;
-    color[3] = 0xFF;
+    c[1] = 0x2F;
+    c[2] = 0x12;
+    c[3] = 0xFF;
 
     Ui_DrawLine((s16)x, ym1, x2, ym1, *(s32 *)(arg0 + 0x34), color);
     Ui_DrawLine((s16)x, y2, x2, y2, *(s32 *)(arg0 + 0x34), color);

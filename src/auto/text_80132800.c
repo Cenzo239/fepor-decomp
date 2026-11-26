@@ -1820,7 +1820,8 @@ x=(s16)(rem+off48);
 y=(s16)(rowH*(s16)quot+off4a);
 t=Text_MeasureHeight(-1,lbl_8036A5AC);
 half=(s16)(((s32)(s16)rowH-t)>>1);
-in.x=x; in.y=y+half;
+in.x=x;
+*(s16 *)((u8 *)&in + 2) = y + half;
 *arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
 #pragma peephole reset

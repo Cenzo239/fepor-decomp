@@ -72,11 +72,11 @@ void *fn_800A0250(void) {
 }
 
 s32 fn_800A0260(s32 a, s32 b, void *arg2) {
-    void fn_8000BCA4(void *);
+    void Process_FindByName(void *);
     void fn_8018DC98(void);
     void fn_8018DCC0(void);
     extern u8 lbl_80366E24;
-    extern u8 lbl_8026D8D8[];
+    extern u8 gMenuCmdStrings[];
     u8 x = 2;
     u8 t;
 
@@ -87,7 +87,7 @@ s32 fn_800A0260(s32 a, s32 b, void *arg2) {
         *(u8 *)((char *)arg2 + 0x39) = x;
     }
     if (lbl_80366E24 != 0) {
-        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
+        Process_FindByName(gMenuCmdStrings + 0x3D0);
         fn_8018DCC0();
     } else {
         fn_8018DC98();

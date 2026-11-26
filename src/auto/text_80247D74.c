@@ -814,7 +814,7 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
             if (!(entry[3] & 0x80))
             {
               alt = table + (((u8) key) << 3);
-              value = alt[3] - 0x40;
+              value = alt[3] - ((0, 0x40));
               value += new_var2;
               if (value < 0) newPan = 0;
               else if (value > 127) newPan = 127;
@@ -830,7 +830,9 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
             else v = v & (~(v >> 31));
             if (flags == 0)
             {
-              s32 r; u8 k = key;
+              s32 r;
+              u8 k;
+              k = key;
               if (Sound_GetChanParam(0x41, arg7, a8) > 0x1F80U)
               {
                 r = Sound_RemapVoiceKey(k & 127, arg7, a8, 1, &status2);

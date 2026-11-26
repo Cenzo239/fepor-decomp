@@ -341,26 +341,10 @@ void fn_8022E804(void *dst, f64 x) {
     f64 fn_80238378(s32, f64);
     void fn_8023853C(f64 *);
     extern const f64 lbl_8036BDC8;
-    u8 dig[0x2C];
-    u8 sp38[0x2C];
-    f64 sp30;
-    f64 sp28;
-    f64 sp20;
-    f64 sp18;
-    f64 sp10;
-    f64 sp8;
-    s8 sign;
-    f64 f31;
-    s32 hx;
-    s32 clas;
-    s32 clas2;
-    u64 uq;
-    u8 t;
-    u8 *q;
-    u8 *p;
-    s32 expadj;
-    s8 ch;
-
+    u8 dig[0x2C]; u8 sp38[0x2C]; f64 sp30; f64 sp28; f64 sp20;
+    f64 sp18; f64 sp10; f64 sp8; s8 sign; f64 f31; s32 hx;
+    s32 clas; s32 clas2; u64 uq; u8 t; u8 *q; u8 *p;
+    s32 expadj; s8 ch;
     sp8 = x;
     sign = (s8)((*(u32 *)&sp8) >> 31);
     if (lbl_8036BDC8 == x) {
@@ -374,18 +358,12 @@ void fn_8022E804(void *dst, f64 x) {
     hx = *(s32 *)&sp28;
     switch (hx & 0x7FF00000) {
     case 0x7FF00000:
-        if ((hx & 0xFFFFF) || *((s32 *)&sp28 + 1) != 0) {
-            clas = 1;
-        } else {
-            clas = 2;
-        }
+        if ((hx & 0xFFFFF) || *((s32 *)&sp28 + 1) != 0) clas = 1;
+        else clas = 2;
         break;
     case 0:
-        if ((hx & 0xFFFFF) || *((s32 *)&sp28 + 1) != 0) {
-            clas = 5;
-        } else {
-            clas = 3;
-        }
+        if ((hx & 0xFFFFF) || *((s32 *)&sp28 + 1) != 0) clas = 5;
+        else clas = 3;
         break;
     default:
         clas = 4;
@@ -399,33 +377,23 @@ void fn_8022E804(void *dst, f64 x) {
         hx = *(s32 *)&sp20;
         switch (hx & 0x7FF00000) {
         case 0x7FF00000:
-            if ((hx & 0xFFFFF) || *((s32 *)&sp20 + 1) != 0) {
-                clas2 = 1;
-            } else {
-                clas2 = 2;
-            }
+            if ((hx & 0xFFFFF) || *((s32 *)&sp20 + 1) != 0) clas2 = 1;
+            else clas2 = 2;
             break;
         case 0:
-            if ((hx & 0xFFFFF) || *((s32 *)&sp20 + 1) != 0) {
-                clas2 = 5;
-            } else {
-                clas2 = 3;
-            }
+            if ((hx & 0xFFFFF) || *((s32 *)&sp20 + 1) != 0) clas2 = 5;
+            else clas2 = 3;
             break;
         default:
             clas2 = 4;
             break;
         }
         ch = 0x49;
-        if (clas2 == 1) {
-            ch = 0x4E;
-        }
+        if (clas2 == 1) ch = 0x4E;
         ((u8 *)dst)[5] = ch;
         return;
     }
-    if ((s8)sign != 0) {
-        sp8 = -x;
-    }
+    if ((s8)sign != 0) sp8 = -x;
     f31 = fn_802382EC((s32 *)&sp10, sp8);
     sp18 = f31;
     expadj = 0x35 - count_trailing_zero_p(&sp18);

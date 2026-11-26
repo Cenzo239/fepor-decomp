@@ -2609,19 +2609,18 @@ M2C_UNK fn_80063954(char *arg0) {
     return temp_r31;
 }
 
-#pragma inline_depth(0)
-u32 fn_800639B4(char *arg0) {
-    void fn_80063A14(u32);
-    u32 temp_r31;
+#pragma optimization_level reset
+M2C_UNK fn_800639B4(char *arg0) {
+    M2C_UNK fn_80063A14(M2C_UNK);
+    M2C_UNK temp_r31;
 
     temp_r31 = fn_8005C82C(arg0, 0);
-    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
+    if (!(fn_8005C6A0(arg0) & 0x4000)) {
         fn_80063A14(temp_r31);
-        FileCache_MarkRelocated(arg0);
+        fn_8005C5A8(arg0);
     }
     return temp_r31;
 }
-
 void fn_80063A14(SomeStruct *arg0) {
  void Game_Assert(void *,s32,void *);
  SomeStruct *inner;
@@ -3716,17 +3715,15 @@ u32 fn_80065E88(s32 arg0, s32 arg1) {
     return temp_r31;
 }
 s32 fn_80065EE8(void *arg0) {
-#pragma scheduling off
     void fn_80065F48(s32);
-    s32 temp_r31;
+    u32 temp_r31;
 
-    temp_r31 = fn_8005C82C(arg0, 0);
+    temp_r31 = (u32)fn_8005C82C(arg0, 0);
     if (!(FileCache_GetFlags((char *)arg0) & 0x4000)) {
-        fn_80065F48(temp_r31);
+        fn_80065F48((s32)temp_r31);
         FileCache_MarkRelocated((char *)arg0);
     }
-    return temp_r31;
-#pragma scheduling reset
+    return (s32)temp_r31;
 }
 
 #pragma optimization_level 2
@@ -7312,10 +7309,12 @@ void fn_8006CF60(void *arg0)
   }
   gqr = ((long) new_var11) | 6;
   new_var6 = 0xFFFF & 0xFFu;
+  ;
   __mtspr(914, (gqr << 16) | (gqr & 0x7FFF));
   new_var17[1] = *((u8 **) (self + 0x48));
   gqr = (((u32) new_var17[1][0x5C]) << 8) | 7;
   gqr = ((gqr << 5) << 11) | (gqr & new_var6);
+  ;
   __mtspr(915, gqr);
   new_var17[0] = *((u8 **) (self + 0x6C));
   t = (new_var16 - ((f32) kf_prev[0])) / ((f32) (kf[0] - kf_prev[0]));
@@ -7388,6 +7387,7 @@ void fn_8006CF60(void *arg0)
   __mtspr(914, gqr);
   __mtspr(916, 0x07060706);
   w = lbl_803692B8 - w;
+  ;
   entry = (*((u8 **) (anim + 0x28))) + ((*new_var)[3] << new_var14);
   new_var20 = 0;
   dst = *((u8 **) (self + 0x70));
@@ -8762,8 +8762,8 @@ void fn_8006F10C(s32 arg0, s32 arg1) {
     s32 fn_800C0658(void);
     void Ui_CreateMenu(void *, s32, s32);
     u8 *base = lbl_80311CA8;
-    volatile void **entries = (volatile void **)(base + 0x6c);
     volatile s32 *table = (volatile s32 *)(base + 0x4c);
+    volatile void **entries = (volatile void **)(base + 0x6c);
 
     entries[0] = (void *)table;
     table[1] = arg0;

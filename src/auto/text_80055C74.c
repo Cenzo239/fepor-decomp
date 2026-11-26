@@ -1851,7 +1851,7 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
   extern const f32 lbl_8036912C;
-  extern const f32 lbl_8036915C;
+  extern f32 lbl_8036915C;
   f32 one;
   f32 h01;
   f32 h00;

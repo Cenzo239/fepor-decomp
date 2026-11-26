@@ -1249,6 +1249,8 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     f32 f31;
     f32 f30;
     u8 *p;
+    u8 cur;
+    u8 prev;
 
     pad = *(u32 **)&gPadInput;
     trig = pad[3];
@@ -1274,7 +1276,9 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         }
         (*(u8 *)((u8 *)arg1 + 0x62))++;
     }
-    if ((s8)*(u8 *)((u8 *)arg1 + 0x62) != (s8)*(u8 *)((u8 *)arg1 + 0x63)) {
+    cur = *(u8 *)((u8 *)arg1 + 0x62);
+    prev = *(u8 *)((u8 *)arg1 + 0x63);
+    if ((s8)cur != (s8)prev) {
         p = (u8 *)arg1;
         p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
         node = (Node *)GfxEnt_Get(p[0x40]);

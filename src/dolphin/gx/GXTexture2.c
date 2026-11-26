@@ -1053,9 +1053,9 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
     value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
   }
   cmd = 0x61;
-  ptr = (u32 *) __GXData;
   gx = __GXData;
   GXWGFifo.u8 = cmd;
+  ptr = (u32 *) __GXData;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;

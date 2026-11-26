@@ -9001,13 +9001,24 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     register s32 dstW0, dstR0, dstW1, dstR1, dstW2, dstR2;
     register s32 dstEnd0, dstEnd1, dstEnd2;
     register s32 ringCount, ringLast;
-    register u8 *src, *dst, *ring;
+    typedef struct AuxDelay {
+        s32 writeIndex;
+        s32 readIndex;
+        s32 endIndex;
+        u8 *buffer;
+        f32 value;
+    } AuxDelay;
+    register AuxDelay *src, *dst;
+    register u8 *ring;
     register u8 *srcBuf0, *srcBuf1, *srcBuf2;
     u8 *dstBuf;
     u8 *ringBase, *ringCursor;
     s32 channel3, offset, i, nextInput;
     f32 sample, delayed, sum, stage, out0, out1, out2;
     f32 drySample;
+    u8 *ringLimit;
+    f32 firstRead;
+    s32 output;
 
     scale = lbl_8036C3E0;
     unity = lbl_8036C3E4;
@@ -9019,8 +9030,8 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
 
     channel3 = (arg2 << 1) + arg2;
     offset = channel3 * 0x14;
-    src = (arg1 + 0xB4) + offset;
-    dst = arg1 + offset;
+    src = (AuxDelay *)(arg1 + 0xB4) + channel3;
+    dst = (AuxDelay *)arg1 + channel3;
     coeff0 = *(f32 *)(arg1 + channel3 * 4 + 0x16C);
     coeff1 = *(f32 *)(arg1 + channel3 * 4 + 0x170);
     coeff2 = *(f32 *)(arg1 + channel3 * 4 + 0x174);
@@ -9030,33 +9041,33 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     ringLast = (ringCount - 1) * 4;
     ring = arg1 + arg2 * 4;
 
-    srcW0 = *(s32 *)(src + 0x00);
-    srcR0 = *(s32 *)(src + 0x04);
-    srcW1 = *(s32 *)(src + 0x14);
-    srcR1 = *(s32 *)(src + 0x18);
-    srcW2 = *(s32 *)(src + 0x28);
-    srcR2 = *(s32 *)(src + 0x2C);
-    srcVal0 = *(f32 *)(src + 0x10);
-    srcVal1 = *(f32 *)(src + 0x24);
-    srcVal2 = *(f32 *)(src + 0x38);
-    srcEnd0 = *(s32 *)(src + 0x08);
-    srcEnd1 = *(s32 *)(src + 0x1C);
-    srcEnd2 = *(s32 *)(src + 0x30);
-    srcBuf0 = *(u8 **)(src + 0x0C);
-    srcBuf1 = *(u8 **)(src + 0x20);
-    srcBuf2 = *(u8 **)(src + 0x34);
+    srcW0 = src[0].writeIndex;
+    srcR0 = src[0].readIndex;
+    srcW1 = src[1].writeIndex;
+    srcR1 = src[1].readIndex;
+    srcW2 = src[2].writeIndex;
+    srcR2 = src[2].readIndex;
+    srcVal0 = src[0].value;
+    srcVal1 = src[1].value;
+    srcVal2 = src[2].value;
+    srcEnd0 = src[0].endIndex;
+    srcEnd1 = src[1].endIndex;
+    srcEnd2 = src[2].endIndex;
+    srcBuf0 = src[0].buffer;
+    srcBuf1 = src[1].buffer;
+    srcBuf2 = src[2].buffer;
 
-    dstW0 = *(s32 *)(dst + 0x00);
-    dstR0 = *(s32 *)(dst + 0x04);
-    dstW1 = *(s32 *)(dst + 0x14);
-    dstR1 = *(s32 *)(dst + 0x18);
-    dstW2 = *(s32 *)(dst + 0x28);
-    dstR2 = *(s32 *)(dst + 0x2C);
-    dstVal0 = *(f32 *)(dst + 0x10);
-    dstVal1 = *(f32 *)(dst + 0x24);
-    dstVal2 = *(f32 *)(dst + 0x38);
-    dstEnd0 = *(s32 *)(dst + 0x08);
-    dstEnd1 = *(s32 *)(dst + 0x1C);
+    dstW0 = dst[0].writeIndex;
+    dstR0 = dst[0].readIndex;
+    dstW1 = dst[1].writeIndex;
+    dstR1 = dst[1].readIndex;
+    dstW2 = dst[2].writeIndex;
+    dstR2 = dst[2].readIndex;
+    dstVal0 = dst[0].value;
+    dstVal1 = dst[1].value;
+    dstVal2 = dst[2].value;
+    dstEnd0 = dst[0].endIndex;
+    dstEnd1 = dst[1].endIndex;
 
     conversion.words[1] = (u32)*arg0 ^ 0x80000000U;
     sample = (f32)(conversion.value - bias);
@@ -9066,10 +9077,11 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
         if (ringCount != 0) {
             ringBase = *(u8 **)(ring + 0x1AC);
             ringCursor = *(u8 **)(ring + 0x1B8);
+            ringLimit = ringBase + ringLast;
             ringCursor += 4;
             delayed = *(f32 *)(ringCursor - 4);
             *(f32 *)(ringCursor - 4) = sample;
-            if ((s32)ringCursor == (s32)(ringBase + ringLast)) {
+            if (ringCursor == ringLimit) {
                 ringCursor = ringBase;
             }
             /* The target stores relative to ringBase, not ring. */
@@ -9082,12 +9094,13 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
         *(f32 *)(srcBuf0 + srcW0) = out0;
         srcW0 += 4;
         *(f32 *)(srcBuf1 + srcW1) = out1;
-        srcVal0 = *(f32 *)(srcBuf0 + srcR0);
+        firstRead = *(f32 *)(srcBuf0 + srcR0);
+        srcVal0 = firstRead;
         srcR0 += 4;
         srcVal1 = *(f32 *)(srcBuf1 + srcR1);
         srcW1 += 4;
         srcR1 += 4;
-        sum = srcVal0 + srcVal1;
+        sum = firstRead + srcVal1;
         if (srcW0 == srcEnd0) srcW0 = 0;
         out2 = __fmadds(coeff2, srcVal2, delayed);
         if (srcR0 == srcEnd0) srcR0 = 0;
@@ -9099,7 +9112,7 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
         if (srcR1 == srcEnd1) srcR1 = 0;
         sum += srcVal2;
 
-        dstBuf = *(u8 **)(dst + 0x0C);
+        dstBuf = dst[0].buffer;
         out0 = __fmadds(damp, dstVal0, sum);
         if (srcW2 == srcEnd2) srcW2 = 0;
         if (srcR2 == srcEnd2) srcR2 = 0;
@@ -9109,7 +9122,7 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
         dstW0 += 4;
         dstVal0 = *(f32 *)(dstBuf + dstR0);
         dstR0 += 4;
-        dstBuf = *(u8 **)(dst + 0x20);
+        dstBuf = dst[1].buffer;
         out1 = __fmadds(damp, dstVal1, stage);
         if (dstW0 == dstEnd0) dstW0 = 0;
         conversion.words[1] = (u32)nextInput;
@@ -9122,22 +9135,23 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
         dstR1 += 4;
         stage = __fmadds(gain, feedback, stage);
         if (dstW1 == dstEnd1) dstW1 = 0;
-        dstBuf = *(u8 **)(dst + 0x34);
+        dstBuf = dst[2].buffer;
         out2 = __fmadds(damp, dstVal2, stage);
         feedback = stage;
         if (dstR1 == dstEnd1) dstR1 = 0;
         *(f32 *)(dstBuf + dstW2) = out2;
         stage = __fnmsubs(damp, out2, dstVal2);
-        dstEnd2 = *(s32 *)(dst + 0x30);
+        dstEnd2 = dst[2].endIndex;
         drySample = dry * sample;
         dstVal2 = *(f32 *)(dstBuf + dstR2);
         dstW2 += 4;
         dstR2 += 4;
         out0 = __fmadds(wet, stage, drySample);
+        output = (s32)out0;
         if (dstW2 == dstEnd2) dstW2 = 0;
         if (dstR2 == dstEnd2) dstR2 = 0;
         sample = (f32)(conversion.value - bias);
-        arg0[-1] = (s32)out0;
+        arg0[-1] = output;
     }
 
     /* Final sample: no speculative read beyond the input block. */
@@ -9145,10 +9159,11 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     if (ringCount != 0) {
         ringBase = *(u8 **)(ring + 0x1AC);
         ringCursor = *(u8 **)(ring + 0x1B8);
+        ringLimit = ringBase + ringLast;
         ringCursor += 4;
         delayed = *(f32 *)(ringCursor - 4);
         *(f32 *)(ringCursor - 4) = sample;
-        if ((s32)ringCursor == (s32)(ringBase + ringLast)) {
+        if (ringCursor == ringLimit) {
             ringCursor = ringBase;
         }
         /* The target stores relative to ringBase, not ring. */
@@ -9160,12 +9175,13 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     *(f32 *)(srcBuf0 + srcW0) = out0;
     srcW0 += 4;
     *(f32 *)(srcBuf1 + srcW1) = out1;
-    srcVal0 = *(f32 *)(srcBuf0 + srcR0);
+    firstRead = *(f32 *)(srcBuf0 + srcR0);
+    srcVal0 = firstRead;
     srcR0 += 4;
     srcVal1 = *(f32 *)(srcBuf1 + srcR1);
     srcW1 += 4;
     srcR1 += 4;
-    sum = srcVal0 + srcVal1;
+    sum = firstRead + srcVal1;
     if (srcW0 == srcEnd0) srcW0 = 0;
     out2 = __fmadds(coeff2, srcVal2, delayed);
     if (srcR0 == srcEnd0) srcR0 = 0;
@@ -9177,7 +9193,7 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     if (srcR1 == srcEnd1) srcR1 = 0;
     sum += srcVal2;
 
-    dstBuf = *(u8 **)(dst + 0x0C);
+    dstBuf = dst[0].buffer;
     out0 = __fmadds(damp, dstVal0, sum);
     if (srcW2 == srcEnd2) srcW2 = 0;
     if (srcR2 == srcEnd2) srcR2 = 0;
@@ -9186,7 +9202,7 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     dstW0 += 4;
     dstVal0 = *(f32 *)(dstBuf + dstR0);
     dstR0 += 4;
-    dstBuf = *(u8 **)(dst + 0x20);
+    dstBuf = dst[1].buffer;
     out1 = __fmadds(damp, dstVal1, stage);
     if (dstW0 == dstEnd0) dstW0 = 0;
     *(f32 *)(dstBuf + dstW1) = out1;
@@ -9198,42 +9214,43 @@ void Sound_ProcessAuxChannel(s32 *arg0, u8 *arg1, s32 arg2)
     dstR1 += 4;
     stage = __fmadds(gain, feedback, stage);
     if (dstW1 == dstEnd1) dstW1 = 0;
-    dstBuf = *(u8 **)(dst + 0x34);
+    dstBuf = dst[2].buffer;
     out2 = __fmadds(damp, dstVal2, stage);
     feedback = stage;
     if (dstR1 == dstEnd1) dstR1 = 0;
     *(f32 *)(dstBuf + dstW2) = out2;
     stage = __fnmsubs(damp, out2, dstVal2);
-    dstEnd2 = *(s32 *)(dst + 0x30);
+    dstEnd2 = dst[2].endIndex;
     drySample = dry * sample;
     dstVal2 = *(f32 *)(dstBuf + dstR2);
     dstW2 += 4;
     dstR2 += 4;
     out0 = __fmadds(wet, stage, drySample);
+    output = (s32)out0;
     if (dstW2 == dstEnd2) dstW2 = 0;
     if (dstR2 == dstEnd2) dstR2 = 0;
-    *arg0 = (s32)out0;
+    *arg0 = output;
 
     channel3 = (arg2 << 1) + arg2;
-    src = (arg1 + 0xB4) + channel3 * 0x14;
-    *(s32 *)(src + 0x00) = srcW0;
-    *(s32 *)(src + 0x04) = srcR0;
-    *(s32 *)(src + 0x14) = srcW1;
-    *(s32 *)(src + 0x18) = srcR1;
-    *(s32 *)(src + 0x28) = srcW2;
-    *(s32 *)(src + 0x2C) = srcR2;
-    *(f32 *)(src + 0x10) = srcVal0;
-    *(f32 *)(src + 0x24) = srcVal1;
-    *(f32 *)(src + 0x38) = srcVal2;
-    *(s32 *)(dst + 0x00) = dstW0;
-    *(s32 *)(dst + 0x04) = dstR0;
-    *(s32 *)(dst + 0x14) = dstW1;
-    *(s32 *)(dst + 0x18) = dstR1;
-    *(s32 *)(dst + 0x28) = dstW2;
-    *(s32 *)(dst + 0x2C) = dstR2;
-    *(f32 *)(dst + 0x10) = dstVal0;
-    *(f32 *)(dst + 0x24) = dstVal1;
-    *(f32 *)(dst + 0x38) = dstVal2;
+    src = (AuxDelay *)(arg1 + 0xB4) + channel3;
+    src[0].writeIndex = srcW0;
+    src[0].readIndex = srcR0;
+    src[1].writeIndex = srcW1;
+    src[1].readIndex = srcR1;
+    src[2].writeIndex = srcW2;
+    src[2].readIndex = srcR2;
+    src[0].value = srcVal0;
+    src[1].value = srcVal1;
+    src[2].value = srcVal2;
+    dst[0].writeIndex = dstW0;
+    dst[0].readIndex = dstR0;
+    dst[1].writeIndex = dstW1;
+    dst[1].readIndex = dstR1;
+    dst[2].writeIndex = dstW2;
+    dst[2].readIndex = dstR2;
+    dst[0].value = dstVal0;
+    dst[1].value = dstVal1;
+    dst[2].value = dstVal2;
     *(f32 *)(arg1 + arg2 * 4 + 0x190) = feedback;
 }
 

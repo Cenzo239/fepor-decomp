@@ -360,28 +360,35 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma opt_strength_reduction off
+#pragma opt_strength_reduction on
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
-extern ThpDecodeState *volatile lbl_80368950;
-extern const f64 lbl_8036C190;
-
+    extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
+    u8 *zig;
+    u8 *p;
+    const f64 *base;
     u32 size;
-    u16 i;
-    u16 row;
     u32 id;
+    u32 i;
+    u16 row;
     u8 *state;
     const f64 *scale;
-    const f64 *base;
-    u8 *zig;
 
     size = ThpReadWord() - 2;
     do {
         id = ThpReadByte();
         zig = lbl_80282FD8;
-        for (i = 0; i < 64; i++) {
-            table[zig[i]] = (f32)(u32)ThpReadByte();
+        p = zig;
+        for (i = 0; (u16)i < 64; i += 8, p += 8) {
+            table[*p] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 3)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 4)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 5)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
+            table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
         }
         state = (u8 *)lbl_80368950;
         base = (const f64 *)(lbl_80282FD8 + 0x50);
@@ -402,7 +409,6 @@ extern const f64 lbl_8036C190;
     } while ((u16)size);
     return 0;
 }
-#pragma opt_strength_reduction reset
 u8 fn_8023CE08(void)
 {
     extern s32 lbl_8036894C;

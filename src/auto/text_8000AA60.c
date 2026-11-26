@@ -529,12 +529,12 @@ s32 fn_8000B37C(void *arg0) {
     return 1;
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_8000B39C(void *arg0)
 {
-    u32 *base;
     s32 counter;
-    u8 key;
+    s32 key;
+    u32 *base;
     u32 *ptr;
     u32 node;
 
@@ -563,7 +563,7 @@ s32 fn_8000B39C(void *arg0)
 done:
     return 1;
 }
-#pragma optimization_level reset
+#pragma global_optimizer on
 s32 fn_8000B418(void *arg0)
 {
     u32 *ptr;
