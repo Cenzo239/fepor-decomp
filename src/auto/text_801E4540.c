@@ -3659,6 +3659,4 @@ extern f32 gTabMenuOne;
 #include "ef.h"
 
 extern u16* lbl_80332020;
-static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
-    return low <= value && value <= high;
-}
+
