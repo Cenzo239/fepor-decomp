@@ -159,7 +159,7 @@ static inline s32 ResetSW_ReadState(s32 zero) {
     s32 enabled;
     s32 pad;
     s64 now;
-    s16 soft;
+    s32 soft;
     u32 freq;
     u32 thresh;
     s32 n;
@@ -224,7 +224,7 @@ static inline s32 ResetSW_ReadState(s32 zero) {
         if (t < now) {
             q = __div2i(now - t, (u64)freq);
             q = __div2i(q, 2);
-            if ((q & 1) == zero) {
+            if ((q % 2) == zero) {
                 state = 1;
             } else {
                 state = zero;
