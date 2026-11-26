@@ -28,9 +28,6 @@ s32 i;
 for(i=0;i<40;i++,p+=12) { if(id==*(s32*)p) return p; }
 return 0;
 }
-static inline s32 GoldCmpBC71C(s32 cost, s32 limit) {
-    return (cost <= limit) ? 1 : 0;
-}
 #pragma cplusplus on
 struct MenuD28 {
 virtual s32 v0()=0;
