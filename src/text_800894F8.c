@@ -5,23 +5,7 @@ static inline void *MenuCreateAt(u8 *base, s32 offset) {
     void *Process_Create(void *, s32);
     return Process_Create(base + offset, 7);
 }
-static inline void MenuCreateProcesses(u8 *base, s32 first) {
-    void *Process_Create(void *, s32);
-    extern u8 lbl_80289950[];
-    extern u16 *lbl_803674E0;
-    extern void *lbl_803674E4;
-    extern void *lbl_803674E8;
-    extern void *lbl_803674EC;
-    void *tmp;
-    lbl_803674E0 = Process_Create(base + first, 7);
-    lbl_803674E4 = Process_Create(base + 0x58, 7);
-    tmp = Process_Create(base + 0x18, 7);
-    lbl_803674E8 = tmp;
-    *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create(base + 0x30, 7);
-    lbl_803674EC = tmp;
-    *(s16 *)((u8 *)tmp + 0x32) = 0;
-}
+
 typedef struct {
     f32 x, y;
     u8 unk8[4];
