@@ -4271,6 +4271,7 @@ void fn_800CB978(u8 *self) {
     }
 }
 
+#pragma opt_common_subs reset
 #pragma dont_inline on
 #pragma use_lmw_stmw on
 #pragma cplusplus on
