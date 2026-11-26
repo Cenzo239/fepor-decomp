@@ -1,5 +1,31 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 Synth_CalculatePortamento(s32 pitch, u8 *voice, s32 delta) {
+ s32 finalPitch,t2,i;
+        finalPitch = pitch;
+        if ((*(u64 *)(voice + 0x114) & 0x400ULL) != 0) {
+            t2 = (u32)(*(s32 *)(voice + 0x138) - *(s32 *)(voice + 0x140)) >> 8;
+            if (t2 > 0) {
+                i = *(u32 *)(voice + 0x13C);
+                *(u32 *)(voice + 0x13C) =
+                    i + ((delta * ((s32)(pitch - i) >> 8)) / t2);
+                if ((i < (u32)pitch && *(u32 *)(voice + 0x13C) < (u32)pitch) ||
+                    (i > (u32)pitch && *(u32 *)(voice + 0x13C) > (u32)pitch)) {
+                    finalPitch = *(s32 *)(voice + 0x13C);
+                    *(s32 *)(voice + 0x140) += delta;
+                } else {
+                    *(s32 *)(voice + 0x140) = *(s32 *)(voice + 0x138);
+                }
+            }
+        }
+
+        if ((*(u64 *)(voice + 0x114) & 0x20000000000ULL) != 0) {
+            finalPitch += (*(s16 *)(voice + 0x210) * (*(s32 *)(voice + 0x1F0) >> 16)) >> 7;
+        }
+
+ return finalPitch;
+}
+
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -881,44 +907,48 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
     default: return -1;
   }
 }
-void fn_80248D28(s32 arg0)
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 3
+extern "C" void fn_80248D28(s32 arg0)
 {
-    extern s32 lbl_803689A8;
+    extern s32 gSynthVoices;
     extern s32 lbl_803689B8;
     extern s32 lbl_803689BC;
-    u32 fn_802616F4(u32);
-    s16 fn_80261214(s32);
-    s32 fn_8025807C(s32, s32, s32);
+    u32 Sound_IsHwVoiceActive(u32);
+    s16 fn_80261214(u16);
+    u32 fn_8025807C(s32, s32, s32);
     s32 fn_80260764(void *);
     s32 fn_802607F4(void *);
-    u16 fn_8025FC64(s32, u8);
+    u16 Sound_GetChanParam(s32, u8, u8);
     s32 fn_8025785C(u8, s32);
-    s32 fn_80257820(u16);
+    u16 fn_80257820(u16);
     u16 fn_802607AC(void *);
     void fn_80261BC8(s32, u16);
     void fn_80249C1C(void *, s32, s32);
 
-    u8 spA;
-    u8 sp8;
-    u8 *voice;
+    u16 spA;
+    u16 sp8;
     u8 *p;
-    s32 delta;
     s32 i;
+    s32 delta;
     s32 pitch;
+    u8 *voice;
     s32 t;
     s32 t2;
     u16 w;
+    u32 modulation;
+    s32 finalPitch;
     u64 flags;
     u64 now;
 
-    voice = (u8 *)lbl_803689A8 + arg0 * 0x458;
-    if (fn_802616F4(arg0) != 0 || *(u32 *)(voice + 0x34) != 0) {
+    voice = (u8 *)gSynthVoices + arg0 * 0x458;
+    if (Sound_IsHwVoiceActive(arg0) != 0 || *(u32 *)(voice + 0x34) != 0) {
         p = voice;
         i = 0;
-        now = ((u64)(u32)lbl_803689B8 << 32) | (u32)lbl_803689BC;
-        delta = (s32)(now - ((((u64)*(u32 *)(voice + 0x24) << 32) | *(u32 *)(voice + 0x28))));
-        *(s32 *)(voice + 0x28) = lbl_803689BC;
-        *(s32 *)(voice + 0x24) = lbl_803689B8;
+        now = *(u64 *)&lbl_803689B8;
+        delta = (s32)(now - *(u64 *)(voice + 0x24));
+        *(u64 *)(voice + 0x24) = now;
         do {
             if (*(u32 *)(p + 0x1C4) != 0) {
                 *(u32 *)(p + 0x1C0) += delta;
@@ -975,8 +1005,7 @@ void fn_80248D28(s32 arg0)
         }
 
         p = voice;
-        i = 2;
-        do {
+        for (i=0;i<2;i++) {
             if (*(u32 *)(p + 0x174) != *(u32 *)(p + 0x184)) {
                 *(s32 *)(p + 0x18C) -= delta;
                 t = *(s32 *)(p + 0x18C);
@@ -989,60 +1018,45 @@ void fn_80248D28(s32 arg0)
                     t2 = *(s32 *)(p + 0x174);
                     if (t2 < 0) {
                         t = 0;
-                    } else if ((u32)t2 > 0x7F0000U) {
-                        t = 0x7F0000;
                     } else {
-                        t = t2;
-                    }
+ t=0x7F0000;
+ if((u32)t2 <= 0x7F0000U)t=t2;
+ }
                     *(s32 *)(p + 0x174) = t;
                 }
                 *(u32 *)(voice + 0x114) |= 0x2000;
             }
             p += 4;
-            i -= 1;
-        } while (i != 0);
+        }
 
         if ((*(u64 *)(voice + 0x114) & 0x20000000000ULL) != 0) {
             if (fn_8025807C((s32)(voice + 0x1E8), (s32)&spA, (s32)&sp8) != 0) {
-                *(u32 *)(voice + 0x114) &= ~0x200;
+                *(u64 *)(voice + 0x114) &= ~0x20000000000ULL;
             }
         }
 
         pitch = (*(u16 *)(voice + 0x12E) << 16) + (((s8)voice[0x130] << 16) / 100);
         if ((*(u64 *)(voice + 0x114) & 0x10030ULL) != 0) {
-            if (voice[0x121] != 0xFF) {
-                t = fn_80260764(voice);
-                *(u16 *)(voice + 0x1DC) = (u16)t;
-                t = (u16)t;
-                if (t != 0x2000) {
-                    t2 = t - 0x2000;
-                    if (t2 < 0) {
-                        pitch += voice[0x1DA] * t2 * 8;
-                    } else {
-                        pitch += voice[0x1DB] * t2 * 8;
-                    }
-                }
-            }
-        } else {
-            t = *(u16 *)(voice + 0x1DC);
-            if (t != 0x2000) {
-                t2 = t - 0x2000;
-                if (t2 < 0) {
-                    pitch += voice[0x1DA] * t2 * 8;
-                } else {
-                    pitch += voice[0x1DB] * t2 * 8;
-                }
-            }
-        }
+ if(voice[0x121]==0xFF) goto pitchDone;
+ t=fn_80260764(voice);
+ *(u16*)(voice+0x1DC)=t;
+ t=(u16)t;
+ } else t=*(u16*)(voice+0x1DC);
+ if(t!=0x2000) {
+ t-=0x2000;
+ if(t<0)pitch+=voice[0x1DA]*t*8;
+ else pitch+=voice[0x1DB]*t*8;
+ }
+pitchDone:
 
         if ((*(u64 *)(voice + 0x114) & 0x2000ULL) != 0) {
-            w = (u16)fn_802607F4(voice);
+            modulation = fn_802607F4(voice);
             t = (voice[0x144] << 8) + ((voice[0x145] << 8) / 100);
             if (*(s16 *)(voice + 0x154) != 0) {
-                t += (*(s16 *)(voice + 0x154) * ((s32)w >> 7)) >> 7;
+                t += (*(s16 *)(voice + 0x154) * ((s32)(u16)modulation >> 7)) >> 7;
             }
             if ((*(u64 *)(voice + 0x114) & 0x4000ULL) != 0) {
-                t2 = (*(s32 *)(voice + 0x150) * ((s32)w >> 7)) >> 7;
+                t2 = (*(s32 *)(voice + 0x150) * ((s32)(u16)modulation >> 7)) >> 7;
             } else {
                 t2 = *(s32 *)(voice + 0x150);
             }
@@ -1050,11 +1064,11 @@ void fn_80248D28(s32 arg0)
         }
 
         if (voice[0x121] != 0xFF) {
-            w = fn_8025FC64(0x41, voice[0x122]);
+            w = Sound_GetChanParam(0x41, voice[0x121], voice[0x122]);
             if (w != *(u16 *)(voice + 0x134) ||
                 (*(u64 *)(voice + 0x114) & 0x21000ULL) == 0x20000ULL) {
                 if (w <= 0x1F80U) {
-                    *(u32 *)(voice + 0x118) &= ~0x400;
+                    *(u64 *)(voice + 0x114) &= ~0x400ULL;
                 } else {
                     flags = *(u64 *)(voice + 0x114);
                     if ((flags & 0x400ULL) == 0 && (flags & 0x20000ULL) == 0) {
@@ -1076,7 +1090,7 @@ void fn_80248D28(s32 arg0)
             }
         }
 
-        t = pitch;
+        finalPitch = pitch;
         if ((*(u64 *)(voice + 0x114) & 0x400ULL) != 0) {
             t2 = (u32)(*(s32 *)(voice + 0x138) - *(s32 *)(voice + 0x140)) >> 8;
             if (t2 > 0) {
@@ -1085,7 +1099,7 @@ void fn_80248D28(s32 arg0)
                     i + ((delta * ((s32)(pitch - i) >> 8)) / t2);
                 if ((i < (u32)pitch && *(u32 *)(voice + 0x13C) < (u32)pitch) ||
                     (i > (u32)pitch && *(u32 *)(voice + 0x13C) > (u32)pitch)) {
-                    t = *(s32 *)(voice + 0x13C);
+                    finalPitch = *(s32 *)(voice + 0x13C);
                     *(s32 *)(voice + 0x140) += delta;
                 } else {
                     *(s32 *)(voice + 0x140) = *(s32 *)(voice + 0x138);
@@ -1094,13 +1108,14 @@ void fn_80248D28(s32 arg0)
         }
 
         if ((*(u64 *)(voice + 0x114) & 0x20000000000ULL) != 0) {
-            t += (*(s16 *)(voice + 0x210) * (*(s32 *)(voice + 0x1F0) >> 16)) >> 7;
+            finalPitch += (*(s16 *)(voice + 0x210) * (*(s32 *)(voice + 0x1F0) >> 16)) >> 7;
         }
 
-        pitch = fn_8025785C((u8)((u32)t >> 16), *(s32 *)(voice + 0x124)) << 16;
-        if ((u16)t != 0) {
+        pitch = fn_8025785C((u8)((u32)finalPitch >> 16), *(s32 *)(voice + 0x124)) << 16;
+        finalPitch = (u16)finalPitch;
+        if (finalPitch != 0) {
             t2 = (u32)pitch >> 16;
-            pitch += (u16)t * (fn_80257820((u16)t2) - t2);
+            pitch += finalPitch * (fn_80257820((u16)t2) - t2);
         }
         pitch = *(s32 *)(voice + 0x1A8) + pitch;
         pitch = *(s32 *)(voice + 0x1A4) + pitch;
@@ -1115,7 +1130,8 @@ void fn_80248D28(s32 arg0)
         *(u32 *)(voice + 0x220) = 0x7FFF;
     }
 }
-
+#pragma pop
+#pragma cplusplus off
 void fn_8024946C(s32 arg0)
 {
     u32 Sound_IsHwVoiceActive(s32);
