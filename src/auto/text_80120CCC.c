@@ -109,18 +109,33 @@ void Obj_EaseTintProc(void *proc) {
 #pragma peephole on
 #pragma scheduling on
 void fn_80120F0C(void) {
-extern u16 gUiPanelFlags; extern u32 gUiInputFlags; extern u8 gUiTooltipProc[];
-void *Process_Find(void *); void Process_Unlink(void); void Process_ClearFunc(void);
-u16 b;
-u16 a;
-u16 *p=&gUiPanelFlags;
-a=gUiPanelFlags; b=p[1];
-gUiInputFlags |= 2;
-if(!(a&0x40)) {
-if((u32)Process_Find(gUiTooltipProc)!=0U) {
-if(gUiInputFlags&3) Process_Unlink(); else Process_ClearFunc();
-}}
-gUiPanelFlags=a; p[1]=b;
+    struct Flags {
+        u16 a;
+        u16 b;
+    };
+    extern struct Flags gUiPanelFlags;
+    extern u32 gUiInputFlags;
+    extern u8 gUiTooltipProc[];
+    void *Process_Find(void *);
+    void Process_Unlink(void);
+    void Process_ClearFunc(void);
+    u16 b;
+    u16 a;
+    struct Flags *p = &gUiPanelFlags;
+    a = gUiPanelFlags.a;
+    b = p->b;
+    gUiInputFlags |= 2;
+    if (!(a & 0x40)) {
+        if ((u32)Process_Find(gUiTooltipProc) != 0U) {
+            if (gUiInputFlags & 3) {
+                Process_Unlink();
+            } else {
+                Process_ClearFunc();
+            }
+        }
+    }
+    gUiPanelFlags.a = a;
+    p->b = b;
 }
 #pragma scheduling on
 #pragma peephole on
