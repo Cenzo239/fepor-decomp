@@ -1,6 +1,9 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+#pragma push
+#pragma inline on
+#pragma inline_max_size(1000)
 static inline s32 Map_ShowObjAtImmediate(s32 x, s32 y) {
     s32 Map_Get(void);
     void *Map_FindObjAt(void *, s32, s32, u32, s32);
@@ -57,6 +60,7 @@ static inline s32 Map_ShowObjAtImmediate(s32 x, s32 y) {
     return 1;
 }
 
+#pragma pop
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
@@ -14660,6 +14664,7 @@ void fn_8019E8B0(void *self)
   void *effect;
   void *host;
   f32 height;
+  f32 x,y;
   (void)lbl_8036AF78;
   if (gUiInputFlags & 1)
   {
@@ -14688,7 +14693,11 @@ void fn_8019E8B0(void *self)
       case 0:
       {
         height = Map_SampleHeight(gBattleMap, (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x50)))), (f32) ((s8) (*((s32 *) (((s8 *) self) + 0x54)))));
-        Effect_SetPos(effect, lbl_8036AF80 + ((f32) (*((s32 *) (((s8 *) self) + 0x50)))), lbl_8036AF80 + ((f32) (*((s32 *) (((s8 *) self) + 0x54)))), height);
+        x = (f32)*(s32 *)((u8 *)self+0x50);
+        x = lbl_8036AF80 + x;
+        y = (f32)*(s32 *)((u8 *)self+0x54);
+        y = lbl_8036AF80 + y;
+        Effect_SetPos(effect,x,y,height);
         break;
       }
       default:
