@@ -573,10 +573,7 @@ int fflush(void *file) {
 #pragma push
 #pragma opt_propagation off
 s32 fn_802312B0(void *arg0) {
-    s32 __flush_buffer(void *, s32 *);
-    s32 fn_8022D4C8();
     M2C_UNK fn_8022D014(s32);
-    s32 fn_80231748(void *);
     typedef struct {
         u8 pad[4];
         u16 pre:7;
@@ -584,23 +581,15 @@ s32 fn_802312B0(void *arg0) {
         u16 rest:6;
     } S4;
     typedef struct {
-        u8 pad[4];
-        u8 pre:2;
-        u8 modeB:3;
-        u8 rest:3;
-    } B4;
-    typedef struct {
         u8 pad[8];
         u8 mode:3;
         u8 flag:1;
         u8 rest:4;
     } B8;
-    register S4 *s4 = (S4 *)arg0;
-    B4 *b4 = (B4 *)arg0;
+    S4 *s4 = (S4 *)arg0;
     B8 *b8 = (B8 *)arg0;
-    s32 var_r29;
-    long var_r30;
-    s32 temp_r30;
+    s32 flush_result;
+    s32 close_result;
     long var_r3;
 
     if (arg0 == NULL) {
@@ -609,48 +598,15 @@ s32 fn_802312B0(void *arg0) {
     if (s4->mode == 0) {
         return 0;
     }
-    if (arg0 == NULL) {
-        var_r29 = fn_8022D4C8();
-    } else if (((u8) M2C_FIELD(arg0, u8 *, 0xA) != 0) || (s4->mode == 0)) {
-        var_r29 = -1;
-    } else if (b4->modeB == 1) {
-        var_r29 = 0;
-    } else {
-        if (b8->mode >= 3U) {
-            b8->mode = 2;
-        }
-        if (b8->mode == 2) {
-            M2C_FIELD(arg0, s32 *, 0x28) = 0;
-        }
-        if (b8->mode != 1) {
-            var_r29 = 0;
-            b8->mode = var_r29;
-        } else {
-            if (s4->mode != 1) {
-                var_r30 = 0;
-            } else {
-                var_r30 = fn_80231748(arg0);
-            }
-            if (__flush_buffer(arg0, 0) != 0) {
-                M2C_FIELD(arg0, u8 *, 0xA) = 1U;
-                var_r29 = -1;
-                M2C_FIELD(arg0, s32 *, 0x28) = 0;
-            } else {
-                var_r29 = 0;
-                b8->mode = var_r29;
-                M2C_FIELD(arg0, s32 *, 0x18) = var_r30;
-                M2C_FIELD(arg0, s32 *, 0x28) = var_r29;
-            }
-        }
-    }
-    temp_r30 = M2C_FIELD(arg0, s32 (**)(s32), 0x44)(M2C_FIELD(arg0, s32 *, 0));
+    flush_result = msl_fflush(arg0);
+    close_result = M2C_FIELD(arg0, s32 (**)(s32), 0x44)(M2C_FIELD(arg0, s32 *, 0));
     s4->mode = 0;
     M2C_FIELD(arg0, s32 *, 0) = 0;
     if (b8->flag) {
         fn_8022D014(M2C_FIELD(arg0, s32 *, 0x1C));
     }
     var_r3 = 0;
-    if ((var_r29) || (temp_r30)) {
+    if ((flush_result) || (close_result)) {
         var_r3 = 1;
     }
     return (s32) (-var_r3 | var_r3) >> 0x1F;
