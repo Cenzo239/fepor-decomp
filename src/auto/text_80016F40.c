@@ -14,10 +14,9 @@ typedef struct Vec3_800193D8 {
 
 typedef struct CamPathInitialEntry { u8 kind; s32 duration; Vec3_800193D8 pos; } CamPathInitialEntry;
 static inline void CamPath_AppendInitial(u8 *p, s32 duration, s32 kind, Vec3_800193D8 v) {
- Vec3_800193D8 copy; Vec3_800193D8 *dest; CamPathInitialEntry *entry;
+ Vec3_800193D8 *dest; Vec3_800193D8 copy;
  *(u8 *)(*(u8 **)(p+0x40)+p[0x44]*20)=kind;
- entry = *(CamPathInitialEntry **)(p+0x40) + p[0x44];
- entry->duration=duration;
+ (*(CamPathInitialEntry **)(p+0x40))[p[0x44]].duration=duration;
  copy=v;
  dest=(Vec3_800193D8 *)(*(u8 **)(p+0x40)+p[0x44]*20+8);
  dest->x=copy.x;dest->y=copy.y;dest->z=copy.z;
