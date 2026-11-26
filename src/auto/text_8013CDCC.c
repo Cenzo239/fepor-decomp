@@ -5107,6 +5107,8 @@ s32 fn_8014351C(void *arg0, s32 arg1) {
     return 1;
 }
 
+typedef struct MenuSortTag_80143570 { u8 value; } MenuSortTag_80143570;
+
 void fn_80143570(void *arg0) {
     void fn_80144B60(void *, u8);
     s32 off;
