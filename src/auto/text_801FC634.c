@@ -1932,8 +1932,9 @@ void fn_80200270(void *arg0) {
     id = sFaceResIds;
     for (i = 0; i < 8; i++) {
         if (*p == *id) {
-            lbl_80339328[i] = 2;
+            (void)lbl_80339328;
             lbl_80339338[i] -= 1;
+            lbl_80339328[i] = 2;
             break;
         }
         id++;
