@@ -2,6 +2,11 @@
 #include "common.h"
 #include "global.h"
 
+static inline u8 Item_CheckRank(u32 limit, u32 rank) {
+    limit = (u8)(limit + (u8)(limit == 0));
+    return limit <= rank;
+}
+
 static inline u8 Item_CheckSpecialFlags(u64 flags) {
     if (!(flags & 8)) return 0;
     if (flags & ((u64)0x100 << 32)) return 0;
@@ -987,7 +992,7 @@ u8 fn_800940B0(void *arg0, void *arg1) {
     void *self;
     u8 type;
     u8 result;
-    u8 lim;
+    u32 lim;
     void *unit;
 
     other = arg1;
@@ -1138,8 +1143,8 @@ clamp79:
     }
 done:
     lim = *((u8 *)other + 0x16);
-    lim = (u8)(lim + (u8)(lim == 0));
-    return (u8)((u32)lim < (u32)result);
+    lim = (u8)((u8)lim + (u8)(lim == 0));
+    return (u8)((u32)lim <= (u32)result);
 }
 #pragma pop
 
