@@ -3523,6 +3523,7 @@ extern "C" void fn_8010A330(void *arg0) {
 #pragma cplusplus off
 
 extern u16 lbl_80312060[32];
+#pragma global_optimizer off
 void fn_8010A4D4(void *arg0) {
     s32 off;
     s16 a;
@@ -3530,8 +3531,8 @@ void fn_8010A4D4(void *arg0) {
     u8 c;
     char *p;
     u8 *out;
-    s32 i;
     s32 dest;
+    s32 i;
 
     p = arg0;
     dest = 0;
@@ -3556,7 +3557,7 @@ void fn_8010A4D4(void *arg0) {
         i++;
     }
 }
-
+#pragma global_optimizer on
 /* Draw a UI text label with left/center/right alignment and the given alpha. */
 void Ui_DrawTextLabel(void *label, s32 alpha) {
     void *Msg_Expand(void *);
