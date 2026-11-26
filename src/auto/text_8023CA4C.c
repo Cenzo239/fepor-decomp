@@ -363,16 +363,32 @@ extern f64 lbl_8036C148;
 #pragma pop
 
 #pragma global_optimizer on
+static inline void ThpReadTable(u8 *zig, f32 *table) {
+    extern ThpDecodeState *volatile lbl_80368950;
+    u8 *p = zig;
+    u32 i;
+    for (i = 0; (u16)i < 64; i += 8, p += 8) {
+        table[*p] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 3)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 4)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 5)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 6)]] = (f32)(u32)*lbl_80368950->cursor++;
+        table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
+    }
+}
+
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
     u8 *zig;
     u8 *p;
-    s32 id;
-    u32 i;
     const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
     u32 size;
+    s32 id;
+    u32 i;
     u16 row;
     u8 *state;
 
