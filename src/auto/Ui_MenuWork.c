@@ -1,28 +1,6 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void Ui_MenuWork_CreateAt(u8 *base, s32 arg0, s32 arg1)
-{
-  extern u8 lbl_80311CA8[];
-  s32 fn_800C0658(void);
-  void Ui_CreateMenu(void *, s32, s32);
-  typedef struct 
-  {
-    void *e0;
-    void *e1;
-    void *e2;
-  } Entries;
-  s32 *table = (s32 *) (base + 0x4c);
-  Entries *entries = (Entries *) (base + 0x6c);
-  entries->e0 = table;
-  table = (s32 *)entries->e0;
-  table[1] = arg0;
-  entries->e1 = (void *)(table + 2);
-  ((s32 *)entries->e1)[1] = arg1;
-  entries->e2 = 0;
-  Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
-}
-
 
 
 
