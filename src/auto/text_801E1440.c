@@ -893,6 +893,17 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
+static inline u32 Save_FindMaxSizeIn(u8 *base) {
+    u32 best = 0;
+    s32 off = 0x2000;
+    s32 i;
+    for (i = 0; i < 6; i++, off += 0x4000) {
+        if (best < save_slot_size(base + off)) best = save_slot_size(base + off);
+    }
+    if (best < save_slot_size(base + 0x1A000)) best = save_slot_size(base + 0x1A000);
+    if (best < save_slot_size(base + 0x20000)) best = save_slot_size(base + 0x20000);
+    return best;
+}
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
     return (size <= limit) ? size : 0;
@@ -2535,8 +2546,9 @@ fn_80231E74(formatted,0x20,gSaveStrings+0x1d0,cal[4],cal[3],cal[5]%100,cal[2],ca
 memcpy(dst,name,strlen(name));
 memcpy(dst+0x20,formatted,strlen(formatted));
 }
-#pragma global_optimizer reset
-#pragma opt_strength_reduction reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction on
 void fn_801E3CA8(void *arg0) {
     void *Msg_Expand(void *);
     void DebugPrint(void *, s32, ...);
@@ -2551,12 +2563,12 @@ void fn_801E3CA8(void *arg0) {
     void *memcpy(void *, void *, s32);
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
-    u8 sp58[0x28];
+    u8 sp58[0x20];
     struct {
         s32 sec, min, hour, mday, mon, year;
         s32 wday, yday, msec, usec;
     } cal;
-    u8 sp10;
+    u8 sp10[0x20];
     s32 i;
     s32 j;
     s32 off;
@@ -2613,22 +2625,8 @@ void fn_801E3CA8(void *arg0) {
     best = 0;
     off = 0x2000;
     base = (u8 *)gSaveDataBase;
-    for (ctr = 2; ctr != 0; ctr--) {
-        clamped = save_slot_size(base + off);
-        if (best < clamped) {
-            best = save_slot_size(base + off);
-        }
-        off += 0x4000;
-        clamped = save_slot_size(base + off);
-        if (best < clamped) {
-            best = save_slot_size(base + off);
-        }
-        off += 0x4000;
-        clamped = save_slot_size(base + off);
-        if (best < clamped) {
-            best = save_slot_size(base + off);
-        }
-        off += 0x4000;
+    for (i = 0; i < 6; i++, off += 0x4000) {
+        if (best < save_slot_size(base + off)) best = save_slot_size(base + off);
     }
     clamped = save_slot_size(base + 0x1A000);
     if (best < clamped) {
@@ -2639,52 +2637,11 @@ void fn_801E3CA8(void *arg0) {
         best = save_slot_size(base + 0x20000);
     }
     *(u32 *)((u8 *)arg0 + 0x48) = best + 1;
-    j = 0;
-    for (ctr = 2; ctr != 0; ctr--) {
-        u8 *p = (u8 *)arg0 + j;
-        j += 8;
-        p[0] = 0x20; p[1] = 0x20; p[2] = 0x20; p[3] = 0x20;
-        p[4] = 0x20; p[5] = 0x20; p[6] = 0x20; p[7] = 0x20;
-        p = (u8 *)arg0 + j;
-        j += 8;
-        p[0] = 0x20; p[1] = 0x20; p[2] = 0x20; p[3] = 0x20;
-        p[4] = 0x20; p[5] = 0x20; p[6] = 0x20; p[7] = 0x20;
-        p = (u8 *)arg0 + j;
-        j += 8;
-        p[0] = 0x20; p[1] = 0x20; p[2] = 0x20; p[3] = 0x20;
-        p[4] = 0x20; p[5] = 0x20; p[6] = 0x20; p[7] = 0x20;
-        p = (u8 *)arg0 + j;
-        j += 8;
-        p[0] = 0x20; p[1] = 0x20; p[2] = 0x20; p[3] = 0x20;
-        p[4] = 0x20; p[5] = 0x20; p[6] = 0x20; p[7] = 0x20;
-    }
+    for (j = 0; j < 0x40; j++) ((u8 *)arg0)[j] = 0x20;
     name = Msg_Expand(gSaveStrings + 0x1C7);
-    i = 0;
-    for (ctr = 3; ctr != 0; ctr--) {
-        if (tmpl[0x12] == 0) break;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        if (tmpl[0x13] == 0) break;
-        tmpl += 1;
-        tmpl += 1;
-        i += 9;
-    }
+    for (i = 0; i < 30; i++, tmpl++) if (!tmpl[0x12]) break;
     fn_8020B294(OSGetTime(), &cal);
-    sp10 = 0;
+    sp10[0] = 0;
     cal.mon += 1;
     fn_80231E74(sp58, 0x20, gSaveStrings + 0x1D0, cal.mon, cal.mday, cal.year % 100, cal.hour, cal.min, &sp10);
     memcpy(arg0, name, strlen(name));
@@ -2695,6 +2652,7 @@ void fn_801E3CA8(void *arg0) {
     fn_800C4588(buf);
     DebugPrint(gSaveStrings + 0x1E9, *(s32 *)((u8 *)arg0 + 0x50));
 }
+#pragma pop
 u32 fn_801E417C(void *arg0) {
     u32 size;
 
