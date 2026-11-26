@@ -1,6 +1,7 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
 typedef struct { f32 x, y, z; } Vec;
+typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
