@@ -2478,50 +2478,43 @@ void fn_80201610(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x28) = 0;
 }
 
-void fn_8020164C(void *arg0, u8 *arg1) {
+#pragma cplusplus on
+extern "C" void fn_8020164C(void *arg0, void *arg1) {
     extern u8 gUnitInfoPopup[];
-
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
-    void *GfxEnt_Get(s32);
+    void *GfxEnt_Get(u8);
     void fn_80024B6C(void);
+    struct Handler {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9(void *, void *) = 0;
+    };
+    u32 v;
+    void *ent;
+    u8 *unit;
 
-    u8 *obj;
-    u8 *entry;
-    void *handler;
-    s32 index;
-    u32 count;
-
-    obj = (u8 *)arg0;
-
-    count = *(u32 *)(obj + 0x28);
-    count++;
-    *(u32 *)(obj + 0x28) = count;
-
-    if (count >= *(u32 *)(obj + 0x2C)) {
+    unit = (u8 *)arg1;
+    v = *(u32 *)((u8 *)arg0 + 0x28);
+    *(u32 *)((u8 *)arg0 + 0x28) = ++v;
+    if (v >= *(u32 *)((u8 *)arg0 + 0x2C)) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
-
-            index = (s8)arg1[0x62];
-            index = arg1[index + 0x40];
-
-            entry = (u8 *)GfxEnt_Get(index);
-            handler = *(void **)(entry + 0x34);
-
-            ((void (*)(void *, void *, void *))
-                (*(void ***)(handler))[0x2C / 4])(
-                    handler,
-                    arg1,
-                    entry
-                );
-
-            return;
         }
+        ent = GfxEnt_Get(unit[0x40 + (s8)unit[0x62]]);
+        (*(Handler **)((u8 *)ent + 0x34))->v9(arg1, ent);
+    } else {
+        fn_80024B6C();
     }
-
-    fn_80024B6C();
 }
-
+#pragma cplusplus off
 s32 fn_802016E4(void) {
     return 0x9C;
 }
