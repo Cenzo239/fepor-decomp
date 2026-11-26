@@ -516,6 +516,16 @@ extern void FileCache_ReleaseByKey(u32);
 #pragma global_optimizer off
 
 #pragma opt_strength_reduction off
+#pragma inline_depth(8)
+#pragma inline_max_size(256)
+static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b) {
+    entries[0] = table;
+    table = entries[0];
+    table[1] = a;
+    entries[1] = table + 2;
+    entries[1][1] = b;
+    entries[2] = 0;
+}
 void fn_8006F10C(s32 arg0, s32 arg1)
 {
   extern u8 lbl_80311CA8[];
