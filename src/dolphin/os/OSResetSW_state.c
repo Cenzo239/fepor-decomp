@@ -147,7 +147,7 @@ extern s32 RunQueueHint_8036851C;
 
 
 
-static inline u32 ResetSwitch_Poll(s64 now) {
+static inline u32 ResetSwitch_Poll(u64 now) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
@@ -157,7 +157,7 @@ static inline u32 ResetSwitch_Poll(s64 now) {
     u32 freq;
     u32 thresh;
     s32 n;
-    s64 t;
+    u64 t;
     s64 q;
 
 
