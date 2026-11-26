@@ -10571,7 +10571,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma opt_dead_code on
+#pragma global_optimizer on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -11784,6 +11784,17 @@ void fn_800DDAE0(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&out, -1);
 }
 
+static inline void Str_AssignAt(void *dst, void *src) {
+    extern void String_Assign(void *, void *, s32, s32);
+    String_Assign(dst, (u8 *)src + 0xC, 0, -1);
+}
+static inline void *Str_CStrDestroy(void *str) {
+    extern void *String_CStr(void *);
+    extern void String_Destroy(void *, s32);
+    void *result = String_CStr(str);
+    String_Destroy(str, -1);
+    return result;
+}
 void *fn_800DDB94(void *arg0)
 {
     extern void *StringMap_FindOrInsert(void *);
@@ -16142,33 +16153,31 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     extern f32 lbl_80369F5C, lbl_80369F60;
     extern const f32 lbl_80369F3C;
 
-    f32 pos[3];
+    struct { f32 x, y, z; } pos;
     f32 z;
     f32 y;
     f32 x;
-    f32 *out;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
         GActor_FindNode(*(void **)((u8 *)arg1 + 0xE0), arg2),
-        pos
+        &pos.x
     );
 
-    out = arg0;
-    x = pos[0];
+    x = pos.x;
 
     if (x > lbl_80369F5C && x < lbl_80369F60) {
-        y = pos[1];
-        z = pos[2];
+        y = pos.y;
+        z = pos.z;
     } else {
         z = lbl_80369F3C;
         y = z;
         x = z;
     }
 
-    out[0] = x;
-    out[1] = y;
-    out[2] = z;
+    arg0[0] = x;
+    arg0[1] = y;
+    arg0[2] = z;
 }
 #pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
