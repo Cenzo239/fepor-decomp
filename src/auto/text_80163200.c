@@ -108,8 +108,8 @@ struct UnitItemListPanel {
 #pragma opt_common_subs off
 static inline void init_761F8_base(void *p,s16 x,s16 y,s16 w,s16 h,s16 style) {
  extern u16 lbl_8028FDB0[],lbl_80292230[];
-extern f32 gF32_1;
-f32 zero;
+extern const f32 gF32_1;
+ f32 zero;
  M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=x;
 M2C_FIELD(p,s16 *,12)=y;
 M2C_FIELD(p,s16 *,14)=x+w;
@@ -8672,7 +8672,9 @@ void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
   *((u32 *) (((s8 *) new_var) + 0x34)) |= 0x10;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 3
 extern "C" void fn_80171374(void *arg0) {
 #pragma opt_common_subs off
     void *Heap_Alloc(s32);
@@ -8870,8 +8872,8 @@ extern "C" void fn_80171374(void *arg0) {
         if (r) Ui_SetWidgetText(r, (u8 *)gUiMsgStrings + 0x2E7);
     }
 }
-#pragma cplusplus reset
-#pragma opt_common_subs on
+#pragma pop
+#pragma cplusplus off
 
 /* Slide the unit list back on, reset the inventory panel, slide detail widget 0x107 off, dismiss 0x106, and raise the inventory. */
 void Ui_RestoreUnitListAfterDetail(void *panel) {
@@ -16076,6 +16078,10 @@ void fn_8017C478(void *arg0) {
     p[0x18 / 2] = bottom;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_8017C4BC(void *arg0) {
     f32 fn_80037818(s32, u8);
     u8 fn_800386B0(s32);
@@ -16299,7 +16305,7 @@ void fn_8017C4BC(void *arg0) {
         *((u8 *)arg0 + 0x79) = 1;
     }
 }
-
+#pragma pop
 #pragma dont_inline on
 #pragma global_optimizer off
 #pragma optimization_level 3
