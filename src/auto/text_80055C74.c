@@ -951,18 +951,6 @@ void *fn_800578F0(void *arg0, s16 arg1) {
     return arg0;
 }
 
-static inline void *Init_80057998(void *self, f32 f0) {
-    *(s32 *)((u8 *)self + 0x14) = 0;
-    *(s32 *)((u8 *)self + 0x18) = 0;
-    *(s32 *)((u8 *)self + 0x1C) = 0;
-    *(s32 *)((u8 *)self + 0x20) = 0;
-    *(f32 *)((u8 *)self + 4) = f0;
-    *(f32 *)((u8 *)self + 8) = f0;
-    *(f32 *)((u8 *)self + 0xC) = f0;
-    *(s32 *)((u8 *)self + 0x24) = 0;
-    *(s32 *)((u8 *)self + 0x28) = 0;
-    return self;
-}
 void *fn_80057998(void *arg0) {
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
