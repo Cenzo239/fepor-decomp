@@ -2,7 +2,6 @@
 #include "common.h"
 #include "structs.h"
 typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
-typedef struct ProjectedViewWork { f32 eye[3]; f32 target[3]; f32 up[3]; f32 bounds[6]; } ProjectedViewWork;
 typedef struct AiActionMap {
         s32 width;
         s32 height;
@@ -22322,6 +22321,7 @@ s32 Map_SetupProjTexTev(void) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 s32 fn_800EF364(void *arg0, s32 arg1) {
     void *Map_Get(void);
     f32 Math_Lerp(f32, f32, f32, f32);
