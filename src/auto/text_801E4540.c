@@ -2,6 +2,81 @@
 #include "common.h"
 #include "global.h"
 
+static inline s32 TabMenu_CountGroups(void *arg0, s8 mode) {
+typedef struct {void *node;} It;
+It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
+It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, beginCCopy, beginC, endCCopy, endC;
+struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
+s32 previous;
+s32 count0, count1, count2;
+void *end0, *end1, *end2;
+s32 ret;
+u8 found;
+u8 value;
+switch (mode) {
+case 0:
+end0 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endACopy.node = end0;
+beginACopy.node = arg0;
+beginA = beginACopy;
+aCopy = beginA; a = aCopy;
+endA = endACopy; aeCopy = endA; ae = aeCopy;
+initA.value = -1; keyA = initA;
+count0 = 0;
+while (a.node != end0) {
+previous = (s8)*(u8 *)&keyA.value;
+value = (*(u8 **)((u8 *)a.node + 8))[2];
+if (previous != (s8)value) { *(u8 *)&keyA.value = value; found = 1; } else found = 0;
+if (found) count0++;
+a.node = *(void **)((u8 *)a.node + 4);
+}
+ret = count0;
+break;
+case 1:
+end1 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endBCopy.node = end1;
+beginBCopy.node = arg0;
+beginB = beginBCopy;
+bCopy = beginB; b = bCopy;
+endB = endBCopy; beCopy = endB; be = beCopy;
+initB.value = -1; keyB = initB;
+count1 = 0;
+while (b.node != end1) {
+previous = (s8)*(u8 *)&keyB.value;
+value = (*(u8 **)((u8 *)b.node + 8))[1];
+if (previous != (s8)value) { *(u8 *)&keyB.value = value; found = 1; } else found = 0;
+if (found) count1++;
+b.node = *(void **)((u8 *)b.node + 4);
+}
+ret = count1;
+break;
+case 2:
+end2 = (u8 *)arg0 + 0x54;
+arg0 = *(void **)((u8 *)arg0 + 0x58);
+endCCopy.node = end2;
+beginCCopy.node = arg0;
+beginC = beginCCopy;
+cCopy = beginC; c = cCopy;
+endC = endCCopy; ceCopy = endC; ce = ceCopy;
+initC.value = -1; keyC = initC;
+count2 = 0;
+while (c.node != end2) {
+previous = (s8)*(u8 *)&keyC.value;
+value = (*(u8 **)((u8 *)c.node + 8))[4];
+if (previous != (s8)value) { *(u8 *)&keyC.value = value; found = 1; } else found = 0;
+if (found) count2++;
+c.node = *(void **)((u8 *)c.node + 4);
+}
+ret = count2;
+break;
+default:
+ret = (s32)arg0;
+break;
+}
+return ret;
+}
 static inline s32 TabMenu_AdjustVisible(void *arg0, u8 *arg1, s32 var_r8) {
     s32 top, bottom, position;
     
@@ -2750,7 +2825,7 @@ void fn_801E8D34(u8 *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma opt_common_subs off
 s32 fn_801E91E8(void *arg0, u8 *arg1) {
     s32 top, bottom, position;
@@ -2838,17 +2913,21 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
     }
     return var_r8;
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 2
+#pragma opt_propagation off
+#pragma opt_common_subs off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
 It beginACopy, beginA, endACopy, endA, beginBCopy, beginB, endBCopy, endB, beginCCopy, beginC, endCCopy, endC;
 struct {s8 value;} initA, keyA, initB, keyB, initC, keyC;
+s32 previous;
 s32 count0, count1, count2;
 void *end0, *end1, *end2;
 s32 ret;
 u8 found;
-s8 value;
+u8 value;
 switch ((s8)*((u8 *)arg0 + 0x30)) {
 case 0:
 end0 = (u8 *)arg0 + 0x54;
@@ -2860,9 +2939,10 @@ aCopy = beginA; a = aCopy;
 endA = endACopy; aeCopy = endA; ae = aeCopy;
 initA.value = -1; keyA = initA;
 count0 = 0;
-while (a.node != ae.node) {
+while (a.node != end0) {
+previous = (s8)*(u8 *)&keyA.value;
 value = (*(u8 **)((u8 *)a.node + 8))[2];
-if (value != keyA.value) { keyA.value = value; found = 1; } else found = 0;
+if (previous != (s8)value) { *(u8 *)&keyA.value = value; found = 1; } else found = 0;
 if (found) count0++;
 a.node = *(void **)((u8 *)a.node + 4);
 }
@@ -2878,9 +2958,10 @@ bCopy = beginB; b = bCopy;
 endB = endBCopy; beCopy = endB; be = beCopy;
 initB.value = -1; keyB = initB;
 count1 = 0;
-while (b.node != be.node) {
+while (b.node != end1) {
+previous = (s8)*(u8 *)&keyB.value;
 value = (*(u8 **)((u8 *)b.node + 8))[1];
-if (value != keyB.value) { keyB.value = value; found = 1; } else found = 0;
+if (previous != (s8)value) { *(u8 *)&keyB.value = value; found = 1; } else found = 0;
 if (found) count1++;
 b.node = *(void **)((u8 *)b.node + 4);
 }
@@ -2896,9 +2977,10 @@ cCopy = beginC; c = cCopy;
 endC = endCCopy; ceCopy = endC; ce = ceCopy;
 initC.value = -1; keyC = initC;
 count2 = 0;
-while (c.node != ce.node) {
+while (c.node != end2) {
+previous = (s8)*(u8 *)&keyC.value;
 value = (*(u8 **)((u8 *)c.node + 8))[4];
-if (value != keyC.value) { keyC.value = value; found = 1; } else found = 0;
+if (previous != (s8)value) { *(u8 *)&keyC.value = value; found = 1; } else found = 0;
 if (found) count2++;
 c.node = *(void **)((u8 *)c.node + 4);
 }
@@ -2910,6 +2992,7 @@ break;
 }
 return ret;
 }
+#pragma pop
 /* Clear the status under the tab-menu cursor and run its clear event. */
 void TabMenu_ClearSelectedStatus(void *menu) {
     void Status_Clear(void *, u8);
