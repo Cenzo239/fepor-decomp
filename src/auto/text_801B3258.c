@@ -16,14 +16,7 @@ static inline u8 *Battle_FindEligibleUnit(void) {
     }
     return 0;
 }
-static inline u8 *Battle_EligibleUnit(u8 *unit) {
-    u8 type;
-    if (unit) {
-        type = (*(u8 **)(unit + 0x190))[8];
-        if (type == 0 || type == 5) return unit;
-    }
-    return 0;
-}
+
 typedef struct StatDisplayTable { u8 pad[0x28]; s16 x[10]; s16 y[10]; u8 order[12]; } StatDisplayTable;
 static inline s16 StatDisplay_CoordAt(s16 *coords, s32 index) { return coords[index]; }
 static inline u8 StatDisplay_OrderAt(u8 *order, s32 index) { return order[index]; }
@@ -1730,17 +1723,11 @@ void fn_801B6DAC(u8 *);
 u8 *unit;
 u8 *p;
 u8 *arg0=out;
-s16 count;
+register s32 count;
 s16 saved;
 u32 off;
 u8 type;
-unit=*(u8 **)(gBattle+0x280);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else {
-unit=*(u8 **)(gBattle+0x560);
-if (unit && ((type=(*(u8 **)(unit+0x190))[8])==0 || type==5)) {
-} else unit=0;
-}
+unit=Battle_FindEligibleUnit();
 found:
 *(u8 **)arg0=unit;
 count=0;
@@ -1755,7 +1742,7 @@ switch(*(u8 *)(p+off+4)) { case 0: goto done1; case 0x29: count++; break; }
 done1:
 *(s16 *)p=saved;
 arg0[8]=count;
-{ s16 value=0; s16 saved2=*(s16 *)p;
+{ register s32 value=0; s16 saved2=*(s16 *)p;
 fn_800340E4(p);
 for(;;) {
 off=*(s16 *)p*4;
