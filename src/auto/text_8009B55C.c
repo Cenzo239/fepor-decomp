@@ -140,7 +140,7 @@ void fn_8009B738(s32 arg0, s32 arg1) {
     Prim2D_PrepareTex();
 
     bus = *(u32 *)0x800000F8 >> 2;
-    rate = bus / 1000u;
+    rate = bus / 125000U;
     ticks = *(u32 *)(lbl_80312100 + 0xB8) << 3;
     sprintf(buf, (char *)gDebugHudStrs + 8, (f32)(ticks / rate) / lbl_80369904);
     c0 = lbl_803698E8;
@@ -159,6 +159,12 @@ void fn_8009B738(s32 arg0, s32 arg1) {
     fn_8014BB58(0, 0x18, &c3, buf);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+#pragma use_lmw_stmw on
+#pragma opt_propagation off
 void fn_8009B900(s32 arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -177,7 +183,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
     extern u8 gSeCueSlots[];
     extern u8 gFxSlots[];
     extern f32 lbl_803698FC;
-    extern f32 lbl_80369900;
+    extern const f32 lbl_80369900;
     extern f32 lbl_80369918;
     extern f32 lbl_8036991C;
     extern f32 lbl_80369920;
@@ -202,10 +208,11 @@ void fn_8009B900(s32 arg0, s32 arg1) {
     u8 groupB[8];
     u8 groupC[40];
     u8 *groupAPtr, *groupBPtr;
-    u8 * volatile groupCPtr;
-    u8 * volatile fxChannelsBase;
+    u8 * groupCPtr;
+    u8 * fxChannelsBase;
     s32 i, j, groupY, barY, targetY, span, cumulative, baseId, kind, channelId;
-    s32 brightness, phase, active;
+    s32 brightness, phase;
+    u8 active;
     u32 len;
     u8 *channel, *record;
     char *label;
@@ -299,7 +306,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 active = 1;
             }
         }
-        if (active != 0) {
+        if ((u8)active != 0) {
             record = *(u8 **)channel;
             channelId = channel[4];
             kind = record[5] & 3;
@@ -307,7 +314,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 case 0: baseId = 0xB; break;
                 case 1: baseId = 3; break;
                 case 2: baseId = 0; break;
-                default: baseId = 0; break;
+                
             }
             groupY = (i + 0) << 3;
             barY = groupY + 0x23;
@@ -345,7 +352,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             Prim2D_SetRect(lbl_80369920, (f32)(groupY + 0x20), lbl_80369924, lbl_80369924);
             Prim2D_SetColor(0, 0, 0, 0xFF);
             Prim2D_EndPrim();
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             textColor0 = lbl_803698D0;
             fn_8014BB58(0x100 - (len << 3), groupY + 0x20, &textColor0, label);
@@ -362,7 +369,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             }
         } else if ((channel[0xC] & 1) != 0) {
             record = *(u8 **)channel;
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             groupY = (i + 0) << 3;
             textColor1 = lbl_803698D4;
@@ -404,7 +411,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 active = 1;
             }
         }
-        if (active != 0) {
+        if ((u8)active != 0) {
             record = *(u8 **)channel;
             channelId = channel[4];
             kind = record[5] & 3;
@@ -412,7 +419,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 case 0: baseId = 0xB; break;
                 case 1: baseId = 3; break;
                 case 2: baseId = 0; break;
-                default: baseId = 0; break;
+                
             }
             groupY = (i + 14) << 3;
             barY = groupY + 0x23;
@@ -450,7 +457,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             Prim2D_SetRect(lbl_80369920, (f32)(groupY + 0x20), lbl_80369924, lbl_80369924);
             Prim2D_SetColor(0, 0, 0, 0xFF);
             Prim2D_EndPrim();
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             textColor2 = lbl_803698D8;
             fn_8014BB58(0x100 - (len << 3), groupY + 0x20, &textColor2, label);
@@ -467,7 +474,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             }
         } else if ((channel[0xC] & 1) != 0) {
             record = *(u8 **)channel;
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             groupY = (i + 14) << 3;
             textColor3 = lbl_803698DC;
@@ -509,7 +516,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 active = 1;
             }
         }
-        if (active != 0) {
+        if ((u8)active != 0) {
             record = *(u8 **)channel;
             channelId = channel[4];
             kind = record[5] & 3;
@@ -517,7 +524,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
                 case 0: baseId = 0xB; break;
                 case 1: baseId = 3; break;
                 case 2: baseId = 0; break;
-                default: baseId = 0; break;
+                
             }
             groupY = (i + 4) << 3;
             barY = groupY + 0x23;
@@ -555,7 +562,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             Prim2D_SetRect(lbl_80369920, (f32)(groupY + 0x20), lbl_80369924, lbl_80369924);
             Prim2D_SetColor(0, 0, 0, 0xFF);
             Prim2D_EndPrim();
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             textColor4 = lbl_803698E0;
             fn_8014BB58(0x100 - (len << 3), groupY + 0x20, &textColor4, label);
@@ -572,7 +579,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
             }
         } else if ((channel[0xC] & 1) != 0) {
             record = *(u8 **)channel;
-            label = *(char **)record;
+            label = **(char ***)channel;
             len = strlen(label);
             groupY = (i + 4) << 3;
             textColor5 = lbl_803698E4;
@@ -689,7 +696,7 @@ void fn_8009B900(s32 arg0, s32 arg1) {
         groupCPtr++;
     }
 }
-
+#pragma pop
 /* Draw the debug guide rectangle and optional T/E markers from gUiInputFlags. */
 void Debug_DrawGuideFrame(void) {
     void Prim2D_SetText(u8 *);
@@ -865,6 +872,10 @@ void fn_8009D0E8(s32 arg0, s32 arg1) {
     *(s32 *)(lbl_803121C8 + 0xA0) = *(s32 *)(lbl_803121C8 + 0x9C);
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_loop_invariants off
 void fn_8009D95C(s32 arg0, s32 arg1) {
     void Prim2D_SetText(void *);
     void Prim2D_SetCornerColors(u32 *, u32 *, u32 *, u32 *);
@@ -884,21 +895,22 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     extern u32 lbl_80369890, lbl_80369894, lbl_80369898, lbl_8036989C;
     extern u32 lbl_803698A0, lbl_803698A4, lbl_803698A8, lbl_803698AC;
     extern u32 lbl_803698B0, lbl_803698B4;
-    extern f32 lbl_803698F8, lbl_803698FC, lbl_80369900;
-    extern f32 lbl_80369904, lbl_8036996C, lbl_803699D0, lbl_803699D4, lbl_803699D8;
-    extern f32 lbl_803699DC, lbl_803699E0, lbl_803699E4;
-    extern f32 lbl_80369930, lbl_80369968, lbl_80369970;
+    extern const f32 lbl_803698F8, lbl_803698FC, lbl_80369900;
+    extern const f32 lbl_80369904, lbl_8036996C, lbl_803699D0, lbl_803699D4, lbl_803699D8;
+    extern const f32 lbl_803699DC, lbl_803699E0, lbl_803699E4;
+    extern const f32 lbl_80369930, lbl_80369968, lbl_80369970;
     extern u8 gDebugHudStrs[];
     s32 x;
     s32 y;
     u32 *tbl;
+    u32 *tbl2, *tbl3, *tbl4, *tbl5;
     f32 f31;
     f32 f30;
     f32 f29;
-    u32 c01, c11, c02, c12, c03, c13, c04, c14, c05, c15;
-    u32 a, b, c, d;
+    HudColor c11, c01, c12, c02, c13, c03, c14, c04, c15, c05;
+    
     u32 bus, rate, ticks;
-    char buf[0x80];
+    char buf[0x40];
     s32 i;
 
     x = arg0;
@@ -915,78 +927,82 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_EndPrim();
 
     tbl = lbl_80312100;
+    ticks = tbl[2] << 3;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[2] << 3;
-    c01 = lbl_80369894;
-    c11 = lbl_80369890;
+    c01 = *(HudColor *)&lbl_80369894;
+    c11 = *(HudColor *)&lbl_80369890;
     f31 = lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8);
     Prim2D_AddPrim(3);
     Prim2D_SetRect(lbl_803698FC, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
-    a = c11; b = c11; c = c01; d = c01;
-    Prim2D_SetCornerColors(&a, &b, &c, &d);
+    { HudColor a=c11, b=c11, c=c01, d=c01;
+    Prim2D_SetCornerColors((u32 *)&a, (u32 *)&b, (u32 *)&c, (u32 *)&d); }
     Prim2D_EndPrim();
 
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[3] << 3;
+    tbl2 = lbl_80312100;
+    ticks = tbl2[3] << 3;
     f30 = lbl_803698FC + f31;
-    c02 = lbl_8036989C;
-    c12 = lbl_80369898;
+    c02 = *(HudColor *)&lbl_8036989C;
+    c12 = *(HudColor *)&lbl_80369898;
     f31 = lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8);
     Prim2D_AddPrim(3);
     Prim2D_SetRect(f30, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
-    a = c12; b = c12; c = c02; d = c02;
-    Prim2D_SetCornerColors(&a, &b, &c, &d);
+    { HudColor a=c12, b=c12, c=c02, d=c02;
+    Prim2D_SetCornerColors((u32 *)&a, (u32 *)&b, (u32 *)&c, (u32 *)&d); }
     Prim2D_EndPrim();
 
     f30 = f30 + f31;
+    ticks = tbl[4] << 3;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[4] << 3;
-    c03 = lbl_803698A4;
-    c13 = lbl_803698A0;
+    c03 = *(HudColor *)&lbl_803698A4;
+    c13 = *(HudColor *)&lbl_803698A0;
     f31 = lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8);
     Prim2D_AddPrim(3);
     Prim2D_SetRect(f30, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
-    a = c13; b = c13; c = c03; d = c03;
-    Prim2D_SetCornerColors(&a, &b, &c, &d);
+    { HudColor a=c13, b=c13, c=c03, d=c03;
+    Prim2D_SetCornerColors((u32 *)&a, (u32 *)&b, (u32 *)&c, (u32 *)&d); }
     Prim2D_EndPrim();
 
     f29 = f30 + f31;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[7] << 3;
-    c04 = lbl_803698AC;
-    c14 = lbl_803698A8;
+    tbl3 = lbl_80312100;
+    ticks = tbl3[7] << 3;
+    c04 = *(HudColor *)&lbl_803698AC;
+    c14 = *(HudColor *)&lbl_803698A8;
     f31 = lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8);
     Prim2D_AddPrim(3);
     Prim2D_SetRect(f29, lbl_803698FC, f31, lbl_8036996C);
     Prim2D_EmitQuad();
-    a = c14; b = c14; c = c04; d = c04;
-    Prim2D_SetCornerColors(&a, &b, &c, &d);
+    { HudColor a=c14, b=c14, c=c04, d=c04;
+    Prim2D_SetCornerColors((u32 *)&a, (u32 *)&b, (u32 *)&c, (u32 *)&d); }
     Prim2D_EndPrim();
 
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[1] << 3;
-    c05 = lbl_803698B4;
-    c15 = lbl_803698B0;
+    tbl4 = lbl_80312100;
+    ticks = tbl4[1] << 3;
+    c05 = *(HudColor *)&lbl_803698B4;
+    c15 = *(HudColor *)&lbl_803698B0;
     f30 = lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8);
     Prim2D_AddPrim(3);
     Prim2D_SetRect(f29 + f31, lbl_803698FC, f30, lbl_8036996C);
     Prim2D_EmitQuad();
-    a = c15; b = c15; c = c05; d = c05;
-    Prim2D_SetCornerColors(&a, &b, &c, &d);
+    { HudColor a=c15, b=c15, c=c05, d=c05;
+    Prim2D_SetCornerColors((u32 *)&a, (u32 *)&b, (u32 *)&c, (u32 *)&d); }
     Prim2D_EndPrim();
 
     Prim2D_AddPrim(1);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[6] << 3;
+    tbl5 = lbl_80312100;
+    ticks = tbl5[6] << 3;
     Prim2D_SetRect(lbl_803698FC, lbl_8036996C,
                 lbl_803699D0 * ((f32)(ticks / rate) / lbl_803699D8),
                 lbl_803699DC);
@@ -1000,9 +1016,9 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
 
     Prim2D_AddPrim(0xA);
     Prim2D_SetPos(lbl_803698FC, lbl_803698FC);
+    ticks = tbl[2] << 3;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[2] << 3;
     {
         u32 qq = ticks / rate;
         sprintf(buf, gDebugHudStrs + 0x199,
@@ -1015,9 +1031,9 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
 
     Prim2D_AddPrim(0xA);
     Prim2D_SetPos(lbl_803698FC, lbl_8036996C);
+    ticks = tbl[3] << 3;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[3] << 3;
     {
         u32 qq = ticks / rate;
         sprintf(buf, gDebugHudStrs + 0x1AF,
@@ -1033,7 +1049,8 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         Prim2D_SetPos(lbl_803698FC, lbl_803699E4);
         bus = *(u32 *)0x800000F8 >> 2;
         rate = bus / 125000u;
-        ticks = tbl[7] << 3;
+        tbl3 = lbl_80312100;
+    ticks = tbl3[7] << 3;
         {
             u32 qq = ticks / rate;
             sprintf(buf, gDebugHudStrs + 0x1C5,
@@ -1049,7 +1066,8 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetPos(lbl_803698FC, lbl_80369930);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[1] << 3;
+    tbl4 = lbl_80312100;
+    ticks = tbl4[1] << 3;
     {
         u32 qq = ticks / rate;
         sprintf(buf, gDebugHudStrs + 0x1DB,
@@ -1062,9 +1080,9 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
 
     Prim2D_AddPrim(0xA);
     Prim2D_SetPos(lbl_803698FC, lbl_80369970);
+    ticks = tbl[5] << 3;
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[5] << 3;
     {
         u32 qq = ticks / rate;
         sprintf(buf, gDebugHudStrs + 0x1F1,
@@ -1078,7 +1096,8 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
     Prim2D_SetPos(lbl_803698FC, lbl_80369968);
     bus = *(u32 *)0x800000F8 >> 2;
     rate = bus / 125000u;
-    ticks = tbl[6] << 3;
+    tbl5 = lbl_80312100;
+    ticks = tbl5[6] << 3;
     {
         u32 qq = ticks / rate;
         sprintf(buf, gDebugHudStrs + 0x207,
@@ -1096,7 +1115,13 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
             Prim2D_PrepareTex();
             Prim2D_AddPrim(0xA);
             Prim2D_SetPos(lbl_803698FC, (f32)(-0xC - i * 8));
-            sprintf(buf, gDebugHudStrs + 0x21D, i);
+            bus = *(u32 *)0x800000F8 >> 2;
+            rate = bus / 125000u;
+            ticks = *(u32 *)((u8 *)tbl + 0x24 + i * 4) << 3;
+            { u32 qq = ticks / rate;
+            sprintf(buf, gDebugHudStrs + 0x21D, i,
+                    (s32)(lbl_803698F8 * ((f32)qq / lbl_803699D8)),
+                    (f32)qq / lbl_80369904); }
             Prim2D_SetText(buf);
             Prim2D_EndPrim();
         }
@@ -1115,6 +1140,7 @@ void fn_8009D95C(s32 arg0, s32 arg1) {
         }
     }
 }
+#pragma pop
 #pragma use_lmw_stmw reset
 void fn_8009E574(void) {
     extern u8 lbl_80312100[];
