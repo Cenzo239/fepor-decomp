@@ -10592,7 +10592,6 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 #pragma opt_dead_code reset
-#pragma peephole reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
