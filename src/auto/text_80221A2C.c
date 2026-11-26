@@ -307,6 +307,8 @@ void fn_80221D6C(void *arg0, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 far
     M2C_FIELD(arg0, f32 *, 0x24) = farg5;
 }
 
+#pragma push
+#pragma fp_contract off
 void fn_80221D88(f32 *obj, f32 angle, u32 mode) {
     f32 cosf(f32);
     f32 a, b, c, t, x;
@@ -345,10 +347,9 @@ void fn_80221D88(f32 *obj, f32 angle, u32 mode) {
         break;
     case 6:
         t = 1.0f / ((1.0f - x) * (1.0f - x));
-        a = t * ((x * 2.0f) * x);
-        b = (x * 4.0f) * t;
-        c = t * (-2.0f);
-        a = 1.0f - a;
+        a = 1.0f - t * (2.0f * x * x);
+        b = (4.0f * x) * t;
+        c = (-2.0f) * t;
         break;
     case 0:
     default:
@@ -361,7 +362,7 @@ void fn_80221D88(f32 *obj, f32 angle, u32 mode) {
     obj[5] = b;
     obj[6] = c;
 }
-
+#pragma pop
 void fn_80221F18(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
  f32 a,b,c;
  if(farg0<0.0f) arg1=0;
