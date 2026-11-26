@@ -3009,17 +3009,14 @@ void fn_8002D39C(void) {
 
 }
 
-#pragma optimization_level 3
+#pragma global_optimizer off
 void fn_8002D3A0(void *arg0) {
     void Event_StartByName(void *, void *);
     extern u8 gBattleState[];
     extern u8 Battle_str[];
     void *str;
-    u8 mode;
 
-    mode = gBattleState[0x54];
-    str = arg0;
-    switch (mode) {
+    switch (gBattleState[0x54]) {
     case 5:
         str = Battle_str + 0x148;
         break;
@@ -3032,7 +3029,7 @@ void fn_8002D3A0(void *arg0) {
     }
     Event_StartByName(str, arg0);
 }
-#pragma optimization_level reset
+#pragma global_optimizer reset
 void fn_8002D420(s32 arg0) {
     void fn_8014C718(void *, s32);
     extern u8 gBattleState[16];
