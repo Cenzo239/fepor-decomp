@@ -14241,9 +14241,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
         value = *begin;
         key = Sort_GetKey((void *)end[-1]);
         if (Sort_GetKey((void *)value) > key) {
-            s32 it_mem[2];
-            it_mem[1] = out.state; it_mem[0] = (s32)out.ptr;
-            SortIterator *pit = (SortIterator *)it_mem;
+            SortIterator it = Sort_PassIter(out);
+ SortIterator *pit = &it;
             cur = end;
             while (begin != cur) {
                 --cur;
@@ -14251,9 +14250,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
                 ++(*pit);
             }
         } else {
-            s32 it_mem[2];
-            it_mem[1] = out.state; it_mem[0] = (s32)out.ptr;
-            SortIterator *pit = (SortIterator *)it_mem;
+            SortIterator it = Sort_PassIter(out);
+ SortIterator *pit = &it;
             for (cur = begin; cur != end; cur++) {
                 *(*pit) = *cur;
                 ++(*pit);
@@ -14276,9 +14274,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             }
         }
         {
-            s32 it_mem[2];
-            it_mem[1] = out.state; it_mem[0] = (s32)out.ptr;
-            SortIterator *pit = (SortIterator *)it_mem;
+            SortIterator it = Sort_PassIter(out);
+ SortIterator *pit = &it;
             for (cur = begin; cur != end; cur++) {
                 *(*pit) = *cur;
                 ++(*pit);
@@ -14291,7 +14288,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
       mid = (s32 *)((u8 *)begin + half_n);
       {
         SortCompare c(comp);
-        SortIterator o = Sort_PassIter(out);
+        SortIterator o(out);
         s32 b_tmp0[2], b_tmp[2];
         *(SortIterator *)b_tmp0 = o;
         ((SortIterator *)b_tmp0)->ptr = (s32 *)((u8 *)((SortIterator *)b_tmp0)->ptr + half_n);
@@ -17021,20 +17018,6 @@ static inline int CheckPos_800E6554(u32 n, u32 pos) {
 
 
 #pragma global_optimizer off
-static inline void AssignString_800E6554(void *dst, void *src, u32 len)
-{
-    void *fn_800C94F8(void *, u32, u32, u32, u32);
-    void String_Resize(void *, u32, s32);
-    void *memcpy(void *, void *, u32);
-    if (dst == src) {
-        fn_800C94F8(dst, 0, 0, 0, 0);
-        String_Resize(dst, len, 1);
-    } else {
-        String_Resize(dst, len, 0);
-        memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)src + 8), len);
-    }
-}
-
 void fn_800E6554(void *vec, void *pos, u32 count, void *src)
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
