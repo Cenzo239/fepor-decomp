@@ -3345,6 +3345,8 @@ return arg0;
 void fn_802160C0(u8 level, char *fmt, ...) {
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_80216110(s32 arg0, OSContext *ctx) {
     void OSClearContext(void *);
     void OSSetCurrentContext(void *);
@@ -3378,8 +3380,8 @@ void fn_80216110(s32 arg0, OSContext *ctx) {
     u8 temp[sizeof(OSContext) + 8];
     volatile PadReg *p;
     u16 v;
-    s32 type;
     struct Node *node;
+    s32 type;
 
     p = (volatile PadReg *)__PADRegs;
     v = p->val;
@@ -3424,10 +3426,10 @@ void fn_80216110(s32 arg0, OSContext *ctx) {
                 do {
                 } while (fn_80215F40() != 0);
                 fn_80216534(lbl_8036873C, lbl_8036872C);
-                *(s32 *)lbl_8036873C = 2;
-                lbl_80368728 = 0;
+                ((struct Node *)lbl_8036873C)->state = 2;
                 lbl_8036873C = lbl_8036872C;
-                lbl_8036872C = 0;
+                lbl_80368728 = 0;
+                lbl_8036872C = NULL;
             }
         } else if (((struct Node *)lbl_8036873C)->next == NULL) {
             if (lbl_8036873C == lbl_80368738) {
@@ -3464,9 +3466,9 @@ void fn_80216110(s32 arg0, OSContext *ctx) {
             } while (fn_80215F40() != 0);
             fn_80216534(NULL, lbl_8036872C);
             fn_80216900(lbl_8036873C);
-            lbl_80368728 = 0;
             lbl_8036873C = lbl_8036872C;
-            lbl_8036872C = 0;
+            lbl_80368728 = 0;
+            lbl_8036872C = NULL;
         } else if (((struct Node *)lbl_8036873C)->next == NULL) {
             if (lbl_8036873C == lbl_80368738) {
                 if (((struct Node *)lbl_8036873C)->cb30 != NULL) {
@@ -3511,7 +3513,7 @@ void fn_80216110(s32 arg0, OSContext *ctx) {
     OSClearContext(temp);
     OSSetCurrentContext(ctx);
 }
-
+#pragma pop
 void fn_80216534(void *arg0, void *arg1) {
 #pragma inline_depth(0)
     M2C_UNK fn_80215F78(s32);
