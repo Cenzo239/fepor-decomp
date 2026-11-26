@@ -655,68 +655,81 @@ void fn_8006F378(void) {
 }
 
 void fn_8006F398(void *arg0, void *arg1) {
-void *GfxEnt_Get(s32);
-s32 Text_MeasureHeight(s32,f32);
-void Prim2D_Begin(void);
-void Prim2D_AddZ(f32);
-void Prim2D_PrepareTex(void);
-void Ui_DrawRouteIconEx(s32,s32,s32);
-void fn_8008AB7C(s32,s32,s32,s32,s32,s32,s32);
-extern f32 lbl_803692E0,lbl_803692F0,lbl_803692F4;
+    void *GfxEnt_Get(s32);
+    s32 Text_MeasureHeight(s32, f32);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void Ui_DrawRouteIconEx(s32, s32, s32);
+    void fn_8008AB7C(s32, s32, s32, s32, s32, s32, s32);
+    extern f32 lbl_803692E0, lbl_803692F0, lbl_803692F4;
 #pragma cplusplus on
-struct Obj {u8 pad[4]; virtual void v0()=0;
-virtual void v1()=0;
-virtual void v2()=0;
-virtual void v3()=0;
-virtual void v4()=0;
-virtual void v5()=0;
-virtual void v6()=0;
-virtual void v7()=0;
-virtual void v8()=0;
-virtual void v9()=0;
-virtual void v10()=0;
-virtual void v11()=0;
-virtual void v12()=0;
-virtual void v13()=0;
-virtual void v14()=0;
-virtual void v15()=0;
-virtual void v16()=0;
-virtual void v17()=0;
-virtual void v18()=0;
-virtual void v19()=0;
-virtual s16 v20()=0; };
-u8 *self=(u8*)arg0;
-u8 *obj=(u8*)arg1;
-u8 *row;
-void *ent;
-s32 sx,sy,height,pulse;
-s32 iconX,iconY;
-row=obj;
-row+=*(s8*)(row+0x62);
-ent=GfxEnt_Get(row[0x40]);
-sx=(s16)(*(s16*)((u8*)ent+0x30)-0x10);
-row=obj;
-row+=*(s8*)(row+0x62);
-ent=GfxEnt_Get(row[0x40]);
-sy=*(s16*)((u8*)ent+0x32);
-height=(s16)((Obj*)arg0)->v20();
-sy=(s16)(sy+((height-Text_MeasureHeight(-1,lbl_803692E0))>>1));
-if(*(s16*)(obj+0x3A)<0) {
-*(s16*)(obj+0x38)=sx; *(s16*)(obj+0x3A)=sy;
-} else {
-*(s16*)(obj+0x38)=(*(s16*)(obj+0x38)+sx)/2;
-*(s16*)(obj+0x3A)=(*(s16*)(obj+0x3A)+sy)/2;
-}
-Prim2D_Begin();Prim2D_AddZ(lbl_803692F0);Prim2D_PrepareTex();
-iconX=*(s16*)(obj+0x38);
-iconY=*(s16*)(obj+0x3A);
-pulse=0;
-if(!obj[0x2D]&&!obj[0x2E]) pulse=1;
-Ui_DrawRouteIconEx(iconX,iconY,pulse);
-sy=(s16)(*(s16*)(self+0xC)+0x40);
-sx=(s16)Text_MeasureHeight(-1,lbl_803692E0);
-Prim2D_Begin();Prim2D_AddZ(lbl_803692F4);Prim2D_PrepareTex();
-fn_8008AB7C(*(s16*)(obj+0x38)+(sy>>1)-0x10,*(s16*)(obj+0x3A)+(sx>>1),sy,0x18,0x19,0x4B,1);
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual void v18() = 0;
+        virtual void v19() = 0;
+        virtual s16 v20() = 0;
+    };
+    u8 *self = (u8 *)arg0;
+    u8 *obj = (u8 *)arg1;
+    s16 sx;
+    s16 sy;
+    s32 height;
+    s32 iconX;
+    s32 iconY;
+    s32 pulse;
+    s16 w;
+    s16 h;
+
+    sx = *(s16 *)((u8 *)GfxEnt_Get(obj[*(s8 *)(obj + 0x62) + 0x40]) + 0x30) - 0x10;
+    sy = *(s16 *)((u8 *)GfxEnt_Get(obj[*(s8 *)(obj + 0x62) + 0x40]) + 0x32);
+    height = (s16)((Obj *)arg0)->v20();
+    sy += (height - Text_MeasureHeight(-1, lbl_803692E0)) >> 1;
+
+    if (*(s16 *)(obj + 0x3A) < 0) {
+        *(s16 *)(obj + 0x38) = sx;
+        *(s16 *)(obj + 0x3A) = sy;
+    } else {
+        *(s16 *)(obj + 0x38) = (*(s16 *)(obj + 0x38) + sx) / 2;
+        *(s16 *)(obj + 0x3A) = (*(s16 *)(obj + 0x3A) + sy) / 2;
+    }
+
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_803692F0);
+    Prim2D_PrepareTex();
+
+    iconX = *(s16 *)(obj + 0x38);
+    iconY = *(s16 *)(obj + 0x3A);
+    pulse = 0;
+    if (!obj[0x2D] && !obj[0x2E]) {
+        pulse = 1;
+    }
+    Ui_DrawRouteIconEx(iconX, iconY, pulse);
+
+    w = *(s16 *)(self + 0xC) + 0x40;
+    h = Text_MeasureHeight(-1, lbl_803692E0);
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_803692F4);
+    Prim2D_PrepareTex();
+    fn_8008AB7C(*(s16 *)(obj + 0x38) + (w >> 1) - 0x10, *(s16 *)(obj + 0x3A) + (h >> 1), w, 0x18, 0x19, 0x4B, 1);
 #pragma cplusplus reset
 }
 
@@ -762,56 +775,68 @@ extern "C" void fn_8006F514(void *arg0) {
 
 extern "C" void fn_8006F54C(void *arg0, void *arg1) {
 #pragma cplusplus off
-void *GfxEnt_Get(u8);
-s32 Text_MeasureWidth(void *,s32,f32);
+    void *GfxEnt_Get(u8);
+    s32 Text_MeasureWidth(void *, s32, f32);
 #pragma cplusplus reset
-struct Obj {u8 pad[4]; virtual void v0()=0;
-virtual void v1()=0;
-virtual void v2()=0;
-virtual void v3()=0;
-virtual void v4()=0;
-virtual void v5()=0;
-virtual void v6()=0;
-virtual void v7()=0;
-virtual void v8()=0;
-virtual void v9()=0;
-virtual void v10()=0;
-virtual void v11()=0;
-virtual void v12()=0;
-virtual void v13()=0;
-virtual void v14()=0;
-virtual void v15()=0;
-virtual void v16()=0;
-virtual void v17()=0;
-virtual s16 v18()=0;
-virtual s16 v19()=0;
-virtual s16 v20()=0; };
-struct TextObj {virtual void v0()=0; virtual void *v1()=0;};
-u8 *self=(u8*)arg0;
-u8 *group=(u8*)arg1;
-s32 i;
-s16 x;
-u8 count;
-s16 y;
-s16 height;
-*(s16*)(self+0xC)=0;
-count=group[0x60];
-height=((Obj*)arg0)->v20()*(s8)count;
-for(i=0;i<(s8)group[0x60];i++) {
-TextObj *obj=*(TextObj**)((u8*)GfxEnt_Get(group[i+0x40])+0x34);
-s16 width=Text_MeasureWidth(obj->v1(),-1,1.0f);
-if(width>=*(s16*)(self+0xC)) *(s16*)(self+0xC)=width;
-}
-*(s16*)(self+0xE)=(((Obj*)arg0)->v18()-*(s16*)(self+0xC))>>1;
-*(s16*)(self+0x10)=(((Obj*)arg0)->v19()-height)>>1;
-x=*(s16*)(self+0xE);
-y=*(s16*)(self+0x10);
-for(i=0;i<(s8)group[0x60];) {
-*(s16*)((u8*)GfxEnt_Get(group[i+0x40])+0x30)=x;
-*(s16*)((u8*)GfxEnt_Get(group[i+0x40])+0x32)=y;
-i++;
-y+=((Obj*)arg0)->v20();
-}
+    struct Obj {
+        u8 pad[4];
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 v18() = 0;
+        virtual s16 v19() = 0;
+        virtual s16 v20() = 0;
+    };
+    struct TextObj {
+        virtual void v0() = 0;
+        virtual void *v1() = 0;
+    };
+    u8 *self = (u8 *)arg0;
+    u8 *group = (u8 *)arg1;
+    s16 height;
+    u8 count;
+    s32 i;
+    s16 x;
+    s32 y;
+
+    *(s16 *)(self + 0xC) = 0;
+    count = group[0x60];
+    height = (s8)count * ((Obj *)arg0)->v20();
+    for (i = 0; i < (s8)group[0x60]; i++) {
+        TextObj *obj = *(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34);
+        s16 width = Text_MeasureWidth(obj->v1(), -1, 1.0f);
+        if (width >= *(s16 *)(self + 0xC)) {
+            *(s16 *)(self + 0xC) = width;
+        }
+    }
+    *(s16 *)(self + 0xE) = (((Obj *)arg0)->v18() - *(s16 *)(self + 0xC)) >> 1;
+    *(s16 *)(self + 0x10) = (((Obj *)arg0)->v19() - height) >> 1;
+    x = *(s16 *)(self + 0xE);
+    y = *(s16 *)(self + 0x10);
+    for (i = 0; i < (s8)group[0x60];) {
+        u8 *ent;
+        ent = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        *(s16 *)(ent + 0x30) = x;
+        ent = (u8 *)GfxEnt_Get(group[i + 0x40]);
+        *(s16 *)(ent + 0x32) = y;
+        i++;
+        y += ((Obj *)arg0)->v20();
+    }
 }
 
 #pragma cplusplus reset
