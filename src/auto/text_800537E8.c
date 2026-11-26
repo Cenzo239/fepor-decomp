@@ -1069,6 +1069,13 @@ void fn_80053F08(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
+static inline u32 MapObj_GetInheritFlag(u32 flags) {
+    return (flags >> 28) & 1;
+}
+
 void fn_80053F68(void *arg0) {
     f32 Math_Lerp(f32, f32, f32, f32);
     void Model_SetColor(void *, u8, u8, u8);
@@ -1230,3 +1237,4 @@ void fn_80053F68(void *arg0) {
         }
     }
 }
+#pragma pop
