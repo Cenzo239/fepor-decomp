@@ -163,11 +163,8 @@ static inline u32 ResetSwitch_Poll(s64 now) {
 
     if (!(*(u32 *)0xCC003000 & 0x10000)) {
         if (lbl_803684FC == 0) {
-            soft = 1;
-            lbl_803684FC = soft;
-            if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
-                soft = 0;
-            }
+            lbl_803684FC = 1;
+            soft = (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) != 0) ? 1 : 0;
             lbl_80368514 = (u32)now;
             state = soft;
             lbl_80368510 = (u32)((u64)now >> 32);
