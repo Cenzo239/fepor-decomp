@@ -5617,7 +5617,10 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
     }
 }
 
+#pragma push
 #pragma use_lmw_stmw on
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_8006ECCC(void *, void *, u16);
     void fn_8006DA64(void *, s32, void *);
@@ -5772,6 +5775,7 @@ void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     fn_80223F2C(r28, r29, r30, 4);
     fn_802239D0(r28, 0);
 }
+#pragma pop
 /* Compute material color/alpha and bind it to GX channel + optional TEV stages. */
 s32 GMaterial_SetupColor(void *mat, s32 animCtx, void *matParam, void *obj)
 {
@@ -6855,8 +6859,10 @@ void fn_8006B39C(void*,void*,s32);void fn_8006A930(void*,void*,s32);void fn_8022
 void fn_802245D8(s32,s32,s32,s32);void fn_80224684(s32,s32,s32);void fn_80067490(s32);
 void fn_8006A6C8(u32,u8,u8,u8,s32);u8 fn_80068D84(void*,s32,void*,s32);void fn_80224A68(s32,s32);void fn_80066D00(s32);void fn_80069C98(void);
 extern u8 lbl_8026B8AC[];extern void *lbl_80367308,*lbl_8036730C;
-u8 *data,*node,*p;
-s32 aux,work,addr1,addr2;
+u8 *data,*p;
+s32 aux,work;
+u8 *node;
+s32 addr1,addr2;
 u32 geometry,last,format;
 u8 draw,reset;
 data=(u8*)fn_80060638(arg0);aux=fn_80060664(arg0);geometry=fn_800605E0(arg0);work=fn_8006049C(arg0);last=-1;
@@ -7923,6 +7929,9 @@ void fn_8006DDDC(void) {
     OSReport(DEMOInit_str + 0xE0);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_loop_invariants off
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -7983,14 +7992,14 @@ void fn_8006DFD8(void) {
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
     u8 fifo[0x80];
-    void *buf;
-    s32 a;
     s32 timed_out;
-    s32 c;
-    u16 xfbHeight;
-    u8 *dst;
+    u8 *dst32;
     void *src;
+    void *buf;
     s32 b;
+    s32 a;
+    u8 *dst;
+    u16 xfbHeight;
     volatile u8 *gx;
 
     timed_out = 0;
@@ -7999,6 +8008,8 @@ void fn_8006DFD8(void) {
     fn_80221A40(lbl_80367318, 1);
     fn_802208BC(0xB00B);
     lbl_80367330 = 0;
+    dst = lbl_80311C68;
+    dst32 = dst + 0x32;
     goto check;
 body:
     if (lbl_80367330 < lbl_80367334) {
@@ -8011,14 +8022,13 @@ body:
     buf = fn_800C4638(0x10000, lbl_8026B990, 0);
     a = fn_8021F4CC();
     b = fn_8021F250();
-    c = fn_8021F258(a);
+    a = fn_8021F258(a);
     fn_802206F4();
     GXInitFifoBase(fifo, buf, 0x10000);
     GXSetCPUFifo(fifo);
     GXSetGPFifo(fifo);
     if (src != NULL) {
-        dst = lbl_80311C68;
-        *(u32 *)dst = *(u32 *)src;
+        *(u32 *)lbl_80311C68 = *(u32 *)src;
         *(u16 *)(dst + 4) = *(u16 *)((u8 *)src + 4);
         *(u16 *)(dst + 6) = *(u16 *)((u8 *)src + 6);
         *(u16 *)(dst + 8) = *(u16 *)((u8 *)src + 8);
@@ -8032,7 +8042,7 @@ body:
         *(Pair *)(dst + 0x1a) = *(Pair *)((u8 *)src + 0x1a);
         *(Pair *)(dst + 0x22) = *(Pair *)((u8 *)src + 0x22);
         *(Pair *)(dst + 0x2a) = *(Pair *)((u8 *)src + 0x2a);
-        fn_8022C1B8(dst + 0x32, (u8 *)src + 0x32, 7);
+        fn_8022C1B8(dst32, (u8 *)src + 0x32, 7);
         lbl_80367324 = lbl_80311C68;
     } else {
         switch (VIGetTvFormat()) {
@@ -8055,7 +8065,7 @@ body:
         fn_8022108C(lbl_80367324, lbl_80311C68, 0, 0x10);
         lbl_80367324 = lbl_80311C68;
     }
-    lbl_80367320 = GXInit(b, c);
+    lbl_80367320 = GXInit(b, a);
     {
         void *rm = lbl_80367324;
         u16 w = *(u16 *)((u8 *)rm + 4);
@@ -8135,8 +8145,7 @@ done:
         lbl_80367318 = lbl_80367314;
     }
 }
-
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_8006E478(void) {
     void OSReport(char *, ...);
@@ -8744,3 +8753,9 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 #pragma opt_common_subs on
+static inline s32 Material_TakeSlot(u8 *count, s32 *ids)
+{
+    u8 index = *count;
+    *count = index + 1;
+    return ids[index];
+}
