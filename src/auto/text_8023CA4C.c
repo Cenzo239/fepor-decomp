@@ -1,11 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-const f64 lbl_8036C190 = 4503599627370496.0;
-static inline f32 ThpU32ToF32(u32 v) {
-    f64 d = lbl_8036C190;
-    *(u32 *)((u8 *)&d + 4) = v;
-    return (f32)(d - lbl_8036C190);
-}
+extern f64 lbl_8036C190;
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
