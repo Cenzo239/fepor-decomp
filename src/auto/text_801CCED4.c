@@ -1923,7 +1923,7 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 }
 
 #pragma use_lmw_stmw on
-#pragma optimization_level 3
+#pragma optimization_level 2
 #pragma global_optimizer off
 extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 {
