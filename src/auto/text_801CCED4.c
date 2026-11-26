@@ -1945,12 +1945,12 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
         static inline void hline(s16 x1, s16 y, s16 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
         static inline void vline(s16 x, s16 y1, s16 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
     };
-    u8 color[4];
     s32 old;
     s32 target;
     void *selected;
     s32 y, x;
     s32 x2, y2;
+    u8 color[4];
 
     ((Obj *)arg0)->v3();
 
@@ -4255,12 +4255,12 @@ s32 fn_801D2B04(void *arg0) {
     return Msg_Expand();
 }
 
+static inline s16 SubSwap(s16 a, s16 b) { return a - b; }
 #pragma global_optimizer off
 void fn_801D2B94(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
     M2C_UNK spC;
     s16 pt[2];
-    s16 sub;
     s16 temp_r6;
     s16 temp_r6_2;
     s32 temp_r7;
@@ -4281,8 +4281,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    sub = M2C_FIELD(arg1, s16 *, 0x54);
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - sub;
+    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
