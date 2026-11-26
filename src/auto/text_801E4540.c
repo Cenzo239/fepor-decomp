@@ -27,6 +27,7 @@ static inline u8 TabMenu_InRange32(s32 low, s32 value, s32 high) {
     if (low <= value && value <= high) ok = 1;
     return ok;
 }
+static inline void *TabMenu_IteratorValue(void **it) { return *it; }
 static inline u8 TabMenu_InSignedRange(s8 value, s8 low, s8 high) {
     return low <= value && value <= high;
 }
@@ -2141,20 +2142,20 @@ s32 fn_801E85A4(void *arg0, s32 arg1) {
 s32 fn_801E8734(void *arg0) {
     s8 fn_801E4A60();
     s32 v;
-    s32 q, r, lo, lower;
+    s32 q, r, lo;
     u8 ok;
     s8 count;
     count = fn_801E4A60();
     if (count > 0) count--;
     v = M2C_FIELD(arg0, s16 *, 0x36);
     q = v / 32;
-    r = v % 32;
-    lower = (s8)q;
+    { s32 lower = (s8)q;
     lo = lower + 8;
-    if (r != 0) lo = lower + 9;
-    { s32 index = (s8)count; s32 upper = (s8)lo;
+    if (v % 32 != 0) lo = lower + 9;
+    { s32 upper = (s8)lo; s32 index = (s8)count;
     ok = 0;
     if (lower <= index && index <= upper) ok = 1;
+    }
     }
     if (!ok) {
         M2C_FIELD(arg0, s16 *, 0x38) = v - ((s8)((s8)q - count) << 5);
