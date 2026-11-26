@@ -17,6 +17,15 @@ static inline u8 Save_CheckSlotCrc(u8 *blk) {
     if (*(u32 *)(blk + 0x50) != hash) return 0;
     return 1;
 }
+static inline void Save_ClearUnusedSlots(void **save, u8 *hist) {
+    s32 i;
+    u8 *blk;
+    for (i = 0; i < 6; i++) {
+        blk = (u8 *)*save + 0x2000 + i * 0x4000;
+        if (hist[i] == 0) *(u32 *)(blk + 0x40) = 0;
+        else if (blk[0x60] == 1) *(u32 *)(blk + 0x40) = 0;
+    }
+}
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -1847,72 +1856,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     }
 
 after_pair:
-    bestc = 0;
-    best = NULL;
-    off = 0x2000;
-    for (j = 3; j != 0; j--) {
-        sys = (u8 *)*arg0 + off;
-        if (*(u32 *)(sys + 0x70) != 0x53595346U) {
-            ok = 0;
-        } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok != 0) {
-            capped = save_slot_size(sys);
-            if (bestc < capped) {
-                best = sys;
-                bestc = save_slot_size(sys);
-            }
-        }
-        off += 0x4000;
-        sys = (u8 *)*arg0 + off;
-        if (*(u32 *)(sys + 0x70) != 0x53595346U) {
-            ok = 0;
-        } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok != 0) {
-            capped = save_slot_size(sys);
-            if (bestc < capped) {
-                best = sys;
-                bestc = save_slot_size(sys);
-            }
-        }
-        off += 0x4000;
-    }
-    sys = (u8 *)*arg0 + 0x1A000;
-    if (*(u32 *)(sys + 0x70) != 0x53595346U) {
-        ok = 0;
-    } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
-        ok = 0;
-    } else {
-        ok = 1;
-    }
-    if (ok != 0) {
-        capped = save_slot_size(sys);
-        if (bestc < capped) {
-            best = sys;
-            bestc = save_slot_size(sys);
-        }
-    }
-    sys = (u8 *)*arg0 + 0x20000;
-    if (*(u32 *)(sys + 0x70) != 0x53595346U) {
-        ok = 0;
-    } else if (*(u32 *)(sys + 0x74) != 0x20050201U) {
-        ok = 0;
-    } else {
-        ok = 1;
-    }
-    if (ok != 0) {
-        capped = save_slot_size(sys);
-        if (bestc < capped) {
-            best = sys;
-        }
-    }
+    best = Save_FindSystemSlot(arg0);
 
     if (arg1 != 0) {
         if (best != NULL) {
