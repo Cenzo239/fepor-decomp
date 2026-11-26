@@ -6565,8 +6565,11 @@ next: node=M2C_FIELD(node,void **,4);
 #pragma optimization_level 4
 #pragma global_optimizer off
 #pragma fp_contract off
-typedef struct { f32 axis3[3], basis3[9], axis1[3], basis1[9], direction4[3], direction[3]; } ActorBillboardVectors;
-
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma fp_contract off
+#pragma opt_lifetimes off
 void fn_8006B39C(void *node, void *actor, s32 work) {
 void *GActor_GetNodeTable(void *);
 void PSMTXRotRad(void *,s32,f32); void PSMTXScale(void *,f32,f32,f32); void PSMTXTrans(void *,f32,f32,f32);
@@ -6593,8 +6596,7 @@ typedef struct { f32 v[9]; } Basis;
 
 u8 *table;
 typedef struct { f32 v[3]; } Vector;
-Vector direction;
-Vector direction4;
+Vector direction,direction4;
 Basis basis1;
 Vector axis1;
 Basis basis3;
