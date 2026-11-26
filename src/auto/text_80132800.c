@@ -1788,9 +1788,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 #pragma scheduling on
-#pragma global_optimizer off
-#pragma optimization_level 3
-#pragma peephole off
+#pragma opt_lifetimes off
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
@@ -6005,6 +6003,7 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 
 void fn_8013B254(void *arg0)
 {
+  s16 cur;
   s16 new_var;
   s16 zero;
   s16 x0;
@@ -6023,7 +6022,9 @@ void fn_8013B254(void *arg0)
   void *q;
   void *p;
   zero = 0;
-  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
+  cur = *((s16 *) (((s8 *) arg0) + 0x64));
+  cur = (s16)(cur + 8);
+  *((s16 *) (((s8 *) arg0) + 0x64)) = cur;
   new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
