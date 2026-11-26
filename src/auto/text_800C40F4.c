@@ -3,7 +3,7 @@
 #include "structs.h"
 typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_800F9574;
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
-static inline s32 Map_AiTerrainTest(s8 x, s32 a, s8 y) {
+static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
 extern u8 gBattleMap[];
 s32 c=a,b=a;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
@@ -8960,7 +8960,8 @@ Xml_Destroy(xml,1);
 String_Destroy(&text,-1);String_Destroy(&name,-1);
 }
 
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
 void fn_800D8B14(s32 self, char *arg1) {
 void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
 void fn_800C8F70(void *, s32); void fn_800D6FA4(void *, void *);
@@ -9002,7 +9003,7 @@ fn_8011C9A8(*(void **)((u8 *)lbl_803678C0+0x424),1);
 fn_8011C9A8(*(void **)((u8 *)lbl_803678C0+0x428),1);
 Xml_Destroy(f,1);String_Destroy(&sp50,-1);String_Destroy(&sp5C,-1);
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_800D8D94(void *arg0, void *arg1, void *arg2, s32 arg3)
 {
     void String_Copy(void *, void *);
@@ -29533,7 +29534,7 @@ Map_SelectRangeBuffer(map,arg3); fn_800227F8(map,obj); fn_80022748(map,0);
 Map_FloodMoveRange(map,x,y,flags,fn_800FE770_Has(obj,0x14,1),fn_800FE770_Has(obj,0x15,0));
 }
 #pragma optimization_level reset
-s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(1,arg0,arg1); }
+s32 Map_IsAiTerrainBlocked(s8 arg0,s8 arg1) { extern u8 gBattleState[]; if(gBattleState[0x11]!=2)return 0; return Map_AiTerrainTest(arg0,1,arg1); }
 #pragma optimization_level reset
 s32 fn_800FE8E8(void *arg0, void *arg1) {
     return (u32) M2C_FIELD(arg0, u32 *, 0x24C) < (u32) M2C_FIELD(arg1, u32 *, 0x24C);
