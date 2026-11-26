@@ -342,6 +342,18 @@ typedef struct String {
       SortIterator &operator++() { ++ptr; return *this; }
       SortIterator operator++(int) { SortIterator tmp(*this); ++ptr; return tmp; }
   };
+static inline s32 *Sort_CopyBackwardIter(SortIterator first, SortIterator last, s32 *result) {
+    while (last.ptr != first.ptr) {
+        --last.ptr;
+        SortIterator tmp(last);
+        *--result = *tmp.ptr;
+    }
+    return result;
+}
+static inline s32 *Sort_CopyBackwardPtr(s32 *first, s32 *last, s32 *result) {
+    while (last > first) *--result = *--last;
+    return result;
+}
 class SortCompare {
 public:
     u8 value;
@@ -13898,36 +13910,42 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
         }
     }
 }
-#pragma cplusplus reset
-void fn_800E0C44(s32 *begin, s32 *end, PairAB *first, PairAB *last, s32 *out) {
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+extern "C" void fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
  if (begin == end) {
- PairAB cur=*last, stop=*first; s32 *dest=out;
- while((u32)cur.a != (u32)stop.a) { cur.a-=4; { PairAB tmp=cur; *--dest=*(s32*)tmp.a; } }
+ SortIterator stop(first); SortIterator cur(last); s32 *dest=out;
+ while(cur.ptr != stop.ptr) { --cur.ptr; { SortIterator tmp(cur); *--dest=*tmp.ptr; } }
  return;
  }
- if((u32)first->a == (u32)last->a) { s32 *dest=out, *src=end; while(src>begin) *--dest=*--src; return; }
- --end; last->a-=4;
+ if(first.ptr == last.ptr) { s32 *dest=out, *src=end; while(src>begin) *--dest=*--src; return; }
+ --end; --last.ptr;
  for (;;) {
- PairAB tmp=*last;
+ SortIterator tmp(last);
  s32 value=*end;
- s32 key=Sort_GetKey((void*)*(s32*)tmp.a);
+ s32 key=Sort_GetKey((void*)*tmp.ptr);
  if(Sort_GetKey((void*)value)>key) {
  *--out=*end;
  if(begin==end) {
- s32 *dest=out; PairAB stop=*first; last->a+=4; { PairAB cur=*last;
- while((u32)cur.a!=(u32)stop.a) {cur.a-=4; { PairAB tmp=cur; *--dest=*(s32*)tmp.a; }}
- return; }
+ ++last.ptr;
+ SortIterator stop(first); SortIterator cur(last); s32 *dest=out;
+ while(cur.ptr!=stop.ptr) {--cur.ptr; { SortIterator tmp(cur); *--dest=*tmp.ptr; }}
+ return;
  }
  --end;
  } else {
- PairAB tmp=*last; *--out=*(s32*)tmp.a;
- if((u32)first->a==(u32)last->a) { ++end; while(end>begin) *--out=*--end; return; }
- last->a-=4;
+ SortIterator tmp(last); *--out=*tmp.ptr;
+ if(first.ptr==last.ptr) { s32 *src=end+1; s32 *dest=out; while(src>begin) *--dest=*--src; return; }
+ --last.ptr;
  }
  }
 }
-
+#pragma pop
+#pragma cplusplus off
 void fn_800E0EE0(s32 *left, s32 *mid, s32 *end) {
     s32 tmp;
     s32 *p;
