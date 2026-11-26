@@ -998,7 +998,6 @@ void fn_80184F20(s32 arg0) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 E_MuBlend_script[];
-    struct Scr { u8 b; };
     u8 key0[0x38];
     u8 key1[0x38];
     u8 key2[0x38];
@@ -1011,32 +1010,32 @@ void fn_80184F20(s32 arg0) {
     u8 key9[0x38];
     u8 key10[0x38];
     s32 unit;
-    struct Scr *script;
+    u8 *script;
 
-    script = (struct Scr *)E_MuBlend_script;
+    script = E_MuBlend_script;
     unit = arg0;
     *(s32 *)(key0 + 0x30) = unit;
-    GfxEnt_ForEachKey(&script->b, MuFade_UnlinkSame, key0);
+    GfxEnt_ForEachKey(script, MuFade_UnlinkSame, key0);
     *(s32 *)(key1 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x20, MuFade_UnlinkSame, key1);
+    GfxEnt_ForEachKey(script + 0x20, MuFade_UnlinkSame, key1);
     *(s32 *)(key2 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x78, MuFade_UnlinkSame, key2);
+    GfxEnt_ForEachKey(script + 0x78, MuFade_UnlinkSame, key2);
     *(s32 *)(key3 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x98, MuFade_UnlinkSame, key3);
+    GfxEnt_ForEachKey(script + 0x98, MuFade_UnlinkSame, key3);
     *(s32 *)(key4 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0xC0, MuFade_UnlinkSame, key4);
+    GfxEnt_ForEachKey(script + 0xC0, MuFade_UnlinkSame, key4);
     *(s32 *)(key5 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x110, MuFade_UnlinkSame, key5);
+    GfxEnt_ForEachKey(script + 0x110, MuFade_UnlinkSame, key5);
     *(s32 *)(key6 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0xE8, MuFade_UnlinkSame, key6);
+    GfxEnt_ForEachKey(script + 0xE8, MuFade_UnlinkSame, key6);
     *(s32 *)(key7 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x40, MuFade_UnlinkSame, key7);
+    GfxEnt_ForEachKey(script + 0x40, MuFade_UnlinkSame, key7);
     *(s32 *)(key8 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x60, MuFade_UnlinkSame, key8);
+    GfxEnt_ForEachKey(script + 0x60, MuFade_UnlinkSame, key8);
     *(s32 *)(key9 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x164, MuFade_UnlinkSame, key9);
+    GfxEnt_ForEachKey(script + 0x164, MuFade_UnlinkSame, key9);
     *(s32 *)(key10 + 0x30) = unit;
-    GfxEnt_ForEachKey((u8 *)script + 0x3F0, MuFade_UnlinkSame, key10);
+    GfxEnt_ForEachKey(script + 0x3F0, MuFade_UnlinkSame, key10);
 }
 #pragma global_optimizer on
 void MoveAnim_MatchUnit(void *arg0, void *arg1) {
@@ -2691,13 +2690,14 @@ void fn_80188368(void *arg0) {
     M2C_FIELD(arg0,s32 *,0x60)=0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
 void MoveAnim_BuildPathHeights(void *arg0) {
 f32 Map_SampleHeightRaw(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
-extern u8 gBattleMap[]; extern f32 gHalf,lbl_8036ACEC;
+extern u8 gBattleMap[]; extern const f32 gHalf,lbl_8036ACEC;
 u8 *self=arg0;
 PathHeightPoint *point; PathHeightPoint *anchor; u8 *dir;
-s32 i; s32 count,y,x; f32 delta,offset,zero;
+s32 x,y,count; f32 delta,offset,zero;
 if(*(u16 *)(self+0x52)&0x8000) {
 f32 *pos=*(f32 **)(self+0x30);
 { PathHeightPoint *initial=*(PathHeightPoint **)(self+0x6C); point=initial; anchor=initial; }
@@ -2707,7 +2707,7 @@ point->rawHeight=Map_SampleHeightRaw(gBattleMap,offset+(f32)x,offset+(f32)y);
 point->index=count; point->height=point->rawHeight;
 delta=point->height-anchor->height;
 if(delta<zero) {
-s32 off; PathHeightPoint *sample;
+s32 i,off; PathHeightPoint *sample;
 for(i=anchor->index+1,off=i*12;i<point->index;off+=12,i++) {
 sample=(PathHeightPoint *)((u8 *)*(PathHeightPoint **)(self+0x6C)+off);
 sample->height=Math_Lerp(anchor->height,point->height,(f32)(point->index-anchor->index),(f32)(sample->index-anchor->index));
@@ -2715,7 +2715,7 @@ sample->height=Math_Lerp(anchor->height,point->height,(f32)(point->index-anchor-
 }
 if(delta>zero) {
 if(*dir==16) {
-s32 off; PathHeightPoint *sample;
+s32 i,off; PathHeightPoint *sample;
 for(i=point->index;i>=anchor->index;i--) {
 sample=*(PathHeightPoint **)(self+0x6C)+i;
 if(point->rawHeight>sample->rawHeight) {anchor=sample;break;}
@@ -2731,7 +2731,7 @@ switch(*dir) {case 8:y--;break;case 4:y++;break;case 1:x--;break;case 2:x++;brea
 }
 }
 }
-
+#pragma pop
 void MoveAnim_AttachClassCue(void *anim) {
     s32 Str_Cmp(void *, void *);
     s32 DebugPrint(const char *, ...);
@@ -4191,6 +4191,8 @@ void fn_8018BA34(void *arg0) {
     *(s32 *)((u8 *)arg0 + 0x3C) = 0;
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_8018BAC8(void *arg0) {
 u8 Pad_IsButton(void*,s32);
 s32 fn_8005B760(s32);
@@ -4226,8 +4228,7 @@ break;
 }
 }
 }
-
-#pragma dont_inline on
+#pragma pop
 void fn_8018BC28(void *arg0) {
  u8 Pad_IsActive(void *);u8 Pad_IsButton(void *,s32);
  void *fn_80105C5C(void *,s32);s32 fn_8005B760(s32);
@@ -5618,8 +5619,9 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     str = Msg_Expand(lbl_80279C40 + 0x66);
     Text_Draw((s16)(y + 0xB0), (s16)x, 0xF, str);
 }
-#pragma cplusplus on
-extern "C" void fn_8018EEB0(void *arg0, s16 arg1) {
+#pragma push
+#pragma opt_propagation off
+void fn_8018EEB0(void *arg0, s16 arg1) {
     s32 Text_MeasureHeight(s32,f32);
     void *Msg_Expand(void *);
     void Text_Draw(s16,s16,s32,void *,...);
@@ -5629,7 +5631,7 @@ extern "C" void fn_8018EEB0(void *arg0, s16 arg1) {
     extern u8 gConvoy[];
     s16 width;
     s16 height;
-    s16 x;
+    s32 x;
     s32 y;
     u8 color[4];
     width=M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12);
@@ -5641,12 +5643,12 @@ extern "C" void fn_8018EEB0(void *arg0, s16 arg1) {
         y=arg1+y;
         Text_Draw(x,y,0xF,str);
     }
-    Text_Draw(x+0x58,y,1,lbl_80279C40+0x8F,fn_800C3E54(gConvoy),0xC8);
-    Text_Draw(x+0xB0,y,0xF,Msg_Expand(lbl_80279C40+0x66));
+    Text_Draw((s16)((s16)x+0x58),y,1,lbl_80279C40+0x8F,fn_800C3E54(gConvoy),0xC8);
+    Text_Draw((s16)((s16)x+0xB0),y,0xF,Msg_Expand(lbl_80279C40+0x66));
     color[0]=0x70; color[1]=0x5F; color[2]=0x1F; color[3]=0x7F;
     Ui_DrawLine(0,(s16)(arg1+height),width,(s16)(arg1+height),0x10,color);
 }
-#pragma cplusplus reset
+#pragma pop
 
 void fn_8018EFE0(void *arg0, s16 arg1) {
     void *Msg_Expand(void *);
@@ -6749,7 +6751,8 @@ void *fn_80190C24(void *parent, void **names) {
     Item_Destroy(item, -1);
     return obj;
 }
-#pragma global_optimizer on
+#pragma push
+#pragma optimization_level 3
 void *fn_80190D9C(void *parent, void **names) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
@@ -6761,11 +6764,12 @@ void *fn_80190D9C(void *parent, void **names) {
     void Item_SetByName(void *, void *);
     void Item_Destroy(void *, s32);
     extern u8 lbl_80296298[];
+    extern const f32 lbl_8036AE20;
     ListIter end;
     ListIter start;
     ListIter ret;
-    ListIter out;
     ListIter pos;
+    ListIter out;
     u8 item[8];
     u8 *base = lbl_80296298;
     u8 *obj;
@@ -6781,7 +6785,7 @@ void *fn_80190D9C(void *parent, void **names) {
         *(s32 *)(obj + 0x54) = 0;
         *(s32 *)(obj + 0x58) = 0;
         obj[0x5C] = 0;
-        *(f32 *)(obj + 0x64) = 1.0f;
+        *(f32 *)(obj + 0x64) = lbl_8036AE20;
         *(s32 *)(obj + 0x68) = 0;
     }
     mode = 0;
@@ -6813,7 +6817,7 @@ void *fn_80190D9C(void *parent, void **names) {
     Item_Destroy(item, -1);
     return obj;
 }
-
+#pragma pop
 void fn_80190F14(void) {
     M2C_UNK fn_8013FE0C();
     fn_8013FE0C();
@@ -13246,34 +13250,23 @@ void fn_8019C244(void *arg0) {
     void *Unit_FadeFacing(void *, s32, s32, f32);
     void GActor_RequestRes(void *);
     extern s32 gTargetList[];
-    extern f32 lbl_8036AF20;
-    extern f32 lbl_8036AF00;
-    s32 *list = gTargetList;
     s32 i;
     f32 sumX;
     f32 sumY;
     void *unit;
     f32 angle;
-    s8 y;
-    s8 x;
-    s32 count;
 
-    sumX = lbl_8036AF20;
-    sumY = sumX;
-    for (i = 0; i < list[0];) {
-        TargetList_GetAt(list, i);
+    sumX = 0.0f;
+    sumY = 0.0f;
+    for (i = 0; i < gTargetList[0]; i++) {
+        TargetList_GetAt(gTargetList, i);
         unit = UnitRef_GetUnit();
-        y = *(s8 *)((u8 *)unit + 0x19F);
-        i++;
-        x = *(s8 *)((u8 *)unit + 0x19E);
-        sumX += (f32)x;
-        sumY += (f32)y;
+        sumX += (f32)*(s8 *)((u8 *)unit + 0x19E);
+        sumY += (f32)*(s8 *)((u8 *)unit + 0x19F);
     }
-    count = list[0];
-    unit = *(void **)((u8 *)arg0 + 0x38);
-    sumX /= (f32)count;
-    sumY /= (f32)count;
-    angle = fn_8004BDA8(unit, lbl_8036AF00 + sumX, lbl_8036AF00 + sumY);
+    sumX /= (f32)gTargetList[0];
+    sumY /= (f32)gTargetList[0];
+    angle = fn_8004BDA8(*(void **)((u8 *)arg0 + 0x38), 0.5f + sumX, 0.5f + sumY);
     Unit_FadeFacing(*(void **)((u8 *)arg0 + 0x38), 0x10, (s32)arg0, angle);
     GActor_RequestRes((u8 *)arg0 + 0x41);
 }
