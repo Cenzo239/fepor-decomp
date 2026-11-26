@@ -5,7 +5,7 @@
 #include "structs.h"
 
 static inline u32 GX_ReadMemCounter(volatile u16 *high, volatile u16 *low) {
-    u32 lo, old, hi;
+    u32 hi, old, lo;
     hi = *high;
     do {
         old = hi;
@@ -187,26 +187,18 @@ s32 fn_8021D91C(s32 arg0) {
     extern s64 lbl_80368760;
     extern u32 lbl_80368768;
     volatile u32 *fifo;
-    volatile u16 *high;
     u32 lo;
     u32 val;
     u32 old;
     unsigned int hi;
     s64 now;
+    volatile u16 *high;
     volatile u16 *low;
     u8 pad[8];
 
     if (arg0 == 0) {
         if (lbl_80368768 == 0) {
-            high = (volatile u16 *)__memReg + 0x27;
-            low = (volatile u16 *)__memReg + 0x28;
-            hi = *high;
-            do {
-                old = hi;
-                hi = *high;
-                lo = *low;
-            } while (hi != old);
-            lbl_80368758 = (hi << 16) | lo;
+            lbl_80368758 = GX_ReadMemCounter((volatile u16 *)__memReg + 0x27, (volatile u16 *)__memReg + 0x28);
             lbl_80368760 = OSGetTime();
             lbl_80368768 = 1;
             return 0;
