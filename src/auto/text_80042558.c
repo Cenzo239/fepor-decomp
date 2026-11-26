@@ -1,5 +1,6 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+typedef struct { f32 x, y, z; } Vec;
 static inline u8 DirFromIndex_80042558(s32 i)
 {
     switch (i) {
@@ -4314,58 +4315,41 @@ void Map_SetupColorGx(void) {
     fn_802245D8(1, 4, 1, 0);
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma opt_propagation off
 s32 fn_8004ABD4(void *arg0, u8 arg1) {
     s32 Item_GetMaxRange(void *);
-    u32 *Item_GetFlagsPtr(void *);
-    void *item;
+    u64 *Item_GetFlagsPtr(void *);
     u8 range;
     u8 kind;
-    u32 *p;
-    u32 a;
-    u32 b;
-    u32 m;
 
-    item = arg0;
-    if (item != NULL) {
+    if (arg0 != NULL) {
         if (arg1 == 0) {
-            if (*(void **)item != NULL) {
-                range = (u8)Item_GetMaxRange(*(void **)item);
+            if (*(void **)arg0 != NULL) {
+                range = (u8)Item_GetMaxRange(*(void **)arg0);
             } else {
                 range = 0;
             }
             if (range > 1U) {
-                {
-                    u32 z;
-                    p = Item_GetFlagsPtr(item);
-                    a = p[0];
-                    z = 0;
-                    b = p[1];
-                    m = 0x40;
-                    a = a & z;
-                    m = b & m;
-                    m = m ^ z;
-                    a = a ^ z;
-                    if ((m | a) != 0) {
-                        goto block_16;
+                if ((*Item_GetFlagsPtr(arg0) & 0x40ULL) == 0ULL) {
+                    if (*(void **)arg0 != NULL) {
+                        kind = *((u8 *)*(void **)arg0 + 0x12);
+                    } else {
+                        kind = 0xC;
                     }
-                }
-                if (*(void **)item != NULL) {
-                    kind = *((u8 *)*(void **)item + 0x12);
-                } else {
-                    kind = 0xC;
-                }
-                switch (kind) {
-                case 1:
-                    return 5;
-                case 2:
-                    return 3;
+                    switch (kind) {
+                    case 1:
+                        return 5;
+                    case 2:
+                        return 3;
+                    }
                 }
             }
         }
-    block_16:
-        if (*(void **)item != NULL) {
-            kind = *((u8 *)*(void **)item + 0x12);
+        if (*(void **)arg0 != NULL) {
+            kind = *((u8 *)*(void **)arg0 + 0x12);
         } else {
             kind = 0xC;
         }
@@ -4384,6 +4368,8 @@ s32 fn_8004ABD4(void *arg0, u8 arg1) {
     }
     return 0;
 }
+#pragma pop
+#pragma global_optimizer off
 void fn_8004AD20(void *arg0, f32 *arg1) {
     void *fn_80146B10(s32);
     void DebugPrint(void *, ...);
@@ -4625,7 +4611,8 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
     return 1;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 void fn_8004B588(u8 *arg0)
 {
     f32 fn_80059F64(f32, f32, f32, f32);
@@ -4748,7 +4735,7 @@ void fn_8004B588(u8 *arg0)
     sp8 = spC;
     fn_80051564(&sp8, 0, *(f32 *)(arg0 + 4), *(f32 *)(arg0 + 8));
 }
-
+#pragma pop
 void fn_8004B8F8(int arg0, int arg1, float arg2, float arg3)
 {
   extern void *lbl_803672CC;
