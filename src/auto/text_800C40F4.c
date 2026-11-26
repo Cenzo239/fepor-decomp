@@ -20829,6 +20829,8 @@ s32 fn_800ECCE4(void) {
     return 0;
 }
 
+#pragma push
+#pragma opt_common_subs off
 s32 fn_800ECD20(void) {
  extern void *lbl_803678C0;
  extern char lbl_80272880[];
@@ -20869,7 +20871,7 @@ s32 fn_800ECD20(void) {
  String_Destroy(&copy,-1);String_Destroy(&str,-1);
  return 0;
 }
-
+#pragma pop
 void *fn_800ECF40(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void String_Init(void *, char *, void *);
     void String_Destroy(void *, s32);
