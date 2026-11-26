@@ -40,6 +40,15 @@ static inline u8 *MenuResource_ClearIn(s32 clear, u8 *base) {
     return base;
 }
 
+static inline void MenuResource_ClearSlots(u8 *base, s32 clear) {
+    void FileCache_ReleaseSlot(void *);
+    u8 *p;
+    s32 i = 0;
+    for (p = base; i < 40; i++, p += 12) {
+        if (*(u32 *)(p + 8)) FileCache_ReleaseSlot(p + 8);
+        *(u32 *)(p + 8) = clear;
+    }
+}
 static inline u8 *MenuResource_FindIn(u8 *p, s32 id) {
 s32 i;
 for(i=0;i<40;p+=12,i++) { if(id==*(s32*)p) return p; }
@@ -8871,9 +8880,8 @@ void fn_801DE074(void) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma global_optimizer off
+#pragma global_optimizer on
 #pragma opt_loop_invariants off
-#pragma opt_propagation off
 void fn_801DE0EC(s32 *list, s32 parent) {
 void Process_UnlinkByKey(void*); void Process_CreateChild(void*,s32); void FileCache_ReleaseSlot(void*); void fn_8005C8B4(void*); int sprintf(char*,const char*,...);
 extern u8 lbl_80299C58[],lbl_80299A78[],gUiSeCues[];
@@ -8886,14 +8894,8 @@ u8 *p;
 u8 *base;
 s32 id;
 Process_UnlinkByKey(lbl_80299C58);
-i = 0;
 base = lbl_80299A78;
-clear = i;
-for (p = base; i < 40; i++, p += 12) {
-if (*(u32 *)(p + 8))
-FileCache_ReleaseSlot(p + 8);
-*(u32 *)(p + 8) = clear;
-}
+MenuResource_ClearIn(0, base);
 for (; (id = *cursor) != -1; cursor++) {
 p = MenuResource_FindIn(base, id);
 if (p) {
