@@ -2059,19 +2059,16 @@ void fn_80077568(s8 *arg0) {
 #pragma push
 #pragma opt_lifetimes off
 s32 fn_80077574(void *arg0) {
+    void fn_8009233C(void *, void *);
+    void fn_8002A784(void *, void *);
+    extern u8 gUiContext[];
+    extern s32 gTargetList[];
 #pragma cplusplus on
     struct Flags {
         u8 bits;
         Flags() {}
         Flags(const Flags &other) : bits(other.bits) {}
     };
-#pragma cplusplus reset
-    {
-    struct Flags fn_8009233C(void *);
-    void fn_8002A784(void *, void *);
-    extern u8 gUiContext[];
-    extern s32 gTargetList[];
-#pragma cplusplus on
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -2098,11 +2095,11 @@ s32 fn_80077574(void *arg0) {
     };
     u8 bits;
     void *unit;
-    void *uiUnit;
     Obj *obj = (Obj *)arg0;
+    Flags result;
     if (*(s8 *)(gUiContext + 0x12)) return 3;
-    uiUnit = *(void **)gUiContext;
-    bits = fn_8009233C(uiUnit).bits;
+    fn_8009233C(&result, *(void **)gUiContext);
+    bits = result.bits;
     if (!(bits & 0x38) && !(u8)(bits & obj->flags().bits)) return 3;
     unit = *(void **)gUiContext;
     fn_8002A784(unit, &obj->flags());
@@ -2110,7 +2107,6 @@ s32 fn_80077574(void *arg0) {
     if ((bits & 0x20) && !(u8)(bits & obj->flags().bits)) return 2;
     return 0;
 #pragma cplusplus reset
-    }
 }
 #pragma pop
 void fn_80077694(s8 *arg0) {
@@ -3569,44 +3565,41 @@ void fn_80079B9C(void *unused, void *parent, void *node) {
     Prim2D_EndPrim();
 }
 
+#pragma push
+#pragma optimization_level 2
 void fn_80079CD8(void *arg0) {
-    M2C_UNK fn_8000C070(void *, s32);
-    u32 fn_8000CD60();
-    M2C_UNK fn_8007A524(void *, M2C_UNK, M2C_UNK);
+    void Process_Goto(void *, s32);
+    u32 Rand_Next(void);
+    void Face_DrawEyes(void *, s32, s32);
     s32 var_r31 = 0;
-    s32 temp_r0 = M2C_FIELD(arg0, s16 *, 0x38);
     u32 temp_r3;
-    s16 temp_r0_2;
     s32 var_r0;
 
-    if (temp_r0 < 0xc) {
-        switch (temp_r0) {
-        case 0: case 1: case 2: case 3: case 4: case 5:
-            var_r31 = 1;
-            break;
-        case 0x12:
-            var_r31 = 2;
-            break;
-        case 6: case 7: case 8: case 9: case 10: case 11:
-            var_r31 = 1;
-            break;
-        }
-    } else {
-        fn_8000C070(arg0, 1);
+    switch (M2C_FIELD(arg0, s16 *, 0x38)) {
+    case 0: case 1: case 2: case 3: case 4: case 5:
+        var_r31 = 1;
+        break;
+    case 6: case 7: case 8: case 9: case 10: case 11:
+        var_r31 = 2;
+        break;
+    case 12: case 13: case 14: case 15: case 16: case 17:
+        var_r31 = 1;
+        break;
+    case 18:
+        Process_Goto(arg0, 1);
         M2C_FIELD(arg0, s16 *, 0x36) = 1;
-        temp_r3 = fn_8000CD60() >> 0x10U;
-        temp_r0_2 = M2C_FIELD(arg0, s16 *, 0x34);
-        switch (temp_r0_2) {
+        temp_r3 = Rand_Next() >> 0x10U;
+        switch (M2C_FIELD(arg0, s16 *, 0x34)) {
         case 3:
-            var_r0 = ((s32) temp_r3 >> 7) + 0x12C;
+            var_r0 = ((s32)temp_r3 >> 7) + 0x12C;
             break;
         case 1:
-            var_r0 = ((s32) temp_r3 >> 7) + 0x1E;
-            break;
-        case 4:
-            var_r0 = ((s32) temp_r3 >> 10) + 1;
+            var_r0 = ((s32)temp_r3 >> 7) + 0x1E;
             break;
         case 2:
+            var_r0 = ((s32)temp_r3 >> 10) + 1;
+            break;
+        case 4:
             var_r0 = 1;
             break;
         case 5:
@@ -3617,13 +3610,14 @@ void fn_80079CD8(void *arg0) {
             break;
         }
         M2C_FIELD(arg0, s32 *, 0x3C) = var_r0;
+        break;
     }
 
-    fn_8007A524(arg0, 0, 7);
-    fn_8007A524(arg0, var_r31, 0xA);
-    M2C_FIELD(arg0, s16 *, 0x38) = (s16) (M2C_FIELD(arg0, s16 *, 0x38) + 1);
+    Face_DrawEyes(arg0, 0, 7);
+    Face_DrawEyes(arg0, var_r31, 0xA);
+    M2C_FIELD(arg0, s16 *, 0x38)++;
 }
-
+#pragma pop
 void fn_80079E08(void *arg0) {
     M2C_FIELD(arg0, s16 *, 0x38) = 0;
 }
@@ -4584,18 +4578,21 @@ found:
     fn_8007BD30((s8)n,a,b,c,d,0,e);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void *fn_8007BD30(s32 index, void *name, s32 x, s32 y, u32 flags, s32 unused, void *parent) {
 extern void *gFaceSlots[]; extern u8 lbl_80288AD8[],lbl_8026C640[];
 extern f32 lbl_803693D8,lbl_803693D4;
 void *Res_GetByName(void *); void *Process_Create(void *,void *); void Process_Goto(void *,s32); s32 fn_802002F0(s32);
-u8 *found; u8 *res; u8 *face; u8 *child; s32 mode; u8 *scripts=lbl_80288AD8;
+u8 *found; u8 *res; u8 *face; u8 *child; s32 mode; u8 (*scripts)[0x18]=(void *)lbl_80288AD8;
 found=Res_GetByName(name);
 if(found) res=found; else res=Res_GetByName(lbl_8026C640+0xef);
 if(gFaceSlots[index]) return 0;
 mode=flags&0x100;
 if(mode) {
 if(!parent) parent=(void *)3;
-face=Process_Create(scripts,parent);
+face=Process_Create(scripts[0],parent);
 M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
 M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
 M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
@@ -4605,7 +4602,7 @@ M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
 gFaceSlots[index]=face; M2C_FIELD(face,s32 *,0x30)=0; return face;
 }
 if(!parent) parent=(void *)3;
-face=Process_Create(scripts+0x18,parent);
+face=Process_Create(scripts[1],parent);
 M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
 M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
 M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
@@ -4613,9 +4610,9 @@ M2C_FIELD(face,f32 *,0x4c)=1.0f; M2C_FIELD(face,f32 *,0x48)=0.0f;
 if(flags&0x200) { M2C_FIELD(face,u16 *,0x46)&=~0x202; if(M2C_FIELD(M2C_FIELD(face,void **,0x34),u8 *,0x1c)==0) M2C_FIELD(face,u16 *,0x46)|=2; }
 M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
 if(!mode) {
-if(M2C_FIELD(res,u16 *,0x18)&2) M2C_FIELD(face,void **,0x50)=Process_Create(scripts+0xc8,face);
+if(M2C_FIELD(res,u16 *,0x18)&2) M2C_FIELD(face,void **,0x50)=Process_Create((u8 *)scripts+0xc8,face);
 if(M2C_FIELD(res,u16 *,0x18)&1) {
-M2C_FIELD(face,void **,0x54)=Process_Create(scripts+0xe4,face);
+M2C_FIELD(face,void **,0x54)=Process_Create((u8 *)scripts+0xe4,face);
 switch((s32)(flags&12)) {
 case 12: break;
 case 4: child=M2C_FIELD(face,void **,0x54); if(child) { M2C_FIELD(child,u16 *,0x36)=3; M2C_FIELD(child,u16 *,0x38)=5; Process_Goto(child,8); } break;
@@ -4627,7 +4624,7 @@ gFaceSlots[index]=face;
 M2C_FIELD(face,s32 *,0x30)=fn_802002F0(M2C_FIELD(M2C_FIELD(face,void **,0x34),s32 *,0));
 return face;
 }
-
+#pragma pop
 void fn_8007C018(void *arg0) {
     M2C_UNK fn_80200270(s32);
     if ((u32) M2C_FIELD(arg0, u32 *, 0x30) != 0U) {
