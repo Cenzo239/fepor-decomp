@@ -4767,6 +4767,20 @@ selected:
 }
 #pragma pop
 
+static inline s8 Ai_GetHealAmount(void *unit, void *item) {
+    void *Item_GetByIid(void *);
+    s8 Unit_GetMaxHp(void *);
+    extern u8 lbl_80273B40[];
+
+    if (item == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
+        return 0xA;
+    }
+    if (item == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
+        return Unit_GetMaxHp(unit);
+    }
+    return 0;
+}
+
 #pragma optimization_level 2
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
@@ -4784,91 +4798,84 @@ s32 Ai_TryUseHealItem(void *arg0) {
     s32 sp8;
     s32 idx;
     s32 a;
-    s8 temp;
     s8 valCur;
-    void *chosen;
-    s8 valBest;
     void *item;
     void *slot;
     u8 *p;
     void *best;
     s32 i;
     void *key;
-    s32 vb;
-    s32 vc;
+    s8 valBest;
+    void *chosen;
+    s8 temp;
 
     best = 0;
     i = 0;
     p = arg0;
-loop:
-    slot = p + 0x1EC;
-    item = *(void **)slot;
-    if (item == 0) {
-        goto after_loop;
-    }
-    if (*(u8 *)((u8 *)item + 0x12) == 0xA && *(u8 *)((u8 *)item + 0x14) == 0x81) {
-        if (best == 0) {
-            best = slot;
-        } else {
-            key = *(void **)best;
-            chosen = best;
-            if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
-                valBest = 0xA;
-            } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
-                valBest = Unit_GetMaxHp(arg0);
-            } else {
-                valBest = 0;
-            }
-            key = *(void **)slot;
-            temp = valBest;
-            if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
-                valCur = 0xA;
-            } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
-                valCur = Unit_GetMaxHp(arg0);
-            } else {
-                valCur = 0;
-            }
-            vb = (s8)valBest;
-            vc = (s8)valCur;
-            if (vb != vc) {
-                if (vb > vc) {
-                    temp = valCur;
-                    valCur = valBest;
-                    chosen = slot;
-                    slot = best;
-                }
-                valBest = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                a = Abs((s8)(valBest - vc));
-                if (Abs((s8)(valBest - (s8)temp)) > a) {
-                    goto set_other;
-                }
-                goto after_dist;
-            set_other:
-                chosen = slot;
-            after_dist:
-                ;
-            } else if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
-                chosen = best;
-            } else if (*(u8 *)((u8 *)best + 4) > *(u8 *)((u8 *)slot + 4)) {
-                chosen = slot;
-            } else {
-                chosen = best;
-            }
-            best = chosen;
+    do {
+        slot = p + 0x1EC;
+        item = *(void **)slot;
+        if (item == 0) {
+            break;
         }
-    }
-    i += 1;
-    p += 8;
-    if (i < 4) {
-        goto loop;
-    }
-after_loop:
+        if (*(u8 *)((u8 *)item + 0x12) == 0xA && *(u8 *)((u8 *)item + 0x14) == 0x81) {
+            if (best == 0) {
+                best = slot;
+            } else {
+                key = *(void **)best;
+                chosen = best;
+                if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x1D)) {
+                    valBest = 0xA;
+                } else if (key == Item_GetByIid(&lbl_80273B40[0x2B])) {
+                    valBest = Unit_GetMaxHp(arg0);
+                } else {
+                    valBest = 0;
+                }
+                key = *(void **)slot;
+                temp = valBest;
+                if (key == Item_GetByIid(&lbl_80273B40[0x1D])) {
+                    valCur = 0xA;
+                } else if (key == Item_GetByIid((u8 *)lbl_80273B40 + 0x2B)) {
+                    valCur = Unit_GetMaxHp(arg0);
+                } else {
+                    valCur = 0;
+                }
+                if (valBest != valCur) {
+                    if (valBest > valCur) {
+                        temp = valCur;
+                        valCur = valBest;
+                        chosen = slot;
+                        slot = best;
+                    }
+                    valBest = Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8];
+                    a = Abs(valBest - valCur);
+                    if (Abs(valBest - temp) <= a) {
+                        goto done_pick;
+                    }
+                    chosen = slot;
+                } else if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
+                    chosen = best;
+                } else if (*(u8 *)((u8 *)best + 4) > *(u8 *)((u8 *)slot + 4)) {
+                    chosen = slot;
+                } else {
+                    chosen = best;
+                }
+            done_pick:
+                best = chosen;
+            }
+        }
+        i += 1;
+        p += 8;
+    } while (i < 4);
+
     if (best != 0) {
-        for (idx = 4; idx < 8; idx++) {
+        idx = 4;
+        do {
             if (best == Unit_GetItemSlot(arg0, idx)) {
                 break;
             }
-        }
+            idx++;
+        } while (idx < 8);
         sp12 = (s8)((u8 *)arg0)[0x19E];
         sp10 = (s8)((u8 *)arg0)[0x19F];
         if (!(gAiState[1] & 2) && !(*(u32 *)((u8 *)arg0 + 0x254) & 0x03000000)) {
