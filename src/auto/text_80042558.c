@@ -53,6 +53,26 @@ static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 
     }
     return 0;
 }
+
+static inline u8 *FindMapObjNear_80042558(void *arg0, s32 x, s32 y, u32 require)
+{
+    u8 *found = FindMapObj_80042558(arg0, x, y, 0, require);
+    if (found != 0) {
+        return found;
+    }
+    {
+        s32 dir;
+        for (dir = 0; dir < 4; dir++) {
+            u8 d = DirFromIndex_80042558(dir);
+            found = FindMapObj_80042558(arg0, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
+            if (found != 0) {
+                return found;
+            }
+        }
+    }
+    return 0;
+}
+
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
@@ -512,20 +532,16 @@ void fn_80042558(void *arg0)
     extern u8 lbl_8036728E;
     extern u8 lbl_80367290[3];
 
-    void *list[16];
-    s32 y;
-    s32 x;
+    void *list[8];
     s32 eventIndex;
     u8 *rec;
-    u8 *start;
 
-    start = gMapObjEventList;
-    rec = start;
+    rec = gMapObjEventList;
     eventIndex = 0;
 
-    for (; eventIndex < fn_8010FF88(start); eventIndex++, rec += 8) {
-        x = (s8)rec[0];
-        y = (s8)rec[1];
+    for (; eventIndex < fn_8010FF88(gMapObjEventList); eventIndex++, rec += 8) {
+        s32 x = (s8)rec[0];
+        s32 y = (s8)rec[1];
         switch (rec[2] - 0x21) {
         case 3:
         {
