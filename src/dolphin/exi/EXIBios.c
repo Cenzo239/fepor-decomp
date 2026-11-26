@@ -838,25 +838,24 @@ void UnlockedHandler(s32 chan, void *context) {
     EXIGetID(chan, 0, &id);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma scheduling off
 #pragma use_lmw_stmw on
+#pragma inline_depth(1)
 s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
-    u32 cmd;
-    u8 filler[4];
-    s32 err;
-    s32 enabled;
-    s32 enabled2;
-    s32 enabled3;
-    s32 startTime;
-    void (*cb)(s32, void *);
-    s32 ok;
-    void (*handler)(s32, void *);
-    s32 *probeTime;
     EXIControl *exi;
+    s32 err;
+    s32 startTime;
+    s32 enabled3;
+    s32 enabled;
+    u32 cmd;
+    s32 ok;
+    void (*handler)(s32,void *);
     extern u32 IDSerialPort1_80368800;
     void UnlockedHandler(s32, void *);
     BOOL EXIClearInterrupts(s32, BOOL, BOOL, BOOL);
-    s32 EXILock(s32, u32, u32);
+    s32 EXILock(s32,u32,void (*)(s32,void *));
     BOOL EXISelect(s32, u32, u32);
     BOOL EXIImm(s32, void *, s32, u32, void (*)(s32, void *));
     BOOL EXISync(s32);
@@ -866,7 +865,6 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     void __OSMaskInterrupts(u32);
     void *memmove(void *, const void *, u32);
 
-    (void)filler;
     exi = &Ecb_8033E188[chan];
     if (chan == 0 && dev == 2 && IDSerialPort1_80368800 != 0) {
         *id = IDSerialPort1_80368800;
@@ -876,27 +874,14 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
         if (!__EXIProbe(chan)) {
             return 0;
         }
-        probeTime = &__EXIProbeStartTime[chan];
-        if (exi->idTime == *probeTime) {
+        if (exi->idTime == __EXIProbeStartTime[chan]) {
             *id = exi->id;
             return exi->idTime;
         }
-        enabled = OSDisableInterrupts();
-        if ((exi->state & 8) || !__EXIProbe(chan)) {
-            OSRestoreInterrupts(enabled);
-            ok = 0;
-        } else {
-            EXIClearInterrupts(chan, 1, 0, 0);
-            exi->extCallback = 0;
-            __OSUnmaskInterrupts(0x100000U >> (chan * 3));
-            exi->state |= 8;
-            OSRestoreInterrupts(enabled);
-            ok = 1;
-        }
-        if (!ok) {
+        if (!EXIAttachInternal(chan, 0)) {
             return 0;
         }
-        startTime = *probeTime;
+        startTime = __EXIProbeStartTime[chan];
     }
     enabled = OSDisableInterrupts();
     ok = 0;
@@ -908,7 +893,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     } else {
         handler = 0;
     }
-    err = !EXILock(chan, dev, (u32)handler);
+    err = !EXILock(chan, dev, handler);
     if (!err) {
         err = !EXISelect(chan, dev, 0);
         if (!err) {
@@ -919,34 +904,11 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
             err |= !EXISync(chan);
             err |= !EXIDeselect(chan);
         }
-        enabled2 = OSDisableInterrupts();
-        if (!(exi->state & 0x10)) {
-            OSRestoreInterrupts(enabled2);
-        } else {
-            exi->state &= ~0x10;
-            SetExiInterruptMask(chan, exi);
-            if (exi->items > 0) {
-                cb = exi->queue[0].callback;
-                if (--exi->items > 0) {
-                    memmove(&exi->queue[0], &exi->queue[1], exi->items * 8);
-                }
-                cb(chan, 0);
-            }
-            OSRestoreInterrupts(enabled2);
-        }
+        EXIUnlock(chan);
     }
     OSRestoreInterrupts(enabled);
     if (chan < 2 && dev == 0) {
-        register enabled3 = OSDisableInterrupts();
-        if (!(exi->state & 8)) {
-            OSRestoreInterrupts(enabled3);
-        } else if ((exi->state & 0x10) && exi->dev == 0) {
-            OSRestoreInterrupts(enabled3);
-        } else {
-            exi->state &= ~8;
-            __OSMaskInterrupts(0x500000U >> (chan * 3));
-            OSRestoreInterrupts(enabled3);
-        }
+        fn_802396C8(chan);
         enabled3 = OSDisableInterrupts();
         err |= startTime != __EXIProbeStartTime[chan];
         if (!err) {
@@ -964,6 +926,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     }
     return 1;
 }
+#pragma pop
 #pragma use_lmw_stmw reset
 #pragma scheduling reset
 
