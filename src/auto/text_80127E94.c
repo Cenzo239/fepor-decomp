@@ -18,10 +18,10 @@ static inline u8 Ai_TryMoveAndAttack(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     u8 fn_80100130(void *, s32, s16 *, s16 *);
     u8 fn_800BE968(s32, s8, s8);
-    u8 fn_80100BA4(s16, s16, s8, s8);
+    u8 fn_80100BA4(s16, s16, s32, s32);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void *TargetList_GetAt(void *, s32);
-    void fn_800FB96C(s32, u8, u8, s32, s32, s32, s8, s32, s32);
+    void fn_800FB96C(s32, u8, u8, void *, s32, s32, s32, s32, s32);
     extern u8 gBattleMap[], gAiState[], gUiContext[], gTargetList[];
     s16 x, y;
     u8 *path;
@@ -54,7 +54,7 @@ checked:
         if (found) {
             Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
             if (gAiState[0x21c] && fn_80100BA4(x, y, (s8)gUiContext[13], (s8)gUiContext[14]))
-                fn_800FB96C(11, gUiContext[13], gUiContext[14], *(s32 *)(gUiContext + 4), (s8)x, (s8)y, (s8)(arg1 < 0 ? arg1 : arg1 + 4), 0, 0);
+                fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4), (s8)x, (s8)y, (s8)(arg1 < 0 ? arg1 : arg1 + 4), 0, 0);
             return gAiState[0x21c];
         }
     } else if (!fn_80100130(arg0, 0, &x, &y)) return 0;
@@ -66,7 +66,7 @@ checked:
     if (!target) return 0;
     Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
     if (gAiState[0x21c] && x == (s8)gUiContext[13] && y == (s8)gUiContext[14])
-        fn_800FB96C(12, gUiContext[13], gUiContext[14], *(s32 *)(gUiContext + 4), target[0], target[1], (s8)(arg1 < 0 ? arg1 : arg1 + 4), 0, 0);
+        fn_800FB96C(12, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4), target[0], target[1], (s8)(arg1 < 0 ? arg1 : arg1 + 4), 0, 0);
     return gAiState[0x21c];
 }
 
@@ -477,6 +477,7 @@ s32 fn_801287B8(void) {
 
 #pragma push
 #pragma use_lmw_stmw on
+#pragma opt_propagation off
 u8 fn_801287C0(void *arg0)
 {
     u8 Status_Test(void *, s32);
