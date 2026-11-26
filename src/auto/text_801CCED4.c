@@ -1932,6 +1932,8 @@ if(now!=*(s16*)((u8*)arg0+0x3C)) Ui_PlaySeCue(lbl_8027DED8+0x2C,100);
 #pragma use_lmw_stmw on
 #pragma optimization_level 2
 #pragma global_optimizer off
+static inline void HL(s16 x1, s16 y, s16 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
+static inline void VL(s16 x, s16 y1, s16 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
 extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 {
     void Prim2D_Begin(void);
@@ -4280,7 +4282,7 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
     ((Obj *)arg1)->v10();
 #pragma cplusplus reset
 
-    temp_r6 = CalcD2B94(M2C_FIELD(arg1, s16 *, 0x54), arg1);
+    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
     temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
     temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
     pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
