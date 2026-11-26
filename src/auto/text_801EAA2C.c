@@ -8,6 +8,16 @@ typedef struct AramAllocSlot {
     s32 size;
     u32 address;
 } AramAllocSlot;
+static inline void AramCache_ReplaceSlot(AramAllocSlot *cell, AramAllocSlot *best, u32 rem, s32 size) {
+    extern void *gAramFreeList;
+    cell->size = rem;
+    cell->address = best->address + size;
+    cell->prev = best->prev;
+    cell->next = best->next;
+    if (cell->next) cell->next->prev = cell;
+    if (cell->prev) cell->prev->next = cell;
+    else gAramFreeList = cell;
+}
 static inline void *AramCache_UnlinkSlot(void *head, AramAllocSlot *node) {
     if (node->next) node->next->prev = node->prev;
     if (node->prev) node->prev->next = node->next;
@@ -1745,16 +1755,7 @@ reclaim:
         goto have;
     }
     node = gAramUsedList;
-    next = ((AramAllocSlot *)node)->next;
-    if (next != 0) {
-        ((AramAllocSlot *)next)->prev = ((AramAllocSlot *)node)->prev;
-    }
-    prev = ((AramAllocSlot *)node)->prev;
-    if (prev != 0) {
-        ((AramAllocSlot *)prev)->next = ((AramAllocSlot *)node)->next;
-    } else {
-        gAramUsedList = ((AramAllocSlot *)node)->next;
-    }
+    gAramUsedList = AramCache_UnlinkSlot(node, node);
     gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
     goto reclaim;
 
@@ -1800,15 +1801,14 @@ insert:
     alloc_list = gAramUsedList;
     insert_prev = 0;
     iter = alloc_list;
-    goto ins_t;
-ins_b:
+    while (iter != 0) {
     if (insert_prev != 0) {
         if (((AramAllocSlot *)best)->address <= ((AramAllocSlot *)insert_prev)->address) {
             goto ins_a;
         }
     }
     if (iter == 0) {
-        goto ins_d;
+        break;
     }
     if (((AramAllocSlot *)iter)->address > ((AramAllocSlot *)best)->address) {
         goto ins_d;
@@ -1816,9 +1816,6 @@ ins_b:
 ins_a:
     insert_prev = iter;
     iter = ((AramAllocSlot *)iter)->next;
-ins_t:
-    if (iter != 0) {
-        goto ins_b;
     }
 ins_d:
     ((AramAllocSlot *)best)->next = iter;
