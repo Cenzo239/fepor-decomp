@@ -212,24 +212,26 @@ void fn_800561C8(void *arg0) {
     fn_80067304(M2C_FIELD(arg0, s32 *, 0x4C));
 }
 
-void fn_800561EC(void *arg0) {
 #pragma opt_common_subs off
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
+void fn_800561EC(void *arg0) {
     void Process_ClearFunc(void *);
     extern u32 lbl_80369100;
-    extern f64 lbl_80369118;
-    extern f64 lbl_80369120;
-    extern f32 gF32_0;
-    extern f32 lbl_8036910C;
-    extern f32 lbl_80369110;
-    extern f32 lbl_80369114;
+    extern const f64 lbl_80369118;
+    extern const f64 lbl_80369120;
+    extern const f32 gF32_0;
+    extern const f32 lbl_8036910C;
+    extern const f32 lbl_80369110;
+    extern const f32 lbl_80369114;
     u8 sp8[4];
     s32 half;
     s32 period;
     s32 pos;
     s32 t;
     f32 f;
-    f32 scale;
-    f32 zero;
     u8 *dst;
     u8 c0, c1, c2;
     u8 r, g, b;
@@ -256,11 +258,9 @@ void fn_800561EC(void *arg0) {
         c1 = *(u8 *)((u8 *)arg0 + 0x39);
         c2 = *(u8 *)((u8 *)arg0 + 0x3A);
         dst = *(u8 **)((u8 *)arg0 + 0x4C);
-        scale = lbl_80369114;
-        zero = gF32_0;
-        r = (u8)(((f32)t * ((f32)c0 - zero)) * scale + zero);
-        g = (u8)(((f32)t * ((f32)c1 - zero)) * scale + zero);
-        b = (u8)(((f32)t * ((f32)c2 - zero)) * scale + zero);
+        r = (u8)(((f32)t * ((f32)c0 - gF32_0)) * lbl_80369114 + gF32_0);
+        g = (u8)(((f32)t * ((f32)c1 - gF32_0)) * lbl_80369114 + gF32_0);
+        b = (u8)(((f32)t * ((f32)c2 - gF32_0)) * lbl_80369114 + gF32_0);
         dst[4] = r;
         sp8[0] = r;
         dst[5] = g;
@@ -297,7 +297,7 @@ void fn_800561EC(void *arg0) {
         break;
     }
 }
-
+#pragma pop
 void fn_80056580(void) {
     void *Process_Find(void *);
     extern u8 lbl_80285B90[];
@@ -512,6 +512,9 @@ void TextBanner_SetString(void *arg0, u32 arg1) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80056B0C(void *arg0) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -539,9 +542,9 @@ void fn_80056B0C(void *arg0) {
     extern s32 lbl_803690F4;
     extern s32 lbl_803690F8;
     extern s32 lbl_803690FC;
-    extern f32 gF32_0;
-    extern f32 lbl_8036912C;
-    extern f32 lbl_80369138;
+    extern const f32 gF32_0;
+    extern const f32 lbl_8036912C;
+    extern const f32 lbl_80369138;
     extern s32 lbl_8036C41C;
     extern s32 lbl_8036C420;
     extern s32 lbl_8036C424;
@@ -666,6 +669,7 @@ void fn_80056B0C(void *arg0) {
     }
     Prim2D_ResetState();
 }
+#pragma pop
 
 void fn_80057020(void *arg0) {
     void Prim2D_EmitQuad(void);
@@ -1014,6 +1018,8 @@ void *fn_80057A64(void *arg0, s32 arg1) {
     return arg0;
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma use_lmw_stmw on
 void fn_80057AE0(void *arg0) {
     void Prim2D_RotateUvCw(void);
@@ -1026,11 +1032,11 @@ void fn_80057AE0(void *arg0) {
     void Prim2D_BindTexture(s32, s32, s32);
     void Prim2D_PrepareTex(void);
     void Prim2D_Begin(void);
-    extern f32 gF32_0;
-    extern f32 lbl_8036912C;
-    extern f32 lbl_80369134;
-    extern f32 lbl_80369150;
-    extern f32 lbl_80369154;
+    extern const f32 gF32_0;
+    extern const f32 lbl_8036912C;
+    extern const f32 lbl_80369134;
+    extern const f32 lbl_80369150;
+    extern const f32 lbl_80369154;
     s32 var_r27;
     s32 var_r26;
     void *temp_r28;
@@ -1073,11 +1079,9 @@ void fn_80057AE0(void *arg0) {
         if (*(u8 *)((u8 *)temp_r28 + 0x54) != 0) {
             temp_r0 = *(s32 *)((u8 *)temp_r28 + 0x4C);
             temp_r3 = *(s32 *)((u8 *)temp_r28 + 0x44);
-            temp_f6 = lbl_80369154 * lbl_80369154;
             temp_f0 = lbl_80369154 - (f32)temp_r0;
             temp_f3 = lbl_80369134;
-            temp_r3 = (s32)(gF32_0 + (temp_f3 - ((temp_f3 * (temp_f0 * temp_f0)) / temp_f6)));
-            if (temp_r3 != 4) { /* WRONG - using adj */ }
+            temp_r3 = (s32)(gF32_0 + (temp_f3 - ((temp_f3 * (temp_f0 * temp_f0)) / (lbl_80369154 * lbl_80369154))));
             switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
             case 8:
                 var_r27 -= temp_r3;
@@ -1106,6 +1110,8 @@ void fn_80057AE0(void *arg0) {
         Prim2D_SetUvRect((f32)(temp_r31 * var_r30), gF32_0, (f32)var_r30, (f32)var_r29);
         Prim2D_EmitQuad();
         switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
+        case 1:
+            break;
         case 4:
             Prim2D_RotateUvCw();
         case 2:
@@ -1117,7 +1123,7 @@ void fn_80057AE0(void *arg0) {
         Prim2D_EndPrim();
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_80057E54(void *arg0, s8 arg1) {
     M2C_FIELD(arg0, s8 *, 0x34) = arg1;
 }
