@@ -4827,6 +4827,8 @@ void *fn_8016AC5C(void) {
 
 u8 fn_8016AC6C(void) { u8 fn_801E3620(void*); extern u8 gSystemSave[]; s32 result; u8 ready=fn_801E3620(gSystemSave); result=2; if(ready!=0) result=0; return (u8)result; }
 
+#pragma push
+#pragma opt_common_subs off
 s32 fn_8016ACA8(void *arg0, void *panel, void *entry) {
 void Process_Goto(void *,s32);
 void *Process_Find(void *);
@@ -4857,15 +4859,15 @@ virtual void v19()=0;
 virtual void v20()=0;
 virtual s16 v21()=0;
 virtual s16 v22()=0; };
-f32 y,x;
+u8 *e = (u8*)entry;
+f32 x;
 s16 base;
 void *proc;
-if(*(u8*)((u8*)entry+0x39)==2) {
+if(e[0x39]==2) {
 base=(*(Obj**)((u8*)panel+0x3C))->v21();
-x=(f32)(base+*(s16*)((u8*)entry+0x30));
-base=(*(Obj**)((u8*)panel+0x3C))->v22();
-y=(f32)(base+*(s16*)((u8*)entry+0x32));
-Ui_CreateMsgPopup(lbl_80277BC0+0x1D1,panel,x,y);
+x=(f32)(base+*(s16*)(e+0x30));
+Ui_CreateMsgPopup(lbl_80277BC0+0x1D1, panel, x,
+    (f32)(*(s16*)(e+0x32) + (*(Obj**)((u8*)panel+0x3C))->v22()));
 return 0;
 }
 proc=Process_Find(lbl_80293D8C);
@@ -4874,7 +4876,7 @@ Process_Goto(proc,0xB);
 return 4;
 #pragma cplusplus reset
 }
-
+#pragma pop
 void fn_8016ADAC(void) {
     extern u16 lbl_80277BC0[];
     Msg_Expand((u8 *)lbl_80277BC0 + 0x1E2);
@@ -15875,18 +15877,18 @@ void fn_8017BE00(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s32 *, 0x58) = 0;
 }
 
+#pragma push
 #pragma global_optimizer off
+#pragma use_lmw_stmw on
 void fn_8017BE54(void *arg0) {
 u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
-extern f32 lbl_8036ABBC;
 void *unit; void *parent; void *item; void *self;
-s32 i; u8 check; u8 found; f32 f;
-f = lbl_8036ABBC;
+s32 i; u8 check; u8 found;
 self = arg0;
 i = 0;
 *(s32 *)((u8 *)self + 0x34) = i;
 *(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x5c) = *(void **)((u8 *)self + 0x38);
-*(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 0x60) = f;
+*(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 0x60) = 0.0f;
 unit = *(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x4c);
 for (; i < 0x62; i++) {
 item = fn_80105C5C((u8 *)unit + 0x1bc, (u8)i);
@@ -15920,7 +15922,7 @@ void *p = *(void **)((u8 *)self + 0x30);
 *(s32 *)((u8 *)p + 0x58) = 2;
 }
 }
-#pragma global_optimizer on
+#pragma pop
 
 void fn_8017BF6C(void *arg0) {
     f32 Math_Ease(s32, s32, f32, f32, f32, f32);
@@ -17140,6 +17142,9 @@ void fn_8017E540(u8 *arg0) {
     *(void **)(arg0 + 0x34) = NULL;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 #pragma use_lmw_stmw on
 void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void *Process_Create(void *, void *);
@@ -17161,12 +17166,12 @@ void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3 sp1C;
     Vec3 sp10;
     s32 a1;
-    s32 a2;
+    int a2;
     s32 count;
-    s32 max_y;
+    s32 y;
     s32 a3;
     s32 min_y;
-    s32 y;
+    s32 max_y;
     s32 i;
     void *walk;
     s32 *xs;
@@ -17276,6 +17281,8 @@ void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         walk = (u8 *)walk + 4;
     } while (i < 2);
 }
+#pragma pop
+#pragma use_lmw_stmw on
 void fn_8017E8A0(void) {
     M2C_UNK fn_8017E8C0();
     fn_8017E8C0();
