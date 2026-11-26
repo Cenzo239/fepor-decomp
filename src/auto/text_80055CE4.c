@@ -515,7 +515,7 @@ void TextBanner_SetString(void *arg0, u32 arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
+#pragma opt_propagation off
 void fn_80056B0C(void *arg0) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -666,7 +666,7 @@ void fn_80056B0C(void *arg0) {
         temp_r0 = (u32)temp_r3_2 >> 0x1FU;
         temp_r0 = temp_r0 + temp_r3_2;
         temp_r0 = (u8)(temp_r0 >> 1);
-        fn_8001003C((s16)temp_r4, (s16)((s32)((((u32)temp_r3_2) >> 0x1FU) + temp_r3_2) >> 1), 1, 1, 0, *(u8 **)((u8 *)arg0 + 0x14), lbl_8036912C, gF32_0);
+        fn_8001003C((s16)temp_r4, (s16)((s32)(temp_r3_2 + (((u32)temp_r3_2) >> 0x1FU)) >> 1), 1, 1, 0, *(u8 **)((u8 *)arg0 + 0x14), lbl_8036912C, gF32_0);
     }
     Prim2D_ResetState();
 }
