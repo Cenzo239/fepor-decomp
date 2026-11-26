@@ -1,6 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-extern const f64 lbl_8036C190;
+const f64 lbl_8036C190 = 4503599627370496.0;
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -366,13 +366,13 @@ s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
-    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
     u8 *zig;
     u8 *p;
+    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
     u32 size;
     u32 id;
     u32 i;
-    u32 row;
+    u16 row;
     u8 *state;
 
     size = ThpReadWord() - 2;
@@ -392,7 +392,7 @@ s32 fn_8023CA4C(void) {
         }
         state = (u8 *)lbl_80368950;
         i = 0;
-        for (row = 0; (u16)row < 8; row++) {
+        for (row = 0; row < 8; row++) {
             *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 0)] * aan[row] * aan[0]);
             *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 1)] * aan[row] * aan[1]);
             *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 2)] * aan[row] * aan[2]);
