@@ -52,6 +52,7 @@ static inline void Ui_WritePointTexCoord(f32 s, f32 t)
     *(volatile f32 *)0xCC008000 = t;
 }
 
+typedef union { u8 byte; f32 floating; } UiPointFifo;
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef union { Color rgba; u32 word; } PanelColor;
@@ -1223,6 +1224,8 @@ volatile unsigned long long fn_8014EFB8(void *arg0, void *arg1, void *arg2, void
 #pragma optimization_level 4
 #pragma opt_lifetimes off
 #pragma opt_propagation on
+#pragma opt_propagation off
+#pragma global_optimizer off
 void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     void fn_8022100C(s32);
     void GXClearVtxDesc(void);
@@ -1241,12 +1244,14 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
     extern f32 lbl_8036A820;
     extern f32 lbl_8036A838;
     u8 sp8[0x20];
+    s32 ctr;
     void *var_r30;
     void *var_r29;
     void *var_r28;
-    f32 f3, f2, f1, f0;
-    u8 r5b, r4b, r3b, r0b;
-    s32 ctr;
+    s32 ctr2;
+    f32 f0, f1, f2, f3;
+    volatile u8 *fifo;
+    u8 r0b, r3b, r4b, r5b;
 
     var_r30 = arg0;
     var_r29 = arg2;
@@ -1277,23 +1282,24 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r28 + 0x1C)), 5);
                 GXBegin(0xB8, 0, 1);
+                fifo = (volatile u8 *)0xCC008000;
                 f3 = *(f32 *)((u8 *)var_r28 + 8);
                 f2 = *(f32 *)((u8 *)var_r28 + 4);
                 f1 = *(f32 *)((u8 *)var_r28 + 0);
                 f0 = lbl_8036A838;
-                *(volatile f32 *)0xCC008000 = f1;
-                *(volatile f32 *)0xCC008000 = f2;
-                *(volatile f32 *)0xCC008000 = f3;
+                *(volatile f32 *)fifo = f1;
+                *(volatile f32 *)fifo = f2;
+                *(volatile f32 *)fifo = f3;
                 r5b = *(u8 *)((u8 *)var_r28 + 0x28);
                 r4b = *(u8 *)((u8 *)var_r28 + 0x2B);
                 r3b = *(u8 *)((u8 *)var_r28 + 0x2A);
                 r0b = *(u8 *)((u8 *)var_r28 + 0x29);
-                *(volatile u8 *)0xCC008000 = r0b;
-                *(volatile u8 *)0xCC008000 = r3b;
-                *(volatile u8 *)0xCC008000 = r4b;
-                *(volatile u8 *)0xCC008000 = r5b;
-                *(volatile f32 *)0xCC008000 = f0;
-                *(volatile f32 *)0xCC008000 = f0;
+                *fifo = r0b;
+                *fifo = r3b;
+                *fifo = r4b;
+                *fifo = r5b;
+                *(volatile f32 *)fifo = f0;
+                *(volatile f32 *)fifo = f0;
             }
             ctr++;
         check1:
@@ -1304,7 +1310,7 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
         GXSetNumTevStages(1);
         GXSetTevOrder(0, 0xFF, 0xFF, 4);
         GXSetNumTexGens(0, 4);
-        ctr = 0;
+        ctr2 = 0;
         goto check2;
         do {
             r0b = *(u8 *)((u8 *)arg1 + 0x28);
@@ -1313,28 +1319,30 @@ void fn_801502EC(void *arg0, void *arg1, void *arg2, void *arg3) {
             if (r0b) {
                 fn_80220F84((s32)(lbl_8036A820 * *(f32 *)((u8 *)var_r29 + 0x1C)), 5);
                 GXBegin(0xB8, 0, 1);
+                fifo = (volatile u8 *)0xCC008000;
                 f2 = *(f32 *)((u8 *)var_r29 + 8);
                 f1 = *(f32 *)((u8 *)var_r29 + 4);
                 f0 = *(f32 *)((u8 *)var_r29 + 0);
-                *(volatile f32 *)0xCC008000 = f0;
-                *(volatile f32 *)0xCC008000 = f1;
-                *(volatile f32 *)0xCC008000 = f2;
+                *(volatile f32 *)fifo = f0;
+                *(volatile f32 *)fifo = f1;
+                *(volatile f32 *)fifo = f2;
                 r5b = *(u8 *)((u8 *)var_r29 + 0x28);
                 r4b = *(u8 *)((u8 *)var_r29 + 0x2B);
                 r3b = *(u8 *)((u8 *)var_r29 + 0x2A);
                 r0b = *(u8 *)((u8 *)var_r29 + 0x29);
-                *(volatile u8 *)0xCC008000 = r0b;
-                *(volatile u8 *)0xCC008000 = r3b;
-                *(volatile u8 *)0xCC008000 = r4b;
-                *(volatile u8 *)0xCC008000 = r5b;
+                *fifo = r0b;
+                *fifo = r3b;
+                *fifo = r4b;
+                *fifo = r5b;
             }
-            ctr += 1;
+            ctr2 += 1;
         check2:
             ;
-        } while (ctr < (s32)*(u16 *)((u8 *)var_r30 + 0x1E));
+        } while (ctr2 < (s32)*(u16 *)((u8 *)var_r30 + 0x1E));
     }
 }
 #pragma pop
+#pragma global_optimizer on
 void fn_801505A8(void *arg0,void *arg1) {
 typedef struct {u32 x,y,z;} Triple;
 typedef struct {Triple position; Triple rotation; f32 a,b,c,d; u8 e,f,g,h;} Entry;
@@ -7232,29 +7240,34 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_803680D8[8];
     extern f64 lbl_8036A868;
 
-    s32 x = (s16)arg0;
-    s32 y = (s16)arg1;
-    s32 w = (s16)arg2;
-    s32 h = (s16)arg3;
-    s32 flags = arg4;
-    s16 h3 = h / 3;
-    s16 right = x + w;
-    s16 bottom = y + h3;
-    s16 bottom2 = y + h;
-    Color4 colors;
+    s32 right, bottom, bottom2;
+    s32 x, y, w, h, flags;
+    s16 h3;
+    Color4rev initial;
     Color4 corner;
-    PanelColor c0, c1, c2, c3;
+    Color4 colors;
     s32 finalColor;
+    Color4 *palette;
 
+    x = (s16)arg0;
+    y = (s16)arg1;
+    w = (s16)arg2;
+    h = (s16)arg3;
+    flags = arg4;
+    h3 = h / 3;
+    right = (s16)(x + w);
+    bottom = (s16)(y + h3);
+    bottom2 = (s16)(y + h);
     if (lbl_803680D6 == 0) {
-        c0.rgba.r = 0; c0.rgba.g = 0; c0.rgba.b = 0; c0.rgba.a = 0;
-        c1.rgba.r = 0; c1.rgba.g = 0; c1.rgba.b = 0; c1.rgba.a = 0;
-        c2.rgba.r = 0; c2.rgba.g = 0; c2.rgba.b = 0; c2.rgba.a = 0xFF;
-        c3.rgba.r = 0; c3.rgba.g = 0; c3.rgba.b = 0; c3.rgba.a = 0xFF;
-        *(u32 *)&lbl_80330D58[0] = *(u32 *)&c0.rgba.r;
-        *(u32 *)&lbl_80330D58[4] = *(u32 *)&c1.rgba.r;
-        *(u32 *)&lbl_80330D58[8] = *(u32 *)&c2.rgba.r;
-        *(u32 *)&lbl_80330D58[0xC] = *(u32 *)&c3.rgba.r;
+        palette = (Color4 *)lbl_80330D58;
+        ((Color *)&initial.c0)->r = 0; ((Color *)&initial.c0)->g = 0; ((Color *)&initial.c0)->b = 0; ((Color *)&initial.c0)->a = 0;
+        ((Color *)&initial.c1)->r = 0; ((Color *)&initial.c1)->g = 0; ((Color *)&initial.c1)->b = 0; ((Color *)&initial.c1)->a = 0;
+        ((Color *)&initial.c2)->r = 0; ((Color *)&initial.c2)->g = 0; ((Color *)&initial.c2)->b = 0; ((Color *)&initial.c2)->a = 0xFF;
+        ((Color *)&initial.c3)->r = 0; ((Color *)&initial.c3)->g = 0; ((Color *)&initial.c3)->b = 0; ((Color *)&initial.c3)->a = 0xFF;
+        palette->c0 = initial.c0;
+        palette->c1 = initial.c1;
+        palette->c2 = initial.c2;
+        palette->c3 = initial.c3;
         lbl_803680D6 = 1;
     }
 
