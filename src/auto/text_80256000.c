@@ -1,5 +1,21 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline void Sound_InitDelay6386C(s32 length, u8 *record) {
+    void *fn_802637A4(s32);
+    void *memset(void *, s32, u32);
+    extern const f32 lbl_8036C378;
+    s32 size = length << 2;
+    *(s32 *)(record + 8) = size;
+    *(void **)(record + 12) = fn_802637A4(size);
+    memset(*(void **)(record + 12), 0, size);
+    *(f32 *)(record + 16) = lbl_8036C378;
+    *(s32 *)(record + 4) = *(s32 *)record - ((length >> 1) << 2);
+    while (*(s32 *)(record + 4) < 0)
+        *(s32 *)(record + 4) += *(s32 *)(record + 8);
+    *(s32 *)record = 0;
+    *(s32 *)(record + 4) = 0;
+}
+
 static inline s32 Sound_ClampMix(s32 value) {
     if (value > 0x7FFFFF) return 0x7FFFFF;
     if (value < -0x7FFFFF) return -0x7FFFFF;
@@ -677,6 +693,9 @@ void fn_80256054(void *arg0, u8 arg1, s32 arg2, s32 arg3, s32 arg4, u16 arg5) {
  fn_8026171C((u8)*(u32*)((u8*)arg0+0xF4),off);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
 s32 fn_802562A0(u8 arg0, u8 arg1, s32 arg2, u8 arg3)
 {
     extern u8 lbl_80359710[];
@@ -693,9 +712,9 @@ s32 fn_802562A0(u8 arg0, u8 arg1, s32 arg2, u8 arg3)
     u8 *nextTable;
     u8 *priorityTable;
     u32 limit;
-    u32 count;
-    u32 index;
-    u32 groupIndex;
+    s32 count;
+    s32 index;
+    u16 groupIndex;
     u32 next;
     u32 restricted;
     u32 flag;
@@ -755,32 +774,11 @@ s32 fn_802562A0(u8 arg0, u8 arg1, s32 arg2, u8 arg3)
         while (index != 0xFF) {
             voice = voices + index * 0x458;
 
-            if (*(u32 *)(voice + 0x100) == (u32)arg2) {
+            if ((u32)arg2 == *(u32 *)(voice + 0x100)) {
                 count++;
 
                 if (voice[0x11C] == 0) {
-                    if (restricted == 0) {
-                        flag = 0;
-                    } else {
-                        flag = 1;
-
-                        if (voice[0x11D] == arg3) {
-                            u32 flags0;
-                            u32 flags1;
-                            u32 mask0;
-                            u32 mask1;
-
-                            flags0 = *(volatile u32 *)(voice + 0x114);
-                            flags1 = *(volatile u32 *)(voice + 0x118);
-                            mask0 = 0;
-                            mask1 = 2;
-
-                            flag = ((flags0 & mask0) ^ mask0) |
-                                   ((flags1 & mask1) ^ mask0);
-                        }
-                    }
-
-                    if (flag == 0) {
+                    if ((!restricted || voice[0x11D] == arg3) && !(*(u64 *)(voice + 0x114) & 2ULL)) {
                         if (candidate == -1) {
                             candidate = index;
                         } else {
@@ -857,28 +855,7 @@ fallback:
             voice = voices + index * 0x458;
 
             if (voice[0x11C] == 0) {
-                if (restricted == 0) {
-                    flag = 0;
-                } else {
-                    flag = 1;
-
-                    if (voice[0x11D] == arg3) {
-                        u32 flags0;
-                        u32 flags1;
-                        u32 mask0;
-                        u32 mask1;
-
-                        flags0 = *(volatile u32 *)(voice + 0x114);
-                        flags1 = *(volatile u32 *)(voice + 0x118);
-                        mask0 = 0;
-                        mask1 = 2;
-
-                        flag = ((flags0 & mask0) ^ mask0) |
-                               ((flags1 & mask1) ^ mask0);
-                    }
-                }
-
-                if (flag == 0) {
+                if ((!restricted || voice[0x11D] == arg3) && !(*(u64 *)(voice + 0x114) & 2ULL)) {
                     if (candidate == -1) {
                         candidate = index;
                     } else {
@@ -905,7 +882,7 @@ fallback:
             break;
         }
 
-        if (arg0 < groupIndex) {
+        if (arg0 < groupIndex || candidate != -1) {
             break;
         }
     }
@@ -925,7 +902,7 @@ fallback:
 not_found:
     return -1;
 }
-
+#pragma pop
 s32 fn_80256628(u8 a,u8 b,s32 c,u8 d) {
 extern u8 lbl_80368A4E,lbl_80368A4F,lbl_80368A50,lbl_80368A51;
 s32 index;
@@ -2392,11 +2369,11 @@ void fn_8025D9A4(void *,u16); void fn_80245014(u16);
 void fn_802572E8(void *); void fn_80257444(void *);
 void fn_8024FACC(s32); void fn_8024FF5C(u16);
 void Sound_SetResource(s32,void *,u8,u32);
-u8 *node; u8 *base; s32 id; u16 *start; u16 *p; s16 i;
+u8 *node; s32 id; u8 *base; u16 *start; u16 *p; s16 i;
 AudioGroupState *state=(AudioGroupState *)gAudioGroupState;
 s16 n=--state->count;
-void *slot;
-slot=(u8 *)state+n*12; node=((AudioGroupState *)slot)->slots[0].node;
+AudioGroupState *slot;
+slot=(AudioGroupState *)((u8 *)state+n*12); node=slot->slots[0].node;
 state=(AudioGroupState *)((u8 *)state+state->count*12);
 id=state->slots[0].id;
 base=state->slots[0].data;
@@ -7885,7 +7862,9 @@ void fn_80262B1C(s32 arg0, s32 arg1) {
     lbl_80368AE8 = arg0;
 }
 
-u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
+#pragma push
+#pragma optimization_level 4
+u32 fn_80262B74(void *arg0, u32 size, void *arg2)
 {
     u32 fn_802142B0(void);
     void Sound_AramDmaCallback(void *);
@@ -7902,17 +7881,16 @@ u32 fn_80262B74(void *arg0, u32 arg1, void *arg2)
     BOOL enabled;
     s32 next;
     u32 chunkSize;
-    u32 result;
+    void *result;
     u32 offset;
     void *cb;
     SoundAramDmaQueue *q2;
     void *data;
-    u32 size;
-    void *state;
     u32 originalOffset;
+    void *state;
     u32 tmp;
 
-    tmp = arg1 + 0x1F;
+    tmp = size + 0x1F;
     data = arg0;
     state = arg2;
     size = tmp & ~0x1FU;
@@ -7966,8 +7944,9 @@ start1:
         return originalOffset;
     }
 
+    goto init_queue;
+chunks:
     cb = (void *)Sound_AramDmaCallback;
-    q2 = (SoundAramDmaQueue *)gSoundAramQueue;
 
     while (size != 0) {
         while (q2->count != 0) {
@@ -7978,7 +7957,7 @@ start1:
             chunkSize = lbl_80368AE4;
         }
 
-        result = lbl_80368AE8(data, chunkSize);
+        result = (void *)lbl_80368AE8(data, chunkSize);
         DCFlushRange((void *)result, chunkSize);
         offset = *(u32 *)((u8 *)state + 8);
 
@@ -8010,18 +7989,21 @@ start2:
             q2->next = (u8)(((s32)q2->next + 1) % 16);
             OSRestoreInterrupts(enabled);
 
-            *(u32 *)((u8 *)state + 8) += chunkSize;
-            size -= chunkSize;
-            data = (u8 *)data + chunkSize;
         } else {
             OSRestoreInterrupts(enabled);
             goto start2;
         }
+        *(u32 *)((u8 *)state + 8) += chunkSize;
+        size -= chunkSize;
+        data = (u8 *)data + chunkSize;
     }
 
     return originalOffset;
+init_queue:
+    q2 = (SoundAramDmaQueue *)gSoundAramQueue;
+    goto chunks;
 }
-
+#pragma pop
 void fn_80262F98(s32 unused, s32 arg1, void *arg2) {
     *(s32 *)((u8 *)arg2 + 8) = *(s32 *)((u8 *)arg2 + 8) - ((arg1 + 0x1F) & ~0x1F);
 }
@@ -8523,16 +8505,19 @@ void fn_80263830(void *arg0) {
     fn_8026386C(M2C_FIELD(arg0, f32 *, 0x140), M2C_FIELD(arg0, f32 *, 0x148), M2C_FIELD(arg0, f32 *, 0x144), M2C_FIELD(arg0, f32 *, 0x14C), M2C_FIELD(arg0, f32 *, 0x150));
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma global_optimizer off
+#pragma opt_propagation off
 s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
 {
-    extern f32 lbl_8036C378;
+    extern const f32 lbl_8036C378;
     extern f32 lbl_8036C37C;
     extern f32 lbl_8036C380;
     extern f32 lbl_8036C384;
     extern f32 lbl_8036C388;
     extern f32 lbl_8036C38C;
-    extern f32 lbl_8036C398;
+    extern const f32 lbl_8036C398;
     extern f32 lbl_8036C39C;
     extern const f64 lbl_8036C3A0;
     extern f64 lbl_8036C390;
@@ -8543,18 +8528,19 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
 
 #pragma opt_propagation off
 
-    u32 *table;
-    u8 *data;
-    u8 *record;
-    u8 channel;
-    u8 sub;
-    u32 ch2;
-    u32 index;
     u32 sub4;
+    u8 sub2;
+    u8 *record;
+    u32 *tp;
+    u32 index;
+    u8 *record2;
+    u32 ch2;
+    u8 sub;
+    u8 channel;
+    u8 *data;
     s32 length;
     s32 size;
     s32 t;
-    f32 zero;
     f32 frequency;
     f32 value;
 
@@ -8571,8 +8557,6 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
     memset(data, 0, 0x13C);
 
     frequency = lbl_8036C38C * arg2;
-    table = lbl_802A4560;
-    zero = lbl_8036C378;
 
     for (channel = 0; channel < 3; channel++) {
         ch2 = (u32)(channel << 1);
@@ -8581,13 +8565,13 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
             index = (u32)sub + ch2;
             record = data + index * 0x14;
 
-            length = (s32)*(u32 *)((u8 *)table + sub4) + 2;
+            length = (s32)*(u32 *)((u8 *)lbl_802A4560 + sub4) + 2;
             size = length << 2;
 
             *(s32 *)(record + 0x80) = size;
             *(void **)(record + 0x84) = fn_802637A4(size);
             memset(*(void **)(record + 0x84), 0, (u32)size);
-            *(f32 *)(record + 0x88) = zero;
+            *(f32 *)(record + 0x88) = lbl_8036C378;
 
             *(s32 *)(record + 0x7C) =
                 *(s32 *)(record + 0x78) - ((length >> 1) << 2);
@@ -8601,58 +8585,60 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
             *(s32 *)(record + 0x7C) = 0;
             *(s32 *)(record + 0x7C) =
                 *(s32 *)(record + 0x78) -
-                ((s32)*(u32 *)((u8 *)table + sub4) << 2);
+                ((s32)*(u32 *)((u8 *)lbl_802A4560 + sub4) << 2);
 
             while (*(s32 *)(record + 0x7C) < 0) {
                 *(s32 *)(record + 0x7C) =
                     *(s32 *)(record + 0x7C) + *(s32 *)(record + 0x80);
             }
 
-            t = (s32)*(u32 *)((u8 *)table + sub4) * -3;
+            t = (s32)*(u32 *)((u8 *)lbl_802A4560 + sub4) * -3;
             value = (f32)fmod(lbl_8036C390, (f32)t / frequency);
             *(f32 *)(data + index * 4 + 0xF4) = value;
         }
 
-        for (sub = 0; sub < 2; sub++) {
-            u8 *p;
-            u8 *tp;
+        {
+            u32 index2, sub4_2;
+        for (sub2 = 0; sub2 < 2; sub2++) {
+            u32 *p;
             u32 sub_u;
 
-            sub4 = (u32)(sub << 2);
-            sub_u = (u32)sub;
-            p = (u8 *)table + sub4;
-            index = sub_u + ch2;
-            tp = p + 8;
-            record = data + index * 0x14;
+            sub4_2 = (u32)(sub2 << 2);
+            sub_u = (u32)sub2;
+            p = (u32 *)((u8 *)lbl_802A4560 + sub4_2);
+            index2 = sub_u + ch2;
+            tp = p + 2;
+            record2 = data + index2 * 0x14;
 
-            length = (s32)*(u32 *)(p + 8) + 2;
+            length = (s32)*(u32 *)tp + 2;
             size = length << 2;
 
-            *(s32 *)(record + 0x08) = size;
-            *(void **)(record + 0x0C) = fn_802637A4(size);
-            memset(*(void **)(record + 0x0C), 0, (u32)size);
-            *(f32 *)(record + 0x10) = zero;
+            *(s32 *)(record2 + 0x08) = size;
+            *(void **)(record2 + 0x0C) = fn_802637A4(size);
+            memset(*(void **)(record2 + 0x0C), 0, (u32)size);
+            *(f32 *)(record2 + 0x10) = lbl_8036C378;
 
-            *(s32 *)(record + 0x04) =
-                *(s32 *)(record + 0x00) - ((length >> 1) << 2);
+            *(s32 *)(record2 + 0x04) =
+                *(s32 *)(record2 + 0x00) - ((length >> 1) << 2);
 
-            while (*(s32 *)(record + 0x04) < 0) {
-                *(s32 *)(record + 0x04) =
-                    *(s32 *)(record + 0x04) + *(s32 *)(record + 0x08);
+            while (*(s32 *)(record2 + 0x04) < 0) {
+                *(s32 *)(record2 + 0x04) =
+                    *(s32 *)(record2 + 0x04) + *(s32 *)(record2 + 0x08);
             }
 
-            *(s32 *)(record + 0x00) = 0;
-            *(s32 *)(record + 0x04) = 0;
-            *(s32 *)(record + 0x04) =
-                *(s32 *)(record + 0x00) - ((s32)*(u32 *)tp << 2);
+            *(s32 *)(record2 + 0x00) = 0;
+            *(s32 *)(record2 + 0x04) = 0;
+            *(s32 *)(record2 + 0x04) =
+                *(s32 *)(record2 + 0x00) - ((s32)*(u32 *)tp << 2);
 
-            while (*(s32 *)(record + 0x04) < 0) {
-                *(s32 *)(record + 0x04) =
-                    *(s32 *)(record + 0x04) + *(s32 *)(record + 0x08);
+            while (*(s32 *)(record2 + 0x04) < 0) {
+                *(s32 *)(record2 + 0x04) =
+                    *(s32 *)(record2 + 0x04) + *(s32 *)(record2 + 0x08);
             }
         }
 
-        *(f32 *)(data + (channel << 2) + 0x10C) = zero;
+        }
+        *(f32 *)(data + (channel << 2) + 0x10C) = lbl_8036C378;
     }
 
     *(f32 *)(data + 0xF0) = arg1;
@@ -8664,17 +8650,16 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
     }
 
     {
-        f32 mul = lbl_8036C39C * *(f32 *)(data + 0x11C);
-        f32 z = lbl_8036C378;
-        *(f32 *)(data + 0x11C) = lbl_8036C37C - (lbl_8036C398 + mul);
+        *(f32 *)(data + 0x11C) = lbl_8036C37C - (lbl_8036C398 + lbl_8036C39C * *(f32 *)(data + 0x11C));
 
-        if (arg5 != z) {
+        if (lbl_8036C378 != arg5) {
             void *mem;
             u8 *slot;
+            u8 delayChannel;
             *(s32 *)(data + 0x120) = (s32)(lbl_8036C38C * arg5);
-            for (channel = 0; channel < 3; channel++) {
+            for (delayChannel = 0; delayChannel < 3; delayChannel++) {
                 mem = fn_802637A4(*(s32 *)(data + 0x120) << 2);
-                slot = data + (channel << 2);
+                slot = data + (delayChannel << 2);
                 *(void **)(slot + 0x124) = mem;
                 memset(*(void **)(slot + 0x124), 0,
                        (u32)(*(s32 *)(data + 0x120) << 2));
@@ -8693,6 +8678,7 @@ s32 fn_8026386C(void *arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5)
 
     return 1;
 }
+#pragma pop
 void fn_80263C94(u8 arg0, void *arg1, void *arg2) {
     M2C_UNK Sound_ProcessAux(s32, s32, s32, void *);
     switch ((s32) arg0) {                           /* irregular */
