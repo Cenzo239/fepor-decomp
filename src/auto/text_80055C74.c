@@ -1247,7 +1247,8 @@ void fn_800581A4(void *arg0)
   extern f64 lbl_80369118;
   extern f32 lbl_8036912C;
   extern f32 lbl_8036915C;
-      extern f32 lbl_80369168;
+      extern f64 lbl_80369160;
+    extern f32 lbl_80369168;
   extern u32 lbl_803690D4;
   Node40 nodes[4];
   Node40 *base;
