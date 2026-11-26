@@ -147,14 +147,12 @@ extern s32 RunQueueHint_8036851C;
 
 
 
-static inline s32 ResetSwitch_Poll(s64 now) {
+static inline u32 ResetSwitch_Poll(s64 now) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
     s64 __div2i(s64, s64);
-    s32 state;
-    s32 enabled;
-    s32 pad;
+    u32 state;
     s32 soft;
     u32 freq;
     u32 thresh;
@@ -162,7 +160,6 @@ static inline s32 ResetSwitch_Poll(s64 now) {
     s64 t;
     s64 q;
 
-    pad = 0;
 
     if (!(*(u32 *)0xCC003000 & 0x10000)) {
         if (lbl_803684FC == 0) {
@@ -229,7 +226,6 @@ static inline s32 ResetSwitch_Poll(s64 now) {
         }
     }
 
-    (void)pad;
     return state;
 }
 
