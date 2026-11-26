@@ -1,6 +1,12 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 extern const f64 lbl_8036C190;
+static inline f32 ThpByteAsF32(u32 x) {
+    union { f64 d; struct { u32 hi; u32 lo; } w; } c;
+    c.w.hi = 0x43300000;
+    c.w.lo = x;
+    return (f32)(c.d - lbl_8036C190);
+}
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -361,23 +367,22 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma optimization_level 3
+#pragma optimization_level 4
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
+    const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
     u8 *zig;
     u8 *p;
-    const f64 *base;
     u32 size;
     u32 id;
     u32 i;
-    u16 row;
+    u32 row;
     u8 *state;
-    const f64 *scale;
 
     size = ThpReadWord() - 2;
-    do {
+    for (;;) {
         id = ThpReadByte();
         zig = lbl_80282FD8;
         p = zig;
@@ -392,22 +397,23 @@ s32 fn_8023CA4C(void) {
             table[zig[(u16)(i + 7)]] = (f32)(u32)*lbl_80368950->cursor++;
         }
         state = (u8 *)lbl_80368950;
-        base = (const f64 *)(lbl_80282FD8 + 0x50);
-        scale = base;
         i = 0;
-        for (row = 0; row < 8; row++, scale++) {
-            *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = base[0] * ((f64)table[(u16)(i + 0)] * *scale);
-            *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = base[1] * ((f64)table[(u16)(i + 1)] * *scale);
-            *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = base[2] * ((f64)table[(u16)(i + 2)] * *scale);
-            *(f32 *)(state + ((u16)(i + 3) << 2) + (id << 8)) = base[3] * ((f64)table[(u16)(i + 3)] * *scale);
-            *(f32 *)(state + ((u16)(i + 4) << 2) + (id << 8)) = base[4] * ((f64)table[(u16)(i + 4)] * *scale);
-            *(f32 *)(state + ((u16)(i + 5) << 2) + (id << 8)) = base[5] * ((f64)table[(u16)(i + 5)] * *scale);
-            *(f32 *)(state + ((u16)(i + 6) << 2) + (id << 8)) = base[6] * ((f64)table[(u16)(i + 6)] * *scale);
-            *(f32 *)(state + ((u16)(i + 7) << 2) + (id << 8)) = base[7] * ((f64)table[(u16)(i + 7)] * *scale);
+        for (row = 0; (u16)row < 8; row++) {
+            *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 0)] * aan[row] * aan[0]);
+            *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 1)] * aan[row] * aan[1]);
+            *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 2)] * aan[row] * aan[2]);
+            *(f32 *)(state + ((u16)(i + 3) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 3)] * aan[row] * aan[3]);
+            *(f32 *)(state + ((u16)(i + 4) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 4)] * aan[row] * aan[4]);
+            *(f32 *)(state + ((u16)(i + 5) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 5)] * aan[row] * aan[5]);
+            *(f32 *)(state + ((u16)(i + 6) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 6)] * aan[row] * aan[6]);
+            *(f32 *)(state + ((u16)(i + 7) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 7)] * aan[row] * aan[7]);
             i += 8;
         }
         size -= 65;
-    } while ((u16)size);
+        if ((u16)size == 0) {
+            break;
+        }
+    }
     return 0;
 }
 u8 fn_8023CE08(void)
@@ -430,7 +436,9 @@ u8 fn_8023CE08(void)
     u8 i;
     u16 length;
     u16 total;
+    u32 pad;
 
+    pad = 0;
     state = lbl_80368950;
 
     lbl_803688E8 = (u8 *)lbl_8036894C;
