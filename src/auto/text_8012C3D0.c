@@ -424,8 +424,24 @@ void fn_8012CC0C(void *arg0)
     }
 }
 
-void fn_8012CCA4(void *arg0)
+#pragma cplusplus on
+extern "C" void fn_8012CCA4(void *arg0)
 {
+    struct VObj {
+        u8 pad[0x2C];
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6(s32);
+    };
+    struct Entry {
+        u32 a;
+        void *b;
+        u8 pad[0x1C];
+    };
     extern u8 gBattleState[];
     extern u8 gUiSelectMenuStrings[];
 
@@ -441,9 +457,9 @@ void fn_8012CCA4(void *arg0)
     void fn_8005C7C8(void *);
 
     u8 *object;
-    s32 i;
-    u32 off;
-    u8 flags;
+    u8 *bs;
+    u32 flags;
+    VObj *obj4c;
 
     object = (u8 *)arg0;
 
@@ -454,41 +470,32 @@ void fn_8012CCA4(void *arg0)
             *(u32 *)((u8 *)*(u32 **)(object + 0x3C) + *(s8 *)(object + 0x62) * 0x24);
     }
 
-    gBattleState[0xA9] = object[0x63];
+    bs = gBattleState;
+    bs[0xA9] = object[0x63];
 
     flags = object[0x66];
-
-    if ((signed char)object[0x67] < 0) {
-        gBattleState[0xAA] = object[0x66] | 0x80;
-    } else {
-        gBattleState[0xAA] = flags;
-
-        for (i = 0, off = 0; i < object[0x6D]; off += 4, i++) {
-            Heap_Free(*(void **)((u8 *)*(u32 **)(object + 0x38) + off));
-        }
-
-        Heap_FreeRaw(*(void **)(object + 0x38));
+    if ((s8)object[0x67] < 0) {
+        flags |= 0x80;
     }
+    bs[0xAA] = flags;
+
+    for (s32 i = 0; i < object[0x6D]; i++) {
+        Heap_Free((*(void ***)(object + 0x38))[i]);
+    }
+    Heap_FreeRaw(*(void **)(object + 0x38));
 
     if (object[0x61] != 0) {
-        off = 0;
-        i = 0;
-        for (; i < object[0x61]; off += 0x24, i++) {
-            fn_800616A0(*(void **)((u8 *)*(u32 **)(object + 0x3C) + off + 4));
+        for (s32 i = 0; i < object[0x61]; i++) {
+            fn_800616A0((*(Entry **)(object + 0x3C))[i].b);
         }
-
         Heap_FreeRaw(*(void **)(object + 0x3C));
     }
 
     fn_80056A04(*(void **)(object + 0x50), 1);
 
-    if (*(void **)(object + 0x4C) != 0) {
-        void **vtable;
-        void *callback;
-
-        vtable = *(void ***)(object + 0x4C);
-        callback = *(void **)((u8 *)vtable[0x2C / 4] + 0x20);
-        ((void (*)(void *, s32))callback)(*(void **)(object + 0x4C), 1);
+    obj4c = *(VObj **)(object + 0x4C);
+    if (obj4c != 0) {
+        obj4c->v6(1);
     }
 
     fn_80057A10(*(void **)(object + 0x44), 1);
@@ -500,7 +507,7 @@ void fn_8012CCA4(void *arg0)
     fn_8006D8E8(*(void **)(object + 0x40));
     fn_8005C7C8(gUiSelectMenuStrings + 0xC7);
 }
-
+#pragma cplusplus reset
 void Ui_ResetSelectPrompt(void *proc) {
     /* Clear select cursor index, then set the text banner from mode (0x6C) and selection state. */
     s32 Msg_Expand(void *);
@@ -586,7 +593,6 @@ extern "C" void fn_8012CF7C(void *arg0) {
     register Obj *item;
     register void *self;
     u8 *entry;
-    u8 *str;
 
     self = arg0;
     pad = (u32 *)lbl_80367240;
@@ -660,8 +666,10 @@ extern "C" void fn_8012CF7C(void *arg0) {
             }
         } else {
             *((u8 *)self + 0x65) = *((u8 *)self + 0x65) - 1;
-            str = lbl_80275AC0 + 0x118;
-            fn_801475FC(str, 0x64);
+            {
+                u8 *str = lbl_80275AC0 + 0x118;
+                fn_801475FC(str, 0x64);
+            }
         }
         if (fn_80166D8C(lbl_80330D68) != 0) {
             table = *(void ***)((u8 *)self + 0x38);
@@ -714,8 +722,10 @@ extern "C" void fn_8012CF7C(void *arg0) {
             }
         } else {
             *((u8 *)self + 0x65) = col + 1;
-            str = lbl_80275AC0 + 0x118;
-            fn_801475FC(str, 0x64);
+            {
+                u8 *str = lbl_80275AC0 + 0x118;
+                fn_801475FC(str, 0x64);
+            }
         }
         if (fn_80166D8C(lbl_80330D68) != 0) {
             table = *(void ***)((u8 *)self + 0x38);
@@ -762,6 +772,8 @@ u8 mode;
 *(s8 *)((char *)proc+0x62)=-1;
 if (*(s8 *)((char *)proc+0x62)<0) {mode=*(u8 *)((char *)proc+0x6C); switch(mode) {case 1: case 2: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+90)); break;case 4: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+107)); break;default: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+123)); break;}} else {mode=*(u8 *)((char *)proc+0x6C); switch(mode) {case 1: case 2: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+138)); break;case 4: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+155)); break;default: TextBanner_SetString(*(s32 *)((char *)proc+0x50),Msg_Expand(gUiSelectMenuStrings+171)); break;}}}
 
+#pragma push
+#pragma optimization_level 4
 void fn_8012D6A4(void *arg0) {
     void Process_Goto(void *, s32);
     s32 Msg_Expand(void *);
@@ -786,7 +798,7 @@ void fn_8012D6A4(void *arg0) {
     u8 flag;
     u8 mode;
     s16 pos;
-    u8 (*cb)(void *);
+    u8 (*cb)(void *, void *);
     void *item;
     void **table;
     u8 *entry;
@@ -893,7 +905,7 @@ void fn_8012D6A4(void *arg0) {
             Process_Goto(self, 5);
         }
     } else if (trig & 0x08000008) {
-        register mode = *((u8 *)self + 0x62);
+        s32 mode = *((u8 *)self + 0x62);
         if ((s8)mode == 0) {
             if (pressed & 0x08000008) {
                 Process_Goto(self, 6);
@@ -938,10 +950,10 @@ void fn_8012D6A4(void *arg0) {
         Ui_PlaySeCue(gUiSelectMenuStrings + 0x166, 0x64);
         Process_Goto(self, 0);
     } else if (pressed & 0x100) {
-        cb = *(u8 (**)(void *))((u8 *)self + 0x54);
+        cb = *(u8 (**)(void *, void *))((u8 *)self + 0x54);
         item = *(void **)((u8 *)*(void **)((u8 *)self + 0x3C) + (s8)*((u8 *)self + 0x62) * 0x24);
         if (cb != NULL) {
-            if (cb(self) != 0) {
+            if (cb(self, item) != 0) {
                 Ui_PlaySeCue(gUiSelectMenuStrings + 0x176, 0x64);
             } else {
                 Ui_PlaySeCue(gUiSelectMenuStrings + 0x186, 0x64);
@@ -952,7 +964,7 @@ void fn_8012D6A4(void *arg0) {
         }
     }
 }
-
+#pragma pop
 s32 fn_8012DC74(void *arg0)
 {
     void Process_Goto(void *, s32);
@@ -1067,7 +1079,10 @@ void fn_8012DF40(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 void fn_8012DFA8(void *arg0) {
     typedef struct { s16 a; s16 b; } S16Pair;
     void Process_Goto(void *, s32);
@@ -1129,11 +1144,11 @@ void fn_8012DFA8(void *arg0) {
     void *next;
     void *find;
     void *item;
-    s32 i;
     s32 off;
     s32 mask;
     s32 flags;
     s32 sel;
+    s32 i;
     u8 mode;
     u8 *p;
     void **p28c;
@@ -1211,8 +1226,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & mask)) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = *(void **)(slot + 4) = GActor_Create();
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1227,8 +1241,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & mask) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = *(void **)(slot + 4) = GActor_Create();
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1245,8 +1258,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (*(s32 *)((u8 *)node + 0x1A0) & 0x400000) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = *(void **)(slot + 4) = GActor_Create();
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1261,8 +1273,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(*(s32 *)((u8 *)node + 0x1A0) & 0x400000)) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = *(void **)(slot + 4) = GActor_Create();
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1278,8 +1289,7 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            *(void **)(slot + 4) = GActor_Create();
-            tmp = *(void **)(slot + 4);
+            tmp = *(void **)(slot + 4) = GActor_Create();
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1292,8 +1302,7 @@ void fn_8012DFA8(void *arg0) {
         while (node != NULL) {
             next = *(void **)((u8 *)node + 0x184);
             *(void **)slot = node;
-            *(void **)(slot + 4) = GActor_Create();
-            tmp = *(void **)(slot + 4);
+            tmp = *(void **)(slot + 4) = GActor_Create();
             *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
             fn_800506E0(node, 0);
             *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1310,8 +1319,7 @@ void fn_8012DFA8(void *arg0) {
             next = *(void **)((u8 *)node + 0x184);
             if (!(flags & 8) && !(flags & 0x10)) {
                 *(void **)slot = node;
-                *(void **)(slot + 4) = GActor_Create();
-                tmp = *(void **)(slot + 4);
+                tmp = *(void **)(slot + 4) = GActor_Create();
                 *(void **)((u8 *)tmp + 4) = (u8 *)node + 0x1C;
                 fn_800506E0(node, 0);
                 *(s32 *)((u8 *)tmp + 0x44) = fn_800639B4();
@@ -1583,20 +1591,15 @@ void fn_8012DFA8(void *arg0) {
     if (find == NULL) {
         sel = -1;
     } else {
-        u8 *base;
         sel = 0;
-        off = sel;
-        base = *(u8 **)(self + 0x3C);
-        i = self[0x61];
-        if (i > 0) {
-            do {
-                if (*(void **)(base + off) != find) {
-                    off += 0x24;
-                    sel += 1;
-                } else {
-                    goto found_sel;
-                }
-            } while (--i != 0);
+        off = 0;
+        slot = *(u8 **)(self + 0x3C);
+        for (i = self[0x61]; i > 0; i--) {
+            if (*(void **)(slot + off) == find) {
+                goto found_sel;
+            }
+            off += 0x24;
+            sel++;
         }
         sel = -1;
     found_sel:;
@@ -1618,7 +1621,7 @@ void fn_8012DFA8(void *arg0) {
     *(s16 *)(self + 0x5A) = y;
     *(s16 *)(self + 0x5C) = spC.a;
     sp8.b = y;
-    *(s16 *)(self + 0x5E) = y;
+    *(s16 *)(self + 0x5E) = spC.b;
 
     tmp = Heap_Alloc(0x58);
     if (tmp != NULL) {
@@ -1680,6 +1683,8 @@ void fn_8012DFA8(void *arg0) {
     *(void **)(self + 0x34) = Process_AttachFunc(&fn_8012F360, self);
     gUiContext[8] = 0x80;
 }
+#pragma pop
+#pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8012EF04(void *arg0) {
     u8 FileCache_IsReady(void *);
