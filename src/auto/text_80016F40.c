@@ -6,6 +6,18 @@ extern u16 gBattleState[700]; // 1400 bytes / 2 = 700 u16s
 void* BattleState_GetFactionInfo(u16 *, u8);
 extern u8 lbl_802841B0[16];
 
+typedef struct Vec3_800193D8 {
+    f32 x;
+    f32 y;
+    f32 z;
+} Vec3_800193D8;
+
+static inline void Vec3_Copy_800193D8(Vec3_800193D8 *dst, Vec3_800193D8 src) {
+    dst->x = src.x;
+    dst->y = src.y;
+    dst->z = src.z;
+}
+
 
 void fn_80016F40(void) {
     extern u16 gUnits[];
@@ -1588,8 +1600,6 @@ void fn_800193CC(void *arg0, f32 farg0) {
 void fn_800193D8(void *arg0) {
     struct Vec3 { f32 x, y, z; };
     void fn_8005A0E0(s32, struct Vec3 *, struct Vec3 *);
-    extern f32 lbl_80368CE4;
-    extern f32 lbl_80368CA0;
     extern struct Vec3 lbl_802682C8[4];
     struct Vec3 points[4];
     struct Vec3 tmp;
@@ -1597,20 +1607,16 @@ void fn_800193D8(void *arg0) {
     struct Vec3 max;
     volatile struct Vec3 minOut;
     volatile struct Vec3 maxOut;
-    f32 fmax;
-    f32 fmin;
     s32 i;
 
-    fmin = lbl_80368CE4;
-    fmax = lbl_80368CA0;
-    min.x = fmin;
-    min.y = fmin;
-    max.x = fmax;
+    min.x = 1000.0f;
+    min.y = 1000.0f;
+    max.x = -1000.0f;
     points[0] = lbl_802682C8[0];
     points[1] = lbl_802682C8[1];
     points[2] = lbl_802682C8[2];
     points[3] = lbl_802682C8[3];
-    max.y = fmax;
+    max.y = -1000.0f;
 
     for (i = 0; i < 4; i++) {
         fn_8005A0E0(0, &points[i], &tmp);
