@@ -114,28 +114,33 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-#pragma opt_propagation off
+#pragma global_optimizer off
+static inline void *CreateFirst_800895B8(void *base) {
+    void *fn_8000CAF0(void *, s32);
+    return fn_8000CAF0((u8 *)base + 0, 7);
+}
+
 void fn_800895B8(void) {
-    void *Process_Create(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     extern u8 lbl_80289950[];
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
+    s8 *base;
     void *tmp;
 
-    base = lbl_80289950;
-    lbl_803674E0 = Process_Create(base, 7);
-    lbl_803674E4 = Process_Create((u8 *)base + 0x58, 7);
-    tmp = Process_Create((u8 *)base + 0x18, 7);
+    base = (s8 *)lbl_80289950;
+    lbl_803674E0 = fn_8000CAF0(base + 0, 7);
+    lbl_803674E4 = fn_8000CAF0(base + 0x58, 7);
+    tmp = fn_8000CAF0(base + 0x18, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = Process_Create((u8 *)base + 0x30, 7);
+    tmp = fn_8000CAF0(base + 0x30, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
-#pragma opt_propagation on
+#pragma global_optimizer on
 u16 fn_80089634(void) {
     extern void *lbl_803674E4;
     return M2C_FIELD(lbl_803674E4, u16 *, 0x32);
