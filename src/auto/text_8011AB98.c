@@ -1473,52 +1473,47 @@ s32 fn_8011C404(void *self) {
     void *TargetList_GetAt(void *, s32);
     extern u8 gTargetList[];
     s16 bestDist;
-    u32 best;
+    void *best;
     s32 i;
-    u8 *op;
-    s32 other;
+    void *other;
+    u32 oy;
+    u32 ox;
+    u32 sy;
+    u32 sx;
     s32 dy;
     s32 dx;
     s16 dist;
     u8 prefer;
-    u32 result;
-    u32 sx;
-    u32 sy;
-    u32 ox;
-    u32 oy;
+    void *result;
 
     bestDist = 0x7FFF;
-    best = 0;
+    best = NULL;
     for (i = 0; i < *(s32 *)gTargetList; i++) {
-        other = (s32)TargetList_GetAt(gTargetList, i);
-        if (self == (void *)other) {
+        other = TargetList_GetAt(gTargetList, i);
+        if (self == other) {
             continue;
         }
-        op = (u8 *)other;
-        ox = op[0];
+        ox = ((u8 *)other)[0];
         sx = ((u8 *)self)[0];
         if ((s8)sx <= (s8)ox) {
             continue;
         }
-        oy = op[1];
+        oy = ((u8 *)other)[1];
         sy = ((u8 *)self)[1];
         dy = (s8)sy - (s8)oy;
-        if ((s8)sy - (s8)oy < 0) {
+        if (((s8)((u8 *)self)[1] - (s8)((u8 *)other)[1]) < 0) {
             dy = -dy;
         }
-        dx = (s8)sx - (s8)ox;
-        if (dx < 0) {
-            dx = -dx;
-        }
+        dx = ((s8)sx - (s8)ox) < 0 ? -((s8)sx - (s8)ox) : ((s8)sx - (s8)ox);
         dist = (s16)(dx + dy);
         if (bestDist < dist) {
             continue;
         }
-        if (best != 0 && bestDist == dist) {
+        if (best != NULL && bestDist == dist) {
             if ((s8)((u8 *)best)[0] == (s8)ox) {
-                prefer = (s8)((u8 *)best)[1] < (s8)oy;
+                prefer = (s8)((u8 *)best)[1] > (s8)oy;
             } else {
-                prefer = (s8)ox < (s8)((u8 *)best)[0];
+                prefer = (s8)ox > (s8)((u8 *)best)[0];
             }
             if (prefer == 0) {
                 continue;
@@ -1527,13 +1522,13 @@ s32 fn_8011C404(void *self) {
         bestDist = dist;
         best = other;
     }
-    if (best != 0) {
+    if (best != NULL) {
         result = best;
     } else {
-        result = (u32)self;
+        result = self;
     }
-    *(u32 *)((u8 *)self + 0x4) = result;
-    return best != 0;
+    *(void **)((u8 *)self + 0x4) = result;
+    return best != NULL;
 }
 #pragma global_optimizer on
 void *fn_8011C558(void *arg0, s16 arg1) {
