@@ -1,6 +1,21 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void FileCache_SetArchiveName(u8 *entry, char *name) {
+    unsigned i;
+    u8 c;
+    if (*name == '/') name++;
+    i = 0;
+    *(u32 *)(entry + 0x2C) = i;
+    for (; i < 0x29; i++, name++) {
+        c = *name;
+        if ((s8)c >= 'A' && (s8)c <= 'Z') *name = c + 0x20;
+        entry[i] = *name;
+        c = *name;
+        if ((s8)c == 0) break;
+        *(u32 *)(entry + 0x2C) = (s8)c + *(u32 *)(entry + 0x2C) * 0x25;
+    }
+}
 static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
     u32 fn_800C44F4(s32);
     u32 fn_800C4604(s32, s32, char *, s32);
@@ -1376,8 +1391,9 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
     char *var_r6;
     char *var_r4;
     unsigned ctr;
-    s32 var_r7;
+    unsigned var_r7;
     u8 temp_r5;
+    unsigned n;
 
     if (*(u16 *)(arg0 + 0x30) & 0x800) {
         list = *(u8 **)(arg0 + 0x38);
@@ -1418,21 +1434,19 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
             if ((s8)path[0] == '/') {
                 var_r6 += 1;
             }
-            var_r7 = 0;
-            *(u32 *)(entry + 0x2C) = 0;
+            n = 0;
+            *(u32 *)(entry + 0x2C) = n;
             var_r3 = (char *)entry;
-            for (ctr = 0x29; ctr > 0; ctr--) {
+            for (; n < 0x29; n++) {
                 temp_r5 = *(u8 *)var_r6;
                 if ((s8)temp_r5 >= 'A' && (s8)temp_r5 <= 'Z') {
                     *var_r6 = temp_r5 + 0x20;
                 }
-                *var_r3 = *var_r6;
+                entry[n] = *var_r6;
                 temp_r5 = *(u8 *)var_r6;
                 if ((s8)temp_r5 == 0) {
                     break;
                 }
-                var_r7 += 1;
-                var_r3 += 1;
                 *(u32 *)(entry + 0x2C) = (s8)temp_r5 + *(u32 *)(entry + 0x2C) * 0x25;
                 var_r6 += 1;
             }
@@ -1638,6 +1652,7 @@ void fn_8005E0F0(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 #pragma use_lmw_stmw off
 void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     s64 OSGetTime(void);
