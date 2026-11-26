@@ -38,6 +38,23 @@ typedef struct PADResetState {
     u32 command[4];
 } PADResetState;
 
+static inline void PAD_ResetNext(u8 *base) {
+    extern u32 lbl_80368670;
+    extern s32 lbl_80366FA4;
+    void fn_802121E0(s32, u32);
+    void fn_8023C188(s32, void (*)(s32, u32));
+    void *memset(void *, int, u32);
+    u32 pending = lbl_80368670;
+    lbl_80366FA4 = __cntlzw(pending);
+    if (lbl_80366FA4 != 32) {
+        u8 *origin = base + lbl_80366FA4 * 12;
+        lbl_80368670 = pending & ~(0x80000000U >> lbl_80366FA4);
+        memset(origin + 16, 0, 12);
+        fn_8023C188(lbl_80366FA4, fn_802121E0);
+    }
+}
+
+
 
 extern s32 lbl_80368614;
 extern void (*lbl_803685E8)(void);
@@ -337,6 +354,7 @@ void fn_80212108(s32 chan, u32 type) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_802121E0(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     void fn_8023B804(s32, u32);
@@ -360,16 +378,17 @@ void fn_802121E0(s32 chan, u32 type) {
     u32 bitConst;
     u8 *padType;
     u8 *origin;
+    u8 *command;
+    s32 chanIdx;
     u32 chanBit;
     u32 mask;
-    u32 savedType;
     s32 result;
 
     bitConst = 0x80000000U;
     padType = (u8 *)PADType;
-    chan = lbl_80366FA4;
+    chanIdx = lbl_80366FA4;
     mask = lbl_80368674;
-    chanBit = bitConst >> chan;
+    chanBit = bitConst >> chanIdx;
     lbl_80368674 = mask & ~chanBit;
     mask &= chanBit;
     result = 1;
@@ -378,47 +397,49 @@ void fn_802121E0(s32 chan, u32 type) {
         if (lbl_80366FA4 != 0x20) {
             lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
             origin = padType + lbl_80366FA4 * 0xC;
-            origin += 0x10;
-            memset(origin, 0, 0xC);
+            memset(origin + 0x10, 0, 0xC);
             fn_8023C188(lbl_80366FA4, fn_802121E0);
         }
     } else {
         type &= 0xFFFFFF00;
-        ((u32 *)padType)[chan] = type;
+        ((u32 *)padType)[chanIdx] = type;
         if (((type & 0x18000000) != 0x08000000) || !(type & 0x01000000)) {
             lbl_80366FA4 = __cntlzw(lbl_80368670);
             if (lbl_80366FA4 != 0x20) {
                 lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
                 origin = padType + lbl_80366FA4 * 0xC;
-            origin += 0x10;
-            memset(origin, 0, 0xC);
+            memset(origin + 0x10, 0, 0xC);
                 fn_8023C188(lbl_80366FA4, fn_802121E0);
             }
         } else if (lbl_80366FB0 < 2) {
             EnabledBits |= chanBit;
-            fn_8023BA70(chan, sr);
-            fn_8023B804(chan, PADSpec | 0x400000);
+            fn_8023BA70(chanIdx, sr);
+            fn_8023B804(chanIdx, PADSpec | 0x400000);
             fn_8023B894(EnabledBits);
             lbl_80366FA4 = __cntlzw(lbl_80368670);
             if (lbl_80366FA4 != 0x20) {
                 lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
                 origin = padType + lbl_80366FA4 * 0xC;
-            origin += 0x10;
-            memset(origin, 0, 0xC);
+            memset(origin + 0x10, 0, 0xC);
                 fn_8023C188(lbl_80366FA4, fn_802121E0);
             }
         } else {
             if (!(type & 0x80000000) || (type & 0x04000000)) {
                 if (mask) {
-                    result = SITransfer(chan, &lbl_80366FBC, 3, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    origin = padType + chanIdx * 0xC;
+                    result = SITransfer(chanIdx, &lbl_80366FBC, 3, origin + 0x10, 0xA, &fn_80211F78, 0);
                 } else {
-                    result = SITransfer(chan, &cmdGetOrigin, 1, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    origin = padType + chanIdx * 0xC;
+                    result = SITransfer(chanIdx, &cmdGetOrigin, 1, origin + 0x10, 0xA, &fn_80211F78, 0);
                 }
             } else if ((type & 0x00100000) && !(type & 0x00080000) && !(type & 0x00040000)) {
                 if (type & 0x40000000) {
-                    result = SITransfer(chan, &cmdGetOrigin, 1, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    origin = padType + chanIdx * 0xC;
+                    result = SITransfer(chanIdx, &cmdGetOrigin, 1, origin + 0x10, 0xA, &fn_80211F78, 0);
                 } else {
-                    result = SITransfer(chan, (u32 *)(padType + chan * 4) + 16, 3, padType + chan * 0xC + 0x10, 8, &fn_80212108, 0);
+                    origin = padType + chanIdx * 0xC;
+                    command = padType + chanIdx * 4;
+                    result = SITransfer(chanIdx, command + 0x40, 3, origin + 0x10, 8, &fn_80212108, 0);
                 }
             }
             if (result == 0) {
@@ -427,8 +448,7 @@ void fn_802121E0(s32 chan, u32 type) {
                 if (lbl_80366FA4 != 0x20) {
                     lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
                     origin = padType + lbl_80366FA4 * 0xC;
-            origin += 0x10;
-            memset(origin, 0, 0xC);
+            memset(origin + 0x10, 0, 0xC);
                     fn_8023C188(lbl_80366FA4, fn_802121E0);
                 }
             }
