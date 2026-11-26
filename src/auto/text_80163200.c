@@ -2666,9 +2666,9 @@ s32 Ui_IsUnitInfoPopupOpen(void) {
 
 #pragma use_lmw_stmw on
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma global_optimizer off
-#pragma opt_propagation off
+#pragma opt_strength_reduction off
 void Ui_ShowUnitInfoPopup(void *arg0, void **arg1, f32 farg0, f32 farg1) {
     u8 *Msg_Expand(void *);
     void *fn_8001ED1C(void *);
@@ -2695,9 +2695,9 @@ void Ui_ShowUnitInfoPopup(void *arg0, void **arg1, f32 farg0, f32 farg1) {
     s32 var_r26;
     u8 *var_r25;
     u8 *var_r4;
-    f32 var_f7;
-    f32 var_f6;
     f32 var_f5;
+    f32 var_f6;
+    f32 var_f7;
     f32 var_f2;
     u8 temp_r3;
     s32 temp_r3_2;
@@ -2816,8 +2816,8 @@ after_type:
         if (var_f7 < lbl_8036A954) {
             var_f7 = lbl_8036A954;
         }
+        var_f2 = (lbl_8036A95C + farg0) - lbl_8036A960 * var_f6;
         var_f5 = lbl_8036A940 + farg1;
-        var_f2 = -((lbl_8036A960 * var_f6) - (lbl_8036A95C + farg0));
         if (var_f2 < lbl_8036A964) {
             var_f2 = lbl_8036A95C;
         }
@@ -9578,6 +9578,8 @@ void Ui_RestoreUnitListPanel(void *panel) {
     }
 }
 
+#pragma push
+#pragma use_lmw_stmw on
 void fn_8017279C(void *arg0) {
 
     void Process_Goto(void *, s32);
@@ -9607,7 +9609,7 @@ void fn_8017279C(void *arg0) {
     u32 fn_80037C20(u32);
     extern u8 gUiAmulMetamorDescProc[];
     #pragma cplusplus on
-    #pragma use_lmw_stmw on
+    
     class Vec2s {
     public:
         s16 x;
@@ -9705,10 +9707,10 @@ cancel:
             Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ed, 0x64);
         }
     }
-#pragma use_lmw_stmw reset
+
 #pragma cplusplus reset
 }
-
+#pragma pop
 void fn_80172B74(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, void *);
