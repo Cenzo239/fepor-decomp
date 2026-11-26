@@ -2,6 +2,12 @@
 #include "common.h"
 #include "global.h"
 
+static inline u8 TabMenu_IsInBand(s8 first, s8 value, s8 last) {
+ u8 result = 0;
+ if (first <= value) { if (value <= last) result = 1; }
+ return result;
+}
+
 typedef struct TabListIterator { void **node; } TabListIterator;
 
 struct UnkStruct {
@@ -211,6 +217,9 @@ void fn_801E4900(s16 *arg0, void *arg1) {
     arg0[1] = y;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 s8 fn_801E4A60(void *arg0, u8 arg1) {
     typedef struct Frame {
         u8 sp8;
@@ -278,13 +287,14 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
     incr0:
         p->sp54 = *(void **)((char *)p->sp54 + 4);
     cond0:
-        if (p->sp54 == list) break;
+        if (p->sp54 == list) goto found0;
         data = *(void **)((char *)p->sp54 + 8);
         match = 0;
         if ((s8)*(u8 *)data >= 0) {
             if (key == (s8)*((u8 *)data + 2)) match = 1;
         }
         if (!match) goto incr0;
+    found0:
         p->sp58 = p->sp54;
         p->sp64 = p->sp54;
         break;
@@ -298,13 +308,14 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
     incr1:
         p->sp48 = *(void **)((char *)p->sp48 + 4);
     cond1:
-        if (p->sp48 == list) break;
+        if (p->sp48 == list) goto found1;
         data = *(void **)((char *)p->sp48 + 8);
         match = 0;
         if ((s8)*(u8 *)data >= 0) {
             if (key == (s8)*((u8 *)data + 1)) match = 1;
         }
         if (!match) goto incr1;
+    found1:
         p->sp4C = p->sp48;
         p->sp64 = p->sp48;
         break;
@@ -318,13 +329,14 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
     incr2:
         p->sp3C = *(void **)((char *)p->sp3C + 4);
     cond2:
-        if (p->sp3C == list) break;
+        if (p->sp3C == list) goto found2;
         data = *(void **)((char *)p->sp3C + 8);
         match = 0;
         if ((s8)*(u8 *)data >= 0) {
             if (key == (s8)*((u8 *)data + 4)) match = 1;
         }
         if (!match) goto incr2;
+    found2:
         p->sp40 = p->sp3C;
         p->sp64 = p->sp3C;
         break;
@@ -341,7 +353,7 @@ s8 fn_801E4A60(void *arg0, u8 arg1) {
     }
     return count;
 }
-
+#pragma pop
 #pragma global_optimizer off
 void TabMenu_SetTab(void *arg0, s8 arg1) {
     void *Msg_Expand(void *);
@@ -3309,7 +3321,7 @@ void fn_801E9E30(s32 *arg0, u8 *arg1) {
     u32 n;
     u32 temp_r6;
     u32 temp_r8;
-    u32 temp_r9;
+    void *temp_r9;
     u32 temp_r5;
     u32 node8;
     void *tmp;
@@ -3321,8 +3333,8 @@ void fn_801E9E30(s32 *arg0, u8 *arg1) {
 
     temp_r0 = arg0[0];
     switch (temp_r0) {
-case 0: case 1: break;
-case 2: {
+    case 0: case 1: break;
+    case 2: {
         temp_r6 = (u32)arg0[2];
         temp_r8 = *(u32 *)(temp_r6 + 4);
         temp_r5 = *(u32 *)(temp_r6 + 8);
@@ -3338,24 +3350,25 @@ case 2: {
             arg0[1] = arg0[2];
             arg0[2] = (s32)tmp;
         }
-    break; }
-default: {
+        break;
+    }
+    default: {
         half = (u32)temp_r0 >> 1;
         var_r7 = (void *)arg0[2];
         for (n=half;n!=0;--n) var_r7=*(void **)((u8 *)var_r7+4);
         list.count = 0;
         list.next = &list.prev;
         list.prev = &list.prev;
-        temp_r9 = (u32)arg0[1];
+        temp_r9 = (void *)arg0[1];
         tmp = *(void **)var_r7;
-        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)(void *)temp_r9 + 4);
+        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)temp_r9 + 4);
         tmp = *(void **)var_r7;
-        **(void ***)((u8 *)(void *)temp_r9 + 4) = tmp;
+        **(void ***)((u8 *)temp_r9 + 4) = tmp;
         *(void **)((u8 *)list.prev + 4) = var_r7;
         *(void **)var_r7 = list.prev;
-        list.prev = (void *)temp_r9;
-        *(void **)((u8 *)(void *)temp_r9 + 4) = &list.prev;
-        list.count = arg0[0] - half;
+        list.prev = temp_r9;
+        *(void **)((u8 *)temp_r9 + 4) = &list.prev;
+        list.count = arg0[0] - (s32)half;
         arg0[0] = half;
         sp10.value = *arg1;
         fn_801E9E30(arg0, &sp10.value);
@@ -3365,9 +3378,9 @@ default: {
         fn_801EA7BC(arg0, &list.count, &sp8.value);
         var_r29 = list.next;
         if (var_r29 != &list.prev) {
-            tmp = *(void **)var_r29;
-            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)list.prev + 4);
-            **(void ***)((u8 *)list.prev + 4) = tmp;
+            void *last = list.prev;
+            *(void **)((u8 *)*(void **)var_r29 + 4) = *(void **)((u8 *)last + 4);
+            **(void ***)((u8 *)last + 4) = *(void **)var_r29;
             while (var_r29 != &list.prev) {
                 temp_r3 = var_r29;
                 var_r29 = *(void **)((u8 *)var_r29 + 4);
@@ -3376,7 +3389,7 @@ default: {
             }
         }
     }
-}
+    }
 }
 
 void fn_801EA018(s32 *arg0, u8 *arg1) {
