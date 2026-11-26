@@ -388,7 +388,7 @@ typedef struct __GXData_struct {
     u32 dirtyState;
 } GXData;
 
-#pragma opt_propagation off
+#pragma opt_propagation on
 
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
