@@ -1880,6 +1880,8 @@ void Prim2D_AddZ(f32);
 void Prim2D_PrepareTex(void);
 void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
 extern f32 lbl_8036B510;
+static inline void DrawHLine(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
+static inline void DrawVLine(s16 x, s32 y1, s32 y2, s32 z, u8 *c) { Ui_DrawLine(x, y1, x, y2, z, c); }
 #pragma cplusplus on
 extern "C" void fn_801CF018(void *arg0) {
     struct Obj {
@@ -1986,12 +1988,6 @@ static inline void CursorBoxBody(u8 *arg1, u8 *arg0)
 }
 extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
 {
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
-    extern f32 lbl_8036B510;
-
     struct Obj { virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0; };
     struct Line {
         static inline void hline(s32 x1, s16 y, s32 x2, s32 z, u8 *c) { Ui_DrawLine(x1, y, x2, y, z, c); }
@@ -2000,7 +1996,6 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
     u8 color[4];
     s32 old;
     s32 target;
-    void *selected;
     s32 y, x;
     s32 x2, y2;
 
@@ -2020,8 +2015,7 @@ extern "C" void fn_801CF134(u8 *arg0, u8 *arg1)
     x = *(s16 *)(arg0 + 0x3E);
     y = *(s16 *)(arg0 + 0x40);
 
-    selected = *(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL;
-    if (selected != arg0) return;
+    if ((*(u32 *)(arg1 + 0x34) ? *(void **)(*(u8 **)(arg1 + 0x38) + 8) : NULL) != arg0) return;
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036B510);
