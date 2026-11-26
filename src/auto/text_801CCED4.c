@@ -163,6 +163,16 @@ virtual void init();
 
 
 
+typedef struct SaveMenuFileEntry {
+ s16 flags;
+ u8 pad02[8];
+ s16 x, y;
+ u8 pad0E[0x3E];
+} SaveMenuFileEntry;
+typedef struct SaveMenuFileEntries {
+ u8 pad00[0x1B4];
+ SaveMenuFileEntry files[5];
+} SaveMenuFileEntries;
 typedef struct ParseValue801CB41C { f32 v[8]; } ParseValue801CB41C;
 typedef struct String801CB41C { u32 a, b, c; } String801CB41C;
 
@@ -5073,7 +5083,8 @@ void fn_801D3C88(void *arg0) {
     *(s32 *)((u8 *)obj + 0xC) = Process_AttachFunc(fn_801D8E80, arg0);
     fn_8008A290(2, 0xfa);
 }
-#pragma opt_common_subs reset
+#pragma push
+#pragma optimization_level 4
 void fn_801D3D3C(void *arg0) {
  void *fn_800D3590(void *);
  void *fn_801DE370(void *);
@@ -5143,11 +5154,11 @@ void fn_801D3D3C(void *arg0) {
  s32 arr_hi[10];
  s32 arr_lo[10];
  s32 i, j, k, m, n, count;
- s32 *p;
- s32 *p24;
- s32 i25;
- s32 saved_byte;
  s32 result;
+ s32 saved_byte;
+ s32 i25;
+ s32 *p24;
+ s32 *p;
  u8 tmp_u8;
  s16 x, y;
  s32 v, changed, sel, flags_a, flags_b;
@@ -5166,23 +5177,17 @@ void fn_801D3D3C(void *arg0) {
   fn_801E3118(&gSaveDataBase, arg0, *(u8 *)((u8 *)state + 0x10) == 1);
   *(s32 *)state = 3; break;
  case 3:
-  result = Card_GetResult();
-  switch (result) {
-   case -0x80: *(s32 *)state = 0x28; break;
-   case -0x42: *(s32 *)state = 0x1e; break;
-   case -0x41: *(s32 *)state = 0xd; break;
-   case -0x40: *(s32 *)state = 0x23; break;
-   case -0xd:
-   case -6:    *(s32 *)state = 0xf; break;
-   case -5:    *(s32 *)state = 0x18; break;
-   case -4:    *(s32 *)state = 0x19; break;
-   case -3:    *(s32 *)state = 5; break;
-   case -2:    *(s32 *)state = 0xe; break;
-   case -1:    *(s32 *)state = 0; break;
-   case 0:     break;
-   default:    *(s32 *)state = 5; break;
-  }
-  if (result != 0) break;
+ switch (Card_GetResult()) {
+case -1: *(s32 *)state=0; break;
+case -3: *(s32 *)state=5; break;
+case -65: *(s32 *)state=0xd; break;
+case -2: *(s32 *)state=0xe; break;
+case -13:
+case -6: *(s32 *)state=0xf; break;
+case -5: *(s32 *)state=0x18; break;
+case -4: *(s32 *)state=0x19; break;
+case -66: *(s32 *)state=0x1e; break;
+case 0:
   if (*(u8 *)((u8 *)state + 0x10) != 1) {
    p24 = arr_hi; count = 0; i25 = 0;
    while (i25 < 5) {
@@ -5217,7 +5222,12 @@ void fn_801D3D3C(void *arg0) {
     break;
    default: break;
   }
-  break;
+break;
+case -64: *(s32*)state=0x23; break;
+case -128: *(s32*)state=0x28; break;
+default: *(s32*)state=5; break;
+}
+break;
  case 5:
   Ui_PlaySeCue(gUiSeCues + 0x290, 0x64);
   MsgBox_Init((u8 *)state + 0x330, gUiSeCues + 0x2a4, 0, 1, 0);
@@ -5631,7 +5641,7 @@ void fn_801D3D3C(void *arg0) {
     case 0xc8:
     fn_801DBEA8(state, 1); *(s8 *)((u8 *)state + 0x12) = -1;
     p24 = (s32 *)state; i25 = 0;
-    while (i25 < 5) {
+    while (5 > i25) {
      fn_801D8D58((u8 *)p24 + 0x1b4); fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
      i25 += 1; p24 = (s32 *)((u8 *)p24 + 0x4c);
     }
@@ -5760,8 +5770,8 @@ void fn_801D3D3C(void *arg0) {
   p24 = (s32 *)state; i25 = 0;
   while (i25 < 5) {
    fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
-   if ((*(s16 *)((u8 *)p24 + 0x1b4) & 4) && *(s8 *)((u8 *)state + 0x12) == -1) *(u8 *)((u8 *)state + 0x12) = (u8)i25;
    i25++; p24 = (s32 *)((u8 *)p24 + 0x4c);
+   if ((*(s16 *)((u8 *)p24 + 0x1b4) & 4) && *(s8 *)((u8 *)state + 0x12) == -1) *(u8 *)((u8 *)state + 0x12) = (u8)i25;
   }
   { s8 idx = *(s8 *)((u8 *)state + 0x12); s16 *fl = (s16 *)((u8 *)state + idx * 0x4c + 0x1b4); *fl = (s16)(*fl | 2); }
   fn_801D8E08((u8 *)state + 0x52e); *(s32 *)state = 0x195; break;
@@ -6014,7 +6024,7 @@ void fn_801D3D3C(void *arg0) {
     }
     p24 = (s32 *)state;
     i25 = 0;
-    while (i25 < 5) {
+    while (5 > i25) {
       fn_801D88B8((u8 *)p24 + 0x1b4, state, 0);
       ++i25;
       p24 = (s32 *)((u8 *)p24 + 0x4c);
@@ -6262,7 +6272,7 @@ void fn_801D3D3C(void *arg0) {
     *(s8 *)((u8 *)state + 0x13) = -1;
     p24 = (s32 *)state;
     i25 = 0;
-    while (i25 < 5) {
+    while (5 > i25) {
       fn_801D8D58((u8 *)p24 + 0x1b4);
       fn_801D8C0C((u8 *)p24 + 0x1b4, i25);
       ++i25;
@@ -6410,7 +6420,7 @@ void fn_801D3D3C(void *arg0) {
     i25 = 0;
     while (i25 < *(s8 *)((u8 *)state + 0x15)) {
       *(s16 *)((u8 *)p24 + 0x7e) = 0xc8;
-      ++i25;
+      i25++;
       p24 = (s32 *)((u8 *)p24 + 0x34);
     }
     fn_801D8E08((u8 *)state + 0x51a);
@@ -6586,7 +6596,7 @@ void fn_801D3D3C(void *arg0) {
  default: break;
  }
 }
-
+#pragma pop
 u8 fn_801D8840(void *arg0) {
     return (u8) (M2C_FIELD(arg0, u8 *, 0x16) == 0x20);
 }
