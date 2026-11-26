@@ -14443,6 +14443,72 @@ struct Fn_80179DEC_Ctor {
         (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
     }
 };
+struct Fn80179DECObj {
+    virtual void m08() = 0;
+    virtual void m0C() = 0;
+    virtual void m10() = 0;
+    virtual void m14() = 0;
+    virtual void m18() = 0;
+    virtual void m1C() = 0;
+    virtual void m20() = 0;
+    virtual void m24() = 0;
+    virtual void m28() = 0;
+};
+static inline void *Fn80179DECBody(u8 *p, void *pCall, void *pMid, s32 arg1, s32 arg2, s32 arg3) {
+    void fn_80142060(void *);
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80292208[], lbl_80293BB8[], lbl_80293B30[];
+    extern const f32 gF32_1;
+    s32 e1 = (s16)arg1, e2 = (s16)arg2;
+    *(void **)p = lbl_8028FDB0;
+    *(s32 *)(p + 4) = 0;
+    *(void **)p = lbl_80292230;
+    *(s16 *)(p + 8) = -1;
+    *(s16 *)(p + 0xA) = (s16)arg1;
+    *(s16 *)(p + 0xC) = (s16)arg2;
+    *(s16 *)(p + 0xE) = (s16)(e1 + 0x108);
+    *(s16 *)(p + 0x10) = (s16)(e2 + 0x110);
+    *(s16 *)(p + 0x12) = 0;
+    *(s16 *)(p + 0x14) = 0;
+    *(s16 *)(p + 0x16) = 0x108;
+    *(s16 *)(p + 0x18) = 0x110;
+    *(s16 *)(p + 0x1A) = 0;
+    *(s16 *)(p + 0x1C) = 0;
+    *(u8 *)(p + 0x1E) = 0xFF;
+    *(u8 *)(p + 0x1F) = 0xFF;
+    *(u8 *)(p + 0x20) = 0xFF;
+    *(u8 *)(p + 0x21) = 0xFF;
+    *(s16 *)(p + 0x22) = (s16)arg3;
+    *(s16 *)(p + 0x24) = 0;
+    *(f32 *)(p + 0x28) = gF32_1;
+    *(f32 *)(p + 0x2C) = gF32_1;
+    *(f32 *)(p + 0x30) = gF32_1;
+    *(s32 *)(p + 0x34) = 0;
+    *(s32 *)(p + 0x38) = 0;
+    *(void **)pCall = lbl_80292208;
+    fn_80142060((u8 *)pCall + 0x3C);
+    *(void **)pMid = lbl_80293BB8;
+    *(u8 *)((u8 *)pMid + 0x48) = 1;
+    *(u8 *)((u8 *)pMid + 0x49) = 0;
+    *(u8 *)((u8 *)pMid + 0x4A) = 1;
+    *(u8 *)((u8 *)pMid + 0x4B) = 0;
+    *(s16 *)((u8 *)pMid + 0x50) = -1;
+    *(s16 *)((u8 *)pMid + 0x52) = -1;
+    *(s16 *)((u8 *)pMid + 0x54) = 0x20;
+    *(s32 *)((u8 *)pMid + 0x58) = 0;
+    *(s32 *)((u8 *)pMid + 0x5C) = 0;
+    *(s32 *)((u8 *)pMid + 0x60) = 3;
+    *(s16 *)((u8 *)pMid + 0x64) = 0x14;
+    *(s16 *)((u8 *)pMid + 0x66) = 0;
+    *(s32 *)((u8 *)pMid + 0x70) = 0;
+    ((Fn80179DECObj *)pMid)->m28();
+    *(void **)p = lbl_80293B30;
+    *(u8 *)(p + 0x78) = 0;
+    *(s16 *)(p + 0x64) = 0x14;
+    *(s16 *)(p + 0x66) = 0xA;
+    *(s16 *)(p + 0x54) = 0x1C;
+    ((Fn80179DECObj *)p)->m28();
+    return p;
+}
 extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
@@ -14463,7 +14529,7 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         virtual void m28() = 0;
     };
     u8 *p = (u8 *)arg0;
-    void *p2 = (u8 *)arg0 + 0x3C;
+    void *pCall = arg0;
     Obj *pMid = (Obj *)arg0;
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
@@ -14493,8 +14559,8 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(f32 *)(p + 0x30) = gF32_1;
     *(s32 *)(p + 0x34) = 0;
     *(s32 *)(p + 0x38) = 0;
-    *(void **)p = lbl_80292208;
-    fn_80142060(p2);
+    *(void **)pCall = lbl_80292208;
+    fn_80142060((u8 *)pCall + 0x3C);
 
     u8 *q = (u8 *)pMid;
     *(void **)q = lbl_80293BB8;
