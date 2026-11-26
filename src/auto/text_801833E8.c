@@ -11392,9 +11392,12 @@ extern "C" void *fn_80198288(void *arg0, void *arg1, void *arg2) {
     self->unk80 = temp;
     fn_800C9A60(&sp20, -1);
 
-    self->unk60 = (void *)fn_800E7FB4(
-        (temp = self->unk80, self->unk88 = temp, self->unk98 = 0, self->unk9C = 0, saved),
-        (z = lbl_8036AE88, self->unk90 = z, self->unk94 = z, &self->str54));
+    self->unk88 = self->unk80;
+    self->unk90 = lbl_8036AE88;
+    self->unk94 = lbl_8036AE88;
+    self->unk98 = 0;
+    self->unk9C = 0;
+    self->unk60 = (void *)fn_800E7FB4(saved, &self->str54);
 
     self->unk64 = ((VObj *)saved)->v2((char *)(lbl_8027A780 + 0x53), fn_800C93EC(&sp74));
     self->unk68 = ((VObj *)saved)->v2((char *)(lbl_8027A780 + 0x5A), fn_800C93EC(&sp68));
