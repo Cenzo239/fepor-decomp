@@ -224,6 +224,9 @@ void Game_PollSoftReset(void) {
     }
 }
 
+#pragma push
+#pragma use_lmw_stmw on
+#pragma opt_loop_invariants off
 void fn_8005B010(void *file, s32 line, s32 kind, char *format, ...) {
     typedef struct { char gpr, fpr, reserved[2]; char *input_arg_area; char *reg_save_area; } VaInfo;
     s32 fn_8005B42C(u32 *, u32);
@@ -259,23 +262,25 @@ void fn_8005B010(void *file, s32 line, s32 kind, char *format, ...) {
     s32 address;
     VaInfo args[1];
     char buffer[512];
-    s32 resetCode;
+    u16 buttons;
     void *frame;
     u32 count;
-    u32 begin, end;
+    u32 *table;
+    u32 end, begin;
     void *entry;
     u32 tick;
-    u16 buttons;
     s32 holdCount;
+    s32 resetCode;
     DebugPrint(lbl_8026AEA8 + 0x212);
     DebugPrint(lbl_8026AEA8 + 0x231);
     count = 0;
     frame = fn_80205B50();
+    table = lbl_802F0398;
     while (frame && frame != (void *)-1 && count++ < 16) {
         address = M2C_FIELD(frame, s32 *, 4);
         if (!lbl_803672D8) entry = NULL;
         else {
-            begin = lbl_802F0398[1];
+            begin = table[1];
             end = begin + lbl_802F0398[0] * 8;
             entry = (void *)fn_8005B448(begin, end, &address, (u8 (*)(s32,s32))fn_8005B42C);
             if ((u32)entry == begin || (u32)entry == end) entry = NULL;
@@ -330,7 +335,7 @@ void fn_8005B010(void *file, s32 line, s32 kind, char *format, ...) {
     OSResetSystem(0, resetCode, 0);
     for (;;) {}
 }
-
+#pragma pop
 s32 fn_8005B42C(u32 *arg0, u32 arg1) {
     return (u32) *arg0 <= arg1;
 }
@@ -425,7 +430,7 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     s32 sp[3];
     u32 h;
     u32 var_r0;
-    u32 off;
+    s32 off;
     u8 col;
     s32 idx;
     u16 stride;
@@ -462,7 +467,8 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
         }
         idx = 0;
     }
-    off = (stride + 1) * idx + 1;
+    off = (stride + 1) * idx;
+    off += 1;
     sp[0] = sp[2] + ((col + off) * 4);
     result = Bin_ReadU32(&sp[0]);
     if (result == 0) {
@@ -474,8 +480,6 @@ u32 fn_8005B580(void *arg0, u8 *name, u8 flag) {
     }
     return result;
 }
-#pragma optimization_level reset
-#pragma use_lmw_stmw off
 void fn_8005B73C(void *arg0) {
     M2C_UNK Msg_Expand(s32);
     Msg_Expand(M2C_FIELD(arg0, s32 *, 4));
