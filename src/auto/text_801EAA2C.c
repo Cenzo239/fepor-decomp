@@ -2,6 +2,12 @@
 #include "common.h"
 
 
+typedef struct AramAllocSlot {
+    u8 pad[0x5C];
+    struct AramAllocSlot *prev, *next;
+    s32 size;
+    u32 address;
+} AramAllocSlot;
 static inline void *AramCache_FindUnusedSlot(void *pool) {
     u8 *p = pool;
     s32 i;
@@ -1768,53 +1774,7 @@ have:
 split:
     cell = gAramSlotPool;
     *(s32 *)((u8 *)best + 0x64) = arg0;
-    var_ctr = 0x20;
-loop_s:
-    if (*(s32 *)((u8 *)cell + 0x64) == 0) {
-    } else {
-        temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-        cell = (u8 *)cell + 0x6C;
-        if (temp_r0 == 0) {
-        } else {
-            temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-            cell = (u8 *)cell + 0x6C;
-            if (temp_r0 == 0) {
-            } else {
-                temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-                cell = (u8 *)cell + 0x6C;
-                if (temp_r0 == 0) {
-                } else {
-                    temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-                    cell = (u8 *)cell + 0x6C;
-                    if (temp_r0 == 0) {
-                    } else {
-                        temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-                        cell = (u8 *)cell + 0x6C;
-                        if (temp_r0 == 0) {
-                        } else {
-                            temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-                            cell = (u8 *)cell + 0x6C;
-                            if (temp_r0 == 0) {
-                            } else {
-                                temp_r0 = *(s32 *)((u8 *)cell + 0xD0);
-                                cell = (u8 *)cell + 0x6C;
-                                if (temp_r0 == 0) {
-                                } else {
-                                    cell = (u8 *)cell + 0x6C;
-                                    var_ctr -= 1;
-                                    if (var_ctr == 0) {
-                                        cell = 0;
-                                    } else {
-                                        goto loop_s;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    cell = AramCache_FindUnusedSlot(cell);
     *(u32 *)((u8 *)cell + 0x64) = rem;
     *(u32 *)((u8 *)cell + 0x68) = *(u32 *)((u8 *)best + 0x68) + arg0;
     *(void **)((u8 *)cell + 0x5C) = *(void **)((u8 *)best + 0x5C);
