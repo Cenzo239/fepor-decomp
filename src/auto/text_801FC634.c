@@ -488,6 +488,7 @@ static inline void *Particle_FindFree(void **base) {
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
+#pragma opt_common_subs on
 void fn_801FD3B4(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -514,8 +515,8 @@ void fn_801FD3B4(void *arg0) {
     extern const f64 lbl_8036BAF8, lbl_8036BB40;
 
     f32 ang, dx, life;
-    s32 i;
     u32 j;
+    s32 i;
     void *slot;
     void *base;
     u32 r;
@@ -535,7 +536,8 @@ void fn_801FD3B4(void *arg0) {
         *(s16 *)((u8 *)arg0 + 0x46) -= 0x4000;
     }
     dx = *(f32 *)((u8 *)arg0 + 0x34) - *(f32 *)((u8 *)arg0 + 0x3C);
-    ang = (f32)fn_80237E90((*(f32 *)((u8 *)arg0 + 0x38) - *(f32 *)((u8 *)arg0 + 0x40)) / dx) * lbl_8036BB18;
+    ang = (f32)fn_80237E90((*(f32 *)((u8 *)arg0 + 0x38) - *(f32 *)((u8 *)arg0 + 0x40)) / dx);
+    ang *= lbl_8036BB18;
     if (dx < gFloatZero) {
         ang += lbl_8036BB1C;
     }
@@ -577,14 +579,17 @@ void fn_801FD3B4(void *arg0) {
         void *p = (u8 *)*(void **)((u8 *)arg0 + 0x30) + k * 0x10;
         if (*(s16 *)((u8 *)p + 0xC) != 0) {
             f32 fx, fy;
+            if (*(s16 *)((u8 *)p + 0xC) != 0) {
             s16 age;
-            s32 rad;
+
             *(s16 *)((u8 *)p + 0xE) += 1;
             *(s16 *)((u8 *)p + 0xC) -= 1;
             fx = (f32)fn_802380D0(lbl_8036BB20 * (f32)*((u8 *)p + 8));
+            fx = (f32)*((u8 *)p + 9) * fx * lbl_8036BB34;
             fy = (f32)sin(lbl_8036BB20 * (f32)*((u8 *)p + 8));
-            *(f32 *)p += (f32)*((u8 *)p + 9) * fx * lbl_8036BB34;
-            *(f32 *)((u8 *)p + 4) += (f32)*((u8 *)p + 9) * fy * lbl_8036BB34;
+            *(f32 *)p += fx;
+            fy = (f32)*((u8 *)p + 9) * fy * lbl_8036BB34;
+            *(f32 *)((u8 *)p + 4) += fy;
             *((u8 *)p + 8) = (u8)(*((u8 *)p + 8) + (s8)((Rand_Next() % 9) - 4));
             if (*(f32 *)p < lbl_8036BB38 || *(f32 *)p > lbl_8036BAE4) {
                 *(s16 *)((u8 *)p + 0xC) = 0;
@@ -592,8 +597,11 @@ void fn_801FD3B4(void *arg0) {
             if (*(f32 *)((u8 *)p + 4) < lbl_8036BB38 || *(f32 *)((u8 *)p + 4) > lbl_8036BB04) {
                 *(s16 *)((u8 *)p + 0xC) = 0;
             }
+            }
+            p = (u8 *)*(void **)((u8 *)arg0 + 0x30) + k * 16;
             if (*(s16 *)((u8 *)p + 0xC) != 0) {
                 f32 sz;
+                s32 rad;
                 s16 a;
                 Prim2D_Begin();
                 Prim2D_SetTransform(gFloatZero, gFloatZero, lbl_8036BAD8, gFloatOne);
@@ -602,7 +610,7 @@ void fn_801FD3B4(void *arg0) {
                 Prim2D_AddPrim(1);
                 rad = *(s16 *)((u8 *)p + 0xC);
                 if ((s32)*((u8 *)p + 9) < rad) {
-                    rad = (s16)*((u8 *)p + 9);
+                    rad = *((u8 *)p + 9);
                 }
                 sz = (f32)rad * lbl_8036BB08 + gFloatTwo;
                 Prim2D_SetPosCorners(*(f32 *)p - sz, *(f32 *)((u8 *)p + 4) - sz, *(f32 *)p + sz, *(f32 *)((u8 *)p + 4) + sz);
@@ -1109,7 +1117,15 @@ void fn_801FE5B0(void *arg0) {
     Prim2D_AddZ(lbl_8036BB6C);
     Prim2D_PrepareTex();
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
+#pragma opt_common_subs on
+#pragma opt_propagation on
+static inline s32 Ui_PanelOffset(s32 extent, s32 edge, s32 adjustment) {
+    return extent - edge + adjustment;
+}
+
 void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -1139,6 +1155,8 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     struct Slot tA;
     s32 sp8;
     s32 y2;
+    s32 right;
+    s32 bottom;
     s16 x;
     s16 y;
     s16 ww;
@@ -1198,7 +1216,9 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_SetTex(&t6, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)(((ww - t6.w) + 4) + x), (f32)(y + t9.h), (f32)t6.w, (f32)(hh - (t9.h + tA.h)));
+    right = ww - t6.w;
+    right += 4;
+    Prim2D_SetRect((f32)(x + right), (f32)(y + t9.h), (f32)t6.w, (f32)(hh - (t9.h + tA.h)));
     Prim2D_EndPrim();
 
     Prim2D_Begin();
@@ -1213,7 +1233,9 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_SetTex(&t8, 0x10);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetRect((f32)(x + t4.w), (f32)(y + ((hh - t8.h) - 1)), (f32)(ww - (t4.w + tA.w)), (f32)t8.h);
+    bottom = hh - t8.h;
+    bottom -= 1;
+    Prim2D_SetRect((f32)(x + t4.w), (f32)(y + bottom), (f32)(ww - (t4.w + tA.w)), (f32)t8.h);
     Prim2D_EndPrim();
 
     Prim2D_Begin();
@@ -1245,7 +1267,7 @@ void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     Prim2D_AddZ(lbl_8036BB78);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_801FEF30(void *arg0) {
     M2C_FIELD(arg0, s8 *, 0x30) = 0;
@@ -1673,10 +1695,10 @@ extern "C" void fn_801FF6B8(void *arg0, void *arg1) {
     s32 spC;
     s32 sp8;
     void *glyph;
-    s16 gx;
-    s16 gy;
     s16 wpad;
     s16 tw;
+    s16 gy;
+    s16 gx;
     s16 ax;
     s16 posx;
     u8 *entry;
