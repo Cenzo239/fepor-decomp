@@ -2951,30 +2951,22 @@ static inline struct String_Init_Tag String_Init_MakeTag(void) {
     return t;
 }
 
-void *String_Init(void *arg0, char *arg1, void *arg2)
-{
-    struct Tag { u8 b; };
-    void String_InitFromRange(void *, char *, char *, void *, struct Tag);
+void *String_Init(void *arg0, char *arg1, void *arg2) {
+    void String_InitFromRange(void *, char *, char *, void *, struct String_Init_Tag);
     void abort(void);
     void fprintf(void *, const char *, ...);
     u32 strlen(const char *);
     extern char __files[];
     extern char gStringErrorMsgs[];
-
-    struct Tag home;
-    struct Tag *p = &home;
-    u32 len2;
+    u32 len;
 
     *(u32 *)((u8 *)arg0 + 4) = 0;
-    len2 = strlen(arg1);
-
-    if (len2 > (u32)-2) {
+    len = strlen(arg1);
+    if (len > (u32)-2) {
         fprintf(__files + 0xA0, gStringErrorMsgs + 0x114);
         abort();
     }
-
-    String_InitFromRange(arg0, arg1, arg1 + len2, arg2, *p);
-
+    String_InitFromRange(arg0, arg1, arg1 + len, arg2, String_Init_MakeTag());
     return arg0;
 }
 
