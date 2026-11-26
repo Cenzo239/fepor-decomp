@@ -756,7 +756,7 @@ void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
     void *Heap_AllocRaw(s32);
     void *fn_8022C414(void *, void *, s32, s32, s32);
-    u16 Rand_Range(s32);
+    s32 Rand_Range(s32);
     void fn_8000D3EC(u32, void *);
     void fn_8001CC48(void *, u32);
     s32 Affinity_FromName(u32);
@@ -772,7 +772,8 @@ void fn_8001AC18(void) {
     u8 *data;
     s32 i;
     u32 v;
-    u16 h;
+    void *dest;
+    u32 h;
     u8 b;
     u8 q2, q1, q0, q3;
 #define BE32(p) (q2 = (p)[2], q1 = (p)[1], q0 = (p)[0], q3 = (p)[3], ((u32)q0 << 24) + ((u32)q1 << 16) + ((u32)q2 << 8) + (u32)q3)
@@ -784,7 +785,8 @@ void fn_8001AC18(void) {
     lbl_803671D4 = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A8A2C, 0, 0x64, count);
     rec = lbl_803671D4;
 
-    for (i = 0; i < lbl_803671D0; i++) {
+    i = 0;
+    while (i < lbl_803671D0) {
         *(s16 *)((u8 *)rec + 0x18) = i + 1;
 
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
@@ -799,17 +801,25 @@ void fn_8001AC18(void) {
         *(u32 *)((u8 *)rec + 0x10) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u8 *)((u8 *)rec + 0x54) = Affinity_FromName(v);
-        Person_ReadWeaponLevels((u8 *)rec + 0x35, &ptr);
-        Status_ReadName((u8 *)rec + 0x40, &ptr);
-        Status_ReadName((u8 *)rec + 0x40, &ptr);
-        Status_ReadName((u8 *)rec + 0x40, &ptr);
+        dest = (u8 *)rec + 0x35;
+        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
+        fn_8001CC48(dest, v);
+        dest = (u8 *)rec + 0x40;
+        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
+        Status_OrByName(dest, v);
+        dest = (u8 *)rec + 0x40;
+        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
+        Status_OrByName(dest, v);
+        dest = (u8 *)rec + 0x40;
+        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
+        Status_OrByName(dest, v);
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u32 *)((u8 *)rec + 0x5C) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u32 *)((u8 *)rec + 0x60) = v;
 
         *(u16 *)((u8 *)rec + 0x5A) = (ptr[0] << 8) + ptr[1];
-        h = (ptr[2] << 8) + ptr[3];
+        h = (u16)((ptr[2] << 8) + ptr[3]);
         if (h == 0) { h = Rand_Range(0x16E); }
         *(u16 *)((u8 *)rec + 0x58) = h;
 
@@ -848,8 +858,10 @@ void fn_8001AC18(void) {
 
         fn_8000D3EC(*(u32 *)((u8 *)rec + 0x0), rec);
 
-        ptr = (u8 *)(((u32)(ptr + 0x24)) & ~3);
         rec = (u8 *)rec + 0x64;
+        ptr = (u8 *)(((u32)(ptr + 0x24)) & ~3);
+        i++;
+
     }
 }
 #pragma pop
