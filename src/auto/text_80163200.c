@@ -430,7 +430,6 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
@@ -15486,7 +15485,7 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
 #pragma cplusplus reset
 
 #pragma push
-#pragma opt_lifetimes off
+#pragma cplusplus off
 #pragma use_lmw_stmw on
 void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
     void fn_80006B18(s32, s32, s32, s32, u8);
