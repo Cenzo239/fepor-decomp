@@ -1864,7 +1864,9 @@ stw r0, 448 (context)
 b OSClearContext
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void OSDumpContext(OSContext *context) {
     extern char lbl_8029BDE0[];
     s32 __cvt_fp2unsigned(f64);
@@ -1882,21 +1884,17 @@ void OSDumpContext(OSContext *context) {
 
     str = lbl_8029BDE0;
     OSReport(str, context);
-    i = 0;
-    if (16 != 0) do {
-        gpr = context->gpr[i];
+    for (i = 0; i < 16; i++) {
         gpr2 = context->gpr[i + 16];
+        gpr = context->gpr[i];
         OSReport(str + 0x44, i, gpr, gpr, i + 16, gpr2, gpr2);
-        i++;
-    } while (i < 16);
+    }
     OSReport(str + 0x74, context->lr, context->cr);
     OSReport(str + 0xA4, context->srr0, context->srr1);
     OSReport(str + 0xD4);
-    i = 0;
-    if (4 != 0) do {
+    for (i = 0; i < 4; i++) {
         OSReport(str + 0xE8, i, context->gqr[i], i + 4, context->gqr[i + 4]);
-        i++;
-    } while (i < 4);
+    }
     if (context->state & 1u) {
         enabled = OSDisableInterrupts();
         oldCtx = *(OSContext **)0x800000D4;
@@ -1907,21 +1905,17 @@ void OSDumpContext(OSContext *context) {
         }
         OSSetCurrentContext(&exceptionContext);
         OSReport(str + 0x10C);
-        i = 0;
-        if (32 != 0) do {
+        for (i = 0; i < 32; i += 2) {
             hi = __cvt_fp2unsigned(context->fpr[i + 1]);
             lo = __cvt_fp2unsigned(context->fpr[i]);
             OSReport(str + 0x120, i, lo, i + 1, hi);
-            i += 2;
-        } while (i < 32);
+        }
         OSReport(str + 0x13C);
-        i = 0;
-        if (32 != 0) do {
+        for (i = 0; i < 32; i += 2) {
             hi = __cvt_fp2unsigned(context->psf[i + 1]);
             lo = __cvt_fp2unsigned(context->psf[i]);
             OSReport(str + 0x150, i, lo, i + 1, hi);
-            i += 2;
-        } while (i < 32);
+        }
         exceptionContext.mode = 0;
         exceptionContext.state = 0;
         if (&exceptionContext == *(OSContext **)0x800000D8) {
@@ -1932,13 +1926,12 @@ void OSDumpContext(OSContext *context) {
     }
     OSReport(str + 0x170);
     p = (u32 *)context->gpr[1];
-    for (j = 0; p != 0 && (u32)p + 0x10000 != 0xFFFFFFFF && j < 16; j++) {
+    for (j = 0; p != 0 && (u32)p != 0xFFFFFFFF && j < 16; j++) {
         OSReport(str + 0x198, p, p[0], p[1]);
         p = (u32 *)p[0];
     }
 }
-
-#pragma peephole off
+#pragma pop
 void __OSContextInit(void)
 {
     void __OSSetExceptionHandler(s32, void *);
@@ -2093,7 +2086,8 @@ extern void OSEnableScheduler(void);
 extern void __OSReschedule(void);
 extern void OSLoadContext(void *);
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_dead_code off
 void __OSUnhandledException(u8 exception, OSContext *context, u32 dsisr, u32 dar) {
     OSErrorHandler *table;
     char *msgs;
@@ -2140,8 +2134,8 @@ void __OSUnhandledException(u8 exception, OSContext *context, u32 dsisr, u32 dar
         } else {
             context->srr1 &= ~0x2000;
             *(OSContext **)0x800000D8 = 0;
-            OSLoadContext(context);
         }
+        OSLoadContext(context);
     }
 
     exc = exception;
@@ -2180,11 +2174,11 @@ dump:
         OSReport(msgs + 0x1E8, context->srr0, dar);
         break;
     case 15: {
-        u32 *hw;
+        u16 *hw;
         OSReport(&lbl_80366F3C);
-        hw = (u32 *)0xCC005000;
-        OSReport(msgs + 0x248, *(u16 *)((u8 *)hw + 0x30), *(u16 *)((u8 *)hw + 0x32));
-        OSReport(msgs + 0x268, *(u16 *)((u8 *)hw + 0x20), *(u16 *)((u8 *)hw + 0x22));
+        hw = (u16 *)0xCC005000;
+        OSReport(msgs + 0x248, hw[24], hw[25]);
+        OSReport(msgs + 0x268, hw[16], hw[17]);
         OSReport(msgs + 0x288, *(u32 *)0xCC006014);
         OSReport(msgs + 0x2A4, __OSLastInterrupt, __OSLastInterruptSrr0,
                  __OSLastInterruptTime);
@@ -2196,6 +2190,7 @@ dump:
 
     PPCHalt();
 }
+#pragma pop
 s32 fn_80206658(u8 *buffer, s32 argc, char **argv) {
     u32 count;
     char *end;
@@ -2295,7 +2290,30 @@ s32 DVDGetAppLoaderOffset(void) {
     }
     return sAppLoaderOffset;
 }
+#pragma push
+#pragma optimization_level 4
 #pragma peephole off
+static inline s32 Boot_GetAppLoaderOffset(void) {
+    u32 OSAllocFromArenaLo(u32, u32);
+    void DVDReadAbsAsyncPrio(void *, u32, s32, s32, s32, s32);
+    s32 DVDGetCommandBlockStatus(void *);
+    s32 DVDKeepAlive(void);
+    void __OSHotReset(s32);
+    extern s32 sAppLoaderOffset;
+    u8 cmd[0x30];
+    u32 buf;
+    if (sAppLoaderOffset != 0) return sAppLoaderOffset;
+    if (*(s32 *)0x800030F4 != 0) {
+        buf = OSAllocFromArenaLo(0x40, 0x20);
+        DVDReadAbsAsyncPrio(cmd, buf, 0x40, *(s32 *)0x800030F4, 0, 0);
+        while (DVDGetCommandBlockStatus(cmd) != 0) {
+            if (DVDKeepAlive() == 0) __OSHotReset(0);
+        }
+        sAppLoaderOffset = *(s32 *)0x800030F4 + *(s32 *)(buf + 0x38);
+    } else sAppLoaderOffset = 0x2440;
+    return sAppLoaderOffset;
+}
+
 void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     BOOL OSDisableInterrupts(void);
     void OSEnableInterrupts(void);
@@ -2331,7 +2349,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     extern s32 sAppLoaderOffset;
     extern char lbl_8029C2D8[];
 
-    typedef void (*CB0)(void *, void *);
+    typedef void (*CB0)(void *);
     typedef s32 (*CB1)(void **, s32 *, s32 *);
     typedef s32 (*CB2)(void);
     typedef void (*SetupFn)(CB0 *, CB1 *, CB2 *);
@@ -2346,10 +2364,6 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     u8 sp8C[0x30];
     u8 sp5C[0x30];
     u8 sp2C[0x30];
-    u32 pad;
-    u32 pad2;
-    u32 pad3;
-    u32 pad4;
     s32 temp_r28;
     u32 temp_r31;
     u32 temp_r30;
@@ -2377,10 +2391,10 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     __OSUnmaskInterrupts(0x400);
     OSEnableInterrupts();
 
-    do {
+    while (lbl_803684B0 != 1) {
         if (DVDKeepAlive() == 0)
             __OSHotReset(0);
-    } while (lbl_803684B0 != 1);
+    }
 
     if (__OSIsGcam == 0) {
         if (fn_8020F404()[8] != 0)
@@ -2437,7 +2451,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         temp_r3 = OSAllocFromArenaLo(0x1C, 1);
         memcpy((void *)temp_r3, (void *)temp_r31, 0x1C);
         *(u32 *)0x800030F0 = temp_r3;
-        spC0((void *)OSReport, (void *)0x80000000);
+        spC0((void *)OSReport);
         OSSetArenaLo((void *)temp_r3);
 
         while (spC4(&spCC, &spD0, &spD4) != 0) {
@@ -2470,8 +2484,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         fn_802067E0(0x81300000);
     }
 }
-
-#pragma peephole off
+#pragma pop
 void fn_80206E1C(u32 bootDol, u32 resetCode, char **argv) {
     void fn_8020878C(s32 *, s32 *);
     int sprintf(char *, char *, ...);
@@ -2702,33 +2715,48 @@ u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
         sheet = idx / temp_r8;
         pos = idx % temp_r8;
         row = pos / temp_r9;
-        temp_r5 = row * temp_r5;
         col = pos - row * temp_r9;
+        row *= temp_r5;
         x = col * arg2->width;
         base = (u8 *)arg2 + imageOffset;
         base += ((u32)(sheet * arg2->sheetSize) >> 1);
         temp_r0 = ((temp_r0 / 8) << 5) / 2;
-        temp_r8 = (x / 8) * 16;
-        temp_r3 = (x % 8) / 4;
+
 
         {
-            s32 a = temp_r5 + 4;
-            *(u16 *)(base + temp_r0 * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp1C)[0];
+            s32 a = row + 4;
+            u8 *dst = base + temp_r0 * (a / 8);
+            dst += (x / 8) * 16;
+            dst += (a % 8) * 2;
+            dst += (x % 8) / 4;
+            *(u16 *)dst = ((u16 *)&sp1C)[0];
         }
         {
-            s32 a = temp_r5 + 5;
+            s32 a = row + 5;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp1C)[1];
+            u8 *dst = base + f * (a / 8);
+            dst += (x / 8) * 16;
+            dst += (a % 8) * 2;
+            dst += (x % 8) / 4;
+            *(u16 *)dst = ((u16 *)&sp1C)[1];
         }
         {
-            s32 a = temp_r5 + 6;
+            s32 a = row + 6;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp20)[0];
+            u8 *dst = base + f * (a / 8);
+            dst += (x / 8) * 16;
+            dst += (a % 8) * 2;
+            dst += (x % 8) / 4;
+            *(u16 *)dst = ((u16 *)&sp20)[0];
         }
         {
-            s32 a = temp_r5 + 7;
+            s32 a = row + 7;
             s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            *(u16 *)(base + f * (a / 8) + temp_r8 + (a % 8) * 2 + temp_r3) = ((u16 *)&sp20)[1];
+            u8 *dst = base + f * (a / 8);
+            dst += (x / 8) * 16;
+            dst += (a % 8) * 2;
+            dst += (x % 8) / 4;
+            *(u16 *)dst = ((u16 *)&sp20)[1];
         }
     }
     return size;
@@ -2805,7 +2833,9 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     return arg1;
 }
 
-#pragma global_optimizer on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_strength_reduction off
 s32 fn_802078A4(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 *arg4) {
 extern u16 lbl_80366F48;
 extern void (*lbl_803684C0)(void);
@@ -2852,7 +2882,7 @@ color=palette[(color>>(6-(sx%4)*2))&3];
 if(arg4) *arg4=((u8*)h)[h->widthOffset+index];
 return arg0;
 }
-
+#pragma pop
 #pragma push
 asm BOOL OSEnableInterrupts(void) {
 nofralloc
