@@ -18,6 +18,8 @@ public:
 struct AiCommandContext { u32 unk0; void *unit; u8 pad[5]; u8 x, y; AiCommandContext *set(void *u) { unit=u; return this; } };
 #pragma cplusplus reset
 typedef struct CardFileStatus { u8 name[32]; u32 length, time; u8 game[4], company[2]; u8 bannerFormat, pad; u32 iconAddress; u16 iconFormat, iconSpeed; u32 commentAddress; u8 offsets[0x30]; } CardFileStatus;
+struct AiFields { u8 pad[4]; volatile u16 f4; volatile u8 f6; u8 pad7; u8 f8[0x10]; };
+static inline void AiFields_Set(struct AiFields *s, u16 v) { s->f4 = v; s->f6 = 2; }
 static inline void SetupCardStatus(CardFileStatus *s) {
     s->commentAddress = 0x2000;
     s->iconAddress = 0;
@@ -16148,8 +16150,8 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
-    extern f32 lbl_80369F5C, lbl_80369F60;
     extern const f32 lbl_80369F3C;
+    extern f32 lbl_80369F5C, lbl_80369F60;
 
     f32 pos[3];
     f32 z;
