@@ -8776,6 +8776,7 @@ extern "C" void fn_800D8030(void *arg0)
     f32 f25;
     f32 f24;
     f32 f23;
+    struct {f32 x,z;} delta;
     f32 rz, rx;
     s32 held;
     s32 pressed;
@@ -8786,7 +8787,6 @@ extern "C" void fn_800D8030(void *arg0)
     s8 trig;
     f32 fov;
     u8 sy, sx;
-    f32 scale, offset;
 
     (void)lbl_80369E50;
 
@@ -8831,15 +8831,14 @@ extern "C" void fn_800D8030(void *arg0)
 
     stick = *(u8 **)gPadInput;
     sy=stick[3]; sx=stick[2];
-    scale=lbl_80369E40;
-    offset=f23*(f32)(s8)sy;
-    f29 += offset*scale;
-    offset=f24*(f32)(s8)sy;
-    f31 += offset*scale;
-    offset=rx*(f32)(s8)sx;
-    f29 += offset*scale;
-    offset=rz*(f32)(s8)sx;
-    f31 += offset*scale;
+    delta.x=f23*(f32)(s8)sy;
+    delta.z=f24*(f32)(s8)sy;
+    f29+=delta.x*lbl_80369E40;
+    f31+=delta.z*lbl_80369E40;
+    delta.x=rx*(f32)(s8)sx;
+    delta.z=rz*(f32)(s8)sx;
+    f29+=delta.x*lbl_80369E40;
+    f31+=delta.z*lbl_80369E40;
 
     if (held & 0x40) {
         f30 += lbl_80369E44 * f25;
@@ -20568,50 +20567,45 @@ u8 fn_800EBF58(void) {
     u32 start;
     u8 result;
     s32 r;
-    u32 elapsed;
-    u32 conv;
-    u32 divres;
 
     start = OSGetTick();
     result = 0;
     PADInit();
-    r = CARDProbeEx(0, &spC, &sp8);
-    if (r == -1 || r < 0) goto END;
-    r = fn_8021AFD0(0, gCardWork, 0, 0);
-    if (r < 0) goto END;
-    r = CARDGetResultCode(0);
-    if (r == -1) goto L_A7D4;
-    if (r == 0) goto L_second;
-    if (r >= 0) goto END;
-    if (r == -6) goto L_second;
-    goto END;
-L_A7D4:
-    r = fn_8021A7D4(0, 0);
-    if (r >= 0) goto L_second2;
-    fn_8021B20C(0);
-    goto END;
-L_second:
-    r = CARDGetResultCode(0);
-    if (r == -1) goto L_second2;
-    if (r == -6) goto L_B20C;
-    if (r >= -6) goto L_check0;
-    if (r == -13) goto L_B20C;
-    goto END;
-L_check0:
-    if (r == 0) {
-        result = 1;
+    do {
+        r = CARDProbeEx(0, &spC, &sp8);
+    } while (r == -1);
+    if (r >= 0) {
+        r = fn_8021AFD0(0, gCardWork, 0, 0);
+        if (r >= 0) {
+            do {
+                r = CARDGetResultCode(0);
+            } while (r == -1);
+            switch (r) {
+            case 0:
+            case -6:
+                r = fn_8021A7D4(0, 0);
+                if (r < 0) {
+                    fn_8021B20C(0);
+                    goto END;
+                }
+                do {
+                    r = CARDGetResultCode(0);
+                } while (r == -1);
+                break;
+            }
+            switch (r) {
+            case 0:
+                result = 1;
+                break;
+            case -6:
+            case -13:
+                fn_8021B20C(0);
+                break;
+            }
+        }
     }
-    goto END;
-L_B20C:
-    fn_8021B20C(0);
-    goto END;
-L_second2:
-    goto END;
 END:
-    elapsed = OSGetTick() - start;
-    conv = (*(u32 *)0x800000F8 >> 2) / 1000;
-    divres = elapsed / conv;
-    DebugPrint((char *)gCardStrings + 0x293, divres, result, elapsed);
+    DebugPrint((char *)gCardStrings + 0x293, (u32)(OSGetTick() - start) / ((*(u32 *)0x800000F8 >> 2) / 1000), result);
     return result;
 }
 
