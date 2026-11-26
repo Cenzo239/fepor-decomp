@@ -41,6 +41,10 @@ static inline f64 HermTail(f64 t0, f64 h, f64 b) { return h * t0 + b; }
 #pragma optimization_level 3
 
 #pragma optimization_level 3
+static inline f64 HermiteTangent(f32 a, f32 b) {
+    return (f64)(a - b) * 0.5;
+}
+
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
