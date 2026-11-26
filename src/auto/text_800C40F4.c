@@ -20266,7 +20266,6 @@ extern "C" void fn_8021D28C(s32, s32, void *);
 extern "C" u8 gCardStrings[];
 #pragma cplusplus on
 #pragma dont_inline on
-#pragma optimization_level 3
 extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     struct Stream_800EBACC {
         u8 pad[0x10];
@@ -20290,8 +20289,8 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     };
     extern struct CardWork gCardWork;
 
-    Stream_800EBACC *stream;
     CardFileStatus status;
+    Stream_800EBACC *stream;
     void *fileInfo;
     s32 size;
     s32 fileNo;
