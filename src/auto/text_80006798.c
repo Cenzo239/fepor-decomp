@@ -11,6 +11,7 @@ typedef struct {
 extern s32 lbl_802AEE20[5]; // array of 5 pointers
 extern f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
+extern u32 jumptable_80283778[13];
 
 #pragma optimization_level 2
 
