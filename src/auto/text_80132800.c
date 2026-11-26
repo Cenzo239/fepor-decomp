@@ -1788,6 +1788,7 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 
 #pragma use_lmw_stmw on
 #pragma scheduling on
+#pragma opt_lifetimes off
 #pragma global_optimizer off
 #pragma optimization_level 3
 #pragma peephole off
