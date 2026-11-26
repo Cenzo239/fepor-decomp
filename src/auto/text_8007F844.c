@@ -466,6 +466,7 @@ void fn_8007FF58(void *arg0) {
     Prim2D_PrepareTex();
 }
 
+#pragma global_optimizer off
 void fn_80080698(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
@@ -593,7 +594,7 @@ void fn_80080698(void *arg0) {
                 wy = y + *(f32 *)&arrB[i];
                 if (i == 7 && Status_Test((u8 *)*(void **)((u8 *)arg0 + 0x58) + 0x1BC, 0x23)) {
                     icon = 0x53;
-                    text = Msg_Expand(strings + 0x262);
+                    text = Msg_Expand(gUiStrings + 0x262);
                 } else {
                     icon = (u8)fn_8005A310(gUiIconDrawer, i, 0);
                     text = fn_8001E5D0(i, 0);
