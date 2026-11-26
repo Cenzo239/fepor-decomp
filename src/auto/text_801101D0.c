@@ -4383,24 +4383,24 @@ void fn_8011868C(void *arg0) {
 #pragma opt_propagation off
 void fn_801186E4(void *arg0)
 {
-    void fn_8000C070(void *, s32);
-    u8 fn_80015648(s32, u8);
-    void fn_8002297C(u8 *);
-    void fn_8002833C(u8 *, void *);
-    void fn_8004A1F0(void);
-    void fn_8004A224(void);
+    void Process_Goto(void *, s32);
+    u8 Allegiance_CompareIds(s32, u8);
+    void Map_RefreshUnitMap(u8 *);
+    void UiCtx_BindUnit(u8 *, void *);
+    void Map_HideMoveLimitView(void);
+    void Map_ShowMoveLimitView(void);
     void fn_800A8400(void);
-    void *fn_800AA794(void);
-    void fn_800AACDC(void *);
-    u32 fn_8013FF94(void *, s32, s32);
-    void fn_801475FC(u8 *, s32);
-    void fn_801658DC(u32, u8 *);
+    void *Map_GetCursorUnit(void);
+    void Map_SetupUnitMoveLimit(void *);
+    u32 Ui_FindChild(void *, s32, s32);
+    void Ui_PlaySeCue(u8 *, s32);
+    void Ui_SetWidgetText(u32, u8 *);
     extern u8 lbl_80274508[];
-    extern u8 lbl_802CA264[];
-    extern u8 lbl_802CA518[];
-    extern u8 lbl_802EF4C8[];
-    extern s32 lbl_80367110;
-    extern void *lbl_80367240;
+    extern u8 gUnitLists[];
+    extern u8 gBattleMap[];
+    extern u8 gUiContext[];
+    extern s32 gUiInputFlags;
+    extern void *gPadInput;
     extern void *lbl_803679F0;
     extern s8 lbl_803679F4;
     void *unit;
@@ -4417,29 +4417,29 @@ void fn_801186E4(void *arg0)
     u32 ret;
 
     self = arg0;
-    unit = fn_800AA794();
+    unit = Map_GetCursorUnit();
     if (unit != NULL) {
-        if (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
+        if (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1) {
             if (!(*(u32 *)((u8 *)unit + 0x1A0) & 0x800)) {
-                ret = fn_8013FF94(self, -0x1000, 0);
+                ret = Ui_FindChild(self, -0x1000, 0);
                 if (ret != 0) {
-                    fn_801658DC(ret, lbl_80274508 + 0x1A7);
+                    Ui_SetWidgetText(ret, lbl_80274508 + 0x1A7);
                 }
             } else {
-                ret = fn_8013FF94(self, -0x1000, 0);
+                ret = Ui_FindChild(self, -0x1000, 0);
                 if (ret != 0) {
-                    fn_801658DC(ret, lbl_80274508 + 0x1B9);
+                    Ui_SetWidgetText(ret, lbl_80274508 + 0x1B9);
                 }
             }
         } else {
-            ret = fn_8013FF94(self, -0x1000, 0);
+            ret = Ui_FindChild(self, -0x1000, 0);
             if (ret != 0) {
-                fn_801658DC(ret, lbl_80274508 + 0x1CB);
+                Ui_SetWidgetText(ret, lbl_80274508 + 0x1CB);
             }
         }
     } else {
         flag = 0;
-        iter = *(void **)(lbl_802CA264 + 0xC);
+        iter = *(void **)(gUnitLists + 0xC);
         while (iter != NULL) {
             flags = *(u32 *)((u8 *)iter + 0x1A0);
             iter = *(void **)((u8 *)iter + 0x184);
@@ -4449,14 +4449,14 @@ void fn_801186E4(void *arg0)
             }
         }
         if (flag == 0) {
-            ret = fn_8013FF94(self, -0x1000, 0);
+            ret = Ui_FindChild(self, -0x1000, 0);
             if (ret != 0) {
-                fn_801658DC(ret, lbl_80274508 + 0x1DD);
+                Ui_SetWidgetText(ret, lbl_80274508 + 0x1DD);
             }
         } else {
-            ret = fn_8013FF94(self, -0x1000, 0);
+            ret = Ui_FindChild(self, -0x1000, 0);
             if (ret != 0) {
-                fn_801658DC(ret, lbl_80274508 + 0x1EF);
+                Ui_SetWidgetText(ret, lbl_80274508 + 0x1EF);
             }
         }
     }
@@ -4464,93 +4464,93 @@ void fn_801186E4(void *arg0)
         lbl_803679F0 = NULL;
         lbl_803679F4 = 1;
     }
-    unit2 = fn_800AA794();
-    if (unit2 == NULL && (lbl_80367110 & 0x400)) {
-        fn_8004A1F0();
+    unit2 = Map_GetCursorUnit();
+    if (unit2 == NULL && (gUiInputFlags & 0x400)) {
+        Map_HideMoveLimitView();
     }
     skip = 0;
-    if ((lbl_80367110 & 0x10) && !(lbl_80367110 & 0x20)) {
+    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
         skip = 1;
     }
     if ((skip != 0) ||
-        ((!( *(u32 *)((u8 *)lbl_80367240 + 4) & 0xF)) &&
-         ((s8)(*(u8 **)lbl_80367240)[2] == 0) &&
-         ((s8)(*(u8 **)lbl_80367240)[3] == 0))) {
-        if ((lbl_803679F0 != unit2) || !(lbl_80367110 & 0x400)) {
+        ((!( *(u32 *)((u8 *)gPadInput + 4) & 0xF)) &&
+         ((s8)(*(u8 **)gPadInput)[2] == 0) &&
+         ((s8)(*(u8 **)gPadInput)[3] == 0))) {
+        if ((lbl_803679F0 != unit2) || !(gUiInputFlags & 0x400)) {
             lbl_803679F0 = unit2;
             if ((unit2 == NULL) || (*(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8) == 0)) {
-                if (lbl_80367110 & 0x400) {
-                    fn_8004A1F0();
+                if (gUiInputFlags & 0x400) {
+                    Map_HideMoveLimitView();
                 }
             } else {
-                fn_800AACDC(unit2);
-                fn_8004A224();
+                Map_SetupUnitMoveLimit(unit2);
+                Map_ShowMoveLimitView();
             }
         }
     }
-    inputFlags = lbl_80367110;
+    inputFlags = gUiInputFlags;
     skip = 0;
     if ((inputFlags & 0x10) && !(inputFlags & 0x20)) {
         skip = 1;
     }
     if (skip == 0) {
-        held = *(u32 *)((u8 *)lbl_80367240 + 4);
-        buttons = held & (*(u32 *)((u8 *)lbl_80367240 + 8) ^ held);
+        held = *(u32 *)((u8 *)gPadInput + 4);
+        buttons = held & (*(u32 *)((u8 *)gPadInput + 8) ^ held);
         if ((unit != NULL) && (buttons & 0x800)) {
             fn_800A8400();
-            if (lbl_80367110 & 0x400) {
-                fn_8004A1F0();
+            if (gUiInputFlags & 0x400) {
+                Map_HideMoveLimitView();
             }
-            fn_8002833C(lbl_802EF4C8, unit);
-            fn_801475FC(lbl_80274508 + 0x201, 0x64);
+            UiCtx_BindUnit(gUiContext, unit);
+            Ui_PlaySeCue(lbl_80274508 + 0x201, 0x64);
             *((u8 *)self + 0x48) = 4;
-            fn_8000C070(self, 0x11);
+            Process_Goto(self, 0x11);
             return;
         }
         if (buttons & 0x100) {
-            if ((unit != NULL) && (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
+            if ((unit != NULL) && (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (!(flags & 0x800)) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags | 0x800;
-                    fn_8002297C(lbl_802CA518);
-                    fn_800AACDC(unit);
-                    fn_801475FC(lbl_80274508 + 0x211, 0x64);
+                    Map_RefreshUnitMap(gBattleMap);
+                    Map_SetupUnitMoveLimit(unit);
+                    Ui_PlaySeCue(lbl_80274508 + 0x211, 0x64);
                 }
             } else {
                 goto block_65;
             }
         } else if (buttons & 0x200) {
-            if ((unit != NULL) && (fn_80015648(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
+            if ((unit != NULL) && (Allegiance_CompareIds(0, *(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)) == 1)) {
                 flags = *(u32 *)((u8 *)unit + 0x1A0);
                 if (flags & 0x800) {
                     *(u32 *)((u8 *)unit + 0x1A0) = flags & ~0x800;
-                    fn_8002297C(lbl_802CA518);
-                    fn_800AACDC(unit);
-                    fn_801475FC(lbl_80274508 + 0x22C, 0x64);
+                    Map_RefreshUnitMap(gBattleMap);
+                    Map_SetupUnitMoveLimit(unit);
+                    Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
                 }
             } else if (unit == NULL) {
-                flag = ClearUnitSelections(*(void **)(lbl_802CA264 + 0xC));
+                flag = ClearUnitSelections(*(void **)(gUnitLists + 0xC));
                 if (flag != 0) {
-                    fn_801475FC(lbl_80274508 + 0x22C, 0x64);
-                    fn_8002297C(lbl_802CA518);
+                    Ui_PlaySeCue(lbl_80274508 + 0x22C, 0x64);
+                    Map_RefreshUnitMap(gBattleMap);
                 }
             }
         } else {
             if (buttons & 0x10) {
             block_65:
-                if (lbl_80367110 & 0x400) {
-                    fn_8004A1F0();
+                if (gUiInputFlags & 0x400) {
+                    Map_HideMoveLimitView();
                 }
-                fn_801475FC(lbl_80274508 + 0x247, 0x64);
-                fn_8000C070(self, 1);
+                Ui_PlaySeCue(lbl_80274508 + 0x247, 0x64);
+                Process_Goto(self, 1);
                 return;
             }
             if (buttons & 0x1000) {
-                if (lbl_80367110 & 0x400) {
-                    fn_8004A1F0();
+                if (gUiInputFlags & 0x400) {
+                    Map_HideMoveLimitView();
                 }
                 *((u8 *)self + 0x48) = 4;
-                fn_8000C070(self, 9);
+                Process_Goto(self, 9);
             }
         }
     }
