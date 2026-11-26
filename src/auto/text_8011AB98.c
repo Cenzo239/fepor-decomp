@@ -432,7 +432,7 @@ void fn_8011AE6C(void *arg0) {
     f32 x, y, z;
     f32 x2, y2, z2;
     f32 mx, my, mz;
-    struct { f32 x, y, z; } diff;
+    f32 dx, dy, dz;
     f32 len;
     f32 len2;
     f32 clamped;
@@ -461,18 +461,18 @@ void fn_8011AE6C(void *arg0) {
     y2 = *(f32 *)((u8 *)arg0 + 0x50);
     x = *(f32 *)((u8 *)arg0 + 0x34);
     x2 = *(f32 *)((u8 *)arg0 + 0x4C);
-    diff.y = y2 - y;
     my = y + y2;
+    dy = y2 - y;
     z = *(f32 *)((u8 *)arg0 + 0x3C);
-    diff.x = x2 - x;
+    dx = x2 - x;
     z2 = *(f32 *)((u8 *)arg0 + 0x54);
 
     mx = x + x2;
-    diff.z = z2 - z;
+    dz = z2 - z;
 
     mz = z + z2;
     mx = half * mx;
-    len = diff.z * diff.z + (diff.x * diff.x + diff.y * diff.y);
+    len = dz * dz + (dx * dx + dy * dy);
     my = half * my;
     mz = half * mz;
     if (len > lbl_8036A1F8) {
@@ -511,9 +511,9 @@ void fn_8011AE6C(void *arg0) {
     eps = lbl_8036A1F8;
     *(s16 *)((u8 *)arg0 + 0x5C) = (s16)(((lbl_8036A220 * (lbl_8036A224 - len)) + (lbl_8036A228 * len)) * lbl_8036A22C);
     *(s16 *)((u8 *)arg0 + 0x5A) = 0;
-    diff.y = *(f32 *)((u8 *)arg0 + 0x50) - my;
+    dy = *(f32 *)((u8 *)arg0 + 0x50) - my;
     ny = *(f32 *)((u8 *)arg0 + 0x4C) - mx;
-    nx = -diff.y;
+    nx = -dy;
     len2 = (nx * nx) + (ny * ny);
     if (len2 > eps) {
         g = __frsqrte(len2);
@@ -1859,6 +1859,8 @@ void fn_8011CC04(u8 *arg0) {
     *(s32 *)(arg0 + 0x64) = base + shifted + 2;
 }
 
+#pragma push
+#pragma opt_strength_reduction off
 void fn_8011CC38(void *arg0, s32 arg1) {
     void *String_CStr(void *);
     void String_Init(void *, char *, void *);
@@ -1869,24 +1871,24 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     extern f32 lbl_8036A240;
     String spA4;
     String sp98;
-    s32 sp94;
-    s32 sp90;
-    s32 sp8C;
-    s32 sp88;
-    s32 sp84;
-    s32 sp80;
-    s32 sp7C;
-    s32 sp78;
+
+
+
+    UiListRect rect1;
+
+
+
+    UiListRect rect1copy;
     String sp6C;
     String sp60;
-    s32 sp5C;
-    s32 sp58;
-    s32 sp54;
-    s32 sp50;
-    s32 sp4C;
-    s32 sp48;
-    s32 sp44;
-    s32 sp40;
+
+
+
+    UiListRect rect2;
+
+
+
+    UiListRect rect2copy;
     String sp34;
     M2C_UNK sp30;
     M2C_UNK sp2C;
@@ -1947,16 +1949,16 @@ void fn_8011CC38(void *arg0, s32 arg1) {
         temp_r10 = M2C_FIELD(arg0, s32 *, 0x4C);
         temp_r11 = M2C_FIELD(arg0, s32 *, 0x48);
         temp_r9 = temp_r10 + 0x10;
-        sp7C = temp_r10;
+        rect1copy.y0 = temp_r10;
         temp_r0 = temp_r11 + (M2C_FIELD(arg0, s32 *, 0x60) - 8);
-        sp88 = temp_r11;
-        sp8C = temp_r10;
-        sp90 = temp_r0;
-        sp94 = temp_r9;
-        sp78 = temp_r11;
-        sp80 = temp_r0;
-        sp84 = temp_r9;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32 *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32, s32), 0x24)(arg0, &sp88, 0, 0xFF, 0xFF, 0x80, temp_r9, temp_r10);
+        rect1.x0 = temp_r11;
+        rect1.y0 = temp_r10;
+        rect1.x1 = temp_r0;
+        rect1.y1 = temp_r9;
+        rect1copy.x0 = temp_r11;
+        rect1copy.x1 = temp_r0;
+        rect1copy.y1 = temp_r9;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, UiListRect *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x24)(arg0, &rect1, 0, 0xFF, 0xFF, 0x80);
     }
     String_Init(&sp6C, lbl_80274A88 + 7, &sp28);
     temp_r24_3 = fn_800E7FB4(temp_r31, &sp6C);
@@ -1979,28 +1981,26 @@ void fn_8011CC38(void *arg0, s32 arg1) {
         var_r23 = 0;
         temp_r25_2 = temp_r29_2 + M2C_FIELD(arg0, s32 *, 0x68);
         var_r24 = temp_r30_2 + M2C_FIELD(arg0, s32 *, 0x6C);
-loop_10:
-        if (var_r23 < var_r28) {
+        while (var_r23 < var_r28) {
             String_Init(&sp60, String_CStr((void *)(M2C_FIELD(arg0, s32 *, 0xB4) + ((var_r23 + M2C_FIELD(arg0, s32 *, 0xF4)) * 0xC))), &sp24);
             M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32, s32, void *, s32, s32, f32), 0x20)(arg0, temp_r25_2, var_r24, &sp60, 1, 0xFF, lbl_8036A240);
             String_Destroy(&sp60, -1);
             var_r24 += 0x10;
             var_r23 += 1;
-            goto loop_10;
         }
         temp_r8 = temp_r29_2 + 4;
-        sp40 = temp_r8;
+        rect2copy.x0 = temp_r8;
         temp_r10_2 = temp_r30_2 + (M2C_FIELD(arg0, s32 *, 0x6C) + ((M2C_FIELD(arg0, s32 *, 0xEC) - M2C_FIELD(arg0, s32 *, 0xF4)) * 0x10));
-        sp50 = temp_r8;
+        rect2.x0 = temp_r8;
         temp_r9_2 = temp_r8 + (M2C_FIELD(arg0, s32 *, 0x60) - 8);
         temp_r0_3 = temp_r10_2 + 0x10;
-        sp54 = temp_r10_2;
-        sp58 = temp_r9_2;
-        sp5C = temp_r0_3;
-        sp44 = temp_r10_2;
-        sp48 = temp_r9_2;
-        sp4C = temp_r0_3;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32 *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32, s32), 0x24)(arg0, &sp50, 0, 0xFF, 0xFF, 0x80, temp_r9_2, temp_r10_2);
+        rect2.y0 = temp_r10_2;
+        rect2.x1 = temp_r9_2;
+        rect2.y1 = temp_r0_3;
+        rect2copy.y0 = temp_r10_2;
+        rect2copy.x1 = temp_r9_2;
+        rect2copy.y1 = temp_r0_3;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, UiListRect *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x24)(arg0, &rect2, 0, 0xFF, 0xFF, 0x80);
         temp_r24_4 = M2C_FIELD(arg0, s32 *, 0xC4);
         String_Init(&sp34, lbl_80274A88 + 7, &sp20);
         temp_r25_3 = fn_800E7FB4(temp_r31, &sp34);
@@ -2013,8 +2013,8 @@ loop_10:
         fn_800E3040(temp_r25_3, arg1, 0, temp_r29_2, temp_r30_2, M2C_FIELD(arg0, s32 *, 0x44), temp_r24_4, (var_r28 * 0x10) + 2, 255, 255, 255, 255, 0);
     }
 }
-
-#pragma global_optimizer reset
+#pragma pop
+#pragma optimization_level reset
 void ListBox_HandleInput(void *list) {
     void Win_UpdatePos(void *);
     void Win_SetDirty(void *);
@@ -3943,6 +3943,9 @@ void fn_80120304(void *arg0)
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_80120354(void *arg0) {
     void Process_ClearFunc(void *);
     void *Process_CreateChild(void *, void *);
@@ -4146,7 +4149,7 @@ after_trig:
     }
     self->unk61 = self->unk60;
 }
-
+#pragma pop
 void fn_8012075C(void *arg0) {
     void fn_80122AA8(void *);
     extern s32 gUiInputFlags;
@@ -4483,4 +4486,18 @@ s32 fn_80120C2C(void) {
     }
     gUiPanelFlags |= 0x200;
     return 1;
+}
+static inline s8 TalkUi_FindSlot20354(s8 want, void *object) {
+    u8 *self = object;
+    u8 *child;
+    if (want < 0) return -1;
+    child = *(u8 **)(self + 0x48);
+    if (child && *(s8 *)(child + 0x43) == want) return 0;
+    child = *(u8 **)(self + 0x4c);
+    if (child && *(s8 *)(child + 0x43) == want) return 1;
+    child = *(u8 **)(self + 0x50);
+    if (child && *(s8 *)(child + 0x43) == want) return 2;
+    child = *(u8 **)(self + 0x54);
+    if (child && *(s8 *)(child + 0x43) == want) return 3;
+    return -1;
 }
