@@ -10566,7 +10566,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma use_lmw_stmw on
+#pragma opt_dead_code off
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10591,7 +10591,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[1] = y;
     arg0[2] = z;
 }
-#pragma use_lmw_stmw reset
+#pragma opt_dead_code reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
@@ -16130,17 +16130,19 @@ void fn_800E4E5C(void *arg0) {
     }
 }
 
-#pragma push
-#pragma cplusplus on
-extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
+#pragma global_optimizer off
+void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
+    extern f32 lbl_80369F5C, lbl_80369F60;
+    extern const f32 lbl_80369F3C;
 
     f32 pos[3];
     f32 z;
     f32 y;
     f32 x;
+    f32 *out;
 
     fn_80060F70(
         *(void **)((u8 *)arg1 + 0xE0),
@@ -16148,24 +16150,23 @@ extern "C" void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
         pos
     );
 
+    out = arg0;
     x = pos[0];
 
-    if (x > lbl_80369F5C) {
-        if (x < lbl_80369F60) {
-            y = pos[1];
-            z = pos[2];
-            goto store;
-        }
+    if (x > lbl_80369F5C && x < lbl_80369F60) {
+        y = pos[1];
+        z = pos[2];
+    } else {
+        z = lbl_80369F3C;
+        y = z;
+        x = z;
     }
-    z = lbl_80369F3C;
-    y = z;
-    x = z;
-store:
-    arg0[0] = x;
-    arg0[1] = y;
-    arg0[2] = z;
+
+    out[0] = x;
+    out[1] = y;
+    out[2] = z;
 }
-#pragma pop
+#pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
@@ -25880,20 +25881,22 @@ void AiCmd_SeekLabel(void *unit)
 void fn_800F8538(void *arg0) {
     extern u8 *gAiCmd;
     extern s32 gAiCmdIsAlt;
-    extern u8 gAiState[];
-    s32 Unit_GetMov(void *);
+    extern s32 gAiState[];
+    extern s8 Unit_GetMov(void *);
 
     u8 *global;
     s32 tmp;
+    s32 index;
     s32 ret;
 
-    global = (u8 *)gAiCmd;
+    global = gAiCmd;
     tmp = *(u8 *)((u8 *)arg0 + 0x1AA);
     *(u8 *)((u8 *)arg0 + 0x1AA) = *(s32 *)(global + 0x10) + (s8)tmp;
 
-    ret = (s8)Unit_GetMov(arg0);
+    ret = Unit_GetMov(arg0);
 
-    *(s32 *)&gAiState[(*(s32 *)(global + 4) << 2) + 8] = ret;
+    index = *(s32 *)(global + 4);
+    gAiState[index + 2] = ret;
 
     if (gAiCmdIsAlt == 0) {
         (*(u8 *)((u8 *)arg0 + 0x250))++;
