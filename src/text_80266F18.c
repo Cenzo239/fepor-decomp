@@ -351,67 +351,50 @@ void fn_80267000(void) {
 
 }
 
+static volatile u32 gExi2Regs_80267004[16] : 0xCC006800;
+
 static inline s32 EXI2_ReadStatus_80267004(s32 *status) {
     s32 fn_802677E4(s32 *, s32, s32);
-    static volatile u32 exi[16] : 0xCC006800;
     s32 cmd;
     s32 err;
 
-    exi[10] = (exi[10] & 0x405) | 0xC0;
+    gExi2Regs_80267004[10] = (gExi2Regs_80267004[10] & 0x405) | 0xC0;
     cmd = 0x40000000;
     err = !fn_802677E4(&cmd, 2, 1);
-    while (exi[13] & 1) {
+    while (gExi2Regs_80267004[13] & 1) {
     }
     err |= !fn_802677E4(status, 4, 0);
-    while (exi[13] & 1) {
+    while (gExi2Regs_80267004[13] & 1) {
     }
-    exi[10] = exi[10] & 0x405;
+    gExi2Regs_80267004[10] = gExi2Regs_80267004[10] & 0x405;
     return !err;
 }
 
 static inline s32 EXI2_WriteMailbox_80267004(s32 mail) {
     s32 fn_802677E4(s32 *, s32, s32);
-    static volatile u32 exi[16] : 0xCC006800;
     s32 cmd;
     s32 err;
 
-    exi[10] = (exi[10] & 0x405) | 0xC0;
+    gExi2Regs_80267004[10] = (gExi2Regs_80267004[10] & 0x405) | 0xC0;
     cmd = mail;
     err = !fn_802677E4(&cmd, 4, 1);
-    while (exi[13] & 1) {
+    while (gExi2Regs_80267004[13] & 1) {
     }
-    exi[10] = exi[10] & 0x405;
+    gExi2Regs_80267004[10] = gExi2Regs_80267004[10] & 0x405;
     return !err;
 }
 
 s32 fn_80267004(s32 arg0, s32 arg1) {
     s32 fn_80267580(s32, s32, s32);
-    s32 fn_802677E4(s32 *, s32, s32);
     extern u8 lbl_803670E0;
-    static volatile u32 exi[16] : 0xCC006800;
     s32 sp54;
-    s32 sp50;
-    s32 sp4C;
-    s32 sp44;
-    s32 sp3C;
-    s32 temp_r24;
-    s32 temp_r26;
     s32 temp_r28;
-    s32 temp_r3;
-    s32 temp_r3_2;
     s32 var_r3;
+    s32 mail;
 
     temp_r28 = OSDisableInterrupts();
     do {
-        exi[10] = (exi[10] & 0x405) | 0xC0;
-        sp50 = 0x40000000;
-        temp_r24 = !fn_802677E4(&sp50, 2, 1);
-        while (exi[13] & 1) {
-        }
-        fn_802677E4(&sp54, 4, 0);
-        while (exi[13] & 1) {
-        }
-        exi[10] = exi[10] & 0x405;
+        EXI2_ReadStatus_80267004(&sp54);
     } while (sp54 & 2);
     lbl_803670E0 += 1;
     if (lbl_803670E0 & 1) {
@@ -422,36 +405,13 @@ s32 fn_80267004(s32 arg0, s32 arg1) {
     while (fn_80267580(var_r3 | 0x10000 | 0xC000, arg0, (arg1 + 3) & 0xFFFFFFFC) == 0) {
     }
     do {
-        exi[10] = (exi[10] & 0x405) | 0xC0;
-        sp4C = 0x40000000;
-        temp_r26 = fn_802677E4(&sp4C, 2, 1) == 0;
-        while (exi[13] & 1) {
-        }
-        fn_802677E4(&sp54, 4, 0);
-        while (exi[13] & 1) {
-        }
-        exi[10] = exi[10] & 0x405;
+        EXI2_ReadStatus_80267004(&sp54);
     } while (sp54 & 2);
-    temp_r24 = (((lbl_803670E0 << 0x10) | 0x1F000000 | arg1) & 0x1FFFFFFF) | 0xC0000000;
-    do {
-        exi[10] = (exi[10] & 0x405) | 0xC0;
-        sp44 = temp_r24;
-        temp_r3 = !fn_802677E4(&sp44, 4, 1);
-        while (exi[13] & 1) {
-        }
-        exi[10] = exi[10] & 0x405;
-    } while (temp_r3);
-    do {
-        exi[10] = (exi[10] & 0x405) | 0xC0;
-        sp3C = 0x40000000;
-        temp_r26 = fn_802677E4(&sp3C, 2, 1) == 0;
-        while (exi[13] & 1) {
-        }
-        temp_r3_2 = temp_r26 | (!fn_802677E4(&sp54, 4, 0));
-        while (exi[13] & 1) {
-        }
-        exi[10] = exi[10] & 0x405;
-    } while (temp_r3_2 != 0 || (sp54 & 2));
+    mail = (((lbl_803670E0 << 0x10) | 0x1F000000 | arg1) & 0x1FFFFFFF) | 0xC0000000;
+    while (!EXI2_WriteMailbox_80267004(mail)) {
+    }
+    while (!EXI2_ReadStatus_80267004(&sp54) || (sp54 & 2)) {
+    }
     OSRestoreInterrupts(temp_r28);
     return 0;
 }
