@@ -520,6 +520,7 @@ s32 fn_8021275C(u32 mask) {
     return 1;
 }
 
+extern u16 gWirelessId : 0x800030e0;
 s32 fn_80212870(void) {
 extern s32 lbl_80368668;
 extern char *lbl_80366FA0;
@@ -533,7 +534,7 @@ void fn_8023C518(void);
 s32 fn_8021264C(u32);
 s64 time;
 u64 sum;
-s64 t0;
+u64 t0;
 u32 *types = PADType;
 if (lbl_80368668) return 1;
 OSRegisterVersion(lbl_80366FA0);
@@ -542,14 +543,14 @@ lbl_80368668 = 1;
 if (lbl_80368820) {
 time = OSGetTime();
 t0 = time;
-sum = ((u64)t0 & 0xffff) + ((u64)(time >> 16) & 0xffff) + ((u64)(time >> 32) & 0xffff) + ((u64)(time >> 48) & 0xffff);
+sum = (t0 & 0xffff) + ((time >> 16) & 0xffff) + ((time >> 32) & 0xffff) + ((time >> 48) & 0xffff);
+gWirelessId = sum & 0x3fff;
 lbl_80368674 = 0xf0000000;
-*(u16 *)0x800030e0 = sum & 0x3fff;
 }
-types[16] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d000000;
-types[17] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d400000;
-types[18] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4d800000;
-types[19] = ((*(u16 *)0x800030e0 & 0x3fff) << 8) | 0x4dc00000;
+types[16] = ((gWirelessId & 0x3fff) << 8) | 0x4d000000;
+types[17] = ((gWirelessId & 0x3fff) << 8) | 0x4d400000;
+types[18] = ((gWirelessId & 0x3fff) << 8) | 0x4d800000;
+types[19] = ((gWirelessId & 0x3fff) << 8) | 0x4dc00000;
 fn_8023C518();
 OSRegisterResetFunction(&lbl_8029D6F8);
 return fn_8021264C(0xf0000000);
