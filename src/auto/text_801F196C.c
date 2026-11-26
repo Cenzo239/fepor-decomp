@@ -4096,6 +4096,13 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
     M2C_FIELD(fn_801F9D50(arg1), s32 *, 0x48) = arg0;
 }
 
+#pragma push
+#pragma optimization_level 2
+static inline void StaffRoll_InitVectorWords(u32 *vec, u32 zero) {
+    vec[0] = zero;
+    vec[1] = zero;
+    vec[2] = zero;
+}
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
@@ -4107,9 +4114,10 @@ void *fn_801F9D50(void *arg0)
     u32 *vec;
     f32 zero;
 
-    entry = (u8 *)Process_CreateChild(lbl_8029B32C, arg0);
-    tmp = entry;
-    if (entry != NULL) {
+    entry = Process_CreateChild(lbl_8029B32C, arg0);
+    arg0 = entry;
+    tmp = arg0;
+    if (tmp != NULL) {
         vec = (u32 *)(tmp + 0x30);
         *(u32 *)(tmp + 0x30) = 0;
         zero = lbl_8036BA00;
@@ -4121,7 +4129,7 @@ void *fn_801F9D50(void *arg0)
     }
     return entry;
 }
-
+#pragma pop
 void fn_801F9DC0(u32 arg0) {
     M2C_UNK fn_801FB1C0(s32, M2C_UNK);
     if ((arg0 != 0U) && ((arg0 + 0x30) != 0) && ((arg0 + 0x30) != 0)) {
