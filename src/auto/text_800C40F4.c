@@ -10586,7 +10586,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_800DBAB8(f32 *arg0, void *arg1) {
+void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
@@ -14167,6 +14167,8 @@ extern "C" void fn_800E14E4(s32 *begin, s32 *mid, s32 *end, SortCompare comp, s3
 #pragma cplusplus on
 static inline SortIterator Sort_PassIter(SortIterator it) { return it; }
 #pragma use_lmw_stmw on
+#pragma inline_max_size(10000)
+#pragma inline_max_total_size(20000)
 extern "C" void fn_800E18B4(s32 *, s32 *, SortIterator, SortCompare);
 static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare c) {
     s32 Sort_GetKey(void *);
@@ -14202,6 +14204,9 @@ static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortI
                 }
             }
 }
+
+#pragma inline_max_size reset
+#pragma inline_max_total_size reset
 extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare comp) {
     s32 Sort_GetKey(void *);
     s32 fn_800E0340(void *, void *, void *);
@@ -14235,15 +14240,15 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             cur = end;
             while (begin != cur) {
                 --cur;
-                *(*(SortIterator *)it_mem) = *cur;
-                ((SortIterator *)it_mem)->ptr++;
+                SortOutputProxy((s32 *)it_mem[0], it_mem[1]) = *cur;
+                it_mem[0] += 4;
             }
         } else {
             s32 it_mem[2];
             *(SortIterator *)it_mem = out;
             for (cur = begin; cur != end; cur++) {
-                *(*(SortIterator *)it_mem) = *cur;
-                ((SortIterator *)it_mem)->ptr++;
+                SortOutputProxy((s32 *)it_mem[0], it_mem[1]) = *cur;
+                it_mem[0] += 4;
             }
         }
         return;
@@ -14265,8 +14270,8 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
             s32 it_mem[2];
             *(SortIterator *)it_mem = out;
             for (cur = begin; cur != end; cur++) {
-                *(*(SortIterator *)it_mem) = *cur;
-                ((SortIterator *)it_mem)->ptr++;
+                SortOutputProxy((s32 *)it_mem[0], it_mem[1]) = *cur;
+                it_mem[0] += 4;
             }
         }
         return;
