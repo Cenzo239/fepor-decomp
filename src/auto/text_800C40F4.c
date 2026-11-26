@@ -23515,16 +23515,9 @@ extern f32 lbl_8036A010, lbl_8036A014, lbl_8036A030, lbl_8036A034, lbl_8036A038,
 void fn_800F20E0(void) {
     void fn_80060060(void *);
     void fn_800F1C24(void *);
-    struct Entry {
-        u8 pad[8];
-        u8 body[0x98];
-    };
-    s32 i;
 
     fn_80060060(lbl_8032AC58 + 0x288);
-    for (i = 0; i < 4; i++) {
-        fn_80060060(((struct Entry *)lbl_8032AC58)[i].body);
-    }
+    Init_800F20E0_Entries(&lbl_8032AC58);
     fn_800F1C24(lbl_8032AC58);
 }
 
