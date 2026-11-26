@@ -33,6 +33,25 @@ static inline void *MsgDebug_FilterText(void *text, u8 *dst)
     return lbl_80330C80;
 }
 
+static inline void Ui_WritePointPosition(f32 x, f32 y, f32 z)
+{
+    *(volatile f32 *)0xCC008000 = x;
+    *(volatile f32 *)0xCC008000 = y;
+    *(volatile f32 *)0xCC008000 = z;
+}
+static inline void Ui_WritePointColor(u8 r, u8 g, u8 b, u8 a)
+{
+    *(volatile u8 *)0xCC008000 = r;
+    *(volatile u8 *)0xCC008000 = g;
+    *(volatile u8 *)0xCC008000 = b;
+    *(volatile u8 *)0xCC008000 = a;
+}
+static inline void Ui_WritePointTexCoord(f32 s, f32 t)
+{
+    *(volatile f32 *)0xCC008000 = s;
+    *(volatile f32 *)0xCC008000 = t;
+}
+
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
 typedef union { Color rgba; u32 word; } PanelColor;
