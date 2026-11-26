@@ -949,6 +949,8 @@ void TabMenu_DrawTab2(void *arg0) {
         goto loop_body;
     }
 }
+#pragma push
+#pragma opt_propagation off
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
     s32 fn_80010B78(void *, s32, f32);
     s32 fn_800102BC(s32, f32);
@@ -1075,6 +1077,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     px = (s32)(s16)(x + half_w);
     py = y + half_h;
     mode = 0x16;
+    py = (s16)py;
     if (arg5 != 0) {
         mode = 0x15;
     }
@@ -1096,7 +1099,7 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     fn_80009C0C(lbl_8036B724);
     fn_8000A248();
 }
-
+#pragma pop
 #pragma use_lmw_stmw on
 void TabMenu_DrawTab1(void *arg0) {
     void Prim2D_Begin(void);
