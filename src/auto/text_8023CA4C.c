@@ -80,6 +80,10 @@ u16 value = (p[0] << 8) | p[1];
 *cursor = p + 2;
  return value;
  }
+static inline u8 ThpCursorByte(void) {
+extern ThpDecodeState *volatile lbl_80368950;
+return *lbl_80368950->cursor++;
+}
  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
@@ -363,6 +367,7 @@ extern f64 lbl_8036C148;
 
 #pragma optimization_level 4
 s32 fn_8023CA4C(void) {
+    static const f64 lbl_8036C190 = 4503599627370496.0;
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
     f32 table[64];
