@@ -14443,37 +14443,7 @@ struct Fn_80179DEC_Ctor {
         (*(void (**)(void *))(*(u8 **)p + 0x28))(p);
     }
 };
- struct Obj_80179DEC {
-     virtual void m08() = 0;
-     virtual void m0C() = 0;
-     virtual void m10() = 0;
-     virtual void m14() = 0;
-     virtual void m18() = 0;
-     virtual void m1C() = 0;
-     virtual void m20() = 0;
-     virtual void m24() = 0;
-     virtual void m28() = 0;
- };
- static inline void InitMid_80179DEC(Obj_80179DEC *pMid) {
-     extern u8 lbl_80293BB8[];
-     u8 *q = (u8 *)pMid;
-     *(void **)q = lbl_80293BB8;
-     *(u8 *)(q + 0x48) = 1;
-     *(u8 *)(q + 0x49) = 0;
-     *(u8 *)(q + 0x4A) = 1;
-     *(u8 *)(q + 0x4B) = 0;
-     *(s16 *)(q + 0x50) = -1;
-     *(s16 *)(q + 0x52) = -1;
-     *(s16 *)(q + 0x54) = 0x20;
-     *(s32 *)(q + 0x58) = 0;
-     *(s32 *)(q + 0x5C) = 0;
-     *(s32 *)(q + 0x60) = 3;
-     *(s16 *)(q + 0x64) = 0x14;
-     *(s16 *)(q + 0x66) = 0;
-     *(s32 *)(q + 0x70) = 0;
-     pMid->m28();
- }
- extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
+  extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
      void fn_80142060(void *);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
@@ -14492,9 +14462,9 @@ struct Fn_80179DEC_Ctor {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    Obj *pMid = (Obj *)arg0;
-    void *pCall = arg0;
     u8 *p = (u8 *)arg0;
+    void *pCall = arg0;
+    Obj *pMid = (Obj *)arg0;
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
 
