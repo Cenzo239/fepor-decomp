@@ -787,8 +787,7 @@ extern "C" void fn_8013D18C(void *arg0, s32 arg1) {
 }
 #pragma cplusplus reset
 #pragma push
-#pragma optimization_level 4
-#pragma opt_common_subs off
+#pragma optimization_level 2
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
