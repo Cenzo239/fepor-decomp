@@ -1196,7 +1196,6 @@ void fn_80218C34(void *arg0)
 
 #pragma push
 #pragma optimization_level 3
-#pragma opt_common_subs off
 void fn_80218CA4(void *arg0) {
     s32 EXIUnlock(s32);
     s32 fn_80216DA8(s32, u8 *);
@@ -1208,6 +1207,7 @@ void fn_80218CA4(void *arg0) {
 
     u8 cmd[0x40];
     u8 status;
+    u32 address;
     u32 scramble;
     u32 i;
     u32 n;
@@ -1220,51 +1220,52 @@ void fn_80218CA4(void *arg0) {
     s32 chan;
     u32 cid;
     u8 *card;
+    s32 result;
 
-    for (chan = 0, work = (u8 *)__CARDBlock; chan < 2; ++chan, work += 0x110) {
-        card = work;
-        if (card + 0x30 == (u8 *)arg0) break;
+    chan = 0;
+    card = (u8 *)__CARDBlock;
+    if ((u8 *)__CARDBlock + 0x30 != (u8 *)arg0) {
+        card = (u8 *)__CARDBlock + 0x110;
+        chan = 1;
+        if ((u8 *)__CARDBlock + 0x140 != (u8 *)arg0) {
+            chan = 2;
+        }
     }
 
     work = (u8 *)((*(u32 *)(card + 0x80) + 0x2F) & ~0x1Fu);
     cid = *(u32 *)(work + 0x20);
     tick = fn_80218018();
-    if (fn_80217ED4(chan, (cid ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u, cmd, tick, 1) < 0) {
+    address = (cid ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u;
+    if (fn_80217ED4(chan, address, cmd, tick, 1) < 0) {
         EXIUnlock(chan);
         fn_8021AE98(chan, -3);
         return;
     }
 
-    scramble = *(u32 *)(card + 0x2C);
-    n = tick + *(u32 *)(card + 0x14);
-    n = ((n + 4) * 8) + 1;
-    for (i = 0; i < n; ++i) {
-        t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-        scramble = (scramble << 1) | ((t >> 30) & 2);
-    }
-
-    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-    scramble |= t >> 31;
+    tick += *(s32 *)(card + 0x14);
+    n = ((tick + 4) * 8) + 1;
+    scramble = Card_AdvanceScramble(n, *(u32 *)(card + 0x2C));
     *(u32 *)(card + 0x2C) = scramble;
 
     tick = fn_80218018();
-    if (fn_80217ED4(chan, ((cid << 16) ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u, cmd, tick, 1) < 0) {
+    address = ((cid << 16) ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u;
+    if (fn_80217ED4(chan, address, cmd, tick, 1) < 0) {
         EXIUnlock(chan);
         fn_8021AE98(chan, -3);
         return;
     }
 
-    tick = fn_80216DA8(chan, &status);
+    result = fn_80216DA8(chan, &status);
     if (fn_80239488(chan) == 0) {
         EXIUnlock(chan);
         fn_8021AE98(chan, -3);
         return;
     }
-    if (tick == 0 && !(status & 0x40)) {
+    if (result == 0 && !(status & 0x40)) {
         EXIUnlock(chan);
-        tick = -5;
+        result = -5;
     }
-    fn_8021AE98(chan, tick);
+    fn_8021AE98(chan, result);
 }
 #pragma pop
 void fn_80218FC8(s32 chan, s32 result) {
@@ -2106,66 +2107,159 @@ s32 CARDProbeEx(s32 chan, s32 *memSize, s32 *sectorSize) {
     return result;
 }
 
-#pragma opt_strength_reduction on
+#pragma push
+#pragma optimization_level 4
 s32 fn_8021AA44(s32 chan) {
-s32 EXIGetID(s32,s32,u32*);s32 EXIUnlock(s32);
-s32 fn_8021A7FC(u32);s32 fn_80216E98(s32,void*);s32 fn_80217D4C(void);s32 fn_80216F88(s32);s32 fn_80216DA8(s32,u8*);s32 fn_80239488(s32);s32 fn_802180DC(s32,void*);
-u8 *__OSLockSramEx(void);void __OSUnlockSramEx(s32);
-s32 fn_80216CE8(s32,s32);void fn_80239298(s32,void*);void fn_80216AA4(void);void fn_8021AE98(s32,s32);
-s32 fn_802190A4(s32,u32,u32,void*,void*);void fn_80217BD0(void*,s32);void fn_8021B170(s32,s32);
-extern u16 lbl_8033A200[];extern s32 lbl_8029DB60[],lbl_8029DB80[];extern u16 lbl_80366FF0;
-u8 status;
-u32 id;
-u8 *card;
-s32 rc, i, sum;
-s32 result;
-u16 code;
-u8 *sram, *p, *serial;
-card=(u8*)lbl_8033A200+chan*0x110;
-if(*(s32*)(card+0x24)==0) {
-if(!EXIGetID(chan,0,&id)) result=-3;
-else if(fn_8021A7FC(id))result=0;else result=-2;
-if(result<0)goto fail;
-*(u32*)(card+0x108)=id;
-*(u16*)(card+8)=id&0xfc;
-*(s32*)(card+0xc)=*(s32*)((u8*)lbl_8029DB60+((id>>9)&0x1c));
-*(u16*)(card+0x10)=((s32)(*(u16*)(card+8)<<20)/8)/ *(s32*)(card+0xc);
-*(s32*)(card+0x14)=*(s32*)((u8*)lbl_8029DB80+((id>>6)&0x1c));
-result=fn_80216E98(chan,card+0x12);if(result<0)goto fail;
-if(fn_80217D4C() && (*(u16*)(card+0x12)>>8)==0xec) *(u16*)(card+0xa)=512;else *(u16*)(card+0xa)=128;
-result=fn_80216F88(chan);if(result<0)goto fail;
-result=fn_80216DA8(chan,&status);if(result<0)goto fail;
-if(!fn_80239488(chan)) {result=-3;goto fail;}
-if(!(status&0x40)){
-result=fn_802180DC(chan,card+0x18);if(result<0)goto fail;
-sram=__OSLockSramEx();p=sram+chan*12;serial=card+0x18;sum=0;
-for(i=0;i<12;i++){*p++=card[0x18+i];sum+=card[0x18+i];}
-sram[0x26+chan]=~sum;__OSUnlockSramEx(1);return result;
-}
-*(s32*)(card+0x24)=1;
-sram=__OSLockSramEx();p=sram+chan*12;sum=0;
-for(i=0;i<12;i++)sum+=*p++;
-__OSUnlockSramEx(0);
-if(sram[0x26+chan]!=(u8)~sum){result=-5;goto fail;}
-}
-if(*(s32*)(card+0x24)==1) {
-if(*(u32*)(card+0x108)==0x80000004) {
-sram=__OSLockSramEx();code=*(u16*)(sram+chan*12);__OSUnlockSramEx(0);
-if(lbl_80366FF0==0xffff || code!=lbl_80366FF0){result=-2;goto fail;}
-}
-*(s32*)(card+0x24)=2;
-result=fn_80216CE8(chan,1);if(result<0)goto fail;
-fn_80239298(chan,fn_80216AA4);EXIUnlock(chan);
-DCInvalidateRange(*(void**)(card+0x80),0xa000);
-}
-i=*(s32*)(card+0x24)-2;
-rc=fn_802190A4(chan,*(s32*)(card+0xc)*i,0x2000,*(u8**)(card+0x80)+(i<<13),fn_8021AE98);
-if(rc<0)fn_80217BD0(card,rc);
-return rc;
-fail:
-EXIUnlock(chan);fn_8021B170(chan,result);return result;
-}
+    s32 EXIGetID(s32, s32, u32 *);
+    s32 EXIUnlock(s32);
+    s32 fn_8021A7FC(u32);
+    s32 fn_80216E98(s32, void *);
+    s32 fn_80217D4C(void);
+    s32 fn_80216F88(s32);
+    s32 fn_80216DA8(s32, u8 *);
+    s32 fn_80239488(s32);
+    s32 fn_802180DC(s32, void *);
+    void *__OSLockSramEx(void);
+    void __OSUnlockSramEx(s32);
+    s32 fn_80216CE8(s32, s32);
+    void fn_80239298(s32, void *);
+    void fn_80216AA4(void);
+    void fn_8021AE98(s32, s32);
+    s32 fn_802190A4(s32, u32, u32, void *, void *);
+    void __CARDPutControlBlock(void *, s32);
+    void fn_8021B170(s32, s32);
+    extern u16 __CARDBlock[];
+    extern s32 lbl_8029DB60[], lbl_8029DB80[];
+    extern u16 lbl_80366FF0;
 
+    typedef struct {
+        u8 flashID[2][12];
+        u8 pad18[0xE];
+        u8 flashIDCheckSum[2];
+    } SramEx;
+
+    typedef struct {
+        u8 pad0[0x8];
+        u16 size;
+        u16 pageSize;
+        s32 sectorSize;
+        u16 cBlock;
+        u16 vendorID;
+        s32 latency;
+        u8 flashID[12];
+        s32 mountStep;
+        u8 pad28[0x58];
+        void *workArea;
+        u8 pad84[0x84];
+        u32 id;
+    } CardCtrl;
+
+    CardCtrl *card;
+    u32 id;
+    u8 status;
+    s32 result;
+    SramEx *sram;
+    int i;
+    u8 checkSum;
+    s32 step;
+    u16 code;
+
+    card = (CardCtrl *)((u8 *)__CARDBlock + chan * 0x110);
+    if (card->mountStep == 0) {
+        if (!EXIGetID(chan, 0, &id)) {
+            result = -3;
+        } else if (fn_8021A7FC(id)) {
+            result = 0;
+        } else {
+            result = -2;
+        }
+        if (result < 0) {
+            goto fail;
+        }
+        card->id = id;
+        card->size = id & 0xFC;
+        card->sectorSize = *(s32 *)((u8 *)lbl_8029DB60 + ((id >> 9) & 0x1C));
+        card->cBlock = ((s32)(card->size << 20) / 8) / card->sectorSize;
+        card->latency = *(s32 *)((u8 *)lbl_8029DB80 + ((id >> 6) & 0x1C));
+        result = fn_80216E98(chan, &card->vendorID);
+        if (result < 0) {
+            goto fail;
+        }
+        if (fn_80217D4C() && (card->vendorID >> 8) == 0xEC) {
+            card->pageSize = 512;
+        } else {
+            card->pageSize = 128;
+        }
+        result = fn_80216F88(chan);
+        if (result < 0) {
+            goto fail;
+        }
+        result = fn_80216DA8(chan, &status);
+        if (result < 0) {
+            goto fail;
+        }
+        if (!fn_80239488(chan)) {
+            result = -3;
+            goto fail;
+        }
+        if (!(status & 0x40)) {
+            result = fn_802180DC(chan, card->flashID);
+            if (result < 0) {
+                goto fail;
+            }
+            sram = (SramEx *)__OSLockSramEx();
+            checkSum = 0;
+            for (i = 0; i < 12; ++i) {
+                sram->flashID[chan][i] = card->flashID[i];
+                checkSum += card->flashID[i];
+            }
+            sram->flashIDCheckSum[chan] = ~checkSum;
+            __OSUnlockSramEx(1);
+            return result;
+        }
+        card->mountStep = 1;
+        sram = (SramEx *)__OSLockSramEx();
+        checkSum = 0;
+        for (i = 0; i < 12; ++i) {
+            checkSum += sram->flashID[chan][i];
+        }
+        __OSUnlockSramEx(0);
+        if (sram->flashIDCheckSum[chan] != (u8)~checkSum) {
+            result = -5;
+            goto fail;
+        }
+    }
+    if (card->mountStep == 1) {
+        if (card->id == 0x80000004) {
+            sram = (SramEx *)__OSLockSramEx();
+            code = *(u16 *)sram->flashID[chan];
+            __OSUnlockSramEx(0);
+            if (lbl_80366FF0 == 0xFFFF || code != lbl_80366FF0) {
+                result = -2;
+                goto fail;
+            }
+        }
+        card->mountStep = 2;
+        result = fn_80216CE8(chan, 1);
+        if (result < 0) {
+            goto fail;
+        }
+        fn_80239298(chan, fn_80216AA4);
+        EXIUnlock(chan);
+        DCInvalidateRange(card->workArea, 0xA000);
+    }
+    step = card->mountStep - 2;
+    result = fn_802190A4(chan, card->sectorSize * step, 0x2000, (u8 *)card->workArea + (step << 13), fn_8021AE98);
+    if (result < 0) {
+        __CARDPutControlBlock(card, result);
+    }
+    return result;
+fail:
+    EXIUnlock(chan);
+    fn_8021B170(chan, result);
+    return result;
+}
+#pragma pop
 void fn_8021AE98(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 EXILock(s32,s32,void*);
