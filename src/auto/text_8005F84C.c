@@ -1,7 +1,7 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void *GActor_FindMatrices(void *p) {
+static inline void *GActor_FindInherited(void *p, u32 offset) {
     while (p) {
         void *matrices = *(void **)((u8 *)p + 0x60);
         if (matrices) return matrices;
@@ -472,8 +472,9 @@ src+=2;dst+=2;
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma inline_depth(8)
 #pragma opt_lifetimes off
+#pragma inline_depth(8)
+#pragma opt_dead_code off
 void fn_80060060(void *arg0) {
     s32 fn_80064FC4(void *, void *, void *);
     s32 fn_800651FC(void *, void *, f32, f32);
@@ -482,7 +483,7 @@ void fn_80060060(void *arg0) {
     extern f32 lbl_803691D8;
 
     u16 sp8[4];
-    void *node;
+    u8 *node;
     void *var_r3;
     f32 hi;
     f32 lo;
