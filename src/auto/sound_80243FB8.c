@@ -1776,7 +1776,9 @@ StreamQueueNode *fn_80246288(StreamQueueNode *arg0, u8 arg1, u32 *arg2)
             walk = ((struct LocalState *)lbl_80368968)->bank + offset;
             first = walk[0];
             second = walk[1];
-            if (first != 0x80 || second != 0) {
+            if (first == 0x80 && second == 0) {
+                /* empty-run marker: cursor stays NULL */
+            } else {
                 if (first & 0x80) {
                     value = ((first & 0x7F) << 8) | second;
                     walk += 2;
