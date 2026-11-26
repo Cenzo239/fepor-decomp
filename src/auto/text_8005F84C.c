@@ -9,6 +9,7 @@ static inline s32 Material_TakeSlot(u8 *count, s32 *ids)
     *count = index + 1;
     return ids[index];
 }
+#pragma pop
 static inline void GMaterial_InsertSlot688D4(u32 value, u32 *slots) {
     u32 entry;
     s32 j;
