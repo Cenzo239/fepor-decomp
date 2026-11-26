@@ -4179,7 +4179,7 @@ void fn_8025C9E0(void *arg0, u8 arg1)
         *(u32 *)((u8 *)arg0 + 0x24) |= 0x20;
     }
 
-    fn_8025C9E0_Clr(arg0, 0);
+    ((u8 *)arg0)[0xF1] = 0;
     base = gSoundStudios + arg1 * 0xBC;
     node = *(void **)(base += 0x48);
     *(void **)((u8 *)arg0 + 0xC) = node;
@@ -7626,6 +7626,9 @@ void fn_8026212C(u8 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     *(s32 *)((char *)temp_r3 + 0xB8) = arg4;
 }
 
+static inline u8 *fn_80262154_Entry(u8 *voices, u32 arg0) {
+    return voices + arg0 * 0xF8;
+}
 u32 fn_80262154(u32 arg0)
 {
     extern u8 *gSoundVoices;
