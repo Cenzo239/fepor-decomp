@@ -1,5 +1,16 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void Video_DistributeOuter(u8 *dst, u16 amount) {
+    extern f32 lbl_8036B480;
+    extern f32 lbl_8036B478;
+    s32 i;
+    for (i = 0; i < 4; i++, dst++) {
+        if (i < amount % 4)
+            *dst = (u8)(s32)((f32)amount * lbl_8036B480 + lbl_8036B478);
+        else
+            *dst = (u8)(s32)((f32)amount * lbl_8036B480);
+    }
+}
 static inline s32 AchieveList_GoldAt(void *arg0,s32 i) { return *(s32*)((u8*)arg0+0x200+i*4); }
 static inline s32 AchieveList_SumGoldNested(void *arg0,s32 start) {
 s32 sum=start, i;
@@ -3336,6 +3347,9 @@ extern "C" void fn_801B9C90(void *arg0) {
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 #pragma cplusplus on
 extern "C" void fn_801B9D94(void *arg0) {
     void *Heap_Alloc(s32);
@@ -3345,7 +3359,7 @@ extern "C" void fn_801B9D94(void *arg0) {
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
     void fn_801402A0(void *, void *, s16 *, s32);
     void Ui_PlaySeCue(void *, s32);
-    void Ui_SetWidgetText(void *, void *, s32, s32);
+    void Ui_SetWidgetText(void *, void *);
     s32 fn_8017B908(void *);
     void fn_8017BB94(void *);
 
@@ -3355,7 +3369,7 @@ extern "C" void fn_801B9D94(void *arg0) {
     extern void *lbl_80292230[];
     extern void *lbl_80293C2C[];
     extern void *lbl_80293C84[];
-    extern f32 lbl_8036B2D8;
+    
 
     s16 pairC[2];
     s16 pair8[2];
@@ -3406,22 +3420,22 @@ extern "C" void fn_801B9D94(void *arg0) {
         ((u8 *)obj1)[0x21] = 0xFF;
         *(s16 *)((u8 *)obj1 + 0x22) = 0x1E0;
         *(s16 *)((u8 *)obj1 + 0x24) = 0;
-        *(f32 *)((u8 *)obj1 + 0x28) = lbl_8036B2D8;
-        *(f32 *)((u8 *)obj1 + 0x2C) = lbl_8036B2D8;
-        *(f32 *)((u8 *)obj1 + 0x30) = lbl_8036B2D8;
+        *(f32 *)((u8 *)obj1 + 0x28) = 1.0f;
+        *(f32 *)((u8 *)obj1 + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)obj1 + 0x30) = 1.0f;
         *(s32 *)((u8 *)obj1 + 0x34) = 0;
         *(s32 *)((u8 *)obj1 + 0x38) = 0;
         *(void **)obj1 = lbl_8029186C;
         *(s32 *)((u8 *)obj1 + 0x3C) = 0;
         *(s16 *)((u8 *)obj1 + 0x40) = 0x14;
         *(s16 *)((u8 *)obj1 + 0x42) = 8;
-        ((void (*)(void *))*(u32 *)(((u8 *)obj1) + 0x28))(obj1);
+        ((UnitHireWidget *)obj1)->init();
+    }
         *(s16 *)((u8 *)obj1 + 8) = 0x108;
         *(s16 *)((u8 *)obj1 + 0x24) = 8;
         *(s32 *)((u8 *)obj1 + 0x34) |= 0x10;
         *(s32 *)((u8 *)obj1 + 0x3C) = fn_8017B908(child);
         Ui_AddChild(arg0, obj1);
-    }
     obj2 = Heap_Alloc(0x58);
     if (obj2 != NULL) {
         *(void **)obj2 = lbl_8028FDB0;
@@ -3444,9 +3458,9 @@ extern "C" void fn_801B9D94(void *arg0) {
         ((u8 *)obj2)[0x21] = 0xFF;
         *(s16 *)((u8 *)obj2 + 0x22) = 0x258;
         *(s16 *)((u8 *)obj2 + 0x24) = 0;
-        *(f32 *)((u8 *)obj2 + 0x28) = lbl_8036B2D8;
-        *(f32 *)((u8 *)obj2 + 0x2C) = lbl_8036B2D8;
-        *(f32 *)((u8 *)obj2 + 0x30) = lbl_8036B2D8;
+        *(f32 *)((u8 *)obj2 + 0x28) = 1.0f;
+        *(f32 *)((u8 *)obj2 + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)obj2 + 0x30) = 1.0f;
         *(s32 *)((u8 *)obj2 + 0x34) = 0;
         *(s32 *)((u8 *)obj2 + 0x38) = 0;
         *(void **)obj2 = lbl_80293C84;
@@ -3461,19 +3475,20 @@ extern "C" void fn_801B9D94(void *arg0) {
         *(s16 *)((u8 *)obj2 + 0x52) = 0;
         *(s16 *)((u8 *)obj2 + 0x54) = 0;
         *(void **)obj2 = lbl_80293C2C;
+    }
         *(s16 *)((u8 *)obj2 + 8) = 0x82;
         *(s32 *)((u8 *)obj2 + 0x34) |= 0x10;
         *(s16 *)((u8 *)obj2 + 0x4E) = 0x130;
         ((u8 *)obj2)[0x4C] = 2;
         *(s32 *)((u8 *)obj2 + 0x48) = 1;
-        Ui_SetWidgetText(obj2, gUiUnitPanelStrings + 0x12C, 2, 0x130);
+        Ui_SetWidgetText(obj2, gUiUnitPanelStrings + 0x12C);
         *(s16 *)((u8 *)obj2 + 0x24) = 8;
         Ui_AddChild(arg0, obj2);
-    }
     Ui_BringChildToFront(arg0, child);
     Ui_PlaySeCue(gUiUnitPanelStrings + 0x156, 0x64);
 }
-
+#pragma pop
+#pragma cplusplus on
 extern "C" void fn_801BA0C4(void *arg0) {
 #pragma cplusplus reset
 void *Ui_FindChild(void *,s32,s32);
@@ -10877,6 +10892,9 @@ void fn_801C7C08(void *arg0) {
     M2C_FIELD(arg0, s32 *, 4) = 0;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     void *fn_8006E658(void);
     void VIConfigure(void *);
@@ -10935,9 +10953,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
         var_f2 = lbl_8036B47C;
     }
     var_r6 = (u8 *)&spC;
-    var_r8 = 0;
     var_r9 = 0;
-    var_r9 = var_r8;
     temp_r0 = (s32)((f32)(s8)lbl_80366E9C * var_f2);
     temp_r8 = (s8)lbl_80366E9C - (u16)temp_r0;
     count = temp_r8 % 4;
@@ -10981,7 +10997,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
     memcpy((u8 *)temp_r3 + 0x32, &sp10, 7);
     fn_802204F8();
 }
-
+#pragma pop
 void fn_801C7F60(void){void fn_801C7F80(void);fn_801C7F80();}
 
 s32 fn_801C7F80(void *arg0)
