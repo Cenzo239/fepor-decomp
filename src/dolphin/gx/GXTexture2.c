@@ -1062,7 +1062,7 @@ void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
   ptr[(0x130 / 4) + arg0] = value;
   gx[1] = 0;
 }
-#pragma optimization_level reset
+#pragma opt_propagation off
 void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
   u8 cmd;
