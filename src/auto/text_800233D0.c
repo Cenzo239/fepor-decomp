@@ -1341,6 +1341,9 @@ end:
     ;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma cplusplus on
 extern "C" void fn_80025068(void *arg0, void *arg1) {
     struct Model {
         u8 pad[4];
@@ -1427,11 +1430,7 @@ extern "C" void fn_80025068(void *arg0, void *arg1) {
     Prim2D_PrepareTex();
     Prim2D_AddPrim(3);
 
-    height = M2C_FIELD(self, Model **, 0x3C)->v20();
-    ph = (f32)height;
-    px = (f32)M2C_FIELD(self, s16 *, 0x3A);
-    py = (f32)M2C_FIELD(self, s16 *, 0x34);
-    Prim2D_SetRect(lbl_80368DAC, px, py, ph);
+    Prim2D_SetRect(lbl_80368DAC, (f32)M2C_FIELD(self, s16 *, 0x3A), (f32)M2C_FIELD(self, s16 *, 0x34), (f32)M2C_FIELD(self, Model **, 0x3C)->v20());
 
     Prim2D_EmitQuad();
 
@@ -1443,8 +1442,8 @@ extern "C" void fn_80025068(void *arg0, void *arg1) {
     Prim2D_SetCornerColors(&color0, &color1, &color2, &color3);
     Prim2D_EndPrim();
 }
-
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma cplusplus on
 extern "C" void Ui_DrawMenuDimRect(s32 unused, void *node) {
