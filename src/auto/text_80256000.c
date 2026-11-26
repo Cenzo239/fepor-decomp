@@ -263,6 +263,7 @@ typedef struct StreamState {
 extern StreamState *lbl_80368968;
 
 typedef struct SoundVoiceParams { u32 words[8]; } SoundVoiceParams;
+typedef struct SoundHwVoice { u8 pad0[0x18]; u32 field18, field1C, field20; u32 flags[19]; u16 field70, field72; SoundVoiceParams params; u8 pad94[0x10]; u8 fieldA4; u8 padA5[0x13]; u32 fieldB8, fieldBC; u16 fieldC0, fieldC2; u32 fieldC4; u8 padC8[0x20]; u8 fieldE8, fieldE9, fieldEA, fieldEB; u8 padEC[8]; u32 fieldF4; } SoundHwVoice;
 
 typedef struct Voice {
     u8 pad0[0x110];
@@ -6877,10 +6878,10 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
     flags = 0;
 
     for (index = 0; index <= lbl_80368AD0; index++) {
-        entry = gSoundVoices + offset;
+        entry = gSoundVoices + index * 4 + 0x24;
 
-        flags |= *(u32 *)(entry + 0x24 + index * 4) & 0x20;
-        *(u32 *)(entry + 0x24 + index * 4) = 0;
+        flags |= *(u32 *)(entry + offset) & 0x20;
+        *(u32 *)(entry + offset) = 0;
     }
 
     entry = gSoundVoices + offset;
@@ -6899,14 +6900,7 @@ void fn_80261730(u32 arg0, u16 arg1, void *arg2, u32 arg3,
     *(u16 *)(entry + 0x70) = arg1;
 
     entry = gSoundVoices + offset;
-    *(u32 *)(entry + 0x74) = *(u32 *)((u8 *)arg2 + 0x00);
-    *(u32 *)(entry + 0x78) = *(u32 *)((u8 *)arg2 + 0x04);
-    *(u32 *)(entry + 0x7C) = *(u32 *)((u8 *)arg2 + 0x08);
-    *(u32 *)(entry + 0x80) = *(u32 *)((u8 *)arg2 + 0x0C);
-    *(u32 *)(entry + 0x84) = *(u32 *)((u8 *)arg2 + 0x10);
-    *(u32 *)(entry + 0x88) = *(u32 *)((u8 *)arg2 + 0x14);
-    *(u32 *)(entry + 0x8C) = *(u32 *)((u8 *)arg2 + 0x18);
-    *(u32 *)(entry + 0x90) = *(u32 *)((u8 *)arg2 + 0x1C);
+    *(SoundVoiceParams *)(entry + 0x74) = *(SoundVoiceParams *)arg2;
 
     if (arg3 != 0) {
         entry = gSoundVoices + offset;
