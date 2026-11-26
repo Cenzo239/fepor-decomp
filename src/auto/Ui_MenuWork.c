@@ -3,9 +3,10 @@
 #include "global.h"
 static inline void Ui_SetupWorkEntries(s32 *table, s32 **entries, s32 a, s32 b) {
  entries[0] = table;
+ table = entries[0];
  table[1] = a;
  entries[1] = table + 2;
- table[3] = b;
+ entries[1][1] = b;
  entries[2] = 0;
 }
 
