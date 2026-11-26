@@ -32,6 +32,12 @@ typedef struct PADStatus {
     s8 err;
 } PADStatus;
 
+typedef struct PADResetState {
+    u32 type[4];
+    PADStatus origin[4];
+    u32 command[4];
+} PADResetState;
+
 
 extern s32 lbl_80368614;
 extern void (*lbl_803685E8)(void);
@@ -328,6 +334,9 @@ void fn_80212108(s32 chan, u32 type) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_802121E0(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
     void fn_8023B804(s32, u32);
@@ -348,20 +357,19 @@ void fn_802121E0(s32 chan, u32 type) {
     extern u16 cmdGetOrigin;
     extern u32 lbl_80368680;
     u32 sr[2];
-    u32 pad[2];
     u32 bitConst;
     u8 *padType;
+    u8 *origin;
     u32 chanBit;
     u32 mask;
-    s32 chanIdx;
     u32 savedType;
     s32 result;
 
     bitConst = 0x80000000U;
     padType = (u8 *)PADType;
-    chanIdx = lbl_80366FA4;
+    chan = lbl_80366FA4;
     mask = lbl_80368674;
-    chanBit = bitConst >> chanIdx;
+    chanBit = bitConst >> chan;
     lbl_80368674 = mask & ~chanBit;
     mask &= chanBit;
     result = 1;
@@ -369,42 +377,48 @@ void fn_802121E0(s32 chan, u32 type) {
         lbl_80366FA4 = __cntlzw(lbl_80368670);
         if (lbl_80366FA4 != 0x20) {
             lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-            memset(padType + lbl_80366FA4 * 0xC + 0x10, 0, 0xC);
+            origin = padType + lbl_80366FA4 * 0xC;
+            origin += 0x10;
+            memset(origin, 0, 0xC);
             fn_8023C188(lbl_80366FA4, fn_802121E0);
         }
     } else {
-        savedType = type & 0xFFFFFF00;
-        *(u32 *)(padType + chanIdx * 4) = savedType;
+        type &= 0xFFFFFF00;
+        ((u32 *)padType)[chan] = type;
         if (((type & 0x18000000) != 0x08000000) || !(type & 0x01000000)) {
             lbl_80366FA4 = __cntlzw(lbl_80368670);
             if (lbl_80366FA4 != 0x20) {
                 lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-                memset(padType + lbl_80366FA4 * 0xC + 0x10, 0, 0xC);
+                origin = padType + lbl_80366FA4 * 0xC;
+            origin += 0x10;
+            memset(origin, 0, 0xC);
                 fn_8023C188(lbl_80366FA4, fn_802121E0);
             }
         } else if (lbl_80366FB0 < 2) {
             EnabledBits |= chanBit;
-            fn_8023BA70(chanIdx, sr);
-            fn_8023B804(chanIdx, PADSpec | 0x400000);
+            fn_8023BA70(chan, sr);
+            fn_8023B804(chan, PADSpec | 0x400000);
             fn_8023B894(EnabledBits);
             lbl_80366FA4 = __cntlzw(lbl_80368670);
             if (lbl_80366FA4 != 0x20) {
                 lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-                memset(padType + lbl_80366FA4 * 0xC + 0x10, 0, 0xC);
+                origin = padType + lbl_80366FA4 * 0xC;
+            origin += 0x10;
+            memset(origin, 0, 0xC);
                 fn_8023C188(lbl_80366FA4, fn_802121E0);
             }
         } else {
             if (!(type & 0x80000000) || (type & 0x04000000)) {
                 if (mask) {
-                    result = SITransfer(chanIdx, &lbl_80366FBC, 3, padType + chanIdx * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    result = SITransfer(chan, &lbl_80366FBC, 3, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
                 } else {
-                    result = SITransfer(chanIdx, &cmdGetOrigin, 1, padType + chanIdx * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    result = SITransfer(chan, &cmdGetOrigin, 1, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
                 }
             } else if ((type & 0x00100000) && !(type & 0x00080000) && !(type & 0x00040000)) {
                 if (type & 0x40000000) {
-                    result = SITransfer(chanIdx, &cmdGetOrigin, 1, padType + chanIdx * 0xC + 0x10, 0xA, &fn_80211F78, 0);
+                    result = SITransfer(chan, &cmdGetOrigin, 1, padType + chan * 0xC + 0x10, 0xA, &fn_80211F78, 0);
                 } else {
-                    result = SITransfer(chanIdx, (u32 *)(padType + chanIdx * 4) + 16, 3, padType + chanIdx * 0xC + 0x10, 8, &fn_80212108, 0);
+                    result = SITransfer(chan, (u32 *)(padType + chan * 4) + 16, 3, padType + chan * 0xC + 0x10, 8, &fn_80212108, 0);
                 }
             }
             if (result == 0) {
@@ -412,14 +426,16 @@ void fn_802121E0(s32 chan, u32 type) {
                 lbl_80368680 |= chanBit;
                 if (lbl_80366FA4 != 0x20) {
                     lbl_80368670 &= ~(bitConst >> lbl_80366FA4);
-                    memset(padType + lbl_80366FA4 * 0xC + 0x10, 0, 0xC);
+                    origin = padType + lbl_80366FA4 * 0xC;
+            origin += 0x10;
+            memset(origin, 0, 0xC);
                     fn_8023C188(lbl_80366FA4, fn_802121E0);
                 }
             }
         }
     }
 }
-
+#pragma pop
 /* On SI type/status: GetOrigin if a standard PAD, else disable the channel. */
 void PADTypeAndStatusCallback(s32 chan, u32 type) {
     s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback, s64 delay);
@@ -1220,6 +1236,12 @@ u8 fn_80213B34(void) {
     return (u8) ((u32) *(u32 *)0xCC006C04 >> 8U);
 }
 
+#pragma push
+#pragma opt_lifetimes off
+extern u32 gAIRegs[8] : 0xCC006C00;
+#pragma push
+#pragma opt_propagation off
+extern u32 gBusClock : 0x800000F8;
 void fn_80213B44(s32 arg0) {
 void OSRegisterVersion(const char *);
 void __OSSetInterruptHandler(s32, void *);
@@ -1229,7 +1251,6 @@ void fn_80213D2C(void);
 extern char *lbl_80366FC0;
 extern s32 lbl_803686A8, lbl_80368698, lbl_8036869C, lbl_803686A0;
 extern u64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
-volatile u32 *regs = (volatile u32 *)0xCC006C00;
 u32 rate;
 if(lbl_803686A8 == 1) return;
 OSRegisterVersion(lbl_80366FC0);
@@ -1237,24 +1258,23 @@ rate = (*(u32 *)0x800000f8 / 4) / 125000;
 lbl_803686B0 = rate * 31524 / 8000;
 lbl_803686B8 = rate * 42024 / 8000;
 lbl_803686C0 = rate * 42000 / 8000;
-lbl_803686D0 = rate * 3000 / 8000;
 lbl_803686C8 = rate * 63000 / 8000;
-regs[0] = (regs[0] & ~0x20) | 0x20;
-regs[1] &= 0xffff00ff;
-regs[1] &= 0xffffff00;
-regs[3] = 0;
+lbl_803686D0 = rate * 3000 / 8000;
+gAIRegs[0] = (gAIRegs[0] & ~0x20) | 0x20;
+gAIRegs[1] = __rlwimi(gAIRegs[1] & 0xffff00ff, 0, 8, 16, 23);
+gAIRegs[1] = __rlwimi(gAIRegs[1] & 0xffffff00, 0, 0, 24, 31);
+gAIRegs[3] = 0;
 fn_80213A08(1);
 fn_80213914(0);
-lbl_80368698=0;
-lbl_8036869C=0;
-lbl_803686A0=arg0;
+lbl_80368698 = lbl_8036869C = 0;
+lbl_803686A0 = arg0;
 __OSSetInterruptHandler(5,fn_80213D2C);
 __OSUnmaskInterrupts(0x04000000);
 __OSSetInterruptHandler(8,fn_80213CB0);
 __OSUnmaskInterrupts(0x00800000);
 lbl_803686A8=1;
 }
-
+#pragma pop
 void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
