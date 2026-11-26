@@ -29,6 +29,7 @@ static inline void *MsgDebug_FilterText(void *text, u8 *dst)
 
 extern u32 *gPrim2D;
 typedef struct { u8 r, g, b, a; } Color;
+typedef union { Color rgba; u32 word; } PanelColor;
 typedef struct { s32 c0, c1, c2, c3; } Color4;
 typedef struct { s32 c3, c2, c1, c0; } Color4rev;
 
@@ -7191,6 +7192,7 @@ void fn_80160F00(s16 x, s16 y, u8 flag, s32 texFlags) {
 #pragma use_lmw_stmw on
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(void *, u16);
@@ -7263,7 +7265,7 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 
     Prim2D_EndPrim();
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(flags | 2));
+    Prim2D_SetTex(0, (u16)flags);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)(s16)arg0, (f32)bottom, (f32)(s16)(right - x), (f32)(s16)(bottom2 - bottom));
