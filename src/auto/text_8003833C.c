@@ -1087,7 +1087,10 @@ void *fn_8003A114(void *arg0) {
 }
 
 s8 fn_8003A1C4(void *arg0) {
-    return (s8) (M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x41) + (((u8) M2C_FIELD(arg0, u8 *, 0x1A6) >> 2U) & 7));
+    s8 ret;
+    s32 tmp = M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x41) + (((u8) M2C_FIELD(arg0, u8 *, 0x1A6) >> 2U) & 7);
+    ret = (s8) tmp;
+    return ret;
 }
 
 #pragma global_optimizer off
