@@ -1790,37 +1790,8 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma opt_lifetimes off
-static inline void MenuPosition_80134C24(s32 *arg0, void *arg1, s32 kind, s32 colW) {
-    Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
-    s32 Text_MeasureHeight(s32, f32);
-    extern const f32 lbl_8036A5AC;
-    Vec2s out, in;
-    u32 rowH;
-    s32 quot;
-    s32 rem, hdiv, t;
-    s16 x, y, half, off48, off4a;
-    quot = kind / colW;
-    t = *(s16 *)((u8 *)arg1 + 0x12);
-    rem = *(s16 *)((u8 *)arg1 + 0x16);
-    rem -= t;
-    rowH = *(s16 *)((u8 *)arg1 + 0x46);
-    off48 = *(s16 *)((u8 *)arg1 + 0x48);
-    off4a = *(s16 *)((u8 *)arg1 + 0x4a);
-    t = (s16)rem;
-    hdiv = t / colW;
-    t = (s16)hdiv;
-    rem = kind - quot * colW;
-    rem = (s16)rem;
-    rem = t * rem;
-    x = (s16)(rem + off48);
-    y = (s16)((s16)rowH * (s16)quot + off4a);
-    t = Text_MeasureHeight(-1, lbl_8036A5AC);
-    half = (s16)(((s32)(s16)rowH - t) >> 1);
-    in.x = x;
-    in.y = (s32)y + half;
-    *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
-}
-
+static inline s16 MenuGridColumns(const MenuGridLayout *self) { return self->columns; }
+static inline s16 MenuGridIndex(const MenuGridLayout *self) { return self->index; }
 void fn_80134C24(s32 *arg0, void *arg1) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
