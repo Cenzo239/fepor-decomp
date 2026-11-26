@@ -13915,14 +13915,11 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-extern "C" void fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
+#pragma opt_propagation off
+extern "C" s32 *fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
- if (begin == end) {
- SortIterator stop(first); SortIterator cur(last); s32 *dest=out;
- while(cur.ptr != stop.ptr) { --cur.ptr; { SortIterator tmp(cur); *--dest=*tmp.ptr; } }
- return;
- }
- if(first.ptr == last.ptr) { s32 *dest=out, *src=end; while(src>begin) *--dest=*--src; return; }
+ if (begin == end) { return Sort_CopyBackwardIter(first,last,out); }
+ if(first.ptr == last.ptr) { return Sort_CopyBackwardPtr(begin,end,out); }
  --end; --last.ptr;
  for (;;) {
  SortIterator tmp(last);
@@ -13932,14 +13929,12 @@ extern "C" void fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortItera
  *--out=*end;
  if(begin==end) {
  ++last.ptr;
- SortIterator stop(first); SortIterator cur(last); s32 *dest=out;
- while(cur.ptr!=stop.ptr) {--cur.ptr; { SortIterator tmp(cur); *--dest=*tmp.ptr; }}
- return;
+ return Sort_CopyBackwardIter(first,last,out);
  }
  --end;
  } else {
  SortIterator tmp(last); *--out=*tmp.ptr;
- if(first.ptr==last.ptr) { s32 *src=end+1; s32 *dest=out; while(src>begin) *--dest=*--src; return; }
+ if(first.ptr==last.ptr) { return Sort_CopyBackwardPtr(begin,end+1,out); }
  --last.ptr;
  }
  }
@@ -30293,6 +30288,13 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
     fn_8002C47C(&obj, 0);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma opt_common_subs off
+static inline void Ai_ScaleMoveRange(s32 *range, f32 scale) {
+    *range = (s32)((f32)*range * scale);
+}
 s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     s32 Unit_GetMov(void *);
     void *Unit_GetActiveItemPtr(void *);
@@ -30304,37 +30306,39 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     extern u8 gBattleMap[];
     extern u8 gUnits[];
 
-    void *u = unit;
-    u8 (*cb)(void *) = arg0;
-    u8 flg = arg2;
     u8 *map;
     s32 rowOff;
+    u8 *row;
+    register s32 range;
     s32 count;
-    s32 range;
+    s32 x_lo, x_hi, y_hi, y, x;
+    void *u = unit;
+    u8 (*cb)(void *) = arg0;
+    u8 *tile;
+    u8 flg = arg2;
     void **slot;
     void *item, *other;
-    u8 *row, *tile, *cell;
-    s8 ux, uy;
-    s32 x_lo, y_lo, x_hi, y_hi;
-    s32 y, x, idx2;
+    u8 *cell;
+    s32 ux, uy, y_lo, idx2;
     u8 v;
     s32 i;
 
-    range = (s32)((float)(s8)Unit_GetMov(u) * farg0);
+    range = (s8)Unit_GetMov(u);
+    range = (s32)((float)range * farg0);
     if ((u8)flg != 0) {
         slot = (void **)Unit_GetActiveItemPtr(u);
-        if ((slot != NULL) && (*slot != NULL)) {
-            v = (*slot != NULL) ? Item_GetRangeForUnit(*slot, u) : 0;
+        if ((slot != 0) && (*slot != 0)) {
+            v = (*slot != 0) ? Item_GetRangeForUnit(*slot, u) : 0;
             range += (u8)v;
         } else {
             for (i = 0; i < 4; i++) {
                 slot = Unit_GetHeldItemSlot(u, i);
-                if (*slot == NULL) {
+                if (*slot == 0) {
                     break;
                 }
                 if ((u8)fn_8009339C(u, *slot) != 0) {
                     item = *slot;
-                    v = (item != NULL) ? Item_GetRangeForUnit(item, u) : 0;
+                    v = (item != 0) ? Item_GetRangeForUnit(item, u) : 0;
                     range += (u8)v;
                 }
             }
@@ -30342,22 +30346,22 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     }
     fn_800FE398(u, 6, range);
 
+    count = 0;
     ux = *(s8 *)((u8 *)u + 0x19E);
     uy = *(s8 *)((u8 *)u + 0x19F);
-    x_lo = (s8)ux - range;
+    x_lo = ux - range;
     if (x_lo < (s8)gBattleMap[8]) {
         x_lo = (s8)gBattleMap[8];
     }
-    count = 0;
-    y_lo = (s8)uy - range;
+    y_lo = uy - range;
     if (y_lo < (s8)gBattleMap[9]) {
         y_lo = (s8)gBattleMap[9];
     }
-    x_hi = (s8)ux + range;
+    x_hi = ux + range;
     if (x_hi > (s8)gBattleMap[0xA] - 1) {
         x_hi = (s8)gBattleMap[0xA] - 1;
     }
-    y_hi = (s8)uy + range;
+    y_hi = uy + range;
     if (y_hi > (s8)gBattleMap[0xB] - 1) {
         y_hi = (s8)gBattleMap[0xB] - 1;
     }
@@ -30385,7 +30389,7 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     if (tile[0xD] == 0) {
         goto x_next;
     }
-    other = tile[0xD] ? gUnits + (tile[0xD] - 1) * 0x280 : NULL;
+    other = tile[0xD] ? gUnits + (tile[0xD] - 1) * 0x280 : 0;
     if (other != u && cb(other) != 0) {
         count++;
     }
@@ -30402,7 +30406,7 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     }
     return count;
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 3
 #pragma dont_inline on
