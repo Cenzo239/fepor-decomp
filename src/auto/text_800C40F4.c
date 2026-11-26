@@ -10594,6 +10594,7 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     void fn_802029C4(void *, f32 *, f32 *);
     f32 vec[3];
     f32 mtx[3][4];
+    f32 *p;
     f32 y;
     f32 z;
     f32 x;
@@ -10603,12 +10604,13 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     vec[2] = 1.0f;
     PSMTXRotRad(mtx, 'Y', 0.0174533f * *(f32 *)((u8 *)arg1 + 0x58));
     fn_802029C4(mtx, vec, vec);
-    *(f32 *)((u8 *)arg1 + 0x60) = vec[0];
-    *(f32 *)((u8 *)arg1 + 0x64) = vec[1];
-    *(f32 *)((u8 *)arg1 + 0x68) = vec[2];
-    z = *(f32 *)((u8 *)arg1 + 0x68);
-    y = *(f32 *)((u8 *)arg1 + 0x64);
-    x = *(f32 *)((u8 *)arg1 + 0x60);
+    p = (f32 *)((u8 *)arg1 + 0x60);
+    p[0] = vec[0];
+    p[1] = vec[1];
+    p[2] = vec[2];
+    z = p[2];
+    y = p[1];
+    x = p[0];
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
@@ -14172,16 +14174,6 @@ static inline SortIterator Sort_PassIter(SortIterator it) { return it; }
 #pragma inline_max_size(10000)
 #pragma inline_max_total_size(20000)
 extern "C" void fn_800E18B4(s32 *, s32 *, SortIterator, SortCompare);
-static inline SortIterator Sort_AdvanceIterator(const SortIterator &out, s32 n) {
- s32 tmp[2];
- *(SortIterator *)tmp = out;
- ((SortIterator *)tmp)->ptr += n;
- return *(SortIterator *)tmp;
-}
-static inline void Sort_CopyStep(SortIterator &out, const s32 &value) {
- *out = value;
- ++out;
-}
 static inline void Sort_BufferedHalf(s32 *begin, s32 *end, SortIterator a, SortIterator b, SortCompare &c) {
     s32 Sort_GetKey(void *);
     s32 fn_800E0340(void *, void *, void *);
@@ -14306,7 +14298,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
       }
       {
         SortCompare c(comp);
-        s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
+        s32 a_tmp0[2], a_tmp[2], b_tmp0[2], b_tmp[2];
         *(SortIterator *)b_tmp0 = out;
         ((SortIterator *)b_tmp0)->ptr += n;
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
