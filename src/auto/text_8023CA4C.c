@@ -74,8 +74,8 @@ return *p;
 static inline u16 ThpReadWord(void) {
 extern ThpDecodeState *volatile lbl_80368950;
 ThpDecodeState *s = lbl_80368950;
+u8 *p = s->cursor;
 u8 **cursor = &s->cursor;
-u8 *p = *cursor;
 u16 value = (p[0] << 8) | p[1];
  *cursor = p + 2;
    return value;
@@ -382,7 +382,7 @@ s32 fn_8023CA4C(void) {
         id = ThpReadByte();
         zig = lbl_80282FD8;
         p = zig;
-        for (i = 0; (u16)i < 64; i += 8, p += 8) {
+        for (i = 0; (u16)i < 64; p += 8, i += 8) {
             table[*p] = (f32)(u32)*lbl_80368950->cursor++;
             table[zig[(u16)(i + 1)]] = (f32)(u32)*lbl_80368950->cursor++;
             table[zig[(u16)(i + 2)]] = (f32)(u32)*lbl_80368950->cursor++;
@@ -395,14 +395,14 @@ s32 fn_8023CA4C(void) {
         state = (u8 *)lbl_80368950;
         i = 0;
         for (row = 0; row < 8; row++) {
-            *(f32 *)(state + ((u16)(i + 0) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 0)] * aan[row] * aan[0]);
-            *(f32 *)(state + ((u16)(i + 1) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 1)] * aan[row] * aan[1]);
-            *(f32 *)(state + ((u16)(i + 2) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 2)] * aan[row] * aan[2]);
-            *(f32 *)(state + ((u16)(i + 3) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 3)] * aan[row] * aan[3]);
-            *(f32 *)(state + ((u16)(i + 4) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 4)] * aan[row] * aan[4]);
-            *(f32 *)(state + ((u16)(i + 5) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 5)] * aan[row] * aan[5]);
-            *(f32 *)(state + ((u16)(i + 6) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 6)] * aan[row] * aan[6]);
-            *(f32 *)(state + ((u16)(i + 7) << 2) + (id << 8)) = (f32)((f64)table[(u16)(i + 7)] * aan[row] * aan[7]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 0) << 2))) = (f32)((f64)table[(u16)(i + 0)] * aan[row] * aan[0]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 1) << 2))) = (f32)((f64)table[(u16)(i + 1)] * aan[row] * aan[1]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 2) << 2))) = (f32)((f64)table[(u16)(i + 2)] * aan[row] * aan[2]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 3) << 2))) = (f32)((f64)table[(u16)(i + 3)] * aan[row] * aan[3]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 4) << 2))) = (f32)((f64)table[(u16)(i + 4)] * aan[row] * aan[4]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 5) << 2))) = (f32)((f64)table[(u16)(i + 5)] * aan[row] * aan[5]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 6) << 2))) = (f32)((f64)table[(u16)(i + 6)] * aan[row] * aan[6]);
+            *(f32 *)((id << 8) + (state + ((u16)(i + 7) << 2))) = (f32)((f64)table[(u16)(i + 7)] * aan[row] * aan[7]);
             i += 8;
         }
         size -= 65;
