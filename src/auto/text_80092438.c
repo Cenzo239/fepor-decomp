@@ -983,7 +983,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
 }
 #pragma pop
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 u8 fn_800940B0(void *arg0, void *arg1) {
     u8 fn_80105BC0(void *, s32);
     void *fn_80019E48(void *);
@@ -991,8 +991,8 @@ u8 fn_800940B0(void *arg0, void *arg1) {
     void *other;
     void *self;
     u8 type;
+    u8 lim;
     u8 result;
-    u32 lim;
     void *unit;
 
     other = arg1;
@@ -1143,7 +1143,7 @@ clamp79:
     }
 done:
     lim = *((u8 *)other + 0x16);
-    lim = (u8)((u8)lim + (u8)(lim == 0));
+    lim = (u8)(lim + (u8)(lim == 0));
     return (u8)((u32)lim <= (u32)result);
 }
 #pragma pop
