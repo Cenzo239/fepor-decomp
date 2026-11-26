@@ -2613,6 +2613,8 @@ void fn_800C8F48(void *arg0) {
     fn_800C802C(arg0, *(s32 *)((u8 *)arg0 + 0x20) + 1);
 }
 
+#pragma opt_dead_assignments off
+#pragma opt_common_subs off
 int fn_800C8F70(void *arg0, int arg1) {
     void *strcpy(char *, const char *);
     void Str_CopyPad(void *, void *, u32);
@@ -2624,8 +2626,8 @@ int fn_800C8F70(void *arg0, int arg1) {
 
     u8 *self;
     int index;
+    Val32 copy;
     Val32 temp;
-    volatile Val32 copy;
     u32 value;
 
     self = (u8 *)arg0;
@@ -2638,15 +2640,14 @@ int fn_800C8F70(void *arg0, int arg1) {
 
     strcpy((char *)(self + 0x28), gStringErrorMsgs + 4);
 
-    temp.words[0] = 0;
-    temp.words[1] = 0;
-    temp.words[2] = 0;
     temp.words[3] = 0;
+    temp.words[2] = 0;
+    temp.words[1] = 0;
+    temp.words[0] = 0;
 
     Str_CopyPad(&temp, gStringErrorMsgs + 4, 0x20);
 
-    copy = temp;
-    *(Val32 *)(self + 0x40) = temp;
+    *(Val32 *)(self + 0x40) = copy = temp;
 
     if (index < *(int *)(self + 0x18)) {
         value = ((u32 *)(*(void **)(self + 0x14)))[index];
@@ -2659,7 +2660,8 @@ int fn_800C8F70(void *arg0, int arg1) {
 
     return 1;
 }
-
+#pragma opt_common_subs reset
+#pragma opt_dead_assignments reset
 void fn_800C908C(void *arg0, String *arg1, s32 *arg2) {
     char *String_CStr(String *);
     char *strcpy(char *, const char *);
@@ -23872,7 +23874,7 @@ Item_Destroy(weapon,-1);return ret;
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_propagation off
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 void fn_800FDDBC(s32,s32,s32,s32,s32);
@@ -23904,13 +23906,17 @@ dy=Abs((s8)self[0x19F]-(s8)unit[0x19F]);
 dist=Abs((s8)b-(s8)a);
 a=dist+dy;
 range=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,self):0;
-if(a>(s8)Unit_GetMov(self)+(u8)range || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
+dist=(s8)Unit_GetMov(self);
+if(a>dist+(u8)range || (M2C_FIELD(unit,u32 *,0x1A0)&0x10000DC))continue;
 outside=0;cx=unit[0x19E];cy=unit[0x19F];
 if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
 if(outside)continue;
 r=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
-cx=unit[0x19E];cy=unit[0x19F];
-fn_800FDDBC((s8)cx,(s8)cy,t,r,6);
+{
+ s32 x=(s8)unit[0x19E];
+ s32 y=(s8)unit[0x19F];
+ fn_800FDDBC(x,y,t,r,6);
+}
 result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
