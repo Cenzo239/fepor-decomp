@@ -3803,11 +3803,6 @@ void fn_801EFDC8(void *arg0) {
     String_Destroy(&path, -1);
 }
 #pragma global_optimizer reset
-static inline void RotSetup801F0718(void *m, s32 axis, f32 ang) {
-    void PSMTXRotRad(void *, s32, f32);
-    PSMTXRotRad(m, axis, ang);
-}
-
 void fn_801F0718(void *arg0) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
     void *Camera_Get(void);
@@ -3837,7 +3832,6 @@ void fn_801F0718(void *arg0) {
     f32 angle;
     u32 *src;
     u16 n;
-    s32 axis;
 
     cam = (struct Cam *)Camera_Get();
     t = lbl_8036B7C8;
@@ -3889,8 +3883,7 @@ void fn_801F0718(void *arg0) {
     ((u32 *)vec)[0] = src[0];
     ((u32 *)vec)[1] = src[1];
     vec[2] = ftmp;
-    axis = 0x58;
-    PSMTXRotRad(mtx14, axis, angle);
+    RotSetup801F0718(mtx14, 0x58, angle);
     PSMTXRotRad(mtx44, 0x59, lbl_8036B7D4 * f31);
     fn_802029C4(mtx14, vec, vec);
     fn_802029C4(mtx44, vec, vec);
