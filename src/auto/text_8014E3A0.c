@@ -2399,7 +2399,7 @@ void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
     u32 c2, c1, c0;
     s16 x1,x2,right,h2,h1,w1,left;
     s32 w0,h0;
-    s32 raw;
+    register s32 raw;
 
     color[0] = 255;
     color[1] = 255;
@@ -7285,6 +7285,7 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 #pragma pop
 #pragma push
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     typedef struct {
         u8 r, g, b, a;
@@ -7309,7 +7310,6 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s16 y0;
     s16 x0;
     s16 third;
-    s32 flags;
     Color4 a0, a1, a2, a3;
     Color4 b0, b1, b2, b3;
     Color4 rev1_3, rev1_2, rev1_1, rev1_0;
@@ -7325,7 +7325,6 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     yA = y0 + third;
     yB = y0 + third * 2;
     yC = y0 + third * 3;
-    flags = arg4;
 
     if (!lbl_803680D4) {
         a0.r = 0; a0.g = 0; a0.b = 0; a0.a = 0;
@@ -7351,8 +7350,8 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     }
 
     Prim2D_Begin();
-    flags |= 2;
-    Prim2D_SetTex(0, (u16)flags);
+    arg4 |= 2;
+    Prim2D_SetTex(0, (u16)arg4);
     Prim2D_PrepareTex();
     c1_0 = lbl_80330D38[0];
     c1_1 = lbl_80330D38[1];
@@ -7366,7 +7365,7 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)flags);
+    Prim2D_SetTex(0, (u16)arg4);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
     Prim2D_SetRect((f32)(s16)arg0, (f32)yA, (f32)(s16)(x1 - x0), (f32)(s16)(yB - yA));
@@ -7375,7 +7374,7 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_EndPrim();
 
     Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)flags);
+    Prim2D_SetTex(0, (u16)arg4);
     Prim2D_PrepareTex();
     c2_0 = lbl_80330D48[0];
     c2_1 = lbl_80330D48[1];
