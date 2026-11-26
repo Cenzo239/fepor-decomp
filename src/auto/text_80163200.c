@@ -1,5 +1,4 @@
 #include "common.h"
-typedef struct { s16 x, y; } UiCursorPoint;
 static inline u8 Ui_ItemCanTransfer_801752EC(void *unit, void *item, void *player) {
     u8 fn_80105BC0(void *, u8);
     u32 *fn_8001CB64(u32);
