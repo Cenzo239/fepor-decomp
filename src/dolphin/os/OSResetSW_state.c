@@ -159,7 +159,7 @@ static inline s32 ResetSW_ReadState(s32 zero) {
     s32 enabled;
     s32 pad;
     s64 now;
-    u8 soft;
+    s16 soft;
     u32 freq;
     u32 thresh;
     s32 n;
