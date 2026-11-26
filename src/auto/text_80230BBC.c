@@ -316,7 +316,7 @@ u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
     u32 temp_r3_2;
     u32 temp_r4;
     u32 var_r27;
-    u32 temp_r3;
+    u8 temp_r3;
 
     if (fwide(arg3, 0) == 0) {
         fwide(arg3, -1);
@@ -337,7 +337,7 @@ u32 __fwrite(u32 arg0, u32 arg1, s32 arg2, void *arg3) {
         var_r31 = 0;
     }
     if (!(((u8) M2C_FIELD(arg3, u8 *, 8) >> 5U) & 7)) {
-        temp_r3 = ((u8) M2C_FIELD(arg3, u8 *, 4) >> 3U) & 7;
+        temp_r3 = ((FileWriteState *)arg3)->mode;
         if (temp_r3 & 2) {
             if ((temp_r3 & 4) && (fseek(arg3, 0, 2) != 0)) {
                 return 0U;
