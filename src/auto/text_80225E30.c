@@ -701,20 +701,16 @@ static inline void InitMsgBuffers_80226AF4(void *arg) {
     void fn_802287B8(void *);
     void fn_802287B0(void *);
     void fn_802287A8(void *);
-    s32 zero;
-    u8 *queue;
     s32 i;
+    u8 *queue;
 
-    zero = 0;
     queue = (u8 *)arg;
-    i = 0;
-    while (i < 3) {
+    for (i = 0; i < 3; i++) {
         fn_802287B8(queue);
         fn_802287B0(queue);
-        ((u32 *)queue)[1] = zero;
+        ((u32 *)queue)[1] = 0;
         fn_802287A8(queue);
-        i++;
-        queue = queue + 0x890;
+        queue += 0x890;
     }
 }
 int TRKInitializeMessageBuffers(void) {
