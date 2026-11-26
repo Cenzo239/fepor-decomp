@@ -568,22 +568,13 @@ static inline void fn_801E4FB8_InsertLoop(void *arg0, u8 *entry) {
 }
 
 static inline void fn_801E4FB8_Impl(void *arg0, s32 index, u8 *entry) {
-    void fn_801EA430(void *, void *);
-    void fn_801EA248(void *, void *);
     void List_Insert(void *, void *, void *, void *);
-    void fn_80057898(void *, s32);
-    struct { u8 value; } initB, initA, keyCopy, key, bCopy, b, aCopy, a;
+    struct { u8 value; } keyCopy, key;
     void *sp[5];
     void *end;
     void *node;
     u8 found;
 
-    bCopy = initB;
-    b = bCopy;
-    fn_801EA430((u8 *)arg0 + 0x50, &b);
-    aCopy = initA;
-    a = aCopy;
-    fn_801EA248((u8 *)arg0 + 0x50, &a);
     end = (u8 *)arg0 + 0x54;
     sp[4] = *(void **)((u8 *)arg0 + 0x58);
     for (;;) {
@@ -616,7 +607,6 @@ static inline void fn_801E4FB8_Impl(void *arg0, s32 index, u8 *entry) {
         entry += 0x18;
         index++;
     }
-    fn_80057898(*(void **)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x50) << 5);
 }
 
 void fn_801E4FB8(void *arg0) {
