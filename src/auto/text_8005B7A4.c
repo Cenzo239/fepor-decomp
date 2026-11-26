@@ -1,6 +1,17 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline u32 FileCache_AllocFromHeap(s32 drive, u32 size, char *name) {
+    u32 fn_800C44F4(s32);
+    u32 fn_800C4604(s32, s32, char *, s32);
+    u32 strlen(char *);
+    s32 off;
+    if (fn_800C44F4(drive) < size) return 0;
+    off = (s32)strlen(name) - 15;
+    if (off < 0) off = 0;
+    return fn_800C4604(drive, size, name + off, size);
+}
+
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
     char *src; u8 c; s32 i; u8 *dst;
     src = arg1;
