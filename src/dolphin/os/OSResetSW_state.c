@@ -150,7 +150,7 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
-static inline s32 ResetSW_ReadState(u32 zero) {
+static inline s32 ResetSW_ReadState(s32 zero) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
@@ -159,7 +159,7 @@ static inline s32 ResetSW_ReadState(u32 zero) {
     s32 enabled;
     s32 pad;
     s64 now;
-    s32 soft;
+    u8 soft;
     u32 freq;
     u32 thresh;
     s32 n;
