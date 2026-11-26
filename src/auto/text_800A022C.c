@@ -85,29 +85,41 @@ static inline void MenuToggle_800A0260(u32 state, void *item) {
 }
 #pragma push
 #pragma opt_dead_code off
-s32 fn_800A0260(s32 a, s32 b, void *arg2) {
+#pragma push
+#pragma use_lmw_stmw on
+#pragma opt_lifetimes off
+#pragma opt_lifetimes on
+#pragma cplusplus off
+#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma scheduling on
+#pragma peephole on
+#pragma opt_strength_reduction on
+#pragma opt_common_subs on
+#pragma opt_loop_invariants on
+#pragma opt_propagation on
+#pragma opt_lifetimes on
+#pragma dont_inline off
+#pragma use_lmw_stmw off
+s32 fn_800A0260(s32 a, s32 b, void *item) {
+    enum { MENU_TOGGLE_ON = 0, MENU_TOGGLE_OFF = 2 };
     void fn_8000BCA4(void *);
     void fn_8018DC98(void);
     void fn_8018DCC0(void);
     extern u8 lbl_80366E24;
-    extern u8 lbl_8026D8D8[];
-    u8 x = 2;
-    u8 t;
+    extern u8 gMenuCmdStrings[];
 
-    t = lbl_80366E24 ^ 1;
-    lbl_80366E24 = t;
-    if (t != 0) {
-        x = 0;
-        *(u8 *)((char *)arg2 + 0x39) = x;
-    }
-    if (lbl_80366E24 != 0) {
-        fn_8000BCA4(lbl_8026D8D8 + 0x3D0);
+    lbl_80366E24 ^= 1;
+    *((u8 *)item + 0x39) = lbl_80366E24 ? MENU_TOGGLE_ON : MENU_TOGGLE_OFF;
+    if (lbl_80366E24) {
+        fn_8000BCA4(gMenuCmdStrings + 0x3D0);
         fn_8018DCC0();
     } else {
         fn_8018DC98();
     }
     return 0;
 }
+#pragma pop
 #pragma pop
 u32 fn_800A02C8(void) {
     extern u8 lbl_80366E24;
