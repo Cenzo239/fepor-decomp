@@ -9939,14 +9939,7 @@ void fn_801C6234(void *arg0) {
     goto get_next;
 loop_body:
     {
-        int cb_arg = (s32)((u8 *)node + 8);
-        *(s16 *)((u8 *)node + 0x18) = *(s16 *)((u8 *)node + 0x18) - 1;
-        if (*(s16 *)((u8 *)node + 0x18) <= 0) {
-            ok = 0;
-        } else {
-            fn_80067708(2, 1, fn_801C65E0, cb_arg);
-            ok = 1;
-        }
+        ok = Ui_TickMarker((u8 *)node + 8);
         if (ok == 0) {
             void *list = *(void **)((u8 *)self + 0x44);
             if (node != NULL) {
