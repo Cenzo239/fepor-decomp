@@ -7388,6 +7388,7 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_SetCornerColors(&rev2_0, &rev2_1, &rev2_2, &rev2_3);
     Prim2D_EndPrim();
 }
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 #pragma opt_lifetimes off
