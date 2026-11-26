@@ -4274,15 +4274,6 @@ void fn_8025CC38(u8 arg0, f32 *out, u32 arg2, u32 arg3, u32 arg4, u32 arg5, f32 
 #pragma fp_contract off
 #pragma opt_common_subs off
 #pragma global_optimizer off
-static inline void Sound_RefineDistance(f32 *distance) {
-    extern const f64 lbl_8036C2E8, lbl_8036C2F0;
-    f64 estimate = __frsqrte(*distance);
-    estimate = lbl_8036C2E8 * estimate * (lbl_8036C2F0 - (f64)*distance * (estimate * estimate));
-    estimate = lbl_8036C2E8 * estimate * (lbl_8036C2F0 - (f64)*distance * (estimate * estimate));
-    estimate = lbl_8036C2E8 * estimate * (lbl_8036C2F0 - (f64)*distance * (estimate * estimate));
-    *distance = (f32)((f64)*distance * estimate);
-}
-
 void fn_8025D328(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4, f32 *arg5, f32 *arg6) {
     extern const f32 lbl_8036C2E0;
     extern const f32 lbl_8036C2E4;
