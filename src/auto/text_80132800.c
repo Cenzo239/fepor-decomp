@@ -159,9 +159,9 @@ typedef struct Vec2s {
 } Vec2s;
 
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
-static inline s16 GridWidth_80134C24(const s16 *self) {
+static inline s16 GridWidth_80134C24(const s16 *self, s32 columns) {
     s16 width = self[11] - self[9];
-    return width / self[34];
+    return width / columns;
 }
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
