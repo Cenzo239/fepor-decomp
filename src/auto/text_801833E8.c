@@ -5618,7 +5618,8 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     str = Msg_Expand(lbl_80279C40 + 0x66);
     Text_Draw((s16)(y + 0xB0), (s16)x, 0xF, str);
 }
-void fn_8018EEB0(void *arg0, s16 arg1) {
+#pragma cplusplus on
+extern "C" void fn_8018EEB0(void *arg0, s16 arg1) {
     s32 Text_MeasureHeight(s32,f32);
     void *Msg_Expand(void *);
     void Text_Draw(s16,s16,s32,void *,...);
@@ -5628,7 +5629,7 @@ void fn_8018EEB0(void *arg0, s16 arg1) {
     extern u8 gConvoy[];
     s16 width;
     s16 height;
-    s32 x;
+    s16 x;
     s32 y;
     u8 color[4];
     width=M2C_FIELD(arg0,s16 *,0x16)-M2C_FIELD(arg0,s16 *,0x12);
@@ -5640,14 +5641,12 @@ void fn_8018EEB0(void *arg0, s16 arg1) {
         y=arg1+y;
         Text_Draw(x,y,0xF,str);
     }
-    Text_Draw((s16)((s16)x+0x58),y,1,lbl_80279C40+0x8F,fn_800C3E54(gConvoy),0xC8);
-    Text_Draw((s16)((s16)x+0xB0),y,0xF,Msg_Expand(lbl_80279C40+0x66));
+    Text_Draw(x+0x58,y,1,lbl_80279C40+0x8F,fn_800C3E54(gConvoy),0xC8);
+    Text_Draw(x+0xB0,y,0xF,Msg_Expand(lbl_80279C40+0x66));
     color[0]=0x70; color[1]=0x5F; color[2]=0x1F; color[3]=0x7F;
     Ui_DrawLine(0,(s16)(arg1+height),width,(s16)(arg1+height),0x10,color);
 }
-
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+#pragma cplusplus reset
 
 void fn_8018EFE0(void *arg0, s16 arg1) {
     void *Msg_Expand(void *);
@@ -6346,23 +6345,19 @@ extern "C" void fn_80190440(void *arg0) {
     extern f32 lbl_8036AE10;
     extern f32 lbl_8036AE14;
     f32 mtx[12];
-    s16 t14;
     void *self;
-    s16 t18;
-    s16 t12;
-    s16 t16;
+    s16 h;
+    s16 w;
 
     self = arg0;
     ((Obj *)self)->v3();
     if (*(u32 *)((u8 *)self + 0x3C) != 0) {
-        t14 = *(s16 *)((u8 *)self + 0x14);
-        t18 = *(s16 *)((u8 *)self + 0x18);
-        register int t12 = *(s16 *)((u8 *)self + 0x12);
-        t16 = *(s16 *)((u8 *)self + 0x16);
+        h = *(s16 *)((u8 *)self + 0x18) - *(s16 *)((u8 *)self + 0x14);
+        w = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
         *(s16 *)((u8 *)self + 0x4A) = 0;
         *(s16 *)((u8 *)self + 0x4C) = 0;
-        *(s16 *)((u8 *)self + 0x4E) = (s16)(t16 - t12);
-        *(s16 *)((u8 *)self + 0x50) = (s16)(t18 - t14);
+        *(s16 *)((u8 *)self + 0x4E) = w;
+        *(s16 *)((u8 *)self + 0x50) = h;
         fn_8013F748(self, (u8 *)self + 0x4A, (u8 *)self + 0x4A);
         fn_8013F748(self, (u8 *)self + 0x4E, (u8 *)self + 0x4E);
         PSMTXScale(mtx, lbl_8036ADFC, lbl_8036ADFC, lbl_8036ADFC);
