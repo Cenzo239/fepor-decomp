@@ -2453,19 +2453,20 @@ void fn_801EDF7C(void *arg0) {
     fn_800162B8();
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 4
 void fn_801EDFCC(void) {
-    extern u8 lbl_8032FF08[];
+    typedef struct { u8 data[192]; } FxChannels;
+    extern FxChannels gFxChannels;
     void fn_80146AF0(void);
-    void fn_801487D0(void *, s32);
+    void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
-    void *p = lbl_8032FF08;
+    u8 *p = gFxChannels.data;
 
     fn_80146AF0();
-    fn_801487D0(p, 0x3E8);
+    Fx_FadeIn(p, 0x3E8);
     fn_8014876C(p, 0x64, 0x3E8);
 }
-#pragma global_optimizer on
+#pragma optimization_level reset
 void fn_801EE018(void *arg0) {
     extern u8 gFxChannels[];
     void fn_80148980(void *, s32, s32);
