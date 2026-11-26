@@ -6305,7 +6305,7 @@ extern "C" void *fn_801BEB24(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
         virtual void m28() = 0;
     };
     void fn_801BEB9C(void *, s16 *, s16 *, s32);
-    extern u8 lbl_802918A0[];
+    extern u8 gUiUnitPanelVtbl[];
     s16 spC[2];
     s16 sp8[2];
 
@@ -6314,7 +6314,7 @@ extern "C" void *fn_801BEB24(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
     spC[0] = arg1;
     spC[1] = arg2;
     fn_801BEB9C(arg0, spC, sp8, arg4);
-    *(void **)arg0 = lbl_802918A0;
+    *(void **)arg0 = gUiUnitPanelVtbl;
     *(s32 *)((u8 *)arg0 + 0xCC) = 0;
     ((Obj *)arg0)->m28();
     return arg0;
