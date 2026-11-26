@@ -6114,12 +6114,33 @@ void fn_8025FFC8(void *arg0, u8 arg1, s32 arg2, u8 arg3, u8 arg4, u8 arg5)
     *(s32 *)(q + 4) = arg2;
 }
 
-void fn_80260060(u8 op, void *a,void *b) {
-u8 dest=*(u32 *)((u8 *)a+0xF4); u8 source=*(u32 *)((u8 *)b+0xF4);
-if(op<0x40U) {s32 src=source*0x86; s32 dst=dest*0x86; u32 index=op & 31; s32 si=src+index; s32 di=dst+index; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+32)[di]=((u8 *)gSoundChanParamsDefault+32)[si];}
-else if(op==0x80U || op==0x81U) {s32 src=source*0x86; s32 dst=dest*0x86; u32 index=op & 0xFE; s32 si=src+index; s32 di=dst+index; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+1)[di]=((u8 *)gSoundChanParamsDefault+1)[si];}
-else if(op==0x84U || op==0x85U) {s32 src=source*0x86; s32 dst=dest*0x86; u32 index=op & 0xFE; s32 si=src+index; s32 di=dst+index; ((u8 *)gSoundChanParamsDefault+dst)[index]=((u8 *)gSoundChanParamsDefault+src)[index]; ((u8 *)gSoundChanParamsDefault+1)[di]=((u8 *)gSoundChanParamsDefault+1)[si];}
-else { ((u8 *)gSoundChanParamsDefault+dest*0x86)[op]=((u8 *)gSoundChanParamsDefault+source*0x86)[op]; }
+void fn_80260060(u8 op, void *a, void *b) {
+    u8 dest = *(u32 *)((u8 *)a + 0xF4);
+    u8 source = *(u32 *)((u8 *)b + 0xF4);
+    if (op < 0x40U) {
+        u32 index = op & 31;
+        s32 src = source * 0x86;
+        s32 dst = dest * 0x86;
+        u8 *base2 = (u8 *)gSoundChanParamsDefault + 0x20;
+        ((u8 *)gSoundChanParamsDefault + dst)[index] = ((u8 *)gSoundChanParamsDefault + src)[index];
+        base2[dst + index] = base2[src + index];
+    } else if (op == 0x80U || op == 0x81U) {
+        u32 index = op & 0xFE;
+        s32 src = source * 0x86;
+        s32 dst = dest * 0x86;
+        u8 *base2 = (u8 *)gSoundChanParamsDefault + 1;
+        ((u8 *)gSoundChanParamsDefault + dst)[index] = ((u8 *)gSoundChanParamsDefault + src)[index];
+        base2[dst + index] = base2[src + index];
+    } else if (op == 0x84U || op == 0x85U) {
+        u32 index = op & 0xFE;
+        s32 src = source * 0x86;
+        s32 dst = dest * 0x86;
+        u8 *base2 = (u8 *)gSoundChanParamsDefault + 1;
+        ((u8 *)gSoundChanParamsDefault + dst)[index] = ((u8 *)gSoundChanParamsDefault + src)[index];
+        base2[dst + index] = base2[src + index];
+    } else {
+        ((u8 *)gSoundChanParamsDefault + dest * 0x86)[op] = ((u8 *)gSoundChanParamsDefault + source * 0x86)[op];
+    }
 }
 
 void fn_80260174(u8 arg0, u8 arg1, u8 arg2) {
@@ -6703,7 +6724,7 @@ void fn_80260BE4(u8 *arg0)
         arg0[0x290] = 0x80;
         arg0[0x291] = 0;
         *(u32 *)(arg0 + 0x294) = 0x10000;
-        arg0[0x2D6] = 1;
+        arg0[0x2B2] = 1;
         arg0[0x2D8] = 1;
         arg0[0x2D9] = 0;
         *(u32 *)(arg0 + 0x2DC) = 0x10000;
@@ -6726,10 +6747,10 @@ void fn_80260BE4(u8 *arg0)
         arg0[0x3B1] = 0;
         *(u32 *)(arg0 + 0x3B4) = 0x10000;
         arg0[0x3D2] = 1;
-        arg0[0x2B2] = 1;
         arg0[0x2B4] = 0x84;
         arg0[0x2B5] = 0;
         *(u32 *)(arg0 + 0x2B8) = 0x10000;
+        arg0[0x2D6] = 1;
         arg0[0x3F6] = 0;
         arg0[0x3F8] = 0x4F;
         arg0[0x3F9] = 0;
@@ -6743,8 +6764,7 @@ void fn_80260BE4(u8 *arg0)
         arg0[0x1D8] = 0;
         arg0[0x1D9] = 0;
         arg0[0xA8] = 0;
-    }
-
+    } else {
     for (a = lbl_8034D034, b = lbl_8034CBB4, i = 0; i < 2; i++) {
         a[0x22] = 0; b[0x22] = 0;
         a[0x46] = 0; b[0x46] = 0;
@@ -6766,7 +6786,7 @@ void fn_80260BE4(u8 *arg0)
         b += 0x240;
     }
 
-    for (q = (u8 *)lbl_8035D118, i = 0; i < 4; i++) {
+    for (q = (u8 *)lbl_8035D118, i = 0; i < 8; i++) {
         u32 *p = (u32 *)q;
         p[0] = 0xFF;
         p[1] = 0xFF;
@@ -6787,6 +6807,7 @@ void fn_80260BE4(u8 *arg0)
         q += 0x40;
     }
 
+    }
     lbl_80368ACC = 0x50;
     lbl_80368AC8 = 0x3E80;
 }
