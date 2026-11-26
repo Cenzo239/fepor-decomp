@@ -1526,36 +1526,25 @@ s8 fn_8003AEB0(void *arg0) {
 }
 
 s8 fn_8003AF28(void *arg0) {
-    s8 fn_80038F28(void);
-    s8 result;
-    s8 lim;
-    {
-        void *c;
-        void *u;
-        u8 b;
-        s32 s;
-        u8 lim_u;
-        c = *(void **)((u8 *)arg0 + 0x18C);
-        u = *(void **)((u8 *)arg0 + 0x188);
-        s = *(u8 *)((u8 *)c + 0x47);
-        b = *(u8 *)((u8 *)arg0 + 0x1AE);
-        lim_u = *(u8 *)((u8 *)c + 0x4F);
-        s = s + b;
-        b = *(u8 *)((u8 *)u + 0x20);
-        lim = (s8)lim_u;
-        result = (s8)(b + s);
+    s8 fn_80038F28(void *);
+    s32 p;
+    s8 var_r31;
+    s8 var_r3;
+
+    p = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x20) + *(u8 *)(p + 0x47)) + *(u8 *)((u8 *)arg0 + 0x1AE);
+    p = *(s8 *)(p + 0x4F);
+    if (var_r31 > (s8)p) {
+        var_r31 = (s8)p;
     }
-    if (result > lim) {
-        result = lim;
+    if (var_r31 < 0) {
+        var_r31 = 0;
     }
-    if (result < 0) {
-        result = 0;
+    var_r3 = var_r31 + fn_80038F28(arg0);
+    if (var_r3 < 0) {
+        var_r3 = 0;
     }
-    result = (s8)(result + fn_80038F28());
-    if (result < 0) {
-        result = 0;
-    }
-    return result;
+    return var_r3;
 }
 
 #pragma global_optimizer off
