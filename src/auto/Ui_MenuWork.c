@@ -1,6 +1,14 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b) {
+    entries[0] = table;
+    table = entries[0];
+    table[1] = a;
+    entries[1] = table + 2;
+    entries[1][1] = b;
+    entries[2] = 0;
+}
 
 #pragma cplusplus on
 struct UiSelectionHandler {
@@ -527,12 +535,13 @@ void fn_8006F10C(s32 arg0, s32 arg1)
     void *e2;
   } Entries;
   u8 *base = lbl_80311CA8;
-  volatile s32 *table = (volatile s32 *) (base + 0x4c);
-  volatile Entries *entries = (volatile Entries *) (base + 0x6c);
-  entries->e0 = (void *) ((volatile s32 *) (base + 0x4c));
+  s32 *table = (s32 *) (base + 0x4c);
+  Entries *entries = (Entries *) (base + 0x6c);
+  entries->e0 = table;
+  table = (s32 *)entries->e0;
   table[1] = arg0;
-  entries->e1 = (void *) (((volatile s32 *) (base + 0x4c)) + 2);
-  ((volatile s32 *) (base + 0x4c))[3] = arg1;
+  entries->e1 = (void *)(table + 2);
+  ((s32 *)entries->e1)[1] = arg1;
   entries->e2 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
