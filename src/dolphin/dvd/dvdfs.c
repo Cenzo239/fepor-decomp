@@ -3423,29 +3423,45 @@ path_ok:
     OSRestoreInterrupts(irq);
 }
 
-void VIFlush(void) {
-s32 OSDisableInterrupts(void);
-void OSRestoreInterrupts(s32);
-extern u8 lbl_8033A068[];
-extern s32 lbl_80368608;
-u8 *base = lbl_8033A068;
-s32 interrupts;
-u64 bits;
-s32 bit;
-interrupts = OSDisableInterrupts();
-lbl_80368638 = (void *)((u32)lbl_80368638 | (u32)lbl_80368628);
-lbl_80368628 = 0;
-*(u64 *)&lbl_80368640 |= *(u64 *)&lbl_80368630;
-while (*(u64 *)&lbl_80368630 != 0) {
-bits = *(u64 *)&lbl_80368630;
-bit = __cntlzw((u32)(bits >> 32));
-if (bit >= 32) bit = __cntlzw((u32)bits) + 32;
-*(u16 *)(base + 0x78 + bit*2) = *(u16 *)(base + bit*2);
-*(u64 *)&lbl_80368630 &= ~((u64)1 << (63-bit));
+static inline s32 cntlzd(u64 bit) {
+    u32 hi = (u32)(bit >> 32);
+    u32 lo = (u32)(bit & 0xFFFFFFFF);
+    s32 value = __cntlzw(hi);
+    if (value < 32) {
+        return value;
+    }
+    return __cntlzw(lo) + 32;
 }
-lbl_80368608 = 1;
-lbl_80368650 = *(void **)(base + 0x120);
-OSRestoreInterrupts(interrupts);
+
+void VIFlush(void) {
+    s32 OSDisableInterrupts(void);
+    void OSRestoreInterrupts(s32);
+    extern u8 lbl_8033A068[];
+    extern s32 lbl_80368608;
+    u16 *regs = (u16 *)lbl_8033A068;
+    s32 enabled;
+    s32 regIndex;
+
+    enabled = OSDisableInterrupts();
+    *(volatile u32 *)&lbl_80368638 |= *(volatile u32 *)&lbl_80368628;
+    *(volatile u32 *)&lbl_80368628 = 0;
+    *(volatile u64 *)&lbl_80368640 |= *(volatile u64 *)&lbl_80368630;
+
+    while (*(volatile u64 *)&lbl_80368630 != 0) {
+        u64 bit = *(volatile u64 *)&lbl_80368630;
+        u32 hi = (u32)(bit >> 32);
+        u32 lo = (u32)(bit & 0xFFFFFFFF);
+        regIndex = __cntlzw(hi);
+        if (regIndex >= 32) {
+            regIndex = __cntlzw(lo) + 32;
+        }
+        regs[regIndex + 60] = regs[regIndex];
+        *(volatile u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
+    }
+
+    lbl_80368608 = 1;
+    lbl_80368650 = *(void **)(lbl_8033A068 + 0x120);
+    OSRestoreInterrupts(enabled);
 }
 
 void VISetNextFrameBuffer(void *frameBuffer)
