@@ -75,26 +75,10 @@ static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 r
         return found;
     }
     {
-        s32 dx;
-        s32 dy;
         s32 dir;
         for (dir = 0; dir < 4; dir++) {
-            u8 d = DirFromIndex_80042558(dir);
-            switch (d) {
-            case 1: dx = -1; break;
-            case 2: dx = 1; break;
-            default: dx = 0; break;
-            }
-            switch (d) {
-            case 4: dy = 1; break;
-            case 8: dy = -1; break;
-            default: dy = 0; break;
-            }
-            {
-                s32 tx = x + dx;
-                s32 ty = y + dy;
-                found = FindMapObj_80042558(map, tx, ty, 0, require);
-            }
+            s32 d = DirFromIndex_80042558(dir);
+            found = FindMapObj_80042558(map, x + DirGetDX_80042558(d), y + DirGetDY_80042558(d), 0, require);
             if (found != 0) {
                 return found;
             }
