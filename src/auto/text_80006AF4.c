@@ -394,48 +394,50 @@ void Prim2D_SetTint(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
  ptr[0x1B] = arg3;
 }
 
+#pragma push
+#pragma opt_common_subs off
 void Prim2D_SetCornerColors(u8 *a, u8 *b, u8 *c, u8 *d) {
     extern void *gPrim2D;
-    u8 *dst;
-    u8 *mid;
-    u8 t0, t1, t2, t3;
+    u8 *ptr;
+    u8 t0, t2, t1, t3;
 
     t0 = a[0];
-    mid = *(u8 **)((u8 *)gPrim2D + 0xC);
+    ptr = (u8 *)gPrim2D;
+    ptr = *(u8 **)(ptr + 0xC);
     t1 = a[1];
-    dst = *(u8 **)(mid + 4);
+    ptr = *(u8 **)(ptr + 4);
     t2 = a[2];
-    dst[0xC] = t0;
+    ptr[0xC] = t0;
     t3 = a[3];
-    dst[0xD] = t1;
+    ptr[0xD] = t1;
     t0 = b[0];
-    dst[0xE] = t2;
+    ptr[0xE] = t2;
     t1 = b[1];
-    dst[0xF] = t3;
+    ptr[0xF] = t3;
     t2 = b[2];
-    dst[0x50] = t0;
+    ptr[0x50] = t0;
     t3 = b[3];
-    dst[0x51] = t1;
+    ptr[0x51] = t1;
     t0 = c[0];
-    dst[0x52] = t2;
+    ptr[0x52] = t2;
     t1 = c[1];
-    dst[0x53] = t3;
+    ptr[0x53] = t3;
     t2 = c[2];
-    dst[0x54] = t0;
+    ptr[0x54] = t0;
     t3 = c[3];
-    dst[0x55] = t1;
+    ptr[0x55] = t1;
     t0 = d[0];
-    dst[0x56] = t2;
+    ptr[0x56] = t2;
     t1 = d[1];
-    dst[0x57] = t3;
+    ptr[0x57] = t3;
     t2 = d[2];
-    dst[0x58] = t0;
+    ptr[0x58] = t0;
     t3 = d[3];
-    dst[0x59] = t1;
-    dst[0x5A] = t2;
-    dst[0x5B] = t3;
+    ptr[0x59] = t1;
+    ptr[0x5A] = t2;
+    ptr[0x5B] = t3;
 }
-
+#pragma pop
 void fn_80007340(s32 arg0, s32 arg1) {
     extern void *gPrim2D;
 
@@ -2063,34 +2065,29 @@ void Prim2D_BindTexture(void *arg0, s32 arg1, u16 flags) {
     *(u16 *)(*(u8 **)&gPrim2D + 0x20) |= flags;
 }
 
-void fn_8000A03C(void *arg0, void *arg1, s8 arg2, u32 arg3) {
-void fn_80006298(void *,s32,u32);
-extern u16 gPrim2D;
-u32 *src;
-u32 b;
-u32 a;
-u8 *g;
-u32 tmp;
-if (arg0) {
-typedef struct { u32 words[8]; } Tex;
-*(Tex *)(*(u8 **)&gPrim2D+0x34)=*(Tex *)arg0;
-} else {
-fn_80006298(*(u8 **)&gPrim2D+0x34,0,0x20);
-if ((arg3&3)==0) {
-arg3 = arg3 & 0xFFFC;
-arg3 = (arg3 | 2) & 0xFFFF;
-}
-}
-if (arg1) {
-*(Struct_8000B090 *)(*(u8 **)&gPrim2D+0x54)=*(Struct_8000B090 *)arg1;
-arg3 = (arg3 | 0x8000)&0xFFFF;
-(*(u8 **)&gPrim2D)[0x22]=(short)arg2;
-} else {
-fn_80006298(*(u8 **)&gPrim2D+0x54,0,0xC);
-(*(u8 **)&gPrim2D)[0x22]=0xFF;
-}
-*(u16 *)(*(u8 **)&gPrim2D+0x20)&=0xFFFF7B0C;
-*(u16 *)(*(u8 **)&gPrim2D+0x20)|=arg3;
+void fn_8000A03C(void *arg0, void *arg1, s8 arg2, u16 arg3) {
+    void fn_80006298(void *, s32, u32);
+    extern u16 gPrim2D;
+    if (arg0) {
+        typedef struct { u32 words[8]; } Tex;
+        *(Tex *)(*(u8 **)&gPrim2D + 0x34) = *(Tex *)arg0;
+    } else {
+        fn_80006298(*(u8 **)&gPrim2D + 0x34, 0, 0x20);
+        if ((arg3 & 3) == 0) {
+            arg3 &= ~3;
+            arg3 |= 2;
+        }
+    }
+    if (arg1) {
+        *(Struct_8000B090 *)(*(u8 **)&gPrim2D + 0x54) = *(Struct_8000B090 *)arg1;
+        arg3 |= 0x8000;
+        (*(u8 **)&gPrim2D)[0x22] = (short)arg2;
+    } else {
+        fn_80006298(*(u8 **)&gPrim2D + 0x54, 0, 0xC);
+        (*(u8 **)&gPrim2D)[0x22] = 0xFF;
+    }
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) &= 0xFFFF7B0C;
+    *(u16 *)(*(u8 **)&gPrim2D + 0x20) |= arg3;
 }
 
 #pragma global_optimizer off
