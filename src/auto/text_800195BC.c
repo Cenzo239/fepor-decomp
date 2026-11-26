@@ -806,6 +806,7 @@ void fn_8001A5E4(void) {
         i++;
     }
 }
+#pragma opt_propagation reset
 #pragma opt_common_subs reset
 #pragma use_lmw_stmw reset
 #pragma push
