@@ -430,8 +430,6 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
-#pragma push
-#pragma optimization_level 3
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -490,22 +488,23 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     s16 x;
     s16 y;
     s16 slot;
-    Obj *self;
-    u32 *item;
     s32 idx;
+    u32 *item;
+    Obj *self;
     s16 *rect;
     s16 w;
     s16 h;
     u8 ok;
     void *obj;
+    s32 lim;
     s16 mid;
     s16 dw;
     s16 dh;
     void *info;
-    register s32 lim;
 
-    self = (Obj *)arg0;
+
     idx = arg1;
+    self = (Obj *)arg0;
     self->v2();
     fn_8008BBF8(0, 0, (s16)(self->unkE - self->unkA), (s16)(self->unk10 - self->unkC), 0, 0xFF);
     self->v3(idx);
@@ -540,7 +539,7 @@ loop_body:
         idx = slot;
         item = Unit_GetItemSlot(self->unk58, idx);
         if ((self->unk5C == 1) && (*item == 0U) &&
-            ((slot == 0) || (idx == 4) ||
+            ((slot == 0) || (slot == 4) ||
              (*Unit_GetItemSlot(self->unk58, idx - 1) != 0U))) {
             ok = 1;
         } else {
@@ -588,7 +587,6 @@ loop_test:
     Prim2D_Begin();
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
-#pragma pop
 }
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -2466,6 +2464,8 @@ void *fn_80166940(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma push
+#pragma opt_propagation off
 void *fn_801669B0(void *self,void *owner,void *xml) {
 void fn_800DBBE4(void *,void *,void *);
 void String_Init(void *,void *,void *);
@@ -2483,8 +2483,8 @@ u32 tag[3];
 u32 str[3];
 u8 scratchTag[4];
 u8 scratchStr[4];
-s32 i;
 u32 off;
+s32 i;
 char *fmt;
 fn_800DBBE4(self,owner,xml);
 M2C_FIELD(self,void **,0x40)=lbl_80293CD0;
@@ -2501,18 +2501,22 @@ String_Init(tag,lbl_80277990+0x21,scratchTag);
 Xml_GetNamedValue(named,xml,tag);
 String_Destroy(tag,-1);
 fmt=(char *)lbl_80277990;
-for(i=0;i<16;i++) {
+i=0;
+off=0;
+for(;i<16;i++) {
+void *res;
 u32 idx;
-off=i*4;
 sprintf(name,fmt+0x2A,i);
 String_Init(str,name,scratchStr);
+res=fn_800E7DF8(owner,str);
 idx=off+0xAC;
-*(void **)((u8 *)self+idx)=fn_800E7DF8(owner,str);
+*(void **)((u8 *)self+idx)=res;
 String_Destroy(str,-1);
 Xml_AdvanceChild(xml);
 Xml_GetChildValue(child,xml);
 idx=off+0xEC;
 *(f32 *)((u8 *)self+idx)=child[0];
+off+=4;
 }
 M2C_FIELD(self,f32 *,0x13C)=0.0f;
 M2C_FIELD(self,f32 *,0x138)=0.0f;
@@ -2520,8 +2524,7 @@ M2C_FIELD(self,f32 *,0x148)=0.0f;
 M2C_FIELD(self,f32 *,0x144)=0.0f;
 return self;
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_80166AE8(s32 x, s32 y, void *msg, void *parent) {
     void *Process_CreateChild(void *, void *);
     void *Msg_Expand(void *);
