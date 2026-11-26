@@ -1502,53 +1502,54 @@ if(p){fn_801403F0();*(s32*)((char*)p+0x40)=0;*(s32*)((char*)p+0x44)=0;*(s32*)((c
 *(s32*)((char*)p+0x4c)=arg2;*(s32*)((char*)p+0x50)=arg0;String_AssignCStr((char*)p+0x54,arg1,strlen(arg1));return p;
 }
 
-void fn_801CE1D0(void *arg0) {
-    void String_Destroy(void *, s32);
-    void Ui_DtorPanelBase(void *, s32);
-    s32 zero;
-    u8 *self;
-    u8 *obj;
-    s32 refs;
+#pragma cplusplus on
+extern "C" void String_Destroy(void *, s32);
+extern "C" void Ui_DtorPanelBase(void *, s32);
+#pragma opt_propagation off
+#pragma cplusplus on
+extern "C" void fn_801CE1D0(void *arg0) {
+    struct RefObj {
+        virtual void destroy(s32);
+        s32 refCount;
+    };
 
-    zero = 0;
-    self = (u8 *)arg0;
-
+    RefObj *zero;
+    u8 *self = (u8 *)arg0;
     if (self != NULL) {
-        obj = *(u8 **)(self + 0x40);
+        RefObj *obj = *(RefObj **)(self + 0x40);
         if (obj != NULL) {
-            refs = *(s32 *)(obj + 4) - 1;
-            *(s32 *)(obj + 4) = refs;
+            s32 refs = obj->refCount - 1;
+            obj->refCount = refs;
             if (refs == 0 && obj != NULL) {
-                (*(void (**)(void *, s32))(*(u8 **)obj + 8))(obj, 1);
+                obj->destroy(1);
             }
+            *(RefObj **)(self + 0x40) = (RefObj *)0;
         }
-        *(void **)(self + 0x40) = NULL;
-
-        obj = *(u8 **)(self + 0x44);
+        obj = *(RefObj **)(self + 0x44);
         if (obj != NULL) {
-            refs = *(s32 *)(obj + 4) - 1;
-            *(s32 *)(obj + 4) = refs;
+            s32 refs = obj->refCount - 1;
+            obj->refCount = refs;
             if (refs == 0 && obj != NULL) {
-                (*(void (**)(void *, s32))(*(u8 **)obj + 8))(obj, 1);
+                obj->destroy(1);
             }
+            *(RefObj **)(self + 0x44) = (RefObj *)0;
         }
-        *(void **)(self + 0x44) = NULL;
-
-        obj = *(u8 **)(self + 0x48);
+        obj = *(RefObj **)(self + 0x48);
+        zero = (RefObj *)0;
         if (obj != NULL) {
-            refs = *(s32 *)(obj + 4) - 1;
-            *(s32 *)(obj + 4) = refs;
+            s32 refs = obj->refCount - 1;
+            obj->refCount = refs;
             if (refs == 0 && obj != NULL) {
-                (*(void (**)(void *, s32))(*(u8 **)obj + 8))(obj, 1);
+                obj->destroy(1);
             }
+            *(RefObj **)(self + 0x48) = zero;
         }
-        *(s32 *)(self + 0x48) = zero;
-
         String_Destroy(self + 0x54, -1);
         Ui_DtorPanelBase(self, 0);
     }
 }
-
+#pragma cplusplus off
+#pragma opt_propagation on
 void fn_801CE2DC(void *arg0) {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_CloseChildAnim(void *, void *, s32);
