@@ -5522,12 +5522,12 @@ void fn_8016BBB8(void *self) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern void *gPadInput;
     extern u16 lbl_80277EA0[];
-    extern f32 lbl_8036AA34, lbl_8036AA38, lbl_8036AA48, lbl_8036AA4C, lbl_8036AA50;
+    extern const f32 lbl_8036AA34, lbl_8036AA38, lbl_8036AA48, lbl_8036AA4C, lbl_8036AA50;
     void *pad;
-    s32 held;
-    s32 trig;
-    s32 stick;
-    s32 mask;
+    u32 held;
+    u32 trig;
+    u32 stick;
+    u32 mask;
     u8 delta;
     u8 cur;
     s32 z;
@@ -5550,9 +5550,7 @@ void fn_8016BBB8(void *self) {
         cur = *(u8 *)((u8 *)self + 0x5A);
         if ((s32)(cur + (s8)delta) >= 0xFF) {
             *(u8 *)((u8 *)self + 0x5A) = 0xFF;
-            cur = *(u8 *)((u8 *)self + 0x5B);
-            cur = cur * -1;
-            *(u8 *)((u8 *)self + 0x5B) = cur;
+            *(u8 *)((u8 *)self + 0x5B) *= -1;
         } else {
             *(u8 *)((u8 *)self + 0x5A) = cur + delta;
         }
@@ -5560,9 +5558,7 @@ void fn_8016BBB8(void *self) {
         cur = *(u8 *)((u8 *)self + 0x5A);
         if ((s32)(cur + (s8)delta) <= 0) {
             *(u8 *)((u8 *)self + 0x5A) = 0;
-            cur = *(u8 *)((u8 *)self + 0x5B);
-            cur = cur * -1;
-            *(u8 *)((u8 *)self + 0x5B) = cur;
+            *(u8 *)((u8 *)self + 0x5B) *= -1;
         } else {
             *(u8 *)((u8 *)self + 0x5A) = cur + delta;
         }
@@ -5579,9 +5575,9 @@ void fn_8016BBB8(void *self) {
             ty = *(s8 *)n;
             if (ty >= 1 && ty <= 4) {
                 z = 0;
-                { f32 base = lbl_8036AA48;
+                {
                 *(s32 *)((u8 *)self + 0x44) = z;
-                *(s16 *)((u8 *)self + 0x48) = (s16)(*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 4) - base);
+                *(s16 *)((u8 *)self + 0x48) = (s16)(*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 4) - lbl_8036AA48);
                 *(s16 *)((u8 *)self + 0x4A) = (s16)*(f32 *)((u8 *)*(void **)((u8 *)self + 0x40) + 8);
                 *(s16 *)((u8 *)self + 0x4E) = z;
                 *(s16 *)((u8 *)self + 0x4C) = z;
@@ -6350,6 +6346,27 @@ void fn_8016CD1C(void *arg0, f32 farg0, f32 farg1) {
 }
 
 #pragma use_lmw_stmw off
+static inline s32 SplitNewline_8016D5A8(const char *src, char *line1, char *line2) {
+    char *strcpy(char *, const char *);
+    void *memcpy(void *, const void *, s32);
+    char buf[0x40];
+    s32 hasSecond = 0;
+    s32 i;
+    char *p;
+    strcpy(buf, src);
+    strcpy(line1, buf);
+    for (p = buf, i = 0; *p != 0; p++, i++) {
+        if (*p == '\n') {
+            memcpy(line1, buf, i);
+            line1[i] = 0;
+            strcpy(line2, p + 1);
+            hasSecond = 1;
+            break;
+        }
+    }
+    return hasSecond;
+}
+
 void fn_8016D5A8(void *arg0, f32 farg0, f32 farg1) {
     void fn_800075D8(void);
     void fn_800076AC(u8, u8, u8, s32);
@@ -10113,8 +10130,11 @@ void fn_801735F0(void *arg0) {
     fn_8013FED0(self);
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
 extern "C" void fn_8017369C(void *arg0) {
 void Process_Goto(void *, s32);
 void *Process_CreateChild(void *, void *);
@@ -10216,11 +10236,11 @@ obj = Process_CreateChild(gUiMsgPopupProc, self);
 *(f32 *)((u8 *)obj + 0x34) = (f32)*((s16 *)&sp18 + 1);
 *(void **)((u8 *)obj + 0x54) = (u8 *)gUiMsgStrings + 0x236;
 } else {
+s32 *r27b;
 void *r26a;
 void *r28;
-s32 *r27b;
-r26a = *(void **)((u8 *)self + 0x4C);
 r28 = *(void **)((u8 *)self + 0x54);
+r26a = *(void **)((u8 *)self + 0x4C);
 r27b = ListWidget_GetSelected(r28);
 u32 *r26b = (u32 *)MapCursor_GetItem(r26a);
 if (r26b != 0 && r27b != 0) {
@@ -10297,8 +10317,8 @@ Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x1ED, 0x64);
 }
 }
 }
-#pragma use_lmw_stmw reset
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 /* Bring the unit inventory forward for taking the selected list item, limiting slots by item flags. */
 void Ui_FocusInvForListItem(void *panel) {
@@ -17367,16 +17387,17 @@ void fn_8017E8C0(void *arg0) {
     f32 temp_f31;
     f32 temp_f31_2;
     f32 temp_f3;
+    f32 alphaScale;
     u32 temp_r31_2;
-    s32 temp_r31;
-    u8 temp_r30_2;
     u32 temp_r30;
+    u8 temp_r30_2;
+    s32 temp_r31;
     s32 temp_r29;
     u32 temp_r28;
-    u8 temp_r28_2;
+    u32 temp_r26_2;
     s32 temp_r27;
     s32 temp_r26;
-    u32 temp_r26_2;
+    u8 temp_r28_2;
     u8 temp_r26_3;
     s32 temp_r25;
     s32 temp_r24;
@@ -17415,8 +17436,10 @@ void fn_8017E8C0(void *arg0) {
                 temp_r3 = M2C_FIELD(arg0, u8 *, 0x40);
                 temp_f3 = (f32) temp_r3;
                 temp_r30 = M2C_FIELD(arg0, u32 *, 0x3C);
-                temp_f31_2 = lbl_8036AC5C - lbl_8036AC48;
-                temp_r31 = (s32) ((temp_f3 * temp_f1) / lbl_8036AC2C);
+                temp_f31_2 = lbl_8036AC5C;
+                temp_f31_2 -= lbl_8036AC48;
+                alphaScale = lbl_8036AC2C;
+                temp_r31 = (s32) ((temp_f3 * temp_f1) / alphaScale);
                 Prim2D_Begin();
                 Prim2D_SetTransform((f32) temp_r25, (f32) temp_r24, temp_f31_2, lbl_8036AC48);
                 Prim2D_BindTexture(temp_r30, temp_r29, 0x21);
@@ -17438,7 +17461,7 @@ void fn_8017E8C0(void *arg0) {
             Prim2D_SetColorByte(temp_r30_2);
             Prim2D_PrepareTex();
             temp_r3_2 = 0xB0 - Text_MeasureWidth(temp_r28, -1, lbl_8036AC48);
-            Text_Draw((s16) ((s32) ((temp_r3_2 >> 0x1FU) + temp_r3_2) >> 1), 0, 1, temp_r28);
+            Text_Draw((s16) ((s32)temp_r3_2 / 2), 0, 1, temp_r28);
             Prim2D_Begin();
             Prim2D_SetTransform((f32) (temp_r25 + 0x2E), (f32) (temp_r24 - 0xC), lbl_8036AC6C, lbl_8036AC48);
             Prim2D_BindTexture(temp_r31_2, 4, 0x11);
