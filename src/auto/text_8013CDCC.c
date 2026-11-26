@@ -761,10 +761,6 @@ extern "C" void fn_8013D18C(void *arg0, s32 arg1) {
     void Prim2D_SetColorByte(s32);
     void Prim2D_PrepareTex(void);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
-    extern f32 lbl_8036A6C0;
-    extern f32 lbl_8036A6E0;
-    extern f32 lbl_8036A6E4;
-    extern f64 lbl_8036A6C8;
     struct Obj {
         u8 pad[4];
         virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
@@ -774,25 +770,19 @@ extern "C" void fn_8013D18C(void *arg0, s32 arg1) {
         virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0;
         virtual void v15() = 0; virtual void v16() = 0; virtual void v17() = 0;
         virtual void v18() = 0; virtual void v19() = 0; virtual void v20() = 0;
-        virtual s16 v21() = 0;
-        virtual s16 v22() = 0;
+        virtual s16 getX() = 0;
+        virtual s16 getY() = 0;
         virtual void v23() = 0; virtual void v24() = 0;
-        virtual f32 v25() = 0;
+        virtual f32 getZ() = 0;
     };
-    f32 x;
-    f32 y;
-    f32 z;
     f32 fade;
     f32 eased;
 
     fade = UiWin_GetFade(arg1);
-    eased = Math_Ease(5, lbl_8036A6E0, lbl_8036A6C0, fade, lbl_8036A6C0);
+    eased = Math_Ease(5, 0.0f, 1.0f, fade, 1.0f);
     Prim2D_Begin();
-    z = ((Obj *)arg0)->v25();
-    y = (f32)((Obj *)arg0)->v22();
-    x = (f32)((Obj *)arg0)->v21();
-    fn_80009C20(x, y, z, lbl_8036A6E0, lbl_8036A6E0, eased, eased, lbl_8036A6E0);
-    Prim2D_SetColorByte((s32)(lbl_8036A6E4 * fade));
+    fn_80009C20(((Obj *)arg0)->getX(), ((Obj *)arg0)->getY(), ((Obj *)arg0)->getZ(), 0.0f, 0.0f, eased, eased, 0.0f);
+    Prim2D_SetColorByte((s32)(255.99f * fade));
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
@@ -4812,12 +4802,12 @@ extern "C" void fn_80142C00(void *self, void *other) {
         PTMF ptmf;
         void *arg;
     };
-    void Prim2D_Begin(void);
-    void Prim2D_AddZ(f32);
-    void Prim2D_PrepareTex(void);
-    s32 Text_MeasureHeight(s32, f32);
-    void Ui_DrawRouteIconEx(s16, s32, u8);
-    void Prim2D_SetAlphaByte(s32);
+    void fn_8000A258(void);
+    void fn_80009C0C(f32);
+    void fn_8000A248(void);
+    s32 fn_800102BC(s32, f32);
+    void fn_8008BF68(s16, s32, u8);
+    void fn_80009B80(s32);
     extern u8 lbl_80292308[];
     extern f32 lbl_8036A76C;
     extern f32 lbl_8036A758;
@@ -4893,39 +4883,39 @@ extern "C" void fn_80142C00(void *self, void *other) {
                 r30 = 1;
             }
         }
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A76C);
-        Prim2D_PrepareTex();
-        Ui_DrawRouteIconEx(*(s16 *)((u8 *)self + 0x7C),
-                    *(s16 *)((u8 *)self + 0x7E) + (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036A758)) >> 1),
+        fn_8000A258();
+        fn_80009C0C(lbl_8036A76C);
+        fn_8000A248();
+        fn_8008BF68(*(s16 *)((u8 *)self + 0x7C),
+                    *(s16 *)((u8 *)self + 0x7E) + (s16)((0x20 - fn_800102BC(-1, lbl_8036A758)) >> 1),
                     r30);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A758);
-        Prim2D_PrepareTex();
+        fn_8000A258();
+        fn_80009C0C(lbl_8036A758);
+        fn_8000A248();
         ((Obj *)self)->v16(0, t27,
             (s16)(*(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12)),
             0x20, r30);
     }
     if (val != 0 && *(u8 *)((u8 *)self + 0x4D) != 0) {
         ((Obj *)self)->v3(other);
-        Prim2D_Begin();
-        Prim2D_AddZ(lbl_8036A770);
-        Prim2D_PrepareTex();
+        fn_8000A258();
+        fn_80009C0C(lbl_8036A770);
+        fn_8000A248();
         {
             s16 a = *(s16 *)(slot + 0x4E);
             s16 b = *(s16 *)((u8 *)self + 0x7A);
             s16 c = *(s16 *)((u8 *)self + 0x8A);
             t25 = (s16)(((s16)(b - a) << 5) + c);
         }
-        t26 = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036A758)) >> 1);
-        Prim2D_Begin();
-        Prim2D_SetAlphaByte(0x40);
-        Prim2D_PrepareTex();
-        Ui_DrawRouteIconEx((s16)t31, t25 + t26, 0);
+        t26 = (s16)((0x20 - fn_800102BC(-1, lbl_8036A758)) >> 1);
+        fn_8000A258();
+        fn_80009B80(0x40);
+        fn_8000A248();
+        fn_8008BF68((s16)t31, t25 + t26, 0);
     }
-    Prim2D_Begin();
-    Prim2D_SetAlphaByte(0x80);
-    Prim2D_PrepareTex();
+    fn_8000A258();
+    fn_80009B80(0x80);
+    fn_8000A248();
 }
 
 #pragma use_lmw_stmw on
