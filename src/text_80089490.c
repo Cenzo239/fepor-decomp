@@ -84,6 +84,10 @@ void fn_80089490(void *);
 #pragma opt_propagation on
 static inline u8 *fn_80089490_add(u8 *base, s32 off) { return base + off; }
 #pragma opt_dead_code off
+static inline s32 IsSpecialAddr(u32 v, u8 *base, s32 off) {
+    return v == (u32)(base + off);
+}
+
 void fn_80089490(void *arg0) {
     extern u8 lbl_80289950[];
     void fn_8000A408(void *);
