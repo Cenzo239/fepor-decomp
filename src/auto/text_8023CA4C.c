@@ -81,6 +81,19 @@ u16 value = (p[0] << 8) | p[1];
  return value;
   }
 
+static inline u16 ThpReadWordP(ThpDecodeState *s) {
+u8 **cursor = &s->cursor;
+u8 *p = *cursor;
+u16 value = (p[0] << 8) | p[1];
+*cursor = p + 2;
+return value;
+}
+static inline u8 ThpReadByteP(ThpDecodeState *s) {
+u8 *p = s->cursor;
+s->cursor = p + 1;
+return *p;
+}
+
  static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
 u8 i;
@@ -370,7 +383,7 @@ s32 fn_8023CA4C(void) {
     u8 *zig;
     u8 *p;
     const f64 *aan = (const f64 *)(lbl_80282FD8 + 0x50);
-    u32 size;
+    s32 size;
     s32 id;
     u32 i;
     u16 row;
