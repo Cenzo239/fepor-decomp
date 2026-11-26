@@ -31,15 +31,7 @@ typedef struct {
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
 extern u8 lbl_80289998[];
-extern u8 lbl_8026CC58[], lbl_8026CC5F[], lbl_8026CC67[];
-void fn_8008A5AC(void);
-void Ui_DrawColorFade(void);
-void fn_80089A28(void);
-static u32 lbl_80289950[] = {
-    0x2003, (u32)lbl_8026CC58, 0x54911001, 0x201A, (u32)fn_8008A5AC, 0,
-    0x2003, (u32)lbl_8026CC5F, 0x54911001, 0x201A, (u32)Ui_DrawColorFade, 0,
-    0x2003, (u32)lbl_8026CC67, 0x54911001, 0x201A, (u32)fn_80089A28, 0
-};
+extern u8 lbl_80289950[];
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
