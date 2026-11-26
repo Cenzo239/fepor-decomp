@@ -542,29 +542,27 @@ s32 fn_8000B37C(void *arg0) {
 #pragma global_optimizer off
 s32 fn_8000B39C(void *arg0)
 {
+    u8 *ptr;
     u32 *base;
-    s32 counter;
     s32 key;
-    u32 *ptr;
     u32 node;
 
     base = *(u32 **)((u8 *)arg0 + 4);
-    key = GetKey_8000B39C(base);
-    counter = *(s16 *)((u8 *)arg0 + 0x28);
-    if (counter >= 0) {
-        *(s16 *)((u8 *)arg0 + 0x28) = (s16)(counter - 1);
+    key = (u8)(*base >> 16);
+    if (*(s16 *)((u8 *)arg0 + 0x28) >= 0) {
+        (*(s16 *)((u8 *)arg0 + 0x28))--;
         if (*(s16 *)((u8 *)arg0 + 0x28) == 0) {
-            ptr = *(u32 **)arg0;
+            ptr = *(u8 **)arg0;
             goto load;
         loop:
             if ((node & 0xFFF) == 1 && (s16)(node >> 16) == key) {
-                *(u32 **)((u8 *)arg0 + 4) = ptr;
+                *(u8 **)((u8 *)arg0 + 4) = ptr;
                 *(s32 *)((u8 *)arg0 + 0x10) = 0;
                 goto done;
             }
-            ptr = (u32 *)((u8 *)ptr + ((node >> 10) & 0x3C));
+            ptr += (node >> 10) & 0x3C;
         load:
-            node = *ptr;
+            node = *(u32 *)ptr;
             if (node != 0) {
                 goto loop;
             }
