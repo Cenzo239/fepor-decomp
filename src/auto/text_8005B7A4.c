@@ -1393,7 +1393,6 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
     unsigned ctr;
     unsigned var_r7;
     u8 temp_r5;
-    unsigned n;
 
     if (*(u16 *)(arg0 + 0x30) & 0x800) {
         list = *(u8 **)(arg0 + 0x38);
@@ -1402,13 +1401,12 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
         goto check;
     body:
         var_r3 = &path[0];
-        var_r6 = (char *)arg0;
         var_r4 = var_r3;
         *(u32 *)(item + 4) = *(u32 *)(item + 4) + (u32)list;
         var_r7 = 0;
         *(u32 *)(item + 8) = *(u32 *)(item + 8) + (u32)list;
         for (ctr = 0x29; ctr > 0; ctr--) {
-            temp_r5 = *(u8 *)var_r6;
+            temp_r5 = arg0[var_r7];
             if ((s8)temp_r5 == 0) {
                 break;
             }
@@ -1419,37 +1417,17 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
             *var_r4 = temp_r5;
             var_r4 += 1;
             var_r7 += 1;
-            var_r6 += 1;
         }
         strcpy(var_r3, *(char **)(item + 4));
 
         {
             entry = fn_8005CEC0();
             *(u16 *)(entry + 0x32) = 0;
-            var_r6 = &path[0];
             *(u16 *)(entry + 0x30) = 0x3000;
             *(u32 *)(entry + 0x3C) = *(u32 *)(item + 0xC);
             *(u32 *)(entry + 0x38) = *(u32 *)(item + 8);
             entry[0x29] = arg0[0x29];
-            if ((s8)path[0] == '/') {
-                var_r6 += 1;
-            }
-            n = 0;
-            *(u32 *)(entry + 0x2C) = n;
-            var_r3 = (char *)entry;
-            for (; n < 0x29; n++) {
-                temp_r5 = *(u8 *)var_r6;
-                if ((s8)temp_r5 >= 'A' && (s8)temp_r5 <= 'Z') {
-                    *var_r6 = temp_r5 + 0x20;
-                }
-                entry[n] = *var_r6;
-                temp_r5 = *(u8 *)var_r6;
-                if ((s8)temp_r5 == 0) {
-                    break;
-                }
-                *(u32 *)(entry + 0x2C) = (s8)temp_r5 + *(u32 *)(entry + 0x2C) * 0x25;
-                var_r6 += 1;
-            }
+            FileCache_SetArchiveName(entry, path);
             *(u32 *)(entry + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
         }
         item += 0x10;
