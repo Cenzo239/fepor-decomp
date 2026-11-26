@@ -157,12 +157,7 @@ typedef struct Vec2s {
     s16 x;
     s16 y;
 } Vec2s;
-#pragma push
-#pragma cplusplus on
-struct MenuPoint { union { struct { s16 x, y; }; u32 packed; }; MenuPoint() {} };
-extern "C" s32 Text_MeasureHeight(s32, f32);
-static inline s16 MenuCenterHeight(s32 height) { return (s16)(((s16)height - Text_MeasureHeight(-1, 1.0f)) >> 1); }
-#pragma pop
+
 
 typedef struct {
     u8 unk0;
