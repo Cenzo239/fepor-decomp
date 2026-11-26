@@ -1247,8 +1247,7 @@ void fn_800581A4(void *arg0)
   extern f64 lbl_80369118;
   extern f32 lbl_8036912C;
   extern f32 lbl_8036915C;
-  extern f64 lbl_80369160;
-  extern f32 lbl_80369168;
+      extern f32 lbl_80369168;
   extern u32 lbl_803690D4;
   Node40 nodes[4];
   Node40 *base;
@@ -1856,11 +1855,11 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   f32 h01;
   f32 h00;
   f32 t1m;
-  f32 two_t;
   f32 tm1;
+  f32 two_t;
   one = lbl_8036912C;
-  two_t = lbl_80369104 * farg4;
   tm1 = farg4 - one;
+  two_t = lbl_80369104 * farg4;
   t1m = one - farg4;
   h01 = ((lbl_8036915C - (lbl_80369104 * farg4)) * (farg4 * farg4));
   h00 = ((one + two_t) * (tm1 * tm1));
