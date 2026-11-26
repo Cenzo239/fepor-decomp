@@ -1,7 +1,7 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
-static inline s8 TalkUi_FindSlot20354(s8 want, void *object) {
+static inline s32 TalkUi_FindSlot20354(s32 want, void *object) {
     u8 *self = object;
     u8 *child;
     if (want < 0) return -1;
