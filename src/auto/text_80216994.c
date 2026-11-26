@@ -1,6 +1,20 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void Card_ChecksumBlock(u16 *src, s32 length, u16 *sum, u16 *inv) {
+    s32 n;
+    *inv = 0;
+    n = length / 2;
+    *sum = 0;
+    for (; n > 0; n--) {
+        *sum += *src;
+        *inv += ~*src;
+        src++;
+    }
+    if (*sum == 0xFFFF) *sum = 0;
+    if (*inv == 0xFFFF) *inv = 0;
+}
+
 #include <dolphin/os.h>
 #include "global.h"
 #include "ef.h"
@@ -1826,6 +1840,8 @@ s32 fn_8021A1B8(s32 arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
 {
@@ -1909,7 +1925,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
         if (*dir != 0xFF) {
             block = *(u16 *)(dir + 0x36);
             len = 0;
-            do {
+            while ((u32)block != 0xFFFF && (u32)len < *(u16 *)(dir + 0x38)) {
                 if ((u32)block < 5 || (u32)block >= *(u16 *)((u8 *)card + 0x10)) {
                     return __CARDPutControlBlock(card, -6);
                 }
@@ -1918,13 +1934,10 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
                 if ((u32)cnt > 1) {
                     return __CARDPutControlBlock(card, -6);
                 }
-                next = (*(u16 **)((u8 *)card + 0x88))[block];
+                block = (*(u16 **)((u8 *)card + 0x88))[block];
                 len++;
-                if ((u32)next == 0xFFFF) {
-                    break;
-                }
-            } while ((u32)len < *(u16 *)(dir + 0x38));
-            if ((u32)len != *(u16 *)(dir + 0x38) || (u32)next != 0xFFFF) {
+            }
+            if ((u32)len != *(u16 *)(dir + 0x38) || (u32)block != 0xFFFF) {
                 return __CARDPutControlBlock(card, -6);
             }
         }
@@ -2004,6 +2017,7 @@ s32 fn_8021A244(s32 chan, s32 *outSize, void (*callback)(s32, s32))
     }
     return 0;
 }
+#pragma pop
 void fn_8021A7D4(void *arg0, s32 arg1) {
     void fn_8021A244(void *, void *, s32);
     s32 sp10;
