@@ -766,6 +766,9 @@ void Debug_DrawGuideFrame(void) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_8009D0E8(s32 arg0, s32 arg1) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -860,8 +863,7 @@ void fn_8009D0E8(s32 arg0, s32 arg1) {
 
     *(s32 *)(lbl_803121C8 + 0xA0) = *(s32 *)(lbl_803121C8 + 0x9C);
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_8009D95C(s32 arg0, s32 arg1) {
     void Prim2D_SetText(void *);
     void Prim2D_SetCornerColors(u32 *, u32 *, u32 *, u32 *);
