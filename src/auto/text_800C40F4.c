@@ -29729,11 +29729,16 @@ void fn_800FEC0C(void) {
 #pragma opt_lifetimes off
 static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
     extern s32 lbl_80367910;
-    s32 *pivot = begin + (offset + lbl_80367910++ % 5);
-    if (lbl_80367910 >= 5) lbl_80367910 = -4;
+    s32 r = lbl_80367910;
+    s32 *pivot = begin + (offset + r % 5);
+    lbl_80367910 = r + 1;
+    if (r + 1 >= 5) lbl_80367910 = -4;
     return pivot;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
     void Sort_Three(s32 *, s32 *, s32 *, u8 (*)(s32, s32));
@@ -29745,10 +29750,8 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     s32 *j;
     s32 *a;
     s32 *b;
-    s32 r;
-    s32 quarter;
     s32 n;
-    s32 threeQuarter;
+    s32 r;
     s32 tmp;
 
     while (1) {
@@ -29764,20 +29767,8 @@ void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
             lbl_80367910 = -4;
             lbl_80367914 = 1;
         }
-        r = lbl_80367910;
-        quarter = n / 4;
-        a = begin + (quarter + (r % 5));
-        lbl_80367910 = r + 1;
-        if (r + 1 >= 5) {
-            lbl_80367910 = -4;
-        }
-        r = lbl_80367910;
-        threeQuarter = (n * 3) / 4;
-        b = begin + (threeQuarter + (r % 5));
-        lbl_80367910 = r + 1;
-        if (r + 1 >= 5) {
-            lbl_80367910 = -4;
-        }
+        a = Sort_PivotAt(begin, n / 4);
+        b = Sort_PivotAt(begin, n * 3 / 4);
         last = end - 1;
         Sort_Three(a, b, last, cmp);
         i = begin;
