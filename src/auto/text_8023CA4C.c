@@ -80,12 +80,6 @@ u16 value = (p[0] << 8) | p[1];
  *cursor = p + 2;
    return value;
   }
- static inline void ThpStoreByteAsFloat(f32 *dst, u8 b) {
-     union { f64 d; u32 w[2]; } u;
-     u.w[0] = 0x43300000;
-     u.w[1] = b;
-     *dst = u.d - lbl_8036C190;
- }
 
   static inline u8 SynthAllocateStream(void) {
 extern u8 gSoundStreamCtrl[];
