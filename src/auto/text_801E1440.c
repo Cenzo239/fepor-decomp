@@ -19,9 +19,10 @@ static inline u8 Save_CheckSlotCrc(u8 *blk) {
 }
 static inline void Save_ClearUnusedSlots(void **save, u8 *hist) {
     s32 i;
+    s32 off;
     u8 *blk;
-    for (i = 0; i < 6; i++) {
-        blk = (u8 *)*save + 0x2000 + i * 0x4000;
+    for (i = 0, off = 0x2000; i < 6; i++, off += 0x4000) {
+        blk = (u8 *)*save + off;
         if (hist[i] == 0) *(u32 *)(blk + 0x40) = 0;
         else if (blk[0x60] == 1) *(u32 *)(blk + 0x40) = 0;
     }
@@ -1695,7 +1696,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u32 bestc;
     u8 *less;
     u8 *more;
-    s8 lang;
+    s32 lang;
     u32 x0, x1;
     u64 temp_ret;
     s32 temp_r4;
@@ -1704,7 +1705,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
     s32 temp_r6;
     s32 temp_r4_2;
     u8 temp_r3;
-    u8 idx;
+    s32 idx;
 
     if (fn_800EB520(*arg0) == 0) {
         fn_800EB760(-4);
@@ -1782,34 +1783,7 @@ void fn_801E2620(void **arg0, u8 arg1) {
         hist[(s8)best_idx[4]] = (u8)(hist[(s8)best_idx[4]] + 1);
     }
 
-    {
-        u8 *hp = hist;
-        off = 0x2000;
-        for (j = 2; j != 0; j--) {
-            blk = (u8 *)*arg0 + off;
-            if (hp[0] == 0) {
-                *(u32 *)(blk + 0x40) = 0;
-            } else if (blk[0x60] == 1) {
-                *(u32 *)(blk + 0x40) = 0;
-            }
-            off += 0x4000;
-            blk = (u8 *)*arg0 + off;
-            if (hp[1] == 0) {
-                *(u32 *)(blk + 0x40) = 0;
-            } else if (blk[0x60] == 1) {
-                *(u32 *)(blk + 0x40) = 0;
-            }
-            off += 0x4000;
-            blk = (u8 *)*arg0 + off;
-            if (hp[2] == 0) {
-                *(u32 *)(blk + 0x40) = 0;
-            } else if (blk[0x60] == 1) {
-                *(u32 *)(blk + 0x40) = 0;
-            }
-            off += 0x4000;
-            hp += 3;
-        }
-    }
+    Save_ClearUnusedSlots(arg0, hist);
 
     {
         u8 **sp = slots;
