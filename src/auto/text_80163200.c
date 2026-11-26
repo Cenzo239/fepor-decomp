@@ -427,6 +427,9 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
@@ -488,20 +491,19 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     s16 x;
     s16 y;
     s16 slot;
-    s32 idx;
-    u32 *item;
     Obj *self;
+    u32 *item;
+    s32 idx;
     s16 *rect;
     s16 w;
     s16 h;
     u8 ok;
     void *obj;
-    s32 lim;
     s16 mid;
     s16 dw;
     s16 dh;
     void *info;
-
+    register s32 lim;
 
     idx = arg1;
     self = (Obj *)arg0;
@@ -561,7 +563,7 @@ loop_test:
 
     if (self->unk4A != 0) {
         s16 x0, x1, y0, y1, t;
-        s16 a, b;
+        s16 a, b, width;
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A894);
         Prim2D_PrepareTex();
@@ -569,8 +571,9 @@ loop_test:
         lim = 0x130;
         a = self->unkA;
         b = self->unkE;
-        mid = (s16)(a + ((s16)(b - a) >> 1));
+        width=(s16)(b-a);
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
+        mid = (s16)(a + (width >> 1));
         *(u16 *)((u8 *)obj + 0x46) |= (u16)(mid < lim);
         x0 = self->unk12;
         x1 = self->unk16;
@@ -590,6 +593,8 @@ loop_test:
 }
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
+
+#pragma pop
 
 #pragma push
 #pragma opt_common_subs off
@@ -15435,6 +15440,13 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         virtual void v0() = 0;
         virtual void v1() = 0;
         virtual void v2(s32) = 0;
+        u8 pad[6];
+        s16 x0;
+        s16 y0;
+        s16 x1;
+        s16 y1;
+        inline s16 GetW() { return x1 - x0; }
+        inline s16 GetH() { return y1 - y0; }
     };
     extern u8 lbl_80278780[];
     extern f32 lbl_8036ABA8;
@@ -15442,7 +15454,8 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
     s32 num;
     f32 target;
     f32 cur;
-    s16 w,h;
+    s16 w, h;
+    f32 val;
 
     unit = M2C_FIELD(arg0, u8 **, 0x4C);
     num = Status_SumBonus(unit + 0x1BC);
@@ -15462,16 +15475,19 @@ extern "C" void fn_8017B4A8(void *arg0, s32 arg1) {
         Ui_PlaySeCue(lbl_80278780 + 0x9E, 0x64);
     }
     ((Obj *)arg0)->v2(arg1);
-    h = M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC);
-    w = M2C_FIELD(arg0, s16 *, 0xE) - M2C_FIELD(arg0, s16 *, 0xA);
+    w = ((Obj *)arg0)->GetW();
+    val = M2C_FIELD(arg0, f32 *, 0x50);
+    h = ((Obj *)arg0)->GetH();
     Ui_DrawJobPersonalPanel(0, 0, w, h,
                 M2C_FIELD(M2C_FIELD(unit, u8 **, 0x18C), u8 *, 0x40), 0xCC, 0x10,
-                M2C_FIELD(arg0, f32 *, 0x50));
+                val);
 }
 #pragma cplusplus reset
 
+#pragma push
+#pragma opt_propagation off
 #pragma use_lmw_stmw on
-void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, u8 arg6) {
+void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
     void fn_80006B18(s32, s32, s32, s32, u8);
     void Prim2D_SetTextScale(s32, f32);
     void Prim2D_SetColorPacked(void *);
@@ -15511,7 +15527,7 @@ void fn_8017B5F4(void *arg0, s16 arg1, s16 arg2, u8 arg3, void *arg4, s32 arg5, 
     Prim2D_SetColorByte(0xFF);
     Prim2D_PrepareTex();
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
     void fn_8000A258(void);
     void fn_8000A174(s32, u16);
@@ -18557,8 +18573,9 @@ extern "C" void fn_80180928(void *arg0) {
 }
 #pragma global_optimizer on
 
-#pragma use_lmw_stmw on
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_80180AC8(void *arg0) {
     void *Heap_Alloc(u32);
     void *fn_80181D88(void *, s32, s32, s32, s32);
@@ -18751,8 +18768,8 @@ extern "C" void fn_80180AC8(void *arg0) {
         /* keep live2/live3 across function */
     }
 }
+#pragma pop
 #pragma cplusplus reset
-#pragma use_lmw_stmw reset
 
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -19262,7 +19279,9 @@ extern "C" void fn_8018179C(void *arg0) {
     fn_80157700(0, y, 5 - Unit_GetSupportRankTotal(M2C_FIELD(arg0, s32 *, 0x48), (s16)(M2C_FIELD(arg0, s16 *, 0x10) - M2C_FIELD(arg0, s16 *, 0xC))), 0x10);
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma cplusplus on
+#pragma opt_common_subs off
 extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *unit, u8 flag) {
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
@@ -19285,7 +19304,7 @@ extern "C" void fn_80181840(void *arg0, s16 arg1, s16 arg2, s32 unused, void *un
     s16 w2;
     s16 w1;
     s16 halfH;
-    s32 rowH;
+    s16 rowH;
     s32 idx;
     s32 mode;
     s32 width;
@@ -19382,7 +19401,8 @@ draw_unit:
         Ui_DrawIcon(gUiIconDrawer, temp_arg1, x, slot);
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
+#pragma cplusplus reset
 
 #pragma cplusplus reset
 
