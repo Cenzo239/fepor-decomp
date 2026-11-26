@@ -488,57 +488,62 @@ s32 fn_800386E0(s32 arg0) {
     return var_r31;
 }
 
+#pragma push
+#pragma optimization_level 4
 s8 fn_80038748(void *arg0) {
-    s32 temp;
-    s32 result;
-    result = 0;
-    if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        temp = 0;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
-        temp = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
-        temp = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
-        temp = 3;
-    } else {
-        temp = -1;
-    }
-    if ((s8)temp < 0) {
-        temp = 0;
-    } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1CC;
-        temp = temp + (s32)arg0;
-    }
-    if ((u32)temp != 0) {
-        result = *(s8 *)((u8 *)*(void **)temp + 0x27);
-    }
-    if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
-        temp = 0;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
-        temp = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
-        temp = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
-        temp = 3;
-    } else {
-        temp = -1;
-    }
-    if ((s8)temp < 0) {
-        temp = 0;
-    } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1EC;
-        temp = temp + (s32)arg0;
-    }
-    if ((u32)temp != 0) {
-        result += *(u8 *)((u8 *)*(void **)temp + 0x27);
-        result = (s8)result;
-    }
-    return (s8)result;
-}
+    struct Slot {
+        s8 *item;
+        u8 pad;
+        u8 flags;
+        u8 pad2[2];
+    };
+    struct Unit {
+        u8 pad[0x1CC];
+        struct Slot weapons[4];
+        struct Slot acc[4];
+    };
+    struct Unit *u = (struct Unit *)arg0;
+    s8 result;
+    s8 temp;
+    s32 i;
+    struct Slot *slot;
 
-#pragma optimization_level 2
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        if (((u->weapons[i].flags >> 7) & 1) && u->weapons[i].item != 0) {
+            temp = i;
+            goto found1;
+        }
+    }
+    temp = -1;
+found1:
+    if (temp < 0) {
+        slot = 0;
+    } else {
+        slot = &u->weapons[temp];
+    }
+    if (slot != 0) {
+        result += slot->item[0x27];
+    }
+    for (i = 0; i < 4; i++) {
+        if (((u->acc[i].flags >> 7) & 1) && u->acc[i].item != 0) {
+            temp = i;
+            goto found2;
+        }
+    }
+    temp = -1;
+found2:
+    if (temp < 0) {
+        slot = 0;
+    } else {
+        slot = &u->acc[temp];
+    }
+    if (slot != 0) {
+        result += slot->item[0x27];
+    }
+    return result;
+}
+#pragma pop
 s8 fn_800388C8(void *arg0) {
     s8 index;
     s32 result = 0;
@@ -1258,6 +1263,10 @@ s8 Unit_GetCon(void *arg0) {
     return (s8)sum;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
+#pragma opt_dead_code off
 s8 fn_8003A778(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
@@ -1267,34 +1276,27 @@ s8 fn_8003A778(void *arg0) {
     extern u8 gBattleState[];
     UnkRet800378CC sp10;
     UnkRet800378CC sp8;
-    s8 result;
+    void *b;
     s8 var_r31;
-    s8 var_r30;
-    s32 temp;
+    int var_r30;
+    u32 temp;
     void *obj;
     void *other;
     void *p;
     s32 diff;
     s32 id;
     void *t;
-    void *b;
+    s8 result;
     void *a;
-    u8 lim;
     s32 sum;
+    s32 lim;
+    s32 cls;
 
-    a = *(void **)((u8 *)arg0 + 0x18C);
-    b = *(void **)((u8 *)arg0 + 0x188);
-    sum = *(u8 *)((u8 *)a + 0x4B);
-    sum += *(u8 *)((u8 *)arg0 + 0x1B2);
-    lim = *(u8 *)((u8 *)a + 0x53);
-    sum += *(u8 *)((u8 *)b + 0x24);
-    var_r31 = (s8)sum;
-    if (var_r31 > (s8)lim) {
-        var_r31 = (s8)lim;
-    }
-    if (var_r31 < 0) {
-        var_r31 = 0;
-    }
+    cls = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x24) + *(u8 *)(cls + 0x4B)) + *(u8 *)((u8 *)arg0 + 0x1B2);
+    cls = *(s8 *)(cls + 0x53);
+    if (var_r31 > (s8)cls) var_r31 = (s8)cls;
+    if (var_r31 < 0) var_r31 = 0;
 
     var_r30 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
@@ -1315,8 +1317,8 @@ s8 fn_8003A778(void *arg0) {
         temp = temp + 0x1CC;
         temp = temp + (s32)arg0;
     }
-    if ((u32)temp != 0) {
-        var_r30 = (s8)*(u8 *)((u8 *)*(void **)temp + 0x26);
+    if (temp != 0) {
+        var_r30 = *(s8 *)((u8 *)*(void **)temp + 0x26);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
@@ -1337,10 +1339,10 @@ s8 fn_8003A778(void *arg0) {
         temp = temp + 0x1EC;
         temp = temp + (s32)arg0;
     }
-    if ((u32)temp != 0) {
+    if (temp != 0) {
         obj = *(void **)temp;
         var_r30 += *(u8 *)((u8 *)obj + 0x26);
-        if ((*Item_GetFlagsPtr((void *)temp) & 2ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)temp) & 0x200000000ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -1365,13 +1367,16 @@ s8 fn_8003A778(void *arg0) {
     }
     return result;
 }
-
+#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
 s8 fn_8003AA40(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
-    void fn_80165E90(void *, void *);
+    void fn_80165E90(u8 *, void *, f32);
     s32 fn_801660A8(void *);
-    void fn_801660C4(s32, u16, u16, u8);
+    f32 fn_801660C4(s32, s32, u16, u8);
     extern u8 gBattleState[];
     UnkRet800378CC sp10;
     UnkRet800378CC sp8;
@@ -1387,22 +1392,15 @@ s8 fn_8003AA40(void *arg0) {
     void *t;
     s8 result;
     void *a;
-    s32 sum;
+    s32 cls;
     s32 lim;
+    f32 angle;
 
-    a = *(void **)((u8 *)arg0 + 0x18C);
-    b = *(void **)((u8 *)arg0 + 0x188);
-    sum = *(u8 *)((u8 *)a + 0x4A);
-    sum += *(u8 *)((u8 *)arg0 + 0x1B1);
-    lim = *(s8 *)((u8 *)a + 0x52);
-    sum = *(u8 *)((u8 *)b + 0x23) + sum;
-    var_r31 = (s8)sum;
-    if (var_r31 > lim) {
-        var_r31 = lim;
-    }
-    if (0 > var_r31) {
-        var_r31 = 0;
-    }
+    cls = (s32)*(void **)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x23) + *(u8 *)(cls + 0x4A)) + *(u8 *)((u8 *)arg0 + 0x1B1);
+    cls = *(s8 *)(cls + 0x52);
+    if (var_r31 > (s8)cls) var_r31 = (s8)cls;
+    if (var_r31 < 0) var_r31 = 0;
 
     var_r30 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
@@ -1424,7 +1422,7 @@ s8 fn_8003AA40(void *arg0) {
         temp = temp + (s32)arg0;
     }
     if (temp != 0) {
-        var_r30 = (s8)*(u8 *)((u8 *)*(void **)temp + 0x25);
+        var_r30 = *(s8 *)((u8 *)*(void **)temp + 0x25);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
@@ -1462,8 +1460,8 @@ s8 fn_8003AA40(void *arg0) {
 
     id = fn_801660A8(gBattleState + 0x3C0);
     t = *(void **)((u8 *)arg0 + 0x188);
-    fn_801660C4(id, *(u16 *)((u8 *)t + 0x58), *(u16 *)((u8 *)arg0 + 0x228), *(u8 *)((u8 *)t + 0x55));
-    fn_80165E90(&sp8, (u8 *)arg0 + 0x1BC);
+    angle = fn_801660C4(id, *(u16 *)((u8 *)t + 0x58), *(u16 *)((u8 *)arg0 + 0x228), *(u8 *)((u8 *)t + 0x55));
+    fn_80165E90((u8 *)&sp8, (u8 *)arg0 + 0x1BC, angle);
     sp10 = sp8;
     var_r30 += sp10.unk1;
     result = (s8)(var_r31 + var_r30);
@@ -1472,7 +1470,7 @@ s8 fn_8003AA40(void *arg0) {
     }
     return result;
 }
-
+#pragma pop
 s32 fn_8003ACF8(void *arg0) {
 u8 *unit = arg0;
 s32 temp;
@@ -1546,43 +1544,45 @@ s8 fn_8003AF28(void *arg0) {
     return var_r3;
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 s8 Unit_GetMagAtk(void *arg0) {
-    u64 *fn_8001CB64(void *);
-    void *fn_8000D354(void *);
-    s32 fn_801660A8(void *);
+    void *Res_GetByName(void *);
+    u64 *Item_GetFlagsPtr(void *);
     void fn_80165E90(void *, void *);
+    s32 fn_801660A8(void *);
     void fn_801660C4(s32, u16, u16, u8);
-    extern u8 lbl_80330708[];
-    int sum;
-    u32 zero;
-    s8 result;
+    extern u8 gBattleState[];
+    UnkRet800378CC sp10;
+    UnkRet800378CC sp8;
+    void *b;
     s8 var_r31;
-    s8 var_r30;
-    s32 temp;
+    int var_r30;
+    u32 temp;
     void *obj;
     void *other;
     void *p;
     s32 diff;
-    u32 id;
+    s32 id;
     void *t;
-    void *b;
-    UnkRet800378CC sp10;
-    u8 lim;
+    s8 result;
     void *a;
-    UnkRet800378CC sp8;
+    s32 sum;
+    s32 lim;
 
     a = *(void **)((u8 *)arg0 + 0x18C);
     b = *(void **)((u8 *)arg0 + 0x188);
     sum = *(u8 *)((u8 *)a + 0x46);
     sum += *(u8 *)((u8 *)arg0 + 0x1AD);
-    lim = *(u8 *)((u8 *)a + 0x4E);
-    sum += *(u8 *)((u8 *)b + 0x1F);
+    lim = *(s8 *)((u8 *)a + 0x4E);
+    sum = *(u8 *)((u8 *)b + 0x1F) + sum;
     var_r31 = (s8)sum;
-    if (var_r31 > (s8)lim) {
-        var_r31 = (s8)lim;
+    if (var_r31 > lim) {
+        var_r31 = lim;
     }
-    if (var_r31 < 0) {
+    if (0 > var_r31) {
         var_r31 = 0;
     }
 
@@ -1603,10 +1603,10 @@ s8 Unit_GetMagAtk(void *arg0) {
     } else {
         temp = (s8)temp * 8;
         temp = temp + 0x1CC;
-        temp = (s32)arg0 + temp;
+        temp = temp + (s32)arg0;
     }
-    if ((u32)temp != 0) {
-        var_r30 = *(u8 *)((u8 *)*(void **)temp + 0x21);
+    if (temp != 0) {
+        var_r30 = (s8)*(u8 *)((u8 *)*(void **)temp + 0x21);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
@@ -1625,37 +1625,36 @@ s8 Unit_GetMagAtk(void *arg0) {
     } else {
         temp = (s8)temp * 8;
         temp = temp + 0x1EC;
-        temp = (s32)arg0 + temp;
+        temp = temp + (s32)arg0;
     }
-    if ((u32)temp != 0) {
+    if (temp != 0) {
         obj = *(void **)temp;
         var_r30 += *(u8 *)((u8 *)obj + 0x21);
-        zero = 0;
-        if ((*fn_8001CB64((void *)temp) & 2ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)temp) & 0x200000000ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
-                other = fn_8000D354(p);
+                other = Res_GetByName(p);
             } else {
-                other = (void *)zero;
+                other = NULL;
             }
             diff = (s8)*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x46) - (s8)*(u8 *)((u8 *)other + 0x46);
             var_r30 = (s8)(var_r30 - diff / 2);
         }
     }
 
-    id = fn_801660A8(lbl_80330708 + 0x3C0);
+    id = fn_801660A8(gBattleState + 0x3C0);
     t = *(void **)((u8 *)arg0 + 0x188);
     fn_801660C4(id, *(u16 *)((u8 *)t + 0x58), *(u16 *)((u8 *)arg0 + 0x228), *(u8 *)((u8 *)t + 0x55));
     fn_80165E90(&sp8, (u8 *)arg0 + 0x1BC);
     sp10 = sp8;
     var_r30 += sp10.unk0;
     result = (s8)(var_r31 + var_r30);
-    if (0 > result) {
+    if (result < 0) {
         result = 0;
     }
     return result;
 }
-#pragma global_optimizer on
+#pragma pop
 s8 Unit_GetCarryWtLimit(void *arg0) {
     s8 fn_80039408(void *);
     s32 p;
