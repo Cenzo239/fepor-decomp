@@ -1,5 +1,11 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 AchieveList_GoldAt(void *arg0,s32 i) { return *(s32*)((u8*)arg0+0x200+i*4); }
+static inline s32 AchieveList_SumGoldNested(void *arg0,s32 start) {
+s32 i, sum=start;
+for(i=start;i<*(s32*)((u8*)arg0+0x224);i++) sum+=AchieveList_GoldAt(arg0,i);
+return *(s32*)((u8*)arg0+0x228)+sum;
+}
 static inline s32 AchieveList_SumGoldWords(void *arg0, s32 start) {
     u32 sum = start;
     s32 i;
