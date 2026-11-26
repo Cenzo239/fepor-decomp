@@ -3003,25 +3003,37 @@ void fn_80188EF4(void *arg0) {
         *(f32 *)((char *)arg0 + 0x3C)));
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_80188FAC(void *p) {
-void Process_Goto(void *,s32);
-extern u8 gMapBlendMode;
-extern u8 gBattleMap[];
-s32 x,y;
-u8 flag,temp;
-void *unit;
-M2C_FIELD(p,f32 *,0x38)=16.0f; M2C_FIELD(p,f32 *,0x3c)=0.0f;
-M2C_FIELD(p,u8 *,0x50)=255; M2C_FIELD(p,u8 *,0x51)=255;
-unit=M2C_FIELD(p,void **,0x30);
-x=M2C_FIELD(unit,f32 *,4); y=M2C_FIELD(unit,f32 *,8);
-switch(M2C_FIELD(p,u16 *,0x52)&0x30){
-case 0x10:M2C_FIELD(p,u8 *,0x50)=0;break;
-case 0x20:M2C_FIELD(p,u8 *,0x51)=0;break;
-}
-flag=1; temp=gMapBlendMode-1; if(!(temp<=flag))flag=0;
-if(flag && M2C_FIELD(M2C_FIELD(M2C_FIELD(p,void **,0x30),void **,0x190),u8 *,8)==1 && gBattleMap[(s8)x+((s8)y<<6)+0x200d]==0) Process_Goto(p,0);
-}
+    void Process_Goto(void *, s32);
+    extern u8 gMapBlendMode;
+    extern u8 gBattleMap[];
+    s32 x, y;
+    void *unit;
 
+    M2C_FIELD(p, f32 *, 0x38) = 16.0f;
+    M2C_FIELD(p, f32 *, 0x3C) = 0.0f;
+    M2C_FIELD(p, u8 *, 0x50) = 255;
+    M2C_FIELD(p, u8 *, 0x51) = 255;
+    unit = M2C_FIELD(p, void **, 0x30);
+    x = M2C_FIELD(unit, f32 *, 4);
+    y = M2C_FIELD(unit, f32 *, 8);
+    switch (M2C_FIELD(p, u16 *, 0x52) & 0x30) {
+    case 0x10:
+        M2C_FIELD(p, u8 *, 0x50) = 0;
+        break;
+    case 0x20:
+        M2C_FIELD(p, u8 *, 0x51) = 0;
+        break;
+    }
+    if (MoveAnim_IsBlendMode(gMapBlendMode) &&
+        M2C_FIELD(M2C_FIELD(M2C_FIELD(p, void **, 0x30), void **, 0x190), u8 *, 8) == 1 &&
+        gBattleMap[(s8)x + ((s8)y << 6) + 0x200D] == 0) {
+        Process_Goto(p, 0);
+    }
+}
+#pragma pop
 void fn_801890B4(u8 *self) {
 void fn_80050C90(void *);
 void fn_8004FE98(void *,s32);
@@ -4852,8 +4864,8 @@ u8 fn_8018D294(void *arg0, s32 arg1) {
     return gAiState[0x21C];
 }
 
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma push
+#pragma opt_common_subs off
 u8 Ai_TryStealAction(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void Map_FillLayer(void *, s32, s32);
@@ -4884,15 +4896,15 @@ u8 Ai_TryStealAction(void *arg0, s32 arg1) {
     s32 dist;
     u32 *tbl;
     u32 t;
+    void *unit;
+    s32 i;
+    void *bestUnit;
+    s32 foundDist;
+    s32 bestDist;
+    s8 bestSlot;
     void **entry;
     s8 slot;
     s8 foundSlot;
-    s8 bestSlot;
-    s32 bestDist;
-    s32 foundDist;
-    void *bestUnit;
-    s32 i;
-    void *unit;
     void *base;
 
     base = gBattleMap;
@@ -4949,8 +4961,7 @@ u8 Ai_TryStealAction(void *arg0, s32 arg1) {
     }
     return gAiState[0x21C];
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
@@ -8480,10 +8491,10 @@ void fn_80193668(void *arg0) {
     void Ui_AddChild(void *, void *);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(u32, s32);
-    void *Item_GetByIid(void *);
+    s32 Item_GetByIid(void *);
     void Allegiance_FillMask(s32, void *);
-    s8 Unit_FindItemSlot(void *, void *);
-    s32 fn_800C39A4(void *, void *);
+    s8 Unit_FindItemSlot(void *, s32);
+    s32 fn_800C39A4(void *, s32);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80293C84[];
@@ -8496,12 +8507,10 @@ void fn_80193668(void *arg0) {
     u8 sp8[8];
     void *unit;
     s32 i;
-    void *key;
+    s32 key;
     u8 found;
     void *obj;
-    void *self;
 
-    self = arg0;
     obj = Heap_Alloc(0x5C);
     if (obj != NULL) {
         *(void **)obj = lbl_8028FDB0;
@@ -8550,14 +8559,14 @@ void fn_80193668(void *arg0) {
     String_AssignCStr((u8 *)obj + 0x3C, (char *)((u32)lbl_80279DF0 + 0x50F), strlen((char *)((u8 *)lbl_80279DF0 + 0x50F)));
     *(s32 *)((u8 *)obj + 0x34) |= 0x10;
     *(s32 *)((u8 *)obj + 0x58) = 1;
-    Ui_AddChild(self, obj);
-    key = *(void **)((u8 *)*(void **)((u8 *)self + 0x68) + 0x50);
-    obj = Ui_FindChild(self, -0x1000, 0);
+    Ui_AddChild(arg0, obj);
+    key = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x50);
+    obj = Ui_FindChild(arg0, -0x1000, 0);
     if (obj != NULL) {
-        Ui_SetWidgetText((u32)obj, (s32)key);
+        Ui_SetWidgetText((u32)obj, key);
     }
     found = 0;
-    *(f32 *)((u8 *)self + 0x64) = lbl_8036AE20;
+    *(f32 *)((u8 *)arg0 + 0x64) = lbl_8036AE20;
     key = Item_GetByIid(lbl_80279DF0 + 0x510);
     Allegiance_FillMask(4, sp8);
     for (i = 1; i <= 0x9F; i++) {
@@ -8579,7 +8588,7 @@ void fn_80193668(void *arg0) {
         }
     }
     if (found != 0) {
-        *(f32 *)((u8 *)self + 0x64) *= lbl_8036AE30;
+        *(f32 *)((u8 *)arg0 + 0x64) *= lbl_8036AE30;
     }
 }
 #pragma pop
