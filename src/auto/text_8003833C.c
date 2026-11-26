@@ -10,6 +10,18 @@ static inline s8 Unit_39408BaseStat(void *self, s32 index) {
     if (value < 0) value = 0;
     return value;
 }
+static inline s8 Unit_FindEquippedIndexIn(u8 *self, s32 offset) {
+    s32 i;
+    for (i=0; i<4; ++i) {
+        if (((self[offset+i*8+5] >> 7) & 1) && *(void **)(self+offset+i*8)) return i;
+    }
+    return -1;
+}
+static inline void *Unit_FindEquippedSlotIn(u8 *self, s32 offset) {
+    s8 index=Unit_FindEquippedIndexIn(self,offset);
+    if(index<0) return 0;
+    return self+offset+index*8;
+}
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -673,7 +685,7 @@ s8 fn_80038A48(void *arg0) {
         ptr = ptr + (s32)arg0;
     }
     if ((u32)ptr != 0) {
-        lim = *(s8 *)((u8 *)*(void **)ptr + 0x1F);
+        lim = *(u8 *)((u8 *)*(void **)ptr + 0x1F);
     }
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
         index = 0;
@@ -694,7 +706,7 @@ s8 fn_80038A48(void *arg0) {
         ptr = ptr + (s32)arg0;
     }
     if ((u32)ptr != 0) {
-        lim = (s8)(lim + *(s8 *)((u8 *)*(void **)ptr + 0x1F));
+        lim = (s8)(lim + *(u8 *)((u8 *)*(void **)ptr + 0x1F));
     }
     tmp = (s8)(var_r5 + lim);
     if (var_r4 <= (s8)(tmp / 2) && (u8)fn_80105BC0((u8 *)arg0 + 0x1BC, 0x10) != 0) {
@@ -776,7 +788,7 @@ s8 fn_80038A48(void *arg0) {
     if ((u32)ptr != 0) {
         item = *(void **)ptr;
         var_r31 += *(u8 *)((u8 *)item + 0x23);
-        bits = (u64 *)fn_8001CB64(item);
+        bits = (u64 *)fn_8001CB64((void *)ptr);
         if ((*bits & 2ULL) != 0) {
             other = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (other != 0) {
@@ -786,7 +798,7 @@ s8 fn_80038A48(void *arg0) {
             }
             class = *(void **)((u8 *)arg0 + 0x18C);
             diff = (s8)*(u8 *)((u8 *)class + 0x48) - (s8)*(u8 *)((u8 *)other + 0x48);
-            var_r31 = (s8)(var_r31 - (s8)(diff / 2));
+            var_r31 = (s8)(var_r31 - (diff / 2));
         }
     }
     return var_r31;
@@ -800,11 +812,11 @@ s8 result=0, hp, value, idx;
 u8 cap,current;
 s8 bonus;
 void *base,*person,**slot,*item,*flags,*other;
-person=M2C_FIELD(arg0,void **,0x188);
 base=M2C_FIELD(arg0,void **,0x18C);
+person=M2C_FIELD(arg0,void **,0x188);
+hp=(M2C_FIELD(base,u8 *,0x44)+M2C_FIELD(arg0,u8 *,0x1AB))+M2C_FIELD(person,u8 *,0x1D);
 cap=M2C_FIELD(base,u8 *,0x4C);
 current=M2C_FIELD(arg0,u8 *,0x1A8);
-hp=M2C_FIELD(person,u8 *,0x1D)+(M2C_FIELD(base,u8 *,0x44)+M2C_FIELD(arg0,u8 *,0x1AB));
 if(hp>(s8)cap)hp=(s8)cap;
 if(hp<0)hp=0;
 bonus=0;
@@ -825,14 +837,14 @@ if(slot)bonus=(s8)(bonus+M2C_FIELD(*slot,u8 *,0x1F));
 if((s8)current<=(s8)(hp+bonus)/2 && Status_Test((u8 *)arg0+0x1BC,0x10)){
 base=M2C_FIELD(arg0,void **,0x18C);
 person=M2C_FIELD(arg0,void **,0x188);
-value=M2C_FIELD(person,u8 *,0x20)+(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE));
+value=(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE))+M2C_FIELD(person,u8 *,0x20);
 if(value>(s8)M2C_FIELD(base,u8 *,0x4F))value=(s8)M2C_FIELD(base,u8 *,0x4F);
 if(value<0)value=0;
 result=value/2;}
 if((M2C_FIELD(arg0,u32 *,0x1A0)&2)&&!Status_Test((u8 *)arg0+0x1BC,0x16)){
 base=M2C_FIELD(arg0,void **,0x18C);
 person=M2C_FIELD(arg0,void **,0x188);
-value=M2C_FIELD(person,u8 *,0x20)+(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE));
+value=(M2C_FIELD(base,u8 *,0x47)+M2C_FIELD(arg0,u8 *,0x1AE))+M2C_FIELD(person,u8 *,0x20);
 if(value>(s8)M2C_FIELD(base,u8 *,0x4F))value=(s8)M2C_FIELD(base,u8 *,0x4F);
 if(value<0)value=0;
 result-=(result+value)/2;}
@@ -860,7 +872,7 @@ result-=((s8)M2C_FIELD(base,u8 *,0x47)-(s8)M2C_FIELD(other,u8 *,0x47))/2;
 }}
 return result;
 }
-s32 fn_80039408(u8 *arg0) {
+s32 fn_80039408(void *arg0) {
     u8 fn_80105BC0(void *, s32);
     void *fn_8001CB64(void *);
     void *fn_8000D354(void *);
@@ -906,7 +918,7 @@ s32 fn_80039408(u8 *arg0) {
     }
     var_r6 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        index = var_r6;
+        index = 0;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
         index = 1;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
@@ -919,9 +931,7 @@ s32 fn_80039408(u8 *arg0) {
     if ((s8)index < 0) {
         ptr = 0;
     } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1CC;
-        ptr = ptr + (s32)arg0;
+        ptr = (s32)((u8 *)arg0 + (s8)index * 8 + 0x1CC);
     }
     if ((u32)ptr != 0) {
         var_r6 = *(s8 *)((u8 *)*(void **)ptr + 0x1F);
@@ -979,9 +989,7 @@ s32 fn_80039408(u8 *arg0) {
     if ((s8)index < 0) {
         ptr = 0;
     } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1CC;
-        ptr = ptr + (s32)arg0;
+        ptr = (s32)((u8 *)arg0 + (s8)index * 8 + 0x1CC);
     }
     if ((u32)ptr != 0) {
         var_r31 = (s8)(var_r31 + *(u8 *)((u8 *)*(void **)ptr + 0x20));
