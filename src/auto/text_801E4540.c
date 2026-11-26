@@ -523,51 +523,7 @@ void fn_801E4E8C(void *arg0)
 
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-static inline void fn_801E4FB8_InsertLoop(void *arg0, u8 *entry) {
-    void List_Insert(void *, void *, void *, void *);
-    struct { u8 value; } keyCopy, key;
-    void *sp[5];
-    void *end;
-    s32 index;
-    void *node;
-    u8 found;
-
-    end = (u8 *)arg0 + 0x54;
-    index = 0;
-    sp[4] = *(void **)((u8 *)arg0 + 0x58);
-    for (;;) {
-        keyCopy.value = index + 1;
-        key = keyCopy;
-        node = sp[4];
-        goto search;
-    next:
-        node = *(void **)((u8 *)node + 4);
-    search:
-        if (node != end) {
-            s8 *p = *(s8 **)((u8 *)node + 8);
-            found = 0;
-            if (p[0] >= 0 && (s8)key.value == p[2]) {
-                found = 1;
-            }
-            if (!found) {
-                goto next;
-            }
-        }
-        sp[2] = node;
-        sp[4] = node;
-        if (node == end) {
-            break;
-        }
-        sp[3] = entry;
-        entry[2] = index;
-        sp[1] = node;
-        List_Insert(&sp[0], (u8 *)arg0 + 0x50, &sp[1], &sp[3]);
-        entry += 0x18;
-        index++;
-    }
-}
-
-static inline void fn_801E4FB8_Impl(void *arg0, u8 *entry, void *end, s32 index) {
+static inline void fn_801E4FB8_Impl(void *arg0, void *end, u8 *entry, s32 index) {
     void List_Insert(void *, void *, void *, void *);
     struct { u8 value; } keyCopy, key;
     void *sp[5];
@@ -620,7 +576,7 @@ void fn_801E4FB8(void *arg0) {
     aCopy = initA;
     a = aCopy;
     fn_801EA248((u8 *)arg0 + 0x50, &a);
-    fn_801E4FB8_InsertLoop(arg0, lbl_80332020);
+    fn_801E4FB8_Impl(arg0, lbl_80332020, (u8 *)arg0 + 0x54, 0);
     fn_80057898(*(void **)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x50) << 5);
 }
 #pragma use_lmw_stmw reset
