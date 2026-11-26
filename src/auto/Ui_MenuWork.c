@@ -1,6 +1,14 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void Ui_SetupWorkEntries(s32 *table, s32 **entries, s32 a, s32 b) {
+ entries[0] = table;
+ table[1] = a;
+ entries[1] = table + 2;
+ table[3] = b;
+ entries[2] = 0;
+}
+
 
 
 #pragma cplusplus on
@@ -526,6 +534,7 @@ static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b)
     entries[1][1] = b;
     entries[2] = 0;
 }
+#pragma opt_strength_reduction off
 void fn_8006F10C(s32 arg0, s32 arg1)
 {
   extern u8 lbl_80311CA8[];
@@ -548,4 +557,4 @@ void fn_8006F10C(s32 arg0, s32 arg1)
   entries->e2 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
-#pragma opt_strength_reduction on
+#pragma opt_strength_reduction reset
