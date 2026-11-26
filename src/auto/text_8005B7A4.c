@@ -13,15 +13,16 @@ static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
 }
 
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; s32 i; u8 *dst;
+    char *src; u8 c; s32 i; u8 *dst;
     src = arg1;
     if (*arg1 == '/') {
         src++;
     }
     *(s32 *)(arg0 + 0x2C) = 0;
     dst = arg0;
-    for (i = 0x29; i > 0; i--) {
-        u8 c = *src;
+    i = 0x29;
+    do {
+        c = *src;
         if ((s8)c >= 'A' && (s8)c <= 'Z') {
             *src = (char)(c + 0x20);
         }
@@ -33,7 +34,7 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
         dst++;
         src++;
         *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
-    }
+    } while (--i);
 
 }
 
@@ -1638,7 +1639,6 @@ void fn_8005E0F0(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 #pragma use_lmw_stmw off
 void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     s64 OSGetTime(void);
