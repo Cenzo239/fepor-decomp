@@ -3,6 +3,7 @@
 #include "global.h"
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
+typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
 
 typedef struct ListNode {
     struct ListNode *prev;
@@ -5790,8 +5791,9 @@ extern "C" void fn_8018F338(void *arg0) {
     fn_80154004(0, 0, 0x10);
 }
 
-#pragma use_lmw_stmw on
-#pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction on
 extern "C" s32 fn_8018F374(void *arg0) {
     void *fn_80105710(void *);
     extern u32 lbl_802CA264[];
@@ -5850,8 +5852,7 @@ loop2_test:
     }
     return total;
 }
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     struct Obj {
