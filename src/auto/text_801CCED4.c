@@ -9920,6 +9920,42 @@ void fn_801E0114(s32 arg0) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
+{
+s32 off;
+u8 *slot;
+s32 i;
+u8 valid;
+i=0; off=0x2000;
+for(;i<6;i++) {
+slot=base+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && id==slot[0x62]) return slot;
+off+=0x4000;
+}
+return 0;
+}
+static inline u8 *Save_FindLinkedHeader(u8 **save)
+{
+u8 *base;
+s32 off;
+u8 *slot;
+s32 i;
+u8 valid;
+i=0; off=0x1a000;
+for(;i<2;i++) {
+base=*save;
+slot=base+off;
+if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
+off+=0x6000;
+}
+return 0;
+}
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
@@ -10266,42 +10302,6 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
-static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
-{
-s32 off;
-u8 *slot;
-s32 i;
-u8 valid;
-i=0; off=0x2000;
-for(;i<6;i++) {
-slot=base+off;
-if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid && id==slot[0x62]) return slot;
-off+=0x4000;
-}
-return 0;
-}
-static inline u8 *Save_FindLinkedHeader(u8 **save)
-{
-u8 *base;
-s32 off;
-u8 *slot;
-s32 i;
-u8 valid;
-i=0; off=0x1a000;
-for(;i<2;i++) {
-base=*save;
-slot=base+off;
-if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
-off+=0x6000;
-}
-return 0;
-}
 #pragma global_optimizer off
 void fn_801E080C(void *arg0) {
 extern u8 gSystemSave[];
