@@ -595,8 +595,8 @@ static inline void Heap_Select_Impl(char *arg0, u32 *table) {
     s32 Str_Cmp(char *, char *);
     extern u32 lbl_80320B88[];
     extern u32 lbl_80367870;
-    s32 i = 0;
     u32 *p = table;
+    s32 i = 0;
     u32 entry;
 
     while (i < 0x10) {
@@ -613,24 +613,8 @@ static inline void Heap_Select_Impl(char *arg0, u32 *table) {
 }
 
 void Heap_Select(char *arg0) {
-    s32 Str_Cmp(char *, char *);
     extern u32 lbl_80320B88[];
-    extern u32 lbl_80367870;
-    s32 i = 0;
-    u32 *table = lbl_80320B88;
-    u32 entry;
-
-    while (i < 0x10) {
-        entry = *table;
-        if (entry != 0) {
-            if (Str_Cmp(arg0, (char *)(entry + 4)) == 0) {
-                lbl_80367870 = lbl_80320B88[i];
-                return;
-            }
-        }
-        i++;
-        table++;
-    }
+    Heap_Select_Impl(arg0, lbl_80320B88);
 }
 #pragma global_optimizer reset
 void fn_800C4728(s32 arg0) {
