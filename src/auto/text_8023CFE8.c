@@ -367,43 +367,13 @@ extern f64 lbl_8036C148;
 void fn_8023CFE8(void) {
     extern u8 *lbl_803688E4;
     extern u8 *lbl_803688E8;
-    s32 out;
-    s32 val;
-    s32 n;
-    s32 n2;
-    u8 v;
-    s32 i;
+    s32 out = 0;
+    s32 i, j;
 
-    out = 0;
-    val = 1;
-    while (1) {
-        n = lbl_803688E4[val - 1];
-        v = (u8)val;
-        n2 = n;
-        if (n2 != 0) {
-            i = (u32)n2 >> 3;
-            if (i != 0) {
-                do {
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                    lbl_803688E8[out++] = v;
-                } while (--i);
-            }
-            n2 &= 7;
-            if (n2 != 0) {
-                do {
-                    lbl_803688E8[out++] = v;
-                } while (--n2);
-            }
-        }
-        val += 1;
-        if (val > 16) {
-            break;
+    for (i = 1; i <= 16; i++) {
+        j = lbl_803688E4[i - 1];
+        while (j--) {
+            lbl_803688E8[out++] = (u8)i;
         }
     }
     lbl_803688E8[out] = 0;
