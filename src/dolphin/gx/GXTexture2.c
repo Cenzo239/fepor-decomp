@@ -1034,13 +1034,16 @@ void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d) {
     *(u16 *)((u8 *)ptr + 2) = 0;
 }
 
+static inline void GXFifoWrite8(volatile PPCWGPipe *fifo, u8 value) { fifo->u8 = value; }
+static inline void GXFifoWrite32(volatile PPCWGPipe *fifo, u32 value) { fifo->u32 = value; }
+
 #pragma opt_propagation on
 void GXSetTevColorOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
 {
-  u8 cmd;
-  u16 *gx;
-  u32 *ptr;
   u32 value;
+  u32 *ptr;
+  u16 *gx;
+  u8 cmd;
   ptr = (u32 *) __GXData;
   value = ptr[(0x130 / 4) + arg0];
   value = __rlwimi(value, arg1 & 0xFF, 18, 13, 13);
@@ -1082,12 +1085,12 @@ void GXSetTevAlphaOp(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5)
     value = __rlwimi(__rlwimi(value, arg1, 19, 10, 11), 3, 16, 14, 15);
   }
   cmd = 0x61;
-  gx = __GXData;
-  ptr = (u32 *) __GXData;
   GXWGFifo.u8 = cmd;
   value = __rlwimi(value, arg4, 19, 12, 12);
   value = __rlwimi(value, arg5, 22, 8, 9);
   GXWGFifo.u32 = value;
+  gx = __GXData;
+  ptr = (u32 *) __GXData;
   ptr[(0x170 / 4) + arg0] = value;
   gx[1] = 0;
 }
