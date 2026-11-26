@@ -2702,6 +2702,7 @@ Vec2s *fn_8013F748(void *arg0, Vec2s *arg1, Vec2s *arg2) {
     arg1->y = sp38.y;
     return arg1;
 }
+#pragma scheduling reset
 #pragma global_optimizer reset
 void Prim2D_ScissorFromRect(void *unused, void *rectSrc) {
     void GXSetScissor(u32, u32, u32, u32);
