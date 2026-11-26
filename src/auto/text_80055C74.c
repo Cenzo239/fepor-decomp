@@ -1846,7 +1846,7 @@ f32 Math_Angle2D(f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     dx = dx - (f32)(s32)(dx / c) * c;
     return dx;
 }
-#pragma optimize_for_size reset
+#pragma optimization_level 4
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
 {
   extern f32 lbl_80369104;
@@ -1866,8 +1866,6 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   h00 = ((one + two_t) * (tm1 * tm1));
   return (f32) ((((f64) (farg4 * (tm1 * farg4))) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (farg4 * (t1m * t1m))) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
-
-#pragma use_lmw_stmw on
 void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void fn_80059C2C(s32, s32, s32, s32, s32);
     void fn_80066D00(s32);
