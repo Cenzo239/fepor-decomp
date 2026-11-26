@@ -3661,6 +3661,8 @@ u32 StaffRoll_CompareUnits(void **lhs, void **rhs) {
 }
 
 #pragma global_optimizer off
+typedef struct StaffRollTexture { u8 tex[32]; u16 width; u16 height; } StaffRollTexture;
+
 void fn_801F8E30(void *arg0) {
     void fn_80007340(void *, void *);
     void Prim2D_SetRect(f32, f32, f32, f32);
@@ -3862,24 +3864,38 @@ void fn_801F9498(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_801F94D8(void *arg0) {
-    void fn_8000A258(void);
-    void fn_80009D74(f32, f32, f32, f32);
-    void fn_80009B8C(s32);
-    void fn_80009B80(s32);
-    void fn_8000A248(void);
-    void fn_8000C070(void *, s32);
-    void fn_8000A174(s32, s32);
-    void fn_80009C0C(f32);
-    void *fn_8000E0E4(void *);
-    s16 fn_80010B78(void *, s32, f32);
+    struct Slot {
+        void *entry;
+        s32 unk;
+    };
+    struct Panel {
+        u8 pad0[0x34];
+        void *list[2];
+        u8 pad3C[0x18];
+        s8 sel;
+        u8 pad55[3];
+        struct Slot slots[2];
+    };
+    void Prim2D_Begin(void);
+    void Prim2D_SetTransform(f32, f32, f32, f32);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetAlphaByte(s32);
+    void Prim2D_PrepareTex(void);
+    void Process_Goto(void *, s32);
+    void Prim2D_SetTex(s32, s32);
+    void Prim2D_AddZ(f32);
+    void *Msg_Expand(void *);
+    s16 Text_MeasureWidth(void *, s32, f32);
     void fn_8001003C(s32, s32, s32, s32, s32, void *, f32, f32, ...);
     void *fn_800A8978(void *);
     f32 fn_801099A0(void *, s32);
-    void fn_80231D94(void *, void *, ...);
-    extern s32 lbl_80367110;
-    extern u8 lbl_80281028[];
+    void sprintf(void *, void *, ...);
+    extern s32 gUiInputFlags;
+    extern u8 StaffRoll_str[];
     extern f32 lbl_8036BA18;
     extern f32 lbl_8036BA20;
     extern f32 lbl_8036BA74;
@@ -3890,16 +3906,10 @@ void fn_801F94D8(void *arg0) {
     extern f32 lbl_8036BA84;
 
     char sp8[0x80];
-    void *temp_r29;
+    struct Panel *temp_r29;
     void **var_r31;
-    void **row;
-    s8 var_r26;
     s32 var_r30;
     s32 var_r3;
-    void *temp_r28;
-    void *temp_r27;
-    void *entry;
-    void *str;
     void *nameStr;
     void *fmtStr;
     void *obj;
@@ -3908,89 +3918,96 @@ void fn_801F94D8(void *arg0) {
     s16 w;
     u16 val22a;
     s8 val19a;
+    s8 var_r26;
+    void *entry;
+    void *str;
+    void *temp_r27;
+    s8 nextSel;
 
-    temp_r29 = arg0;
-    if (lbl_80367110 & 1) {
-        fn_8000C070(temp_r29, 3);
+    temp_r29 = (struct Panel *)arg0;
+    if (gUiInputFlags & 1) {
+        Process_Goto(temp_r29, 3);
         return;
     }
-    fn_8000A258();
-    fn_80009D74(lbl_8036BA18, lbl_8036BA18, lbl_8036BA74, lbl_8036BA20);
-    fn_80009B8C(0xFF);
-    fn_80009B80(0x80);
-    fn_8000A248();
-    var_r26 = *(s8 *)((u8 *)temp_r29 + 0x54);
-    fn_8000A258();
-    fn_8000A174(0, 0x13);
+    Prim2D_Begin();
+    Prim2D_SetTransform(lbl_8036BA18, lbl_8036BA18, lbl_8036BA74, lbl_8036BA20);
+    Prim2D_SetColorByte(0xFF);
+    Prim2D_SetAlphaByte(0x80);
+    Prim2D_PrepareTex();
+    var_r26 = temp_r29->sel;
+    Prim2D_Begin();
+    Prim2D_SetTex(0, 0x13);
     var_r30 = var_r26;
-    fn_80009C0C((f32)(var_r30 * 2));
-    fn_8000A248();
+    Prim2D_AddZ((f32)(var_r30 * 2));
+    Prim2D_PrepareTex();
     var_r3 = -var_r30;
-    var_r31 = (void **)((u8 *)temp_r29 + 0x34);
+    var_r31 = temp_r29->list;
     if (var_r3 >= 0) {
-        for (; var_r3 > 0; var_r3--) {
+        while (var_r3 > 0) {
             var_r31 = (void **)var_r31[1];
+            var_r3--;
         }
     } else {
-        for (var_r3 = var_r30; var_r3 > 0; var_r3--) {
+        while (var_r3 < 0) {
             var_r31 = (void **)*var_r31;
+            var_r3++;
         }
     }
     if (var_r26 > 0) {
-        row = (void **)((u8 *)temp_r29 + ((var_r30 & 1) << 3));
-        entry = row[0x58 / 4];
+        entry = temp_r29->slots[var_r30 & 1].entry;
         if (entry != 0) {
-            fn_8000A258();
-            fn_80009B8C((s32)fn_801099A0(entry, 9));
-            fn_8000A248();
+            Prim2D_Begin();
+            Prim2D_SetColorByte((s32)fn_801099A0(entry, 9));
+            Prim2D_PrepareTex();
             f31 = fn_801099A0(entry, 1);
             f30 = lbl_8036BA78;
             str = fn_800A8978(*(void **)((u8 *)var_r31[2] + 0x18C));
-            w = fn_80010B78(str, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(str, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA7C + f31), 1, 1, 0, str, lbl_8036BA20, lbl_8036BA18);
             obj = var_r31[2];
             val22a = *(u16 *)((u8 *)obj + 0x22A);
             val19a = *(s8 *)((u8 *)obj + 0x19A);
-            nameStr = fn_8000E0E4(lbl_80281028 + 0x2B8);
-            fmtStr = fn_8000E0E4(lbl_80281028 + 0x2A6);
-            fn_80231D94(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            nameStr = Msg_Expand(StaffRoll_str + 0x2B8);
+            fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
+            sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
-            w = fn_80010B78(sp8, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA80 + f31), 1, 1, 0, sp8, lbl_8036BA20, lbl_8036BA18);
         }
     }
-    fn_8000A258();
-    fn_80009C0C(lbl_8036BA84);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036BA84);
+    Prim2D_PrepareTex();
     temp_r27 = *var_r31;
-    if ((s8)(var_r30 + 1) < 5) {
-        row = (void **)((u8 *)temp_r29 + (((var_r30 + 1) & 1) << 3));
-        entry = row[0x58 / 4];
+    nextSel = var_r30 + 1;
+    if (nextSel < 5) {
+        entry = temp_r29->slots[nextSel & 1].entry;
         if (entry != 0) {
-            fn_8000A258();
-            fn_80009B8C((s32)fn_801099A0(entry, 9));
-            fn_8000A248();
+            Prim2D_Begin();
+            Prim2D_SetColorByte((s32)fn_801099A0(entry, 9));
+            Prim2D_PrepareTex();
             f31 = fn_801099A0(entry, 1);
             f30 = lbl_8036BA78;
             str = fn_800A8978(*(void **)((u8 *)((void **)temp_r27)[2] + 0x18C));
-            w = fn_80010B78(str, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(str, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA7C + f31), 1, 1, 0, str, lbl_8036BA20, lbl_8036BA18);
             obj = ((void **)temp_r27)[2];
             val22a = *(u16 *)((u8 *)obj + 0x22A);
             val19a = *(s8 *)((u8 *)obj + 0x19A);
-            nameStr = fn_8000E0E4(lbl_80281028 + 0x2B8);
-            fmtStr = fn_8000E0E4(lbl_80281028 + 0x2A6);
-            fn_80231D94(sp8, lbl_80281028 + 0x2E6, fmtStr, val19a, val22a, nameStr);
+            nameStr = Msg_Expand(StaffRoll_str + 0x2B8);
+            fmtStr = Msg_Expand(StaffRoll_str + 0x2A6);
+            sprintf(sp8, StaffRoll_str + 0x2E6, fmtStr, val19a, val22a, nameStr);
             f30 = lbl_8036BA78;
-            w = fn_80010B78(sp8, -1, lbl_8036BA20);
+            w = Text_MeasureWidth(sp8, -1, lbl_8036BA20);
             f30 = f30 - (f32)(w >> 1);
             fn_8001003C((s32)f30, (s32)(lbl_8036BA80 + f31), 1, 1, 0, sp8, lbl_8036BA20, lbl_8036BA18);
         }
     }
 }
+#pragma pop
 void fn_801F99C4(void *arg0) {
     s32 fn_800A8A00(void *);
     void *Sound_Create(void *, void *);
@@ -4549,230 +4566,150 @@ void fn_801FA8B4(void *arg0, u8 (*compare)(void *, void *)) {
     }
 }
 
-#pragma peephole off
+#pragma push
+#pragma peephole on
+#pragma opt_propagation off
 void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
     typedef struct {
-        s32 a;
-        s32 b;
+        u8 a;
+        u16 b;
+        u32 c;
     } Elem;
+    typedef struct {
+        u32 w0;
+        u32 w1;
+    } ElemRaw;
     typedef struct {
         u32 cap;
         u32 size;
         Elem *data;
     } Vec;
-    void fn_800C428C(void *);
-    void *fn_800C42D8(u32);
-    void fn_801FB548(Vec *);
-    void fn_8022CF78(void);
-    void fn_80232058(void *, const char *, ...);
+    void Heap_Free(void *);
+    void *Heap_Alloc(u32);
+    void StaffRoll_VecClear(Vec *);
+    void abort(void);
+    void fprintf(void *, const char *, ...);
     extern char __files[];
-    extern char lbl_80281028[];
+    extern char StaffRoll_str[];
 
-    Vec *vec;
-    Elem *fill;
-    u32 count;
-    Elem *pos;
     Vec tmp;
 
-    count = arg2;
-    vec = (Vec *)arg0;
-    pos = (Elem *)arg1;
-    fill = (Elem *)arg3;
-    if (count == 0) {
+    if (arg2 == 0) {
         return;
     }
-    if (count > 0x1FFFFFFFU || vec->size > 0x1FFFFFFFU - count) {
+    if (arg2 > 0x1FFFFFFFU || ((Vec *)arg0)->size > 0x1FFFFFFFU - arg2) {
         char *files = __files;
-        char *msg = lbl_80281028;
-        fn_80232058(files + 0xA0, msg + 0x3A1);
-        fn_8022CF78();
+        char *msg = StaffRoll_str;
+        fprintf(files + 0xA0, msg + 0x3A1);
+        abort();
     }
-    if (vec->size + count <= vec->cap) {
-        Elem *dst = vec->data + vec->size;
-        Elem *fill_out = fill;
-        s32 n = dst - pos;
-        if (count > (u32)n) {
+    if (((Vec *)arg0)->size + arg2 <= ((Vec *)arg0)->cap) {
+        Elem *dst = ((Vec *)arg0)->data + ((Vec *)arg0)->size;
+        Elem *fill_out = (Elem *)arg3;
+        s32 n = dst - (Elem *)arg1;
+        if (arg2 > (u32)n) {
             Elem *p = dst;
             Elem *src;
-            u32 ctr;
-            for (ctr = count - (u32)n; ctr != 0; ctr--) {
+            while (arg2 > (u32)n) {
                 if (p != NULL) {
-                    *p = *fill;
+                    *(ElemRaw *)p = *(ElemRaw *)arg3;
                 }
                 p++;
-                count--;
-                vec->size++;
+                arg2--;
+                ((Vec *)arg0)->size++;
             }
-            for (src = pos; src < dst; src++, p++) {
+            for (src = (Elem *)arg1; src < dst; src++, p++) {
                 if (p != NULL) {
-                    *p = *src;
+                    *(ElemRaw *)p = *(ElemRaw *)src;
                 }
-                vec->size++;
+                ((Vec *)arg0)->size++;
             }
         } else {
-            Elem *src = dst - count;
+            Elem *src = dst - arg2;
             Elem *p = dst;
-            u32 words;
-            u8 *from_b;
-            u8 *to_b;
+            Elem *from;
+            Elem *to;
             s32 off;
 
             for (; src < dst; src++, p++) {
                 if (p != NULL) {
-                    *p = *src;
+                    *(ElemRaw *)p = *(ElemRaw *)src;
                 }
-                vec->size++;
+                ((Vec *)arg0)->size++;
             }
-            off = (n - (s32)count) * 8;
-            if ((u8 *)dst - off <= (u8 *)fill && (u8 *)fill < (u8 *)dst) {
-                fill_out = (Elem *)((u8 *)fill + count * 8);
+            off = n - (s32)arg2;
+            if (dst - off <= (Elem *)arg3 && (Elem *)arg3 < dst) {
+                fill_out = fill_out + arg2;
             }
-            from_b = (u8 *)pos + off;
-            to_b = (u8 *)dst;
-            if (from_b > (u8 *)pos) {
-                words = (u32)(from_b + 7 - (u8 *)pos) >> 3;
-                for (; (words >> 3) != 0;) {
-                    u32 ctr = words >> 3;
-                    do {
-                        to_b[-8] = from_b[-8];
-                        *(u16 *)(to_b - 6) = *(u16 *)(from_b - 6);
-                        *(s32 *)(to_b - 4) = *(s32 *)(from_b - 4);
-                        to_b[-0x10] = from_b[-0x10];
-                        *(u16 *)(to_b - 0xe) = *(u16 *)(from_b - 0xe);
-                        *(s32 *)(to_b - 0xc) = *(s32 *)(from_b - 0xc);
-                        to_b[-0x18] = from_b[-0x18];
-                        *(u16 *)(to_b - 0x16) = *(u16 *)(from_b - 0x16);
-                        *(s32 *)(to_b - 0x14) = *(s32 *)(from_b - 0x14);
-                        to_b[-0x20] = from_b[-0x20];
-                        *(u16 *)(to_b - 0x1e) = *(u16 *)(from_b - 0x1e);
-                        *(s32 *)(to_b - 0x1c) = *(s32 *)(from_b - 0x1c);
-                        to_b[-0x28] = from_b[-0x28];
-                        *(u16 *)(to_b - 0x26) = *(u16 *)(from_b - 0x26);
-                        *(s32 *)(to_b - 0x24) = *(s32 *)(from_b - 0x24);
-                        to_b[-0x30] = from_b[-0x30];
-                        *(u16 *)(to_b - 0x2e) = *(u16 *)(from_b - 0x2e);
-                        *(s32 *)(to_b - 0x2c) = *(s32 *)(from_b - 0x2c);
-                        to_b[-0x38] = from_b[-0x38];
-                        *(u16 *)(to_b - 0x36) = *(u16 *)(from_b - 0x36);
-                        *(s32 *)(to_b - 0x34) = *(s32 *)(from_b - 0x34);
-                        to_b[-0x40] = from_b[-0x40];
-                        *(u16 *)(to_b - 0x3e) = *(u16 *)(from_b - 0x3e);
-                        *(s32 *)(to_b - 0x3c) = *(s32 *)(from_b - 0x3c);
-                        from_b -= 0x40;
-                        to_b -= 0x40;
-                    } while (--ctr != 0);
-                    break;
-                }
-                words &= 7;
-                if (words != 0) {
-                    do {
-                        to_b[-8] = from_b[-8];
-                        *(u16 *)(to_b - 6) = *(u16 *)(from_b - 6);
-                        *(s32 *)(to_b - 4) = *(s32 *)(from_b - 4);
-                        from_b -= 8;
-                        to_b -= 8;
-                    } while (--words != 0);
-                }
+            from = (Elem *)arg1 + off;
+            to = dst;
+            while (from > (Elem *)arg1) {
+                --from;
+                --to;
+                to->a = from->a;
+                to->b = from->b;
+                to->c = from->c;
             }
         }
         {
-            Elem *out = pos;
-            u32 left = count;
-            if (left != 0) {
-                u32 ctr = left >> 3;
-                if (ctr != 0) {
-                    do {
-                        ((u8 *)out)[0] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 2) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 4) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[8] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0xa) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0xc) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x10] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x12) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x14) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x18] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x1a) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x1c) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x20] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x22) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x24) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x28] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x2a) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x2c) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x30] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x32) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x34) = *(s32 *)((u8 *)fill_out + 4);
-                        ((u8 *)out)[0x38] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 0x3a) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 0x3c) = *(s32 *)((u8 *)fill_out + 4);
-                        out = (Elem *)((u8 *)out + 0x40);
-                    } while (--ctr != 0);
-                }
-                left &= 7;
-                if (left != 0) {
-                    do {
-                        ((u8 *)out)[0] = ((u8 *)fill_out)[0];
-                        *(u16 *)((u8 *)out + 2) = *(u16 *)((u8 *)fill_out + 2);
-                        *(s32 *)((u8 *)out + 4) = *(s32 *)((u8 *)fill_out + 4);
-                        out = (Elem *)((u8 *)out + 8);
-                    } while (--left != 0);
-                }
+            Elem *out = (Elem *)arg1;
+            u32 left = arg2;
+            while (left != 0) {
+                out->a = fill_out->a;
+                out->b = fill_out->b;
+                out->c = fill_out->c;
+                out++;
+                left--;
             }
         }
         return;
     }
 
     {
-        u32 cap;
         Elem *p;
-        Elem *dst;
-        Elem *src;
+        u32 cap;
         Elem *end;
+        Elem *src;
+        Elem *dst;
         u32 t;
         Elem *tp;
         u32 ts;
-        u32 z;
+        u32 new_size = ((Vec *)arg0)->size + arg2;
 
-        z = 0;
-        tmp.cap = z;
-        tmp.size = z;
-        tmp.data = (Elem *)z;
-        cap = 1;
-        z = vec->cap;
-        if (z != 0) {
-            cap = z;
-        }
-        while (vec->size + count > cap) {
+        tmp.cap = 0;
+        tmp.size = 0;
+        tmp.data = NULL;
+        cap = ((Vec *)arg0)->cap != 0 ? ((Vec *)arg0)->cap : 1;
+        while (new_size > cap) {
             if (cap < 0x0FFFFFFFU) {
                 cap *= 2;
             } else {
                 cap = 0x1FFFFFFFU;
             }
         }
-        p = (Elem *)fn_800C42D8(cap * 8);
+        p = (Elem *)Heap_Alloc(cap * 8);
         if (p == NULL) {
             char *files = __files;
-            char *msg = lbl_80281028;
-            fn_80232058(files + 0xA0, msg + 0x3BE);
-            fn_8022CF78();
+            char *msg = StaffRoll_str;
+            fprintf(files + 0xA0, msg + 0x3BE);
+            abort();
         }
         tmp.data = p;
         tmp.cap = cap;
         dst = p;
-        src = vec->data;
-        end = vec->data + vec->size;
-        for (; src < pos; src++, dst++) {
+        end = ((Vec *)arg0)->data + ((Vec *)arg0)->size;
+        src = ((Vec *)arg0)->data;
+        for (; src < (Elem *)arg1; src++, dst++) {
             if (dst != NULL) {
-                *dst = *src;
+                *(ElemRaw *)dst = *(ElemRaw *)src;
             }
             tmp.size++;
         }
         {
             u32 ctr;
-            for (ctr = count; ctr != 0; ctr--) {
+            for (ctr = arg2; ctr != 0; ctr--) {
                 if (dst != NULL) {
-                    *dst = *fill;
+                    *(ElemRaw *)dst = *(ElemRaw *)arg3;
                 }
                 dst++;
                 tmp.size++;
@@ -4780,28 +4717,28 @@ void fn_801FAA9C(void *arg0, void *arg1, u32 arg2, void *arg3) {
         }
         for (; src < end; src++, dst++) {
             if (dst != NULL) {
-                *dst = *src;
+                *(ElemRaw *)dst = *(ElemRaw *)src;
             }
             tmp.size++;
         }
-        if (&tmp != vec) {
+        if (&tmp != (Vec *)arg0) {
             t = tmp.cap;
-            tmp.cap = vec->cap;
-            vec->cap = t;
+            tmp.cap = ((Vec *)arg0)->cap;
+            ((Vec *)arg0)->cap = t;
             tp = tmp.data;
-            tmp.data = vec->data;
-            vec->data = tp;
+            tmp.data = ((Vec *)arg0)->data;
+            ((Vec *)arg0)->data = tp;
             ts = tmp.size;
-            tmp.size = vec->size;
-            vec->size = ts;
+            tmp.size = ((Vec *)arg0)->size;
+            ((Vec *)arg0)->size = ts;
         }
-        fn_801FB548(&tmp);
+        StaffRoll_VecClear(&tmp);
         if (tmp.data != NULL) {
-            fn_800C428C(tmp.data);
+            Heap_Free(tmp.data);
         }
     }
 }
-#pragma peephole on
+#pragma pop
 /* Grow the staff-roll vector so it can hold at least newCap elements. */
 void StaffRoll_VecReserve(void *arg0, u32 newCap) {
     typedef struct {
