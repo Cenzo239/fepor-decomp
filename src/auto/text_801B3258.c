@@ -9786,7 +9786,9 @@ extern "C" void fn_801C60E8(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x3C) = lbl_8036B424;
     *(f32 *)((u8 *)arg0 + 0x40) = lbl_8036B424;
 }
-#pragma cplusplus reset
+#pragma cplusplus off
+#pragma push
+#pragma optimization_level 3
 void fn_801C6234(void *arg0) {
     s32 fn_8006135C(void *, void *);
     void fn_80060F70(void *, s32, f32 *);
@@ -9799,7 +9801,7 @@ void fn_801C6234(void *arg0) {
     f64 fn_80238788(f64);
     void fn_801C65E0(void);
     extern u8 lbl_8027D4B8[];
-    extern f32 lbl_8036B414;
+    extern const f32 lbl_8036B414;
     extern f32 lbl_8036B424;
     extern f32 lbl_8036B428;
     extern f32 lbl_8036B434;
@@ -9824,6 +9826,7 @@ void fn_801C6234(void *arg0) {
     long idx;
     f32 angle;
     register u8 ok;
+    f32 dot;
 
     self = arg0;
     rodata = lbl_8027D4B8;
@@ -9857,7 +9860,6 @@ void fn_801C6234(void *arg0) {
                     fn_802029C4(mtx, vec, vec);
                     ((f32 *)vec)[1] = lbl_8036B424;
                     if (fn_8020322C((f32 *)vec) > lbl_8036B424) {
-                        f32 dot;
                         fn_802031E8((f32 *)vec, (f32 *)vec);
                         dot = fn_80203270((f32 *)refv, (f32 *)vec);
                         if (dot >= lbl_8036B434) {
@@ -9899,15 +9901,18 @@ void fn_801C6234(void *arg0) {
                             *(s32 *)((u8 *)list + 0x14) = *(s32 *)((u8 *)list + 0x14) + 1;
                         }
                         if (n != NULL) {
-                            *(s32 *)&sp8[0] = *(s32 *)&sp14[0];
-                            *(s32 *)&sp8[1] = *(s32 *)&sp14[1];
-                            *(s16 *)((u8 *)n + 0x18) = 0xB4;
-                            *(s32 *)&sp8[2] = *(s32 *)&sp14[2];
+                            s32 x, y, z;
+                            s16 life = 0xB4;
+                            x = *(s32 *)&sp14[0]; y = *(s32 *)&sp14[1]; z = *(s32 *)&sp14[2];
+                            *(s32 *)&sp8[0] = x;
+                            *(s32 *)&sp8[1] = y;
+                            *(s16 *)((u8 *)n + 0x18) = life;
+                            *(s32 *)&sp8[2] = z;
                             *(f32 *)((u8 *)n + 0x8) = sp8[0];
                             *(f32 *)((u8 *)n + 0xC) = sp8[1];
                             *(f32 *)((u8 *)n + 0x10) = sp8[2];
                             *(f32 *)((u8 *)n + 0x14) = angle;
-                            *(f32 *)((u8 *)n + 0xC) = zero;
+                            *(f32 *)((u8 *)n + 0xC) = lbl_8036B414;
                         }
                     }
                     *(f32 *)((u8 *)walk + 0x34) = pos[1];
@@ -9970,6 +9975,7 @@ get_next:
         goto loop_body;
     }
 }
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 void fn_801C65E0(void *arg0) {
@@ -12889,9 +12895,11 @@ void fn_801CB2A4(void *arg0) {
     }
 }
 
-#pragma cplusplus on
+#pragma push
+#pragma cplusplus off
+#pragma optimization_level 2
 #pragma opt_common_subs off
-void *fn_801CB41C(void *arg0, void *arg1, void *arg2) {
+void *fn_801CB41C(u8 *self, void *arg1, void *arg2) {
 void fn_800DF7A0(void *);
 void String_Init(void *,void *,void *); void Xml_GetNamedValue(void *,void *,void *);
 u32 strlen(void *); void String_AssignCStr(void *,void *,u32); void String_Destroy(void *,s32);
@@ -12907,9 +12915,10 @@ String801CB41C str,s48,s3c,s30,s24,s18;
 u32 a14,a10,ac,a8;
 void *saved;
 s32 i;
-u8 *self=(u8 *)arg0;
+u32 len;
 u8 *s60;
-fn_800DF7A0(arg0);
+
+fn_800DF7A0(self);
 saved=arg1;
 *(void **)(self+0x40)=lbl_80298428;
 *(u32 *)(self+0x48)=0; *(u32 *)(self+0x4c)=0; *(u32 *)(self+0x50)=0;
@@ -12922,8 +12931,9 @@ String_AssignCStr(self+0x54,arg1,strlen(arg1));String_Destroy(&s48,-1);
 String_Init(&s3c,lbl_8027DAB0+0xe5,&a10);
 Xml_GetNamedValue(&p160,arg2,&s3c);arg1=&p160;
 String_AssignCStr(self+0x60,arg1,strlen(arg1));String_Destroy(&s3c,-1);
+len=strlen(lbl_8027DAB0+0xc8);
 s60=self+0x60;
-if(String_Compare(s60,0,*(u32 *)s60,lbl_8027DAB0+0xc8,strlen(lbl_8027DAB0+0xc8))==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
+if(String_Compare(s60,0,*(u32 *)s60,lbl_8027DAB0+0xc8,len)==0 && (s32)*fn_80117CC0(self+0x54,4)=='_'){
 String_Substr(&s30,self+0x54,0,4);String_Assign(self+0x60,&s30,0,-1);String_Destroy(&s30,-1);
 }
 String_Init(&s24,lbl_8027DAB0+0xec,&ac);
@@ -12946,8 +12956,7 @@ fn_801CB934(self+0x48,*(u8 **)(self+0x50)+(*(u32 *)(self+0x4c)<<5),1,(s32)record
 *(s32 *)(self+0x74)=-1;self[0x78]=0;self[0x79]=0;String_Destroy(&str,-1);
 return self;
 }
-
-#pragma cplusplus reset
+#pragma pop
 int fn_801CB7F0(void *arg0, void *arg1, void *unused) {
     u8 *src;
     u8 *dst;
