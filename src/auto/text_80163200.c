@@ -1,4 +1,7 @@
 #include "common.h"
+static inline s16 Ui_TextOffsetSum(s16 margin, s32 offset) { return margin + offset; }
+static inline s16 Ui_TextOffsetRight(s16 margin, s32 width, s16 avail) { return avail - (margin + width); }
+static inline s16 Ui_TextOffsetVertical(s16 margin, s32 offset) { return (margin + offset) >> 1; }
 static inline s16 Ui_CursorRowY(s32 row, s32 height, s32 top) { return row * height + top; }
 static inline s16 Ui_AverageCursorCoord(s16 target, s16 current) { return (current + (target + 1)) >> 1; }
 
@@ -877,8 +880,8 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
     s32 x;
     s32 slot;
     s32 rowY;
-    s32 row;
     s32 rowHeight;
+    s32 row;
     s32 offset;
     u8 enabled;
     void *selected;
@@ -889,7 +892,7 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
         savedHeight=height;
         x=M2C_FIELD(arg0,s16 *,0x64);
         savedX=x;
-        y=(s16)(slot*height+M2C_FIELD(arg0,s16 *,0x66));
+        y=Ui_CursorRowY(slot,height,M2C_FIELD(arg0,s16 *,0x66));
         if(slot>=4 && slot<=7) y+=((ItemCursorView *)arg0)->getRowOffset();
         if(M2C_FIELD(arg0,s16 *,0x52)<0) {
             M2C_FIELD(arg0,s16 *,0x50)=x;
@@ -922,7 +925,7 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
         ((CursorRenderView *)arg0)->update(arg1);
         Prim2D_Begin(); Prim2D_AddZ(lbl_8036A890); Prim2D_PrepareTex();
         row=M2C_FIELD(arg0,s16 *,0x4E);
-        rowY=(s16)(row*savedHeight+M2C_FIELD(arg0,s16 *,0x66));
+        rowY=Ui_CursorRowY(row,savedHeight,M2C_FIELD(arg0,s16 *,0x66));
         rowHeight=M2C_FIELD(arg0,s16 *,0x54);
         offset=Text_MeasureHeight(-1,lbl_8036A8A0);
         rowHeight=(s16)(((s16)rowHeight-offset)>>1);
@@ -1475,6 +1478,7 @@ extern "C" void fn_80165300(void *arg0) {
 #pragma push
 #pragma optimization_level 4
 #pragma cplusplus on
+#pragma global_optimizer off
 extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     void Prim2D_SetText(void *);
     void Prim2D_SetColorPacked(s32 *);
@@ -1536,11 +1540,11 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     char sp8[4];
     s16 x;
     s32 a1;
-    s16 avail;
     Obj *self;
-    s32 t;
+    s16 t;
     s16 y;
-    s32 r;
+    s16 r;
+    s16 avail;
     void *str;
     void *p;
     char *s;
@@ -1552,7 +1556,7 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
         if (*(s16 *)(gUnitInfoPopup + 0xd8) == 0) {
             strcpy(sp1C, (char *)String_CStr(sp10));
             p = fn_80234198(sp1C, (u8 *)lbl_80277720 + 0x1d);
-            if (p != NULL) {
+            if (p != 0) {
                 *(u8 *)((u8 *)p + 5) = 0;
                 strcat(sp1C, Msg_Expand((u8 *)lbl_80277720 + 0x22));
                 goto do_set;
@@ -1569,9 +1573,8 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     Prim2D_AddZ(lbl_8036A8B4);
     Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
     Prim2D_PrepareTex();
-    avail = (s16)(self->unkE - self->unkA);
-    avail = (s16)(avail - (self->unk4E + self->unk52));
-    if (String_CStr(&self->str_obj) != NULL) {
+    avail = (s16)((s16)(self->unkE - self->unkA) - (self->unk4E + self->unk52));
+    if (String_CStr(&self->str_obj) != 0) {
         switch (self->unk48) {
         case 0:
             x = self->unk4E;
