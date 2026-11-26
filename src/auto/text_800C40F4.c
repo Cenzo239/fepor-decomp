@@ -27443,7 +27443,7 @@ if(!gAiCmdIsAlt) obj[0x250]=index; else obj[0x251]=index;
 }
 
 #pragma cplusplus on
-extern "C" void fn_800FAD94(void *arg0) {
+extern "C" void fn_800FAD94(u8 *unit) {
     extern s8 gUiContext[];
     extern u8 *gAiCmd;
     extern struct { s32 pad[2]; s32 arr[1]; } gAiState;
@@ -27453,13 +27453,11 @@ extern "C" void fn_800FAD94(void *arg0) {
     s8 *TargetList_GetCurrent(void *);
     void Ai_SetDecision(u8, s32, s8, s8, s8, s8, s8);
 
-    u8 *unit;
     u8 *cmd;
     s32 cmdC;
     s32 x;
     s32 y;
 
-    unit = (u8 *)arg0;
     cmd = gAiCmd;
     x = gUiContext[0xD];
     y = gUiContext[0xE];
