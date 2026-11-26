@@ -7,6 +7,68 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
+static inline s32 count_trailing_zero_p(const f64 *px) {
+    const u32 *l = (const u32 *)px;
+    s32 n;
+    u32 lo = l[1];
+    if (lo != 0) {
+        s32 j;
+        u32 xbits;
+        s32 m;
+        s32 k;
+        m = 16;
+        xbits = 0xFFFFU;
+        n = 0;
+        j = 32;
+        k = m;
+        while (j != 0) {
+            if ((lo & xbits) == 0) {
+                n += k;
+                lo >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
+        }
+        return n;
+    } else {
+        s32 j;
+        u32 xbits;
+        s32 m;
+        s32 k;
+        m = 16;
+        xbits = 0xFFFFU;
+        lo = l[0] | 0x100000;
+        n = 0;
+        k = m;
+        j = 32;
+        while (j != 0) {
+            if ((lo & xbits) == 0) {
+                n += k;
+                lo >>= k;
+                j -= k;
+            } else if (xbits == 1) {
+                break;
+            }
+            if (m > 1) {
+                m /= 2;
+            }
+            if (xbits > 1) {
+                xbits >>= m;
+                k -= m;
+            }
+        }
+        return n + 32;
+    }
+}
+
 static inline s32 count_trailing_zero(f64 x) {
     u32 *l = (u32 *)&x;
     u32 lo = l[1];
