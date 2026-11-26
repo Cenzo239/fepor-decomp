@@ -381,24 +381,21 @@ void fn_8022D0DC(void *heap, void *ptr, u32 size) {
         u32 usedSlots;
     } PoolBlock;
 
-    extern u32 lbl_80282B60[];
+    extern const u32 lbl_80282B60[];
     void fn_8022D234(void **, void *);
 
-    u32 *limit;
     u32 index;
-    u8 *slot;
+    u32 *slot;
     PoolBlock **sizeClass;
     PoolBlock *block;
 
     index = 0;
-    limit = lbl_80282B60;
-    while (size > *limit) {
-        limit++;
+    while (size > lbl_80282B60[index]) {
         index++;
     }
 
-    slot = (u8 *)ptr - 4;
-    block = *(PoolBlock **)((u8 *)ptr - 4);
+    slot = (u32 *)ptr - 1;
+    block = (PoolBlock *)*slot;
     sizeClass = (PoolBlock **)((u8 *)heap + (index << 3) + 4);
 
     if (block->freeSlots == NULL && sizeClass[1] != block) {
@@ -416,7 +413,7 @@ void fn_8022D0DC(void *heap, void *ptr, u32 size) {
         }
     }
 
-    *(void **)(slot + 4) = block->freeSlots;
+    *(void **)(slot + 1) = block->freeSlots;
     block->freeSlots = slot;
 
     if (--block->usedSlots == 0) {
