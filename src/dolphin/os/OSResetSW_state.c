@@ -136,6 +136,8 @@ extern s32 currentDirectory;
 
 extern u16 Scb_803394;
 
+static inline s32 ResetTimeIsSet(s64 time) { return time != 0 ? 1 : 0; }
+static inline s32 ResetTimeExpired(s64 now, s64 start, u32 ticks) { return now - start > ticks; }
 u32 __OSGetResetSWState(void);
 
 extern void OSDisableInterrupts(void);
