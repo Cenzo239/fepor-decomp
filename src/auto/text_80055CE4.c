@@ -1,5 +1,6 @@
 /* Functions from 0x80055C74 to 0x8005A29C, found by decomp-toolkit. */
 #include "common.h"
+typedef struct TrailNode40 { f32 v[9]; u8 r, g, b, a; } TrailNode40;
 
 void *Process_CreateChild(void *, s32, void *);             /* extern */
 s32 strcpy(void *, s32);                       /* extern */
