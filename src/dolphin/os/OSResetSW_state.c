@@ -143,13 +143,6 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
-static inline s64 ResetSW_Time(u32 high, u32 low) {
- union { s64 time; struct { u32 high, low; } words; } value;
- value.words.high = high;
- value.words.low = low;
- return value.time;
-}
-
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -158,12 +151,12 @@ s32 fn_80208D18(void) {
     s32 state;
     s32 enabled;
     s32 pad;
-    s64 now;
-    s32 soft;
+    u64 now;
+    u8 soft;
     u32 freq;
     u32 thresh;
-    u32 n;
-    s64 t;
+    s32 n;
+    u64 t;
     u64 q;
 
     enabled = OSDisableInterrupts();
@@ -222,9 +215,10 @@ s32 fn_80208D18(void) {
     n = *(u8 *)0x800030E3 & 0x1F;
     if (n != 0) {
         freq = *(u32 *)0x800000F8 >> 2;
-        t = __OSStartTime + (s64)(s32)(n * 0x3C) * (s64)freq;
+        t = (s64)(s32)(n * 60) * (u64)freq;
+ t += __OSStartTime;
         if (t < now) {
-            q = __div2i(now - t, (s64)freq);
+            q = (now - t) / freq;
             q = __div2i(q, 2);
             if ((q & 1) == 0) {
                 state = 1;
