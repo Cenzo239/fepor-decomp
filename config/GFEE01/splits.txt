@@ -225,7 +225,10 @@ auto/text_8005F7F0.c:
 	.text       start:0x8005F7F0 end:0x8005F84C
 
 auto/text_8005F84C.c:
-	.text       start:0x8005F84C end:0x80072408
+	.text       start:0x8005F84C end:0x8006F10C
+
+auto/Ui_MenuWork.c:
+	.text       start:0x8006F10C end:0x80072408
 
 auto/text_80072408.c:
 	.text       start:0x80072408 end:0x800725C8
