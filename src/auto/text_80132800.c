@@ -4628,78 +4628,45 @@ done:
     fn_8000A248();
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 extern "C" void fn_80139538(void *arg0, s32 arg1) {
-    void fn_80139E88(void *, s32);
-    void Ui_PlaySeCue(void *, s32);
-    extern u32 gUiInputFlags;
-    extern u32 *gPadInput;
-    extern u8 lbl_802768A0[];
-    s32 visible, row;
-    s16 page, old, total;
-    s32 pages;
-    struct Menu {
-        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
-        virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
-        virtual void v6() = 0; virtual void v7() = 0; virtual void v8() = 0;
-        virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
-        virtual void v12() = 0; virtual s32 count() = 0;
-    };
-    s32 size, held, edge, repeat;
-    u8 blocked;
-
-    visible = ((Menu *)arg0)->count();
-    size = M2C_FIELD(arg0, s16 *, 0x58);
-    total = M2C_FIELD(arg0, s32 *, 0x70);
-    pages = size + total;
-    pages = pages - 1;
-    pages = pages / size;
-    pages = (s16)pages;
-    if ((s16)visible > pages)
-        visible = pages;
-    row = M2C_FIELD(arg0, s16 *, 0x4E);
-    blocked = 0;
-    page = row / size;
-    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20))
-        blocked = 1;
-    if (!blocked) {
-        held = gPadInput[1];
-        edge = (s32)gPadInput[2] ^ held;
-        repeat = gPadInput[3];
-        edge = held & edge;
-        {
-            struct State {
-                u8 pad[0x4E];
-                s16 selection;
-            };
-            old = ((State *)arg0)->selection;
-        }
-        if ((s16)row == 0x7FFF) {
-            s32 last = (pages - 1) * size;
-            if (edge & 0x08000008)
-                M2C_FIELD(arg0, s16 *, 0x4E) = last;
-            else if (edge & 0x04000004) {
-                M2C_FIELD(arg0, s16 *, 0x4E) = 0;
-                M2C_FIELD(arg0, s16 *, 0x56) = 0;
-            }
-            goto changed;
-        }
-        if (page == pages - 1 && (repeat & 0x04000004)) {
-            M2C_FIELD(arg0, s16 *, 0x4E) = 0x7FFF;
-            goto changed;
-        }
-        if (page == 0 && (edge & 0x08000008)) {
-            M2C_FIELD(arg0, s16 *, 0x56) = pages - visible;
-            M2C_FIELD(arg0, s16 *, 0x4E) = 0x7FFF;
-            goto changed;
-        }
-    }
-    fn_80139E88(arg0, arg1);
-    return;
+ void fn_80139E88(void *,s32);
+ void Ui_PlaySeCue(void *,s32);
+ extern u32 gUiInputFlags;
+ extern u32 *gPadInput;
+ extern u8 lbl_802768A0[];
+ s32 visible, row; s16 page, old, total; s32 pages;
+ struct Menu { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual void v10()=0; virtual void v11()=0; virtual void v12()=0; virtual s32 count()=0; };
+ s32 size, held, edge, repeat;
+ u8 blocked;
+ visible=((Menu *)arg0)->count();
+ size=M2C_FIELD(arg0,s16 *,0x58);
+ total=M2C_FIELD(arg0,s32 *,0x70);
+ pages=size+total; pages=(s16)((pages-1)/size);
+ if((s16)visible>pages) visible=pages;
+ row=M2C_FIELD(arg0,s16 *,0x4E);
+ blocked=0;
+ page=row/size;
+ if((gUiInputFlags&0x10)&&!(gUiInputFlags&0x20)) blocked=1;
+ if(!blocked) {
+ held=gPadInput[1]; edge=(s32)gPadInput[2]^held; repeat=gPadInput[3]; edge=held&edge;
+ struct State { u8 pad[0x4E]; s16 selection; }; old=((State *)arg0)->selection;
+ if((s16)row==0x7FFF) {
+ s32 last=(pages-1)*size;
+ if(edge&0x08000008) M2C_FIELD(arg0,s16 *,0x4E)=last;
+ else if(edge&0x04000004) {M2C_FIELD(arg0,s16 *,0x4E)=0;M2C_FIELD(arg0,s16 *,0x56)=0;}
+ goto changed;
+ }
+ if(page==pages-1&&(repeat&0x04000004)) {M2C_FIELD(arg0,s16 *,0x4E)=0x7FFF;goto changed;}
+ if(page==0&&(edge&0x08000008)) {M2C_FIELD(arg0,s16 *,0x56)=pages-visible;M2C_FIELD(arg0,s16 *,0x4E)=0x7FFF;goto changed;}
+ }
+ fn_80139E88(arg0,arg1); return;
 changed:
-    if (old != M2C_FIELD(arg0, s16 *, 0x4E))
-        Ui_PlaySeCue(lbl_802768A0 + 0x1D, 100);
+ if(old!=M2C_FIELD(arg0,s16 *,0x4E)) Ui_PlaySeCue(lbl_802768A0+0x1D,100);
 }
-
+#pragma pop
 extern "C" void fn_801396C4(void *self, void *other) {
 struct Obj {
 virtual void v0()=0;
@@ -7145,7 +7112,7 @@ struct RefObj {
     s32 refCount;
 };
 extern "C" void Ui_DrawAtlasRect75(s32, s32, s32);
-extern "C" void fn_8013692C(s32, s32, s32, s32, s32, s32);
+
 extern "C" void fn_8013CA2C(void *arg0) {
     struct Obj {
         u8 pad[4];
