@@ -12,7 +12,7 @@ struct EffectActorMethods {
     virtual void v7(); virtual void v8(); virtual void v9();
     virtual void v10(); virtual void v11(); virtual void v12();
     virtual void v13(); virtual void v14();
-    virtual void Move(EffectActorVec, s32);
+    virtual void Move(const EffectActorVec &, s32);
 };
 #pragma cplusplus off
 
@@ -2011,15 +2011,11 @@ s32 fn_801515F4(void *arg0) {
 }
 
 #pragma push
+#pragma cplusplus on
 #pragma optimization_level 4
-s32 fn_8015160C(void *arg0)
+extern "C" s32 fn_8015160C(void *arg0)
 {
-  typedef struct 
-  {
-    f32 x;
-    f32 y;
-    f32 z;
-  } Vec3;
+  typedef EffectActorVec Vec3;
   s32 Pad_IsButton(void *, s32);
   s32 fn_8005F84C(void *, s32, s32);
   void Effect_SetPos(void *, f32, f32, f32);
@@ -2042,7 +2038,7 @@ s32 fn_8015160C(void *arg0)
   vtable = *((void ***) (((u8 *) obj) + 0x40));
   pad = *((void **) (((u8 *) inner) + 0x5C));
   vec.x = 0.0f;
-  ((void (*)(void *)) vtable[8])(obj);
+  ((EffectActorMethods *)obj)->Update();
   if (pad != NULL)
   {
     if (((u8) Pad_IsButton(pad, 0x11)) != 0)
@@ -2074,9 +2070,9 @@ s32 fn_8015160C(void *arg0)
         vec.x = *((f32 *) (((u8 *) obj) + 0xB4));
         vec.y = 0.0f;
         vec.z = *((f32 *) (((u8 *) obj) + 0xBC));
-        copy = vec;
+        
         vtable = *((void ***) (((u8 *) obj) + 0x40));
-        ((void (*)(void *, Vec3 *, s32)) vtable[0x11])(obj, &copy, (s32) d);
+        ((EffectActorMethods *)obj)->Move(vec, (s32)d);
       }
     }
   }
@@ -2087,6 +2083,7 @@ s32 fn_8015160C(void *arg0)
   return 0;
 }
 #pragma pop
+#pragma cplusplus off
 u8 fn_801517C0(void *arg0) {
     return M2C_FIELD(arg0, u8 *, 0xC4);
 }
