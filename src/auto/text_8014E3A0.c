@@ -2375,7 +2375,10 @@ void fn_80151EDC(s16 x, s16 y, s32 texFlags) {
         Prim2D_EndPrim();
     }
 }
+#pragma push
 #pragma cplusplus off
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
 void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
 {
     void Ui_LoadAtlasTex(void *, void *, s32);
@@ -2391,22 +2394,21 @@ void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
     extern u8 gUiTexScratch[];
     extern void *gUiTexAtlas;
     extern s16 lbl_80368088[4], lbl_80368090[4], lbl_80368098[4];
+    s16 w2;
     u8 color[4];
     u32 c2, c1, c0;
-    s16 right, x2, x1, h2, h1, w1, left, w0, h0;
-    s16 w2;
+    s16 x1,x2,right,h2,h1,w1,left;
+    s32 w0,h0;
     s32 raw;
-    s16 width;
 
     color[0] = 255;
     color[1] = 255;
     color[2] = 255;
     color[3] = arg3;
-    width = arg2;
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xa8);
-    w0 = lbl_80368088[2] - lbl_80368088[0];
-    h0 = lbl_80368088[3] - lbl_80368088[1];
-    if (w0 && h0) {
+    h0 = (s16)(lbl_80368088[3] - lbl_80368088[1]);
+    w0 = (s16)(lbl_80368088[2] - lbl_80368088[0]);
+    if ((s16)w0 && (s16)h0) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg4 | 1));
         Prim2D_PrepareTex();
@@ -2419,8 +2421,8 @@ void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xa9);
     left = lbl_80368088[2] - lbl_80368088[0];
     right = lbl_80368098[2] - lbl_80368098[0];
-    w1 = width - left - right;
     h1 = lbl_80368090[3] - lbl_80368090[1];
+    w1 = arg2 - left - right;
     x1 = arg0 + left;
     if (w1 && h1) {
         Prim2D_Begin();
@@ -2435,7 +2437,7 @@ void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
     }
     Ui_LoadAtlasTex(gUiTexAtlas, gUiTexScratch, 0xaa);
     raw = lbl_80368098[2] - lbl_80368098[0];
-    x2 = arg0 + (width - (s16)raw);
+    x2 = arg0 + (arg2 - (s16)raw);
     w2 = raw;
     h2 = lbl_80368098[3] - lbl_80368098[1];
     if ((s16)w2 && h2) {
@@ -2449,6 +2451,7 @@ void fn_80152010(s16 arg0, s16 arg1, s16 arg2, u8 arg3, s32 arg4)
         Prim2D_EndPrim();
     }
 }
+#pragma pop
 void fn_80152414(s16 arg0, s16 arg1, s32 arg2) {
 void Ui_LoadAtlasTex(s32,void *,s32);
 void Prim2D_SetTex(void *,u16);
@@ -7280,66 +7283,70 @@ void fn_801610A8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_EndPrim();
 }
 #pragma pop
+#pragma push
+#pragma opt_common_subs off
 void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    typedef struct {
+        u8 r, g, b, a;
+    } Color4;
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, u16);
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetRect(f32, f32, f32, f32);
     void Prim2D_EmitQuad(void);
-    void Prim2D_SetCornerColors(void *, void *, void *, void *);
+    void Prim2D_SetCornerColors(Color4 *, Color4 *, Color4 *, Color4 *);
     void Prim2D_EndPrim(void);
-    void Prim2D_SetColorPacked(void *);
-    extern u8 lbl_803680D4;
-    extern u8 lbl_803680D5;
-    extern u32 lbl_80330D38[];
-    extern u32 lbl_80330D48[];
-    extern f64 lbl_8036A868;
-    u32 colors[4];
-    u32 rev[4];
-    u32 tip;
-    register s16 x0;
-    s16 y0;
+    void Prim2D_SetColorPacked(Color4 *);
+    extern s8 lbl_803680D4;
+    extern s8 lbl_803680D5;
+    extern Color4 lbl_80330D38[4];
+    extern Color4 lbl_80330D48[4];
     s16 x1;
     s16 yA;
     s16 yB;
     s16 yC;
+    s16 y0;
+    s16 x0;
     s16 third;
     s32 flags;
+    Color4 a0, a1, a2, a3;
+    Color4 b0, b1, b2, b3;
+    Color4 rev1_3, rev1_2, rev1_1, rev1_0;
+    Color4 c1_3, c1_2, c1_1, c1_0;
+    Color4 tip;
+    Color4 rev2_3, rev2_2, rev2_1, rev2_0;
+    Color4 c2_3, c2_2, c2_1, c2_0;
 
-    flags = arg4;
     x0 = (s16)arg0;
     y0 = (s16)arg1;
+    x1 = x0 + (s16)arg2;
     third = (s16)arg3 / 3;
-    x1 = (s16)(x0 + (s16)arg2);
-    yA = (s16)(y0 + third);
-    yB = (s16)(y0 + third * 2);
-    yC = (s16)(y0 + third * 3);
+    yA = y0 + third;
+    yB = y0 + third * 2;
+    yC = y0 + third * 3;
+    flags = arg4;
 
-    if ((s8)lbl_803680D4 == 0) {
-        u8 *p;
-        p = (u8 *)colors;
-        p[0] = 0; p[1] = 0; p[2] = 0; p[3] = 0;
-        p[4] = 0; p[5] = 0; p[6] = 0; p[7] = 0;
-        p[8] = 0; p[9] = 0; p[10] = 0; p[11] = 0xFF;
-        p[12] = 0; p[13] = 0; p[14] = 0; p[15] = 0xFF;
-        lbl_80330D38[0] = colors[0];
-        lbl_80330D38[1] = colors[1];
-        lbl_80330D38[3] = colors[3];
-        lbl_80330D38[2] = colors[2];
+    if (!lbl_803680D4) {
+        a0.r = 0; a0.g = 0; a0.b = 0; a0.a = 0;
+        a1.r = 0; a1.g = 0; a1.b = 0; a1.a = 0;
+        a2.r = 0; a2.g = 0; a2.b = 0; a2.a = 0xFF;
+        a3.r = 0; a3.g = 0; a3.b = 0; a3.a = 0xFF;
+        lbl_80330D38[0] = a0;
+        lbl_80330D38[1] = a1;
+        lbl_80330D38[2] = a2;
+        lbl_80330D38[3] = a3;
         lbl_803680D4 = 1;
     }
-    if ((s8)lbl_803680D5 == 0) {
-        u8 *p;
-        p = (u8 *)colors;
-        p[0] = 0; p[1] = 0; p[2] = 0; p[3] = 0xFF;
-        p[4] = 0; p[5] = 0; p[6] = 0; p[7] = 0xFF;
-        p[8] = 0; p[9] = 0; p[10] = 0; p[11] = 0;
-        p[12] = 0; p[13] = 0; p[14] = 0; p[15] = 0;
-        lbl_80330D48[0] = colors[0];
-        lbl_80330D48[1] = colors[1];
-        lbl_80330D48[2] = colors[2];
-        lbl_80330D48[3] = colors[3];
+    if (!lbl_803680D5) {
+        b0.r = 0; b0.g = 0; b0.b = 0; b0.a = 0xFF;
+        b1.r = 0; b1.g = 0; b1.b = 0; b1.a = 0xFF;
+        b2.r = 0; b2.g = 0; b2.b = 0; b2.a = 0;
+        b3.r = 0; b3.g = 0; b3.b = 0; b3.a = 0;
+        lbl_80330D48[0] = b0;
+        lbl_80330D48[1] = b1;
+        lbl_80330D48[2] = b2;
+        lbl_80330D48[3] = b3;
         lbl_803680D5 = 1;
     }
 
@@ -7347,15 +7354,15 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     flags |= 2;
     Prim2D_SetTex(0, (u16)flags);
     Prim2D_PrepareTex();
-    colors[0] = lbl_80330D38[0];
-    colors[1] = lbl_80330D38[1];
-    colors[2] = lbl_80330D38[2];
-    colors[3] = lbl_80330D38[3];
+    c1_0 = lbl_80330D38[0];
+    c1_1 = lbl_80330D38[1];
+    c1_2 = lbl_80330D38[2];
+    c1_3 = lbl_80330D38[3];
     Prim2D_AddPrim(3);
     Prim2D_SetRect((f32)(s16)arg0, (f32)(s16)arg1, (f32)(s16)(x1 - x0), (f32)(s16)(yA - y0));
     Prim2D_EmitQuad();
-    rev[3] = colors[3]; rev[2] = colors[2]; rev[1] = colors[1]; rev[0] = colors[0];
-    Prim2D_SetCornerColors(&rev[0], &rev[1], &rev[2], &rev[3]);
+    rev1_3 = c1_3; rev1_2 = c1_2; rev1_1 = c1_1; rev1_0 = c1_0;
+    Prim2D_SetCornerColors(&rev1_0, &rev1_1, &rev1_2, &rev1_3);
     Prim2D_EndPrim();
 
     Prim2D_Begin();
@@ -7370,15 +7377,15 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)flags);
     Prim2D_PrepareTex();
-    colors[0] = lbl_80330D48[0];
-    colors[1] = lbl_80330D48[1];
-    colors[2] = lbl_80330D48[2];
-    colors[3] = lbl_80330D48[3];
+    c2_0 = lbl_80330D48[0];
+    c2_1 = lbl_80330D48[1];
+    c2_2 = lbl_80330D48[2];
+    c2_3 = lbl_80330D48[3];
     Prim2D_AddPrim(3);
     Prim2D_SetRect((f32)(s16)arg0, (f32)yB, (f32)(s16)(x1 - x0), (f32)(s16)(yC - yB));
     Prim2D_EmitQuad();
-    rev[3] = colors[3]; rev[2] = colors[2]; rev[1] = colors[1]; rev[0] = colors[0];
-    Prim2D_SetCornerColors(&rev[0], &rev[1], &rev[2], &rev[3]);
+    rev2_3 = c2_3; rev2_2 = c2_2; rev2_1 = c2_1; rev2_0 = c2_0;
+    Prim2D_SetCornerColors(&rev2_0, &rev2_1, &rev2_2, &rev2_3);
     Prim2D_EndPrim();
 }
 #pragma push
