@@ -2039,57 +2039,16 @@ static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
 
 s32 AchieveList_GetTotalGold(void *arg0) { return AchieveList_SumGoldNested(arg0,0); }
 
-s32 AchieveList_SumBonuses(void *arg0) {
-    s32 n;
-    s32 sum;
+s32 AchieveList_SumBonuses(void *arg0)
+{
+    s32 n = *(s32 *)((u8 *)arg0 + 0x224);
+    s32 sum = 0;
     s32 i;
-    s32 rem;
-    s32 ctr;
-    u8 *p;
-    s32 t0;
-    s32 t1;
 
-    n = *(s32 *)((u8 *)arg0 + 0x224);
-    sum = 0;
-    i = 0;
-    if (n > 0) {
-        rem = n - 8;
-        if (n > 8) {
-            p = arg0;
-            ctr = (u32)(rem + 7) >> 3;
-            if (rem > 0) {
-                do {
-                    t0 = *(s32 *)(p + 0x200);
-                    i += 8;
-                    t1 = *(s32 *)(p + 0x204);
-                    sum += t0;
-                    t0 = *(s32 *)(p + 0x208);
-                    sum += t1;
-                    t1 = *(s32 *)(p + 0x20C);
-                    sum += t0;
-                    t0 = *(s32 *)(p + 0x210);
-                    sum += t1;
-                    t1 = *(s32 *)(p + 0x214);
-                    sum += t0;
-                    t0 = *(s32 *)(p + 0x218);
-                    sum += t1;
-                    t1 = *(s32 *)(p + 0x21C);
-                    sum += t0;
-                    p += 0x20;
-                    sum += t1;
-                } while (--ctr);
-            }
-        }
-        p = (u8 *)arg0 + (i << 2);
-        ctr = n - i;
-        if (i < n) {
-            do {
-                t0 = *(s32 *)(p + 0x200);
-                p += 4;
-                sum += t0;
-            } while (--ctr);
-        }
+    for (i = 0; i < n; i++) {
+        sum += ((s32 *)arg0)[i + 0x80];
     }
+
     return sum;
 }
 
