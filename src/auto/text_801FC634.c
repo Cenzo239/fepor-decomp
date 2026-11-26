@@ -1029,7 +1029,83 @@ void fn_801FE520(void *arg0) {
     *(s16 *)((u8 *)self + 0x3C) = 0xA;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+void fn_801FE5B0(void *arg0) {
+    f32 fn_800067BC(M2C_UNK, f32, f32, f32, f32);
+    M2C_UNK fn_80009B80(M2C_UNK);
+    M2C_UNK fn_80009B8C(s32);
+    M2C_UNK fn_80009C0C(f32);
+    M2C_UNK fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
+    M2C_UNK fn_8000A174(M2C_UNK, M2C_UNK);
+    M2C_UNK fn_8000A248();
+    M2C_UNK fn_8000A258();
+    s32 fn_8000E0E4(s32);
+    M2C_UNK fn_8001003C(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, s32, ...);
+    M2C_UNK fn_801FE84C(M2C_UNK, M2C_UNK, s16, s16, s32 *);
+    extern s32 lbl_8036BB54;
+    extern f32 lbl_8036BB58;
+    extern f32 lbl_8036BB5C;
+    extern f32 lbl_8036BB60;
+    extern f32 lbl_8036BB64;
+    extern f32 lbl_8036BB68;
+    extern f32 lbl_8036BB6C;
+    s32 sp8;
+    f32 temp_f31;
+    f32 var_f1;
+    f32 var_f3;
+    s32 temp_r3;
+    s32 temp_r3_2;
+    u8 temp_r0;
+    u8 temp_r0_2;
+
+    var_f3 = lbl_8036BB58;
+    temp_r0 = M2C_FIELD(arg0, u8 *, 0x30);
+    temp_r3 = M2C_FIELD(arg0, s16 *, 0x28) + 1;
+    switch ((s32) temp_r0) {                        /* switch 1; irregular */
+    case 1:                                         /* switch 1 */
+        break;
+    case 0:                                         /* switch 1 */
+        var_f3 = (f32) (5 - temp_r3) / lbl_8036BB5C;
+        break;
+    case 2:                                         /* switch 1 */
+        var_f3 = (f32) temp_r3 / lbl_8036BB5C;
+        break;
+    }
+    temp_f31 = fn_800067BC(5, lbl_8036BB60, lbl_8036BB58, var_f3, lbl_8036BB58);
+    fn_8000A258();
+    fn_80009C20((f32) M2C_FIELD(arg0, s16 *, 0x38), (f32) M2C_FIELD(arg0, s16 *, 0x3A), (f32) M2C_FIELD(arg0, s16 *, 0x3C), (f32) ((s16) M2C_FIELD(arg0, s16 *, 0x3E) >> 1), (f32) ((s16) M2C_FIELD(arg0, s16 *, 0x40) >> 1), temp_f31, temp_f31, lbl_8036BB60);
+    temp_r0_2 = M2C_FIELD(arg0, u8 *, 0x30);
+    var_f1 = lbl_8036BB58;
+    temp_r3_2 = M2C_FIELD(arg0, s16 *, 0x28) + 1;
+    switch ((s32) temp_r0_2) {                      /* switch 2; irregular */
+    case 1:                                         /* switch 2 */
+        break;
+    case 0:                                         /* switch 2 */
+        var_f1 = (f32) (5 - temp_r3_2) / lbl_8036BB5C;
+        break;
+    case 2:                                         /* switch 2 */
+        var_f1 = (f32) temp_r3_2 / lbl_8036BB5C;
+        break;
+    }
+    fn_80009B8C((s32) (lbl_8036BB64 * var_f1));
+    fn_80009B80(0x80);
+    fn_8000A248();
+    sp8 = lbl_8036BB54;
+    fn_801FE84C(0, 0, M2C_FIELD(arg0, s16 *, 0x3E), M2C_FIELD(arg0, s16 *, 0x40), &sp8);
+    fn_8000A258();
+    fn_80009C0C(lbl_8036BB68);
+    fn_8000A248();
+    fn_8000A258();
+    fn_8000A174(0, 0x13);
+    fn_8000A248();
+    fn_8001003C(0x10, 0x20, 1, 1, 0, fn_8000E0E4(M2C_FIELD(arg0, s32 *, 0x34)), lbl_8036BB58, lbl_8036BB60);
+    fn_8000A258();
+    fn_80009C0C(lbl_8036BB6C);
+    fn_8000A248();
+}
+#pragma pop
 void fn_801FE84C(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4) {
     void Ui_LoadAtlasTex(void *, void *, s32);
     u16 GXGetTexObjWidth(void *);
@@ -1270,6 +1346,12 @@ void fn_801FF190(s32 arg0) {
     extern u8 lbl_80281F00[], lbl_8029B5D0[], lbl_8029B69C[], lbl_803392D0[], lbl_803392DC[];
     extern s8 lbl_8036843C, lbl_8036843D;
 #pragma cplusplus on
+    struct Item {
+        u32 unk0;
+        void *str;
+        u8 unk8;
+        u8 flags;
+    };
     struct Base { u32 unk; };
     struct Obj : Base {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -1288,12 +1370,12 @@ void fn_801FF190(s32 arg0) {
         fn_8013CE10(lbl_803392DC);
         lbl_8036843D = 1;
     }
-    *(void **)(lbl_803392D0 + 4) = lbl_80281F00 + 0x7a;
-    lbl_803392D0[8] = 1;
-    lbl_803392D0[9] |= 1;
-    *(void **)(lbl_803392DC + 4) = lbl_80281F00 + 0x88;
-    lbl_803392DC[8] = 1;
-    lbl_803392DC[9] |= 1;
+    ((Item *)lbl_803392D0)->str = lbl_80281F00 + 0x7a;
+    ((Item *)lbl_803392D0)->unk8 = 1;
+    ((Item *)lbl_803392D0)->flags |= 1;
+    ((Item *)lbl_803392DC)->str = lbl_80281F00 + 0x88;
+    ((Item *)lbl_803392DC)->unk8 = 1;
+    ((Item *)lbl_803392DC)->flags |= 1;
     obj = (Obj *)Heap_Alloc(0x30);
     if (obj) {
         fn_8013CED0(obj, lbl_8029B5D0);
@@ -2390,7 +2472,6 @@ void fn_80201328(void *arg0) {
 }
 
 #pragma push
-#pragma opt_common_subs on
 #pragma cplusplus on
 extern "C" void fn_802013C0(s32 arg0) {
     extern s8 lbl_8036844C, lbl_8036844D;
@@ -2403,6 +2484,17 @@ extern "C" void fn_802013C0(s32 arg0) {
     u8 *Ui_CreateMenu(void *, s32, s32);
     extern void *lbl_8029B864[];
 
+    struct Item {
+        u32 f0;
+        u8 *f4;
+        u8 f8;
+        u8 f9;
+        void Set(u8 *s) {
+            f4 = s;
+            f8 = 1;
+            f9 |= 1;
+        }
+    };
     struct Base {
         u32 pad;
     };
@@ -2441,12 +2533,8 @@ extern "C" void fn_802013C0(s32 arg0) {
         fn_8013CE10(lbl_80339354);
         lbl_8036844D = 1;
     }
-    *(u8 **)(lbl_80339348 + 4) = lbl_802820B8 + 0x7E;
-    lbl_80339348[8] = 1;
-    lbl_80339348[9] |= 1;
-    *(u8 **)(lbl_80339354 + 4) = lbl_802820B8 + 0x91;
-    lbl_80339354[8] = 1;
-    lbl_80339354[9] |= 1;
+    ((Item *)lbl_80339348)->Set(lbl_802820B8 + 0x7E);
+    ((Item *)lbl_80339354)->Set(lbl_802820B8 + 0x91);
     obj = (u8 *)Heap_Alloc(0x30);
     if (obj) {
         fn_8013CED0(obj, lbl_8029B798);
