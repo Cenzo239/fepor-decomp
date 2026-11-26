@@ -9,7 +9,7 @@ static inline u8 FileCache_HasExtension(char *name, char *ext) {
         ++p;
     }
     while ((s8)(c = *p) != 0) {
-        if ((s8)c != (s8)*ext) return 0;
+        if ((s8)c != (s8)*ext) break;
         ++ext;
         ++p;
         if ((s8)*ext == 0 && (s8)*p == 0) return 1;
@@ -1412,8 +1412,8 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
 }
 #pragma global_optimizer on
 
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
 void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     s64 OSGetTime(void);
     u32 fn_8005E594(s8, s32, char *);
@@ -1431,7 +1431,7 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     char *p;
     char *ext;
     s32 match;
-    s8 c;
+    u8 c;
     s8 drive;
     s32 size;
     s32 off;
@@ -1444,12 +1444,12 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     *(s32 *)(arg0 + 0x2C) = 0;
     for (i = 0x29; i > 0; i--) {
         c = *src;
-        if (c >= 'A' && c <= 'Z') {
+        if ((s8)c >= 'A' && (s8)c <= 'Z') {
             *src = (char)(c + 0x20);
         }
         *dst = *src;
         c = *src;
-        if (c == 0) {
+        if ((s8)c == 0) {
             break;
         }
         dst++;
@@ -1462,108 +1462,15 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     *(u16 *)(arg0 + 0x30) = arg3;
     *(u32 *)(arg0 + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
 
-    p = arg1;
-    ext = lbl_8026B330 + 0x221;
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            break;
-        }
-        if (c != '.') {
-            p++;
-            continue;
-        }
-        break;
-    }
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            match = 0;
-            break;
-        }
-        if (c == (s8)*ext) {
-            ext++;
-            p++;
-            if ((s8)*ext == 0 && (s8)*p == 0) {
-                match = 1;
-                break;
-            }
-            continue;
-        }
-        match = 0;
-        break;
-    }
-    if ((u8)match) {
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x221)) {
         *(u16 *)(arg0 + 0x30) = 0xC00;
     }
 
-    p = arg1;
-    ext = lbl_8026B330 + 0x226;
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            break;
-        }
-        if (c != '.') {
-            p++;
-            continue;
-        }
-        break;
-    }
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            match = 0;
-            break;
-        }
-        if (c == (s8)*ext) {
-            ext++;
-            p++;
-            if ((s8)*ext == 0 && (s8)*p == 0) {
-                match = 1;
-                break;
-            }
-            continue;
-        }
-        match = 0;
-        break;
-    }
-    if ((u8)match) {
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x226)) {
         *(u16 *)(arg0 + 0x30) = 0x800;
     }
 
-    p = arg1;
-    ext = lbl_8026B330 + 0x22B;
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            break;
-        }
-        if (c != '.') {
-            p++;
-            continue;
-        }
-        break;
-    }
-    for (;;) {
-        c = *p;
-        if (c == 0) {
-            match = 0;
-            break;
-        }
-        if (c == (s8)*ext) {
-            ext++;
-            p++;
-            if ((s8)*ext == 0 && (s8)*p == 0) {
-                match = 1;
-                break;
-            }
-            continue;
-        }
-        match = 0;
-        break;
-    }
-    if ((u8)match) {
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x22B)) {
         *(u16 *)(arg0 + 0x30) = 0x400;
     }
 
@@ -1588,8 +1495,7 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     }
     fn_801ED848(arg2, *(u32 *)(arg0 + 0x38), fn_8005E014, arg0);
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
