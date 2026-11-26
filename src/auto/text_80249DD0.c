@@ -1910,6 +1910,22 @@ Audio_Unlock();
 }
 
 #pragma global_optimizer off
+static inline u32 Sound_FindFreeIn(u8 *base) {
+    u32 index;
+    u8 *scan = base;
+    for (index = 0; index < 64; scan += 0x68, index++) {
+        if (scan[0xC] == 0) break;
+    }
+    return index;
+}
+static inline u32 Sound_FindIdIn(u32 id, u8 *base) {
+    u32 j;
+    u8 *scan = base;
+    for (j = 0; j < 64; scan += 0x68, j++) {
+        if (scan[0xC] && id == *(u32 *)(scan + 4)) break;
+    }
+    return j;
+}
 u32 fn_8024C97C(s8 a,s32 b,s32 c,s32 d,s8 e,s8 f,s8 g,s8 h,u8 p,u8 q,u32 flags,s32 data,s32 extra,s16 *coef){
 extern u8 gSoundSlots[],lbl_803689C4[8];extern u32 lbl_803689C0,lbl_803689A4;
 void Audio_Lock(void);void Audio_Unlock(void);s32 fn_8024CE1C(s32,s32);u32 fn_8024E100(u32);void fn_80261C98(s32,void*,void*);u32 fn_80262290(s32);
