@@ -14524,7 +14524,7 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 #pragma cplusplus on
 extern "C" void *fn_80179F8C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *fn_8017A000(void *, s16 *, s16 *, s32);
-    extern u8 lbl_80291B1C[];
+    extern u8 gUiPanelExVtbl[];
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
@@ -14544,7 +14544,7 @@ extern "C" void *fn_80179F8C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     ab[1] = arg2;
     cd[1] = arg4;
     fn_8017A000(arg0, ab, cd, arg5);
-    *(void **)arg0 = lbl_80291B1C;
+    *(void **)arg0 = gUiPanelExVtbl;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *)arg0)->m28();
     return arg0;
@@ -16657,7 +16657,7 @@ void fn_8017CE1C(void *self, void *arg1) {
 }
 
 #pragma cplusplus on
-extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
+void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;
