@@ -6,6 +6,28 @@ typedef struct {
     u8 unk : 7;
 } ItemFlagBits;
 
+static inline s32 Convoy_FindEmpty_inline(void *convoy) {
+    s32 i;
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((u8 *)convoy + i * 8) == NULL) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
+    void Item_Copy(void *, void *);
+    s32 slot;
+    ((ItemFlagBits *)((u8 *)item + 5))->flag = 0;
+    slot = Convoy_FindEmpty_inline(convoy);
+    if (slot < 0) {
+        return 0;
+    }
+    Item_Copy((u8 *)convoy + slot * 8, item);
+    return 1;
+}
+
 typedef struct {
     u8 unk0[8];
     u8 param;
