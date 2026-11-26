@@ -4415,10 +4415,6 @@ void fn_801186E4(void *arg0)
     void *next;
     u32 flags;
     u32 ret;
-    u8 changed;
-    void *cur;
-    void *following;
-    u32 clearFlags;
 
     self = arg0;
     unit = fn_800AA794();
@@ -4533,18 +4529,8 @@ void fn_801186E4(void *arg0)
                     fn_801475FC(lbl_80274508 + 0x22C, 0x64);
                 }
             } else if (unit == NULL) {
-                changed = 0;
-                cur = *(void **)(lbl_802CA264 + 0xC);
-                while (cur != NULL) {
-                    clearFlags = *(u32 *)((u8 *)cur + 0x1A0);
-                    following = *(void **)((u8 *)cur + 0x184);
-                    if (clearFlags & 0x800) {
-                        changed = 1;
-                        *(u32 *)((u8 *)cur + 0x1A0) = clearFlags & ~0x800;
-                    }
-                    cur = following;
-                }
-                if (changed != 0) {
+                flag = ClearUnitSelections(*(void **)(lbl_802CA264 + 0xC));
+                if (flag != 0) {
                     fn_801475FC(lbl_80274508 + 0x22C, 0x64);
                     fn_8002297C(lbl_802CA518);
                 }
