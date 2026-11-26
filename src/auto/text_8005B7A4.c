@@ -2,7 +2,7 @@
 #include "common.h"
 #include "global.h"
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; u8 *dst; s32 i; u8 c;
+    char *src; u8 c; s32 i; u8 *dst;
     src = arg1;
     if (*arg1 == '/') {
         src++;
@@ -1457,8 +1457,8 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     char *ext;
     s32 match;
     u8 c;
-    s32 size;
     u8 drive;
+    s32 size;
     s32 off;
     u32 handle;
 
@@ -1624,7 +1624,10 @@ void fn_8005E0F0(void) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma use_lmw_stmw off
 void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     s64 OSGetTime(void);
     u32 fn_8005E594(s8, s32, char *);
@@ -1637,8 +1640,8 @@ void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     extern char lbl_8026B330[];
     extern u8 lbl_803672E8;
     u32 strlen(char *);
-    char *src;
-    u8 *dst;
+    register char *src;
+    register u8 *dst;
     unsigned ctr;
     char *p;
     char *ext;
@@ -1650,176 +1653,25 @@ void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
     s32 off;
     u32 res;
     s32 z;
-    u16 flags;
 
-    flags = arg2;
-    src = arg1;
-    if ((s8)arg1[0] == (s8)'/') {
-        src = src + 1;
-    }
-    z = 0;
-    dst = arg0;
-    *(s32 *)(arg0 + 0x2C) = z;
-    for (ctr = 0x29; ctr != 0; ctr--) {
-        ch = *(u8 *)src;
-        sc = (s8)ch;
-        if (sc >= 'A' && sc <= 'Z') {
-            *(u8 *)src = (u8)(ch + 0x20);
-        }
-        *dst = *(u8 *)src;
-        ch = *(u8 *)src;
-        sc = (s8)ch;
-        if (sc == 0) {
-            break;
-        }
-        sc = (s8)ch;
-        *(s32 *)(arg0 + 0x2C) = sc + *(s32 *)(arg0 + 0x2C) * 0x25;
-        dst = dst + 1;
-        src = src + 1;
-    }
+    FileCache_CopyName(arg0, arg1);
 
     fn_8020C6D4(arg1, arg0 + 0x40);
     arg0[0x29] = lbl_803672E8;
     *(u16 *)(arg0 + 0x32) = 0;
-    *(u16 *)(arg0 + 0x30) = flags;
+    *(u16 *)(arg0 + 0x30) = arg2;
     *(u32 *)(arg0 + 0x34) = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
     *(u8 **)(arg0 + 0x6C) = arg0;
 
-    p = arg1;
-    ext = lbl_8026B330 + 0x221;
-    goto find1_chk;
-find1:
-    sc = (s8)sc;
-    if (sc == '.') {
-        goto cmp1;
-    }
-    p += 1;
-find1_chk:
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto find1;
-    }
-    goto cmp1;
-cmp1:
-cmp1_body:
-    ch = *(u8 *)ext;
-    sc = (s8)sc;
-    if (sc == (s8)ch) {
-        ch = *(u8 *)++ext;
-        p += 1;
-        if ((s8)ch != 0) {
-            sc = (s8)*p;
-            goto cmp1_body;
-        }
-        if ((s8)*p != 0) {
-            sc = (s8)*p;
-            goto cmp1_body;
-        }
-        match = 1;
-        goto done1;
-    }
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto cmp1_body;
-    }
-    match = 0;
-done1:
-    if (match) {
-        *(u16 *)(arg0 + 0x30) |= 0xC00;
-    }
-
-    p = arg1;
-    ext = lbl_8026B330 + 0x226;
-    goto find2_chk;
-find2:
-    sc = (s8)sc;
-    if (sc == '.') {
-        goto cmp2;
-    }
-    p += 1;
-find2_chk:
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto find2;
-    }
-    goto cmp2;
-cmp2:
-cmp2_body:
-    ch = *(u8 *)ext;
-    sc = (s8)sc;
-    if (sc == (s8)ch) {
-        ch = *(u8 *)++ext;
-        p += 1;
-        if ((s8)ch != 0) {
-            sc = (s8)*p;
-            goto cmp2_body;
-        }
-        if ((s8)*p != 0) {
-            sc = (s8)*p;
-            goto cmp2_body;
-        }
-        match = 1;
-        goto done2;
-    }
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto cmp2_body;
-    }
-    match = 0;
-done2:
-    if (match) {
-        *(u16 *)(arg0 + 0x30) |= 0x800;
-    }
-
-    p = arg1;
-    ext = lbl_8026B330 + 0x22B;
-    goto find3_chk;
-find3:
-    sc = (s8)sc;
-    if (sc == '.') {
-        goto cmp3;
-    }
-    p += 1;
-find3_chk:
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto find3;
-    }
-    goto cmp3;
-cmp3:
-cmp3_body:
-    ch = *(u8 *)ext;
-    sc = (s8)sc;
-    if (sc == (s8)ch) {
-        ch = *(u8 *)++ext;
-        p += 1;
-        if ((s8)ch != 0) {
-            sc = (s8)*p;
-            goto cmp3_body;
-        }
-        if ((s8)*p != 0) {
-            sc = (s8)*p;
-            goto cmp3_body;
-        }
-        match = 1;
-        goto done3;
-    }
-    sc = (s8)*p;
-    if (sc != 0) {
-        goto cmp3_body;
-    }
-    match = 0;
-done3:
-    if (match) {
-        *(u16 *)(arg0 + 0x30) |= 0x400;
-    }
-
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x221)) *(u16 *)(arg0 + 0x30) |= 0xC00;
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x226)) *(u16 *)(arg0 + 0x30) |= 0x800;
+    if (FileCache_HasExtension(arg1, lbl_8026B330 + 0x22B)) *(u16 *)(arg0 + 0x30) |= 0x400;
     *(s32 *)(arg0 + 0x3C) = (*(s32 *)(arg0 + 0x74) + 0x1F) & ~0x1F;
 
-    if (*(volatile u16 *)(arg0 + 0x30) & 0x410) {
+    if (*(u16 *)(arg0 + 0x30) & 0x410) {
         *(u32 *)(arg0 + 0x38) = fn_800C45B8(-*(s32 *)(arg0 + 0x3C), lbl_8026B330 + 5, 0);
     } else {
-        if (*(volatile u16 *)(arg0 + 0x30) & 2) {
+        if (*(u16 *)(arg0 + 0x30) & 2) {
             drive = (s8)arg0[0x29];
             size = *(s32 *)(arg0 + 0x3C) + 1;
             if (fn_800C44F4(drive) < (u32)size) {
@@ -1834,8 +1686,8 @@ done3:
             *(u32 *)(arg0 + 0x38) = res;
             *(u8 *)(*(u8 **)(arg0 + 0x3C) + *(u32 *)(arg0 + 0x38)) = 0;
         } else {
-            size = *(s32 *)(arg0 + 0x3C);
             drive = (s8)arg0[0x29];
+            size = *(s32 *)(arg0 + 0x3C);
             if (fn_800C44F4(drive) < (u32)size) {
                 res = 0;
             } else {
@@ -1858,6 +1710,7 @@ done3:
         fn_8020CB38(arg0 + 0x40, *(u32 *)(arg0 + 0x38), *(s32 *)(arg0 + 0x3C), 0, (void *)fn_8005E070, 2);
     }
 }
+#pragma pop
 u32 fn_8005E55C(void) {
     s64 OSGetTime(void);
     return OSGetTime() / (*(u32 *)0x800000F8 >> 2);
