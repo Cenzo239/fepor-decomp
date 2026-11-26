@@ -591,14 +591,22 @@ void fn_8000E394(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8000E50C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4) {
-    u32 result;
-    u32 *table;
+    s32 fontId;
     s32 index;
+    u32 *table;
+    u32 result;
 
-    result = (u32)fn_8010494C(lbl_802AEE20[2]);
+    fontId = 2;
+    if (fontId == -1) {
+        fontId = 0;
+    }
+    result = (u32)fn_8010494C(lbl_802AEE20[fontId]);
     table = (u32 *)lbl_802AEE20;
     index = Text_FindFontIndex(table, result);
-    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5, farg0, farg1, farg2, farg3, farg4);
+
+    fn_8000E7FC(arg0, arg1, arg2, arg3, arg4, arg5,
+                farg0, farg1, farg2, farg3, farg4);
+
     if (index == -1) {
         index = 0;
     }
