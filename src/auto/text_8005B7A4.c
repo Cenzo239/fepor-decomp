@@ -2,7 +2,7 @@
 #include "common.h"
 #include "global.h"
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    s32 i; u8 c; char *src; u8 *dst;
+    char *src; u8 *dst; s32 i; u8 c;
     src = arg1;
     if (*arg1 == '/') {
         src++;
@@ -1439,7 +1439,6 @@ void FileCache_SpawnArchiveEntries(u8 *arg0) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_propagation off
 void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     s64 OSGetTime(void);
     u32 fn_8005E594(s8, s32, char *);
