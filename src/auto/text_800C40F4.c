@@ -5,9 +5,8 @@ typedef struct AiRangeCell_800F9574 { u8 pad[0x610E]; s16 value; } AiRangeCell_8
 static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return ((AiRangeCell_800F9574 *)cell)->value; }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
 extern u8 gBattleMap[];
-s32 c=a;
+s32 c=a,b=a;
 u8 t=(gBattleMap+x+(y<<6))[0x100D];
-s32 b=a;
 if (!((u8)(t-0x26)<=1)) c=0;
 if ((u8)c==0 && t!=0x28) b=0;
 if ((u8)b==0 && t!=0x2A) a=0;
@@ -11351,7 +11350,7 @@ for (;var_r29 < (M2C_FIELD(arg0,s32 *,0x10C)+(temp_r3=M2C_FIELD(arg0,s32 *,0x108
 #pragma opt_strength_reduction reset
 
 #pragma push
-#pragma opt_common_subs off
+#pragma opt_register_coloring off
 void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
     void (*cb)(void *, s32, s32);
 
