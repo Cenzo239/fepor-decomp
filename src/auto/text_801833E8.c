@@ -3,7 +3,6 @@
 #include "global.h"
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
-typedef struct MuFadeColor { u8 r, g, b, a; } MuFadeColor;
 
 typedef struct ListNode {
     struct ListNode *prev;
@@ -695,14 +694,14 @@ if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
 #pragma optimization_level 3
-void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
+void *fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     void GfxEnt_ForEachKey(void *, void *, void *);
-    u8 *Process_Create(void *, u32);
+    void *Process_Create(void *, u32);
     void MuFade_UnlinkSame(void *, void *);
     extern u8 lbl_80295B64[];
     u8 sp8[0x34];
     u32 var_r31;
-    u8 *temp_r3;
+    void *temp_r3;
     u8 a;
     u8 d;
     u8 c;
@@ -724,6 +723,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     d = arg1[3];
     ((u8 *)temp_r3)[0x36] = c;
     ((u8 *)temp_r3)[0x37] = d;
+    return temp_r3;
 }
 #pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
