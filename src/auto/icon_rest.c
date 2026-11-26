@@ -648,6 +648,16 @@ void fn_800C3864(s32 arg0, s32 arg1) {
     Item_Clear(arg0 + (arg1 * 8));
 }
 
+static inline s32 Convoy_FindItem_inline(void *convoy, void *item) {
+    s32 i;
+    for (i = 0; i < 200; i++) {
+        if (*(void **)((u8 *)convoy + i * 8) == item) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 s32 Convoy_FindByIid(s32 *arg0, s32 arg1) {
     void *item;
     s32 i;
