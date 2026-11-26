@@ -9778,6 +9778,8 @@ void Ui_ExitSubmenuToUnitList(void *panel) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_80172DA4(void *arg0) {
     void Process_Goto(void *, s32);
     void *Process_CreateChild(void *, void *);
@@ -9819,7 +9821,7 @@ extern "C" void fn_80172DA4(void *arg0) {
         virtual void v9() = 0;
         virtual Vec2s v10() = 0;
         virtual void v11(void *) = 0;
-        virtual u8 v12(u32, void *) = 0;
+        virtual u8 v12(u32) = 0;
     };
 
     void *item;
@@ -9859,7 +9861,7 @@ extern "C" void fn_80172DA4(void *arg0) {
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && var_r29 != 0 && Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) == 0) {
             item = *(void **)gUiContext;
-            v12res = ((Obj *)obj4c)->v12(var_r29, gUiContext);
+            v12res = ((Obj *)obj4c)->v12(var_r29);
             if (v12res == 0) {
                 Ui_PlaySeCue((u8 *)gUiMsgStrings + 0x322, 0x64);
             } else {
@@ -9891,7 +9893,7 @@ extern "C" void fn_80172DA4(void *arg0) {
         }
     }
 }
-
+#pragma pop
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, s32);
@@ -12639,15 +12641,20 @@ void *fn_8017761C(void) {
     return (u8 *)gUiMsgStrings + 0x4d7;
 }
 
+#pragma push
+#pragma optimize_for_size on
 s32 fn_8017762C(void) {
     u32 *Unit_GetItemSlot(u32, s32);
     u64 *Item_GetFlagsPtr(u32 *);
     u8 Status_Test(void *, u32);
     extern u32 gUiContext[];
+    struct { s8 j; u32 z; u32 mask; } pair;
     s8 i;
     u8 unavailable;
     u32 unit;
     u32 *slot;
+    u64 *flags;
+    u32 t;
     s32 result;
 
     unavailable = 1;
@@ -12656,20 +12663,27 @@ s32 fn_8017762C(void) {
         for (i = 0; i < 8; i++) {
             slot = Unit_GetItemSlot(unit, i);
             if (*slot != 0) {
-                if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x20000000000ULL) == 0) {
-                    if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x200ULL) == 0) {
-                        unavailable = 0;
+                flags = Item_GetFlagsPtr(slot);
+                if ((*(u64 *)flags & 0x20000000000ULL) == 0) {
+                    flags = Item_GetFlagsPtr(slot);
+                    t = 0;
+                    if ((*(u64 *)flags & 0x200ULL) == 0) {
+                        unavailable = t;
                         break;
                     }
                 }
             }
         }
     } else {
-        for (i = 0; i < 8; i++) {
-            slot = Unit_GetItemSlot(unit, i);
+        pair.j = 0;
+        pair.mask = 0x200;
+        pair.z = pair.j;
+        for (; pair.j < 8; pair.j++) {
+            slot = Unit_GetItemSlot(unit, pair.j);
             if (*slot != 0) {
-                if ((*(u64 *)Item_GetFlagsPtr(slot) & 0x20000000000ULL) == 0) {
-                    unavailable = 0;
+                flags = Item_GetFlagsPtr(slot);
+                if ((*(u64 *)flags & ((u64)pair.mask << 32)) == 0) {
+                    unavailable = pair.z;
                     break;
                 }
             }
@@ -12681,6 +12695,7 @@ s32 fn_8017762C(void) {
     }
     return (u8)result;
 }
+#pragma pop
 /* If entry type is 2, show a lock-message popup at parent+entry pos; else set UI command 0x87. */
 s32 Ui_SetCmd87OrShowLockMsg(s32 unused, void *parent, void *entry) {
     void *Process_CreateChild(void *, void *);
@@ -14249,7 +14264,7 @@ extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     return self;
 }
 #pragma cplusplus on
-#pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void *fn_80179BC8(void *p, s32 x, s32 y, s32 w, s32 h, s32 style) {
     void fn_80142060(void *);
     void fn_80143B24(void *);
@@ -14318,7 +14333,7 @@ extern "C" void *fn_80179BC8(void *p, s32 x, s32 y, s32 w, s32 h, s32 style) {
     ((Obj *)p)->v8();
     return p;
 }
-#pragma opt_propagation reset
+#pragma opt_lifetimes reset
 #pragma cplusplus off
 
 s32 fn_80179D40(s32 arg0) {
