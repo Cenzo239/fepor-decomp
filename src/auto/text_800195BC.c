@@ -183,7 +183,9 @@ void *fn_800199E8(void) {
     return (char *) &lbl_80268330 + 0x1D0;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 2
 extern "C" void fn_800199F8(void *arg0) {
     void fn_8000A274(s32);
     void Ui_PlaySeCue(void *, s32);
@@ -213,6 +215,7 @@ extern "C" void fn_800199F8(void *arg0) {
     f32 temp_f1_3;
     f32 temp_f1_4;
     f32 temp_f1_5;
+    f32 lo;
     s32 temp_r3;
     s32 temp_r5;
     s32 temp_r5_2;
@@ -253,14 +256,14 @@ extern "C" void fn_800199F8(void *arg0) {
     if (temp_f1_3 > lbl_80368CF8) {
         *(f32 *)((u8 *)arg0 + 4) = lbl_80368CF8;
     }
-    if (*(f32 *)((u8 *)arg0 + 4) < lbl_80368CF4) {
+    temp_f1_3 = *(f32 *)((u8 *)arg0 + 4);
+    if (temp_f1_3 < lbl_80368CF4) {
         *(f32 *)((u8 *)arg0 + 4) = lbl_80368CF4;
     }
+    lo = lbl_80368D20;
     temp_f1_3 = *(f32 *)((u8 *)arg0 + 4);
-    if (lbl_80368D20 < temp_f1_3) {
-        if (temp_f1_3 < lbl_80368D24) {
-            *(f32 *)((u8 *)arg0 + 4) = lbl_80368C88;
-        }
+    if (lo < temp_f1_3 && temp_f1_3 < lbl_80368D24) {
+        *(f32 *)((u8 *)arg0 + 4) = lbl_80368C88;
     }
     if (gBattleState[0x9D] & 1) {
         *(f32 *)((u8 *)arg0 + 8) =
@@ -280,7 +283,7 @@ extern "C" void fn_800199F8(void *arg0) {
     }
     fn_8000A274((s32)(lbl_80368D28 - lbl_80368D2C * (f32)*(u8 *)(*(u8 **)gPadInput + 7)));
 }
-#pragma cplusplus reset
+#pragma pop
 f32 fn_80019C80(s32 unused, s32 idx) {
     u32 local[4];
     extern u32 lbl_802682F8[4];
