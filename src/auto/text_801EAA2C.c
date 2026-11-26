@@ -2,12 +2,20 @@
 #include "common.h"
 
 
-typedef struct AramAllocSlot {
-    u8 pad[0x5C];
-    struct AramAllocSlot *prev, *next;
-    s32 size;
-    u32 address;
-} AramAllocSlot;
+typedef struct AramSlot {
+    u8 unk_00[0x20];
+    void *cbArg;              /* 0x20 */
+    void *cbData;             /* 0x24 */
+    char name[0x2B];          /* 0x28 */
+    u8 flags;                 /* 0x53 */
+    u32 nameHash;             /* 0x54 */
+    s32 tick;                 /* 0x58 */
+    struct AramSlot *prev;    /* 0x5C */
+    struct AramSlot *next;    /* 0x60 */
+    s32 size;                 /* 0x64 */
+    u32 addr;                 /* 0x68 */
+} AramSlot;
+typedef AramSlot AramAllocSlot;
 static inline void *AramCache_InsertUsed(void *best, void *alloc_list) {
     void *insert_prev;
     void *iter;
@@ -15,14 +23,14 @@ static inline void *AramCache_InsertUsed(void *best, void *alloc_list) {
     iter = alloc_list;
     while (iter != 0) {
     if (insert_prev != 0) {
-        if (((AramAllocSlot *)best)->address <= ((AramAllocSlot *)insert_prev)->address) {
+        if (((AramAllocSlot *)best)->addr <= ((AramAllocSlot *)insert_prev)->addr) {
             goto ins_a;
         }
     }
     if (iter == 0) {
         break;
     }
-    if (((AramAllocSlot *)iter)->address > ((AramAllocSlot *)best)->address) {
+    if (((AramAllocSlot *)iter)->addr > ((AramAllocSlot *)best)->addr) {
         goto ins_d;
     }
 ins_a:
@@ -44,7 +52,7 @@ ins_d:
 static inline void AramCache_ReplaceSlot(AramAllocSlot *cell, AramAllocSlot *best, u32 rem, s32 size) {
     extern void *gAramFreeList;
     cell->size = rem;
-    cell->address = best->address + size;
+    cell->addr = best->addr + size;
     cell->prev = best->prev;
     cell->next = best->next;
     if (cell->next) cell->next->prev = cell;
@@ -134,19 +142,7 @@ typedef struct Unk5C {
 } Unk5C;
 
 /* 0x6C-byte ARAM file-cache slot. */
-typedef struct AramSlot {
-    u8 unk_00[0x20];
-    void *cbArg;              /* 0x20 */
-    void *cbData;             /* 0x24 */
-    char name[0x2B];          /* 0x28 */
-    u8 flags;                 /* 0x53 */
-    u32 nameHash;             /* 0x54 */
-    s32 tick;                 /* 0x58 */
-    struct AramSlot *prev;    /* 0x5C */
-    struct AramSlot *next;    /* 0x60 */
-    s32 size;                 /* 0x64 */
-    u32 addr;                 /* 0x68 */
-} AramSlot;
+
 
 static inline void AramCache_ClearUnusedSlots(void *pool) {
     s32 empty;
