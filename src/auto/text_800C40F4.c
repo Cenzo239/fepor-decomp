@@ -6440,6 +6440,19 @@ extern "C" void fn_800CF5B8(void *arg0) {
     fn_800E2218(p30, *(void **)(v16 + v17));
     *(s32 *)((u8 *)self + 0x230) = 0;
 }
+struct DebugCameraMethods {
+    u8 pad[0x40];
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void SetPosition(f32, f32, f32);
+    virtual void v8();
+    virtual void SetLookAt(f32, f32, f32);
+};
 extern "C" void fn_800CFDDC(void *arg0) {
     void *fn_8002595C(s32);
     void String_Init(void *, char *, void *);
@@ -7052,6 +7065,9 @@ extern "C" void GameScene_StopWorlds(void) {
         world->v15();
     }
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_800D540C(void *arg0) {
 s64 OSGetTime(void);
 s64 __div2i(s64, s64);
@@ -7101,8 +7117,8 @@ void *obj;
 s64 t0;
 s64 t1;
 void *p;
-VObj *found;
-f32 *cam;
+struct Camera { f32 *value; } cam;
+struct Found { VObj *value; } found;
 f32 z;
 f32 f1;
 f32 f3;
@@ -7159,16 +7175,16 @@ fn_800D06BC(obj);
 if (gBattleReplayActive != 0) {
 fn_800CFDDC(obj);
 }
-cam = (f32 *)UiObj_FindEnabledCamera(*(void **)((u8 *)obj + 4));
+cam.value = (f32 *)UiObj_FindEnabledCamera(*(void **)((u8 *)obj + 4));
 String_Init(&sp4C, lbl_802704F8 + 0x315, &sp18);
-found = (VObj *)fn_800E7DA4(*(void **)((u8 *)obj + 4), &sp4C);
+found.value = (VObj *)fn_800E7DA4(*(void **)((u8 *)obj + 4), &sp4C);
 String_Destroy(&sp4C, -1);
-fn_800DBBC8(sp58, cam);
+fn_800DBBC8(sp58, cam.value);
 f1 = sp58[0];
 f3 = sp58[2];
-if (found != NULL) {
-found->v7(f1, lbl_80369DC8, f3);
-found->v11(*(f32 *)((u8 *)gGame + 0x24), *(f32 *)((u8 *)gGame + 0x28), *(f32 *)((u8 *)gGame + 0x2C));
+if (found.value != NULL) {
+found.value->v7(f1, lbl_80369DC8, f3);
+found.value->v11(*(f32 *)((u8 *)gGame + 0x24), *(f32 *)((u8 *)gGame + 0x28), *(f32 *)((u8 *)gGame + 0x2C));
 }
 if (*(u8 *)((u8 *)obj + 0x187) != 0) {
 if (gBattleReplayScene != NULL && *(s32 *)((u8 *)gBattleReplayScene + 0x444) != 2) {
@@ -7184,7 +7200,7 @@ Process_ClearFunc(lbl_80367888);
 }
 }
 }
-
+#pragma pop
 extern "C" void fn_800D5784(s32 arg0) {
     void DebugPrint(char *, ...);
     s32 Process_CreateChild(void *, s32);
@@ -8717,6 +8733,8 @@ fn_800E3F54(*(void **)((u8 *)self+0x414));
 return self;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma opt_common_subs off
 void fn_800D8030(void *arg0)
 {
@@ -8733,15 +8751,15 @@ void fn_800D8030(void *arg0)
     void fn_800E8FE8(void *, f32);
     extern void *gPadInput;
     extern char lbl_802711B0[];
-    extern f32 lbl_80369E30;
-    extern f32 lbl_80369E34;
-    extern f32 lbl_80369E38;
-    extern f32 lbl_80369E3C;
-    extern f64 lbl_80369E50;
-    extern f32 lbl_80369E40;
-    extern f32 lbl_80369E44;
-    extern f32 lbl_80369E48;
-    extern f32 lbl_80369E4C;
+    extern const f32 lbl_80369E30;
+    extern const f32 lbl_80369E34;
+    extern const f32 lbl_80369E38;
+    extern const f32 lbl_80369E3C;
+    extern const f64 lbl_80369E50;
+    extern const f32 lbl_80369E40;
+    extern const f32 lbl_80369E44;
+    extern const f32 lbl_80369E48;
+    extern const f32 lbl_80369E4C;
 
     f32 mtx[3][4];
     f32 vec[3];
@@ -8849,7 +8867,7 @@ void fn_800D8030(void *arg0)
     vt = *(void **)((u8 *)self + 0x40);
     ((void (*)(void *, f32, f32, f32))*(void **)((u8 *)vt + 0x2C))(self, f26, f27, f28);
 }
-#pragma opt_common_subs reset
+#pragma pop
 extern s32 lbl_8036A0CC;
 extern s32 lbl_8036A0D4;
 extern s32 lbl_8036A0D8;
@@ -9090,7 +9108,11 @@ void fn_800D8D94(void *arg0, void *arg1, void *arg2, s32 arg3)
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
-extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
+#pragma opt_propagation off
+extern "C" void fn_800D8E14(void *self, s32 arg1) {
     struct Host {
         u8 pad[0x10];
         virtual void v0();
@@ -9136,7 +9158,6 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
     extern f32 lbl_80369E58;
     String str74, str68, str5C, str50, str44, str38, str2C, str20;
     void *alloc1C, *alloc18, *alloc14, *alloc10, *allocC, *alloc8;
-    void *self;
     void *obj;
     s8 flag;
     s8 made29;
@@ -9144,7 +9165,6 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
     s8 made27;
     s8 made26;
 
-    self = arg0;
     str74.cap = 0;
     str68.cap = 0;
     str74.size = 0;
@@ -9214,7 +9234,7 @@ extern "C" void fn_800D8E14(void *arg0, s32 arg1) {
     String_Destroy(&str68, -1);
     String_Destroy(&str74, -1);
 }
-
+#pragma pop
 #pragma opt_common_subs off
 extern "C" void fn_800D9188(void *arg0, s32 arg1) {
 void fn_800E5698(void *,void *); void String_Assign(void *,void *,s32,s32); void String_Destroy(void *,s32);
@@ -13853,7 +13873,7 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer on
-#pragma opt_common_subs off
+#pragma opt_propagation off
 s32 *fn_800E0728(s32 *first, s32 *mid, s32 *last, s32 n1, s32 n2, SortIteratorFields *from, SortIteratorFields *to) {
     void fn_800E0EE0(s32 *, s32 *, s32 *, void *);
     SortIteratorFields outA, stopA, curA, outB, curB, stopB;
@@ -26167,8 +26187,9 @@ bits:
     return flag;
 }
 
-#pragma cplusplus on
-extern "C" void fn_800F8868(u8 *self) {
+#pragma push
+#pragma optimization_level 2
+void fn_800F8868(u8 *self) {
     extern u8 *gAiCmd;
     extern u8 gUiContext[], gAiState[], gTargetList[];
     extern s32 gAiCmdIsAlt;
@@ -26178,13 +26199,12 @@ extern "C" void fn_800F8868(u8 *self) {
     void fn_800FFB4C(void *, s32, s32);
     u32 fn_8002F680(void *, u8, u8);
     void fn_800FB96C(s32, u8, u8, void *, s8, s8, s32, s32, s32);
-    struct Ret { void *p; } ctx;
     s16 x, y;
     u8 *other = gAiCmd;
     if (fn_801021F0(*(void **)(other + 0x14), &x, &y)) {
-        other = (u8 *)Unit_FindByName(*(void **)(other + 0x14));
-        ctx.p = ((AiCommandContext *)gUiContext)->set(other);
-        if (!fn_800BF1E8(ctx.p)) {
+        other = Unit_FindByName(*(void **)(other + 0x14));
+        *(void **)(gUiContext + 4) = other;
+        if (!fn_800BF1E8(gUiContext)) {
             *(s32 *)(gAiState + 8) = 9;
             *(s32 *)(gAiState + 0xC) = 9;
         } else {
@@ -26200,7 +26220,7 @@ extern "C" void fn_800F8868(u8 *self) {
     else
         self[0x251]++;
 }
-#pragma cplusplus reset
+#pragma pop
 void fn_800F8994(void *arg0) {
  extern u8 gAiState[],gBattleMap[]; extern u8 *gAiCmd; extern s32 gAiCmdIsAlt;
  void Ai_UnitIsHostileToActive(void *);void Ai_UnitNameInCmdList(void *);void Ai_UnitHostileNotInCmdList(void *);
@@ -29334,28 +29354,35 @@ void fn_800FDDBC(s32 x, s32 y, s32 min, s32 max, s32 layer) {
         }
     }
 }
-#pragma use_lmw_stmw reset
-void fn_800FDF38(s32 x,s32 y,u8 *path,s32 mode,s32 value) {
-    extern u8 gBattleMap[];
-    void Map_SelectRangeBuffer(void *,s32);
-    register u8 *map=gBattleMap;
-    Map_SelectRangeBuffer(map,mode);
-    *(u16 *)(*(u32 *)(gBattleMap+0x14190) + ((((s8)x+((s8)y<<6)))<<1))=(short)value;
-    while(*path) {
+#pragma opt_lifetimes off
+void fn_800FDF38(s32 x, s32 y, u8 *path, s32 mode, s32 value) {
+    extern struct {
+        u8 pad[8];
+        s8 minX, minY, maxX, maxY;
+        u8 pad2[0x14190 - 12];
+        u16 *buf;
+    } gBattleMap;
+    void Map_SelectRangeBuffer(void *, s32);
+    register u8 *map = (u8 *)&gBattleMap;
+    Map_SelectRangeBuffer(map, mode);
+    gBattleMap.buf[(s8)x + ((s8)y << 6)] = (short)value;
+    while (*path) {
         u8 outside;
-        switch(*path) {
+        switch (*path) {
         case '4': x--; break;
         case '6': x++; break;
         case '8': y--; break;
         case '2': y++; break;
         }
-        outside=0;
-        if(x<(s8)gBattleMap[8] || (s8)gBattleMap[10]-1<x || y<(s8)gBattleMap[9] || (s8)gBattleMap[11]-1<y) outside=1;
-        if(!outside) (*(u16 **)(map+0x14190))[(s8)x+((s8)y<<6)]=value;
+        outside = 0;
+        if (x < gBattleMap.minX || gBattleMap.maxX - 1 < x || y < gBattleMap.minY || gBattleMap.maxY - 1 < y)
+            outside = 1;
+        if (!outside)
+            (*(u16 **)(map + 0x14190))[(s8)x + ((s8)y << 6)] = value;
         path++;
     }
 }
-
+#pragma opt_lifetimes reset
 void fn_800FE074(u8 *unit, s32 arg1, s32 arg2) {
     void Map_FloodMoveRange(void *, u8, u8, u16, s32, s32);
     void fn_80022748(void *, void *);
