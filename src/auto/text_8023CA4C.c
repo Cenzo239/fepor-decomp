@@ -1,6 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-extern f64 lbl_8036C190;
+extern const f64 lbl_8036C190;
 typedef struct SoundBucketNode { struct SoundBucketNode *next, *prev; u8 flags, index; u16 pad; } SoundBucketNode;
 static inline void SoundBucket_Unlink(SoundBucketNode *node, s32 offset) {
 extern u8 lbl_8034C964[];
@@ -376,8 +376,9 @@ s32 fn_8023CA4C(void) {
     u16 row;
     u8 *state;
 
-    size = (u16)ThpReadWord() - 2;
-    for (;;) {
+    size = (u16)ThpReadWord();
+    size -= 2;
+    do {
         id = ThpReadByte();
         zig = lbl_80282FD8;
         p = zig;
@@ -405,10 +406,7 @@ s32 fn_8023CA4C(void) {
             i += 8;
         }
         size -= 65;
-        if ((u16)size == 0) {
-            break;
-        }
-    }
+    } while ((u16)size != 0);
     return 0;
 }
 #pragma global_optimizer reset
