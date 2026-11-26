@@ -18107,8 +18107,7 @@ extern "C" void *fn_800E805C(void *arg0, void *arg1, void *arg2) {
     };
     void *result;
 
-    arg2 = String_CStr(arg2);
-    result = ((Obj *)arg0)->v2(String_CStr(arg1), arg2);
+    result = ((Obj *)arg0)->v2(String_CStr(arg1), String_CStr(arg2));
     if (result != NULL) {
         fn_800DF664(result);
     }
