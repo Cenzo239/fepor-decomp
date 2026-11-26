@@ -2088,7 +2088,6 @@ String_Destroy(&str,-1);return count;
 #pragma optimization_level 4
 #pragma opt_loop_invariants off
 #pragma opt_strength_reduction off
-#pragma opt_propagation off
 s32 fn_800C802C(void *arg0, s32 arg1) {
  typedef struct { u32 a,b,c,d,e,f,g,h; } Block;
  void String_Init(void *, char *, void *);
@@ -2097,12 +2096,12 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  Block value, temp, fallback;
  String str;
  u8 alloc;
- s32 result;
+ register s32 result;
  u8 *self;
  u8 *entry;
  s32 offset;
  s32 j,k;
- s32 index;
+ register s32 index;
  u8 *list;
  s32 listOffset;
  u8 equal;
@@ -5123,8 +5122,8 @@ if(madeA) String_Destroy(name,-1);
 
 #pragma cplusplus reset
 
-#pragma dont_inline on
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_dead_code off
 extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 arg5,u8 arg6) {
  void String_Init(void *,void *,void *); void String_Concat(void *,void *,s32); void String_ConcatCStr(void *,void *,void *);
  void *Heap_Alloc(u32); void *String_CStr(s32); void *String_AssignCStr(void *,void *,s32);
@@ -5176,8 +5175,7 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  String_Destroy(&sp5C,-1); String_Destroy(&sp68,-1); String_Destroy(&sp74,-1);
  return result;
 }
-#pragma dont_inline reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 extern "C" void *fn_800CDAA0(void *arg0, void *arg1) {
 void String_JoinCStr(String*,char*,void*);
@@ -5206,8 +5204,8 @@ String_Destroy(&out,-1);return 0;
 
 extern "C" s32 fn_800CDBA4(void *arg0, s32 arg1, u32 arg2) {
 #pragma opt_common_subs off
-    u16 FileCache_Probe(void);
-    s32 FileCache_Load(void);
+    u16 FileCache_Probe(const char *);
+    s32 FileCache_Load(const char *);
     char *String_CStr(String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -5219,7 +5217,7 @@ extern "C" s32 fn_800CDBA4(void *arg0, s32 arg1, u32 arg2) {
     u32 strlen(const char *);
     extern char lbl_802704F8[];
 
-    s32 ret;
+    struct Result { s32 value; } ret;
     char *p;
     String name;
     String result;
@@ -5257,13 +5255,11 @@ extern "C" s32 fn_800CDBA4(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    String_CStr(&name);
-    if ((u16)FileCache_Probe() != 0x8000) {
-        String_CStr(&name);
-        ret = FileCache_Load();
+    if ((u16)FileCache_Probe(String_CStr(&name)) != 0x8000) {
+        ret.value = FileCache_Load(String_CStr(&name));
         String_Destroy(&result, -1);
         String_Destroy(&name, -1);
-        return ret;
+        return ret.value;
     }
 
     {
@@ -5282,13 +5278,11 @@ extern "C" s32 fn_800CDBA4(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    String_CStr(&name);
-    if ((u16)FileCache_Probe() != 0x8000) {
-        String_CStr(&name);
-        ret = FileCache_Load();
+    if ((u16)FileCache_Probe(String_CStr(&name)) != 0x8000) {
+        ret.value = FileCache_Load(String_CStr(&name));
         String_Destroy(&result, -1);
         String_Destroy(&name, -1);
-        return ret;
+        return ret.value;
     }
 
     String_Destroy(&result, -1);
@@ -11664,14 +11658,15 @@ void fn_800DD598(void *vec, String *begin, String *end)
     extern char lbl_80271730[];
     u32 newCount;
     u32 *pMin;
+    String *capEnd;
     u32 sz;
-    u32 limit;
     u32 *pLen;
     u32 len;
     String *data;
     String *dst;
     char *errFile;
     String *dstEnd;
+    u32 limit;
     void *buf;
 
     newCount = (u32)(((s32)end - (s32)begin) / 12);
@@ -11708,9 +11703,8 @@ void fn_800DD598(void *vec, String *begin, String *end)
             begin++;
         }
         if (newCount < *(u32 *)((u8 *)vec + 4)) {
-            len = *(u32 *)((u8 *)vec + 4);
-            dstEnd = (String *)((u8 *)*(void **)((u8 *)vec + 8) + len * 0xC);
-            while (dst < dstEnd) {
+            capEnd = (String *)((u8 *)*(void **)((u8 *)vec + 8) + *(u32 *)((u8 *)vec + 4) * 0xC);
+            while (dst < capEnd) {
                 if (dst != 0 && dst->data != 0) {
                     Heap_Free(dst->data);
                 }
