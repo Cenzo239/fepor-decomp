@@ -10567,6 +10567,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma opt_dead_code off
+#pragma global_optimizer on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -20292,11 +20293,10 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     };
     extern struct CardWork gCardWork;
 
-    CardFileStatus status;
     Stream_800EBACC *stream;
+    CardFileStatus status;
     void *fileInfo;
     s32 size;
-    s32 fileNo;
     u8 ok;
 
     if (arg0 == NULL) {
@@ -20316,24 +20316,15 @@ extern "C" void fn_800EBACC(void *arg0, void *arg1) {
         fn_8021CDC4(gCardWork.chan, arg1);
         fileInfo = gCardWork.fileInfo;
         gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
-        ok = 0;
-        if (gCardWork.result == 0 && gCardWork.busy == 0) {
-            ok = 1;
-        }
+        ok = (gCardWork.result == 0 && gCardWork.busy == 0);
         if (ok != 0) {
             gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
-            ok = 0;
-            if (gCardWork.result == 0 && gCardWork.busy == 0) {
-                ok = 1;
-            }
+            ok = (gCardWork.result == 0 && gCardWork.busy == 0);
             if (ok != 0) {
                 gCardWork.result = fn_8021C02C(fileInfo);
-                ok = 0;
-                if (gCardWork.result == 0 && gCardWork.busy == 0) {
-                    ok = 1;
-                }
+                ok = (gCardWork.result == 0 && gCardWork.busy == 0);
                 if (ok != 0) {
-                    fileNo = *(s32 *)&gCardWork.fileInfo[4];
+                    s32 fileNo = *(s32 *)&gCardWork.fileInfo[4];
                     fn_8021D004(gCardWork.chan, fileNo, &status);
                     status.commentAddress = 0x2000;
                     status.iconAddress = 0;
