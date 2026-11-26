@@ -1489,33 +1489,30 @@ extern "C" void Camera_InitSlots(void) {
 
 extern "C" void fn_80019208(void *arg0) {
     extern u8 gEventLockDepth, lbl_803671C1, lbl_8036728B;
-    extern f32 lbl_80368CCC,lbl_80368C8C,lbl_80368CD0,lbl_80368CD4,lbl_80368CD8,lbl_80368CDC,lbl_80368CE0;
+    extern const f32 lbl_80368CCC,lbl_80368CD0,lbl_80368CD4,lbl_80368CD8,lbl_80368CDC,lbl_80368CE0;
     typedef union { struct { f32 x,y,z; } v; u32 words[3]; } Point;
     Point target, current;
     struct Obj { u8 pad[0x74]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; };
-    f32 a,b,c,d,e;
-    f32 factor,one,dx,dz;
     f32 *p=(f32 *)arg0;
+    f32 a,c,d,e;
     if(gEventLockDepth==0 && !(lbl_8036728B&4))
         ((Obj *)arg0)->v1();
-    factor=lbl_80368CCC; one=lbl_80368C8C; dx=lbl_80368CD4; dz=lbl_80368CD8;
-    p[28]=(factor*p[28]+one)*lbl_80368CD0;
-    a=factor*p[28];
-    p[6]=(p[6]*a+p[3])/(one+a);
-    p[4]=(p[4]*a+p[1])/(one+a);
-    p[5]=(p[5]*a+p[2])/(one+a);
+    p[28]=(lbl_80368CCC*p[28]+1.0f)/8.0f;
+    a=lbl_80368CCC*p[28];
+    p[6]=(p[6]*a+p[3])/(1.0f+a);
+    p[4]=(p[4]*a+p[1])/(1.0f+a);
+    p[5]=(p[5]*a+p[2])/(1.0f+a);
     p[19]=*(f32 *)((u8 *)gBattleState+0x52C);
     p[20]=*(f32 *)((u8 *)gBattleState+0x530);
     p[21]=*(f32 *)((u8 *)gBattleState+0x53C);
     c=p[28];
-    d=dx*c; e=dz*c;
+    d=lbl_80368CD4*c; e=lbl_80368CD8*c;
     target=*(Point *)(p+19);
     current=*(Point *)(p+16);
     if(lbl_803671C1) {d=lbl_80368CDC*c; e=lbl_80368CE0*c;}
-    a=lbl_80368C8C+d; b=lbl_80368C8C+e;
-    p[16]=(current.v.x*d+target.v.x)/a;
-    p[17]=(current.v.y*d+target.v.y)/a;
-    p[18]=(current.v.z*e+target.v.z)/b;
+    p[16]=(current.v.x*d+target.v.x)/(1.0f+d);
+    p[17]=(current.v.y*d+target.v.y)/(1.0f+d);
+    p[18]=(current.v.z*e+target.v.z)/(1.0f+e);
 }
 
 #pragma peephole reset
