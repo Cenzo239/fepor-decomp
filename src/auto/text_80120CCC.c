@@ -3073,10 +3073,13 @@ void fn_80125624(void *arg0) {
     }
     scale = 1.0f;
     for (i = 0; i < 2; i++) {
+        f32 v;
         obj->scrollX[i] += obj->speedX * scale - delta.x;
         obj->scrollY[i] += obj->speedY * scale - delta.y;
-        obj->scrollX[i] -= (f32)((s32)(obj->scrollX[i] * 0.0078125f) << 7);
-        obj->scrollY[i] -= (f32)((s32)(obj->scrollY[i] * 0.0078125f) << 7);
+        v = obj->scrollX[i];
+        obj->scrollX[i] = v - (f32)((s32)(v / 128.0f) * 128);
+        v = obj->scrollY[i];
+        obj->scrollY[i] = v - (f32)((s32)(v / 128.0f) * 128);
         scale *= 1.5f;
     }
     fn_8000A258();
