@@ -157,6 +157,7 @@ typedef struct Vec2s {
     s16 x;
     s16 y;
 } Vec2s;
+typedef struct MenuGridLayout { u8 pad0[0x12]; s16 left; u8 pad14[2]; s16 right; u8 pad18[0x26]; s16 index; u8 pad40[4]; s16 columns, rowHeight, xOffset, yOffset; } MenuGridLayout;
 
 
 typedef struct {
