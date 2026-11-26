@@ -146,7 +146,7 @@ static inline s64 ResetSwitchDeadline(s32 minutes, u32 ticks) { return __OSStart
 static inline s32 ResetSwitchBegin(s64 now) {
     s32 state;
     lbl_803684FC = 1;
-    state = *(s64 *)&lbl_80368508 != 0 ? 1 : 0;
+    state = *(s64 *)&lbl_80368508 ? 1 : 0;
     *(s64 *)&lbl_80368510 = now;
     return state;
 }
