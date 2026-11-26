@@ -1,6 +1,11 @@
 /* Functions from 0x8009F85C to 0x800A399C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u8 MenuCmd_CheckItem_800A3770(u8 *base, s32 item) {
+    s32 fn_8005C0AC(s32, u8 *);
+    return (u8)fn_8005C0AC(item, base + 0x7E6) != 0;
+}
+
 static inline u8 *MenuCmd_FindStatus(s32 slot) {
     void *Map_GetCursorUnit(void);
     void *fn_80105C5C(void *, u8);
