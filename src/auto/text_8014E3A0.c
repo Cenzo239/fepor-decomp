@@ -7479,6 +7479,21 @@ void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     Prim2D_EndPrim();
 }
 #pragma use_lmw_stmw reset
+typedef struct { s32 a, b, c, d; } C4_80161B98;
+
+static inline C4_80161B98 MakeC4Rev80161B98(s32 *p) {
+    C4_80161B98 r;
+    s32 a = p[0];
+    s32 b = p[1];
+    s32 c = p[2];
+    s32 d = p[3];
+    r.a = d;
+    r.b = c;
+    r.c = b;
+    r.d = a;
+    return r;
+}
+
 void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s32 *arg6, s32 arg7) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(void *, u16);
