@@ -2453,7 +2453,7 @@ void fn_801EDF7C(void *arg0) {
     fn_800162B8();
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 1
 void fn_801EDFCC(void) {
     typedef struct { u8 data[192]; } FxChannels;
     extern FxChannels gFxChannels;
