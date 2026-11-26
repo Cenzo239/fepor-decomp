@@ -13,24 +13,24 @@ static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
 }
 
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; u8 c; s32 i; struct { u8 *p; } dst;
+    char *src; u8 c; s32 i; u8 *dst;
     src = arg1;
     if (*arg1 == '/') {
         src++;
     }
     *(s32 *)(arg0 + 0x2C) = 0;
-    dst.p = arg0;
+    dst = arg0;
     for (i = 0x29; i > 0; i--) {
         c = *src;
         if ((s8)c >= 'A' && (s8)c <= 'Z') {
             *src = (char)(c + 0x20);
         }
-        *dst.p = *src;
+        *dst = *src;
         c = *src;
         if ((s8)c == 0) {
             break;
         }
-        dst.p++;
+        dst++;
         src++;
         *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
     }
