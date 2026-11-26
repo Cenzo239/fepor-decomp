@@ -21,7 +21,7 @@ typedef struct List {
 
 static inline s32 CountUnitItemReferences(u8 *unit,u8 *target) {
 void **Unit_GetHeldItemSlot(void *,s32);
-s32 i; u8 *entry; void *item; s32 count=0;
+s32 count=0; s32 i; u8 *entry; void *item;
 if((*(u64 *)(target+0x38)&5ULL)!=0) {
 for(i=count;i<4;i++) { entry=(u8 *)Unit_GetHeldItemSlot(unit,i);item=*(void **)entry; if(!item) break;
 if(!(entry[5]&63) && target==item) count++;
@@ -6053,8 +6053,8 @@ extern "C" void fn_8018FC1C(void *arg0) {
     fn_80154004(0, 0, 0x10);
 }
 
-#pragma opt_common_subs off
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 extern "C" s32 fn_8018FC58(void *arg0)
 {
   void **fn_80037BBC(void *, s32);
@@ -6115,8 +6115,8 @@ extern "C" s32 fn_8018FC58(void *arg0)
   }
   return total;
 }
+#pragma pop
 #pragma cplusplus reset
-#pragma opt_common_subs reset
 
 void *fn_8018FFB4(void *arg0, s16 arg1) {
     void Heap_Free(void *);
