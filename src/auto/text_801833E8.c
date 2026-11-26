@@ -814,19 +814,19 @@ void *fn_80184750(void *unit, u32 dir, s32 frames, s32 priority) {
 }
 
 void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    void fn_8000A388(void *, void *, void *);
-    void *fn_8000CA64(void *, s32);
-    f32 fn_8004BDA8(f32, f32, f32);
-    void fn_80185078(void *, void *);
-    extern u16 lbl_80295A78[36];
-    extern f32 lbl_8036ACD8;
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, s32);
+    f32 fn_8004BDA8(void *, f32, f32);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u16 E_MuFade_script[36];
+    extern const f32 gHalf;
     u8 sp8[0x34];
     f32 temp_f31;
     void *temp_r3;
 
-    temp_f31 = fn_8004BDA8(lbl_8036ACD8 + (f32)arg1, lbl_8036ACD8 + (f32)arg2, lbl_8036ACD8);
+    temp_f31 = fn_8004BDA8(arg0, gHalf + (f32)arg1, gHalf + (f32)arg2);
     M2C_FIELD(sp8, void **, 0x30) = arg0;
-    fn_8000A388(&lbl_80295A78, fn_80185078, sp8);
+    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
     if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
         return NULL;
     }
@@ -834,7 +834,7 @@ void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
         M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * temp_f31);
         return NULL;
     }
-    temp_r3 = fn_8000CA64(&lbl_80295A78, arg4);
+    temp_r3 = Process_CreateEx(&E_MuFade_script, arg4);
     M2C_FIELD(temp_r3, void **, 0x30) = arg0;
     M2C_FIELD(temp_r3, f32 *, 0x34) = temp_f31;
     M2C_FIELD(temp_r3, s32 *, 0x38) = arg3;
@@ -6266,10 +6266,10 @@ void fn_80190258(void *arg0) {
 }
 
 void fn_801902A8(void *arg0) {
-    void fn_80202A6C(void *,f32,f32,f32,f32);
-    void GXSetProjection(void *,s32);
+    void fn_80202A6C(void *, f32, f32, f32, f32);
+    void GXSetProjection(void *, s32);
     void fn_80225034(f32 *);
-    void GXSetViewport(f32,f32,f32,f32,f32,f32);
+    void GXSetViewport(f32, f32, f32, f32, f32, f32);
     void fn_80069F04(void *);
     f32 projection[3][4];
     f32 viewport[6];
@@ -6277,18 +6277,16 @@ void fn_801902A8(void *arg0) {
     s16 height;
     s16 x;
     s16 y;
-    s16 left=M2C_FIELD(arg0,s16 *,0x12);
-    s16 top=M2C_FIELD(arg0,s16 *,0x14);
-    width=M2C_FIELD(arg0,s16 *,0x16)-left;
-    height=M2C_FIELD(arg0,s16 *,0x18)-top;
-    x=M2C_FIELD(arg0,s16 *,0xA)+left;
-    y=M2C_FIELD(arg0,s16 *,0xC)+top;
-    fn_80202A6C(projection,30.0f,(f32)(width/height),1.0f,1000.0f);
-    GXSetProjection(projection,0);
+    x = M2C_FIELD(arg0, s16 *, 0xA) + M2C_FIELD(arg0, s16 *, 0x12);
+    width = M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12);
+    y = M2C_FIELD(arg0, s16 *, 0xC) + M2C_FIELD(arg0, s16 *, 0x14);
+    height = M2C_FIELD(arg0, s16 *, 0x18) - M2C_FIELD(arg0, s16 *, 0x14);
+    fn_80202A6C(projection, 30.0f, (f32)(width / height), 1.0f, 1000.0f);
+    GXSetProjection(projection, 0);
     fn_80225034(viewport);
-    GXSetViewport((f32)x,(f32)y,(f32)width,(f32)height,viewport[4],viewport[5]);
-    fn_80069F04(M2C_FIELD(arg0,void **,0x40));
-    GXSetViewport(viewport[0],viewport[1],viewport[2],viewport[3],viewport[4],viewport[5]);
+    GXSetViewport((f32)x, (f32)y, (f32)width, (f32)height, viewport[4], viewport[5]);
+    fn_80069F04(M2C_FIELD(arg0, void **, 0x40));
+    GXSetViewport(viewport[0], viewport[1], viewport[2], viewport[3], viewport[4], viewport[5]);
 }
 
 #pragma cplusplus on
