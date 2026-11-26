@@ -5,9 +5,12 @@ static inline void Fx_801EDFCC_Body(void *p) {
     void fn_80146AF0(void);
     void Fx_FadeIn(void *, s32);
     void fn_8014876C(void *, s32, s32);
-    fn_80146AF0();
-    Fx_FadeIn(p, 0x3E8);
-    fn_8014876C(p, 0x64, 0x3E8);
+    s32 i;
+    for (i = 0; i < 1; i++) {
+        fn_80146AF0();
+        Fx_FadeIn(p, 0x3E8);
+        fn_8014876C(p, 0x64, 0x3E8);
+    }
 }
 
 typedef struct CameraAnimVec { f32 x, y, z; } CameraAnimVec;
