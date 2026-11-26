@@ -314,7 +314,7 @@ s32 fn_8000ADE4(void *arg0)
 {
  extern u8 gProcesses[];
  u8 *tmp = *(u8 **)((u8 *)arg0 + 4);
- if (Process_FindInPool(gProcesses, *(u32 *)(tmp + 4)) != 0) return 0;
+ if (Process_FindCodeInPool(*(u32 *)(tmp + 4), gProcesses) != 0) return 0;
  *(u8 **)((u8 *)arg0 + 4) += 8;
  return 1;
 }
