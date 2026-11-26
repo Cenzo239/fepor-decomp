@@ -786,12 +786,15 @@ extern "C" void fn_8013D18C(void *arg0, s32 arg1) {
     Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void Ui_ShowUnitInfoText(void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     extern s32 gUiInputFlags;
     extern u32 *gPadInput;
     extern u8 gUnitInfoPopup[];
@@ -829,7 +832,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     u8 *p = (u8 *)arg1;
     s8 maxIdx = (s8)p[0x60];
     s32 rows = self->Rows();
-    s16 cols = (s16)self->Cols();
+    s32 cols = self->Cols();
     s16 colW = cols;
     u8 skip = 0;
     s16 row = (s16)((s8)p[0x62] / colW);
@@ -849,9 +852,9 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         held = gPadInput[1];
         edge = held & (gPadInput[2] ^ held);
         p[0x63] = p[0x62];
-        if (cols > 1) {
+        if ((s16)cols > 1) {
             rem = (s16)(maxIdx - row * colW);
-            if (rem > cols)
+            if (rem > (s16)cols)
                 rem = cols;
             if (trig & 0x01000001) {
                 if (col > 0)
@@ -878,9 +881,9 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 p[0x62] = (u8)(p[0x62] - cols);
             }
         } else if (trig & 0x04000004) {
-            if (row == rows - 1) {
+            if (row == (s16)rows - 1) {
                 if (trig == edge)
-                    p[0x62] = (u8)(p[0x62] - (rows - 1) * colW);
+                    p[0x62] = (u8)(p[0x62] - ((s16)rows - 1) * colW);
             } else {
                 p[0x62] = (u8)(p[0x62] + cols);
                 if ((s8)p[0x62] > maxIdx - 1)
@@ -903,7 +906,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 inner = *(Inner **)((u8 *)item + 0x34);
                 obj = inner->v2();
                 if (obj != NULL) {
-                    Ui_ShowUnitInfoText(gUnitInfoPopup, fx, fy);
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, obj, fx, fy);
                 } else {
                     item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                     inner = *(Inner **)((u8 *)item + 0x34);
@@ -914,6 +917,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         }
     }
 }
+#pragma pop
 
 extern "C" void fn_8013D6E0(void *arg0, void *arg1) {
 void *GfxEnt_Get(u8);
