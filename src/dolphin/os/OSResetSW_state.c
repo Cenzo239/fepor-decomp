@@ -1,10 +1,6 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
 
-static inline s32 ResetTimeIsSet(u64 time, s32 yes, s32 no) {
-    return time != 0 ? yes : no;
-}
-
 #include <dolphin/os.h>
 #include "global.h"
 extern u16 Scb_80339420[];
@@ -115,12 +111,10 @@ extern u16 InterruptHandlerTable_803684C8[];
 extern s32 StopAtNextInt_80368530;
 extern u16 lbl_80368550;
 
-extern u32 lbl_80368514;
-extern u32 lbl_80368510;
+extern s64 lbl_80368510;
 extern s32 lbl_803684FC;
 extern s32 lbl_80368500;
-extern s32 lbl_80368508;
-extern u32 lbl_8036850C;
+extern s64 lbl_80368508;
 extern s64 __OSStartTime;
 extern void (*lbl_803684F8)();
 
@@ -149,84 +143,55 @@ extern void* RunQueue_80339478[];
 extern s32 RunQueueBits_80368518;
 extern s32 RunQueueHint_8036851C;
 
+u8 __OSResetTimer : 0x800030E3;
+u32 __OSBusClock : 0x800000F8;
 
+#define OS_TIMER_CLOCK (__OSBusClock / 4)
 
-#pragma push
-#pragma optimization_level 3
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
-    s64 __div2i(s64, s64);
+    s32 enabled = OSDisableInterrupts();
     s32 state;
-    s32 enabled;
-    
+    u32 reg;
     s64 now;
-    s32 soft;
-    u32 freq;
-    u32 thresh;
-    s32 n;
-    u64 t;
-    s64 q;
 
-    enabled = OSDisableInterrupts();
     now = __OSGetSystemTime();
-    
 
-    if (!(*(u32 *)0xCC003000 & 0x10000)) {
-        if (lbl_803684FC == 0) {
+    reg = *(volatile u32 *)0xCC003000;
+    if (!(reg & 0x00010000)) {
+        if (!lbl_803684FC) {
             lbl_803684FC = 1;
-            soft = ResetTimeIsSet(((u64)(u32)lbl_80368508 << 32 | lbl_8036850C), 1, 0);
-            lbl_80368514 = (u32)now;
-            state = soft;
-            lbl_80368510 = (u32)((u64)now >> 32);
+            state = lbl_80368508 ? 1 : 0;
+            lbl_80368510 = now;
         } else {
-            soft = 1;
-            if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
-                freq = *(u32 *)0x800000F8 >> 2;
-                thresh = (freq / 125000) * 0x64 >> 3;
-                if ((s64)thresh >= (u64)now - (s64)((u64)lbl_80368510 << 32 | lbl_80368514)) {
-                    soft = 0;
-                }
-            }
-            if (soft != 0) {
-                state = 1;
-            } else {
-                state = 0;
-            }
+            state = lbl_80368508 || (100 * (OS_TIMER_CLOCK / 125000) / 8 < now - lbl_80368510) ? 1 : 0;
         }
-    } else if (lbl_803684FC != 0) {
+    } else if (lbl_803684FC) {
         lbl_803684FC = 0;
         state = lbl_80368500;
-        if (state != 0) {
-            lbl_8036850C = (u32)now; lbl_80368508 = (s32)((u64)now >> 32);
+        if (state) {
+            lbl_80368508 = now;
         } else {
-            lbl_8036850C = 0; lbl_80368508 = 0;
+            lbl_80368508 = 0;
         }
-    } else if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) != 0) {
-        freq = *(u32 *)0x800000F8 >> 2;
-        thresh = (freq / 1000) * 0x28;
-        if (now - (s64)((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) < (s64)thresh) {
-            state = 1;
-        } else {
-            lbl_8036850C = 0; lbl_80368508 = 0;
-            state = 0;
-        }
+    } else if (lbl_80368508 && (now - lbl_80368508 < (40 * (OS_TIMER_CLOCK / 1000)))) {
+        state = 1;
     } else {
-        lbl_8036850C = 0; lbl_80368508 = 0;
         state = 0;
+        lbl_80368508 = 0;
     }
 
     lbl_80368500 = state;
 
-    n = *(u8 *)0x800030E3 & 0x1F;
-    if (n != 0) {
-        freq = *(u32 *)0x800000F8 >> 2;
-        t = __OSStartTime + (s64)(n * 60) * freq;
-        if (t < now) {
-            q = __div2i(now - t, (u64)freq);
-            q = __div2i(q, 2);
-            if ((q & 1) == 0) {
+    if (__OSResetTimer & 0x1F) {
+        s64 fire = (__OSResetTimer & 0x1F) * 60;
+        fire = __OSStartTime + (fire * OS_TIMER_CLOCK);
+        if (fire < now) {
+            now -= fire;
+            now = (now / OS_TIMER_CLOCK) / 2;
+            if ((now & 1) == 0) {
                 state = 1;
             } else {
                 state = 0;
@@ -234,8 +199,6 @@ s32 fn_80208D18(void) {
         }
     }
 
-    
     OSRestoreInterrupts(enabled);
     return state;
 }
-#pragma pop
