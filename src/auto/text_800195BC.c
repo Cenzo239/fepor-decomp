@@ -652,6 +652,7 @@ void fn_8001A5D0(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_loop_invariants off
 void fn_8001A5E4(void) {
