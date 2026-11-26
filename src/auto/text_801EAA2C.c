@@ -2,6 +2,48 @@
 #include "common.h"
 
 
+static inline void Map_UpdateCursorMoveLimit(void) {
+    extern s8 lbl_80368374;
+    extern void *lbl_80368370, *gPadInput;
+    extern s32 gUiInputFlags;
+    void *Map_GetCursorUnit(void);
+    void Map_HideMoveLimitView(void);
+    void Map_ShowMoveLimitView(void);
+    void Map_SetupUnitMoveLimit(void *);
+    void *unit2;
+    u8 skip;
+    u32 gflags;
+    if (lbl_80368374 == 0) {
+        lbl_80368370 = NULL;
+        lbl_80368374 = 1;
+    }
+    unit2 = Map_GetCursorUnit();
+    if (unit2 == NULL && (gUiInputFlags & 0x400)) {
+        Map_HideMoveLimitView();
+    }
+    skip = 0;
+    gflags = gUiInputFlags;
+    if ((gflags & 0x10) && !(gflags & 0x20)) {
+        skip = 1;
+    }
+    if ((skip != 0) ||
+        ((!( *(u32 *)((u8 *)gPadInput + 4) & 0xF)) &&
+         ((s8)(*(u8 **)gPadInput)[2] == 0) &&
+         ((s8)(*(u8 **)gPadInput)[3] == 0))) {
+        if ((lbl_80368370 != unit2) || !(gflags & 0x400)) {
+            lbl_80368370 = unit2;
+            if ((unit2 == NULL) || (*(u8 *)(*(u8 **)((u8 *)unit2 + 0x190) + 8) == 0)) {
+                if (gflags & 0x400) {
+                    Map_HideMoveLimitView();
+                }
+            } else {
+                Map_SetupUnitMoveLimit(unit2);
+                Map_ShowMoveLimitView();
+            }
+        }
+    }
+
+}
 typedef struct AramSlot {
     u8 unk_00[0x20];
     void *cbArg;              /* 0x20 */
@@ -525,6 +567,8 @@ void fn_801EB23C(void *arg0) {
     fn_8016E9DC(arg0);
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_801EB294(void *arg0)
 {
     void Process_Goto(void *, s32);
@@ -712,7 +756,7 @@ void fn_801EB294(void *arg0)
         }
     }
 }
-
+#pragma pop
 void fn_801EB72C(void *arg0) {
     void EventLock_Dec(void);
     void fn_800A8478(void);
