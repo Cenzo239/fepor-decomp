@@ -469,6 +469,9 @@ void fn_801FCCA0(void *self) {
 #pragma use_lmw_stmw reset
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
 static inline void *Particle_FindFree(void *base) {
     s32 j;
     for (j = 0; j < 1024; j++) {
@@ -478,6 +481,12 @@ static inline void *Particle_FindFree(void *base) {
     return NULL;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_801FD3B4(void *arg0) {
     void Prim2D_SetAlpha(u8);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -496,15 +505,15 @@ void fn_801FD3B4(void *arg0) {
     f64 fn_802380D0(f32);
     f64 sin(f32);
     extern void *gFallingParticleTex;
-    extern f32 lbl_8036BAD8, gFloatZero, gFloatOne, lbl_8036BAE4;
-    extern f32 lbl_8036BAE8, lbl_8036BAEC, lbl_8036BB04, lbl_8036BB08;
-    extern f32 lbl_8036BB0C, lbl_8036BB10, lbl_8036BB14, lbl_8036BB18;
-    extern f32 lbl_8036BB1C, lbl_8036BB20, lbl_8036BB24, lbl_8036BB28;
-    extern f32 lbl_8036BB2C, lbl_8036BB30, lbl_8036BB34, lbl_8036BB38, gFloatTwo;
-    extern f64 lbl_8036BAF8, lbl_8036BB40;
+    extern const f32 lbl_8036BAD8, gFloatZero, gFloatOne, lbl_8036BAE4;
+    extern const f32 lbl_8036BAE8, lbl_8036BAEC, lbl_8036BB04, lbl_8036BB08;
+    extern const f32 lbl_8036BB0C, lbl_8036BB10, lbl_8036BB14, lbl_8036BB18;
+    extern const f32 lbl_8036BB1C, lbl_8036BB20, lbl_8036BB24, lbl_8036BB28;
+    extern const f32 lbl_8036BB2C, lbl_8036BB30, lbl_8036BB34, lbl_8036BB38, gFloatTwo;
+    extern const f64 lbl_8036BAF8, lbl_8036BB40;
 
     f32 ang, dx, life;
-    s16 i;
+    s32 i;
     u32 j;
     void *slot;
     void *base;
@@ -530,23 +539,8 @@ void fn_801FD3B4(void *arg0) {
         ang += lbl_8036BB1C;
     }
     life = ang;
-    for (i = 0; i < (s8)*((u8 *)arg0 + 0x4B); i++) {
-        u32 o = 0;
-        u32 idx = 0;
-        base = *(void **)((u8 *)arg0 + 0x30);
-        slot = NULL;
-        for (j = 0; j < 0x80; j++) {
-            if (*(s16 *)((u8 *)base + o + 0xC) == 0) { slot = (u8 *)base + idx; break; }
-            if (*(s16 *)((u8 *)base + o + 0x1C) == 0) { slot = (u8 *)base + idx + 0x10; break; }
-            if (*(s16 *)((u8 *)base + o + 0x2C) == 0) { slot = (u8 *)base + idx + 0x20; break; }
-            if (*(s16 *)((u8 *)base + o + 0x3C) == 0) { slot = (u8 *)base + idx + 0x30; break; }
-            if (*(s16 *)((u8 *)base + o + 0x4C) == 0) { slot = (u8 *)base + idx + 0x40; break; }
-            if (*(s16 *)((u8 *)base + o + 0x5C) == 0) { slot = (u8 *)base + idx + 0x50; break; }
-            if (*(s16 *)((u8 *)base + o + 0x6C) == 0) { slot = (u8 *)base + idx + 0x60; break; }
-            if (*(s16 *)((u8 *)base + o + 0x7C) == 0) { slot = (u8 *)base + idx + 0x70; break; }
-            o += 0x80;
-            idx += 0x80;
-        }
+    for (i = 0; i < *((u8 *)arg0 + 0x4B); i++) {
+        slot = Particle_FindFree(*(void **)((u8 *)arg0 + 0x30));
         if (slot == NULL) {
             break;
         }
@@ -556,7 +550,7 @@ void fn_801FD3B4(void *arg0) {
         *(f32 *)slot = *(f32 *)((u8 *)arg0 + 0x34);
         *(f32 *)((u8 *)slot + 4) = *(f32 *)((u8 *)arg0 + 0x38);
         *((u8 *)slot + 8) = (u8)(s32)life;
-        *((u8 *)slot + 9) = (u8)((s8)*((u8 *)arg0 + 0x4C) + (r % (u8)(s8)*((u8 *)arg0 + 0x4D)));
+        *((u8 *)slot + 9) = (u8)((s8)*((u8 *)arg0 + 0x4C) + (r % (s8)*((u8 *)arg0 + 0x4D)));
         *((u8 *)slot + 0xB) = (u8)Rand_Next();
         *(s16 *)((u8 *)slot + 0xC) = life16;
         *(s16 *)((u8 *)slot + 0xE) = 0;
@@ -583,7 +577,7 @@ void fn_801FD3B4(void *arg0) {
         if (*(s16 *)((u8 *)p + 0xC) != 0) {
             f32 fx, fy;
             s16 age;
-            s16 rad;
+            s32 rad;
             *(s16 *)((u8 *)p + 0xE) += 1;
             *(s16 *)((u8 *)p + 0xC) -= 1;
             fx = (f32)fn_802380D0(lbl_8036BB20 * (f32)*((u8 *)p + 8));
@@ -594,7 +588,7 @@ void fn_801FD3B4(void *arg0) {
             if (*(f32 *)p < lbl_8036BB38 || *(f32 *)p > lbl_8036BAE4) {
                 *(s16 *)((u8 *)p + 0xC) = 0;
             }
-            if (*(f32 *)((u8 *)p + 4) < lbl_8036BB38 || *(f32 *)p > lbl_8036BB04) {
+            if (*(f32 *)((u8 *)p + 4) < lbl_8036BB38 || *(f32 *)((u8 *)p + 4) > lbl_8036BB04) {
                 *(s16 *)((u8 *)p + 0xC) = 0;
             }
             if (*(s16 *)((u8 *)p + 0xC) != 0) {
@@ -621,7 +615,7 @@ void fn_801FD3B4(void *arg0) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_801FDA08(void *arg0) {
     extern u8 gFallingParticleTex;
@@ -1645,7 +1639,8 @@ struct CursorTexture { u8 buf[0x20]; u16 w,h; };
 #pragma optimization_level 4
 #pragma cplusplus on
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void Prim2D_SetColorPacked(s32 *);
@@ -1667,8 +1662,8 @@ extern "C" void fn_801FF6B8(void *arg0, void *arg1) {
     u16 GXGetTexObjHeight(void *);
     f64 fn_802380D0(f32);
     extern void *lbl_80368438;
-    extern f32 lbl_8036BB58, lbl_8036BB78, lbl_8036BB90, lbl_8036BB94, lbl_8036BB98;
-    extern f32 lbl_8036BB9C, lbl_8036BBA0, lbl_8036BBA4, lbl_8036BBA8, lbl_8036BBAC, lbl_8036BBB0;
+    extern const f32 lbl_8036BB58, lbl_8036BB78, lbl_8036BB90, lbl_8036BB94, lbl_8036BB98;
+    extern const f32 lbl_8036BB9C, lbl_8036BBA0, lbl_8036BBA4, lbl_8036BBA8, lbl_8036BBAC, lbl_8036BBB0;
     extern const f64 lbl_8036BB70, lbl_8036BB80;
 
     CursorTexture tex0;
