@@ -2630,7 +2630,7 @@ s32 fn_80145F58(void *arg0, void **arg1) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 void *fn_80145FE8(void) {
-    u8 fn_800BDD08(void *, void *, void *);
+    u8 EventFlag_IsSet(void *, void *, void *);
     void *fn_8014D8FC(void *, void *, void *);
     s32 Str_Cmp(void *, void *);
     extern u8 lbl_80276BC8[];
@@ -2755,7 +2755,7 @@ void *fn_80145FE8(void) {
         return lbl_80276BC8 + 0x28C;
     }
     if ((Str_Cmp(a, lbl_80276BC8 + 0x2A2) == 0) || (Str_Cmp(b, lbl_80276BC8 + 0x2A2) == 0)) {
-        if (fn_800BDD08(gBattleState + 0xB4, lbl_80276BC8 + 0x2AF, gBattleState) == 0) {
+        if (EventFlag_IsSet(gBattleState + 0xB4, lbl_80276BC8 + 0x2AF, gBattleState) == 0) {
             return lbl_80276BC8 + 0x2C4;
         }
         return lbl_80276BC8 + 0x28C;
