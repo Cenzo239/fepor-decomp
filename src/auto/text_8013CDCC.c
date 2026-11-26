@@ -4911,7 +4911,7 @@ extern "C" void fn_80142C00(void *self, void *other) {
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_common_subs on
 #pragma opt_strength_reduction on
 #pragma use_lmw_stmw on
@@ -4937,7 +4937,7 @@ Menu42Callback cb;
 s16 rows, scroll, x, y;
 s32 sign;
 s32 page;
-u8 *node, *slot, *table;
+u8 *table, *slot, *node;
 s16 count;
 self->prepare();
 self->draw(arg);
