@@ -1513,6 +1513,8 @@ s32 fn_800138BC(void *arg0) {
     return (s32)*stack;
 }
 
+#pragma push
+#pragma opt_propagation off
 u32 ScriptCtx_Call(void) {
 #pragma dont_inline on
     void fn_800142B0(s32);
@@ -1525,14 +1527,9 @@ u32 ScriptCtx_Call(void) {
     extern void *lbl_80367198;
     void *command;
     void *context;
-    void *inner;
-    s32 *stack;
-    s32 base;
+    s32 *base;
     s32 i;
-    s32 *p;
-    s32 zero;
     void *table;
-    s32 val;
 
     fn_800142B0(0);
     command = lbl_80367184;
@@ -1541,63 +1538,33 @@ u32 ScriptCtx_Call(void) {
         fn_800142B0(5);
         return 0;
     }
-    inner = *(void **)((u8 *)command + 8);
-    if (inner == NULL) {
+    if (*(void **)((u8 *)command + 8) == NULL) {
         fn_80011A5C(command);
-        context = lbl_80367180;
-        stack = *(s32 **)((u8 *)context + 0x18);
-        stack -= 1;
-        *(s32 **)((u8 *)context + 0x18) = stack;
-        val = *stack;
-        return val;
+        return *--(*(u32 **)((u8 *)lbl_80367180 + 0x18));
     }
-    context = lbl_80367180;
-    if (context == NULL) {
+    if ((context = lbl_80367180) == NULL) {
         context = lbl_803671A4;
     }
-    zero = 0;
-    i = (s8)*(u8 *)((u8 *)command + 0xD);
-    base = *(s32 *)((u8 *)context + 0x18) - (i << 2);
-    *(s32 *)((u8 *)context + 0x18) = base + (*(s16 *)((u8 *)command + 0x12) << 2);
-    table = (u8 *)lbl_80367198 + (*(u16 *)((u8 *)inner + 0x20) << 2);
-    i = (s8)*(u8 *)((u8 *)command + 0xD);
-    p = (s32 *)(base + (i << 2));
-    while (i < *(s16 *)((u8 *)command + 0x12)) {
-        *p = zero;
-        p += 1;
-        i += 1;
+    base = *(s32 **)((u8 *)context + 0x18) - *(s8 *)((u8 *)command + 0xD);
+    table = (u32 *)lbl_80367198 + *(u16 *)(*(u8 **)((u8 *)command + 8) + 0x20);
+    *(s32 **)((u8 *)context + 0x18) = base + *(s16 *)((u8 *)command + 0x12);
+    for (i = *(s8 *)((u8 *)command + 0xD); i < *(s16 *)((u8 *)command + 0x12); i++) {
+        base[i] = 0;
     }
     lbl_80367180 = context;
-    stack = *(s32 **)((u8 *)context + 0x18);
-    val = *(s32 *)((u8 *)context + 0xC);
-    *(s32 **)((u8 *)context + 0x18) = stack + 1;
-    *stack = val;
-    val = *(s32 *)((u8 *)context + 0x8);
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
-    val = *(s32 *)((u8 *)context + 0x10);
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
-    val = *(s32 *)((u8 *)context + 0x14);
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
+    *(*(s32 **)((u8 *)context + 0x18))++ = *(s32 *)((u8 *)context + 0xC);
+    *(*(s32 **)((u8 *)lbl_80367180 + 0x18))++ = *(s32 *)((u8 *)context + 0x8);
+    *(*(s32 **)((u8 *)lbl_80367180 + 0x18))++ = *(s32 *)((u8 *)context + 0x10);
+    *(*(s32 **)((u8 *)lbl_80367180 + 0x18))++ = *(s32 *)((u8 *)context + 0x14);
     *(s32 *)((u8 *)context + 0xC) = *(s32 *)((u8 *)command + 4);
     *(void **)((u8 *)context + 0x8) = command;
     *(void **)((u8 *)context + 0x10) = table;
-    *(s32 *)((u8 *)context + 0x14) = base;
+    *(s32 **)((u8 *)context + 0x14) = base;
     fn_80011EDC(lbl_80367180);
-    context = lbl_80367180;
-    stack = *(s32 **)((u8 *)context + 0x18);
-    stack -= 1;
-    *(s32 **)((u8 *)context + 0x18) = stack;
-    val = *stack;
-    return val;
+    return *--(*(u32 **)((u8 *)lbl_80367180 + 0x18));
 }
-
-#pragma scheduling off
+#pragma pop
+#pragma dont_inline on
 void ScriptCtx_Push(s32 arg0) {
     extern u8 *lbl_80367180;
     extern s32 lbl_80367188;
@@ -3729,7 +3696,7 @@ void fn_80016538(void)
   while (index < 8);
 }
 #pragma global_optimizer on
-#pragma use_lmw_stmw off
+#pragma use_lmw_stmw on
 void fn_80016628(s32 arg0) {
     M2C_UNK fn_80015718(void *, void *);
     M2C_UNK fn_800158A0(void *);
