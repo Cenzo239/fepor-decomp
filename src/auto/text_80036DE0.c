@@ -1,5 +1,11 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+
+static inline s8 Unit_StatTotalForClamp(u8 *self, s32 personOffset, s32 classOffset, s32 bonusOffset) {
+    u8 *person = *(u8 **)(self + 0x188);
+    u8 *cls = *(u8 **)(self + 0x18C);
+    return self[bonusOffset] + (person[personOffset] + cls[classOffset]);
+}
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
 *(volatile f32 *)0xCC008000=x;
@@ -413,6 +419,10 @@ void fn_8003708C(void *arg0, void *arg1) {
     fn_8003712C();
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma global_optimizer off
 void fn_8003712C(void *arg0) {
     void *cls;
     void *unit;
@@ -428,8 +438,8 @@ void fn_8003712C(void *arg0) {
     s8 cur;
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x44];
         u8 t = u[0x1D];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AB);
@@ -441,11 +451,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AB) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AB) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AB) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AB) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x45];
         u8 t = u[0x1E];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AC);
@@ -457,11 +467,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AC) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AC) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AC) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AC) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x46];
         u8 t = u[0x1F];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AD);
@@ -473,11 +483,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AD) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AD) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AD) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AD) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x47];
         u8 t = u[0x20];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AE);
@@ -489,11 +499,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AE) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AE) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AE) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AE) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x48];
         u8 t = u[0x21];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AF);
@@ -505,11 +515,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AF) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AF) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AF) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AF) - excess);
 
     {
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
         u8 t = u[0x22];
         u8 s = c[0x49];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1B0);
@@ -520,11 +530,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B0) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B0) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B0) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B0) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x4A];
         u8 t = u[0x23];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1B1);
@@ -536,11 +546,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B1) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B1) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B1) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B1) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
         u8 s = c[0x4B];
         u8 t = u[0x24];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1B2);
@@ -552,11 +562,11 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1B2) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1B2) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1B2) = (u8)(*(u8 *)((u8 *)arg0 + 0x1B2) - excess);
 
     {
-        volatile u8 *u = (volatile u8 *)*(void **)((u8 *)arg0 + 0x188);
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *u = (u8 *)*(void **)((u8 *)arg0 + 0x188);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
         u8 t = u[0x1B];
         u8 s = c[0x3C];
         u8 b = *(u8 *)((u8 *)arg0 + 0x1A9);
@@ -567,10 +577,10 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1A9) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1A9) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1A9) = (u8)(*(u8 *)((u8 *)arg0 + 0x1A9) - excess);
 
     {
-        volatile u8 *c = (volatile u8 *)*(void **)((u8 *)arg0 + 0x18C);
+        u8 *c = (u8 *)*(void **)((u8 *)arg0 + 0x18C);
         u8 b = *(u8 *)((u8 *)arg0 + 0x1AA);
         u8 s = c[0x3E];
         u32 p = b + s;
@@ -580,7 +590,7 @@ void fn_8003712C(void *arg0) {
     if (excess < 0) {
         excess = 0;
     }
-    *(u8 *)((u8 *)arg0 + 0x1AA) = (u8)(*(volatile u8 *)((u8 *)arg0 + 0x1AA) - excess);
+    *(u8 *)((u8 *)arg0 + 0x1AA) = (u8)(*(u8 *)((u8 *)arg0 + 0x1AA) - excess);
 
     cls = *(void **)((u8 *)arg0 + 0x18C);
     unit = *(void **)((u8 *)arg0 + 0x188);
@@ -692,7 +702,7 @@ void fn_8003712C(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x1A8) = (u8)(v + slot_bonus);
     }
 }
-
+#pragma pop
 /* Return the first deployed unit with the same faction and disposId as unit, and state flags 0x100 set / 8 clear. */
 void *Unit_FindDisposLeader(u8 *unit) {
     void Allegiance_FillMask(s32, void *);
