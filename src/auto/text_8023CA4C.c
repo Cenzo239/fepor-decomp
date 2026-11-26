@@ -362,7 +362,7 @@ extern f64 lbl_8036C148;
 
 #pragma pop
 
-#pragma global_optimizer on
+#pragma global_optimizer off
 s32 fn_8023CA4C(void) {
     extern u8 lbl_80282FD8[];
     extern ThpDecodeState *volatile lbl_80368950;
@@ -376,7 +376,7 @@ s32 fn_8023CA4C(void) {
     u16 row;
     u8 *state;
 
-    size = ThpReadWord() - 2;
+    size = (u16)ThpReadWord() - 2;
     for (;;) {
         id = ThpReadByte();
         zig = lbl_80282FD8;
