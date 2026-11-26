@@ -512,58 +512,23 @@ void Unit_FillAffinityBonuses(void *unit, void *info) {
     AffinityBonuses_Halve(info);
 }
 
-#pragma opt_propagation off
-#pragma opt_common_subs off
-void fn_801A8DA4(void *unit) {
-    void Unit_AddAffinityBonuses(void *, s32, void *);
-    void Unit_FindSupportPartnerIndex(void *, s32);
-    s32 Unit_GetSupportRank(void *, s32);
-    void *Unit_GetSupportPartner(void *, s32);
-    u8 Unit_CountSupportPartners(void *);
-    u8 Unit_GetDistance(void *, void *);
-    void AffinityBonuses_Halve(void *);
-    register s32 rank;
-    void *partner;
-    s32 i;
+#pragma push
+#pragma cplusplus on
+extern "C" void fn_801A8DA4(void *unit) {
     struct {
         u32 unk00;
         s8 bonuses[6];
     } info;
 
-    i = 0;
-    *(u8 *)((u8 *)&info + 9) = i;
-    *(u8 *)((u8 *)&info + 8) = i;
-    *(u8 *)((u8 *)&info + 7) = i;
-    *(u8 *)((u8 *)&info + 6) = i;
-    *(u8 *)((u8 *)&info + 5) = i;
-    *(u8 *)((u8 *)&info + 4) = i;
-
-    for (; i < (s32)Unit_CountSupportPartners(unit); i++) {
-        partner = Unit_GetSupportPartner(unit, i);
-        if (partner == NULL) {
-            continue;
-        }
-        if (*(void **)((u8 *)unit + 0x190) != *(void **)((u8 *)partner + 0x190)) {
-            continue;
-        }
-        if ((u8)Unit_GetDistance(unit, partner) > 3) {
-            continue;
-        }
-        Unit_FindSupportPartnerIndex(partner, *(s32 *)((u8 *)unit + 0x188));
-        rank = Unit_GetSupportRank(unit, i);
-        Unit_AddAffinityBonuses(unit, rank, &info);
-        Unit_AddAffinityBonuses(partner, rank, &info);
-    }
-    AffinityBonuses_Halve(&info);
-    *(s16 *)((u8 *)unit + 0x298) = (s16)(*(s16 *)((u8 *)unit + 0x298) + *(s8 *)((u8 *)&info + 4));
-    *(s16 *)((u8 *)unit + 0x29A) = (s16)(*(s16 *)((u8 *)unit + 0x29A) + *(s8 *)((u8 *)&info + 5));
-    *(s16 *)((u8 *)unit + 0x29E) = (s16)(*(s16 *)((u8 *)unit + 0x29E) + *(s8 *)((u8 *)&info + 6));
-    *(s16 *)((u8 *)unit + 0x2A0) = (s16)(*(s16 *)((u8 *)unit + 0x2A0) + *(s8 *)((u8 *)&info + 7));
-    *(s16 *)((u8 *)unit + 0x2A4) = (s16)(*(s16 *)((u8 *)unit + 0x2A4) + *(s8 *)((u8 *)&info + 8));
-    *(s16 *)((u8 *)unit + 0x2A6) = (s16)(*(s16 *)((u8 *)unit + 0x2A6) + *(s8 *)((u8 *)&info + 9));
+    Unit_FillAffinityBonuses(unit, &info);
+    *(s16 *)((u8 *)unit + 0x298) += info.bonuses[0];
+    *(s16 *)((u8 *)unit + 0x29A) += info.bonuses[1];
+    *(s16 *)((u8 *)unit + 0x29E) += info.bonuses[2];
+    *(s16 *)((u8 *)unit + 0x2A0) += info.bonuses[3];
+    *(s16 *)((u8 *)unit + 0x2A4) += info.bonuses[4];
+    *(s16 *)((u8 *)unit + 0x2A6) += info.bonuses[5];
 }
-#pragma opt_common_subs reset
-#pragma opt_propagation reset
+#pragma pop
 void fn_801A8F14(void *arg0, void *arg1) {
     u8 fn_801B8550(s32);
     if (fn_801B8550(M2C_FIELD(arg1, s32 *, 0x280)) != 0) {
