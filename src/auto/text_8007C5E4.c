@@ -1034,89 +1034,109 @@ void fn_8007DAC4(void *arg0, void *arg1)
   }
 }
 #pragma use_lmw_stmw on
-void fn_8007DD78(void *arg0) {
-    void *fn_80105C5C(void *, u8);
-    void *self;
-    void *p;
-    void *cursor;
-    s32 count;
-    s32 i;
-    s32 j;
-    u8 flag;
-
-    self = arg0;
-    p = self;
-
-    *(u32 *)((u8 *)arg0 + 0x38) = 0;
-    *(u32 *)((u8 *)arg0 + 0x3C) = 0;
-    *(u32 *)((u8 *)arg0 + 0x40) = 0;
-    *(u32 *)((u8 *)arg0 + 0x44) = 0;
-    *(u32 *)((u8 *)arg0 + 0x48) = 0;
-    *(u32 *)((u8 *)arg0 + 0x4C) = 0;
-    *(u32 *)((u8 *)arg0 + 0x50) = 0;
-    *(u32 *)((u8 *)arg0 + 0x54) = 0;
-
-    for (i = 0; i < 0x62; i++) {
-        void *r = fn_80105C5C((u8 *)*(void **)(*(u8 **)((u8 *)self + 0x58) + 0x18C) + 0x1C, (u8)i);
-        if (r != NULL && *(u8 *)((u8 *)r + 0x19) != 0) {
-            *(void **)((u8 *)p + 0x38) = r;
-            p = (u8 *)p + 4;
-        }
+void fn_8007DD78(void *arg0)
+{
+  void *fn_80105C5C(void *, u8);
+  s32 i;
+  void *cursor;
+  s32 count;
+  void *new_var[2];
+  void *q;
+  u8 flag;
+  s32 j;
+  new_var[0] = arg0;
+  new_var[1] = new_var[0];
+  i = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x38)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x3C)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x40)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x44)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x48)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x4C)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x50)) = 0;
+  *((u32 *) (((u8 *) new_var[0]) + 0x54)) = 0;
+  for (i = 0; i < 0x62; i++)
+  {
+    q = fn_80105C5C(((u8 *) (*((void **) ((*((u8 **) (((u8 *) new_var[0]) + 0x58))) + 0x18C)))) + 0x1C, (u8) i);
+    if ((q != NULL) && ((*((u8 *) (((u8 *) q) + 0x19))) != 0))
+    {
+      *((void **) (((u8 *) new_var[1]) + 0x38)) = q;
+      new_var[1] = ((u8 *) new_var[1]) + 4;
     }
+  }
 
-    cursor = self;
-    count = 0;
-    for (j = 0; j < 0x62; j++) {
-        p = fn_80105C5C((u8 *)*(void **)((u8 *)self + 0x58) + 0x1BC, (u8)j);
-        if (p != NULL && *(u8 *)((u8 *)p + 0x19) != 0) {
-            for (i = 0; i < 0x62; i++) {
-                void *r = fn_80105C5C((u8 *)*(void **)(*(u8 **)((u8 *)self + 0x58) + 0x18C) + 0x1C, (u8)i);
-                if (r != NULL) {
-                    if (*(u32 *)p == *(u32 *)r) {
-                        break;
-                    }
-                    flag = 0;
-                    if (*(u8 *)((u8 *)p + 0x19) != 0 && *(u8 *)((u8 *)p + 0x1A) == 0) {
-                        flag = 1;
-                    }
-                    if (flag == 0) {
-                        break;
-                    }
-                }
-            }
-            if (i == 0x62) {
-                *(void **)((u8 *)cursor + 0x40) = p;
-                cursor = (u8 *)cursor + 4;
-                count++;
-            }
+  cursor = new_var[0];
+  count = 0;
+  for (j = 0; j < 0x62; j++)
+  {
+    new_var[1] = fn_80105C5C(((u8 *) (*((void **) (((u8 *) new_var[0]) + 0x58)))) + 0x1BC, (u8) j);
+    if ((new_var[1] != NULL) && ((*((u8 *) (((u8 *) new_var[1]) + 0x19))) != 0))
+    {
+      for (i = 0; i < 0x62; i++)
+      {
+        q = fn_80105C5C(((u8 *) (*((void **) ((*((u8 **) (((u8 *) new_var[0]) + 0x58))) + 0x18C)))) + 0x1C, (u8) i);
+        if (q != NULL)
+        {
+          if ((*((u32 *) new_var[1])) == (*((u32 *) q)))
+          {
+            break;
+          }
+          flag = 0;
+          if (((*((u8 *) (((u8 *) new_var[1]) + 0x19))) != 0) && ((*((u8 *) (((u8 *) new_var[1]) + 0x1A))) == 0))
+          {
+            flag = 1;
+          }
+          if (flag == 0)
+          {
+            break;
+          }
         }
-    }
+      }
 
-    cursor = (u8 *)self + (count << 2);
-    for (j = 0; j < 0x62; j++) {
-        p = fn_80105C5C((u8 *)*(void **)((u8 *)self + 0x58) + 0x1BC, (u8)j);
-        if (p != NULL && *(u8 *)((u8 *)p + 0x19) != 0) {
-            for (count = 0; count < 0x62; count++) {
-                void *r = fn_80105C5C((u8 *)*(void **)(*(u8 **)((u8 *)self + 0x58) + 0x18C) + 0x1C, (u8)count);
-                if (r != NULL) {
-                    if (*(u32 *)p == *(u32 *)r) {
-                        break;
-                    }
-                    flag = 0;
-                    if (*(u8 *)((u8 *)p + 0x19) != 0 && *(u8 *)((u8 *)p + 0x1A) == 0) {
-                        flag = 1;
-                    }
-                    if (flag != 0) {
-                        break;
-                    }
-                }
-            }
-            if (count == 0x62) {
-                *(void **)((u8 *)cursor + 0x40) = p;
-                cursor = (u8 *)cursor + 4;
-            }
-        }
+      if (i == 0x62)
+      {
+        *((void **) (((u8 *) cursor) + 0x40)) = new_var[1];
+        cursor = ((u8 *) cursor) + 4;
+        count++;
+      }
     }
+  }
+
+  cursor = ((u8 *) new_var[0]) + (count << 2);
+  for (j = 0; j < 0x62; j++)
+  {
+    new_var[1] = fn_80105C5C(((u8 *) (*((void **) (((u8 *) new_var[0]) + 0x58)))) + 0x1BC, (u8) j);
+    if ((new_var[1] != NULL) && ((*((u8 *) (((u8 *) new_var[1]) + 0x19))) != 0))
+    {
+      for (count = 0; count < 0x62; count++)
+      {
+        q = fn_80105C5C(((u8 *) (*((void **) ((*((u8 **) (((u8 *) new_var[0]) + 0x58))) + 0x18C)))) + 0x1C, (u8) count);
+        if (q != NULL)
+        {
+          if ((*((u32 *) new_var[1])) == (*((u32 *) q)))
+          {
+            break;
+          }
+          flag = 0;
+          if (((*((u8 *) (((u8 *) new_var[1]) + 0x19))) != 0) && ((*((u8 *) (((u8 *) new_var[1]) + 0x1A))) == 0))
+          {
+            flag = 1;
+          }
+          if (flag != 0)
+          {
+            break;
+          }
+        }
+      }
+
+      if (count == 0x62)
+      {
+        *((void **) (((u8 *) cursor) + 0x40)) = new_var[1];
+        cursor = ((u8 *) cursor) + 4;
+      }
+    }
+  }
+
 }
 extern u8 gBattleState[1400];
 void fn_8007DF6C(void *arg0) {
@@ -1180,9 +1200,11 @@ void fn_8007DFE0(void *arg0) {
  }
  Prim2D_Begin(); Prim2D_AddZ(lbl_80369430); Prim2D_PrepareTex();
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
 void fn_8007E2C4(void *arg0) {
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
  void Unit_FillAffinityBonuses(void *,void *);
  void **fn_8006EDD8(void *,s32);
  u32 *Ui_GetColor(s32);
@@ -1213,6 +1235,7 @@ void fn_8007E2C4(void *arg0) {
  f32 y;
   f32 dimw,dimh;
  u16 *dim;
+ u16 *textureDim;
  u32 k0;
  s32 left,right,top,width;
  s32 val;
@@ -1228,8 +1251,8 @@ void fn_8007E2C4(void *arg0) {
  scaledh=dimh*lbl_80369430;
  color=*Ui_GetColor(1);
  obj=gUiAtlas;
- dim=*fn_8006EDD8(obj,0x1A);
- texh=(f32)dim[1]; texw=(f32)dim[0];
+ textureDim=*fn_8006EDD8(obj,0x1A);
+ texh=(f32)textureDim[1]; texw=(f32)textureDim[0];
  Prim2D_Begin();Prim2D_BindTexture(obj,0x1A,0x11);Prim2D_PrepareTex();
  Prim2D_AddPrim(1);Prim2D_SetPrimParam(lbl_80369418);
  Prim2D_SetQuadMin(x,y,lbl_80369418,lbl_80369418);
@@ -1261,8 +1284,7 @@ fn_8001003C((s16)(right-width/2),(s16)(left),top,0,0,labels.labels[0],lbl_803694
 
  Prim2D_Begin();Prim2D_AddZ(lbl_80369430);Prim2D_PrepareTex();
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 /* Draw the unit-info name plate (faction label + unit name). */
 void UnitInfo_DrawNamePlate(void *panel)
 {
