@@ -11,7 +11,7 @@ static inline s32 Trade_FindPreviousItem(s32 index, s32 side) {
     }
     return index;
 }
-static inline s32 Trade_FindNextItem(s32 side, s32 index) {
+static inline s32 Trade_FindNextItem(s32 index, s32 side) {
     extern u8 lbl_80312ACC[];
     u8 *entry = lbl_80312ACC + (side << 7) + index * 0x10;
     while (1) {
