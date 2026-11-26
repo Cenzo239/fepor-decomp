@@ -115,7 +115,6 @@ void fn_80089554(void) {
 }
 
 #pragma global_optimizer off
-#pragma optimization_level 3
 void fn_800895B8(void) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80289950[0x48];
