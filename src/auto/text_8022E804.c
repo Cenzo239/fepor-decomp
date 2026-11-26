@@ -414,7 +414,7 @@ void fn_8022E804(void *dst, f64 x) {
     if ((s8)sign != 0) sp8 = -x;
     f31 = fn_802382EC((s32 *)&sp10, sp8);
     sp18 = f31;
-    expadj = 0x35 - count_trailing_zero_mask(&sp18, 0xFFFFU);
+    expadj = 0x35 - count_trailing_parts(&sp18);
     fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
     fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
@@ -432,12 +432,11 @@ void fn_8022E804(void *dst, f64 x) {
         }
         p = dig + 5;
         q = dig + dig[4] + 5;
-        while (p < q) {
+        while (p < --q) {
             t = *p;
             *p = *q;
             p++;
             *q = t;
-            q--;
         }
         *(s16 *)(dig + 2) = dig[4] - 1;
     }
