@@ -45,8 +45,8 @@ extern u16 lbl_8036719E;
 extern u32 lbl_803671A0;
 extern u32 gCmScriptStatus;
 
-extern f32 lbl_8036AE88;
-extern f32 lbl_8036AE8C;
+extern const f32 lbl_8036AE88;
+extern const f32 lbl_8036AE8C;
 extern f64 lbl_8036AE90;
 extern f64 lbl_8036AE98;
 
@@ -10578,7 +10578,7 @@ void Ui_Meter_Init(void *arg0, s32 arg1, s32 arg2) {
     void fn_801232F4(void *, f32, f32);
     void fn_80123300(void *, s32);
     extern void *gGame;
-    extern f32 lbl_8036AE8C;
+    extern const f32 lbl_8036AE8C;
 
     if (arg1 > 0x50) {
         arg1 = 0x50;
@@ -10610,8 +10610,8 @@ void fn_80196AD0(void *arg0, s32 arg1) {
     s32 fn_800E2E60(void *);
     s32 fn_800E2E68(void *);
     void SpriteSheet_DrawUvRect(void *, s32, s32 *, s32 *, s32, s32, s32, s32, s32, s32);
-    extern f32 lbl_8036AE88;
-    extern f32 lbl_8036AE8C;
+    extern const f32 lbl_8036AE88;
+    extern const f32 lbl_8036AE8C;
     extern f64 lbl_8036AE90;
     extern f64 lbl_8036AE98;
 
@@ -10756,9 +10756,9 @@ void fn_80196F10(void *arg0, s32 arg1) {
     extern s32 fn_800E2E58(void *);
     extern s32 fn_800E2E60(void *);
     extern s32 fn_800E2E68(void *);
-    extern f32 lbl_8036AE88;
-    extern f32 lbl_8036AE8C;
-    extern f32 lbl_8036AEA0;
+    extern const f32 lbl_8036AE88;
+    extern const f32 lbl_8036AE8C;
+    extern const f32 lbl_8036AEA0;
     s32 copy2b[4];
     s32 copy2a[4];
     s32 copy4[4];
@@ -10957,9 +10957,9 @@ void fn_801976A4(void *arg0, s32 arg1) {
     s32 fn_800E2E60(void *);
     s32 fn_800E2E68(void *);
     void SpriteSheet_DrawUvRect(void *, s32, s32 *, s32 *, s32, s32, s32, s32, s32, s32);
-    extern f32 lbl_8036AE88;
-    extern f32 lbl_8036AE8C;
-    extern f32 lbl_8036AEA0;
+    extern const f32 lbl_8036AE88;
+    extern const f32 lbl_8036AE8C;
+    extern const f32 lbl_8036AEA0;
     extern f64 lbl_8036AE90;
     extern f64 lbl_8036AE98;
 
@@ -11069,8 +11069,8 @@ extern "C" void fn_80197A78(void *arg0, s32 arg1)
     extern void fn_80196AD0(void *, s32);
     extern void fn_80196F10(void *, s32);
     extern void fn_801976A4(void *, s32);
-    extern f32 lbl_8036AE88;
-    extern f32 lbl_8036AE8C;
+    extern const f32 lbl_8036AE88;
+    extern const f32 lbl_8036AE8C;
 
     s32 copy[4];
     s32 rect2[4];
@@ -11194,7 +11194,7 @@ void fn_80123300(void *,s32); void fn_801232F4(void *,f32,f32); void Ui_PlaySeCu
 f64 sin(f64);
 extern void *gGame;
 extern u8 lbl_8027A780[];
-extern f32 lbl_8036AE88,lbl_8036AE8C,lbl_8036AEA0,lbl_8036AEA4;
+extern const f32 lbl_8036AE88,lbl_8036AE8C,lbl_8036AEA0,lbl_8036AEA4;
 struct Obj {u8 pad[0x40];
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0;
 virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0;
@@ -11259,7 +11259,7 @@ extern "C" void *fn_80198288(void *arg0, void *arg1, void *arg2) {
     u32 strlen(const char *);
     extern u8 lbl_80296778[];
     extern u8 lbl_8027A780[];
-    extern f32 lbl_8036AE88;
+    extern const f32 lbl_8036AE88;
 
     typedef struct {
         u32 size;
