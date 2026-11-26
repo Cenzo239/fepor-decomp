@@ -1786,6 +1786,11 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
+#pragma inline_depth(8)
+static inline s32 fn_80134C24_Measure(f32 f) {
+    s32 Text_MeasureHeight(s32, f32);
+    return Text_MeasureHeight(-1, f);
+}
 #pragma use_lmw_stmw on
 #pragma scheduling on
 #pragma global_optimizer off
@@ -1794,7 +1799,6 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
-extern f32 lbl_8036A5AC;
 Vec2s out,in;
 u32 rowH;
 s16 kind,colW;
@@ -1818,10 +1822,9 @@ rem=(s16)rem;
 rem=t*rem;
 x=(s16)(rem+off48);
 y=(s16)(rowH*(s16)quot+off4a);
-t=Text_MeasureHeight(-1,lbl_8036A5AC);
+t=Text_MeasureHeight(-1,1.0f);
 half=(s16)(((s32)(s16)rowH-t)>>1);
-in.x=x;
-*(s16 *)((u8 *)&in + 2) = y + half;
+in.x=x; in.y=y+half;
 *arg0=*(s32*)fn_8013F748(arg1,&out,&in);
 }
 #pragma peephole reset
