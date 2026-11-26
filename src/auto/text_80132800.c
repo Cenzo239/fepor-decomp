@@ -158,6 +158,19 @@ typedef struct Vec2s {
     s16 y;
 } Vec2s;
 
+typedef struct MenuGridLayout {
+    u8 pad00[0x12];
+    s16 left;
+    s16 top;
+    s16 right;
+    u8 pad18[0x26];
+    s16 index;
+    u8 pad40[4];
+    s16 columns;
+    s16 rowHeight;
+    s16 xOffset;
+    s16 yOffset;
+} MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
