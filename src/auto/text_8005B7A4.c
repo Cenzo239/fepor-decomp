@@ -23,27 +23,27 @@ virtual void deselect(void *, void *) = 0;
 #pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
-static inline u32 Terrain_HashStr(u8 *s) {
-    u8 b;
-    u32 acc = 0;
-    while ((b = *s, (s8)b != 0)) {
-        acc += b;
-        s++;
-        acc <<= 4;
-    }
-    return acc;
-}
-static inline void Terrain_HashAll(void *entries_void, u32 *out) {
+static inline void Terrain_HashAll(u32 *out, void *entries_void) {
     struct TerrainEntry {
         u8 *name;
         u32 unk4;
         u32 unk8;
     };
     struct TerrainEntry *entries = (struct TerrainEntry *)entries_void;
+    u8 b;
+    u8 *s;
+    u32 acc;
     s32 i;
 
     for (i = 0; i < 0x4D; i++) {
-        *out++ = Terrain_HashStr(entries->name);
+        s = entries->name;
+        acc = 0;
+        while ((b = *s, (s8)b != 0)) {
+            acc += b;
+            s++;
+            acc <<= 4;
+        }
+        *out++ = acc;
         entries++;
     }
 }
