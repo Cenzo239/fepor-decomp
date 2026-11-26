@@ -53,6 +53,18 @@ extern u8 lbl_8026CFE8[72];
 extern f32 lbl_803697E0;
 extern f32 lbl_803697E4;
 
+static inline u8 Unit_CheckItemState(void *unit, u64 flags) {
+    u8 Status_Test(void *, s32);
+    if (flags & 0x200) {
+        if (Status_Test((u8 *)unit + 0x1BC, 9)) return 1;
+        return 0;
+    }
+    if (((*(u8 *)((u8 *)unit + 0x1A5) >> 4) & 7) == 0) return 1;
+    if (flags & 2) return 0;
+    if (flags & 4) return 0;
+    if (flags & 0x40) return 1;
+    return 1;
+}
 #pragma scheduling reset
 
 /* If status 0x24-0x28 is set and the matching wpnExp slot is 0, set that slot to 1. */
@@ -933,6 +945,8 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 4
 u8 fn_80093DA8(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 Status_Test(void *, s32);
@@ -1030,7 +1044,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
     }
     return z;
 }
-
+#pragma pop
 u8 fn_800940B0(void *arg0, void *arg1) {
     u8 fn_80105BC0(void *, s32);
     void *fn_80019E48(void *);
