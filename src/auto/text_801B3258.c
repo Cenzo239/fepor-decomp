@@ -2037,9 +2037,7 @@ static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
     return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
-s32 AchieveList_GetTotalGold(void *arg0) {
-    return AchieveList_SumGoldFrom(arg0, 0);
-}
+s32 AchieveList_GetTotalGold(void *arg0) { return AchieveList_SumGoldNested(arg0,0); }
 
 s32 AchieveList_SumBonuses(void *arg0) {
     s32 n;
