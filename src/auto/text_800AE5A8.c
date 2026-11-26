@@ -16,6 +16,8 @@ typedef struct {
 
 extern f64 lbl_80369CF8;
 
+static inline f32 ScaledDiff_800B9C38(f32 base, f32 v, f32 scale) { return base - v * scale; }
+
 static inline u32 LoadSoundBankB(void *path) {
     s32 fn_800B4A84(void *, s32, s32);
     s32 fn_800B49C8(void *);
