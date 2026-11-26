@@ -83,12 +83,7 @@ extern u16* lbl_80368648;
 extern void* lbl_8036864C;
 extern void* lbl_80368650;
 extern void* lbl_80368654;
-static inline void VIFlushCopyRegister(u16 *regs, u32 index) {
-    regs[index + 60] = regs[index];
-}
-static inline u64 VIFlushGetChanged(void) {
-    return ((u64)(u32)lbl_80368630 << 32) | (u32)lbl_80368634;
-}
+
 
 u8 ErrorCode2Num(s32);
 
