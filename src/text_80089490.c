@@ -48,11 +48,6 @@ extern u16 *lbl_803674E0;
 extern f32 lbl_8036A118;
 extern f32 lbl_8036A120;
 extern f32 lbl_8036A130;
-
-static u8 s_80289950[0x48] = { 1 };
-static u8 s_80289998[0x10] = { 1 };
-static u8 s_802899A8[0x24] = { 1 };
-static u8 s_802899CC[0x4] = { 1 };
 extern f32 gTextScale2;
 
 extern f32 lbl_80369768;
