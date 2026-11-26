@@ -2753,7 +2753,7 @@ void fn_801B893C(void *arg0) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-static inline void Ui_DrawSummaryRows(s32 i, void *self) {
+static inline void Ui_DrawSummaryRows(void *self) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -2780,8 +2780,10 @@ static inline void Ui_DrawSummaryRows(s32 i, void *self) {
     extern u8 lbl_8027C5E8[];
 
     f32 baseY;
+    s32 i;
     s32 y;
     void *p;
+    i = 0;
     baseY = lbl_8036B2AC;
     y = i;
     p = self;
@@ -2800,6 +2802,12 @@ static inline void Ui_DrawSummaryRows(s32 i, void *self) {
     }
 }
 
+#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma opt_lifetimes off
 void fn_801B8B94(void *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -2831,8 +2839,6 @@ void fn_801B8B94(void *arg0) {
     void *self;
     void *str;
     f32 h;
-    f32 h2;
-    f32 w2;
     f32 w;
     f32 baseY;
     u16 tw, th;
@@ -2935,8 +2941,8 @@ void fn_801B8B94(void *arg0) {
     tex = fn_8006EDD8(*(void **)((u8 *)self + 8), 2);
     {
         u16 *dims = (u16 *)*tex;
-        w2 = (f32)dims[0];
-        h2 = (f32)dims[1];
+        w = (f32)dims[0];
+        h = (f32)dims[1];
     }
     *(s32 *)color2 = *Ui_GetColor(1);
     tex = fn_8006EDD8(*(void **)((u8 *)self + 8), 2);
@@ -2951,7 +2957,7 @@ void fn_801B8B94(void *arg0) {
     Prim2D_AddPrim(1);
     Prim2D_SetPrimParam(lbl_8036B278);
     Prim2D_SetQuadMin(lbl_8036B288, lbl_8036B2B0, lbl_8036B278, lbl_8036B278);
-    Prim2D_SetQuadMax(lbl_8036B288 + h2, lbl_8036B2B0 + w2, (f32)th2, (f32)tw2);
+    Prim2D_SetQuadMax(lbl_8036B288 + h, lbl_8036B2B0 + w, (f32)th2, (f32)tw2);
     Prim2D_SetColor(color2[0], color2[1], color2[2], 0xCD);
     Prim2D_EmitQuad();
     Prim2D_EndPrim();
@@ -13661,7 +13667,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     s32 scroll;
     s16 sign;
     s16 row;
-    s16 endrow;
+    s32 endrow;
     s16 col;
     s16 ybase;
     bool same;
@@ -13732,12 +13738,13 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
     row = (s16)((-sign & ~sign) >> 31);
     if (sign < 0) {
         s32 count = self->v14();
-        endrow = (s16)(count + 1);
+        endrow = count + 1;
     } else {
         s32 count = self->v14();
-        endrow = (s16)count;
+        endrow = count;
     }
 
+    endrow = (s16)endrow;
     scrollShort = (s16)scroll;
     for (; row < endrow; row++) {
         if ((rowIndex = (s16)row) + self->v13() >= 0) {
@@ -13755,7 +13762,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
                         scale = lbl_8036B4CC;
                     }
                     void *cells = self->unk3C;
-                    cell = fn_801CD480(cells, col, (s16)(rowIndex + self->v13()));
+                    cell = fn_801CD480(cells, col, (s16)(row + self->v13()));
                     if ((s32)*cell != 9) {
                         s16 center = (s16)((self->v11() - fn_8001059C(cell, -1, lbl_8036B4CC)) >> 1);
                         x = (s16)(center + col * self->v11());
