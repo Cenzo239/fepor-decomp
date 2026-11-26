@@ -8675,7 +8675,6 @@ void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 4
-#pragma opt_propagation off
 extern "C" void fn_80171374(void *arg0) {
 #pragma opt_common_subs off
     void *Heap_Alloc(s32);
@@ -8774,7 +8773,23 @@ extern "C" void fn_80171374(void *arg0) {
 
     p = Heap_Alloc(0x50);
     if (p) {
-        init_761F8_base(p, 0x130, 0x94, 0x118, 0x40, 0x1FE);
+        {f32 zero;
+ M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=0x130;
+M2C_FIELD(p,s16 *,12)=0x94;
+M2C_FIELD(p,s16 *,14)=0x130+0x118;
+M2C_FIELD(p,s16 *,16)=0x94+0x40;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0x118;
+M2C_FIELD(p,s16 *,24)=0x40;
+M2C_FIELD(p,s16 *,26)=0;
+M2C_FIELD(p,s16 *,28)=0;M2C_FIELD(p,u8 *,30)=0xFF;
+M2C_FIELD(p,u8 *,31)=0xFF;
+M2C_FIELD(p,u8 *,32)=0xFF;
+M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=0x1FE; M2C_FIELD(p,s16 *,0x24)=0;
+  M2C_FIELD(p,f32 *,0x28)=gF32_1; M2C_FIELD(p,f32 *,0x2C)=gF32_1; M2C_FIELD(p,f32 *,0x30)=gF32_1;
+ M2C_FIELD(p,s32 *,0x34)=0; M2C_FIELD(p,s32 *,0x38)=0;
+}
         M2C_FIELD(p, void **, 0) = lbl_80292178;
         M2C_FIELD(p, u8 *, 60) = 0xFF;
         M2C_FIELD(p, u8 *, 61) = 0xFF;
@@ -8810,7 +8825,23 @@ extern "C" void fn_80171374(void *arg0) {
 
     p = Heap_Alloc(0x54);
     if (p) {
-        init_761F8_base(p, 0x260, 0x12C, 0x108, 0x55, 0x1F4);
+        {f32 zero;
+ M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=0x260;
+M2C_FIELD(p,s16 *,12)=0x12C;
+M2C_FIELD(p,s16 *,14)=0x260+0x108;
+M2C_FIELD(p,s16 *,16)=0x12C+0x55;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0x108;
+M2C_FIELD(p,s16 *,24)=0x55;
+M2C_FIELD(p,s16 *,26)=0;
+M2C_FIELD(p,s16 *,28)=0;M2C_FIELD(p,u8 *,30)=0xFF;
+M2C_FIELD(p,u8 *,31)=0xFF;
+M2C_FIELD(p,u8 *,32)=0xFF;
+M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=0x1F4; M2C_FIELD(p,s16 *,0x24)=0;
+  M2C_FIELD(p,f32 *,0x28)=gF32_1; M2C_FIELD(p,f32 *,0x2C)=gF32_1; M2C_FIELD(p,f32 *,0x30)=gF32_1;
+ M2C_FIELD(p,s32 *,0x34)=0; M2C_FIELD(p,s32 *,0x38)=0;
+}
         M2C_FIELD(p, void **, 0) = lbl_80291A3C;
         M2C_FIELD(p, s32 *, 0x3C) = 0;
         M2C_FIELD(p, s32 *, 0x40) = 0x1003C;
@@ -8830,7 +8861,23 @@ extern "C" void fn_80171374(void *arg0) {
 
     p = Heap_Alloc(0x4C);
     if (p) {
-        init_761F8_base(p, 0x138, 0x6C, 0x108, 0xD0, 0x1F4);
+        {f32 zero;
+ M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=0x138;
+M2C_FIELD(p,s16 *,12)=0x6C;
+M2C_FIELD(p,s16 *,14)=0x138+0x108;
+M2C_FIELD(p,s16 *,16)=0x6C+0xD0;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0x108;
+M2C_FIELD(p,s16 *,24)=0xD0;
+M2C_FIELD(p,s16 *,26)=0;
+M2C_FIELD(p,s16 *,28)=0;M2C_FIELD(p,u8 *,30)=0xFF;
+M2C_FIELD(p,u8 *,31)=0xFF;
+M2C_FIELD(p,u8 *,32)=0xFF;
+M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=0x1F4; M2C_FIELD(p,s16 *,0x24)=0;
+  M2C_FIELD(p,f32 *,0x28)=gF32_1; M2C_FIELD(p,f32 *,0x2C)=gF32_1; M2C_FIELD(p,f32 *,0x30)=gF32_1;
+ M2C_FIELD(p,s32 *,0x34)=0; M2C_FIELD(p,s32 *,0x38)=0;
+}
         M2C_FIELD(p, void **, 0) = lbl_802919DC;
         M2C_FIELD(p, s32 *, 0x44) = 0;
         M2C_FIELD(p, u8 *, 0x48) = 1;
@@ -8845,7 +8892,23 @@ extern "C" void fn_80171374(void *arg0) {
 
     p = Heap_Alloc(0x58);
     if (p) {
-        init_761F8_base(p, 0, 0x28, 0x260, 0x3A, 0x226);
+        {f32 zero;
+ M2C_FIELD(p,void * *,0)=lbl_8028FDB0; M2C_FIELD(p,s32 *,4)=0; M2C_FIELD(p,void * *,0)=lbl_80292230; M2C_FIELD(p,s16 *,8)=-1;M2C_FIELD(p,s16 *,10)=0;
+M2C_FIELD(p,s16 *,12)=0x28;
+M2C_FIELD(p,s16 *,14)=0+0x260;
+M2C_FIELD(p,s16 *,16)=0x28+0x3A;
+M2C_FIELD(p,s16 *,18)=0;
+M2C_FIELD(p,s16 *,20)=0;
+M2C_FIELD(p,s16 *,22)=0x260;
+M2C_FIELD(p,s16 *,24)=0x3A;
+M2C_FIELD(p,s16 *,26)=0;
+M2C_FIELD(p,s16 *,28)=0;M2C_FIELD(p,u8 *,30)=0xFF;
+M2C_FIELD(p,u8 *,31)=0xFF;
+M2C_FIELD(p,u8 *,32)=0xFF;
+M2C_FIELD(p,u8 *,33)=0xFF;M2C_FIELD(p,s16 *,0x22)=0x226; M2C_FIELD(p,s16 *,0x24)=0;
+  M2C_FIELD(p,f32 *,0x28)=gF32_1; M2C_FIELD(p,f32 *,0x2C)=gF32_1; M2C_FIELD(p,f32 *,0x30)=gF32_1;
+ M2C_FIELD(p,s32 *,0x34)=0; M2C_FIELD(p,s32 *,0x38)=0;
+}
         M2C_FIELD(p, void **, 0) = lbl_80293C84;
         M2C_FIELD(p, s32 *, 0x3C) = 0;
         M2C_FIELD(p, s32 *, 0x40) = 0;
@@ -16103,6 +16166,30 @@ static inline s16 GoldCost_CalculateInline(s32 unit, s16 qty) {
 #pragma opt_common_subs off
 #pragma inline_depth(8)
 #pragma dont_inline off
+static inline u32 GoldCost_CanIncreaseInline(void *panel) {
+    u8 fn_8003D13C(s32);
+    extern u8 lbl_80330708[];
+    s32 funds;
+    s32 unit;
+    s16 cost;
+    s32 diff;
+    u32 can;
+    s16 qty;
+    s16 next;
+    diff = (u8)fn_8003D13C(*(s32 *)((u8 *)panel + 0x40));
+    qty = *(s16 *)((u8 *)panel + 0x3E);
+    diff -= qty;
+    can = (u32)(-diff & ~diff) >> 31;
+    if (can) {
+        next = qty + 1;
+        unit = *(s32 *)((u8 *)panel + 0x40);
+        funds = *(s32 *)(lbl_80330708 + 0x1C);
+        cost = GoldCost_CalculateInline(unit, next);
+        can = cost <= funds;
+    }
+    return can;
+}
+
 void fn_8017C4BC(void *arg0) {
     f32 fn_80037818(s32, u8);
     u8 fn_800386B0(s32);
