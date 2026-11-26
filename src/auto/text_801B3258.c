@@ -28,6 +28,9 @@ s32 i;
 for(i=0;i<40;i++,p+=12) { if(id==*(s32*)p) return p; }
 return 0;
 }
+static inline s32 GoldCmpBC71C(s32 cost, s32 limit) {
+    return (cost <= limit) ? 1 : 0;
+}
 #pragma cplusplus on
 struct MenuD28 {
 virtual s32 v0()=0;
@@ -4936,7 +4939,7 @@ extern "C" void fn_801BBDA0(void *arg0) {
     }
 }
 
-#pragma opt_lifetimes off
+#pragma global_optimizer off
 extern "C" s32 fn_801BC71C(s32 arg0) {
     u8 fn_8003D13C(void);
     s16 Unit_GetGoldCost(s32, s32, u8 *);
@@ -4949,8 +4952,7 @@ extern "C" s32 fn_801BC71C(s32 arg0) {
     t = *(s32 *)(gBattleState + 0x1C);
     return (Unit_GetGoldCost(arg0, 1, gBattleState) <= t) ? 1 : 0;
 }
-
-#pragma cplusplus reset
+#pragma global_optimizer on
 
 #pragma cplusplus on
 extern "C" void Ui_DetachChildSlots(void *panel) {
