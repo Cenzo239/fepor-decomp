@@ -13,11 +13,12 @@ static inline s32 count_trailing_zero(f64 x) {
     u32 hi;
     s32 n;
     if (lo != 0) {
-        s32 m = 16;
         u32 xbits = 0xFFFFU;
+        s32 k;
+        s32 m = 16;
         s32 j = 32;
-        s32 k = m;
         n = 0;
+        k = m;
         while (j != 0) {
             if ((lo & xbits) == 0) {
                 n += k;
@@ -36,12 +37,13 @@ static inline s32 count_trailing_zero(f64 x) {
         }
         return n;
     } else {
-        s32 m = 16;
         u32 xbits = 0xFFFFU;
+        s32 k;
+        s32 m = 16;
         s32 j = 32;
-        s32 k = m;
-        hi = l[0] | 0x100000;
         n = 0;
+        k = m;
+        hi = l[0] | 0x100000;
         while (j != 0) {
             if ((hi & xbits) == 0) {
                 n += k;
@@ -276,7 +278,6 @@ void fn_8022E804(void *dst, f64 x) {
     f64 sp30;
     f64 sp28;
     f64 sp20;
-    f64 sp18;
     f64 sp10;
     f64 sp8;
     s8 sign;
@@ -284,13 +285,6 @@ void fn_8022E804(void *dst, f64 x) {
     s32 hx;
     s32 clas;
     s32 clas2;
-    u32 xbits;
-    s32 k;
-    s32 m;
-    s32 j;
-    s32 n;
-    u32 lo;
-    u32 hi;
     u64 uq;
     u8 t;
     u8 *q;
@@ -364,56 +358,7 @@ void fn_8022E804(void *dst, f64 x) {
         sp8 = -x;
     }
     f31 = fn_802382EC((s32 *)&sp10, sp8);
-    sp18 = f31;
-    lo = *((u32 *)&sp18 + 1);
-    if (lo != 0) {
-        m = 0x10;
-        xbits = 0xFFFFU;
-        n = 0;
-        k = m;
-        j = 0x20;
-        while (j != 0) {
-            if ((lo & xbits) == 0) {
-                n += k;
-                lo >>= k;
-                j -= k;
-            } else if (xbits == 1) {
-                break;
-            }
-            if (m > 1) {
-                m /= 2;
-            }
-            if (xbits > 1) {
-                xbits >>= m;
-                k -= m;
-            }
-        }
-    } else {
-        k = 0x10;
-        xbits = 0xFFFFU;
-        n = 0;
-        m = k;
-        hi = (*(u32 *)&sp18) | 0x100000;
-        j = 0x20;
-        while (j != 0) {
-            if ((hi & xbits) == 0) {
-                n += k;
-                hi >>= k;
-                j -= k;
-            } else if (xbits == 1) {
-                break;
-            }
-            if (m > 1) {
-                m /= 2;
-            }
-            if (xbits > 1) {
-                xbits >>= m;
-                k -= m;
-            }
-        }
-        n += 0x20;
-    }
-    expadj = 0x35 - n;
+    expadj = 0x35 - count_trailing_zero(f31);
     fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
     fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
