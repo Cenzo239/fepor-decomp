@@ -3134,10 +3134,11 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
         }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
 void fn_80154370(s16 arg0, s16 arg1) {
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
     void Ui_DrawWindowFrame(void);
     s32 Prim2D_PushZ(f32 *);
     s32 Msg_Expand(void *);
@@ -3156,9 +3157,9 @@ void fn_80154370(s16 arg0, s16 arg1) {
     void Text_Draw(s16, s16, s32, s32, s16, ...);
     void Prim2D_PopZ(s32, f32);
     extern u8 lbl_802774F0[];
-    extern f32 lbl_8036A874;
-    extern f32 lbl_8036A87C;
-    extern f32 lbl_8036A878;
+    extern const f32 lbl_8036A874;
+    extern const f32 lbl_8036A87C;
+    extern const f32 lbl_8036A878;
     extern f64 lbl_8036A868;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367C40;
     extern struct { s16 f0; s16 f2; s16 f4; s16 f6; } lbl_80367CE8;
@@ -3169,8 +3170,6 @@ void fn_80154370(s16 arg0, s16 arg1) {
     f32 sp10;
     u8 spC[4];
     s32 sp8;
-    s32 temp_r30;
-    s32 temp_r31;
     s16 temp_r20;
     s16 *temp_r25;
     s16 *temp_r26;
@@ -3179,11 +3178,14 @@ void fn_80154370(s16 arg0, s16 arg1) {
     s16 temp_r29;
     s32 temp_r22;
     s32 temp_r21;
+    s32 width;
+    s16 temp_r30;
+    s32 temp_r31;
 
     Ui_DrawWindowFrame();
     temp_r22 = Prim2D_PushZ(&sp10);
     temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
-    temp_r30 = Text_MeasureWidth(temp_r21, -1, lbl_8036A874);
+    width = Text_MeasureWidth(temp_r21, -1, lbl_8036A874);
     temp_r31 = fn_80010770(temp_r21, -1, lbl_8036A874);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036A87C);
@@ -3192,27 +3194,25 @@ void fn_80154370(s16 arg0, s16 arg1) {
     {
         s16 *rC40 = (s16 *)&lbl_80367C40;
         s16 t4;
-        s16 t5;
-        s16 t7;
+        s32 t5;
+        s32 t7;
         s16 t8;
 
         temp_r26 = (s16 *)&lbl_80367CE8;
-        spC[0] = 0;
         temp_r25 = (s16 *)&lbl_80367C50;
-        t4 = (s16)(temp_r26[2] - lbl_80367CE8.f0);
-        t5 = (s16)(arg0 + ((s16)(rC40[2] - lbl_80367C40.f0) + 1));
+        t5 = (s16)(rC40[2] - rC40[0]) + 1;
+        t4 = (s16)(temp_r26[2] - temp_r26[0]);
+        t7 = (s16)(temp_r25[3] - temp_r25[1]) + 8;
+        temp_r30 = arg0 + t5;
+        temp_r29 = arg1 + t7;
+        temp_r27 = temp_r30 + (s16)(width + t4);
         t8 = (s16)(temp_r26[3] - temp_r26[1]);
-        t7 = (s16)(arg1 + ((s16)(temp_r25[3] - temp_r25[1]) + 8));
+        temp_r20 = temp_r29 + t8;
+        temp_r28 = temp_r27 - t4;
         spC[0] = 0;
-        temp_r27 = (s16)(t5 + (s16)(temp_r30 + t4));
         spC[1] = 0;
-        temp_r20 = (s16)(t7 + t8);
         spC[2] = 0;
-        temp_r28 = (s16)(temp_r27 - t4);
-        spC[3] = 0xFF;
-        temp_r30 = t5;
-        temp_r29 = t7;
-        temp_r20 = (s16)(t7 + t8);
+        spC[3] = 255;
     }
 
     Prim2D_Begin();
@@ -3253,7 +3253,7 @@ void fn_80154370(s16 arg0, s16 arg1) {
         9, temp_r21, lbl_80367CE8.f0);
     Prim2D_PopZ(temp_r22, sp10);
 }
-#pragma global_optimizer reset
+#pragma pop
 void fn_801546B0(s16 arg0, s16 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void Ui_LoadAtlasTex(s32, void *, s32);
     void Prim2D_SetTex(void *, u16);
@@ -7381,7 +7381,10 @@ void fn_80161364(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Prim2D_SetCornerColors(&rev[0], &rev[1], &rev[2], &rev[3]);
     Prim2D_EndPrim();
 }
-void fn_80161778(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
+void fn_80161778(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     M2C_UNK Prim2D_SetColorPacked(s32 *);
     M2C_UNK Prim2D_SetPosCorners(f32, f32, f32, f32, f32);
     M2C_UNK Prim2D_Begin(void);
@@ -7390,68 +7393,65 @@ void fn_80161778(s16 arg0, s16 arg1, s32 arg2, s32 arg3) {
     M2C_UNK Prim2D_AddPrim(s32);
     M2C_UNK Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
     M2C_UNK Prim2D_EndPrim(void);
-    M2C_UNK fn_80161B98(s16, s16, s16, s16, s32, M2C_UNK *, M2C_UNK *, M2C_UNK);
-    extern M2C_UNK lbl_80330CE8;
+    M2C_UNK fn_80161B98(s32, s32, s32, s16, s32, M2C_UNK *, M2C_UNK *, M2C_UNK);
+    extern u8 lbl_80330CE8[48];
     extern M2C_UNK lbl_80367C10;
     extern M2C_UNK lbl_80367C18;
     extern M2C_UNK lbl_80367C20;
     extern u8 gUiTexScratch[64];
     extern f64 lbl_8036A868;
-    extern f32 lbl_8036A870;
-    s16 temp_r7;
+    extern const f32 lbl_8036A870;
     s16 temp_r0;
+    s16 temp_r7;
+    s16 *left = (s16 *)&lbl_80367C10;
+    s16 *right = (s16 *)&lbl_80367C20;
     s16 temp_r3;
-    s16 temp_r24;
     s16 temp_r27;
-    s16 temp_r0_2;
-    s16 temp_r0_3;
-    u8 spF;
-    u8 spE;
-    u8 spD;
-    u8 spC;
+    u8 color[4];
     s32 sp8;
     f32 temp_f2;
 
-    temp_r7 = M2C_FIELD(&lbl_80367C10, s16 *, 4) - M2C_FIELD(&lbl_80367C10, s16 *, 0);
-    temp_r0 = M2C_FIELD(&lbl_80367C10, s16 *, 6) - M2C_FIELD(&lbl_80367C10, s16 *, 2);
-    temp_r27 = arg2 - (temp_r7 + (s16)(M2C_FIELD(&lbl_80367C20, s16 *, 4) - M2C_FIELD(&lbl_80367C20, s16 *, 0)));
+    temp_r7 = left[2] - M2C_FIELD(&lbl_80367C10, s16 *, 0);
+    temp_r27 = arg2 - ((s16)(left[2] - M2C_FIELD(&lbl_80367C10, s16 *, 0)) + (s16)(right[2] - M2C_FIELD(&lbl_80367C20, s16 *, 0)));
+    temp_r0 = left[3] - left[1];
     if ((temp_r7 != 0) && (temp_r0 != 0)) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg3 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)arg0, (f32)arg1, (f32)M2C_FIELD(&lbl_80367C10, s16 *, 0), (f32)M2C_FIELD(&lbl_80367C10, s16 *, 2), (f32)temp_r7, (f32)temp_r0);
+        Prim2D_SetRectUv((f32)(s16)arg0, (f32)(s16)arg1, (f32)M2C_FIELD(&lbl_80367C10, s16 *, 0), (f32)left[1], (f32)temp_r7, (f32)temp_r0);
         Prim2D_EndPrim();
     }
-    spC = 0xFF;
-    temp_r3 = M2C_FIELD(&lbl_80367C10, s16 *, 4) - M2C_FIELD(&lbl_80367C10, s16 *, 0);
-    spD = 0xFF;
-    temp_r24 = arg0 + temp_r3;
-    spE = 0xFF;
-    spF = 0xFF;
+    temp_r3 = left[2] - M2C_FIELD(&lbl_80367C10, s16 *, 0);
+    color[0] = 0xFF;
+    color[1] = 0xFF;
+    arg0 = arg0 + temp_r3;
+    color[2] = 0xFF;
+    color[3] = 0xFF;
     Prim2D_Begin();
     Prim2D_SetTex(NULL, (u16)(arg3 | 2));
     Prim2D_PrepareTex();
     Prim2D_AddPrim(4);
-    temp_f2 = lbl_8036A870 + (f32)arg1;
-    Prim2D_SetPosCorners(lbl_8036A870 + (f32)temp_r24, temp_f2, lbl_8036A870 + (f32)(s16)(temp_r24 + temp_r27), temp_f2, lbl_8036A870);
-    sp8 = (s32)spC;
+    temp_f2 = lbl_8036A870 + (f32)(s16)arg1;
+    Prim2D_SetPosCorners(lbl_8036A870 + (f32)(s16)arg0, temp_f2, lbl_8036A870 + (f32)(s16)(arg0 + temp_r27), temp_f2, lbl_8036A870);
+    sp8 = *(s32 *)color;
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
-    fn_80161B98(temp_r24, arg1, temp_r27, (s16)(M2C_FIELD(&lbl_80367C18, s16 *, 6) - M2C_FIELD(&lbl_80367C18, s16 *, 2)), arg3, &lbl_80367C18, &lbl_80330CE8, 0);
-    temp_r0_2 = M2C_FIELD(&lbl_80367C20, s16 *, 4) - M2C_FIELD(&lbl_80367C20, s16 *, 0);
-    temp_r0_3 = M2C_FIELD(&lbl_80367C20, s16 *, 6) - M2C_FIELD(&lbl_80367C20, s16 *, 2);
-    if ((temp_r0_2 != 0) && (temp_r0_3 != 0)) {
+    fn_80161B98(arg0, arg1, temp_r27, (s16)(M2C_FIELD(&lbl_80367C18, s16 *, 6) - M2C_FIELD(&lbl_80367C18, s16 *, 2)), arg3, &lbl_80367C18, (M2C_UNK *)lbl_80330CE8, 0);
+    left = (s16 *)&lbl_80367C20;
+    arg0 += temp_r27;
+    temp_r7 = left[3] - left[1];
+    temp_r0 = right[2] - M2C_FIELD(&lbl_80367C20, s16 *, 0);
+    if ((temp_r0 != 0) && (temp_r7 != 0)) {
         Prim2D_Begin();
         Prim2D_SetTex(gUiTexScratch, (u16)(arg3 | 1));
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)(s16)(temp_r24 + temp_r27), (f32)arg1, (f32)M2C_FIELD(&lbl_80367C20, s16 *, 0), (f32)M2C_FIELD(&lbl_80367C20, s16 *, 2), (f32)temp_r0_2, (f32)temp_r0_3);
+        Prim2D_SetRectUv((f32)(s16)arg0, (f32)(s16)arg1, (f32)M2C_FIELD(&lbl_80367C20, s16 *, 0), (f32)left[1], (f32)temp_r0, (f32)temp_r7);
         Prim2D_EndPrim();
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void Ui_DrawLine(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s32 *arg5) {
     void Prim2D_Begin(void);
     void Prim2D_SetTex(s32, u16);
