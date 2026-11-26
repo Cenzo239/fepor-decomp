@@ -977,6 +977,9 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
     return z;
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 u8 fn_800940B0(void *arg0, void *arg1) {
     u8 fn_80105BC0(void *, s32);
     void *fn_80019E48(void *);
@@ -1076,7 +1079,7 @@ u8 fn_800940B0(void *arg0, void *arg1) {
     }
 
     type = *((u8 *)other + 0x12);
-    result = ((u8 *)self)[type + 0x20C];
+    { u8 *p = (u8 *)self; p += type; result = p[0x20C]; }
 
     if (type == 7) {
         if (fn_80105BC0((u8 *)self + 0x1BC, 0x28) != 0) {
@@ -1136,9 +1139,10 @@ clamp79:
     }
 done:
     lim = *((u8 *)other + 0x16);
-    lim = (u8)(lim + (lim == 0));
-    return (u8)(lim < result);
+    lim = (u8)(lim + (u8)(lim == 0));
+    return (u8)((u32)lim < (u32)result);
 }
+#pragma pop
 
 /* True if unit may equip itemData: flag 0x200 needs status 9; else allow when +0x1A5 high nibble is 0, deny on flags 2/4, else allow. */
 s32 Unit_CanEquipItem(void *unit, void *itemData) {
