@@ -2425,6 +2425,7 @@ void fn_801B7B5C(void *arg0, s32 arg1, f32 farg0) {
     }
 }
 
+#pragma global_optimizer off
 #pragma opt_common_subs off
 void fn_801B8334(void *arg0) {
     s32 FileCache_GetFlags(void *);
@@ -2438,6 +2439,7 @@ void fn_801B8334(void *arg0) {
         Process_ClearFunc(arg0);
     }
 }
+#pragma global_optimizer reset
 
 extern f32 lbl_8036B228;
 #pragma use_lmw_stmw on
@@ -5716,8 +5718,7 @@ extern "C" void fn_801BDAF8(void *arg0) {
     extern u8 lbl_80292178[];
     extern u8 lbl_80292230[];
     extern u8 lbl_802CA264[];
-    extern f32 lbl_8036B2D8;
-    extern f32 lbl_8036B2E0;
+    extern const f32 lbl_8036B2E0;
 
     struct Obj {
         virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
@@ -5732,7 +5733,9 @@ extern "C" void fn_801BDAF8(void *arg0) {
     void *p;
     void *hold;
     void *q;
-    f32 zero;
+    void *entry2;
+    void *hold2;
+    void *p4;
 
     fn_8014004C(self, fn_8013FF94(self, 0x80, 0));
     fn_8014004C(self, fn_8013FF94(self, 0x81, 0));
@@ -5759,11 +5762,11 @@ extern "C" void fn_801BDAF8(void *arg0) {
         fn_8013B064(hold, entry);
         entry = *(void **)((u8 *)entry + 0x184);
     }
-    hold = *(void **)((u8 *)self + 0x48);
-    entry = *(void **)(lbl_802CA264 + 0x3C);
-    while (entry != NULL) {
-        fn_8013B064(hold, entry);
-        entry = *(void **)((u8 *)entry + 0x184);
+    hold2 = *(void **)((u8 *)self + 0x48);
+    entry2 = *(void **)(lbl_802CA264 + 0x3C);
+    while (entry2 != NULL) {
+        fn_8013B064(hold2, entry2);
+        entry2 = *(void **)((u8 *)entry2 + 0x184);
     }
     q = *(void **)((u8 *)self + 0x48);
     *(void **)((u8 *)q + 0x7C) = (void *)fn_801BC71C;
@@ -5792,10 +5795,9 @@ extern "C" void fn_801BDAF8(void *arg0) {
         *(u8 *)((u8 *)p + 0x21) = 0xFF;
         *(s16 *)((u8 *)p + 0x22) = 0x1FE;
         *(s16 *)((u8 *)p + 0x24) = 0;
-        zero = lbl_8036B2D8;
-        *(f32 *)((u8 *)p + 0x28) = zero;
-        *(f32 *)((u8 *)p + 0x2C) = zero;
-        *(f32 *)((u8 *)p + 0x30) = zero;
+        *(f32 *)((u8 *)p + 0x28) = 1.0f;
+        *(f32 *)((u8 *)p + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)p + 0x30) = 1.0f;
         *(s32 *)((u8 *)p + 0x34) = 0;
         *(s32 *)((u8 *)p + 0x38) = 0;
         *(void **)p = lbl_80292178;
@@ -5859,10 +5861,9 @@ extern "C" void fn_801BDAF8(void *arg0) {
         *(u8 *)((u8 *)p + 0x21) = 0xFF;
         *(s16 *)((u8 *)p + 0x22) = 0x1F4;
         *(s16 *)((u8 *)p + 0x24) = 0;
-        zero = lbl_8036B2D8;
-        *(f32 *)((u8 *)p + 0x28) = zero;
-        *(f32 *)((u8 *)p + 0x2C) = zero;
-        *(f32 *)((u8 *)p + 0x30) = zero;
+        *(f32 *)((u8 *)p + 0x28) = 1.0f;
+        *(f32 *)((u8 *)p + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)p + 0x30) = 1.0f;
         *(s32 *)((u8 *)p + 0x34) = 0;
         *(s32 *)((u8 *)p + 0x38) = 0;
         *(void **)p = lbl_80291A3C;
@@ -5907,10 +5908,9 @@ extern "C" void fn_801BDAF8(void *arg0) {
         *(u8 *)((u8 *)p + 0x21) = 0xFF;
         *(s16 *)((u8 *)p + 0x22) = 0x1F4;
         *(s16 *)((u8 *)p + 0x24) = 0;
-        zero = lbl_8036B2D8;
-        *(f32 *)((u8 *)p + 0x28) = zero;
-        *(f32 *)((u8 *)p + 0x2C) = zero;
-        *(f32 *)((u8 *)p + 0x30) = zero;
+        *(f32 *)((u8 *)p + 0x28) = 1.0f;
+        *(f32 *)((u8 *)p + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)p + 0x30) = 1.0f;
         *(s32 *)((u8 *)p + 0x34) = 0;
         *(s32 *)((u8 *)p + 0x38) = 0;
         *(void **)p = lbl_80291A0C;
@@ -5930,39 +5930,38 @@ extern "C" void fn_801BDAF8(void *arg0) {
     fn_80137EA0(*(void **)((u8 *)self + 0x54), fn_8013AC54(*(void **)((u8 *)self + 0x48)));
     fn_801400F4(self, *(void **)((u8 *)self + 0x54));
 
-    p = fn_800C42D8(0x40);
-    if (p != NULL) {
-        *(void **)p = lbl_8028FDB0;
-        *(s32 *)((u8 *)p + 4) = 0;
-        *(void **)p = lbl_80292230;
-        *(s16 *)((u8 *)p + 8) = -1;
-        *(s16 *)((u8 *)p + 0xA) = 0x134;
-        *(s16 *)((u8 *)p + 0xC) = 0x110;
-        *(s16 *)((u8 *)p + 0xE) = (s16)(0x134 + 0x110);
-        *(s16 *)((u8 *)p + 0x10) = (s16)(0x110 + 0x7D);
-        *(s16 *)((u8 *)p + 0x12) = 0;
-        *(s16 *)((u8 *)p + 0x14) = 0;
-        *(s16 *)((u8 *)p + 0x16) = 0x110;
-        *(s16 *)((u8 *)p + 0x18) = 0x7D;
-        *(s16 *)((u8 *)p + 0x1A) = 0;
-        *(s16 *)((u8 *)p + 0x1C) = 0;
-        *(u8 *)((u8 *)p + 0x1E) = 0xFF;
-        *(u8 *)((u8 *)p + 0x1F) = 0xFF;
-        *(u8 *)((u8 *)p + 0x20) = 0xFF;
-        *(u8 *)((u8 *)p + 0x21) = 0xFF;
-        *(s16 *)((u8 *)p + 0x22) = 0x1F4;
-        *(s16 *)((u8 *)p + 0x24) = 0;
-        zero = lbl_8036B2D8;
-        *(f32 *)((u8 *)p + 0x28) = zero;
-        *(f32 *)((u8 *)p + 0x2C) = zero;
-        *(f32 *)((u8 *)p + 0x30) = zero;
-        *(s32 *)((u8 *)p + 0x34) = 0;
-        *(s32 *)((u8 *)p + 0x38) = 0;
-        *(void **)p = lbl_802919B0;
-        *(s32 *)((u8 *)p + 0x3C) = 0;
-        ((Obj *)p)->v8();
+    p4 = fn_800C42D8(0x40);
+    if (p4 != NULL) {
+        *(void **)p4 = lbl_8028FDB0;
+        *(s32 *)((u8 *)p4 + 4) = 0;
+        *(void **)p4 = lbl_80292230;
+        *(s16 *)((u8 *)p4 + 8) = -1;
+        *(s16 *)((u8 *)p4 + 0xA) = 0x134;
+        *(s16 *)((u8 *)p4 + 0xC) = 0x110;
+        *(s16 *)((u8 *)p4 + 0xE) = (s16)(0x134 + 0x110);
+        *(s16 *)((u8 *)p4 + 0x10) = (s16)(0x110 + 0x7D);
+        *(s16 *)((u8 *)p4 + 0x12) = 0;
+        *(s16 *)((u8 *)p4 + 0x14) = 0;
+        *(s16 *)((u8 *)p4 + 0x16) = 0x110;
+        *(s16 *)((u8 *)p4 + 0x18) = 0x7D;
+        *(s16 *)((u8 *)p4 + 0x1A) = 0;
+        *(s16 *)((u8 *)p4 + 0x1C) = 0;
+        *(u8 *)((u8 *)p4 + 0x1E) = 0xFF;
+        *(u8 *)((u8 *)p4 + 0x1F) = 0xFF;
+        *(u8 *)((u8 *)p4 + 0x20) = 0xFF;
+        *(u8 *)((u8 *)p4 + 0x21) = 0xFF;
+        *(s16 *)((u8 *)p4 + 0x22) = 0x1F4;
+        *(s16 *)((u8 *)p4 + 0x24) = 0;
+        *(f32 *)((u8 *)p4 + 0x28) = 1.0f;
+        *(f32 *)((u8 *)p4 + 0x2C) = 1.0f;
+        *(f32 *)((u8 *)p4 + 0x30) = 1.0f;
+        *(s32 *)((u8 *)p4 + 0x34) = 0;
+        *(s32 *)((u8 *)p4 + 0x38) = 0;
+        *(void **)p4 = lbl_802919B0;
+        *(s32 *)((u8 *)p4 + 0x3C) = 0;
+        ((Obj *)p4)->v8();
     }
-    *(void **)((u8 *)self + 0x58) = p;
+    *(void **)((u8 *)self + 0x58) = p4;
     q = *(void **)((u8 *)self + 0x58);
     if (q != NULL) {
         *(s32 *)((u8 *)q + 4) = *(s32 *)((u8 *)q + 4) + 1;
@@ -13041,7 +13040,10 @@ int fn_801CB7F0(void *arg0, void *arg1, void *unused) {
     return (int)arg1;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_unroll_loops off
 void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
 {
     struct Vector32 {
@@ -13066,12 +13068,12 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
     extern u8 lbl_8027DAB0[];
 
     struct Vector32 *vec;
-    u8 *position;
     u8 *fill;
+    u32 count;
+    u8 *position;
     u8 *end;
     u8 *src;
     u8 *dst;
-    u32 count;
     u32 required;
     u32 i;
 
@@ -13091,6 +13093,7 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
 
     required = vec->size + count;
     if (required <= vec->capacity) {
+        u8 *fillPtr = fill;
         s32 after;
         u32 remaining;
 
@@ -13101,7 +13104,7 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             u32 extra;
             extra = count - after;
             dst = end;
-            for (i = 0; i < extra; i++) {
+            for (; count > (u32)after;) {
                 if (dst != 0) {
                     *(struct Raw32 *)dst = *(struct Raw32 *)fill;
                 }
@@ -13111,10 +13114,8 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             }
 
             src = position;
-            if (src < end) {
-                u32 copies;
-                copies = ((u32)(end + 0x1F) - (u32)src) >> 5;
-                for (i = 0; i < copies; i++) {
+            {
+                for (; src < end;) {
                     if (dst != 0) {
                         *(struct Raw32 *)dst = *(struct Raw32 *)src;
                     }
@@ -13129,7 +13130,7 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
 
             src = end - (count << 5);
             dst = end;
-            for (i = 0; i < count; i++) {
+            for (; src < end;) {
                 if (dst != 0) {
                     *(struct Raw32 *)dst = *(struct Raw32 *)src;
                 }
@@ -13142,14 +13143,13 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             shiftFrom = position + (remaining << 5);
             shiftTo = end;
 
-            if ((u32)fill >= (u32)(end - (remaining << 5)) &&
+            if ((u32)(end - (remaining << 5)) <= (u32)fill &&
                 (u32)fill < (u32)end) {
-                fill += count << 5;
+                fillPtr += count << 5;
             }
 
-            if (shiftFrom > position) {
-                remaining = ((u32)(shiftFrom + 0x1F) - (u32)position) >> 5;
-                for (i = 0; i < remaining; i++) {
+            {
+                for (; shiftFrom > position;) {
                     shiftFrom -= 0x20;
                     shiftTo -= 0x20;
                     ((struct Float32 *)shiftTo)->f0 = ((struct Float32 *)shiftFrom)->f0;
@@ -13166,14 +13166,14 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
 
         dst = position;
         for (i = 0; i < count; i++) {
-            ((struct Float32 *)dst)->f0 = ((struct Float32 *)fill)->f0;
-            ((struct Float32 *)dst)->f1 = ((struct Float32 *)fill)->f1;
-            ((struct Float32 *)dst)->f2 = ((struct Float32 *)fill)->f2;
-            ((struct Float32 *)dst)->f3 = ((struct Float32 *)fill)->f3;
-            ((struct Float32 *)dst)->f4 = ((struct Float32 *)fill)->f4;
-            ((struct Float32 *)dst)->f5 = ((struct Float32 *)fill)->f5;
-            ((struct Float32 *)dst)->f6 = ((struct Float32 *)fill)->f6;
-            ((struct Float32 *)dst)->last = ((struct Float32 *)fill)->last;
+            ((struct Float32 *)dst)->f0 = ((struct Float32 *)fillPtr)->f0;
+            ((struct Float32 *)dst)->f1 = ((struct Float32 *)fillPtr)->f1;
+            ((struct Float32 *)dst)->f2 = ((struct Float32 *)fillPtr)->f2;
+            ((struct Float32 *)dst)->f3 = ((struct Float32 *)fillPtr)->f3;
+            ((struct Float32 *)dst)->f4 = ((struct Float32 *)fillPtr)->f4;
+            ((struct Float32 *)dst)->f5 = ((struct Float32 *)fillPtr)->f5;
+            ((struct Float32 *)dst)->f6 = ((struct Float32 *)fillPtr)->f6;
+            ((struct Float32 *)dst)->last = ((struct Float32 *)fillPtr)->last;
             dst += 0x20;
         }
     } else {
@@ -13190,10 +13190,10 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             newCapacity = 1;
         }
         while (required > newCapacity) {
-            if (newCapacity >= 0x03FFFFFFU) {
-                newCapacity = 0x07FFFFFFU;
-            } else {
+            if (newCapacity < 0x03FFFFFFU) {
                 newCapacity <<= 1;
+            } else {
+                newCapacity = 0x07FFFFFFU;
             }
         }
 
@@ -13208,10 +13208,8 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
         src = vec->data;
         end = src + (vec->size << 5);
         dst = tmp.data;
-        if (src < position) {
-            u32 copies;
-            copies = ((u32)(position + 0x1F) - (u32)src) >> 5;
-            for (i = 0; i < copies; i++) {
+        {
+            for (; src < position;) {
                 if (dst != 0) {
                     *(struct Raw32 *)dst = *(struct Raw32 *)src;
                 }
@@ -13229,10 +13227,8 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             dst += 0x20;
         }
 
-        if (src < end) {
-            u32 copies;
-            copies = ((u32)(end + 0x1F) - (u32)src) >> 5;
-            for (i = 0; i < copies; i++) {
+        {
+            for (; src < end;) {
                 if (dst != 0) {
                     *(struct Raw32 *)dst = *(struct Raw32 *)src;
                 }
@@ -13247,15 +13243,15 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
             u32 oldSize;
             u8 *oldData;
 
-            oldCapacity = vec->capacity;
-            oldSize = vec->size;
-            oldData = vec->data;
-            vec->capacity = tmp.capacity;
-            vec->size = tmp.size;
-            vec->data = tmp.data;
-            tmp.capacity = oldCapacity;
-            tmp.size = oldSize;
-            tmp.data = oldData;
+            oldCapacity = tmp.capacity;
+            tmp.capacity = vec->capacity;
+            vec->capacity = oldCapacity;
+            oldData = tmp.data;
+            tmp.data = vec->data;
+            vec->data = oldData;
+            oldSize = tmp.size;
+            tmp.size = vec->size;
+            vec->size = oldSize;
         }
 
         fn_801CC030(&tmp);
@@ -13264,9 +13260,7 @@ void fn_801CB934(void *arg0, void *arg1, s32 arg2, s32 arg3)
         }
     }
 }
-
-#pragma opt_common_subs on
-#pragma cplusplus off
+#pragma pop
 
 void *fn_801CBFD0(void *arg0, s16 arg1) {
     void Heap_Free(void *);
@@ -13712,7 +13706,7 @@ extern "C" void fn_801CC844(void *arg0, void *arg1) {
         
         f32 fval = self->unk58;
         if (fval < lbl_8036B4D0) {
-            f32 value = lbl_8036B4D4 * (f32)self->v12() + self->unk58;
+            f32 value = (f32)self->v12() * lbl_8036B4D4 + self->unk58;
             self->unk58 = value;
             if (value >= -lbl_80367098[0]) {
                 self->unk58 = lbl_8036B4D0;
