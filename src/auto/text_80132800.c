@@ -3917,35 +3917,7 @@ void *fn_80137EA8(void *arg0, s16 arg1) {
 #pragma cplusplus on
 #pragma optimization_level 2
 #pragma opt_common_subs off
-extern "C" void fn_80137F14(void *arg0, s32 arg1) {
-    struct Obj {
-        virtual void v0() = 0;
-        virtual void v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3(s32) = 0;
-        u8 pad4[6];
-        s16 unkA;
-        s16 unkC;
-        s16 unkE;
-        s16 unk10;
-        s16 unk12;
-        s16 unk14;
-        s16 unk16;
-        s16 unk18;
-        u8 pad1A[0x22 - 0x1A];
-        s16 unk22;
-        u8 pad24[0x34 - 0x24];
-        u32 unk34;
-        u8 pad38[4];
-        void *unk3C;
-        u32 unk40;
-        s16 unk44;
-        s16 unk46;
-        s16 unk48;
-        s16 unk4A;
-        s32 unk4C;
-        u8 *unk50;
-    };
+extern "C" void fn_80137F14(PortraitPanelObject *self, s32 arg1) {
     void fn_80160F00(s32, s32, s32, s32);
     void fn_8013F748(void *, s16 *, s16 *);
     void Prim2D_Begin(void);
@@ -4000,7 +3972,6 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     extern u8 lbl_802767E0[192];
 
     s32 idx;
-    Obj *self;
     void *unit;
     s16 *rect;
     s16 w, h;
@@ -4013,7 +3984,6 @@ extern "C" void fn_80137F14(void *arg0, s32 arg1) {
     u8 sp38[0x30];
 
     idx = arg1;
-    self = (Obj *)arg0;
     self->v2();
     fn_80160F00(0, 0, self->unk4C == 0 ? 1 : 0, 0x10);
     self->v3(idx);
