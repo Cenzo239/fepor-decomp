@@ -1,6 +1,7 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+static inline s16 Map_ReadAiRange_800F9574(u8 *cell) { return *(s16 *)(cell + 0x610E); }
 static inline s32 Map_AiTerrainTest(s32 a, s8 x, s8 y) {
 extern u8 gBattleMap[];
 s32 c=a,b=a;
@@ -2360,6 +2361,10 @@ case_float:
     }
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
+#pragma use_lmw_stmw on
 s32 fn_800C8A9C(u8 *self,u8 *base) {
  void fn_800C94F8(void *,u32,u32,void *,u32);
  void fn_800C9874(void *,u32,u8);
@@ -2371,14 +2376,14 @@ s32 fn_800C8A9C(u8 *self,u8 *base) {
  void *Heap_Alloc(u32);
  s32 fn_800C7D3C(void *,void *,s32,void *);
  void fn_800C9BC4(void *,void *,u32,void *);
- void fn_800CA6C8(void *,s16);
  extern char gStringErrorMsgs[];
+ void fn_800CA6C8(void *,s16);
  struct {s32 capacity,size;String *data;} lines;
  String line,check;
  void *entry;
  s32 index;
- s32 total;
  char *messages;
+ s32 total;
  s32 offset;
  u8 *cursor;
  s32 next;
@@ -2420,7 +2425,7 @@ s32 fn_800C8A9C(u8 *self,u8 *base) {
  String_Destroy(&line,-1);fn_800CA6C8(&lines,0);
  return 1;
 }
-
+#pragma pop
 void Xml_GetChildName(String *arg0, void *arg1) {
     void String_AssignCStr(String *, char *, u32);
     u32 strlen(const char *);
@@ -26502,6 +26507,8 @@ void fn_800F94D4(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_800F9574(void *arg0)
 {
     extern u8 gAiState[];
@@ -26520,6 +26527,7 @@ void fn_800F9574(void *arg0)
     u8 *row;
     s32 x;
     s32 y;
+    s32 ux, uy;
     s32 mov;
     s32 minX;
     s32 minY;
@@ -26527,8 +26535,8 @@ void fn_800F9574(void *arg0)
     s32 maxY;
     s32 best;
     s32 random;
-    s32 bestX;
-    s32 bestY;
+    s16 bestX;
+    s16 bestY;
 
     unit = (u8 *)arg0;
 
@@ -26537,39 +26545,39 @@ void fn_800F9574(void *arg0)
 
         Map_BuildUnitMoveRange(unit, 5, -1);
 
-        x = (s8)unit[0x19E];
-        y = (s8)unit[0x19F];
+        ux = *(s8 *)(unit+0x19E);
+        uy = *(s8 *)(unit+0x19F);
 
         best = -1;
 
         mov = (s8)Unit_GetMov(unit);
 
+
+        minX = ux - mov;
+
+        if (minX < (s8)gBattleMap[8]) {
+            minX = (s8)gBattleMap[8];
+        }
+
+        minY = uy - mov;
+
+        if (minY < (s8)gBattleMap[9]) {
+            minY = (s8)gBattleMap[9];
+        }
+
+        maxX = ux + mov;
+
+        if (maxX > (s8)gBattleMap[0xA] - 1) {
+            maxX = (s8)gBattleMap[0xA] - 1;
+        }
+
+        maxY = uy + mov;
+
+        if (maxY > (s8)gBattleMap[0xB] - 1) {
+            maxY = (s8)gBattleMap[0xB] - 1;
+        }
+
         map = gBattleMap;
-
-        minX = x - mov;
-
-        if (minX < (s8)map[8]) {
-            minX = (s8)map[8];
-        }
-
-        minY = y - mov;
-
-        if (minY < (s8)map[9]) {
-            minY = (s8)map[9];
-        }
-
-        maxX = x + mov;
-
-        if (maxX > (s8)map[0xA] - 1) {
-            maxX = (s8)map[0xA] - 1;
-        }
-
-        maxY = y + mov;
-
-        if (maxY > (s8)map[0xB] - 1) {
-            maxY = (s8)map[0xB] - 1;
-        }
-
         y = minY;
 
         while (y <= maxY) {
@@ -26578,9 +26586,7 @@ void fn_800F9574(void *arg0)
             row = map + (s8)y * 0x40;
 
             while (x <= maxX) {
-                if (*(s16 *)(map +
-                        ((s8)x + (s8)y * 0x40) * 2 +
-                        0x610E) >= 0) {
+                if (((s16 *)(map + ((s8)x + (s8)y * 0x40)*2))[0x3087] >= 0) {
 
                     cell = row + (s8)x;
 
@@ -26628,7 +26634,7 @@ void fn_800F9574(void *arg0)
         unit[0x251]++;
     }
 }
-
+#pragma pop
 void fn_800F977C(void *arg0) {
 extern u8 gAiState[],gBattleMap[];
 extern u8 *gAiCmd;
