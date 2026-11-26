@@ -1,13 +1,6 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline void Ui_InitMenuEntries(s32 *table, void **entries, s32 arg0, s32 arg1) {
-    entries[0] = table;
-    table[1] = arg0;
-    entries[1] = table + 2;
-    table[3] = arg1;
-    entries[2] = 0;
-}
 
 #pragma cplusplus on
 struct UiSelectionHandler {
@@ -522,20 +515,25 @@ extern void FileCache_ReleaseByKey(u32);
 #pragma global_optimizer off
 
 #pragma opt_strength_reduction off
-void fn_8006F10C(s32 arg0, s32 arg1) {
-    extern u8 lbl_80311CA8[];
-    s32 fn_800C0658(void);
-    void Ui_CreateMenu(void *, s32, s32);
-    typedef struct { void *e0, *e1, *e2; } Entries;
-    u8 *base = lbl_80311CA8;
-    volatile s32 *table = (volatile s32 *)(base + 0x4c);
-    volatile Entries *entries = (volatile Entries *)(base + 0x6c);
-
-    entries->e0 = (void *)table;
-    table[1] = arg0;
-    entries->e1 = (void *)(table + 2);
-    table[3] = arg1;
-    entries->e2 = 0;
-    Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
+void fn_8006F10C(s32 arg0, s32 arg1)
+{
+  extern u8 lbl_80311CA8[];
+  s32 fn_800C0658(void);
+  void Ui_CreateMenu(void *, s32, s32);
+  typedef struct 
+  {
+    void *e0;
+    void *e1;
+    void *e2;
+  } Entries;
+  u8 *base = lbl_80311CA8;
+  volatile s32 *table = (volatile s32 *) (base + 0x4c);
+  volatile Entries *entries = (volatile Entries *) (base + 0x6c);
+  entries->e0 = (void *) ((volatile s32 *) (base + 0x4c));
+  table[1] = arg0;
+  entries->e1 = (void *) (((volatile s32 *) (base + 0x4c)) + 2);
+  ((volatile s32 *) (base + 0x4c))[3] = arg1;
+  entries->e2 = 0;
+  Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
 #pragma opt_strength_reduction on
