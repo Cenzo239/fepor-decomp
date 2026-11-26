@@ -389,7 +389,7 @@ void fn_802212C8(s32 arg0) {
  M2C_FIELD(__GXData, u32 *, 0x1E8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1E8), 0x4D, 24, 0, 7);
 }
 
-void fn_8022257C(s32, s32, s32, u32 *, u32 *, u32 *);
+void fn_8022257C(s32, u16, u16, u32 *, u32 *, u32 *);
 void fn_802212FC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
  u32 x, y, z;
  u32 format = arg2 & 15;
