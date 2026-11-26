@@ -28537,15 +28537,13 @@ void fn_800FC580(void)
     extern void *fn_80022FC4(void *);
     extern void *fn_800C4638(s32, void *, s32);
 
-    void *result;
-
-    *(volatile u16 *)&gAiState.f4 = (u16)-1;
+    u32 val = 0xFFFF;
+    *(volatile u16 *)&gAiState.f4 = val;
     *(volatile u8 *)&gAiState.f6 = 2;
 
     fn_80100B08(&gAiState);
     memset(gAiState.f8, 0, 0x10);
-    result = fn_80022FC4(gBattleMap);
-    lbl_80367904 = fn_800C4638((s32)result, lbl_802731D0 + 0x2C, 0);
+    lbl_80367904 = fn_800C4638((s32)fn_80022FC4(gBattleMap), lbl_802731D0 + 0x2C, 0);
 }
 #pragma global_optimizer on
 s32 fn_800FC5F8(void) {
