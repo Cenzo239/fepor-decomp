@@ -14383,6 +14383,7 @@ void *fn_80179D70(void *arg0, s16 arg1) {
 }
 
 #pragma cplusplus on
+extern "C" void fn_80142060(void *);
 #pragma global_optimizer on
 struct Fn_80179DEC_Ctor {
     static inline void *callBase(void *p) {
@@ -14450,7 +14451,7 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern u8 lbl_80292208[];
     extern u8 lbl_80293BB8[];
     extern u8 lbl_80293B30[];
-    extern f32 gF32_1;
+    extern const f32 gF32_1;
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
@@ -14462,9 +14463,8 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    struct CallObj { virtual void unused() = 0; };
     u8 *p = (u8 *)arg0;
-    CallObj *pCall = (CallObj *)arg0;
+    void *p2 = (u8 *)arg0 + 0x3C;
     Obj *pMid = (Obj *)arg0;
     s32 e1 = (s16)arg1;
     s32 e2 = (s16)arg2;
@@ -14494,8 +14494,8 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(f32 *)(p + 0x30) = gF32_1;
     *(s32 *)(p + 0x34) = 0;
     *(s32 *)(p + 0x38) = 0;
-    *(void **)pCall = lbl_80292208;
-    fn_80142060((u8 *)pCall + 0x3C);
+    *(void **)p = lbl_80292208;
+    fn_80142060(p2);
 
     u8 *q = (u8 *)pMid;
     *(void **)q = lbl_80293BB8;
@@ -14528,7 +14528,7 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 #pragma cplusplus on
 extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     void *fn_8017A000(void *, s16 *, s16 *, s32);
-    extern u8 gUiPanelExVtbl[];
+    extern u8 lbl_80291B1C[];
     struct Obj {
         virtual void m08() = 0;
         virtual void m0C() = 0;
@@ -14540,16 +14540,15 @@ extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
         virtual void m24() = 0;
         virtual void m28() = 0;
     };
-    typedef struct { s16 x; s16 y; } Pair;
-    Pair ab;
-    Pair cd;
+    s16 ab[2];
+    s16 cd[2];
 
-    cd.x = arg3;
-    ab.x = arg1;
-    ab.y = arg2;
-    cd.y = arg4;
-    fn_8017A000(arg0, &ab.x, &cd.x, arg5);
-    *(void **)arg0 = gUiPanelExVtbl;
+    cd[0] = arg3;
+    ab[0] = arg1;
+    ab[1] = arg2;
+    cd[1] = arg4;
+    fn_8017A000(arg0, ab, cd, arg5);
+    *(void **)arg0 = lbl_80291B1C;
     *(s16 *)((u8 *)arg0 + 0xD4) = 1;
     ((Obj *)arg0)->m28();
     return arg0;
