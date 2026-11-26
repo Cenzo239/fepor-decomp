@@ -8472,6 +8472,8 @@ void fn_80193540(void *self) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_80193668(void *arg0) {
     void *Heap_Alloc(s32);
     void String_AssignCStr(void *, char *, u32);
@@ -8580,7 +8582,7 @@ void fn_80193668(void *arg0) {
         *(f32 *)((u8 *)self + 0x64) *= lbl_8036AE30;
     }
 }
-
+#pragma pop
 #pragma cplusplus on
 extern "C" void *fn_801938F8(void *arg0, s16 arg1, s16 arg2, s16 arg3) {
     struct Obj {
@@ -17310,7 +17312,7 @@ void fn_801A27A0(void *arg0) {
 }
 
 void fn_801A27F8(void *arg0) {
-    M2C_UNK fn_80066D00(M2C_UNK, void *, f32, f32, f32);
+    M2C_UNK fn_80066D00(M2C_UNK);
     M2C_UNK fn_80067490(M2C_UNK);
     M2C_UNK fn_80067984(M2C_UNK);
     M2C_UNK Camera_ApplyOrtho(M2C_UNK);
@@ -17396,7 +17398,7 @@ void fn_801A27F8(void *arg0) {
         *(f32 *)0xCC008000 = 0.0f;
         *(f32 *)0xCC008000 = 0.0f;
         *(f32 *)0xCC008000 = 1.0f;
-        fn_80066D00(-1, (void *)0xCC010000, 1.0f, 608.0f, 0.0f);
+        fn_80066D00(-1);
         fn_80067984(0);
     }
 }
