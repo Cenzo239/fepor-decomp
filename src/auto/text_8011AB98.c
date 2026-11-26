@@ -1,6 +1,8 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
+
+typedef struct UiListRect { s32 x0, y0, x1, y1; } UiListRect;
 extern u8 lbl_8032FE24[];
 extern u16 gActorXmlStrs[];
 extern u16 lbl_80296128[];
@@ -412,17 +414,17 @@ void fn_8011AE2C(void *arg0) {
 void fn_8011AE6C(void *arg0) {
     f32 Map_SampleHeightRaw(void *, f32, f32);
     extern u8 gBattleMap[];
-    extern f32 lbl_8036A200;
+    extern const f32 lbl_8036A200;
     extern f32 lbl_8036A1F8;
-    extern f64 lbl_8036A208;
-    extern f64 lbl_8036A210;
-    extern f64 lbl_8036A218;
+    extern const f64 lbl_8036A208;
+    extern const f64 lbl_8036A210;
+    extern const f64 lbl_8036A218;
     extern f32 lbl_80367068[];
-    extern f32 lbl_8036A224;
-    extern f32 lbl_8036A228;
-    extern f32 lbl_8036A220;
-    extern f32 lbl_8036A22C;
-    extern f32 lbl_8036A230;
+    extern const f32 lbl_8036A224;
+    extern const f32 lbl_8036A228;
+    extern const f32 lbl_8036A220;
+    extern const f32 lbl_8036A22C;
+    extern const f32 lbl_8036A230;
     f32 spC;
     f32 sp8;
     f32 c;
@@ -430,7 +432,7 @@ void fn_8011AE6C(void *arg0) {
     f32 x, y, z;
     f32 x2, y2, z2;
     f32 mx, my, mz;
-    f32 dx, dy, dz;
+    struct { f32 x, y, z; } diff;
     f32 len;
     f32 len2;
     f32 clamped;
@@ -459,18 +461,18 @@ void fn_8011AE6C(void *arg0) {
     y2 = *(f32 *)((u8 *)arg0 + 0x50);
     x = *(f32 *)((u8 *)arg0 + 0x34);
     x2 = *(f32 *)((u8 *)arg0 + 0x4C);
-    dy = y2 - y;
+    diff.y = y2 - y;
     my = y + y2;
     z = *(f32 *)((u8 *)arg0 + 0x3C);
-    dx = x2 - x;
+    diff.x = x2 - x;
     z2 = *(f32 *)((u8 *)arg0 + 0x54);
-    dy = dy * dy;
+
     mx = x + x2;
-    dz = z2 - z;
-    dx = (dx * dx) + dy;
+    diff.z = z2 - z;
+
     mz = z + z2;
     mx = half * mx;
-    len = (dz * dz) + dx;
+    len = diff.z * diff.z + (diff.x * diff.x + diff.y * diff.y);
     my = half * my;
     mz = half * mz;
     if (len > lbl_8036A1F8) {
@@ -509,9 +511,9 @@ void fn_8011AE6C(void *arg0) {
     eps = lbl_8036A1F8;
     *(s16 *)((u8 *)arg0 + 0x5C) = (s16)(((lbl_8036A220 * (lbl_8036A224 - len)) + (lbl_8036A228 * len)) * lbl_8036A22C);
     *(s16 *)((u8 *)arg0 + 0x5A) = 0;
-    dy = *(f32 *)((u8 *)arg0 + 0x50) - my;
+    diff.y = *(f32 *)((u8 *)arg0 + 0x50) - my;
     ny = *(f32 *)((u8 *)arg0 + 0x4C) - mx;
-    nx = -dy;
+    nx = -diff.y;
     len2 = (nx * nx) + (ny * ny);
     if (len2 > eps) {
         g = __frsqrte(len2);
@@ -1862,11 +1864,11 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     void String_Init(void *, char *, void *);
     void String_Destroy(void *, s32);
     s32 fn_800E7FB4(s32, void *);
-    void fn_800E3040(s32, s32, s32, s32, s32, s32, s32, s32);
+    void fn_800E3040(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
     extern char lbl_80274A88[];
     extern f32 lbl_8036A240;
-    M2C_UNK spA4;
-    M2C_UNK sp98;
+    String spA4;
+    String sp98;
     s32 sp94;
     s32 sp90;
     s32 sp8C;
@@ -1875,8 +1877,8 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     s32 sp80;
     s32 sp7C;
     s32 sp78;
-    M2C_UNK sp6C;
-    M2C_UNK sp60;
+    String sp6C;
+    String sp60;
     s32 sp5C;
     s32 sp58;
     s32 sp54;
@@ -1885,7 +1887,7 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     s32 sp48;
     s32 sp44;
     s32 sp40;
-    M2C_UNK sp34;
+    String sp34;
     M2C_UNK sp30;
     M2C_UNK sp2C;
     M2C_UNK sp28;
@@ -1929,7 +1931,7 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     temp_r29 = M2C_FIELD(arg0, s32 *, 0xC8);
     if ((s32) M2C_FIELD(arg0, s32 *, 0xB0) != 0) {
         String_Init(&spA4, String_CStr((void *)(M2C_FIELD(arg0, s32 *, 0xB4) + (M2C_FIELD(arg0, s32 *, 0xEC) * 0xC))), &sp30);
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32, s32, M2C_UNK *, M2C_UNK, M2C_UNK, f32), 0x20)(arg0, temp_r24, temp_r25, &spA4, 1, 0xFF, lbl_8036A240);
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32, s32, void *, s32, s32, f32), 0x20)(arg0, temp_r24, temp_r25, &spA4, 1, 0xFF, lbl_8036A240);
         String_Destroy(&spA4, -1);
     }
     String_Init(&sp98, lbl_80274A88 + 1, &sp2C);
@@ -1940,7 +1942,7 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     sp10 = 0xFF;
     sp14 = 0xFF;
     sp18 = 0;
-    fn_800E3040(temp_r24_2, arg1, 1, M2C_FIELD(arg0, s32 *, 0x48) + (M2C_FIELD(arg0, s32 *, 0x60) - 0xE), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), 0x10, 0x10);
+    fn_800E3040(temp_r24_2, arg1, 1, M2C_FIELD(arg0, s32 *, 0x48) + (M2C_FIELD(arg0, s32 *, 0x60) - 0xE), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), 0x10, 0x10, 255, 255, 255, 255, 0);
     if (((u8) M2C_FIELD(arg0, u8 *, 0x9C) != 0) && ((u8) M2C_FIELD(arg0, u8 *, 0xF0) == 0)) {
         temp_r10 = M2C_FIELD(arg0, s32 *, 0x4C);
         temp_r11 = M2C_FIELD(arg0, s32 *, 0x48);
@@ -1964,7 +1966,7 @@ void fn_8011CC38(void *arg0, s32 arg1) {
     sp10 = 0xFF;
     sp14 = 0xFF;
     sp18 = 0;
-    fn_800E3040(temp_r24_3, arg1, 0, M2C_FIELD(arg0, s32 *, 0x48), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), temp_r30, temp_r29);
+    fn_800E3040(temp_r24_3, arg1, 0, M2C_FIELD(arg0, s32 *, 0x48), M2C_FIELD(arg0, s32 *, 0x4C), M2C_FIELD(arg0, s32 *, 0x44), temp_r30, temp_r29, 255, 255, 255, 255, 0);
     if ((u8) M2C_FIELD(arg0, u8 *, 0xF0) != 0) {
         temp_r0_2 = M2C_FIELD(arg0, s32 *, 0xB0);
         temp_r4 = M2C_FIELD(arg0, s32 *, 0xF8);
@@ -1980,7 +1982,7 @@ void fn_8011CC38(void *arg0, s32 arg1) {
 loop_10:
         if (var_r23 < var_r28) {
             String_Init(&sp60, String_CStr((void *)(M2C_FIELD(arg0, s32 *, 0xB4) + ((var_r23 + M2C_FIELD(arg0, s32 *, 0xF4)) * 0xC))), &sp24);
-            M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32, s32, M2C_UNK *, M2C_UNK, M2C_UNK, f32), 0x20)(arg0, temp_r25_2, var_r24, &sp60, 1, 0xFF, lbl_8036A240);
+            M2C_FIELD(M2C_FIELD(arg0, void **, 0x40), M2C_UNK (**)(void *, s32, s32, void *, s32, s32, f32), 0x20)(arg0, temp_r25_2, var_r24, &sp60, 1, 0xFF, lbl_8036A240);
             String_Destroy(&sp60, -1);
             var_r24 += 0x10;
             var_r23 += 1;
@@ -2008,7 +2010,7 @@ loop_10:
         sp10 = 0xFF;
         sp14 = 0xFF;
         sp18 = 0;
-        fn_800E3040(temp_r25_3, arg1, 0, temp_r29_2, temp_r30_2, M2C_FIELD(arg0, s32 *, 0x44), temp_r24_4, (var_r28 * 0x10) + 2);
+        fn_800E3040(temp_r25_3, arg1, 0, temp_r29_2, temp_r30_2, M2C_FIELD(arg0, s32 *, 0x44), temp_r24_4, (var_r28 * 0x10) + 2, 255, 255, 255, 255, 0);
     }
 }
 
@@ -2748,7 +2750,8 @@ fn_80109BB4(Sound_FindByName((void *)lbl_80367A5C), (u8)((*(s16 *)((u8 *)self + 
 }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 s32 fn_8011E12C(void *arg0) {
     u8 fn_8011E4B8(void *, void *, u16);
     void Process_ClearFunc(void *);
@@ -2815,14 +2818,11 @@ s32 fn_8011E12C(void *arg0) {
     case 0:
         Process_ClearFunc(self);
         return 0;
-    case 1:
-        goto def;
     case 2:
         return 2;
     default:
         break;
     }
-def:
     if (fn_801229C4(self->unk44) != 0) {
         fn_801226D0(self->unk44, self);
         return 2;
@@ -2907,7 +2907,7 @@ def:
     self->unk60 = self->unk62;
     return 3;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 {
