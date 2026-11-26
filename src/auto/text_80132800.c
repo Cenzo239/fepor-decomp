@@ -1,6 +1,5 @@
 /* Functions from 0x80132800 to 0x80149F38, found by decomp-toolkit. */
 #include "common.h"
-static inline s16 CenterRow_80134C24(s32 height, s32 textHeight) { return (s16)(((s16)height - textHeight) >> 1); }
 #pragma cplusplus on
 struct MenuCenteredLabel {
 virtual void v0()=0;
