@@ -30,10 +30,10 @@ static inline u8 Convoy_TryAddItem_inline(void *convoy, void *item) {
 }
 
 static inline s32 Convoy_Count_inline(void *convoy) {
-    u8 *p = (u8 *)convoy;
+    u8 *p;
     s32 count = 0;
     s32 i;
-    for (i = 0; i < 200; p += 8, i++) {
+    for (i = 0, p = (u8 *)convoy; i < 200; p += 8, i++) {
         if (*(void **)p != NULL) {
             count++;
         }
@@ -557,6 +557,7 @@ void fn_800C341C(s32 arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma dont_inline off
 void fn_800C3468(void *arg0) {
     void *UnitRef_GetName(void *);
     void DebugPrint(void *, ...);
@@ -568,9 +569,6 @@ void fn_800C3468(void *arg0) {
     u8 *fmt;
     void *unit;
     void *name;
-    s32 j;
-    s32 count;
-    u8 *p;
 
     base = arg0;
     i = 0;
@@ -587,20 +585,11 @@ void fn_800C3468(void *arg0) {
             val = 0;
         }
         name = UnitRef_GetName(entry);
-        DebugPrint(fmt + 0x13, i, name, entry[4], val);
+        DebugPrint(fmt + 0x13, i, name, entry[4], (u8)val);
     }
 
-    count = 0;
-    p = (u8 *)base;
-    for (j = 0; j < 200; p += 8, j++) {
-        if (*(void **)p != NULL) {
-            count++;
-        }
-    }
-
-    DebugPrint(lbl_80270088 + 0x25, count);
+    DebugPrint(lbl_80270088 + 0x25, Convoy_Count_inline(base));
 }
-#pragma dont_inline off
 void Convoy_AddItem(void *convoy, void *item) {
     void Item_Clear(void *);
     s32 fn_8001CA2C(void *);
