@@ -951,16 +951,28 @@ void *fn_800578F0(void *arg0, s16 arg1) {
     return arg0;
 }
 
+static inline void *Init_80057998(void *self, f32 f0) {
+    *(s32 *)((u8 *)self + 0x14) = 0;
+    *(s32 *)((u8 *)self + 0x18) = 0;
+    *(s32 *)((u8 *)self + 0x1C) = 0;
+    *(s32 *)((u8 *)self + 0x20) = 0;
+    *(f32 *)((u8 *)self + 4) = f0;
+    *(f32 *)((u8 *)self + 8) = f0;
+    *(f32 *)((u8 *)self + 0xC) = f0;
+    *(s32 *)((u8 *)self + 0x24) = 0;
+    *(s32 *)((u8 *)self + 0x28) = 0;
+    return self;
+}
 void *fn_80057998(void *arg0) {
     s32 fn_8006D948(void *);
     extern u8 lbl_8026AD80[];
     extern u8 lbl_80285BF0[];
-    extern f32 lbl_80369108;
+    extern f32 gF32_0;
     f32 f0;
 
     *(void **)((u8 *)arg0 + 0x2C) = lbl_80285BF0;
     *(s32 *)arg0 = fn_8006D948(lbl_8026AD80 + 0xAA);
-    f0 = lbl_80369108;
+    f0 = gF32_0;
     *(s32 *)((u8 *)arg0 + 0x14) = 0;
     *(s32 *)((u8 *)arg0 + 0x18) = 0;
     *(s32 *)((u8 *)arg0 + 0x1C) = 0;
@@ -1863,6 +1875,7 @@ f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
   h00 = ((one + two_t) * (t_m1 * t_m1));
   return (f32) ((((f64) ((t_m1 * farg4) * farg4)) * (((f64) (farg3 - farg1)) * 0.5)) + ((((f64) (((one - farg4) * (one - farg4)) * farg4)) * (((f64) (farg2 - farg0)) * 0.5)) + ((f64) ((h00 * farg1) + (h01 * farg2)))));
 }
+#pragma optimization_level reset
 void fn_8005956C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, f32 farg0) {
     void fn_80059C2C(s32, s32, s32, s32, s32);
     void fn_80066D00(s32);
