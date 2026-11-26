@@ -750,7 +750,7 @@ void fn_8001A5E4(void) {
 }
 #pragma use_lmw_stmw reset
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 2
 #pragma opt_common_subs off
 void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
@@ -799,10 +799,10 @@ void fn_8001AC18(void) {
         *(u32 *)((u8 *)rec + 0x10) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u8 *)((u8 *)rec + 0x54) = Affinity_FromName(v);
-        fn_8001CC48((u8 *)rec + 0x35, Bin_ReadU32In(&ptr));
-        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
-        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
-        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
+        Person_ReadWeaponLevels((u8 *)rec + 0x35, &ptr);
+        Status_ReadName((u8 *)rec + 0x40, &ptr);
+        Status_ReadName((u8 *)rec + 0x40, &ptr);
+        Status_ReadName((u8 *)rec + 0x40, &ptr);
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u32 *)((u8 *)rec + 0x5C) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
