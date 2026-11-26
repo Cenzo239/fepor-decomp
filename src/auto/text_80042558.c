@@ -90,7 +90,11 @@ static inline u8 *FindMapObjNear_80042558(Map_80042558 *map, s32 x, s32 y, u32 r
             case 8: dy = -1; break;
             default: dy = 0; break;
             }
-            found = FindMapObj_80042558(map, x + dx, y + dy, 0, require);
+            {
+                s32 tx = x + dx;
+                s32 ty = y + dy;
+                found = FindMapObj_80042558(map, tx, ty, 0, require);
+            }
             if (found != 0) {
                 return found;
             }
