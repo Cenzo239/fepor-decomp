@@ -1,5 +1,10 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
+static inline void Map_ClearRangeCell(void *map, s32 index)
+{
+    (*(s16 **)((u8 *)map + 0x14190))[index] = -1;
+    ((s16 *)((u8 *)map + 0xC18E))[index] = 0;
+}
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -73,30 +78,31 @@ typedef struct {
 } Actor;
 
 
-void fn_8001EEEC(s8 *p)
+#pragma cplusplus on
+extern "C" void fn_8001EEEC(s8 *p)
 {
-    while (1) {
-        switch (*p) {
-        case 0:
-            *p = 0x10;
-            return;
-        case 0x34:
-            *p = 1;
-            break;
-        case 0x38:
-            *p = 8;
-            break;
-        case 0x36:
-            *p = 2;
-            break;
-        case 0x32:
-            *p = 4;
-            break;
-        }
-        p++;
+start:
+    switch (*p) {
+    case 0:
+        *p = 0x10;
+        return;
+    case 0x34:
+        *p = 1;
+        break;
+    case 0x38:
+        *p = 8;
+        break;
+    case 0x36:
+        *p = 2;
+        break;
+    case 0x32:
+        *p = 4;
+        break;
     }
+    p += 1;
+    goto start;
 }
-
+#pragma cplusplus reset
 void fn_8001EF7C(void) {
 
 }
