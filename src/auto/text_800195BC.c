@@ -11,6 +11,15 @@ static inline u32 Bin_ReadU32In(u8 **cursor) {
     return value;
 }
 
+static inline void Status_ReadName(void *status, u8 **cursor) {
+    void Status_OrByName(void *, u32);
+    Status_OrByName(status, Bin_ReadU32In(cursor));
+}
+static inline void Person_ReadWeaponLevels(void *levels, u8 **cursor) {
+    void fn_8001CC48(void *, u32);
+    fn_8001CC48(levels, Bin_ReadU32In(cursor));
+}
+
 void *fn_800195BC(void) {
 extern u8 lbl_80268330[];
 return lbl_80268330+0x1A3;
@@ -790,14 +799,10 @@ void fn_8001AC18(void) {
         *(u32 *)((u8 *)rec + 0x10) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u8 *)((u8 *)rec + 0x54) = Affinity_FromName(v);
-        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
-        fn_8001CC48((u8 *)rec + 0x35, v);
-        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
-        Status_OrByName((u8 *)rec + 0x40, v);
-        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
-        Status_OrByName((u8 *)rec + 0x40, v);
-        if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
-        Status_OrByName((u8 *)rec + 0x40, v);
+        fn_8001CC48((u8 *)rec + 0x35, Bin_ReadU32In(&ptr));
+        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
+        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
+        Status_OrByName((u8 *)rec + 0x40, Bin_ReadU32In(&ptr));
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
         *(u32 *)((u8 *)rec + 0x5C) = v;
         if (ptr == NULL) { v = 0; } else { v = BE32(ptr); ptr += 4; }
