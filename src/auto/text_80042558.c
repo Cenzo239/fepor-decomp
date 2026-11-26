@@ -50,9 +50,10 @@ static inline u8 IsInRect_80042558(MapObj_80042558 *ent, s32 x, s32 y)
 
 static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
 {
+    MapObj_80042558 *base;
     s32 i;
     for (i = M2C_FIELD(arg0, s16 *, 6) - 1; i >= 0; i--) {
-        MapObj_80042558 *base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
+        base = M2C_FIELD(arg0, MapObj_80042558 **, 0x14);
         if (forbid != 0 && (M2C_FIELD(base[i].unk10, u32 *, 0xBC) & forbid)) continue;
         if ((M2C_FIELD(base[i].unk10, u32 *, 0xBC) & require) != require) continue;
         if (IsInRect_80042558(&base[i], x, y)) {
