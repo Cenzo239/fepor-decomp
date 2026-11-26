@@ -1,6 +1,12 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline s32 Material_TakeSlot(u8 *count, s32 *ids)
+{
+    u8 index = *count;
+    *count = index + 1;
+    return ids[index];
+}
 static inline void GMaterial_InsertSlot688D4(u32 value, u32 *slots) {
     u32 entry;
     s32 j;
@@ -7932,7 +7938,6 @@ void fn_8006DDDC(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_loop_invariants off
-#pragma opt_common_subs off
 void fn_8006DFD8(void) {
     void *fn_800C4638(s32, void *, s32);
     void fn_800C4588(void *);
@@ -7993,12 +7998,12 @@ void fn_8006DFD8(void) {
     extern u8 lbl_80366DE0;
     typedef struct { u32 x, y; } Pair;
     u8 fifo[0x80];
-    s32 timed_out;
-    u8 *dst32;
-    void *src;
-    void *buf;
-    s32 b;
     s32 a;
+    s32 b;
+    void *buf;
+    void *src;
+    u8 *dst32;
+    s32 timed_out;
     u8 *dst;
     u16 xfbHeight;
     volatile u8 *gx;
