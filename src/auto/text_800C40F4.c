@@ -9338,8 +9338,8 @@ struct Child {u8 pad[64];virtual void v0();virtual void v1();virtual void v2();v
 u32 s90[3],s84[3],s78[3],s6c[3],s60[3],s54[3],s48[3],s3c[3],s30[3],s24[3],s18[3];
 u32 a14,a10,ac,a8;
 
-struct {u32 value;} selected;
 s8 flag1,flag2;
+struct {u32 value;} selected;
 selected.value=arg1;
 s90[1]=0;s84[1]=0;s90[0]=0;s90[2]=0;s90[1]=0;s84[0]=0;s84[2]=0;s84[1]=0;
 ((u8 *)arg0)[0x88]=arg2;
@@ -14035,6 +14035,7 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 #pragma opt_propagation off
+#pragma dont_inline on
 extern "C" s32 *fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
  if (begin == end) { return Sort_CopyBackwardIter(first,last,out); }
@@ -25317,7 +25318,9 @@ extern f64 lbl_8036A088;
     }
     return var_r31;
 }
-s32 fn_800F6F94(void *arg0, u8 arg1) {
+#pragma push
+#pragma optimization_level 4
+s32 fn_800F6F94(const s8 *arg0, u8 arg1) {
 #pragma fp_contract off
 #pragma use_lmw_stmw on
 void *BattleUnit_GetWeaponSlot(void *);
@@ -25354,7 +25357,7 @@ extern f64 lbl_8036A070,lbl_8036A098;
     s32 *var_r3;
     s32 temp_r27_2;
     s32 temp_r29;
-    s32 var_r30;
+    register s32 var_r30;
     u64 temp_ret;
     u8 temp_r4;
     void *temp_r3;
@@ -25388,7 +25391,7 @@ extern f64 lbl_8036A070,lbl_8036A098;
         var_r30 = (s32) ((f32) var_r30 * (f32) fmod(var_f1, lbl_8036A098));
     }
     if (arg1 != 0) {
-        var_r30 = (s32) (lbl_8036A06C * ((f32) var_r30 * (f32) *(s8 *)((u8 *)arg0 + 5)));
+        var_r30 = (s32) (lbl_8036A06C * ((f32) var_r30 * (f32) arg0[5]));
         if (var_r30 <= 0) {
             temp_r29_2 = fn_800F834C(gBattle);
             temp_r30 = fn_800F8344(gBattle);
@@ -25429,7 +25432,7 @@ extern f64 lbl_8036A070,lbl_8036A098;
     }
     return var_r30;
 }
-#pragma scheduling on
+#pragma pop
 f32 fn_800F738C(u8 arg0, f32 farg0) {
     f64 fmod(f64, f64);
     extern f32 lbl_8036A080;
@@ -30688,15 +30691,19 @@ s32 fn_801001F0(void *arg0) {
     return result;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
 #pragma use_lmw_stmw on
 s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8002C618(void *, s8, s8);
     void fn_8002F728(void *);
     u8 Ai_UnitIsHostileToActive(void *);
-    void fn_800FE180(void *, s32, s32, void *);
+    void fn_800FE180(void *, s32, s32);
     void Map_BuildUnitMoveRange(void *, s32, s32);
-    void fn_800FE398(void *, s32, s32, void *);
+    void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
     extern u8 gUnits[];
@@ -30705,71 +30712,63 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     extern u8 lbl_8028EA98[];
     extern s32 gTargetList[];
 
-    u8 mode;
     u32 flags;
     void *self;
-    s16 *out_x;
-    s16 *out_y;
-    u8 *map;
-    u8 *map2;
-    s16 best_cost;
-    s16 best_alt;
-    s32 keep_bit;
-    s8 y;
-    s8 x;
-    s32 yrow;
-    u8 *rowbase;
-    u8 *maprow;
+    u8 mode;
+    register s32 x, y;
+    s16 best_alt, best_cost;
     s32 idx;
+    u8 *maprow, *rowbase;
+    s32 yrow, ncount;
     s16 *neigh;
-    s32 ncount;
-    s32 nx;
-    s32 ny;
-    u8 out_of_bounds;
-    u8 cell;
+    u8 *map2, *map;
+    s32 short_y, byte_x, short_x;
+    s16 *out_x, *out_y;
+    s32 keep_bit, nx, ny;
+    u8 out_of_bounds, cell;
     void *unit;
-    s16 cost;
-    s16 alt;
-    s32 best_x;
-    s32 best_y;
-    void *ctx[3];
-    void *ctx2[3];
-    u8 ctx_flags;
+    s16 cost, alt;
+    s32 best_x, best_y;
+    void *ctx[3], *ctx2[3];
 
     mode = arg1;
     flags = arg2;
     self = arg0;
     out_x = arg3;
     out_y = arg4;
-    map = gBattleMap;
     map2 = gBattleMap;
     best_cost = 0x7FFF;
     best_alt = -1;
 
     Map_BuildUnitMoveRange(self, 5, -1);
     if (flags & 0x100) {
-        fn_800FE180(self, 6, *(s32 *)map * *(s32 *)(map + 4), map);
+        fn_800FE180(self, 6, *(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4));
     } else {
-        fn_800FE398(self, 6, *(s32 *)map * *(s32 *)(map + 4), map);
+        fn_800FE398(self, 6, *(s32 *)gBattleMap * *(s32 *)(gBattleMap + 4));
     }
     if (flags & 4) {
         mode &= (u8)~1;
     }
     if (flags & 8) {
-        mode &= (u8)~2;
+        mode &= ~2;
     }
+    map = gBattleMap;
     keep_bit = flags & 1;
     flags &= 2;
-    y = (s8)map[9];
+    y = map[9];
+    y = (s8)y;
     while (y <= (s8)map[0xB] - 1) {
         yrow = (s8)y << 6;
-        x = (s8)map[8];
+        x = map[8];
+        x = (s8)x;
+        short_y = (s16)y;
         rowbase = map + yrow;
         maprow = map2 + yrow;
         while (x <= (s8)map[0xA] - 1) {
-            idx = ((s8)x + yrow) * 2;
+            byte_x = (s8)x;
+            idx = (byte_x + yrow) * 2;
             if (*(s16 *)(map + idx + 0x818E) >= 0
-                && (s8)rowbase[(s32)x + 0xE18E] == 0
+                && (s8)rowbase[byte_x + 0xE18E] == 0
                 && Map_IsAiTerrainBlocked(x, y) == 0) {
                 if (keep_bit != 0 && (cell = maprow[(s32)x + 0xD], cell != 0)) {
                     if (cell != 0)
@@ -30783,15 +30782,16 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
                     neigh = lbl_802732A0;
                     ncount = 0;
                     while (*neigh != 0x7FFF) {
-                        nx = (s16)x + neigh[0];
-                        ny = (s16)y + neigh[1];
+                        short_x = (s16)x;
+                        nx = short_x + neigh[0];
+                        ny = short_y + neigh[1];
                         out_of_bounds = 0;
                         if (nx < (s8)map[8] || (s8)map[0xA] - 1 < nx
                             || ny < (s8)map[9] || (s8)map[0xB] - 1 < ny) {
                             out_of_bounds = 1;
                         }
                         if (!out_of_bounds) {
-                            cell = map[nx + (ny << 6) + 0xD];
+                            cell = gBattleMap[(s8)nx + ((s8)ny << 6) + 0xD];
                             if (cell != 0) {
                                 if (cell != 0)
                                     unit = gUnits + (cell - 1) * 0x280;
@@ -30851,7 +30851,7 @@ s32 fn_80100284(void *arg0, u8 arg1, u32 arg2, s16 *arg3, s16 *arg4) {
     fn_8002F728(gTargetList);
     return 0;
 }
-
+#pragma pop
 s32 Map_CountNeighborUnits(s16 arg0,s16 arg1,u8 (*arg2)(void *)) {
 extern s16 lbl_802732A0[];
 extern u8 gBattleMap[],gUnits[];
