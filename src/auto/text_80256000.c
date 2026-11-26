@@ -14,10 +14,11 @@ static inline void fn_80261BC8_Body(u8 *entry, u16 value) {
   extern u8 lbl_80368AD0;
   u8 index;
   u8 *p;
+  int off = 0x38;
   index = *(u8 *)(entry + 0xE8);
   if (index != 0xFF) {
     p = entry + (index << 2);
-    if (*(u32 *)(p + 0x38) == ((u32)value << 4)) return;
+    if (*(u32 *)(p + off) == ((u32)value << 4)) return;
   }
   p = entry + (lbl_80368AD0 << 2);
   *(u32 *)(p + 0x38) = value << 4;
