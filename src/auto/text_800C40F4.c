@@ -10570,6 +10570,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 }
 
 #pragma global_optimizer on
+#pragma opt_lifetimes off
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
