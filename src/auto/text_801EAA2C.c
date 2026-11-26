@@ -165,9 +165,8 @@ static inline void AramCache_ClearUnusedSlots(void *pool) {
     AramSlot *scan;
     s32 j;
     scan = (AramSlot *)pool;
-    j = 0;
     empty = 0;
-    for (; j < 256; scan++, j++) {
+    for (j = 0; j < 256; scan++, j++) {
         flags = scan->flags;
         if (flags & 1) scan->flags = flags & ~1;
         else { scan->size = empty; scan->flags = empty; }
