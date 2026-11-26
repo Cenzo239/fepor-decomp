@@ -430,6 +430,7 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" void fn_80163974(void *arg0, s32 arg1) {
@@ -18576,6 +18577,7 @@ extern "C" void fn_80180928(void *arg0) {
 #pragma push
 #pragma cplusplus on
 #pragma opt_common_subs off
+#pragma opt_propagation off
 extern "C" void fn_80180AC8(void *arg0) {
     void *Heap_Alloc(u32);
     void *fn_80181D88(void *, s32, s32, s32, s32);
