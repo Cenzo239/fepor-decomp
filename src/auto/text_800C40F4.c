@@ -21454,13 +21454,14 @@ void *fn_800EE0B0(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_800EE124(void *arg0) {
 #pragma scheduling on
 void *fn_80040844(void);void *fn_80046360(void *,void *,void (*)(),u32,s32,u32);u8 *fn_80046EB8(void *,void *);u32 fn_80222420(s32,s32,s32,s32,s32);void *fn_800C45B8(u32,void *,s32);void DCFlushRange(void *,u32);s32 fn_8006135C(void *,void *);
 void fn_800EFEE0();void fn_800EFC2C();s32 fn_800EF1C0();void fn_800EF364();void fn_800EEEF0();void fn_800EE72C();
 extern const f32 lbl_80369FB8;extern void *lbl_803678D0,*lbl_803678D4[2],*lbl_803678DC,*lbl_803678E0;extern u8 lbl_80272C64[];
-u8 *obj;void *res;s32 size;
+u8 *obj;void *res;u32 size; struct {s32 value;} small;
 
 M2C_FIELD(arg0,f32 *,0x34)=lbl_80369FB8;M2C_FIELD(arg0,s32 *,0x30)=0;M2C_FIELD(arg0,f32 *,0x38)=lbl_80369FB8;M2C_FIELD(arg0,void **,0x3C)=0;
 
@@ -21486,8 +21487,8 @@ res=fn_80046360(obj,lbl_80272C64+0x76,fn_800EE72C,0,0,0x4000);
 if(res){
 M2C_FIELD(arg0,u8 **,0x3C)=fn_80046EB8(obj,res)+0x14;
 size=fn_80222420(0x130,0xE0,4,0,0);lbl_803678D0=fn_800C45B8(size,lbl_80272C64+(u32)0x7E,0);DCFlushRange(lbl_803678D0,size);
-size=fn_80222420(4,0x10,3,0,0);lbl_803678D4[0]=fn_800C45B8(size,lbl_80272C64+0x7E,0);lbl_803678D4[1]=fn_800C45B8(size,lbl_80272C64+(short)0x7E,0);
-DCFlushRange(lbl_803678D4[0],size);DCFlushRange(lbl_803678D4[1],size);
+small.value=fn_80222420(4,0x10,3,0,0);lbl_803678D4[0]=fn_800C45B8(small.value,lbl_80272C64+0x7E,0);lbl_803678D4[1]=fn_800C45B8(small.value,lbl_80272C64+(short)0x7E,0);
+DCFlushRange(lbl_803678D4[0],small.value);DCFlushRange(lbl_803678D4[1],small.value);
 lbl_803678DC=lbl_803678D4[0];lbl_803678E0=lbl_803678D4[1];
 if(fn_8006135C(M2C_FIELD(arg0,void **,0x3C),lbl_80272C64+0x7F)<0)fn_800056A0(0);
 }
