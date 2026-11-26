@@ -29748,10 +29748,8 @@ void fn_800FEC0C(void) {
 #pragma opt_lifetimes off
 static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
     extern s32 lbl_80367910;
-    s32 r = lbl_80367910;
-    s32 *pivot = begin + (offset + r % 5);
-    lbl_80367910 = r + 1;
-    if (r + 1 >= 5) lbl_80367910 = -4;
+    s32 *pivot = begin + (offset + lbl_80367910 % 5);
+    if (++lbl_80367910 >= 5) lbl_80367910 = -4;
     return pivot;
 }
 
