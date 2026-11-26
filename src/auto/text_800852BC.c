@@ -13,6 +13,15 @@ extern f64 lbl_80369688;
 extern f32 lbl_803696C8;
 typedef struct { u16 a, b, c; } Fn89980Struct;
 typedef struct { f32 a, b; } FloatPair892E8;
+typedef struct {
+    void *f00;
+    u8 pad04[0x44];
+    void *f48;
+    u8 pad50[8];
+    void *f58;
+    u8 pad60[0x1C];
+    void *f7C;
+} Struct_80089490;
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
@@ -1752,21 +1761,23 @@ void fn_80089490(void *arg0) {
     void fn_8000A408(void *);
     u8 *tbl = lbl_80289950;
     void *v;
+    void *p;
 
     if (*(u8 *)((u8 *)arg0 + 0x2B) == 0x7B) {
         return;
     }
     v = *(void **)arg0;
-    if (fn_80089490_Eq(v, tbl + 0x7C)) {
+    if (v == tbl + 0x7C) {
         return;
     }
-    if (fn_80089490_Eq(v, tbl + 0)) {
+    p = tbl + 0;
+    if (v == p) {
         return;
     }
-    if (fn_80089490_Eq(v, tbl + 0x58)) {
+    if (v == tbl + 0x58) {
         return;
     }
-    if (fn_80089490_Eq(v, tbl + 0x48)) {
+    if (v == tbl + 0x48) {
         return;
     }
     fn_8000A408(arg0);
