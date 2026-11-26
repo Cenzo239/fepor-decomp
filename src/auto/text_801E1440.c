@@ -2453,35 +2453,78 @@ void fn_801E379C(u8 *arg0) {
     }
 }
 
-void fn_801E38E0(void *unused, void *data) {
-struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
-extern char gSaveStrings[];
-extern u8 gBattleState[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
-extern u16 gStreamBaseVtbl[];
-void fn_8017A38C(void *, void *);
-void BattleState_Write(void *, void *);
-void fn_80048C5C(void *);
-void Unit_WriteAll(void *);
-void fn_800C33C0(void *, void *);
-void Icon_WriteSlots(void *, void *);
-void fn_8010FBA8(void *, void *);
-void UnitPair_Write(void *, void *);
-void fn_800C4588(void *);
-w.vtbl = gStreamBaseVtbl;
-w.cur = 0; w.start = 0; w.size = 0; w.owned = 0;
-w.vtbl = gMemStreamVtbl; w.owned = 0; w.start = data; w.cur = data; w.size = 0x100000;
-fn_8017A38C(&w,gSaveStrings+0x14F); BattleState_Write(gBattleState,&w);
-fn_8017A38C(&w,gSaveStrings+0x154); fn_80048C5C(&w);
-fn_8017A38C(&w,gSaveStrings+0x159); Unit_WriteAll(&w);
-fn_8017A38C(&w,gSaveStrings+0x15E); fn_800C33C0(gConvoy,&w);
-fn_8017A38C(&w,gSaveStrings+0x163); Icon_WriteSlots(gIconSlots,&w);
-fn_8017A38C(&w,gSaveStrings+0x168); fn_8010FBA8(gMapObjEventList,&w);
-fn_8017A38C(&w,gSaveStrings+0x1C2); UnitPair_Write(gUiContext,&w);
-w.vtbl=gMemStreamVtbl; w.vtbl=gStreamBaseVtbl;
-if(w.owned) {fn_800C4588(w.start); w.start=0; w.owned=0;}
+#pragma push
+#pragma opt_propagation off
+typedef struct MemStream_801E38E0 {
+    void *start;
+    void *cur;
+    u32 size;
+    u8 owned;
+    void *vtbl;
+} MemStream_801E38E0;
+
+static inline void MemStream_Init_801E38E0(MemStream_801E38E0 *w, void *data) {
+    extern u16 gStreamBaseVtbl[];
+    extern u8 gMemStreamVtbl[];
+    w->vtbl = gStreamBaseVtbl;
+    w->cur = 0;
+    w->start = 0;
+    w->size = 0;
+    w->owned = 0;
+    w->vtbl = gMemStreamVtbl;
+    w->owned = 0;
+    w->start = data;
+    w->cur = data;
+    w->size = 0x100000;
 }
 
-#pragma optimization_level 3
+void fn_801E38E0(void *unused, void *data) {
+    struct { void *start; void *cur; u32 size; u8 owned; void *vtbl; } w;
+    extern u8 gBattleState[], gSaveStrings[], gConvoy[], gIconSlots[], gMapObjEventList[], gUiContext[], gMemStreamVtbl[];
+    extern u16 gStreamBaseVtbl[];
+    void fn_8017A38C(void *, void *);
+    void BattleState_Write(void *, void *);
+    void fn_80048C5C(void *);
+    void Unit_WriteAll(void *);
+    void fn_800C33C0(void *, void *);
+    void Icon_WriteSlots(void *, void *);
+    void fn_8010FBA8(void *, void *);
+    void UnitPair_Write(void *, void *);
+    void fn_800C4588(void *);
+
+    w.vtbl = gStreamBaseVtbl;
+    w.cur = 0;
+    w.start = 0;
+    w.size = 0;
+    w.owned = 0;
+    w.vtbl = gMemStreamVtbl;
+    w.owned = 0;
+    w.start = data;
+    w.cur = data;
+    w.size = 0x100000;
+    fn_8017A38C(&w, gSaveStrings + 0x14F);
+    BattleState_Write(gBattleState, &w);
+    fn_8017A38C(&w, gSaveStrings + 0x154);
+    fn_80048C5C(&w);
+    fn_8017A38C(&w, gSaveStrings + 0x159);
+    Unit_WriteAll(&w);
+    fn_8017A38C(&w, gSaveStrings + 0x15E);
+    fn_800C33C0(gConvoy, &w);
+    fn_8017A38C(&w, gSaveStrings + 0x163);
+    Icon_WriteSlots(gIconSlots, &w);
+    fn_8017A38C(&w, gSaveStrings + 0x168);
+    fn_8010FBA8(gMapObjEventList, &w);
+    fn_8017A38C(&w, gSaveStrings + 0x1C2);
+    UnitPair_Write(gUiContext, &w);
+    w.vtbl = gMemStreamVtbl;
+    w.vtbl = gStreamBaseVtbl;
+    if (w.owned) {
+        fn_800C4588(w.start);
+        w.start = 0;
+        w.owned = 0;
+    }
+}
+#pragma pop
 void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {
 #pragma use_lmw_stmw on
     unsigned long long __div2i(s32, s32, s32, s32);
