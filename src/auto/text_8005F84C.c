@@ -8742,10 +8742,20 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     d->table[4] = 0;
     Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
+static inline void fn_8006F09C_init(s32 *table, void **entries, s32 a0, s32 a1, s32 a2) {
+    entries[0] = table;
+    table[1] = a0;
+    entries[1] = table + 2;
+    table[3] = a1;
+    entries[2] = table + 4;
+    table[5] = a2;
+    entries[3] = 0;
+}
 #pragma opt_common_subs off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
 {
   extern u8 lbl_80311CA8[];
+  void *new_var;
   s32 fn_800C0658(void);
   void Ui_CreateMenu(void *, s32, s32);
   typedef struct 
@@ -8756,14 +8766,15 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
     void *e3;
   } Entries;
   u8 *base = lbl_80311CA8;
-  s32 *table = (s32 *) (base + 0x4c);
+  s32 *table = (s32 *) ((((u32) base) & 0xFFFFu) + 0x4c);
   Entries *entries = (Entries *) (((u32) base) + 0x6c);
   entries->e0 = table;
   table = (s32 *) entries->e0;
+  new_var = (void *) (table + 4);
   table[1] = arg0;
   entries->e1 = (void *) (table + 2);
   ((s32 *) entries->e1)[1] = arg1;
-  entries->e2 = (void *)(table + 4);
+  entries->e2 = new_var;
   ((s32 *) entries->e2)[1] = arg2;
   entries->e3 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
