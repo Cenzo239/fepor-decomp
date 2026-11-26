@@ -16163,7 +16163,6 @@ extern "C" void fn_800E4E7C(void *arg0, void *arg1, void *arg2)
     out->y = y;
     out->z = z;
 }
-#pragma global_optimizer on
 #pragma pop
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
