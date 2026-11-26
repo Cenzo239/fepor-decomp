@@ -774,7 +774,10 @@ dolphin/dvd/dvdlow.c:
 	.text       start:0x8020B52C end:0x8020C3A8
 
 dolphin/dvd/dvdfs.c:
-	.text       start:0x8020C3A8 end:0x8020FD50
+	.text       start:0x8020C3A8 end:0x8020FB10
+
+dolphin/dvd/fstload.c:
+	.text       start:0x8020FB10 end:0x8020FD50
 
 dolphin/vi/vi.c:
 	.text       start:0x8020FD50 end:0x80211DD4

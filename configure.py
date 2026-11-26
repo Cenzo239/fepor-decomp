@@ -493,6 +493,7 @@ config.libs = [
             Object(NonMatching, "dolphin/os/OSTime.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/dvd/dvdlow.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/dvd/dvdfs.c", mw_version="GC/1.2.5n"),
+            Object(NonMatching, "dolphin/dvd/fstload.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/vi/vi.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/pad/Pad.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/text_80216994.c", mw_version="GC/1.2.5n"),
