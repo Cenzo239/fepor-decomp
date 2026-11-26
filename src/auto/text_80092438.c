@@ -65,6 +65,13 @@ static inline u8 Unit_CheckItemState(void *unit, u64 flags) {
     if (flags & 0x40) return 1;
     return 1;
 }
+static inline u8 Unit_CheckItemMask(void *unit, void *item, u64 flags, u64 mask) {
+    u8 fn_800940B0(void *, void *);
+    if (!(flags & mask)) return 0;
+    if (!Unit_CheckItemState(unit, flags)) return 0;
+    if (!fn_800940B0(unit, item)) return 0;
+    return 1;
+}
 #pragma scheduling reset
 
 /* If status 0x24-0x28 is set and the matching wpnExp slot is 0, set that slot to 1. */
@@ -972,20 +979,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
         t.ok = 1;
         if (flags & 1) {
             if (flags2 & 1) {
-                if (flags & 0x200) {
-                    if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
-                        t.ok = 1;
-                    } else {
-                        t.ok = z;
-                    }
-                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                } else if (flags & 2) {
-                    t.ok = t.result;
-                } else if (flags & 4) {
-                    t.ok = t.result;
-                } else if (flags & 0x40) {
-                    t.ok = 1;
-                }
+                t.ok = Unit_CheckItemState(arg0, flags);
                 if (t.ok == z) {
                     t.result = z;
                 } else if (fn_800940B0(arg0, arg1) == z) {
@@ -997,20 +991,7 @@ u8 fn_80093DA8(void *arg0, void *arg1) {
         } else {
             if (flags & 4) {
                 if (flags2 & 4) {
-                    if (flags & 0x200) {
-                        if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
-                            t.ok = 1;
-                        } else {
-                            t.ok = z;
-                        }
-                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                    } else if (flags & 2) {
-                        t.ok = t.result;
-                    } else if (flags & 4) {
-                        t.ok = t.result;
-                    } else if (flags & 0x40) {
-                        t.ok = 1;
-                    }
+                    t.ok = Unit_CheckItemState(arg0, flags);
                     if (t.ok == z) {
                         t.result = z;
                     } else if (fn_800940B0(arg0, arg1) == z) {
