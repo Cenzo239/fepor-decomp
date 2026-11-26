@@ -3117,21 +3117,28 @@ u32 SetInterruptMask(u32 mask, u32 current) {
 }
 #pragma global_optimizer off
 #pragma scheduling off
-u32 __OSMaskInterrupts(u32 global) {
-    u32 prev;
+u32 __OSMaskInterrupts(u32 arg) {
+    BOOL OSDisableInterrupts(void);
+    BOOL OSRestoreInterrupts(BOOL);
+    u32 SetInterruptMask(u32, u32);
+    u32 global;
     BOOL enabled;
+    BOOL temp;
+    u32 prev;
     u32 ie;
     u32 mask;
 
-    enabled = OSDisableInterrupts();
+    global = arg;
+    temp = OSDisableInterrupts();
     prev = *(u32 *)0x800000C4;
+    enabled = temp;
     ie = *(u32 *)0x800000C8;
     mask = global & ~(prev | ie);
     global |= prev;
     *(u32 *)0x800000C4 = global;
     global |= ie;
     while (mask != 0) {
-        mask = fn_80207C34(mask, global);
+        mask = SetInterruptMask(mask, global);
     }
     OSRestoreInterrupts(enabled);
     return prev;
