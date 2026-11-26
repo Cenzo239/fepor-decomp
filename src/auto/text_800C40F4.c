@@ -10222,14 +10222,26 @@ void fn_800DB1FC(void *arg0, void *arg1) {
     String_Assign((void *)((char *)arg0 + 0xAC), arg1, 0, -1);
 }
 
-void fn_800DB228(void *arg0) {
+#pragma cplusplus on
+extern "C" void fn_800DB228(u8 *self) {
     void *fn_800E7E4C(void *, void *);
     M2C_UNK *String_CStr(void *);
     s32 Text_MeasureWidth(void *, s32, f32);
     extern const f32 lbl_80369E60;
+    struct Base {
+        u8 pad[0x40];
+    };
+    struct Derived : Base {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6(s32, s32, void *, u8, s32, f32) = 0;
+    };
 
-    u8 *self = (u8 *)arg0;
-    u8 *obj = fn_800E7E4C(*(void **)self, self + 0x1C);
+    u8 *obj = (u8 *)fn_800E7E4C(*(void **)self, self + 0x1C);
     s32 halfWidth = 0;
 
     if (self[0xB9] != 0) {
@@ -10240,8 +10252,7 @@ void fn_800DB228(void *arg0) {
         ) / 2;
     }
 
-    ((void (*)(void *, s32, s32, void *, u8, s32, f32))(*(void ***)(self + 0x40))[8])(
-        self,
+    ((Derived *)self)->v6(
         (s32)((f32)halfWidth + (*(f32 *)(*(u8 **)(self + 0x38) + 0x68) + (f32)(*(s32 *)(self + 0x48) + *(s32 *)(obj + 0x60)))),
         *(s32 *)(self + 0x4C) + *(s32 *)(obj + 0x64),
         self + 0xAC,
@@ -10250,7 +10261,7 @@ void fn_800DB228(void *arg0) {
         (f32)*(s32 *)(self + 0xBC)
     );
 }
-
+#pragma cplusplus off
 void *fn_800DB338(void *arg0, void *arg1, void *arg2)
 {
     void *fn_800E4688(void *, void *, void *);
@@ -13169,7 +13180,10 @@ void *fn_800DF724(void *arg0, s16 arg1) {
     return self;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
+#pragma opt_propagation off
 extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
 #pragma opt_common_subs off
     struct Obj {
@@ -13194,7 +13208,7 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
         void **vtbl;
     };
     void String_Init(String *, char *, void *);
-    char *Xml_GetNamedValue(char *, void *, String *);
+    void Xml_GetNamedValue(char *, void *, String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
     s32 String_Compare(String *, u32, u32, char *, u32);
@@ -13254,17 +13268,20 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     str48.data = 0;
     str48.cap = 0;
     String_Init(&str3C, lbl_80271A30 + 1, &alloc14);
-    p = Xml_GetNamedValue(bufCC, path, &str3C);
+    Xml_GetNamedValue(bufCC, path, &str3C);
+    p = bufCC;
     len = strlen(p);
     String_AssignCStr(&str60, p, len);
     String_Destroy(&str3C, -1);
     String_Init(&str30, lbl_80271A30 + 7, &alloc10);
-    p = Xml_GetNamedValue(bufAC, path, &str30);
+    Xml_GetNamedValue(bufAC, path, &str30);
+    p = bufAC;
     len = strlen(p);
     String_AssignCStr(&str54, p, len);
     String_Destroy(&str30, -1);
     String_Init(&str24, lbl_80271A30 + 0xC, &allocC);
-    p = Xml_GetNamedValue(buf8C, path, &str24);
+    Xml_GetNamedValue(buf8C, path, &str24);
+    p = buf8C;
     len = strlen(p);
     String_AssignCStr(&str48, p, len);
     String_Destroy(&str24, -1);
@@ -13291,7 +13308,8 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     if (self->unk38 != NULL) {
         self->unk28 = fn_800DC018(self->unk38);
     } else {
-        String_AssignCStr(&self->s2, lbl_80271A30, strlen(lbl_80271A30));
+        len = strlen(lbl_80271A30);
+        String_AssignCStr(&self->s2, lbl_80271A30, len);
         self->unk28 = 0;
     }
     String_Destroy(&str48, -1);
@@ -13299,7 +13317,8 @@ extern "C" void *fn_800DF7A0(void *arg0, void *arg1, void *arg2) {
     String_Destroy(&str60, -1);
     return self;
 }
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma cplusplus on
 #pragma dont_inline on
