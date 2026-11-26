@@ -3,11 +3,6 @@
 #include <dolphin/os.h>
 #include "global.h"
 
-static inline void VIFlushMerge(u32 *shadow, u32 *changed) {
-    *shadow |= *changed;
-    *changed = 0;
-}
-
 /* Minimal DVDCommandBlock layout used by the DVD state machine. */
 typedef struct DVDReadyCommand {
     u8 pad[8];
@@ -1066,7 +1061,7 @@ void VIFlush(void) {
         void *unk120;
     } *vi = (void *)lbl_8033A068;
     s32 enabled;
-    s32 regIndex;
+    u32 regIndex;
  u16 value;
 
     enabled = OSDisableInterrupts();
@@ -1078,7 +1073,7 @@ void VIFlush(void) {
     while (*(u64 *)&lbl_80368630 != 0) {
         regIndex = cntlzd(*(u64 *)&lbl_80368630);
         value = vi->regs[regIndex];
- *(vi->regs + regIndex + 60) = value;
+ vi->shdwRegs[regIndex] = value;
         *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
 
