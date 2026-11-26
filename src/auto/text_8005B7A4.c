@@ -738,7 +738,11 @@ void fn_8005C8B4(s32 arg0) {
     fn_8005D330(arg0, 0);
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma global_optimizer off
 #pragma opt_common_subs off
+#pragma opt_lifetimes on
 void fn_8005C8D8(arg0)
 s8 arg0;
 {
@@ -749,9 +753,10 @@ s8 arg0;
     void fn_800C4588(void *);
     extern u8 gFileCache[];
     extern u8 lbl_8026B330[];
+    u8 *list;
     u8 *entry;
-    u32 time;
     s32 index;
+    u32 time;
 
     DebugPrint((char *)(lbl_8026B330 + 6), arg0);
     time = (u32)(OSGetTime() / (*(u32 *)0x800000F8 >> 2));
@@ -761,24 +766,21 @@ s8 arg0;
     do {
         if (*(s8 *)entry != 0 && *(u16 *)(entry + 0x32) == 0 &&
             (arg0 < 0 || *(s8 *)(entry + 0x29) == arg0) &&
-            *(void **)(entry + 0x38) != NULL &&
+            *(u32 *)(entry + 0x38) != 0 &&
             (*(volatile u16 *)(entry + 0x30) & 0x2000) &&
             !(*(volatile u16 *)(entry + 0x30) & 0x1000)) {
             if ((*(volatile u16 *)(entry + 0x30) & 0x200) && time < *(u32 *)(entry + 0x34) + 0xA) {
                 DebugPrint((char *)(lbl_8026B330 + 0x1C), entry);
             } else {
                 DebugPrint((char *)(lbl_8026B330 + 0x4E), entry, *(u32 *)(entry + 0x3C));
-                if (*(volatile u16 *)(entry + 0x30) & 0x1000) {
-                    goto next;
-                }
-                while (*(volatile u16 *)(entry + 0x30) & 0x80) {
-                    OS_YieldThread();
-                }
+                if (!(*(volatile u16 *)(entry + 0x30) & 0x1000)) goto check80;
+                goto next;
+                yield80: OS_YieldThread();
+                check80: if (*(volatile u16 *)(entry + 0x30) & 0x80) goto yield80;
                 if (*(volatile u16 *)(entry + 0x30) & 0x800) {
                     if (*(volatile u16 *)(entry + 0x30) & 0x2000) {
                         s32 i;
                         u8 *item;
-                        u8 *list;
                         list = *(u8 **)(entry + 0x38);
                         i = 0;
                         item = list + 8;
@@ -806,15 +808,14 @@ s8 arg0;
                                 *(u16 *)(found + 0x30) &= 0xFFFE;
                             }
                         }
-                    } else if (*(volatile u16 *)(entry + 0x30) & 1) {
-                        fn_8003FED8(*(void **)(entry + 0x38));
-                        *(u16 *)(entry + 0x30) &= 0xFFFE;
                     }
+                } else if (*(volatile u16 *)(entry + 0x30) & 1) {
+                        fn_8003FED8(*(void **)(entry + 0x38));
+                        *(volatile u16 *)(entry + 0x30) &= 0xFFFE;
                 }
                 if ((*(volatile u16 *)(entry + 0x30) & 0x800) && (*(volatile u16 *)(entry + 0x30) & 0x2000)) {
                     s32 i;
                     u8 *item;
-                    u8 *list;
                     list = *(u8 **)(entry + 0x38);
                     i = 0;
                     item = list + 8;
@@ -850,7 +851,7 @@ s8 arg0;
                 fn_800C4588(*(void **)(entry + 0x38));
                 *(u8 *)entry = 0;
                 *(u32 *)(entry + 0x2C) = 0;
-                *(u16 *)(entry + 0x30) = 0;
+                *(volatile u16 *)(entry + 0x30) = 0;
                 *(u16 *)(entry + 0x32) = 0;
                 *(u32 *)(entry + 0x38) = 0;
                 *(u32 *)(entry + 0x3C) = 0;
@@ -861,7 +862,7 @@ s8 arg0;
         entry += 0x7C;
     } while (index < 0x400);
 }
-#pragma opt_common_subs reset
+#pragma pop
 void fn_8005CBC8(void)
 {
     extern char lbl_8026B330[];
@@ -1964,3 +1965,38 @@ void *fn_8005E594(s32 arg0, u32 arg1, char *arg2) {
     return result;
 }
 #pragma dont_inline reset
+static inline void FileCache_ClearChildren_C8D8(u8 *list) {
+extern u8 gFileCache[];
+                    s32 i;
+                    u8 *item;
+                    i = 0;
+                    item = list + 8;
+                    for (; i < *(u16 *)(list + 4); item += 0x10, i++) {
+                        u8 *found;
+                        u32 j;
+                        u32 key;
+                        u8 *e;
+                        unsigned ctr;
+                        e = gFileCache;
+                        key = *(u32 *)(item + 8);
+                        j = 0;
+                        for (ctr = 0x400; ctr > 0; ctr--) {
+                            if (*(u32 *)(e + 0x38) == key) {
+                                found = gFileCache + j * 0x7C;
+                                goto found2;
+                            }
+                            e += 0x7C;
+                            j++;
+                        }
+                        found = 0;
+                    found2:
+                        if (found) {
+                            *(found) = 0;
+                            *(u32 *)(found + 0x2C) = 0;
+                            *(u16 *)(found + 0x30) = 0;
+                            *(u16 *)(found + 0x32) = 0;
+                            *(u32 *)(found + 0x38) = 0;
+                            *(u32 *)(found + 0x3C) = 0;
+                        }
+                    }
+}
