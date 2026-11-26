@@ -1515,7 +1515,7 @@ fn_8026212C(arg0,arg1,arg2,arg5,arg6);
 Audio_Unlock();
 }
 
-#pragma optimization_level 2
+#pragma optimization_level 3
 void fn_8024BB90(void) {
     extern u8 gSoundData[];
     extern u8 gSoundSlots[];
