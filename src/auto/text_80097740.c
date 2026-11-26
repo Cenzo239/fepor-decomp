@@ -147,25 +147,25 @@ typedef struct {
     s16 value;
 } lbl_80330EAC_t;
 
-#pragma opt_common_subs off
-s16 fn_80097740(void) {
-    extern s16 lbl_80330EAC[];
-    extern u8 lbl_803120C0[];
+#pragma push
+#pragma opt_strength_reduction off
+s32 fn_80097740(void) {
+    extern s16 gBattle[];
+    extern u8 gEventSlots[];
     extern void *lbl_80367500;
     extern void *lbl_80367504;
     s16 *idx;
     s16 n;
-    s16 result;
+    s32 result;
     s32 c;
     void *p;
     void *t;
     u32 v;
-    s32 init;
 
-    idx = &lbl_80330EAC[0x450];
-    init = lbl_80330EAC[0x450];
-    if (init != 0) {
-        *idx = init + 1;
+    idx = &gBattle[0x450];
+    result = gBattle[0x450];
+    if (result != 0) {
+        *idx = result + 1;
     }
     for (;;) {
         n = *idx;
@@ -180,7 +180,7 @@ s16 fn_80097740(void) {
             result = n;
             break;
         case 0x20:
-            p = (void *)lbl_803120C0;
+            p = (void *)gEventSlots;
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -191,7 +191,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h1:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -205,7 +205,7 @@ s16 fn_80097740(void) {
             result = *idx;
             break;
         case 0x21:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -216,7 +216,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h3:
-            p = (void *)lbl_803120C0;
+            p = (void *)gEventSlots;
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -230,7 +230,7 @@ s16 fn_80097740(void) {
             result = *idx;
             break;
         case 0x22:
-            p = (void *)(lbl_803120C0 + 0x28);
+            p = (void *)(gEventSlots + 0x28);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -241,7 +241,7 @@ s16 fn_80097740(void) {
             }
             lbl_80367500 = NULL;
         h5:
-            p = (void *)(lbl_803120C0 + 0x14);
+            p = (void *)(gEventSlots + 0x14);
             if (p != NULL) {
                 t = *(void **)p;
                 v = (t != NULL) ? M2C_FIELD(t, u32 *, 0x280) : 0;
@@ -261,4 +261,4 @@ s16 fn_80097740(void) {
         *idx = *idx + 1;
     }
 }
-#pragma opt_common_subs reset
+#pragma pop
