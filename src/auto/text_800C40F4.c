@@ -1,6 +1,41 @@
 /* Functions from 0x800C40F4 to 0x801035C8, found by decomp-toolkit. */
 #include "common.h"
 #include "structs.h"
+static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
+    extern u8 gBattleMap[];
+    extern u8 gUnits[];
+    u8 Ai_UnitIsHostileToActive(void *);
+    s32 count;
+                count = 0;
+                while (nb[0] != 0x7FFF) {
+                    u8 oob;
+                    s32 nx;
+                    s32 ny;
+                    nx = x16 + nb[0];
+                    ny = y16 + nb[1];
+                    oob = 0;
+                    if (nx < ((s8 *)gBattleMap)[8] || ((s8 *)gBattleMap)[10] - 1 < nx || ny < ((s8 *)gBattleMap)[9] || ((s8 *)gBattleMap)[11] - 1 < ny) {
+                        oob = 1;
+                    }
+                    if (!oob) {
+                        u8 nid = *((u8 *)&gBattleMap + (s8)nx + ((s8)ny << 6) + 0xD);
+                        if (nid != 0) {
+                            void *nunit;
+                            if (nid != 0) {
+                                nunit = gUnits + (nid - 1) * 0x280;
+                            } else {
+                                nunit = NULL;
+                            }
+                            if (Ai_UnitIsHostileToActive(nunit) != 0) {
+                                count += 1;
+                            }
+                        }
+                    }
+                    nb += 2;
+                }
+
+return count;
+}
 static inline void *Ai_ActionTileUnit(u8 id) {
     extern u8 gUnits[];
     if (id) return gUnits + (id - 1) * 0x280;
@@ -31818,11 +31853,7 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
             if (flag1) {
                 id = rowUnit[x8 + 0xD];
                 if (id) {
-                    if (id != 0) {
-                        unit = gUnits + (id - 1) * 0x280;
-                    } else {
-                        unit = NULL;
-                    }
+                    unit = Ai_ActionTileUnit(id);
                     if (Allegiance_Compare(*(s32 *)((u8 *)arg0 + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) {
                         continue;
                     }
