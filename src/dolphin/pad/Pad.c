@@ -44,12 +44,11 @@ static inline void PAD_ResetNext(u8 *base) {
     void fn_802121E0(s32, u32);
     void fn_8023C188(s32, void (*)(s32, u32));
     void *memset(void *, int, u32);
-    u8 *origin;
     u32 pending = lbl_80368670;
     lbl_80366FA4 = __cntlzw(pending);
     if (lbl_80366FA4 != 32) {
+        u8 *origin = base + lbl_80366FA4 * 12;
         lbl_80368670 = pending & ~(0x80000000U >> lbl_80366FA4);
-        origin = base + lbl_80366FA4 * 12;
         memset(origin + 16, 0, 12);
         fn_8023C188(lbl_80366FA4, fn_802121E0);
     }
