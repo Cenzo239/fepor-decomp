@@ -2020,7 +2020,7 @@ static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
     s32 sum = start;
     s32 i;
     for (i = start; i < *(s32 *)((u8 *)arg0 + 0x224); ++i)
-        sum = *(s32 *)((u8 *)arg0 + 0x200 + i * 4) + sum;
+        sum += *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
     return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
