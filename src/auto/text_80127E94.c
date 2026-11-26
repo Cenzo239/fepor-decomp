@@ -23,9 +23,9 @@ static inline u8 Ai_TryMoveAndAttack(void *arg0, s32 arg1) {
     void *TargetList_GetAt(void *, s32);
     void fn_800FB96C(s32, u8, u8, s32, s32, s32, s8, s32, s32);
     extern u8 gBattleMap[], gAiState[], gUiContext[], gTargetList[];
-    s16 y, x;
-    s32 py, px;
+    s16 x, y;
     u8 *path;
+    s32 px, py;
     u8 found, out;
     u8 *target;
     s32 i;
@@ -459,34 +459,17 @@ s32 fn_801287B8(void) {
 u8 fn_801287C0(void *arg0)
 {
     u8 Status_Test(void *, s32);
-    u8 fn_80100130(void *, s32, s16 *, s16 *);
     u8 fn_801001B8(void *, s32, s16 *, s16 *);
-    u8 *fn_8001FC40(void *, s8, s8);
-    u8 fn_800BE968(s32, s8, s8);
-    u8 fn_80100BA4(s16, s16, s8, s8);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
     void *TargetList_GetAt(void *, s32);
-    void fn_800FB96C(s32, u8, u8, void *, s8, s8, s8, s32, s32);
+    void fn_800FB96C(s32, u8, u8, void *, s32, s32, s32, s32, s32);
 
-    extern u8 gBattleMap[];
     extern u8 gAiState[];
     extern u8 gUiContext[];
     extern u8 gTargetList[];
 
-    u8 *self;
     u32 oldFlags;
-    s16 py;
-    s16 px;
-    u8 *path;
-    u8 *target;
-    s16 y;
-    s16 x;
-    s16 y2;
-    s16 x2;
-    s32 index;
-    u8 found;
-    u8 outside;
-    u8 result;
+    u8 *self;
 
     self = (u8 *)arg0;
 
@@ -497,102 +480,18 @@ u8 fn_801287C0(void *arg0)
     oldFlags = *(u32 *)(self + 0x254);
     *(u32 *)(self + 0x254) |= 0x30000000;
 
-    if (!(*(u32 *)(self + 0x254) & 0x20000000)) {
-        result = 0;
-        goto check_alternate;
-    }
-
-    if (Status_Test(self + 0x1BC, 0x5B)) {
-        if (!fn_80100130(self, 0x100, &x, &y)) {
-            result = 0;
-            goto check_alternate;
-        }
-
-        path = fn_8001FC40(gBattleMap, (s8)x, (s8)y);
-        px = (s8)self[0x19E];
-        py = (s8)self[0x19F];
-
-        while (*path != 0x10) {
-            switch (*path) {
-            case 1:
-                px--;
-                break;
-            case 2:
-                px++;
-                break;
-            case 8:
-                py--;
-                break;
-            case 4:
-                py++;
-                break;
-            }
-
-            outside = 0;
-            if (px < (s8)gBattleMap[8] || (s8)gBattleMap[10] - 1 < px ||
-                py < (s8)gBattleMap[9] || (s8)gBattleMap[11] - 1 < py) {
-                outside = 1;
-            }
-
-            if (!outside) {
-                if (fn_800BE968(11, (s8)px, (s8)py)) {
-                    x = px;
-                    y = py;
-                    found = 1;
-                    goto found_done;
-                }
-            }
-            path++;
-        }
-        found = 0;
-
-    found_done:
-        if (found) {
-            Ai_SetUnitMoveTo(self, x, y, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
-            if (gAiState[0x21C]) {
-                if (fn_80100BA4(x, y, (s8)gUiContext[13], (s8)gUiContext[14])) {
-                    fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4), (s8)x, (s8)y, -1, 0, 0);
-                }
-            }
-            result = gAiState[0x21C];
-            goto check_alternate;
-        }
-    } else {
-        if (!fn_80100130(self, 0, &x, &y)) {
-            result = 0;
-            goto check_alternate;
-        }
-    }
-
-    target = 0;
-    for (index = 0; index < *(s32 *)gTargetList; index++) {
-        target = TargetList_GetAt(gTargetList, 0);
-        break;
-    }
-
-    if (!target) {
-        result = 0;
-        goto check_alternate;
-    }
-
-    Ai_SetUnitMoveTo(self, x, y, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
-    if (gAiState[0x21C]) {
-        if (x == (s8)gUiContext[13] && y == (s8)gUiContext[14]) {
-            fn_800FB96C(12, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4), target[0], target[1], -1, 0, 0);
-        }
-    }
-    result = gAiState[0x21C];
-
-check_alternate:
-    if (result == 0) {
+    if (!Ai_TryMoveAndAttack(self, -1)) {
         if (*(u32 *)(self + 0x254) & 0x10000000) {
+            s16 x2;
+            s16 y2;
             if (fn_801001B8(self, 0, &x2, &y2)) {
                 Ai_SetUnitMoveTo(self, x2, y2, 1, *(u16 *)(gAiState + 4), 0, 0, -1);
                 if (gAiState[0x21C]) {
                     if (x2 == (s8)gUiContext[13] && y2 == (s8)gUiContext[14]) {
-                        s8 tx = ((s8 *)TargetList_GetAt(gTargetList, 0))[0];
-                        s8 ty = ((s8 *)TargetList_GetAt(gTargetList, 0))[1];
-                        fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4), tx, ty, -1, 0, 0);
+                        fn_800FB96C(11, gUiContext[13], gUiContext[14], *(void **)(gUiContext + 4),
+                            ((s8 *)TargetList_GetAt(gTargetList, 0))[0],
+                            ((s8 *)TargetList_GetAt(gTargetList, 0))[1],
+                            -1, 0, 0);
                     }
                 }
             }
