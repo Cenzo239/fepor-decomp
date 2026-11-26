@@ -989,26 +989,22 @@ static inline s32 Width(s32 k) {
     return n;
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma global_optimizer on
+#pragma use_lmw_stmw off
+#pragma opt_common_subs on
+#pragma peephole on
 s32 fn_801CD480(s32 arg0, s32 arg1, s32 arg2) {
-    extern u8 *lbl_802984C0[];
     extern char lbl_8027DD60[];
-    s32 count = 0;
-    u8 **table = (u8 **)count;
-    s16 width;
-    u8 *result;
-    u8 **table2;
-
-    switch (arg0) { case 0: table = lbl_802984C0; break; }
-    while ((s32)**table != 10) { table++; count++; }
-    width = count + 1;
-    table2 = (u8 **)0;
-    switch (arg0) { case 0: table2 = lbl_802984C0; break; }
-    result = table2[(s16)arg1 + width * (s16)arg2];
-    if (result) return (s32)result;
+    s16 w = Width(arg0) + 1;
+    u8 **p = GetTbl(arg0);
+    u8 *result = p[(s16)arg1 + w * (s16)arg2];
+    if (result != 0) {
+        return (s32)result;
+    }
     return (s32)(lbl_8027DD60 + 0x16);
 }
-#pragma global_optimizer reset
+#pragma pop
 s32 fn_801CD508(s32 arg0) {
     extern u8 *lbl_802984C0[];
     s32 count = 0;
