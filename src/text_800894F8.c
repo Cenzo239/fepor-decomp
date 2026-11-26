@@ -284,8 +284,4 @@ void fn_80089970(void) {
 
 #pragma global_optimizer reset
 #pragma peephole off
-/* fn_80089490 helper: tbl + off with off carried as a runtime param. */
-static inline u8 *Tbl_80089490_At(s32 off) {
-    extern u8 lbl_80289950[];
-    return lbl_80289950 + off;
-}
+
