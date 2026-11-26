@@ -69,68 +69,24 @@ static inline s32 count_trailing_zero_p(const f64 *px) {
         return 32 + n2;
     }
 }
-static inline s32 count_trailing_zero_mask(const f64 *px, u32 mask) {
-    const u32 *l = (const u32 *)px;
-    u32 lo = l[1];
-    if (lo) {
-        s32 n;
-        s32 j;
-        s32 m;
-        s32 k;
-        u32 xbits;
-        m = 16;
-        xbits = mask;
-        n = 0;
-        j = 0x20;
-        k = m;
-        while (j != 0) {
-            if ((lo & xbits) == 0) {
-                n += k;
-                lo >>= k;
-                j -= k;
-            } else if (xbits == 1) {
-                break;
-            }
-            if (m > 1) {
-                m /= 2;
-            }
-            if (xbits > 1) {
-                xbits >>= m;
-                k -= m;
-            }
-        }
-        return n;
-    } else {
-        u32 hi = l[0] | 0x100000;
-        s32 n2;
-        s32 j;
-        s32 m;
-        s32 k;
-        u32 xbits;
-        m = 16;
-        xbits = mask;
-        n2 = 0;
-        k = m;
-        j = 32;
-        while (j != 0) {
-            if ((hi & xbits) == 0) {
-                n2 += k;
-                hi >>= k;
-                j -= k;
-            } else if (xbits == 1) {
-                break;
-            }
-            if (m > 1) {
-                m /= 2;
-            }
-            if (xbits > 1) {
-                xbits >>= m;
-                k -= m;
-            }
-        }
-        return 32 + n2;
+static inline s32 count_trailing_word(u32 lo) {
+    s32 n, j, m, k;
+    u32 xbits;
+    m = 16; xbits = 0xFFFFU; n = 0; j = 32; k = m;
+    while (j != 0) {
+        if ((lo & xbits) == 0) { n += k; lo >>= k; j -= k; }
+        else if (xbits == 1) break;
+        if (m > 1) m /= 2;
+        if (xbits > 1) { xbits >>= m; k -= m; }
     }
+    return n;
 }
+static inline s32 count_trailing_parts(const f64 *px) {
+    const u32 *l = (const u32 *)px;
+    if (l[1]) return count_trailing_word(l[1]);
+    return 32 + count_trailing_word(l[0] | 0x100000);
+}
+
 
 static inline s32 count_trailing_zero(f64 x) {
     u32 *l = (u32 *)&x;
@@ -458,7 +414,7 @@ void fn_8022E804(void *dst, f64 x) {
     if ((s8)sign != 0) sp8 = -x;
     f31 = fn_802382EC((s32 *)&sp10, sp8);
     sp18 = f31;
-    expadj = 0x35 - count_trailing_zero_p(&sp18);
+    expadj = 0x35 - count_trailing_zero_mask(&sp18, 0xFFFFU);
     fn_8022F1C0(sp38, *(s32 *)&sp10 - expadj);
     fn_80238378(expadj, f31);
     fn_8023853C(&sp30);
