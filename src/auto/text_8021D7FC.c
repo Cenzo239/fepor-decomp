@@ -194,7 +194,6 @@ s32 fn_8021D91C(s32 arg0) {
     s64 now;
     volatile u16 *high;
     volatile u16 *low;
-    u8 pad[8];
 
     if (arg0 == 0) {
         if (lbl_80368768 == 0) {
