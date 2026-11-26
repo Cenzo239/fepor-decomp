@@ -16130,6 +16130,7 @@ void fn_800E4E5C(void *arg0) {
     }
 }
 
+#pragma global_optimizer off
 void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
 {
     s32 GActor_FindNode(void *, void *);
@@ -16162,8 +16163,9 @@ void fn_800E4E7C(f32 *arg0, void *arg1, void *arg2)
     arg0[0] = x;
     arg0[1] = y;
     arg0[2] = z;
+    return;
 }
-
+#pragma global_optimizer on
 void fn_800E4F0C(void *arg0) {
     M2C_UNK GActor_FindNode(s32);
     GActor_FindNode(M2C_FIELD(arg0, s32 *, 0xE0));
@@ -20265,7 +20267,79 @@ extern "C" void fn_8021D004(s32, s32, void *);
 extern "C" void fn_8021D28C(s32, s32, void *);
 extern "C" u8 gCardStrings[];
 #pragma cplusplus on
-#pragma dont_inline on
+struct Stream_800EBACC {
+    u8 pad[0x10];
+    virtual void *GetBuf();
+    virtual void v1();
+    virtual ~Stream_800EBACC();
+};
+static inline void Body_800EBACC(Stream_800EBACC *stream, void *arg0, void *arg1) {
+    struct CardWork {
+        u8 workArea[0xA000];
+        s32 chan;
+        volatile s32 result;
+        s32 sectorSize;
+        s32 unkA00C;
+        s32 unkA010;
+        s32 unkA014;
+        u8 unkA018;
+        u8 unkA019;
+        u8 busy;
+        u8 unkA01B;
+        u8 fileInfo[0x14];
+    };
+    extern struct CardWork gCardWork;
+    CardFileStatus status;
+    void *fileInfo;
+    s32 size;
+    s32 fileNo;
+    u8 ok;
+
+    size = Stream_LoadFile(stream, arg0);
+    DebugPrint(gCardStrings + 0x288, size);
+    if (size > 0) {
+        fn_800EBF58();
+        fn_8021CDC4(gCardWork.chan, arg1);
+        fileInfo = gCardWork.fileInfo;
+        gCardWork.result = fn_8021C3D8(gCardWork.chan, arg1, size, fileInfo);
+        ok = 0;
+        if (gCardWork.result == 0 && gCardWork.busy == 0) {
+            ok = 1;
+        }
+        if (ok != 0) {
+            gCardWork.result = fn_8021CBC8(fileInfo, stream->GetBuf(), size, 0);
+            ok = 0;
+            if (gCardWork.result == 0 && gCardWork.busy == 0) {
+                ok = 1;
+            }
+            if (ok != 0) {
+                gCardWork.result = fn_8021C02C(fileInfo);
+                ok = 0;
+                if (gCardWork.result == 0 && gCardWork.busy == 0) {
+                    ok = 1;
+                }
+                if (ok != 0) {
+                    fileNo = *(s32 *)&gCardWork.fileInfo[4];
+                    fn_8021D004(gCardWork.chan, fileNo, &status);
+                    status.commentAddress = 0x2000;
+                    status.iconAddress = 0;
+                    status.bannerFormat = (status.bannerFormat & ~3) | 1;
+                    status.iconFormat = (status.iconFormat & ~3) | 1;
+                    status.iconSpeed = (status.iconSpeed & ~3) | 3;
+                    status.iconFormat = (status.iconFormat & ~0xC) | 4;
+                    status.iconSpeed = (status.iconSpeed & ~0xC) | 8;
+                    status.iconFormat = (status.iconFormat & ~0x30) | 0x10;
+                    status.iconSpeed = (status.iconSpeed & ~0x30) | 0x30;
+                    status.iconFormat = status.iconFormat & ~0xC0;
+                    status.iconSpeed = status.iconSpeed & ~0xC0;
+                    status.bannerFormat = (status.bannerFormat & ~4) | 4;
+                    fn_8021D28C(gCardWork.chan, fileNo, &status);
+                }
+            }
+        }
+    }
+    delete stream;
+}
 extern "C" void fn_800EBACC(void *arg0, void *arg1) {
     struct Stream_800EBACC {
         u8 pad[0x10];
