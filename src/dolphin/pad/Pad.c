@@ -1,5 +1,9 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+static inline void AI_WaitSampleChange(volatile u32 *regs) {
+    u32 sample = regs[2];
+    while (sample == regs[2]) {}
+}
 #include <dolphin/os.h>
 #include "global.h"
 extern u16 Scb_80339420[];
