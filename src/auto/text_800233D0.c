@@ -1179,7 +1179,6 @@ extern u32 gPadInput;
 #pragma opt_strength_reduction off
 extern "C" void fn_80024D74(s32 unused, void *arg1) {
     void *GfxEnt_Get(u8);
-    extern u32 lbl_80367240;
     struct Item {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -1198,7 +1197,7 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
     void *item;
     u8 *unit;
 
-    if ((((u32 *)lbl_80367240)[1] & 0x3000003U) == 0) {
+    if ((((u32 *)gPadInput)[1] & 0x3000003U) == 0) {
         return;
     }
     unit = (u8 *)arg1;
