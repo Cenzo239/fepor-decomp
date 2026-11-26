@@ -3,6 +3,11 @@
 #include <dolphin/os.h>
 #include "global.h"
 
+static inline void VIFlushMerge(u32 *shadow, u32 *changed) {
+    *shadow |= *changed;
+    *changed = 0;
+}
+
 /* Minimal DVDCommandBlock layout used by the DVD state machine. */
 typedef struct DVDReadyCommand {
     u8 pad[8];
@@ -1047,36 +1052,41 @@ static inline s32 cntlzd(u64 bit) {
     return __cntlzw(lo) + 32;
 }
 
-#pragma opt_common_subs off
+#pragma push
 #pragma global_optimizer off
 void VIFlush(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     extern u8 lbl_8033A068[];
     extern s32 lbl_80368608;
-    struct { u16 regs[60]; u16 shdwRegs[60]; u8 pad[0x30]; void *unk120; } *vi = (void *)lbl_8033A068;
+    struct {
+        u16 regs[60];
+        u16 shdwRegs[60];
+        u8 pad[0x30];
+        void *unk120;
+    } *vi = (void *)lbl_8033A068;
     s32 enabled;
-    u32 regIndex;
- u64 changed;
-    u16 value;
+    s32 regIndex;
+ u16 value;
+
     enabled = OSDisableInterrupts();
     *(u32 *)&lbl_80368638 |= *(u32 *)&lbl_80368628;
     *(u32 *)&lbl_80368628 = 0;
     *(u32 *)&lbl_80368644 |= *(u32 *)&lbl_80368634;
-    *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
+ *(u32 *)&lbl_80368640 |= *(u32 *)&lbl_80368630;
+
     while (*(u64 *)&lbl_80368630 != 0) {
-        changed = *(u64 *)&lbl_80368630;
- regIndex = cntlzd(changed);
+        regIndex = cntlzd(*(u64 *)&lbl_80368630);
         value = vi->regs[regIndex];
-        vi->shdwRegs[regIndex] = value;
+ *(vi->regs + regIndex + 60) = value;
         *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
+
     lbl_80368608 = 1;
     lbl_80368650 = vi->unk120;
     OSRestoreInterrupts(enabled);
 }
-#pragma opt_common_subs reset
-#pragma global_optimizer on
+#pragma pop
 void VISetNextFrameBuffer(void *frameBuffer)
 {
     u32 OSDisableInterrupts(void);
