@@ -1351,16 +1351,14 @@ u8 fn_8003D094(s32 arg0, u8 arg1) {
     return (u8)v;
 }
 
-u8 fn_8003D13C(void *arg0)
+u8 fn_8003D13C(u8 *unit)
 {
-    typedef struct { u8 pad[0x9F]; u8 flags; } BattleStateBits;
-    extern BattleStateBits gBattleState[];
+    extern u8 gBattleState[];
 
     u8 fn_800386B0(void *);
     u8 Status_Test(void *, s32);
     void *Res_GetByName(void *);
 
-    u8 *unit;
     u8 *classData;
     s32 limit;
     s32 result;
@@ -1369,9 +1367,7 @@ u8 fn_8003D13C(void *arg0)
     u8 ok;
     void *res;
 
-    unit = (u8 *)arg0;
-
-    if ((gBattleState->flags >> 3) & 1) {
+    if ((gBattleState[0x9F] >> 3) & 1) {
         return 0;
     }
 
@@ -1401,9 +1397,13 @@ u8 fn_8003D13C(void *arg0)
         ok = 0;
     } else {
         res = *(void **)(*(u8 **)(unit + 0x18C) + 0xC);
-        res = (res != NULL) ? Res_GetByName(res) : NULL;
+        if (res) {
+            res = Res_GetByName(res);
+        } else {
+            res = 0;
+        }
 
-        if (res == NULL) {
+        if (!res) {
             ok = 0;
         } else {
             level = (s8)unit[0x19A];
@@ -1420,9 +1420,7 @@ u8 fn_8003D13C(void *arg0)
     }
 
     value = fn_800386B0(unit);
-    level = (s8)unit[0x19A];
-
-    result = limit - ((level - 1) * 100 + value);
+    result = limit - (value + ((s8)unit[0x19A] - 1) * 100);
 
     if (result > 100) {
         result = 100;
@@ -1637,17 +1635,18 @@ void Unit_MoveToListHead(void *unit, s32 listId) {
     fn_800157DC(gUnitLists + listId * 0xC, unit);
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 void fn_8003D70C(s32 arg0) {
-    extern u8 gBattleState[];
+    extern u8 lbl_80330708[];
     void *fn_8014D8FC(void *);
     s32 fn_801661CC(void *);
-    void *Res_GetByName(void *);
-    u8 Status_Test(s32, s32);
+    void *fn_8000D354(void *);
+    u8 fn_80105BC0(s32, s32);
     s8 fn_801F1A2C(void);
-    s32 Rand_Range(s32);
+    s32 fn_8000CEE4(s32);
 
-    s32 bonus;
     void *partner;
     s16 s7;
     s16 s6;
@@ -1657,11 +1656,12 @@ void fn_8003D70C(s32 arg0) {
     s16 s2;
     s16 s1;
     s16 s0;
+    s32 bonus;
     s32 level;
     u8 *cls;
     s32 factor;
 
-    level = fn_801661CC(fn_8014D8FC(gBattleState));
+    level = fn_801661CC(fn_8014D8FC(lbl_80330708));
     if (*(u8 *)(*(u8 **)(arg0 + 0x190) + 8) != 1) {
         level = 0;
     }
@@ -1675,54 +1675,57 @@ void fn_8003D70C(s32 arg0) {
     *(u8 *)(arg0 + 0x19A) = level;
 
     cls = *(u8 **)(arg0 + 0x18C);
-    s0 = (s16)(level * cls[0x54]);
-    s1 = (s16)(level * cls[0x55]);
-    s2 = (s16)(level * cls[0x56]);
-    s3 = (s16)(level * cls[0x57]);
-    s4 = (s16)(level * cls[0x58]);
-    s5 = (s16)(level * cls[0x59]);
-    s6 = (s16)(level * cls[0x5A]);
-    s7 = (s16)(level * cls[0x5B]);
-    {
-        void *name = *(void **)(cls + 0xC);
-        if (name != NULL) {
-            partner = Res_GetByName(name);
-        } else {
-            partner = NULL;
+    s0 = level * cls[0x54];
+    s1 = level * cls[0x55];
+    s2 = level * cls[0x56];
+    s3 = level * cls[0x57];
+    s4 = level * cls[0x58];
+    s5 = level * cls[0x59];
+    s6 = level * cls[0x5A];
+    s7 = level * cls[0x5B];
+    if (*(void **)(cls + 0xC) != NULL) {
+        partner = fn_8000D354(*(void **)(cls + 0xC));
+    } else {
+        partner = NULL;
+    }
+
+    if (partner != NULL) {
+        if (fn_80105BC0(arg0 + 0x1BC, 2) != 0) {
+            if (fn_80105BC0(arg0 + 0x1BC, 8) == 0) {
+                if (fn_80105BC0((s32)partner + 0x1C, 2) == 0) {
+                    bonus = (s8)fn_801F1A2C();
+                    bonus += fn_801661CC(fn_8014D8FC(lbl_80330708));
+                    s0 += bonus * ((u8 *)partner)[0x54];
+                    s1 += bonus * ((u8 *)partner)[0x55];
+                    s2 += bonus * ((u8 *)partner)[0x56];
+                    s3 += bonus * ((u8 *)partner)[0x57];
+                    s4 += bonus * ((u8 *)partner)[0x58];
+                    s5 += bonus * ((u8 *)partner)[0x59];
+                    s6 += bonus * ((u8 *)partner)[0x5A];
+                    s7 += bonus * ((u8 *)partner)[0x5B];
+                }
+            }
         }
     }
 
-    if (partner != NULL && Status_Test(arg0 + 0x1BC, 2) != 0 && Status_Test(arg0 + 0x1BC, 8) == 0 && Status_Test((s32)partner + 0x1C, 2) == 0) {
-        u8 *p = (u8 *)partner;
-        bonus = (s8)fn_801F1A2C();
-        bonus += fn_801661CC(fn_8014D8FC(gBattleState));
-        s0 = (s16)(s0 + bonus * p[0x54]);
-        s1 = (s16)(s1 + bonus * p[0x55]);
-        s2 = (s16)(s2 + bonus * p[0x56]);
-        s3 = (s16)(s3 + bonus * p[0x57]);
-        s4 = (s16)(s4 + bonus * p[0x58]);
-        s5 = (s16)(s5 + bonus * p[0x59]);
-        s6 = (s16)(s6 + bonus * p[0x5A]);
-        s7 = (s16)(s7 + bonus * p[0x5B]);
-    }
-
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AB) = *(u8 *)(arg0 + 0x1AB) + (s0 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AC) = *(u8 *)(arg0 + 0x1AC) + (s1 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AD) = *(u8 *)(arg0 + 0x1AD) + (s2 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AE) = *(u8 *)(arg0 + 0x1AE) + (s3 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AF) = *(u8 *)(arg0 + 0x1AF) + (s4 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B0) = *(u8 *)(arg0 + 0x1B0) + (s5 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B1) = *(u8 *)(arg0 + 0x1B1) + (s6 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B2) = *(u8 *)(arg0 + 0x1B2) + (s7 * factor) / 10000;
 }
+#pragma pop
 s32 Unit_CanReceiveItem(s32 unit, void *item) {
     /* True if item is free, under CON wt limit, and unit has an empty item/held slot. */
     u64 *Item_GetFlagsPtr(void *);
