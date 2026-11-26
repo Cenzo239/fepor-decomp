@@ -5112,10 +5112,18 @@ s32 fn_8014351C(void *arg0, s32 arg1) {
 #pragma push
 #pragma opt_strength_reduction off
 void fn_80143570(void *arg0) {
-void fn_80144B60(void *, MenuSortTag);
-s32 i;
-MenuSortTag tag;
-for(i=0;i!=11;i++) fn_80144B60((u8 *)arg0+(i*12+0x90),tag);
+    void fn_80144B60(void *, MenuSortTag);
+    struct {
+        u8 pad[0x90];
+        struct {
+            u8 data[12];
+        } items[11];
+    } *s = arg0;
+    s32 i;
+    MenuSortTag tag;
+    for (i = 0; i != 11; i++) {
+        fn_80144B60(&s->items[i], tag);
+    }
 }
 #pragma pop
 #pragma cplusplus on
