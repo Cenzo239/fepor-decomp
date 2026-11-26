@@ -2609,15 +2609,27 @@ M2C_UNK fn_80063954(char *arg0) {
     return temp_r31;
 }
 
+#pragma inline_depth(8)
+static inline void *fn_800639B4_Body(void *res, char *p) {
+    M2C_UNK fn_80063A14(M2C_UNK);
+    if (!(FileCache_GetFlags(p) & 0x4000)) {
+        fn_80063A14((M2C_UNK)res);
+        FileCache_MarkRelocated(p);
+    }
+    return res;
+}
+#pragma inline_depth(0)
 #pragma cplusplus on
 extern "C" void fn_80063A14(SomeStruct *);
-extern "C" SomeStruct *fn_800639B4(char *arg0) {
-    SomeStruct *temp_r31 = (SomeStruct *)fn_8005C82C(arg0, 0);
-    if (!(FileCache_GetFlags(arg0) & 0x4000)) {
-        fn_80063A14(temp_r31);
+extern "C" void *fn_800639B4(char *arg0) {
+    void *fn_8005C82C(char *, s32);
+    void fn_80063A14(void *);
+    void *res = fn_8005C82C(arg0, 0);
+    if ((FileCache_GetFlags(arg0) & 0x4000) == 0) {
+        fn_80063A14(res);
         FileCache_MarkRelocated(arg0);
     }
-    return temp_r31;
+    return res;
 }
 #pragma cplusplus off
 void fn_80063A14(SomeStruct *arg0) {
