@@ -2,6 +2,12 @@
 #include "common.h"
 #include "global.h"
 
+static inline u64 Item_ReadUseFlags(const void *item) {
+    u32 lo = *((const u32 *)item + 15);
+    u32 hi = *((const u32 *)item + 14);
+    return ((u64)hi << 32) | lo;
+}
+
 static inline u8 Item_CheckSpecialFlags(u64 flags) {
     if (!(flags & 8)) return 0;
     if (flags & ((u64)0x100 << 32)) return 0;
@@ -914,11 +920,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     }
     if (flags & 0x18) {
         if (flags & 8) {
-            if (!(flags2 & 8)) {
-            } else if (flags & ((u64)0x100 << 32)) {
-            } else {
-                t.result = 1;
-            }
+            t.result = Item_CheckSpecialFlags(flags);
         } else {
             if (flags & 0x10) {
                 if (!(flags2 & 0x10)) {
