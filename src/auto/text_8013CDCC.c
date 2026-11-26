@@ -178,7 +178,7 @@ virtual void setSelection(void *)=0;
 virtual s32 getPage()=0;
 virtual void v11()=0;
 virtual void v12()=0;
-virtual Vec2s getPosition()=0;
+virtual MenuPopupPosition getPosition()=0;
 };
 #pragma cplusplus reset
 
