@@ -893,28 +893,6 @@ static inline u8 *Save_FindUnusedSlotIn(u8 **save) {
     return best;
 }
 
-static inline void Save_InitSuspendHeader(u8 *best, u8 saved47, u8 *battle) {
-    *(s32 *)(best + 0x4C) = 0x4000;
-    *(u32 *)(best + 0x40) = 0x4645384AU;
-    *(u32 *)(best + 0x44) = 0x20050201U;
-    *(u32 *)(best + 0x48) = 0;
-    *(u32 *)(best + 0x5C) = 0;
-    *(u32 *)(best + 0x58) = 0;
-    best[0x60] = 2;
-    best[0x61] = 0;
-    best[0x62] = saved47;
-    best[0x63] = 0;
-    best[0x64] = 0;
-    best[0x65] = 0;
-    best[0x66] = 0;
-    *(u64 *)(best + 0x58) = *(u64 *)(battle + 0x58);
-    best[0x61] = battle[0x51C];
-    best[0x64] = battle[0x10];
-    best[0x65] = battle[0x54];
-    best[0x66] = battle[0xA6];
-
-}
-
 static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
     u32 size = *(u32 *)(slot + 0x48);
     return (size <= limit) ? size : 0;
@@ -1387,7 +1365,6 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_common_subs off
 void fn_801E1CB4(u8 **arg0, void *arg1) {
     void fn_80006298(void *, s32, s32);
     void fn_800167E4(void *);
@@ -1429,12 +1406,14 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
         void *vtbl;
     } w;
     u8 *p;
+    u8 *battle;
 
     other = arg1;
     saved47 = gSystemSave[0x47];
     best = Save_FindUnusedSlotIn(arg0);
 
     fn_80006298(best, 0, 0x4000);
+    battle = gBattleState;
     *(s32 *)(best + 0x4C) = 0x4000;
     *(u32 *)(best + 0x40) = 0x4645384AU;
     *(u32 *)(best + 0x44) = 0x20050201U;
@@ -1448,11 +1427,11 @@ void fn_801E1CB4(u8 **arg0, void *arg1) {
     best[0x64] = 0;
     best[0x65] = 0;
     best[0x66] = 0;
-    *(u64 *)(best + 0x58) = *(u64 *)(gBattleState + 0x58);
-    best[0x61] = gBattleState[0x51C];
-    best[0x64] = gBattleState[0x10];
-    best[0x65] = gBattleState[0x54];
-    best[0x66] = gBattleState[0xA6];
+    *(u64 *)(best + 0x58) = *(u64 *)(battle + 0x58);
+    best[0x61] = battle[0x51C];
+    best[0x64] = battle[0x10];
+    best[0x65] = battle[0x54];
+    best[0x66] = battle[0xA6];
 
     p = best + 0xB8;
     w.vtbl = gStreamBaseVtbl;
