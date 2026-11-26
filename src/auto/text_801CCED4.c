@@ -6641,7 +6641,8 @@ void fn_801D88B0(s8 *arg0, s8 arg1) {
     *arg0 = arg1;
 }
 
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
 void fn_801D88B8(void *arg0, void *arg1, u8 arg2) {
     void *fn_801E09B4(void *);
     void *fn_801E2324(void *, void *);
@@ -6675,21 +6676,9 @@ void fn_801D88B8(void *arg0, void *arg1, u8 arg2) {
         *(s16 *)self = flags | 0x20;
     }
 
-    save = fn_801E09B4(&gSaveDataBase);
-    if (save == NULL) goto save0_null;
-    if (*(u8 *)((u8 *)save + 0x60) != 3) goto save0_null;
-    goto save0_ok;
-save0_null:
-    save = NULL;
-save0_ok:
+    save = SaveMenu_GetHeader(&gSaveDataBase);
     if (save != NULL) {
-        save = fn_801E09B4(&gSaveDataBase);
-        if (save == NULL) goto save1_null;
-        if (*(u8 *)((u8 *)save + 0x60) != 3) goto save1_null;
-        goto save1_ok;
-save1_null:
-        save = NULL;
-save1_ok:
+        save = SaveMenu_GetHeader(&gSaveDataBase);
         name = *(u8 *)((u8 *)save + 0x63);
     } else {
         name = 0xFF;
@@ -6700,21 +6689,9 @@ save1_ok:
     *(s16 *)self = *(s16 *)self & ~8;
     *(s16 *)self = *(s16 *)self & ~2;
 
-    save = fn_801E2324(&gSaveDataBase, (void *)(s32)*(s16 *)(self + 8));
-    if (save == NULL) goto unit0_null;
-    if (*(u8 *)((u8 *)save + 0x60) != 2) goto unit0_null;
-    goto unit0_ok;
-unit0_null:
-    save = NULL;
-unit0_ok:
+    save = SaveMenu_GetUnit(&gSaveDataBase, (void *)(s32)*(s16 *)(self + 8));
     if (save == NULL) goto early_exit;
-    unit = fn_801E2324(&gSaveDataBase, (void *)(s32)*(s16 *)(self + 8));
-    if (unit == NULL) goto unit1_null;
-    if (*(u8 *)((u8 *)unit + 0x60) != 2) goto unit1_null;
-    goto unit1_ok;
-unit1_null:
-    unit = NULL;
-unit1_ok:
+    unit = SaveMenu_GetUnit(&gSaveDataBase, (void *)(s32)*(s16 *)(self + 8));
 
     *(s16 *)self = *(s16 *)self | 4;
     *(u8 *)(self + 0x16) = *(u8 *)((u8 *)unit + 0x64);
@@ -6777,7 +6754,7 @@ early_exit:
 done:
     return;
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_801D8C0C(void *arg0, s16 arg1)
 {
   memset(arg0, 0, 0x4C);
