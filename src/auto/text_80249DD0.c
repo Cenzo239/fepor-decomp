@@ -4464,38 +4464,8 @@ void Sound_SelectSource3(void *voice, u32 *step) {
 
 void fn_8025276C(void *voice, u32 *step) { SelectSource(voice, (u8*)voice+0x2D8, step, 0x400000, 0x20); }
 
-void fn_80252870(void *arg0, u32 *arg1)
-{
-    void fn_8025FFC8(void *, u8, s32, u8, u8, u8);
-
-    s32 scale;
-    u64 *flags;
-    u8 *voice;
-
-    voice = (u8 *)arg0;
-    flags = (u64 *)(voice + 0x114);
-
-    if ((*flags & 0x2000000ULL) == 0) {
-        *flags |= 0x2000000ULL;
-    } else {
-        scale = (s32)(arg1[0] & 0xFFFF0000) / 100;
-        if (scale < 0) {
-            scale -= ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
-        } else {
-            scale += ((s32)(s8)(arg1[1] >> 16) << 8) / 100;
-        }
-
-        fn_8025FFC8(
-            voice + 0x2FC,
-            (u8)(arg1[0] >> 8),
-            scale,
-            (u8)arg1[1],
-            (u8)(arg1[1] >> 8) != 0,
-            (u8)(arg1[1] >> 8)
-        );
-    }
-
-    *(u32 *)(voice + 0x220) |= 0x40;
+void fn_80252870(void *voice, u32 *step) {
+    SelectSource(voice, (u8 *)voice + 0x2FC, step, 0x02000000, 0x40);
 }
 
 void Sound_SelectSource7(void *voice, u32 *step) {
