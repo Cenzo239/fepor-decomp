@@ -4,6 +4,14 @@
 #include <dolphin/os.h>
 #include "global.h"
 #include "ef.h"
+static inline u32 Card_AdvanceScramble(u32 value, u32 count) {
+ u32 i;
+ for(i=0;i<count;++i) {
+  u32 bits=~((value<<23)^((value<<15)^(value^(value<<7))));
+  value=(value<<1)|((bits>>30)&2);
+ }
+ return value | (~((value<<23)^((value<<15)^(value^(value<<7))))>>31);
+}
 
 
 
@@ -1186,7 +1194,9 @@ void fn_80218C34(void *arg0)
     (void)chan;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_80218CA4(void *arg0) {
     s32 EXIUnlock(s32);
     s32 fn_80216DA8(s32, u8 *);
@@ -1196,30 +1206,24 @@ void fn_80218CA4(void *arg0) {
     s32 fn_80239488(s32);
     extern u16 __CARDBlock[];
 
-    u8 cmd[0x50];
+    u8 cmd[0x40];
     u8 status;
-    s32 result;
     u32 scramble;
-    u32 n;
     u32 i;
+    u32 n;
     u32 rem;
     u32 ctr;
     u32 t;
     s32 left;
     u8 *work;
     s32 tick;
-    u8 *card;
-    u32 cid;
     s32 chan;
+    u32 cid;
+    u8 *card;
 
-    chan = 0;
-    card = (u8 *)__CARDBlock;
-    if ((u8 *)__CARDBlock + 0x30 != (u8 *)arg0) {
-        card = (u8 *)__CARDBlock + 0x110;
-        chan = 1;
-        if ((u8 *)__CARDBlock + 0x140 != (u8 *)arg0) {
-            chan = 2;
-        }
+    for (chan = 0, work = (u8 *)__CARDBlock; chan < 2; ++chan, work += 0x110) {
+        card = work;
+        if (card + 0x30 == (u8 *)arg0) break;
     }
 
     work = (u8 *)((*(u32 *)(card + 0x80) + 0x2F) & ~0x1Fu);
@@ -1231,42 +1235,12 @@ void fn_80218CA4(void *arg0) {
         return;
     }
 
-    i = 0;
     scramble = *(u32 *)(card + 0x2C);
-    n = (((u32)(tick + *(s32 *)(card + 0x14)) + 4) << 3) + 1;
-    if (n != 0) {
-        if (n > 8) {
-            rem = n - 8;
-            ctr = (rem + 7) >> 3;
-            if (rem != 0) {
-                do {
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                    scramble = (scramble << 1) | ((t >> 30) & 2);
-                    i += 8;
-                } while (--ctr);
-            }
-        }
-        left = (s32)(n - i);
-        if (i < n) {
-            do {
-                t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
-                scramble = (scramble << 1) | ((t >> 30) & 2);
-            } while (--left);
-        }
+    n = tick + *(u32 *)(card + 0x14);
+    n = ((n + 4) * 8) + 1;
+    for (i = 0; i < n; ++i) {
+        t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
+        scramble = (scramble << 1) | ((t >> 30) & 2);
     }
 
     t = ~((scramble << 23) ^ ((scramble << 15) ^ (scramble ^ (scramble << 7))));
@@ -1280,19 +1254,19 @@ void fn_80218CA4(void *arg0) {
         return;
     }
 
-    result = fn_80216DA8(chan, &status);
+    tick = fn_80216DA8(chan, &status);
     if (fn_80239488(chan) == 0) {
         EXIUnlock(chan);
         fn_8021AE98(chan, -3);
         return;
     }
-    if (result == 0 && !(status & 0x40)) {
+    if (tick == 0 && !(status & 0x40)) {
         EXIUnlock(chan);
-        result = -5;
+        tick = -5;
     }
-    fn_8021AE98(chan, result);
+    fn_8021AE98(chan, tick);
 }
-
+#pragma pop
 void fn_80218FC8(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 __CARDPutControlBlock(void *,s32);
@@ -1782,93 +1756,54 @@ s32 fn_80219CF4(s32 card, s32 *alternative) {
     return cBlock;
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
-s32 fn_80219F34(s32 card, s32 *alternative) {
-    void *memcpy(void *, const void *, u32);
-    u8 *block[2];
-    s32 i;
-    u8 **bp;
-    s32 *alt;
-    s32 cBlock, cCheck;
-    u8 *b;
+s32 fn_80219F34(s32 card,s32 *alternative) {
+void *memcpy(void*,const void*,u32);
+u8 *block[2];
+s32 i;
+u8 **bp;
+s32 *alt;
+s32 cBlock,cCheck;
+u8 *b;
 
-    i = 0;
-    cBlock = 0;
-    cCheck = 0;
-    alt = alternative;
-    bp = block;
-    do {
-        s32 n;
-        u16 *p;
-        u16 temp;
-        u32 sum, inv;
-        b = *(u8 **)((u8 *)card + 0x80) + ((i + 3) << 13);
-        *bp = b;
-        n = 0x1FFC;
-        n /= 2;
-        p = (u16 *)(b + 4);
-        sum = inv = 0;
-        for (; n > 0; n--) {
-            temp = *p++;
-            sum += temp;
-            inv += ~temp;
-        }
-        if ((u16)sum == 0xFFFF)
-            sum = 0;
-        if ((u16)inv == 0xFFFF)
-            inv = 0;
-        if (*(u16 *)b != (u16)sum || *(u16 *)(b + 2) != (u16)inv) {
-            *(u8 **)((u8 *)card + 0x88) = 0;
-            cCheck = i;
-            cBlock++;
-        } else {
-            u16 free, j;
-            u32 total = *(u16 *)((u8 *)card + 0x10);
-            p = (u16 *)(b + 10);
-            free = 0;
-            j = 5;
-            while (j < total) {
-                if (*p == 0)
-                    free++;
-                p++;
-                j++;
-            }
-            if (free != *(u16 *)(b + 6)) {
-                *(u8 **)((u8 *)card + 0x88) = 0;
-                cCheck = i;
-                cBlock++;
-            }
-        }
-        i++;
-        bp++;
-    } while (i < 2);
-    if (cBlock == 0) {
-        if (*(u8 **)((u8 *)card + 0x88) == 0) {
-            if (*(s16 *)(block[0] + 4) - *(s16 *)(block[1] + 4) < 0)
-                cCheck = 0;
-            else
-                cCheck = 1;
-            {
-                u8 **chosen = &block[cCheck];
-                *(u8 **)((u8 *)card + 0x88) = *chosen;
-                memcpy(*chosen, block[cCheck ^ 1], 0x2000);
-            }
-        } else {
-            s32 chosen;
-            if (*(u8 **)((u8 *)card + 0x88) == block[0])
-                chosen = 0;
-            else
-                chosen = 1;
-            cCheck = chosen;
-        }
-    }
-    if (alt)
-        *alt = cCheck;
-    return cBlock;
+i=0;cBlock=0;cCheck=0;alt=alternative;bp=block;
+do{
+s32 n;
+u16 *p;
+u16 temp;
+u32 sum,inv;
+b=*(u8**)((u8*)card+0x80)+((i+3)<<13);
+*bp=b;
+n=0x1ffc;n/=2;
+p=(u16*)(b+4);sum=inv=0;
+for(;n>0;n--){temp=*p++;sum+=temp;inv+=~temp;}
+if((u16)sum==0xffff)sum=0;
+if((u16)inv==0xffff)inv=0;
+if(*(u16*)b!=(u16)sum || *(u16*)(b+2)!=(u16)inv){
+*(u8**)((u8*)card+0x88)=0;cCheck=i;cBlock++;
+}else{
+u16 free,j;
+u32 total=*(u16*)((u8*)card+0x10);
+p=(u16*)(b+10);free=0;j=5;
+while(j<total){if(*p==0)free++;p++;j++;}
+if(free!=*(u16*)(b+6)){*(u8**)((u8*)card+0x88)=0;cCheck=i;cBlock++;}
 }
-#pragma global_optimizer reset
-#pragma opt_strength_reduction off
-#pragma opt_common_subs reset
+i++;bp++;
+}while(i<2);
+if(cBlock==0){
+if(*(u8**)((u8*)card+0x88)==0){
+if(*(s16*)(block[0]+4)-*(s16*)(block[1]+4)<0)cCheck=0;else cCheck=1;
+{u8 **chosen=&block[cCheck];
+*(u8**)((u8*)card+0x88)=*chosen;
+memcpy(*chosen,block[cCheck^1],0x2000);}
+}else {s32 chosen;if(*(u8**)((u8*)card+0x88)==block[0])chosen=0;else chosen=1;cCheck=chosen;}
+}
+if(alt)*alt=cCheck;
+return cBlock;
+}
+#pragma pop
 s32 fn_8021A1B8(s32 arg0) {
     s32 temp_r31;
     s32 temp_r0;
@@ -3001,73 +2936,61 @@ return __CARDPutControlBlock(card,-6);
 return 0;
 }
 
-void fn_8021C5D8(s32 chan, s32 result)
-{
-#pragma use_lmw_stmw on
+void fn_8021C5D8(s32 chan, s32 result) {
     extern u16 __CARDBlock[];
     s32 fn_802190A4(s32, u32, u32, void *, void *);
     void *__CARDGetFatBlock(void *);
     s32 __CARDPutControlBlock(void *, s32);
 
     u8 *card;
-    u8 *file;
-    u16 *fat;
-    s32 remaining;
-    s32 blockSize;
-    s32 amount;
-    u16 next;
-    s32 count;
     void (*callback)(s32, s32);
+    u16 *fat;
+    u8 *file;
+    s32 length;
     s32 n;
 
     card = (u8 *)__CARDBlock + chan * 0x110;
-
-    if (result >= 0) {
-        file = *(u8 **)(card + 0xC0);
-        remaining = *(s32 *)(file + 0xC);
-
-        if (remaining < 0) {
-            result = -14;
-        } else {
-            blockSize = *(s32 *)(card + 0xC);
-            n = blockSize - 1;
-            n = ~n;
-            amount = ((*(s32 *)(file + 8) + blockSize) & n) - *(s32 *)(file + 8);
-            *(s32 *)(file + 0xC) = remaining - amount;
-
-            if (*(s32 *)(file + 0xC) > 0) {
-                fat = (u16 *)__CARDGetFatBlock(card);
-                *(s32 *)(file + 8) = *(s32 *)(file + 8) + amount;
-                *(u16 *)(file + 0x10) = fat[*(u16 *)(file + 0x10)];
-                next = *(u16 *)(file + 0x10);
-
-                if (next < 5 || next >= *(u16 *)(card + 0x10)) {
-                    result = -6;
-                } else {
-                    count = *(s32 *)(file + 0xC);
-                    blockSize = *(s32 *)(card + 0xC);
-                    if (count >= blockSize) {
-                        count = blockSize;
-                    }
-                    result = fn_802190A4(
-                        chan,
-                        blockSize * next,
-                        count,
-                        *(void **)(card + 0xB4),
-                        (void *)fn_8021C5D8
-                    );
-                }
-            }
-        }
-
-        if (result < 0) {
-            callback = *(void (**)(s32, s32))(card + 0xD0);
-            *(void **)(card + 0xD0) = 0;
-            __CARDPutControlBlock(card, result);
-            callback(chan, result);
-        }
+    if (result < 0) {
+        goto error;
     }
-#pragma use_lmw_stmw reset
+
+    file = *(u8 **)(card + 0xC0);
+    if (*(s32 *)(file + 0xC) < 0) {
+        result = -14;
+        goto error;
+    }
+
+    n = *(s32 *)(card + 0xC) - 1;
+    n = ~n;
+    length = ((*(s32 *)(file + 8) + *(s32 *)(card + 0xC)) & n) - *(s32 *)(file + 8);
+    *(s32 *)(file + 0xC) -= length;
+    if (*(s32 *)(file + 0xC) <= 0) {
+        goto error;
+    }
+
+    fat = (u16 *)__CARDGetFatBlock(card);
+    *(s32 *)(file + 8) += length;
+    *(u16 *)(file + 0x10) = fat[*(u16 *)(file + 0x10)];
+    if (*(u16 *)(file + 0x10) < 5 || *(u16 *)(file + 0x10) >= *(u16 *)(card + 0x10)) {
+        result = -6;
+        goto error;
+    }
+
+    result = fn_802190A4(
+        chan,
+        *(s32 *)(card + 0xC) * (u32)*(u16 *)(file + 0x10),
+        (*(s32 *)(file + 0xC) < *(s32 *)(card + 0xC)) ? *(s32 *)(file + 0xC) : *(s32 *)(card + 0xC),
+        *(void **)(card + 0xB4),
+        (void *)fn_8021C5D8
+    );
+
+    if (result < 0) {
+    error:
+        callback = *(void (**)(s32, s32))(card + 0xD0);
+        *(void (**)(s32, s32))(card + 0xD0) = 0;
+        __CARDPutControlBlock(card, result);
+        callback(chan, result);
+    }
 }
 
 s32 fn_8021C708(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4)
