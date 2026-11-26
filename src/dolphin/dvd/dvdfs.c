@@ -61,7 +61,7 @@ static inline s32 DVDCheckCancel(s32 resume, u8 *base) {
         ResumeFromHere_803685C0 = resume;
         block = (DVDReadyCommand *)executing_80368598;
         lbl_803685B8 = 0;
-        executing_80368598 = (u8 *)BB2_80339F40 + 0x40;
+        executing_80368598 = base + 0x40;
         block->state = 10;
         if (block->callback != NULL) block->callback(-3, block);
         if (lbl_803685BC != NULL) lbl_803685BC(0, block);
