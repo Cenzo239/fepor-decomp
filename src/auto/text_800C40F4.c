@@ -18125,11 +18125,12 @@ extern "C" void *fn_800E80D8(void *arg0, void *arg1, void *arg2) {
         virtual void v1() = 0;
         virtual void *v2(void *, void *) = 0;
     };
-    Obj *self = (Obj *)arg0;
-    void *a = arg1;
-    void *result = String_CStr(arg2);
-    result = self->v2(String_CStr(a), result);
-    if (result != 0) fn_800DF670(result);
+    void *result;
+
+    result = ((Obj *)arg0)->v2(String_CStr(arg1), String_CStr(arg2));
+    if (result != NULL) {
+        fn_800DF670(result);
+    }
     return result;
 }
 extern "C" void fn_800E8154(void *arg0) {
