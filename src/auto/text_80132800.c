@@ -1786,12 +1786,11 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
     fn_8008AB7C(arg1 + (arg3 >> 1), arg2 + (arg4 >> 1), arg3, 0x17, 0x19, 0x4C, arg5);
 }
 
-static inline s32 Fn_80134C24_Half(s16 rowH, s32 t) {
-    return (s16)(((s32)rowH - t) >> 1);
-}
-
 #pragma use_lmw_stmw on
 #pragma scheduling on
+#pragma global_optimizer off
+#pragma optimization_level 3
+#pragma peephole off
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
