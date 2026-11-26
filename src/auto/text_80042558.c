@@ -1,5 +1,52 @@
 /* Functions from 0x800330F8 to 0x80055C70, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 DirFromIndex_80042558(s32 i)
+{
+    switch (i) {
+    case 0: return 1;
+    case 1: return 2;
+    case 2: return 4;
+    case 3: return 8;
+    default: return 16;
+    }
+}
+
+static inline s32 DirGetDX_80042558(u8 dir)
+{
+    switch (dir) {
+    case 1: return -1;
+    case 2: return 1;
+    default: return 0;
+    }
+}
+
+static inline s32 DirGetDY_80042558(u8 dir)
+{
+    switch (dir) {
+    case 4: return 1;
+    case 8: return -1;
+    default: return 0;
+    }
+}
+
+static inline u8 *FindMapObj_80042558(void *arg0, s32 x, s32 y, u32 forbid, u32 require)
+{
+    s32 i;
+    s32 count = M2C_FIELD(arg0, s16 *, 6);
+    for (i = count - 1; i >= 0; i--) {
+        u8 *base = M2C_FIELD(arg0, u8 **, 0x14);
+        u8 *ent = base + i * 0xB4;
+        u32 flags = M2C_FIELD(M2C_FIELD(ent, u8 **, 0x10), u32 *, 0xBC);
+        u8 hit;
+        if (forbid != 0 && (flags & forbid)) continue;
+        if ((flags & require) != require) continue;
+        hit = (x >= (s8)ent[4] && x <= (s8)ent[6] && y >= (s8)ent[5] && y <= (s8)ent[7]);
+        if (hit) {
+            return base + i * 0xB4;
+        }
+    }
+    return 0;
+}
 extern f64 lbl_80368F90;
 static inline void Map_WriteColorVertex(f32 x, f32 y, f32 z, const u8 *color) {
 u8 r=color[0],g=color[1],b=color[2],a=color[3];
