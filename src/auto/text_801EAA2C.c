@@ -52,9 +52,12 @@ static inline void AramCache_ReplaceSlot(AramAllocSlot *cell, AramAllocSlot *bes
     else gAramFreeList = cell;
 }
 static inline void *AramCache_UnlinkSlot(void *head, AramAllocSlot *node) {
-    if (node->next) node->next->prev = node->prev;
-    if (node->prev) {
-        node->prev->next = node->next;
+    AramAllocSlot *prev;
+    AramAllocSlot *next = node->next;
+    if (next) next->prev = node->prev;
+    prev = node->prev;
+    if (prev) {
+        prev->next = node->next;
         return head;
     }
     return node->next;
@@ -1744,6 +1747,8 @@ s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     ARQPostRequest(cell, 0, 0, 0, buf, *(s32 *)((u8 *)cell + 0x68), *(s32 *)((u8 *)cell + 0x64), &fn_801ED800);
     return 1;
 }
+#pragma push
+#pragma opt_common_subs off
 void fn_801ED12C(s32 arg0) {
     void fn_801EC7B8(void);
     void *AramCache_InsertFree(void *, void *);
@@ -1822,7 +1827,7 @@ split:
 insert:
     gAramUsedList = AramCache_InsertUsed(best, gAramUsedList);
 }
-
+#pragma pop
 void fn_801ED3D4(void)
 {
   extern u8 gAramSlotPool[];
