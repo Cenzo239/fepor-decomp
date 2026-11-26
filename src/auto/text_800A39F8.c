@@ -1,14 +1,6 @@
 /* Functions from 0x800A39F8 to 0x800A9384, found by decomp-toolkit. */
 #include "common.h"
 
-static inline s32 Movie_FrameDataOffset(u32 count) {
-    return count * 4 + 8;
-}
-
-static inline s32 Movie_FrameData(void *base, s32 offset) {
-    return (s32)base + offset;
-}
-
 static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
     s32 fn_8023C56C(s32, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
@@ -461,7 +453,7 @@ s32 fn_800A424C(s32 arg0) {
     u8 *ready;
     u8 *buffers;
     s32 r27;
-    u32 r26;
+    s32 r26;
     s32 *r25;
     struct Obj *r23;
     s32 r24;
@@ -472,8 +464,8 @@ s32 fn_800A424C(s32 arg0) {
     ready = (u8 *)&p->slotA[0].flag;
     if (*(s32 *)(ready + p->fb4 * 12) != 0) {
     buffers = (u8 *)&p->slotA[0].ptr;
-    r25 = (s32 *)((u8 *)*(void **)(buffers + p->fb4 * 12) + 8);
     r26 = p->f6c * 4 + 8;
+    r25 = (s32 *)((u8 *)*(void **)(buffers + p->fb4 * 12) + 8);
     r26 = (s32)*(void **)(buffers + p->fb4 * 12) + r26;
     if (p->fa7 != 0) {
         if (arg0 < 0 || (u32)arg0 >= (u32)p->f98) {
