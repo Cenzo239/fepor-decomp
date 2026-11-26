@@ -36,6 +36,8 @@ extern u8 Proc_GActorNodeLink[16];
 
 #pragma use_lmw_stmw reset
 
+static inline f64 HermTail(f64 t0, f64 h, f64 b) { return h * t0 + b; }
+
 #pragma optimization_level 3
 
 f32 Math_Hermite(f32 farg0, f32 farg1, f32 farg2, f32 farg3, f32 farg4)
