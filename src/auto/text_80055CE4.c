@@ -367,10 +367,10 @@ void fn_800566D4(void *arg0) {
     void GXSetNumTevStages(s32);
     void fn_802245D8(s32, s32, s32, s32);
     void GXSetZMode(s32, s32, s32);
-    extern f32 gF32_0;
-    extern f32 lbl_8036912C;
-    extern f32 lbl_80369138;
-    extern f32 lbl_8036913C;
+    extern const f32 gF32_0;
+    extern const f32 lbl_8036912C;
+    extern const f32 lbl_80369138;
+    extern const f32 lbl_8036913C;
     u8 sp8[0x28];
     void *tex;
     u8 alpha;
