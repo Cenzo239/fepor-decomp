@@ -79,8 +79,8 @@ static inline s32 count_trailing_zero(f64 x) {
         u32 xbits;
         s32 m;
         s32 k;
-        n = 0;
         j = 32;
+        n = 0;
         m = 16;
         xbits = 0xFFFFU;
         k = m;
