@@ -1,7 +1,7 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
-static inline u32 FileCache_AllocFromHeap(s32 drive, u32 size, char *name) {
+static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
     u32 fn_800C44F4(s32);
     u32 fn_800C4604(s32, s32, char *, s32);
     u32 strlen(char *);
@@ -1683,32 +1683,10 @@ void fn_8005E12C(u8 *arg0, char *arg1, u16 arg2) {
         *(u32 *)(arg0 + 0x38) = fn_800C45B8(-*(s32 *)(arg0 + 0x3C), lbl_8026B330 + 5, 0);
     } else {
         if (*(u16 *)(arg0 + 0x30) & 2) {
-            drive = (s8)arg0[0x29];
-            size = *(s32 *)(arg0 + 0x3C) + 1;
-            if (fn_800C44F4(drive) < (u32)size) {
-                res = 0;
-            } else {
-                off = (s32)strlen(arg1) - 0xF;
-                if (off < 0) {
-                    off = 0;
-                }
-                res = fn_800C4604(drive, size, arg1 + off, size);
-            }
-            *(u32 *)(arg0 + 0x38) = res;
+            *(u32 *)(arg0 + 0x38) = FileCache_AllocFromHeap(*(s8 *)(arg0+0x29), *(u32 *)(arg0+0x3C)+1, arg1);
             *(u8 *)(*(u8 **)(arg0 + 0x3C) + *(u32 *)(arg0 + 0x38)) = 0;
         } else {
-            drive = (s8)arg0[0x29];
-            size = *(s32 *)(arg0 + 0x3C);
-            if (fn_800C44F4(drive) < (u32)size) {
-                res = 0;
-            } else {
-                off = (s32)strlen(arg1) - 0xF;
-                if (off < 0) {
-                    off = 0;
-                }
-                res = fn_800C4604(drive, size, arg1 + off, size);
-            }
-            *(u32 *)(arg0 + 0x38) = res;
+            *(u32 *)(arg0 + 0x38) = FileCache_AllocFromHeap(*(s8 *)(arg0+0x29), *(u32 *)(arg0+0x3C), arg1);
         }
         if (*(u32 *)(arg0 + 0x38) == 0) {
             *(u32 *)(arg0 + 0x38) = fn_8005E594((s8)arg0[0x29], *(s32 *)(arg0 + 0x3C), arg1);
