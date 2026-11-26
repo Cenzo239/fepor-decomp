@@ -3620,14 +3620,6 @@ void Ui_DrawTextLabel(void *label, s32 alpha) {
 }
 
 #pragma use_lmw_stmw on
-static inline void PackColor8010A704(s32 *slot, u8 *obj, u8 alpha, s32 base) {
-    u8 *p = (u8 *)slot;
-    p[0] = obj[base];
-    p[1] = obj[base + 1];
-    p[2] = obj[base + 2];
-    p[3] = (u8)((alpha * obj[base + 3]) >> 8);
-}
-
 void fn_8010A704(void *arg0, u8 arg1) {
     void Prim2D_SetCornerColors(s32 *, s32 *, s32 *, s32 *);
     void Prim2D_EmitQuad(void);
@@ -3651,7 +3643,6 @@ void fn_8010A704(void *arg0, u8 arg1) {
     s32 sp10;
     s32 spC;
     s32 sp8;
-    u8 *p;
     u8 alpha;
     s16 a;
     s16 b;
@@ -3681,26 +3672,10 @@ void fn_8010A704(void *arg0, u8 arg1) {
     sp20 = lbl_8036C4DC;
     sp1C = lbl_8036C4E0;
     sp18 = lbl_8036C4E4;
-    p = (u8 *)&sp24;
-    p[0] = ((u8 *)arg0)[0x24];
-    p[1] = ((u8 *)arg0)[0x25];
-    p[2] = ((u8 *)arg0)[0x26];
-    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x27]);
-    p = (u8 *)&sp20;
-    p[0] = ((u8 *)arg0)[0x28];
-    p[1] = ((u8 *)arg0)[0x29];
-    p[2] = ((u8 *)arg0)[0x2A];
-    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x2B]);
-    p = (u8 *)&sp1C;
-    p[0] = ((u8 *)arg0)[0x2C];
-    p[1] = ((u8 *)arg0)[0x2D];
-    p[2] = ((u8 *)arg0)[0x2E];
-    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x2F]);
-    p = (u8 *)&sp18;
-    p[0] = ((u8 *)arg0)[0x30];
-    p[1] = ((u8 *)arg0)[0x31];
-    p[2] = ((u8 *)arg0)[0x32];
-    p[3] = AlphaMul8010A704(alpha, ((u8 *)arg0)[0x33]);
+    PackColor8010A704(&sp24, (u8 *)arg0, alpha, 0x24);
+    PackColor8010A704(&sp20, (u8 *)arg0, alpha, 0x28);
+    PackColor8010A704(&sp1C, (u8 *)arg0, alpha, 0x2C);
+    PackColor8010A704(&sp18, (u8 *)arg0, alpha, 0x30);
     Prim2D_AddPrim(3);
     Prim2D_SetPosCorners(
         (f32)*(s16 *)((u8 *)arg0 + 0x14),
