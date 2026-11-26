@@ -12,6 +12,13 @@ typedef struct Vec3_800193D8 {
     f32 z;
 } Vec3_800193D8;
 
+static inline u8 CamPath_FindInitialKey(s32 count, u8 **list, f32 time) {
+ s32 i; u8 *keys;
+ if (count == 0) return 0;
+ keys = *list;
+ for (i=count; i>0; --i,keys+=0x14) if ((f32)*(s32 *)(keys+4)==time) return 1;
+ return 0;
+}
 static inline u8 CamPath_HasInitialKey(s32 count, u8 *keys) {
     s32 i;
     extern f32 lbl_80368C88;
@@ -638,6 +645,8 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma push
+#pragma optimization_level 3
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
@@ -650,9 +659,9 @@ void fn_800180F4(void *arg0, u8 arg1) {
     extern f32 lbl_80368C8C;
     extern f64 lbl_80368C98;
 
+    s32 sp2C[3];
     s32 sp20[3];
     s32 sp14[3];
-    s32 sp2C[3];
     s32 sp8[3];
     void *cam;
     u8 *dst;
@@ -662,6 +671,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     u8 idx;
     void *walk;
     void *slot;
+    f32 f1;
     f32 f2;
     f32 f0;
     s32 t;
@@ -671,11 +681,12 @@ void fn_800180F4(void *arg0, u8 arg1) {
     *(s32 *)((u8 *)arg0 + 0x30) = arg1;
     fn_80018594(arg0);
     dst = lbl_802CA434;
-    f0 = lbl_80368C8C;
+    f1 = lbl_80368CA0;
     f2 = lbl_80368C88;
+    f0 = lbl_80368C8C;
     found = 0;
-    *(f32 *)(dst + 0x28) = lbl_80368CA0;
-    *(f32 *)(dst + 0x34) = lbl_80368CA0;
+    *(f32 *)(dst + 0x28) = f1;
+    *(f32 *)(dst + 0x34) = f1;
     *(f32 *)(dst + 0x58) = f2;
     *(f32 *)(dst + 0x5c) = f2;
     *(f32 *)(dst + 0x60) = f2;
@@ -696,20 +707,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
         *(f32 *)(dst + 0x44) = *(f32 *)&sp20[1];
         *(f32 *)(dst + 0x48) = *(f32 *)&sp20[2];
     } else {
-        if (c45 == 0) {
-            found = 0;
-        } else {
-            walk = *(void **)((u8 *)arg0 + 0x48);
-            found = 0;
-            for (i = c45; i > 0; i--) {
-                t = *(s32 *)((u8 *)walk + 4);
-                if ((f32)t == f2) {
-                    found = 1;
-                    break;
-                }
-                walk = (u8 *)walk + 0x14;
-            }
-        }
+        found = CamPath_HasInitialKey(c45, *(u8 **)((u8 *)arg0 + 0x48));
         if ((u8)found == 0) {
             idx = *((u8 *)arg0 + 0x44);
             found = 0;
@@ -717,14 +715,15 @@ void fn_800180F4(void *arg0, u8 arg1) {
             *((u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14) = (u8)found;
             sp14[1] = *(s32 *)((u8 *)cam + 0x44);
             sp14[2] = *(s32 *)((u8 *)cam + 0x48);
+            idx = *((u8 *)arg0 + 0x44);
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
             *(s32 *)((u8 *)slot + 4) = found;
             idx = *((u8 *)arg0 + 0x44);
-            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14);
-            *(f32 *)((u8 *)slot + 8) = *(f32 *)&sp14[0];
-            *(f32 *)((u8 *)slot + 0xc) = *(f32 *)&sp14[1];
-            *(f32 *)((u8 *)slot + 0x10) = *(f32 *)&sp14[2];
-            *((u8 *)arg0 + 0x44) = idx + 1;
+            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
+            *(f32 *)((u8 *)slot + 0) = *(f32 *)&sp14[0];
+            *(f32 *)((u8 *)slot + 4) = *(f32 *)&sp14[1];
+            *(f32 *)((u8 *)slot + 8) = *(f32 *)&sp14[2];
+            *((u8 *)arg0 + 0x44) += 1;
         }
     }
     c46 = *((u8 *)arg0 + 0x46);
@@ -741,21 +740,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
         *(f32 *)(dst + 0xc) = tf;
         *(f32 *)(dst + 0x18) = tf;
     } else {
-        if (c46 == 0) {
-            found = 0;
-        } else {
-            walk = *(void **)((u8 *)arg0 + 0x4c);
-            found = 0;
-            f0 = lbl_80368C88;
-            for (i = c46; i > 0; i--) {
-                t = *(s32 *)((u8 *)walk + 4);
-                if ((f32)t == f0) {
-                    found = 1;
-                    break;
-                }
-                walk = (u8 *)walk + 0x14;
-            }
-        }
+        found = CamPath_HasInitialKey(c46, *(u8 **)((u8 *)arg0 + 0x4c));
         if ((u8)found == 0) {
             f32 fx, fy, fz;
             idx = *((u8 *)arg0 + 0x44);
@@ -766,17 +751,18 @@ void fn_800180F4(void *arg0, u8 arg1) {
             sp2C[0] = *(s32 *)&fx;
             sp2C[1] = *(s32 *)&fy;
             sp2C[2] = *(s32 *)&fz;
+            idx = *((u8 *)arg0 + 0x44);
             slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + idx * 0x14;
             *(s32 *)((u8 *)slot + 4) = 0;
             idx = *((u8 *)arg0 + 0x44);
             sp8[0] = sp2C[0];
             sp8[1] = sp2C[1];
             sp8[2] = sp2C[2];
-            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14);
-            *(f32 *)((u8 *)slot + 8) = *(f32 *)&sp8[0];
-            *(f32 *)((u8 *)slot + 0xc) = *(f32 *)&sp8[1];
-            *(f32 *)((u8 *)slot + 0x10) = *(f32 *)&sp8[2];
-            *((u8 *)arg0 + 0x44) = idx + 1;
+            slot = (u8 *)*(void **)((u8 *)arg0 + 0x40) + (idx * 0x14) + 8;
+            *(f32 *)((u8 *)slot + 0) = *(f32 *)&sp8[0];
+            *(f32 *)((u8 *)slot + 4) = *(f32 *)&sp8[1];
+            *(f32 *)((u8 *)slot + 8) = *(f32 *)&sp8[2];
+            *((u8 *)arg0 + 0x44) += 1;
         }
     }
     fn_80018594(arg0);
@@ -785,7 +771,7 @@ void fn_800180F4(void *arg0, u8 arg1) {
     CamPath_Apply(arg0, lbl_80368C88);
     Process_Goto(arg0, 0);
 }
-
+#pragma pop
 void fn_8001840C(void *arg0)
 {
     extern s32 gActiveCam;
