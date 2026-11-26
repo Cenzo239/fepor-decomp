@@ -1,6 +1,21 @@
 /* Functions from 0x8005AE20 to 0x80072408, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline u8 FileCache_HasExtension(char *name, char *ext) {
+    u8 c;
+    char *p = name;
+    while ((s8)(c = *p) != 0) {
+        if ((s8)c == '.') break;
+        ++p;
+    }
+    while ((s8)(c = *p) != 0) {
+        if ((s8)c != (s8)*ext) return 0;
+        ++ext;
+        ++p;
+        if ((s8)*ext == 0 && (s8)*p == 0) return 1;
+    }
+    return 0;
+}
 #pragma cplusplus on
 struct UiSelectionHandler {
 virtual void v0() = 0;
