@@ -645,6 +645,8 @@ void fn_8006FC50(void *arg0) {
 #pragma cplusplus reset
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_8006FE44(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     s32 Text_MeasureWidth(void *, s32, f32);
@@ -682,15 +684,16 @@ void fn_8006FE44(void *arg0, void *arg1) {
     u8 *group;
     u8 *self;
     s16 y;
-    s8 c;
-    s32 j;
-    s32 t26;
-    s32 i;
-    s16 lineW;
+    s32 c;
     s16 step;
+    s32 i;
+    s32 t26;
+    s32 j;
+    s16 lineW;
     s16 maxLine;
     u8 *text;
     s16 w;
+    u8 ch;
 
     i = 0;
     self = (u8 *)arg0;
@@ -698,9 +701,8 @@ void fn_8006FE44(void *arg0, void *arg1) {
     *(s16 *)((u8 *)arg0 + 8) = i;
     goto check1;
 loop1:
-    t26 = (s32)GfxEnt_Get(group[i + 0x40]);
     w = (s16)Text_MeasureWidth(
-        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4((void *)t26),
+        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4(GfxEnt_Get(group[i + 0x40])),
         -1, 1.0f);
     if (w >= *(s16 *)(self + 8)) {
         *(s16 *)(self + 8) = w;
@@ -713,13 +715,16 @@ check1:
     }
     w = ((Obj *)arg0)->v18();
     c = (s8)t26;
-    step = (s16)((s32)w / ((s32)c + 1));
+    step = (s16)((s32)w / (c + 1));
     t26 = step;
     y = ((Obj *)arg0)->v17();
     j = 0;
     goto check2;
 loop2:
-    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = t26;
+    {
+        u8 *ent = (u8 *)GfxEnt_Get(group[j + 0x40]);
+        *(s16 *)(ent + 0x30) = t26;
+    }
     *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
     t26 = t26 + step;
     j += 1;
@@ -730,31 +735,27 @@ check2:
     lineW = 0;
     maxLine = -1;
     text = (u8 *)((Obj *)arg0)->v0();
-    goto check3;
-loop3:
-    switch ((s8)*text) {
-    case 10:
-        if (lineW > maxLine) {
-            maxLine = lineW;
+    while ((s8)(ch = *text) != 0) {
+        switch ((s8)ch) {
+        case 10:
+            if (lineW > maxLine) {
+                maxLine = lineW;
+            }
+            lineW = 0;
+            text += 1;
+            break;
+        default:
+            lineW += fn_80010428(&text, -1, 1.0f);
+            break;
         }
-        lineW = 0;
-        text += 1;
-        break;
-    default:
-        lineW += fn_80010428(&text, -1, 1.0f);
-        break;
-    }
-check3:
-    if ((s8)*text != 0) {
-        goto loop3;
     }
     if (lineW > maxLine) {
         maxLine = lineW;
     }
     *(s16 *)(self + 0x10) = (s16)((((Obj *)arg0)->v18() - maxLine) >> 1);
-#pragma cplusplus reset
+#pragma cplusplus off
 }
-
+#pragma pop
 void MsgWin_OpenSingle(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     extern u32 lbl_80311CA8[];
     extern s8 lbl_80366DE8;
@@ -988,8 +989,10 @@ extern "C" void fn_800703DC(void *arg0, void *arg1) {
         Ui_PlaySeCue(lbl_8026BB84 + 0x53, 0x64);
     }
 }
-#pragma cplusplus reset
-void fn_800704F0(void *arg0, void *arg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma cplusplus on
+extern "C" void fn_800704F0(void *arg0, void *arg1) {
 void *GfxEnt_Get(s32);
 s32 Text_MeasureHeight(s32,f32);
 void Prim2D_Begin(void);
@@ -1028,6 +1031,7 @@ s32 sx;
 s16 sy;
 s32 height,pulse;
 s32 iconX,iconY;
+s16 barW,barH;
 row=obj;
 row+=*(s8*)(row+0x62);
 ent=GfxEnt_Get(row[0x40]);
@@ -1052,13 +1056,14 @@ iconY=*(s16*)(obj+0x3A);
 pulse=0;
 if(!obj[0x2D]&&!obj[0x2E]) pulse=1;
 Ui_DrawRouteIconEx(iconX,iconY,pulse);
-sy=(s16)(*(s16*)(self+0x8)+0x40)-(s16)(sx-sx);
-sx=(s16)Text_MeasureHeight(-1,lbl_803692E0);
+barW=(s16)(*(s16*)(self+0x8)+0x40);
+barH=(s16)Text_MeasureHeight(-1,lbl_803692E0);
 Prim2D_Begin();Prim2D_AddZ(lbl_803692F4);Prim2D_PrepareTex();
-fn_8008AB7C(*(s16*)(obj+0x38)+(sy>>1)-0x10,*(s16*)(obj+0x3A)+(sx>>1),sy,0x18,0x19,0x4B,1);
-#pragma cplusplus reset
+fn_8008AB7C(*(s16*)(obj+0x38)+(barW>>1)-0x10,*(s16*)(obj+0x3A)+(barH>>1),barW,0x18,0x19,0x4B,1);
+#pragma cplusplus off
 }
-#pragma optimization_level reset
+#pragma pop
+#pragma cplusplus off
 void fn_80070678(void *arg0) {
     void Ui_DrawMsgPanelBg(s32, s32);
     void Prim2D_Begin(void);
