@@ -132,7 +132,7 @@ typedef struct { s32 a; s32 b; } PairAB;
 typedef struct { s32 *a; s32 b; } SortIteratorFields;
 typedef struct HeapC55 HeapC55;
 struct HeapC55 { u32 unk0, unk4; HeapC55 *prev, *next; u32 size; HeapC55 *owner, *free; u32 extent; };
-static inline void HeapC55_PrintList(HeapC55 **table) { void DebugPrint(void *,...); extern u8 lbl_802700D8[]; s32 i; u32 ext; HeapC55 *h;
+static inline void HeapC55_PrintList(HeapC55 **start) { void DebugPrint(void *,...); extern u8 lbl_802700D8[]; HeapC55 *h; HeapC55 **table; u32 ext; s32 i; table=start;
 for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
 DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
 DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
