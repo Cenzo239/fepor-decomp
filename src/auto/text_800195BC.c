@@ -1,6 +1,16 @@
 /* Functions from 0x800195BC to 0x8001EE58, found by decomp-toolkit. */
 #include "common.h"
 
+static inline u32 Bin_ReadU32In(u8 **cursor) {
+    u8 *p = *cursor;
+    u32 b2, b1, b0, b3, value;
+    if (!p) return 0;
+    b2 = p[2]; b1 = p[1]; b0 = p[0]; b3 = p[3];
+    value = (b0 << 24) + (b1 << 16) + (b2 << 8) + b3;
+    *cursor = p + 4;
+    return value;
+}
+
 void *fn_800195BC(void) {
 extern u8 lbl_80268330[];
 return lbl_80268330+0x1A3;
@@ -748,8 +758,8 @@ void fn_8001AC18(void) {
     extern void *lbl_803671D4;
 
     s32 count;
-    void *rec;
     u8 *ptr;
+    void *rec;
     u8 *data;
     s32 i;
     u32 v;
@@ -762,8 +772,8 @@ void fn_8001AC18(void) {
     count = BE32(data);
     ptr = data + 4;
     lbl_803671D0 = count;
-    rec = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A8A2C, 0, 0x64, count);
-    lbl_803671D4 = rec;
+    lbl_803671D4 = fn_8022C414(Heap_AllocRaw(count * 0x64 + 0x10), fn_800A8A2C, 0, 0x64, count);
+    rec = lbl_803671D4;
 
     for (i = 0; i < lbl_803671D0; i++) {
         *(s16 *)((u8 *)rec + 0x18) = i + 1;
