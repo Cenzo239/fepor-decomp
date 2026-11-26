@@ -10589,6 +10589,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
 extern "C" void PSMTXRotRad(void *, s32, f32);
 extern "C" void fn_802029C4(void *, f32 *, f32 *);
 #pragma cplusplus reset
+struct DirectionVector { f32 x, y, z; };
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -14298,7 +14299,7 @@ extern "C" void fn_800E18B4(s32 *begin, s32 *end, SortIterator out, SortCompare 
       }
       {
         SortCompare c(comp);
-        s32 a_tmp0[2], a_tmp[2], b_tmp0[2], b_tmp[2];
+        s32 b_tmp0[2], b_tmp[2], a_tmp0[2], a_tmp[2];
         *(SortIterator *)b_tmp0 = out;
         ((SortIterator *)b_tmp0)->ptr += n;
         *(SortIterator *)b_tmp = *(SortIterator *)b_tmp0;
@@ -17042,6 +17043,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     } st;
 
     void *pSrc;
+    void *pVec;
     u32 room;
     void *newData;
     void *end;
@@ -17067,6 +17069,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     u32 one;
     u32 remaining;
 
+    pVec = vec;
     pPos = pos;
     cnt = count;
     pSrc = src;
@@ -17076,17 +17079,17 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     }
 
     if (cnt > 0x09249249U ||
-        *(u32 *)((u8 *)vec + 4) > 0x09249249U - cnt) {
+        *(u32 *)((u8 *)pVec + 4) > 0x09249249U - cnt) {
         fprintf(__files + 0xA0, lbl_802720E0 + 0x9A);
         abort();
     }
 
-    size = *(u32 *)((u8 *)vec + 4);
+    size = *(u32 *)((u8 *)pVec + 4);
     need = size + cnt;
 
-    if (need <= *(u32 *)vec) {
-        end = *(u8 **)((u8 *)vec + 8) + size * 0x1C;
-        room = (u32)(((s32)end - (s32)pPos) / 28);
+    if (need <= *(u32 *)pVec) {
+        end = *(u8 **)((u8 *)pVec + 8) + size * 0x1C;
+        room = (u32)(((char (*)[28])end) - ((char (*)[28])pPos));
 
         if (cnt > room) {
             dst = end;
@@ -17110,7 +17113,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 }
                 dst = (u8 *)dst + 0x1C;
                 cnt -= 1;
-                *(u32 *)((u8 *)vec + 4) += 1;
+                *(u32 *)((u8 *)pVec + 4) += 1;
             }
 
             cur = pPos;
@@ -17134,7 +17137,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 }
                 cur = (u8 *)cur + 0x1C;
                 dst = (u8 *)dst + 0x1C;
-                *(u32 *)((u8 *)vec + 4) += 1;
+                *(u32 *)((u8 *)pVec + 4) += 1;
             }
         } else {
             bytes = cnt * 0x1C;
@@ -17161,7 +17164,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
                 }
                 cur = (u8 *)cur + 0x1C;
                 dst = (u8 *)dst + 0x1C;
-                *(u32 *)((u8 *)vec + 4) += 1;
+                *(u32 *)((u8 *)pVec + 4) += 1;
             }
 
             n = (room - cnt) * 0x1C;
@@ -17253,7 +17256,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         st.data = 0;
 
         one = 1;
-        cap = *(u32 *)vec;
+        cap = *(u32 *)pVec;
         if (cap != 0) {
             one = cap;
         }
@@ -17277,8 +17280,8 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
         st.cap = cap;
         dst = newData;
 
-        cur = *(void **)((u8 *)vec + 8);
-        end = (u8 *)cur + *(u32 *)((u8 *)vec + 4) * 0x1C;
+        cur = *(void **)((u8 *)pVec + 8);
+        end = (u8 *)cur + *(u32 *)((u8 *)pVec + 4) * 0x1C;
 
         while ((u8 *)cur < (u8 *)pPos) {
             if (dst != 0) {
@@ -17349,18 +17352,18 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
             st.size += 1;
         }
 
-        if (&st.cap != (u32 *)vec) {
+        if (&st.cap != (u32 *)pVec) {
             u32 temp;
             void *ptr;
             temp = st.cap;
-            st.cap = *(u32 *)vec;
-            *(u32 *)vec = temp;
+            st.cap = *(u32 *)pVec;
+            *(u32 *)pVec = temp;
             ptr = st.data;
-            st.data = *(void **)((u8 *)vec + 8);
-            *(void **)((u8 *)vec + 8) = ptr;
+            st.data = *(void **)((u8 *)pVec + 8);
+            *(void **)((u8 *)pVec + 8) = ptr;
             temp = st.size;
-            st.size = *(u32 *)((u8 *)vec + 4);
-            *(u32 *)((u8 *)vec + 4) = temp;
+            st.size = *(u32 *)((u8 *)pVec + 4);
+            *(u32 *)((u8 *)pVec + 4) = temp;
         }
 
         fn_800E6DC8(&st.cap);
