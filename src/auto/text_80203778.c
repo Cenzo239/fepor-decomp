@@ -2774,63 +2774,26 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     extern s32 lbl_803684BC;
     extern s32 OSFontCodeToIndex(u16, u16);
 
-    u8 *ptr;
-    s32 *out;
-    u32 code;
-    s32 flag1;
-    s32 flag2;
+    u16 code = 0;
     s32 font;
-    s32 flag3;
 
-    ptr = arg1;
-    out = arg3;
-    code = 0;
     switch (arg0) {
     case 0:
         font = lbl_803684B8;
-        {
-            u8 b0 = *ptr;
-            code = b0;
-            if (b0 != 0) {
-                ptr++;
-            }
+        code = *arg1;
+        if (code != 0) {
+            arg1++;
         }
         break;
     case 1:
         font = lbl_803684BC;
-        {
-            u8 b0 = *ptr;
-            code = b0;
-            if (b0 != 0) {
-                ptr++;
-                flag1 = 1;
-                flag2 = 0;
-                if ((u8)code >= 0x81 && (u8)code <= 0x9f) {
-                    flag2 = 1;
-                }
-                if (flag2 == 0) {
-                    flag2 = 0;
-                    if ((u8)code >= 0xe0 && (u8)code <= 0xfc) {
-                        flag2 = 1;
-                    }
-                    if (flag2 == 0) {
-                        flag1 = 0;
-                    }
-                }
-                if (flag1 != 0) {
-                    u8 b1 = *ptr;
-                    flag3 = 0;
-                    flag1 = 0;
-                    if (b1 >= 0x40 && b1 <= 0xfc) {
-                        flag1 = 1;
-                    }
-                    if (flag1 != 0 && b1 != 0x7f) {
-                        flag3 = 1;
-                    }
-                    if (flag3 != 0) {
-                        code = (code << 8) | *ptr;
-                        ptr++;
-                    }
+        code = *arg1;
+        if (code != 0) {
+            arg1++;
+            if ((((u8)code >= 0x81 && (u8)code <= 0x9f) || ((u8)code >= 0xe0 && (u8)code <= 0xfc)) != 0) {
+                u8 b1 = *arg1;
+                if (((b1 >= 0x40 && b1 <= 0xfc) && (b1 != 0x7f)) != 0) {
+                    code = (u16)((code << 8) | *arg1++);
                 }
             }
         }
@@ -2838,8 +2801,8 @@ u8 *fn_80207768(u16 arg0, u8 *arg1, s32 *arg2, s32 *arg3) {
     }
 
     *arg2 = font;
-    *out = OSFontCodeToIndex(arg0, code);
-    return ptr;
+    *arg3 = OSFontCodeToIndex(arg0, code);
+    return arg1;
 }
 
 #pragma global_optimizer on
@@ -3409,41 +3372,43 @@ u32 RealMode(u32 addr)
     return addr & 0x3FFFFFFF;
 }
 
-void __OSInitMemoryProtection(void) {
+#pragma push
 #pragma inline_depth(0)
-#pragma peephole off
-#pragma opt_common_subs off
-extern u8 ResetFunctionInfo_8029CE28[];
-void OSRegisterResetFunction(void *);
-void DCInvalidateRange(void *, u32);
-void Config24MB(void);
-void Config48MB(void);
-u32 size;
-s32 level;
-size=*(u32*)0x800000F0;
-level=OSDisableInterrupts();
-OS_MEMRegs[0x20/2]=0;
-OS_MEMRegs[0x10/2]=0xFF;
-__OSMaskInterrupts(0xF0000000);
-__OSSetInterruptHandler(0,MEMIntrruptHandler);
-__OSSetInterruptHandler(1,MEMIntrruptHandler);
-__OSSetInterruptHandler(2,MEMIntrruptHandler);
-__OSSetInterruptHandler(3,MEMIntrruptHandler);
-__OSSetInterruptHandler(4,MEMIntrruptHandler);
-OSRegisterResetFunction(ResetFunctionInfo_8029CE28);
-if(*(u32*)0x800000F0 < *(u32*)0x80000028 && *(u32*)0x800000F0 == 0x1800000) {
-DCInvalidateRange((void*)0x81800000,0x1800000);
-OS_MEMRegs[0x28/2]=2;
-}
-if(size<=0x1800000) RealMode((u32)Config24MB);
-else if(size<=0x3000000) RealMode((u32)Config48MB);
-__OSUnmaskInterrupts(0x08000000);
-OSRestoreInterrupts(level);
-#pragma inline_depth reset
-#pragma peephole reset
-#pragma opt_common_subs reset
-}
+#pragma optimization_level 2
+void __OSInitMemoryProtection(void) {
+    u32 padding[12];
+    u32 simulatedSize;
+    s32 enabled;
+    extern u8 ResetFunctionInfo_8029CE28[];
+    void OSRegisterResetFunction(void *);
+    void DCInvalidateRange(void *, u32);
+    void Config24MB(void);
+    void Config48MB(void);
 
+    simulatedSize = *(u32 *)0x800000F0;
+    enabled = OSDisableInterrupts();
+    OS_MEMRegs[0x20 / 2] = 0;
+    OS_MEMRegs[0x10 / 2] = 0xFF;
+    __OSMaskInterrupts(0xF0000000);
+    __OSSetInterruptHandler(0, MEMIntrruptHandler);
+    __OSSetInterruptHandler(1, MEMIntrruptHandler);
+    __OSSetInterruptHandler(2, MEMIntrruptHandler);
+    __OSSetInterruptHandler(3, MEMIntrruptHandler);
+    __OSSetInterruptHandler(4, MEMIntrruptHandler);
+    OSRegisterResetFunction(ResetFunctionInfo_8029CE28);
+    if (*(u32 *)0x800000F0 < *(u32 *)0x80000028 && *(u32 *)0x800000F0 == 0x1800000) {
+        DCInvalidateRange((void *)0x81800000, 0x1800000);
+        OS_MEMRegs[0x28 / 2] = 2;
+    }
+    if (simulatedSize <= 0x1800000) {
+        RealMode((u32)Config24MB);
+    } else if (simulatedSize <= 0x3000000) {
+        RealMode((u32)Config48MB);
+    }
+    __OSUnmaskInterrupts(0x08000000);
+    OSRestoreInterrupts(enabled);
+}
+#pragma pop
 void fn_802086A0(void *arg0) {
     void fn_8020AEC4(void *);
     void *node;
