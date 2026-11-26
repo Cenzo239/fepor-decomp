@@ -1,7 +1,7 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
-static inline void Ui_StoreCursorTile(s8 x, s8 y) { extern u8 gUiContext[]; gUiContext[0xD] = x; gUiContext[0xE] = y; }
+static inline void Ui_StoreCursorTile(void *process, s8 x, s8 y) { extern u8 gUiContext[]; void Process_Goto(void *, s32); gUiContext[0xD] = x; gUiContext[0xE] = y; Process_Goto(process, 6); }
 static inline u8 Ui_IsTargetTile(s8 x, s8 y)
 {
     extern u8 gBattleMap[], gUnits[], gTargetList[];
