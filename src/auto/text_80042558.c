@@ -6525,115 +6525,11 @@ fn_8004AFB4(res, arg1);
 }
 #pragma pop
 #pragma optimization_level reset
-void fn_800506E0(void *arg0, s32 arg1)
-{
-    void *Unit_GetActiveItemPtr(void *);
-    s32 fn_8004ABD4(void *, s32);
-    u8 Status_Test(void *, s32);
-    void *Res_GetByName(void *);
-    void fn_800056A0(s32);
-    s32 fn_8004B1A0(s32);
-    s32 fn_8004B158(void);
-    u16 FileCache_Probe(void *);
-    void fn_8004AFD4(s32, s32);
-    s32 sprintf(char *, const char *, ...);
-    void DebugPrint(const char *, ...);
-
-    extern u8 lbl_8026AB18[];
-
-    u8 *unit;
-    u8 *classData;
-    u8 *res;
-    u8 *name;
-    s32 item;
-    s32 index;
-    char buffer[0x20];
-
-    unit = (u8 *)arg0;
-
-    item = (s8)unit[0x16C];
-
-    if (item < 0) {
-        item = fn_8004ABD4(
-            Unit_GetActiveItemPtr(unit), 0
-        );
-    }
-
-    classData = *(u8 **)(unit + 0x18C);
-
-    if (unit[3] & 4) {
-        res = *(u8 **)(classData + 0xC);
-
-        if (res != 0) {
-            classData = (u8 *)Res_GetByName(res);
-        } else {
-            classData = 0;
-        }
-    }
-
-    index = 0;
-
-    if (Status_Test(unit + 0x1BC, 8) != 0) {
-        if (Status_Test(classData + 0x1C, 9) == 0) {
-            index = 1;
-        }
-    } else {
-        if (Status_Test(classData + 0x1C, 2) != 0) {
-            index = 1;
-        }
-    }
-
-    res = *(u8 **)(
-        *(u8 **)(unit + 0x188) + 0x5C + index * 4
-    );
-
-    name = res;
-
-    if (name == 0) {
-        name = *(u8 **)(classData + 0x18);
-
-        if (name == 0) {
-            fn_800056A0(0);
-            name = lbl_8026AB18 + 0x52;
-        }
-    }
-
-    if (name != 0) {
-        if ((s8)name[0] == 0) {
-            Res_GetByName(lbl_8026AB18 + 0x53);
-        } else {
-            sprintf(
-                buffer,
-                (char *)lbl_8026AB18 + 0x5F,
-                name,
-                fn_8004B1A0(item)
-            );
-
-            res = (u8 *)Res_GetByName(buffer);
-
-            if (res == 0) {
-                fn_800056A0(0);
-                Res_GetByName(lbl_8026AB18 + 0x53);
-            } else {
-                sprintf(
-                    buffer,
-                    (char *)lbl_8026AB18 + 0x64,
-                    fn_8004B158()
-                );
-
-                if (FileCache_Probe(buffer) == 0x8000) {
-                    DebugPrint(
-                        (char *)lbl_8026AB18 + 0x67,
-                        buffer
-                    );
-
-                    Res_GetByName(lbl_8026AB18 + 0x53);
-                }
-            }
-        }
-    }
-
-    fn_8004AFD4(item, arg1);
+void fn_800506E0(void *arg0, s32 arg1) {
+void fn_8004AFD4(void *, s32);
+s32 value = get_4F128_id(arg0);
+void *res = get_4F128_resource(arg0, value);
+fn_8004AFD4(res, arg1);
 }
 
 void *fn_800508C4(void *arg0) {
@@ -7807,12 +7703,13 @@ void fn_8005306C(void *arg0) {
     u8 temp_r0_2;
     u8 temp_r0_3;
     u8 temp_r0_4;
+    f32 *var_r31;
+    f32 *var_r30;
     void *temp_r29;
     void *temp_r3;
     void *temp_r4;
     void *temp_r5;
-    f32 *var_r30;
-    f32 *var_r31;
+
 
     var_r31 = NULL;
     var_r30 = NULL;
@@ -7847,9 +7744,10 @@ void fn_8005306C(void *arg0) {
         var_r3 = var_r30;
     }
     if (var_r3 != NULL) {
-        M2C_FIELD(temp_r4, f32 *, 0xC) = (f32)var_r3[0];
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = (f32)var_r3[1];
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + var_r3[2]);
+ f32 z=var_r3[2]; f32 y=var_r3[1]; f32 x=var_r3[0];
+        M2C_FIELD(temp_r4, f32 *, 0xC) = x;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x10) = y;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), f32 *, 0x14) = (f32)(lbl_8036909C + z);
     }
 }
 #pragma pop
