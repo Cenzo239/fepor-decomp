@@ -9321,7 +9321,8 @@ fn_800E4D24(M2C_FIELD(self,void **,24));fn_800E4BA4(M2C_FIELD(self,void **,24),2
 if(Unit_GetActor(M2C_FIELD(self,void **,24)))fn_8008CDE0(Unit_GetActor(M2C_FIELD(self,void **,24)),0);
 String_Destroy(s24,-1);String_Destroy(s30,-1);
 }
-#pragma opt_common_subs reset
+#pragma push
+#pragma optimization_level 4
 extern "C" void fn_800D9458(s32 arg0,u32 arg1,s32 arg2) {
 #pragma opt_common_subs off
 void fn_8005BCAC();void fn_8005C7E8(u32);void *Heap_Alloc(s32);
@@ -9337,29 +9338,31 @@ struct Child {u8 pad[64];virtual void v0();virtual void v1();virtual void v2();v
 u32 s90[3],s84[3],s78[3],s6c[3],s60[3],s54[3],s48[3],s3c[3],s30[3],s24[3],s18[3];
 u32 a14,a10,ac,a8;
 
+struct {u32 value;} selected;
 s8 flag1,flag2;
+selected.value=arg1;
 s90[1]=0;s84[1]=0;s90[0]=0;s90[2]=0;s90[1]=0;s84[0]=0;s84[2]=0;s84[1]=0;
 ((u8 *)arg0)[0x88]=arg2;
 ((Parent *)M2C_FIELD(((u8 *)arg0),void **,4))->v6(lbl_802711B0+0x18f,lbl_802711B0+0x1e4);
 ((Parent *)M2C_FIELD(((u8 *)arg0),void **,4))->v6(lbl_802711B0+0x19a,String_CStr(((u8 *)arg0)+0x70));
 M2C_FIELD(((u8 *)arg0),void **,0x10)=0;
-String_Assign(((u8 *)arg0)+0x70,M2C_FIELD(((u8 *)arg0),u8 **,0x3c)+arg1*12,0,-1);
+String_Assign(((u8 *)arg0)+0x70,M2C_FIELD(((u8 *)arg0),u8 **,0x3c)+selected.value*12,0,-1);
 if(M2C_FIELD(((u8 *)arg0),void **,0x18)){
-arg1=(s32)fn_801992F8(M2C_FIELD(((u8 *)arg0),void **,0x18));
-String_AssignCStr(s84,(void *)arg1,strlen((void *)arg1));
+selected.value=(s32)fn_801992F8(M2C_FIELD(((u8 *)arg0),void **,0x18));
+String_AssignCStr(s84,(void *)selected.value,strlen((void *)selected.value));
 }else String_AssignCStr(s84,lbl_802711B0+0x1d7,strlen(lbl_802711B0+0x1d7));
 fn_800E78B0(M2C_FIELD(((u8 *)arg0),void **,4),s84);
-arg1=(s32)M2C_FIELD(((u8 *)arg0),void **,0x8c);
+selected.value=(s32)M2C_FIELD(((u8 *)arg0),void **,0x8c);
 M2C_FIELD(((u8 *)arg0),u32 *,0x8c)=fn_800D9804(((u8 *)arg0),((u8 *)arg0)+0x70,M2C_FIELD(((u8 *)arg0),void **,0x18));
-if(arg1){fn_8005C7E8((u32)arg1);fn_8005BCAC();}
+if(selected.value){fn_8005C7E8((u32)selected.value);fn_8005BCAC();}
 String_Init(s78,lbl_802711B0+0x189,&a14);
 String_Concat(s6c,s78,((u8 *)arg0)+0x70);String_ConcatCStr(s60,s6c,lbl_802711B0+0x1df);
 String_Assign(s90,s60,0,-1);String_Destroy(s60,-1);String_Destroy(s6c,-1);
 fn_800E8154(M2C_FIELD(((u8 *)arg0),void **,4),s90);
 flag1=0;flag2=0;
-arg1=(s32)Heap_Alloc(0x1d8);
-if(arg1){String_Copy(s54,((u8 *)arg0)+0x70);flag1=1;String_Init(s48,lbl_802711B0+0x1e4,&a10);flag2=1;arg1=(s32)fn_80117A94((void *)arg1,M2C_FIELD(((u8 *)arg0),void **,4),s48,s54,0,0);}
-M2C_FIELD(((u8 *)arg0),void **,0x10)=(void *)arg1;
+selected.value=(s32)Heap_Alloc(0x1d8);
+if(selected.value){String_Copy(s54,((u8 *)arg0)+0x70);flag1=1;String_Init(s48,lbl_802711B0+0x1e4,&a10);flag2=1;selected.value=(s32)fn_80117A94((void *)selected.value,M2C_FIELD(((u8 *)arg0),void **,4),s48,s54,0,0);}
+M2C_FIELD(((u8 *)arg0),void **,0x10)=(void *)selected.value;
 if(flag2)String_Destroy(s48,-1);
 if(flag1)String_Destroy(s54,-1);
 String_Concat(s3c,s78,((u8 *)arg0)+0x70);String_ConcatCStr(s30,s3c,lbl_802711B0+0x1eb);
@@ -9373,7 +9376,7 @@ if((u8)arg2)fn_800E4E5C(M2C_FIELD(((u8 *)arg0),void **,0x10));
 fn_800E4D24(M2C_FIELD(((u8 *)arg0),void **,0x10));fn_800E4BA4(M2C_FIELD(((u8 *)arg0),void **,0x10),255);fn_800E4B84(M2C_FIELD(((u8 *)arg0),void **,0x10));fn_800E4B44(M2C_FIELD(((u8 *)arg0),void **,0x10));
 String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 }
-#pragma opt_common_subs on
+#pragma pop
 
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -18905,10 +18908,11 @@ void fn_800E9050(void *arg0) {
 #pragma cplusplus on
 #pragma opt_common_subs off
 extern "C" void fn_800E905C(void *arg0) {
-void fn_80202300(void *,s32,f32);void fn_802029C4(void *,void *,void *);void fn_80203184(void *,void *,void *);
-void fn_800C9A60(void *,s16);void fn_800C9758(void *,void *,s32,s32);void *fn_800C93EC(void *);
-s32 fn_800C9400(void *,s32,u32,void *,u32);u32 strlen(void *);void fn_80067FE8(void *,void *,void *);
-extern u8 lbl_80272470[];extern const f32 lbl_80369F78,lbl_80369F84,lbl_80369F88,lbl_80369F8C;
+void PSMTXRotRad(void *,s32,f32);void fn_802029C4(void *,void *,void *);void fn_80203184(void *,void *,void *);
+void String_Destroy(void *,s16);void String_Assign(void *,void *,s32,s32);void *String_CStr(void *);
+s32 String_Compare(void *,s32,u32,const char *,u32);u32 strlen(const char *);void fn_80067FE8(void *,void *,void *);
+extern const char lbl_80272470[];extern const f32 lbl_80369F78,lbl_80369F84,lbl_80369F88,lbl_80369F8C;
+struct Str { u32 len, cap, data; s32 cmp(const char *s) { u32 n = strlen(s); return String_Compare(this, 0, len, s, n); } };
 struct V3 {f32 x,y,z; V3() {} V3(const V3 &v):x(v.x),y(v.y),z(v.z) {} };
 struct Parent {u8 pad[16];virtual void v0();virtual void v1();virtual void *v2(void *,void *);};
 struct Child {u8 pad[64];virtual void v0();virtual void v1();virtual void v2();virtual void v3();virtual void v4();virtual void v5();virtual void v6();virtual void v7();virtual void v8();virtual void v9();virtual void v10();virtual void v11();virtual void v12();virtual V3 v13();};
@@ -18916,23 +18920,21 @@ f32 me0[12],mb0[12],m80[12],m50[12];
 u32 str[3];
 V3 pos,dir,offset,base;
 u8 *self=(u8 *)arg0;
-void *name;
 str[1]=0;str[0]=0;str[2]=0;str[1]=0;
-if(!self[0xac]) {fn_800C9A60(str,-1);return;}
+if(!self[0xac]) {String_Destroy(str,-1);return;}
 if(self[0xfd]){
 pos.x=M2C_FIELD(self,f32 *,0x48);pos.y=M2C_FIELD(self,f32 *,0x4c);pos.z=M2C_FIELD(self,f32 *,0x50);
 dir.x=lbl_80369F78;dir.y=lbl_80369F78;dir.z=lbl_80369F84;
-fn_80202300(me0,0x58,lbl_80369F88*M2C_FIELD(self,f32 *,0x54));
-fn_80202300(mb0,0x59,lbl_80369F88*M2C_FIELD(self,f32 *,0x58));
+PSMTXRotRad(me0,0x58,lbl_80369F88*M2C_FIELD(self,f32 *,0x54));
+PSMTXRotRad(mb0,0x59,lbl_80369F88*M2C_FIELD(self,f32 *,0x58));
 fn_802029C4(me0,&dir,&dir);fn_802029C4(mb0,&dir,&dir);
 M2C_FIELD(self,f32 *,0x60)=dir.x;M2C_FIELD(self,f32 *,0x64)=dir.y;M2C_FIELD(self,f32 *,0x68)=dir.z;
 fn_80203184(&pos,&dir,&dir);
 M2C_FIELD(self,f32 *,0xe4)=dir.x;M2C_FIELD(self,f32 *,0xe8)=dir.y;M2C_FIELD(self,f32 *,0xec)=dir.z;
 }else{
-if(fn_800C9400(self+0xb0,0,M2C_FIELD(self,u32 *,0xb0),lbl_80272470,strlen(lbl_80272470)) && fn_800C9400(self+0xbc,0,M2C_FIELD(self,u32 *,0xbc),lbl_80272470,strlen(lbl_80272470))){
-fn_800C9758(str,(self+0xbc)+M2C_FIELD(self,s32 *,0xe0)*12,0,-1);
-name=fn_800C93EC(str);
-M2C_FIELD(self,void **,0x12c)=((Parent *)M2C_FIELD(self,void **,0))->v2(fn_800C93EC(self+0xb0),name);
+if(((Str *)(self+0xb0))->cmp(lbl_80272470) && ((Str *)(self+0xbc))->cmp(lbl_80272470)){
+String_Assign(str,(self+0xbc)+M2C_FIELD(self,s32 *,0xe0)*12,0,-1);
+M2C_FIELD(self,void **,0x12c)=((Parent *)M2C_FIELD(self,void **,0))->v2(String_CStr(self+0xb0),String_CStr(str));
 if(M2C_FIELD(self,void **,0x12c)){
 const V3 &v=((Child *)M2C_FIELD(self,void **,0x12c))->v13();
 M2C_FIELD(self,f32 *,0xe4)=v.x;M2C_FIELD(self,f32 *,0xe8)=v.y;M2C_FIELD(self,f32 *,0xec)=v.z;
@@ -18943,8 +18945,8 @@ offset.x=lbl_80369F78;offset.y=lbl_80369F78;offset.z=-M2C_FIELD(self,f32 *,0x104
 base.x=M2C_FIELD(self,f32 *,0xe4)+M2C_FIELD(self,f32 *,0xf0);
 base.y=M2C_FIELD(self,f32 *,0xe8)+M2C_FIELD(self,f32 *,0xf4);
 base.z=M2C_FIELD(self,f32 *,0xec)+M2C_FIELD(self,f32 *,0xf8);
-fn_80202300(m80,0x58,lbl_80369F88*M2C_FIELD(self,f32 *,0x54));
-fn_80202300(m50,0x59,lbl_80369F88*M2C_FIELD(self,f32 *,0x58));
+PSMTXRotRad(m80,0x58,lbl_80369F88*M2C_FIELD(self,f32 *,0x54));
+PSMTXRotRad(m50,0x59,lbl_80369F88*M2C_FIELD(self,f32 *,0x58));
 fn_802029C4(m80,&offset,&offset);fn_802029C4(m50,&offset,&offset);fn_80203184(&offset,&base,&offset);
 M2C_FIELD(self,f32 *,0x48)=offset.x;M2C_FIELD(self,f32 *,0x4c)=offset.y;M2C_FIELD(self,f32 *,0x50)=offset.z;
 }
@@ -18959,7 +18961,7 @@ M2C_FIELD(M2C_FIELD(self,void **,0x128),f32 *,212)=M2C_FIELD(self,f32 *,0x48)+M2
 M2C_FIELD(M2C_FIELD(self,void **,0x128),f32 *,216)=M2C_FIELD(self,f32 *,0x4c)+M2C_FIELD(self,f32 *,0x11c);
 M2C_FIELD(M2C_FIELD(self,void **,0x128),f32 *,220)=M2C_FIELD(self,f32 *,0x50);
 {u8 *p=M2C_FIELD(self,u8 **,0x128);fn_80067FE8(p+0xd4,p+0xec,p+0xe0);}
-fn_800C9A60(str,-1);
+String_Destroy(str,-1);
 }
 #pragma opt_common_subs on
 #pragma cplusplus off
@@ -19730,7 +19732,10 @@ void fn_800EA808(void) {
     DebugPrint(msg, gCardWork.tick / conv);
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 void fn_800EA8F4(s32 arg0) {
     void Process_Goto(s32, s32);
     void fn_8006EEFC(void *, void *);
@@ -19757,6 +19762,7 @@ void fn_800EA8F4(s32 arg0) {
     s32 buf;
     u8 *base2;
     u8 *base;
+    u8 *work;
 
     self = arg0;
     base = gCardWork + 0x10000;
@@ -19816,15 +19822,16 @@ void fn_800EA8F4(s32 arg0) {
         }
         fn_80006298(buf + 0x1C00, (s32)(crc ^ ~0U), 8);
         fn_800C4588(table);
-        *(base2 - 0x5FE6) = 1;
-        *(s32 *)(base - 0x5FFC) = fn_8021CAB4(base2 - 0x5FE4, buf, 0x2000, 0, &Card_AsyncDone);
+        work = gCardWork + 0x10000;
+        *(work - 0x5FE6) = 1;
+        *(s32 *)(base - 0x5FFC) = fn_8021CAB4((void *)((u32)work - 0x5FE4U), *(s32 *)(base2 - 0x5FCC), 0x2000, 0, &Card_AsyncDone);
         if (*(s32 *)(base - 0x5FFC) < 0) {
             Process_Goto(self, 0x63);
-            *(base2 - 0x5FE6) = 0;
+            *(work - 0x5FE6) = 0;
         }
     }
 }
-
+#pragma pop
 void Card_SetNoCopyAttr(s32 proc) {
     /* OR CARD_ATTR_NO_COPY (0x08) onto the open save file; goto error state on failure. */
     struct CardWork {
