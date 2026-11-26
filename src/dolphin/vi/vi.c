@@ -3,6 +3,13 @@
 #include <dolphin/os.h>
 #include "global.h"
 
+static inline u64 VIReadChangedBits(void) {
+    extern void *lbl_80368630, *lbl_80368634;
+    union { u64 value; struct { u32 hi, lo; } words; } bits;
+    bits.words.hi = (u32)lbl_80368630;
+    bits.words.lo = (u32)lbl_80368634;
+    return bits.value;
+}
 /* Minimal DVDCommandBlock layout used by the DVD state machine. */
 typedef struct DVDReadyCommand {
     u8 pad[8];
@@ -1046,6 +1053,7 @@ static inline s32 cntlzd(u64 bit) {
     return __cntlzw(lo) + 32;
 }
 
+#pragma opt_common_subs off
 #pragma global_optimizer off
 void VIFlush(void) {
     s32 OSDisableInterrupts(void);
@@ -1071,7 +1079,7 @@ void VIFlush(void) {
     while (*(u64 *)&lbl_80368630 != 0) {
         regIndex = cntlzd(*(u64 *)&lbl_80368630);
         value = vi->regs[regIndex];
- vi->shdwRegs[regIndex] = value;
+ ((u16 *)((u8 *)vi + regIndex * 2))[60] = value;
         *(u64 *)&lbl_80368630 &= ~((u64)1 << (63 - regIndex));
     }
 
@@ -1079,6 +1087,7 @@ void VIFlush(void) {
     lbl_80368650 = vi->unk120;
     OSRestoreInterrupts(enabled);
 }
+#pragma opt_common_subs reset
 #pragma global_optimizer on
 void VISetNextFrameBuffer(void *frameBuffer)
 {
