@@ -49,6 +49,17 @@ static inline void MenuResource_ClearSlots(u8 *base, s32 clear) {
         *(u32 *)(p + 8) = clear;
     }
 }
+static inline void MenuResource_ClearTable(u8 **base) {
+    void FileCache_ReleaseSlot(void *);
+    u8 *p;
+    s32 clear;
+    s32 i = 0;
+    clear = i;
+    for (p = *base; i < 40; i++, p += 12) {
+        if (*(u32 *)(p + 8)) FileCache_ReleaseSlot(p + 8);
+        *(u32 *)(p + 8) = clear;
+    }
+}
 static inline u8 *MenuResource_FindIn(u8 *p, s32 id) {
 s32 i;
 for(i=0;i<40;p+=12,i++) { if(id==*(s32*)p) return p; }
@@ -1167,6 +1178,7 @@ extern "C" void Prim2D_SetPos(f32, f32);
 extern "C" void Prim2D_SetTextScale(u8, f32);
 extern "C" void Prim2D_SetText(void *);
 extern "C" void Prim2D_EndPrim(void);
+#pragma cplusplus on
 extern "C" void fn_801CD940(void *arg0, void *arg1)
 {
     struct UiPanel_801CD940 {
@@ -1189,11 +1201,11 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     extern f32 lbl_8036B4F0;
     extern f32 lbl_8036B4F4;
 
-    UiPanel_801CD940 *self = (UiPanel_801CD940 *)arg0;
-    s16 offset;
-    s16 y;
     s32 xOffset;
     u32 *str;
+    s16 offset;
+    s16 y;
+    UiPanel_801CD940 *self = (UiPanel_801CD940 *)arg0;
 
     self->v2();
 
@@ -8879,7 +8891,7 @@ s32 owner = parent;
 s32 *cursor = list;
 Process_UnlinkByKey(lbl_80299C58);
 base = lbl_80299A78;
-MenuResource_ClearSlots(base, 0);
+MenuResource_ClearIn(0, base);
 for (; (id = *cursor) != -1; cursor++) {
 p = MenuResource_FindIn(base, id);
 if (p) {
