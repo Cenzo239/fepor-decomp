@@ -1,10 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline s16 MenuRoute_CenterOffset(s16 height) {
-    s32 Text_MeasureHeight(s32, f32);
-    extern f32 lbl_8036B5E0;
-    return (height - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1;
-}
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
@@ -3737,7 +3732,6 @@ extern "C" void fn_801D1CAC(void *arg0) {
 #pragma cplusplus on
 #pragma optimization_level 4
 #pragma opt_propagation off
-#pragma opt_lifetimes off
 extern "C" void fn_801D1F28(void *self, void *other)
 {
     struct Obj {
@@ -3764,7 +3758,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
     extern f32 lbl_8036B5F0;
     extern f32 lbl_8036B5F4;
 
-    s32 width;
+    
     s16 height;
     s32 selected;
     s16 targetX;
@@ -3785,7 +3779,7 @@ extern "C" void fn_801D1F28(void *self, void *other)
     tmp = Prim2D_PushZ(sp8);
     fn_80202574(tmp, tmp, lbl_8036B5E4, lbl_8036B5E4, lbl_8036B5EC);
 
-    width = ((Obj *)self)->f10();
+    s32 width = ((Obj *)self)->f10();
 
     x = (s16)(*(s16 *)((u8 *)self + 0x4E) - *(s16 *)((u8 *)self + 0x54));
     height = *(s16 *)((u8 *)self + 0x56);
@@ -4161,12 +4155,12 @@ extern "C" void fn_801D28A8(u8 *self, s32 x, s32 y, u8 *item) {
     void Prim2D_Begin(); void Prim2D_SetTex(s32, u16); void Prim2D_PrepareTex();
     s32 Text_MeasureHeight(s32, f32); u8 fn_800BE890(s32);
     void *Msg_ResolveName(void *); void *fn_800BE728(s32); void *Msg_Expand(void *);
-    void Text_Draw(s32, s16, u8, void *, ...); void Ui_DrawLine(s16, s16, s16, s16, s32, u8 *);
+    void Text_Draw(s32, s16, u8, void *, ...); void Ui_DrawLine(s16, s16, s16, s16, s32, void *);
     s32 fn_800BE798(s32); void fn_80152B4C(s16, s16, s32, s32);
     extern f32 lbl_8036B5E0;
-    u8 color[4]; s32 pad; s32 disabled; void *text;
+    struct { u8 r, g, b, a; } color; s32 pad; s32 disabled; void *text;
     s16 h; s16 left, width; s32 half; s16 lineY;
-    s32 yy, xx;
+    s32 xx, yy;
     Prim2D_Begin(); Prim2D_SetTex(0, (u16)(*(u32 *)(self + 0x34) | 0x13)); Prim2D_PrepareTex();
     pad = *(s16 *)(self + 0x56);
     pad = (s16)(((s16)pad - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1);
@@ -4182,8 +4176,8 @@ extern "C" void fn_801D28A8(u8 *self, s32 x, s32 y, u8 *item) {
     half = ((s16)h - Text_MeasureHeight(-1, lbl_8036B5E0)) >> 1;
     s32 textH = Text_MeasureHeight(-1, lbl_8036B5E0);
     lineY = (s16)(yy + (s16)(textH + half));
-    color[0] = 255; color[1] = 255; color[2] = 255; color[3] = 0x33;
-    Ui_DrawLine(left, lineY, (s16)(left + width), lineY, 0x10, color);
+    color.r = 255; color.g = 255; color.b = 255; color.a = 0x33;
+    Ui_DrawLine(left, lineY, (s16)(left + width), lineY, 0x10, &color);
     s32 value = fn_800BE798(*(s32 *)item);
     s32 baseline = yy + pad; s32 numberX = xx + 0xc0;
     fn_80152B4C((s16)numberX, (s16)(baseline + 6), value, 0x10);
@@ -4944,9 +4938,8 @@ void fn_801D3810(s32 arg0) {
 }
 
 #pragma cplusplus on
-#pragma opt_common_subs off
-#pragma dont_inline on
-#pragma global_optimizer on
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void *fn_801D3860(void *arg0,s32 x,s32 y,s32 id) {
 extern u8 lbl_8028FDB0[],lbl_80292230[],gUiPanelDVtbl[],gEmptyVtbl[],gBattleState[];
 extern const f32 lbl_8036B618,lbl_8036B61C;
@@ -4993,10 +4986,8 @@ self[152]=255;self[153]=255;self[154]=255;self[155]=255;
 ((Obj *)(self+120))->v1();
 ((Obj *)self)->v8();return self;
 }
-#pragma global_optimizer reset
-#pragma dont_inline reset
-#pragma opt_common_subs reset
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 typedef struct { u8 pad[0xa]; s16 xa, xc, xe, x10, x12, x14, x16, x18; u8 pad2[0x5e - 0x1a]; s16 x5e, x60, x62; u8 pad3[0x86 - 0x64]; s16 x86, x88, x8a; } O_801D3A4C;
 static inline s16 W_801D3A4C(O_801D3A4C *o) { return o->xe - o->xa; }
 static inline s16 H_801D3A4C(O_801D3A4C *o) { return o->x10 - o->xc; }
