@@ -20,8 +20,7 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
     }
     *(s32 *)(arg0 + 0x2C) = 0;
     dst = arg0;
-    i = 0x29;
-    do {
+    for (i = 0x29; i > 0; i--) {
         c = *src;
         if ((s8)c >= 'A' && (s8)c <= 'Z') {
             *src = (char)(c + 0x20);
@@ -31,10 +30,10 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
         if ((s8)c == 0) {
             break;
         }
+        *(s32 *)(arg0 + 0x2C) = *(s32 *)(arg0 + 0x2C) * 0x25 + (s8)c;
         dst++;
         src++;
-        *(s32 *)(arg0 + 0x2C) = (s8)c + *(s32 *)(arg0 + 0x2C) * 0x25;
-    } while (--i);
+    }
 
 }
 
