@@ -5976,16 +5976,22 @@ switch(param & 255U) {
     }
 }
 
-int fn_8025FA50(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-void Sound_WriteParamU8(s32, s32, s32, u8);
-u8 a,b,c;
-u16 value;
-if((u8)arg1 != 255) {
- if((u8)arg0 < 0x40U) { u16 v=(u16)arg3; a=arg0&31; Sound_WriteParamU8(a,arg1,arg2,(u8)(v>>7)); Sound_WriteParamU8((u8)(a+32),arg1,arg2,v&127); }
- else if((u8)arg0==0x80 || (u8)arg0==0x81) { u16 v=(u16)arg3; b=arg0&254; Sound_WriteParamU8(b,arg1,arg2,(u8)(v>>7)); Sound_WriteParamU8((u8)(b+1),arg1,arg2,v&127); }
- else if((u8)arg0==0x84 || (u8)arg0==0x85) { u16 v=(u16)arg3; c=arg0&254; Sound_WriteParamU8(c,arg1,arg2,(u8)(v>>7)); Sound_WriteParamU8((u8)(c+1),arg1,arg2,v&127); }
- else { value=(u16)arg3; Sound_WriteParamU8(arg0,arg1,arg2,(u8)(value>>7)); }
-}
+int fn_8025FA50(u8 op, u8 channel, u8 group, u16 value) {
+    void Sound_WriteParamU8(u8, u8, u8, u8);
+    if (channel != 255) {
+        if (op < 0x40U) {
+            Sound_WriteParamU8(op & 31, channel, group, value >> 7);
+            Sound_WriteParamU8((op & 31) + 32, channel, group, value & 127);
+        } else if (op == 0x80U || op == 0x81U) {
+            Sound_WriteParamU8(op & 0xFE, channel, group, value >> 7);
+            Sound_WriteParamU8((op & 0xFE) + 1, channel, group, value & 127);
+        } else if (op == 0x84U || op == 0x85U) {
+            Sound_WriteParamU8(op & 0xFE, channel, group, value >> 7);
+            Sound_WriteParamU8((op & 0xFE) + 1, channel, group, value & 127);
+        } else {
+            Sound_WriteParamU8(op, channel, group, value >> 7);
+        }
+    }
 }
 
 #pragma optimization_level 3
