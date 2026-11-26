@@ -24472,7 +24472,7 @@ u8 fn_800F3F50(s32 arg0, s8 arg1) {
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction reset
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 #pragma opt_strength_reduction off
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
