@@ -2,12 +2,6 @@
 #include "common.h"
 #include "global.h"
 
-static inline u64 Item_ReadUseFlags(const void *item) {
-    u32 lo = *((const u32 *)item + 15);
-    u32 hi = *((const u32 *)item + 14);
-    return ((u64)hi << 32) | lo;
-}
-
 static inline u8 Item_CheckSpecialFlags(u64 flags) {
     if (!(flags & 8)) return 0;
     if (flags & ((u64)0x100 << 32)) return 0;
@@ -863,7 +857,8 @@ u8 fn_80093708(void *arg0, void *arg1) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 u8 fn_800939FC(void *arg0, void *arg1) {
     s32 fn_800061F4(void);
     u8 fn_8001C914(void *, void *);
