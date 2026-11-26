@@ -132,7 +132,7 @@ typedef struct { s32 a; s32 b; } PairAB;
 typedef struct { s32 *a; s32 b; } SortIteratorFields;
 typedef struct HeapC55 HeapC55;
 struct HeapC55 { u32 unk0, unk4; HeapC55 *prev, *next; u32 size; HeapC55 *owner, *free; u32 extent; };
-static inline void HeapC55_PrintList(HeapC55 **table) { void DebugPrint(void *,...); extern u8 lbl_802700D8[]; s32 i; u32 ext; HeapC55 *h;
+static inline void HeapC55_PrintList(HeapC55 **table) { void DebugPrint(void *,...); extern u8 lbl_802700D8[]; HeapC55 *h; u32 ext; s32 i;
 for(i=0;i<16;i++,table++){h=*table;if(h){ext=h->extent;
 DebugPrint(lbl_802700D8+0x18);DebugPrint(lbl_802700D8+0xa2);
 DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
@@ -1378,7 +1378,7 @@ return;
 void *fn_800C55B0(HeapC55 *self,s32 bytes){
 void DebugPrint(void *,...);void fn_8005BC8C(s8);
 extern u8 lbl_802700D8[];extern u8 lbl_80320B88[];
-u32 size; HeapC55 **base; HeapC55 *block; s32 mb; HeapC55 **table; HeapC55 *p,*head; u32 n; u8 *lo,*hi;
+u32 size; HeapC55 **base; s32 mb; HeapC55 *block; HeapC55 **table; HeapC55 *p,*head; u32 n; u8 *lo,*hi;
 size=(bytes+0x3f)&~31;
 block=HeapC55_Best(self->free,size);
 if(block==0){mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
@@ -1405,9 +1405,7 @@ if(n<64){p=block->next;head=self->free;if(p)p->prev=block->prev;p=block->prev;if
 else{block->size=n;block=(HeapC55*)((u8*)block+n);block->size=-size;block->owner=self;}
 self->owner=HeapC55_Append(self->owner,block);return block;
 }
-#pragma global_optimizer on
-#pragma opt_common_subs off
-#pragma use_lmw_stmw on
+#pragma pop
 s32 fn_800C5A48(s32 arg0, s32 bytes) {
     void DebugPrint(void *, ...);
     void fn_8005BC8C(s8);
@@ -1497,6 +1495,7 @@ s32 fn_800C5A48(s32 arg0, s32 bytes) {
     ((HeapC55 *)arg0)->owner = block;
     return (s32)block;
 }
+#pragma opt_propagation on
 #pragma opt_common_subs on
 
 #pragma global_optimizer on
@@ -23695,11 +23694,12 @@ void fn_800F1C24(void *arg0) {
 
     f32 m1C8[12], m198[12], m168[12], m138[12], m108[12], mD8[12], mA8[12], m78[12], m48[12], m18[12], q[4];
     u8 *ctx;
+    unsigned same;
     u8 *self;
     f32 f26, f27, f29, f28;
     void *terrain;
     s32 i;
-    u8 same;
+    u8 same_u8;
 
     self = (u8 *)arg0;
     ctx = lbl_80330708;
@@ -23717,16 +23717,17 @@ void fn_800F1C24(void *arg0) {
     if (*(u8 *)(self + 0x63C) != 0) {
         *(f32 *)(self + 0x5E0) = *(f32 *)(ctx + 0x534) - lbl_8036A010;
         *(f32 *)(self + 0x5E4) = *(f32 *)(ctx + 0x538) - lbl_8036A010;
-    } else if (same != 0) {
+    } else if ((u8)same != 0) {
         *(f32 *)(self + 0x5E0) = lbl_8036A010 * (*(f32 *)(self + 0x5E0) + (f32)(s8)(s32)*(f32 *)(ctx + 0x534));
         *(f32 *)(self + 0x5E4) = lbl_8036A010 * (*(f32 *)(self + 0x5E4) + (f32)(s8)(s32)*(f32 *)(ctx + 0x538));
     } else {
         *(f32 *)(self + 0x5E0) = (f32)(s8)(s32)*(f32 *)(ctx + 0x534);
         *(f32 *)(self + 0x5E4) = (f32)(s8)(s32)*(f32 *)(ctx + 0x538);
     }
+    same_u8 = same;
     for (i = 0; i < 4; i++) {
         f28 = fn_80023068(lbl_802CA518, *(f32 *)(self + 0x5E0) + lbl_8028E578[i], *(f32 *)(self + 0x5E4) + lbl_8028E588[i]) - lbl_8036A014;
-        if (same != 0) {
+        if (same_u8 != 0) {
             *(f32 *)(self + 0x5E8 + i * 4) = lbl_8036A010 * (*(f32 *)(self + 0x5E8 + i * 4) + f28);
         } else {
             *(f32 *)(self + 0x5E8 + i * 4) = f28;
