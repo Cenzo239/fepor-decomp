@@ -2016,20 +2016,18 @@ s32 ScriptCmd_PlayerDeadCheck(void)
     return *(s32 *)(gUnitLists + 0x48) == 0;
 }
 
-static inline s32 AchieveList_SumGoldFrom(void *arg0, s32 start) {
+static inline s32 AchieveList_SumGoldCount(void *arg0, s32 start, s32 count) {
     s32 sum = start;
     s32 i;
     s32 value;
-    for (i = start; i < *(s32 *)((u8 *)arg0 + 0x224); ++i) {
+    for (i = start; i < count; ++i) {
         value = *(s32 *)((u8 *)arg0 + 0x200 + i * 4);
         sum += value;
     }
     return *(s32 *)((u8 *)arg0 + 0x228) + sum;
 }
 
-s32 AchieveList_GetTotalGold(void *arg0) {
-    return AchieveList_SumGoldFrom(arg0, 0);
-}
+s32 AchieveList_GetTotalGold(void *arg0) { return AchieveList_SumGoldFrom(arg0, 0); }
 
 s32 AchieveList_SumBonuses(void *arg0) {
     s32 n;
