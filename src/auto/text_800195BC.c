@@ -751,7 +751,7 @@ void fn_8001A5E4(void) {
 #pragma use_lmw_stmw reset
 #pragma push
 #pragma optimization_level 4
-#pragma global_optimizer off
+#pragma opt_common_subs off
 void fn_8001AC18(void) {
     u8 *Hash_Lookup(char *);
     void *Heap_AllocRaw(s32);
