@@ -591,6 +591,27 @@ void Heap_AdjustExtent(s32 arg0) {
     node->size += arg0;
 }
 #pragma global_optimizer reset
+static inline void Heap_Select_Impl(char *arg0, u32 *table) {
+    s32 Str_Cmp(char *, char *);
+    extern u32 lbl_80320B88[];
+    extern u32 lbl_80367870;
+    s32 i = 0;
+    u32 *p = table;
+    u32 entry;
+
+    while (i < 0x10) {
+        entry = *p;
+        if (entry != 0) {
+            if (Str_Cmp(arg0, (char *)(entry + 4)) == 0) {
+                lbl_80367870 = lbl_80320B88[i];
+                return;
+            }
+        }
+        i++;
+        p++;
+    }
+}
+
 void Heap_Select(char *arg0) {
     s32 Str_Cmp(char *, char *);
     extern u32 lbl_80320B88[];
@@ -10566,7 +10587,7 @@ void fn_800DBA50(f32 *arg0, void *arg1) {
     arg0[2] = z;
 }
 
-#pragma opt_dead_code off
+#pragma opt_dead_code on
 void fn_800DBAB8(f32 *arg0, void *arg1) {
     void PSMTXRotRad(void *, s32, f32);
     void fn_802029C4(void *, f32 *, f32 *);
@@ -10591,7 +10612,6 @@ void fn_800DBAB8(f32 *arg0, void *arg1) {
     arg0[1] = y;
     arg0[2] = z;
 }
-#pragma opt_dead_code reset
 void fn_800DBB58(f32 *arg0, u8 *arg1) {
     f32 value0;
     f32 value1;
