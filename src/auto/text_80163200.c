@@ -575,13 +575,14 @@ loop_test:
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 1
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
     struct { s16 x; s16 y; } sp8;
-    s16 var0;
     s16 var5;
+    s16 var0;
     s16 temp;
     temp = *(s16 *)((u8 *)arg1 + 0x4C);
     if (temp < 0) { var0 = 0; var5 = 0; }
@@ -592,7 +593,7 @@ void fn_80163C98(s32 *arg0, void *arg1) {
     sp8.x = var5; sp8.y = var0;
     *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
-#pragma global_optimizer reset
+#pragma pop
 s32 fn_80163D14(void *arg0, void *arg1)
 {
   u8 *ctx = (u8 *) arg0;
@@ -14521,7 +14522,7 @@ extern "C" void *fn_80179DEC(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
 #pragma cplusplus off
 
 #pragma cplusplus on
-extern "C" void *fn_80179F8C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
+extern "C" void *fn_80179F8C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *fn_8017A000(void *, s16 *, s16 *, s32);
     extern u8 lbl_80291B1C[];
     struct Obj {
@@ -16656,7 +16657,7 @@ void fn_8017CE1C(void *self, void *arg1) {
 }
 
 #pragma cplusplus on
-void fn_8017D4B8(s32 *arg0, void *arg1) {
+extern "C" void fn_8017D4B8(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s16 sp8;
     s16 spA;
