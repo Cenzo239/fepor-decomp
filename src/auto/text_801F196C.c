@@ -4256,17 +4256,8 @@ loop_check:
     obj->unk4C = Sound_Create(StaffRoll_str + 0x301, obj);
 }
 
-static inline void StaffRoll_DrawTime(f32 x, f32 y, u32 time) {
-    void fn_8001003C(s32,s32,s32,s32,s32,void*,f32,f32,...);
-    extern u8 lbl_80281028[];
-    extern f32 lbl_8036BA20, lbl_8036BA18;
-    u32 hours = time / 3600;
-    u32 rem = time % 3600;
-    u32 minutes = rem / 60;
-    u32 seconds = rem - minutes * 60;
-    fn_8001003C((s32)x, (s32)y, 33, 1, 0, lbl_80281028 + 0x364,
-                 lbl_8036BA20, lbl_8036BA18, hours, minutes, seconds);
-}
+#pragma push
+#pragma optimization_level 4
 #pragma global_optimizer off
 void fn_801FA00C(void *arg0) {
 void fn_8000A258(void); void fn_80009D74(f32,f32,f32,f32);
@@ -4284,7 +4275,8 @@ f32 limit, y, scroll, step, x, period, offset;
 u8 *end, *ent, *base;
 void *str, *a, *b, *obj;
 u8 flag;
-u32 time, hours, minutes, seconds;
+struct { u32 hours, minutes; } elapsed;
+u32 time, seconds;
 f32 tx, scale, zero;
 if(lbl_80367110 & 1) {fn_8000C070(arg0,1);return;}
 fn_8000A258();
@@ -4327,11 +4319,12 @@ fn_8001003C((s32)x,(s32)y,1,1,0,lbl_80281028+0x350,lbl_8036BA20,lbl_8036BA18,*(u
 fn_8001003C((s32)(lbl_8036BAA4+x),(s32)y,32,1,0,lbl_80281028+0x354,lbl_8036BA20,lbl_8036BA18,fn_8000E0E4(lbl_80281028+0x357));
 tx=lbl_8036BAA8+lbl_8036BA98;scale=lbl_8036BA20;zero=lbl_8036BA18;
 time=*(u32*)(ent+4);
-hours=time/3600;time%=3600;seconds=time%60;minutes=time/60;
-fn_8001003C((s32)tx,(s32)y,33,1,0,lbl_80281028+0x364,scale,zero,hours,minutes,seconds);
+elapsed.hours=time/3600;time%=3600;elapsed.minutes=time/60;seconds=time%60;
+fn_8001003C((s32)tx,(s32)y,33,1,0,lbl_80281028+0x364,scale,zero,elapsed.hours,elapsed.minutes,seconds);
 }
 }
 }
+#pragma pop
 #pragma global_optimizer on
 
 void fn_801FA478(void *arg0) {
