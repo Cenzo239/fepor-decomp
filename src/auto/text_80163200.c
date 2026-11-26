@@ -47,7 +47,7 @@ struct CursorRenderView {
     virtual void v7(); virtual void v8(); virtual void v9();
     virtual void v10(); virtual void v11(); virtual void v12();
     virtual void v13();
-    virtual void drawRow(s32, s16, s16, s16, u8);
+    virtual void drawRow(s32, s32, s16, s32, u8);
 };
 struct ItemCursorView {
     virtual void v0(); virtual void v1(); virtual void v2();
@@ -868,12 +868,12 @@ extern "C" void fn_80164350(void *arg0, void *arg1) {
     s32 Text_MeasureHeight(s32,f32);
     void Ui_DrawRouteIconEx(s16,s32,u8);
     void Prim2D_SetAlphaByte(s32);
-    s16 height;
-    s32 savedHeight;
-    s32 savedX;
-    s32 y;
-    s16 x;
+    s32 height;
     u8 active;
+    s16 savedHeight;
+    s16 savedX;
+    s32 y;
+    s32 x;
     s32 slot;
     s32 row;
     s32 rowY;
@@ -15039,7 +15039,9 @@ extern "C" void fn_8017AACC(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_loop_invariants off
 #pragma cplusplus on
 extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
@@ -15059,7 +15061,7 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
         virtual void v2() = 0;
         virtual void v3() = 0;
     };
-    s16 temp_r25;
+    s32 temp_r25;
     s32 var_r26;
     void *temp_r27;
     void *temp_r28;
@@ -15079,10 +15081,12 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     other = arg1;
     ((Obj *)arg0)->v3();
     temp_r25 = *(s16 *)((u8 *)self + 0x3E);
-    if (temp_r25 >= 0) {
+    if ((s16)temp_r25 >= 0) {
         var_r26 = 0;
-        for (var_r31 = 0; var_r31 < 0x62; var_r31++) {
-            temp_r28 = fn_80105C5C((u8 *)*(void **)((u8 *)self + 0x4C) + 0x1BC, (u8)var_r31);
+        temp_r27 = *(void **)((u8 *)self + 0x4C);
+        var_r31 = var_r26;
+        do {
+            temp_r28 = fn_80105C5C((u8 *)temp_r27 + 0x1BC, (u8)var_r31);
             if (temp_r28 != NULL) {
                 if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
                     if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
@@ -15106,7 +15110,8 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                     }
                 }
             }
-        }
+            var_r31++;
+        } while(var_r31 < 0x62);
         temp_r4 = *(s16 *)((u8 *)self + 0x40);
         var_r31 = (s16)(((temp_r25 + var_r26) << 5) + 0x46);
         if (temp_r4 < 0 || *(s16 *)((u8 *)self + 0x42) < 0) {
@@ -15120,8 +15125,10 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
         }
         if (*(u8 *)((u8 *)self + 0x3C) != 0) {
             temp_r25 = 0;
-            for (var_r26 = 0; var_r26 < 0x62; var_r26++) {
-                temp_r28 = fn_80105C5C((u8 *)*(void **)((u8 *)self + 0x4C) + 0x1BC, (u8)var_r26);
+            temp_r27 = *(void **)((u8 *)self + 0x4C);
+            var_r26 = temp_r25;
+            do {
+                temp_r28 = fn_80105C5C((u8 *)temp_r27 + 0x1BC, (u8)var_r26);
                 if (temp_r28 != NULL) {
                     if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
                         if (*(u8 *)((u8 *)temp_r28 + 0x19) != 0) {
@@ -15145,8 +15152,9 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
                         }
                     }
                 }
-            }
-            if (temp_r25 != 0) {
+                var_r26++;
+            } while(var_r26 < 0x62);
+            if ((u32)temp_r25 != 0) {
                 flag = 0;
                 check = flag;
                 if (*(u8 *)((u8 *)other + 0x2D) == 0 && *(u8 *)((u8 *)other + 0x2E) == 0) {
@@ -15176,10 +15184,8 @@ extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
         }
     }
 }
-
+#pragma pop
 #pragma cplusplus on
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
 extern "C" void fn_8017AF30(void *arg0, void *arg1) {
     void fn_80009B98(void);
     void fn_80009BC0(void (*)(void *), s16 *);
