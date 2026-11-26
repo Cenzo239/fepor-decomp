@@ -813,34 +813,37 @@ void *fn_80184750(void *unit, u32 dir, s32 frames, s32 priority) {
     return proc;
 }
 
-void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+#pragma cplusplus on
+extern "C" void *fn_801848D8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_CreateEx(void *, s32);
     f32 fn_8004BDA8(void *, f32, f32);
     void MuFade_UnlinkSame(void *, void *);
     extern u16 E_MuFade_script[36];
     extern const f32 gHalf;
-    u8 sp8[0x34];
-    f32 temp_f31;
-    void *temp_r3;
-
-    temp_f31 = fn_8004BDA8(arg0, gHalf + (f32)arg1, gHalf + (f32)arg2);
-    M2C_FIELD(sp8, void **, 0x30) = arg0;
-    GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
-    if (temp_f31 == ((f32)M2C_FIELD(arg0, s16 *, 0x15C) / 50.0f)) {
-        return NULL;
-    }
-    if (arg3 <= 0) {
-        M2C_FIELD(arg0, s16 *, 0x15C) = (s16)(50.0f * temp_f31);
-        return NULL;
-    }
-    temp_r3 = Process_CreateEx(&E_MuFade_script, arg4);
-    M2C_FIELD(temp_r3, void **, 0x30) = arg0;
-    M2C_FIELD(temp_r3, f32 *, 0x34) = temp_f31;
-    M2C_FIELD(temp_r3, s32 *, 0x38) = arg3;
-    return temp_r3;
+    struct Unit {
+        void *fade(f32 angle, s32 frames, s32 priority) {
+            u8 sp8[0x34];
+            void *proc;
+            M2C_FIELD(sp8, void **, 0x30) = this;
+            GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp8);
+            if (angle == ((f32)M2C_FIELD(this, s16 *, 0x15C) / 50.0f)) {
+                return NULL;
+            }
+            if (frames <= 0) {
+                M2C_FIELD(this, s16 *, 0x15C) = (s16)(50.0f * angle);
+                return NULL;
+            }
+            proc = Process_CreateEx(&E_MuFade_script, priority);
+            M2C_FIELD(proc, void **, 0x30) = this;
+            M2C_FIELD(proc, f32 *, 0x34) = angle;
+            M2C_FIELD(proc, s32 *, 0x38) = frames;
+            return proc;
+        }
+    };
+    return ((Unit *)arg0)->fade(fn_8004BDA8(arg0, gHalf + (f32)arg1, gHalf + (f32)arg2), arg3, arg4);
 }
-
+#pragma cplusplus reset
 void *Unit_FaceToward(void *unit, u32 target, s32 frames, s32 priority) {
     /* Fade unit facing (0x15C) toward target unit; snap if frames<=0. */
     void GfxEnt_ForEachKey(void *, void *, void *);
