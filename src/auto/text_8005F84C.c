@@ -23,6 +23,14 @@ virtual void deselect(void *, void *) = 0;
 #pragma cplusplus reset
 
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
+static inline u8 GActor_HasFrameEvent(u8 *actor) {
+    s32 i;
+    for (i = 0; i < 2; i++, actor += 4) {
+        if (*(u16 *)(actor + 0x7C) == 4) return 1;
+        if (*(u16 *)(actor + 0x7E) == 4) return 1;
+    }
+    return 0;
+}
 
 
 static inline u8 *GActor_FindAnimation(u8 *p) {
@@ -453,7 +461,10 @@ src+=2;dst+=2;
 #pragma cplusplus reset
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma inline_depth(8)
 void fn_80060060(void *arg0) {
     s32 fn_80064FC4(void *, void *, void *);
     s32 fn_800651FC(void *, void *, f32, f32);
@@ -464,32 +475,18 @@ void fn_80060060(void *arg0) {
     u16 sp8[4];
     void *node;
     void *var_r3;
-    void *var_r4;
-    f32 lo;
     f32 hi;
+    f32 lo;
     f32 t;
     f32 cur;
     s32 end;
     s32 start;
-    s32 flag;
+    u8 flag;
     u8 found;
-    f32 delta;
 
-    delta = *(f32 *)((u8 *)arg0 + 0x5C);
-    var_r3 = arg0;
-    goto loop_2;
-loop_1:
-    node = *(void **)((u8 *)var_r3 + 0x44);
-    if (node != NULL) {
-        goto block_7;
-    }
-    var_r3 = *(void **)((u8 *)var_r3 + 4);
-loop_2:
-    if (var_r3 != NULL) {
-        goto loop_1;
-    }
-    node = NULL;
-block_7:
+
+    hi = *(f32 *)((u8 *)arg0 + 0x5C);
+    node = GActor_FindAnimation((u8 *)arg0);
 
     if (node == NULL) {
         return;
@@ -505,7 +502,7 @@ block_7:
     }
 
     lo = *(f32 *)((u8 *)arg0 + 0x58);
-    hi = lo + delta;
+    hi = lo + hi;
     *(f32 *)((u8 *)arg0 + 0x58) = hi;
 
     if (*(u32 *)arg0 & 0x80) {
@@ -520,21 +517,7 @@ block_7:
             found = 1;
         }
         if (found) {
-            var_r4 = arg0;
-            goto loop_2b;
-        loop_1b:
-            node = *(void **)((u8 *)var_r4 + 0x44);
-            if (node != NULL) {
-                goto block_7b;
-            }
-            var_r4 = *(void **)((u8 *)var_r4 + 4);
-        loop_2b:
-            if (var_r4 != NULL) {
-                goto loop_1b;
-            }
-            node = NULL;
-        block_7b:
-            *(f32 *)((u8 *)arg0 + 0x58) = (f32)fn_8006555C(node, (s32)hi, 3);
+            *(f32 *)((u8 *)arg0 + 0x58) = (f32)fn_8006555C(GActor_FindAnimation((u8 *)arg0), (s32)hi, 3);
         }
     }
 
@@ -568,7 +551,7 @@ block_7:
                 start = *(s32 *)((u8 *)node + 0x14);
                 *(f32 *)((u8 *)arg0 + 0x58) = *(f32 *)((u8 *)arg0 + 0x58) - (f32)(end - start);
                 hi = *(f32 *)((u8 *)arg0 + 0x58);
-                lo = (f32)(start - 1);
+                lo = (f32)(*(s32 *)((u8 *)node + 0x14) - 1);
             } else {
                 start = *(s32 *)((u8 *)node + 0x14);
                 if (cur <= (f32)start) {
@@ -598,7 +581,7 @@ block_7:
         *(u32 *)arg0 |= 0x10;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 s32 fn_80060440(void *arg0) {
     s32 var_r4;
@@ -843,6 +826,8 @@ void fn_800606BC(void *arg0) {
 #pragma cplusplus reset
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_800608AC(void *arg0) {
     void fn_80061A08(void *);
     void fn_80065AF8(s32, void *, void *, void *);
@@ -884,7 +869,7 @@ void fn_800608AC(void *arg0) {
     fn_80065AF8((s32)arg0,M2C_FIELD(model,void **,0xC),matrices,0);
 #pragma cplusplus reset
 }
-
+#pragma pop
 void fn_800609DC(void *arg0) {
     void fn_80061A08(void *);
     void fn_80065AF8(s32, void *, void *, void *);
@@ -3676,11 +3661,18 @@ void *MTXRotDegOrder(void *node, void *out)
     return out;
 }
 
+#pragma push
 #pragma optimization_level 4
-#pragma inline_depth(3)
 #pragma use_lmw_stmw on
+#pragma dont_inline off
+#pragma auto_inline on
+#pragma inline_max_size(1000)
+#pragma inline_depth(2)
 void fn_80065AF8(s32 arg0, void *arg1, void *arg2, void *arg3) {
-    void PSMTXConcat(void *, void *, void *);
+    void fn_80202024(void *, void *, void *);
+    void *out = arg3;
+    void *base = arg2;
+    s32 root = arg0;
     void *child;
     void *n;
     void *p;
@@ -3689,19 +3681,20 @@ void fn_80065AF8(s32 arg0, void *arg1, void *arg2, void *arg3) {
 
     p = *(void **)arg1;
     if (p) {
-        dst = (u8 *)arg2 + *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
-        PSMTXConcat((u8 *)arg2 + *(u16 *)((u8 *)p + 0xEC) * 0x30, dst, dst);
+        dst = (u8 *)base + *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
+        fn_80202024((u8 *)base + *(u16 *)((u8 *)p + 0xEC) * 0x30, dst, dst);
     }
-    if (arg3) {
+    if (out) {
         off = *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
-        PSMTXConcat((u8 *)arg2 + off, (u8 *)arg1 + 0x10, (u8 *)arg3 + off);
+        fn_80202024((u8 *)base + off, (u8 *)arg1 + 0x10, (u8 *)out + off);
     }
     child = *(void **)((u8 *)arg1 + 8);
-    if (child) fn_80065AF8(arg0, child, arg2, arg3);
+    if (child) fn_80065AF8(root, child, base, out);
     arg1 = *(void **)((u8 *)arg1 + 4);
-    if (arg1) fn_80065AF8(arg0, arg1, arg2, arg3);
+    if (arg1) fn_80065AF8(root, arg1, base, out);
 }
-#pragma optimization_level reset
+#pragma inline_depth(0)
+#pragma pop
 
 #pragma optimization_level 4
 void fn_80065E68(void) {
@@ -4562,6 +4555,8 @@ s32 Fog_GetColor(void) {
     return lbl_80366DD4;
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_800675E8(void *arg0) {
     void GXSetScissor(u16, u16, u16, u16);
     void GXSetViewport(f32, f32, f32, f32, f32, f32);
@@ -4651,8 +4646,7 @@ void fn_800675E8(void *arg0) {
 
     cam[3]++;
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void fn_80067708(s32 arg0, s32 arg1, void *arg2, void *arg3) {
     void Game_Assert(void *, s32, void *);
     extern void *gCamera;
@@ -5269,7 +5263,8 @@ void fn_80068550(s32 arg0) {
     gCamera = (void *)arg0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 void fn_80068558(void *arg0, void *arg1, void *arg2)
 {
     void *fn_8000D354(void *);
@@ -5297,16 +5292,13 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
                     p = arr;
                     off = 0;
                     for (k = 0; k < 8; k++) {
-                        if (*p == arg2) {
+                        if (arr[k] == arg2) {
                             off = k * 4;
-                            n = 7 - k;
-                            if (k < 7) {
-                                while (n != 0) {
+                            
+                            for (; k < 7; k++) {
                                     arr = *(void ***)((u8 *)entry + 0x18);
                                     *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
                                     off += 4;
-                                    n -= 1;
-                                }
                             }
                             *(void **)((u8 *)*(void **)((u8 *)entry + 0x18) + 0x1C) = NULL;
                             break;
@@ -5347,15 +5339,12 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
                 for (k = 0; k < 8; k++) {
                     if (*p == arg2) {
                         off = k * 4;
-                        n = 7 - k;
-                        if (k < 7) {
-                            while (n) {
+                        
+                        for (; k < 7; k++) {
                                 arr = *(void ***)((u8 *)found + 0x18);
                                 *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
                                 off += 4;
-                                n -= 1;
                             }
-                        }
                         *(void **)((u8 *)*(void **)((u8 *)found + 0x18) + 0x1C) = NULL;
                         break;
                     }
@@ -5372,8 +5361,7 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         }
     }
 }
-
-#pragma opt_loop_invariants off
+#pragma pop
 s32 fn_800688D4(void *arg0, void *arg1, u32 arg2, s32 arg3) {
     void *Res_GetByName(void *);
     void *fn_800C4638(s32, void *, s32);
@@ -7161,40 +7149,41 @@ void fn_8006CC6C(s32 arg0) {
     fn_8003F670(arg0);
 }
 
+#pragma push
+#pragma opt_propagation off
 void *fn_8006CCBC(char *name, s32 flags) {
-extern u32 FileCache_GetFlags(void *);
-void *Archive_LoadFlags(char *,s32);
-extern f32 lbl_803692AC;
-u8 fresh=1;
-void *archive;
-u32 *reloc;
-s32 b,g,r;
-u8 *material;
-s32 i;
-s32 offset;
-f32 factor;
-if(FileCache_GetFlags(name)&0x4000) fresh=0;
-archive=Archive_LoadFlags(name,flags);
-if(fresh) {
-reloc=M2C_FIELD(archive,u32 **,0x48);
-if(reloc) {reloc[0]+=(u32)reloc;reloc[1]+=(u32)reloc;}
-i=0;
-factor=lbl_803692AC;
-offset=i;
-for(;i<M2C_FIELD(archive,u16 *,0x54);offset+=0x20,i++) {
-material=M2C_FIELD(archive,u8 **,0x34)+offset;
-r=(s32)(factor*(f32)material[8]);
-g=(s32)(factor*(f32)material[9]);
-b=(s32)(factor*(f32)material[10]);
-if(r>255) r=255;
-if(g>255) g=255;
-if(b>255) b=255;
-material[8]=r;material[9]=g;material[10]=b;
+    extern u32 FileCache_GetFlags(void *);
+    void *Archive_LoadFlags(char *, s32);
+    u8 fresh = 1;
+    void *archive;
+    u32 *reloc;
+    s32 i;
+    s32 b, g, r;
+    u8 *material;
+    if (FileCache_GetFlags(name) & 0x4000) fresh = 0;
+    archive = Archive_LoadFlags(name, flags);
+    if (fresh) {
+        reloc = M2C_FIELD(archive, u32 **, 0x48);
+        if (reloc) {
+            reloc[0] += (u32)reloc;
+            reloc[1] += (u32)reloc;
+        }
+        for (i = 0; i < M2C_FIELD(archive, u16 *, 0x54); i++) {
+            material = M2C_FIELD(archive, u8 **, 0x34) + i * 0x20;
+            r = (s32)(1.25f * (f32)material[8]);
+            g = (s32)(1.25f * (f32)material[9]);
+            b = (s32)(1.25f * (f32)material[10]);
+            if (r > 255) r = 255;
+            if (g > 255) g = 255;
+            if (b > 255) b = 255;
+            material[8] = r;
+            material[9] = g;
+            material[10] = b;
+        }
+    }
+    return archive;
 }
-}
-return archive;
-}
-
+#pragma pop
 void *fn_8006CE14(char *name) {
     extern u32 FileCache_GetFlags(void *);
     void *Archive_LoadFlags(char *, s32);
@@ -8593,7 +8582,7 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     u32 value;
     u16 i;
 
-    *(u32 *)arg0 = fn_8005C82C(arg1, arg2);
+    *(u8 **)arg0 = (u8 *)fn_8005C82C(arg1, arg2);
     file = *(u8 **)arg0;
 
     if (*(u32 *)file == 0x0020AF31U) {
@@ -8603,7 +8592,9 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
     *(u32 *)file += 1;
     *(u32 *)(file + 8) += (u32)file;
 
-    for (i = 0; i < *(u32 *)(file + 4); i++) {
+    i = 0;
+
+    while (i < *(u32 *)(file + 4)) {
         table = *(u8 **)(file + 8);
         offset = (i & 0xFFFF) << 3;
 
@@ -8642,6 +8633,8 @@ int fn_8006EDE8(void *arg0, void *arg1, int arg2) {
                 record[2] = 1;
             }
         }
+
+        i++;
     }
 }
 void fn_8006EEFC(void *arg0, void *arg1) {
