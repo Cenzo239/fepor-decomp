@@ -1,5 +1,8 @@
 /* Functions from 0x801FC634 to 0x8022C1E8, found by decomp-toolkit. */
 #include "common.h"
+static inline s32 ResetTimeNonzero(s64 time) { return time != 0; }
+static inline s32 ResetTimeElapsed(s64 now, s64 start, u32 ticks) { return now - start > (s64)ticks; }
+
 
 #include <dolphin/os.h>
 #include "global.h"
@@ -149,7 +152,6 @@ extern s32 RunQueueHint_8036851C;
 
 #pragma push
 #pragma optimization_level 3
-#pragma opt_common_subs off
 s32 fn_80208D18(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -158,7 +160,7 @@ s32 fn_80208D18(void) {
     s32 state;
     s32 enabled;
     s32 pad;
-    u64 now;
+    s64 now;
     s32 soft;
     u32 freq;
     u32 thresh;
@@ -185,7 +187,7 @@ s32 fn_80208D18(void) {
             if (((u64)(u32)lbl_80368508 << 32 | lbl_8036850C) == 0) {
                 freq = *(u32 *)0x800000F8 >> 2;
                 thresh = (freq / 125000) * 0x64 >> 3;
-                if ((s64)thresh >= now - (s64)((u64)lbl_80368510 << 32 | lbl_80368514)) {
+                if ((s64)thresh >= (u64)now - (s64)((u64)lbl_80368510 << 32 | lbl_80368514)) {
                     soft = 0;
                 }
             }
@@ -222,8 +224,7 @@ s32 fn_80208D18(void) {
     n = *(u8 *)0x800030E3 & 0x1F;
     if (n != 0) {
         freq = *(u32 *)0x800000F8 >> 2;
-        t = (s64)(s32)(n * 60) * (u64)freq;
- t += __OSStartTime;
+        t = __OSStartTime + (s64)(n * 60) * freq;
         if (t < now) {
             q = __div2i(now - t, (u64)freq);
             q = __div2i(q, 2);
