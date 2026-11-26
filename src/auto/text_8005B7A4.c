@@ -13,7 +13,7 @@ static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
 }
 
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; s8 c; s32 i; u8 *dst;
+    char *src; u8 c; s32 i; u8 *dst;
     src = arg1;
     if (*arg1 == '/') {
         src++;
