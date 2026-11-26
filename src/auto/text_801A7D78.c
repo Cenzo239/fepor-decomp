@@ -186,7 +186,9 @@ void fn_801A80D8(void *unit, s32 *hit, s32 *avoid, s32 *crit) {
 }
 void fn_801A80D8(void *arg0, s32 *arg1, s32 *arg2, s32 *arg3);
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_801A8268(void *arg0) {
     s32 fn_800056CC(const char *, ...);
     s32 fn_800A8A88(void *);
@@ -204,15 +206,16 @@ void fn_801A8268(void *arg0) {
     s32 fn_8001D8A8(void *);
     extern u8 lbl_8027B650[];
     extern u16 lbl_80367218;
-    s8 g, e, f, d, c, b, a;
+    s8 g, f, e, d, c, b, a;
     s8 t;
     u8 b25;
     u8 b26;
     s32 tmp;
     s8 v1a8, v19a;
     void *p;
-    void *obj, *base;
     s32 flag;
+    s32 secondFlag;
+    void *base, *obj;
     s32 ret;
     void *slot;
 
@@ -263,9 +266,9 @@ void fn_801A8268(void *arg0) {
     } else {
         base = (u8 *)arg0 + 0x284;
     }
-    obj = *(void **)base;
-    if (obj != 0) {
-        tmp = *((u8 *)obj + 0x18);
+    base = *(void **)base;
+    if (base != 0) {
+        tmp = *((u8 *)base + 0x18);
     } else {
         tmp = 0;
     }
@@ -281,15 +284,15 @@ void fn_801A8268(void *arg0) {
     fn_800056CC((const char *)(lbl_8027B650 + 0xEC),
                 *(s16 *)((u8 *)arg0 + 0x2C2), *(s16 *)((u8 *)arg0 + 0x2C4));
 
-    flag = *((u8 *)arg0 + 0x2C8);
+    secondFlag = *((u8 *)arg0 + 0x2C8);
     slot = (u8 *)arg0 + 0x28C;
-    if ((s8)flag <= 0) {
+    if ((s8)secondFlag <= 0) {
         base = &lbl_80367218;
     } else {
         base = (u8 *)arg0 + 0x284;
     }
     b25 = *((u8 *)base + 4);
-    if ((s8)flag <= 0) {
+    if ((s8)secondFlag <= 0) {
         base = &lbl_80367218;
     } else {
         base = (u8 *)arg0 + 0x284;
@@ -301,9 +304,8 @@ void fn_801A8268(void *arg0) {
         tmp = 0;
     }
     b26 = (u8)tmp;
-    ret = fn_8001D2C8(slot);
     fn_800056CC((const char *)(lbl_8027B650 + 0x100),
-                ret, b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
+                fn_8001D2C8(slot), b25, b26, *(s8 *)((u8 *)arg0 + 0x294));
 
     fn_800056CC((const char *)(lbl_8027B650 + 0x114),
                 fn_8001D8A8((u8 *)arg0 + 0x2AE));
@@ -311,6 +313,7 @@ void fn_801A8268(void *arg0) {
                 fn_8001D8A8((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3A));
     fn_800056CC((const char *)(lbl_8027B650 + 0x12E));
 }
+#pragma pop
 void fn_801A859C(void *arg0) {
     s8 temp;
     temp = Unit_GetMaxHp();
