@@ -1,5 +1,17 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void *SaveMenu_GetHeader(void *base) {
+    void *fn_801E09B4(void *);
+    u8 *slot = fn_801E09B4(base);
+    if (slot != NULL && slot[0x60] == 3) return slot;
+    return NULL;
+}
+static inline void *SaveMenu_GetUnit(void *base, void *id) {
+    void *fn_801E2324(void *, void *);
+    u8 *slot = fn_801E2324(base, id);
+    if (slot != NULL && slot[0x60] == 2) return slot;
+    return NULL;
+}
 const f64 lbl_8036B670 = 4503816931318784.0;
 static inline u8 *Battle_FindActiveSideUnit(void) {
     extern u8 gBattle[];
