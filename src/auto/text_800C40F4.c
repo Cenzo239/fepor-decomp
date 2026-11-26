@@ -141,6 +141,18 @@ DebugPrint(lbl_802700D8+0xd4,i,h,(u8*)h+ext,ext,(u8*)*table+4);
 static inline s32 HeapC55_FindIndex(HeapC55 **table, HeapC55 *heap) { s32 i; for(i=0;i<16;i++,table++) if(*table==heap) return i; return -1; }
 static inline void *HeapC55_End(void *end, void **fallback) { if(end) return end; return *fallback; }
 static inline HeapC55 *HeapC55_Append(HeapC55 *head, HeapC55 *block) { HeapC55 *tail=head; if(head) { HeapC55 *next; while((next=tail->next)!=0) tail=next; } block->next=0; block->prev=tail; if(tail) tail->next=block; if(head) return head; return block; }
+static inline void HeapC55_PrintAll(void) {
+void DebugPrint(void *,...); extern u8 lbl_802700D8[],lbl_80320B88[]; extern u32 *lbl_80367860,*lbl_80367868; extern u32 lbl_80367864,lbl_8036786C;
+s32 mb;u32 n;u8 *lo,*hi;HeapC55 **base,**table;
+mb=24; if((u32)lbl_80367860>0x81800000U)mb=48;
+DebugPrint(lbl_802700D8+0x18);
+n=mb<<20; DebugPrint(lbl_802700D8+0x1a,0x80000000U,n+0x80000000U,n);
+hi=(u8*)lbl_80367864;lo=(u8*)lbl_80367860;DebugPrint(lbl_802700D8+0x46,lo,hi,hi-lo);
+if(lbl_80367868)lo=(u8*)lbl_80367868+((HeapC55*)lbl_80367868)->extent;else lo=(u8*)lbl_80367860;
+hi=HeapC55_End((void*)lbl_8036786C,(void**)&lbl_80367864);
+DebugPrint(lbl_802700D8+0x7a,lo,hi,hi-lo);
+base=(HeapC55**)lbl_80320B88;table=base;HeapC55_PrintList(table);
+}
 static inline HeapC55 *HeapC55_Best(HeapC55 *p,u32 size) { HeapC55 *best=0; u32 limit=0x7fffffff; for(;p;p=p->next) { u32 n=p->size; if(n<=limit && n>=size) { limit=n; best=p; } } return best; }
 static inline u8 relation_is_one(void *a, void *b) {
     u8 Allegiance_Compare(void *, void *);
