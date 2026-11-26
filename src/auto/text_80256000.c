@@ -1453,75 +1453,43 @@ void fn_802572E8(u16 *arg0)
     extern u8 gSoundData[];
     extern s32 gSynthVoices;
 
-    void fn_80256FF0(u8);
+    void fn_80256FF0(u32);
 
-    u16 *list;
     u32 index;
-    u32 offset;
-    u32 id;
+    u16 id;
     u8 *voice;
 
-    list = arg0;
-    index = 0;
-    offset = 0;
+    for (index = 0; index < gSoundData[0x210]; index++) {
+        voice = (u8 *)gSynthVoices + index * 0x458;
 
-    while (index < gSoundData[0x210]) {
-        voice = (u8 *)gSynthVoices + offset;
-
-        if (*(u32 *)(voice + 0x34) == 0) {
-            if (voice[0x11C] == 0) {
-                fn_80256FF0(index);
-            }
+        if (*(u32 *)(voice + 0x34) == 0 && voice[0x11C] == 0) {
+            fn_80256FF0(index);
         }
-
-        offset += 0x458;
-        index++;
     }
 
-    while (*list != 0xFFFF) {
-        if (*list & 0x8000) {
-            id = *list & 0x3FFF;
+    while (*arg0 != 0xFFFF) {
+        if (*arg0 & 0x8000) {
+            for (id = *arg0 & 0x3FFF; id <= arg0[1]; id++) {
+                for (index = 0; index < gSoundData[0x210]; index++) {
+                    voice = (u8 *)gSynthVoices + index * 0x458;
 
-            while ((u16)id <= list[1]) {
-                index = 0;
-                offset = 0;
-
-                while (index < gSoundData[0x210]) {
-                    voice = (u8 *)gSynthVoices + offset;
-
-                    if (*(u32 *)(voice + 0x34) != 0) {
-                        if (*(u16 *)(voice + 0x104) ==
-                            (u16)id) {
-                            fn_80256FF0(index);
-                        }
-                    }
-
-                    offset += 0x458;
-                    index++;
-                }
-
-                id++;
-            }
-
-            list += 2;
-        } else {
-            index = 0;
-            offset = 0;
-
-            while (index < gSoundData[0x210]) {
-                voice = (u8 *)gSynthVoices + offset;
-
-                if (*(u32 *)(voice + 0x34) != 0) {
-                    if (*(u16 *)(voice + 0x104) == *list) {
+                    if (*(u32 *)(voice + 0x34) != 0 && id == *(u16 *)(voice + 0x104)) {
                         fn_80256FF0(index);
                     }
                 }
-
-                offset += 0x458;
-                index++;
             }
 
-            list++;
+            arg0 += 2;
+        } else {
+            for (index = 0; index < gSoundData[0x210]; index++) {
+                voice = (u8 *)gSynthVoices + index * 0x458;
+
+                if (*(u32 *)(voice + 0x34) != 0 && *arg0 == *(u16 *)(voice + 0x104)) {
+                    fn_80256FF0(index);
+                }
+            }
+
+            arg0++;
         }
     }
 }
