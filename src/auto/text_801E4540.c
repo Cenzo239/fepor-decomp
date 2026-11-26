@@ -723,7 +723,7 @@ void fn_801E551C(void) {
 }
 
 #pragma use_lmw_stmw on
-void TabMenu_DrawTab2(void *arg0) {
+void TabMenu_DrawTab2(u8 *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -737,45 +737,46 @@ void TabMenu_DrawTab2(void *arg0) {
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
-    void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
+    void fn_8001003C(s32, s16, u8, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
-    void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
+    void fn_801E5C1C(void *, s16, s16, s16, s16, s32, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
     extern u8 gBattleState[];
     extern u8 lbl_80332000[];
-    extern s16 lbl_8036833C;
+    extern s16 lbl_8036833C[4];
 
     struct Node { struct Node *prev; struct Node *next; u8 *data; };
 
     u8 color[4];
     s32 color_word;
-    void *self;
+    u8 *self;
     struct Node *node;
     s16 *rect;
-    void *tbl74;
-    void *tbl84;
-    s8 row;
-    s8 t;
+    s32 row;
+    s32 y1;
     s16 y0;
-    s16 y1;
+    u8 *tbl74;
+    struct Node *end;
+    u8 *tbl84;
+    s8 t;
     s16 pad;
     s16 pad2;
     s16 y;
+    s32 yline;
     s16 w;
     s16 x2;
-    s16 yline;
     s32 rem;
     s32 page;
+    s8 p;
     s8 lim;
     u8 in_view;
     u8 mark;
-    u8 sel;
+    s32 sel;
     void *str;
     void *str2;
     s32 unk36;
-    u8 *data;
     struct Node *cur;
 
     self = arg0;
@@ -783,8 +784,9 @@ void TabMenu_DrawTab2(void *arg0) {
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne);
     Prim2D_PrepareTex();
 
-    unk36 = *(s16 *)((u8 *)self + 0x36);
-    node = *(struct Node **)((u8 *)self + 0x58);
+    unk36 = *(s16 *)(self + 0x36);
+    end = (struct Node *)(self + 0x54);
+    node = *(struct Node **)(self + 0x58);
     row = (s8)(unk36 / 32);
     t = row;
     if (row >= 0) {
@@ -804,37 +806,36 @@ void TabMenu_DrawTab2(void *arg0) {
     }
 
     rem = unk36 % 32;
-    y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
+    y0 = 8 - rem;
+    y1 = y0 + (s16)((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1);
+    rect = lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
-    data = node->data;
-    if ((s8)data[0] < 0) {
-        pad = (s16)((0x20 - (s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1])) >> 1);
+    if ((s8)node->data[0] < 0) {
+        pad = (s16)((0x20 - (s16)(rect[3] - rect[1])) >> 1);
         pad2 = (s16)(pad + 0xC);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)self + 0x64), lbl_80332000, 0xC);
+        Ui_LoadAtlasTex(*(s32 *)(self + 0x64), lbl_80332000, 0xC);
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        y = (s16)((((s8)(row - (s8)page) << 5) + 8) - rem);
-        yline = (s16)(y + pad);
-        w = (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]);
-        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)((s16 *)&lbl_8036833C)[0], (f32)((s16 *)&lbl_8036833C)[1],
-                    (f32)w, (f32)(s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1]));
+        y = (s16)((((s8)(row - page) << 5) + 8) - rem);
+        yline = y + pad;
+        Prim2D_SetRectUv(lbl_8036B718, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)rect[1],
+                    (f32)(s16)(rect[2] - lbl_8036833C[0]), (f32)(s16)(rect[3] - rect[1]));
         Prim2D_SwapUvU();
-        x2 = (s16)(0x208 - (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]));
+        x2 = (s16)(0x208 - (s16)(rect[2] - lbl_8036833C[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)((s16 *)&lbl_8036833C)[0], (f32)((s16 *)&lbl_8036833C)[1],
-                    (f32)(s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]), (f32)(s16)(((s16 *)&lbl_8036833C)[3] - ((s16 *)&lbl_8036833C)[1]));
+        Prim2D_SetRectUv((f32)x2, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)rect[1],
+                    (f32)(s16)(rect[2] - lbl_8036833C[0]), (f32)(s16)(rect[3] - rect[1]));
         color[0] = 0xFF;
-        w = (s16)(((s16 *)&lbl_8036833C)[2] - ((s16 *)&lbl_8036833C)[0]);
+        w = (s16)(rect[2] - lbl_8036833C[0]);
         color[1] = 0xFF;
         color[2] = 0xFF;
         x2 = (s16)(0x208 - w);
@@ -852,13 +853,13 @@ void TabMenu_DrawTab2(void *arg0) {
         Prim2D_SetColorPacked(&color_word);
         Prim2D_EndPrim();
     } else {
-        if (fn_801E4A60(self, data[4]) == row) {
-            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x4C))[(s8)data[4]]);
+        if (fn_801E4A60(self, node->data[4]) == (s8)row) {
+            str = Msg_Expand(((void **)*(void **)(self + 0x4C))[(s8)node->data[4]]);
             sel = 0;
-            t = (s8)*(u8 *)((u8 *)self + 0x33);
-            cur = *(struct Node **)((u8 *)self + 0x58);
+            t = (s8)*(u8 *)(self + 0x33);
+            cur = *(struct Node **)(self + 0x58);
             {
-                s8 idx = (s8)data[4];
+                s8 idx = (s8)node->data[4];
                 if (t >= 0) {
                     goto sel_fwd_chk;
                     sel_fwd:
@@ -874,20 +875,20 @@ void TabMenu_DrawTab2(void *arg0) {
                     sel_back_chk:
                     if (t < 0) goto sel_back;
                 }
-                switch ((s8)*(u8 *)((u8 *)self + 0x31)) {
+                switch ((s8)*(u8 *)(self + 0x31)) {
                 case 0:
-                    sel = (u8)(idx == (s8)*(u8 *)((u8 *)self + 0x32));
+                    sel = (idx == (s8)*(u8 *)(self + 0x32));
                     break;
                 case 1:
-                    switch ((s8)*(u8 *)((u8 *)self + 0x30)) {
+                    switch ((s8)*(u8 *)(self + 0x30)) {
                     case 0:
-                        sel = (u8)(idx == (s8)cur->data[2]);
+                        sel = (idx == (s8)cur->data[2]);
                         break;
                     case 1:
-                        sel = (u8)(idx == (s8)cur->data[1]);
+                        sel = (idx == (s8)cur->data[1]);
                         break;
                     case 2:
-                        sel = (u8)(idx == (s8)cur->data[4]);
+                        sel = (idx == (s8)cur->data[4]);
                         break;
                     }
                     break;
@@ -896,54 +897,52 @@ void TabMenu_DrawTab2(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (Status_Test(tbl74, data[0]) != 0) {
-            mark = 0x14;
-            if (Status_Test(tbl84, data[0]) != 0) {
-                mark = 1;
-            }
+        if (Status_Test(tbl74, node->data[0]) != 0) {
+            mark = Status_Test(tbl84, node->data[0]) != 0 ? 1 : 0x14;
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
-                    gTabMenuOne, gTabMenuZero);
+        fn_8001003C(0x88, (s16)y1, mark, 1, 0, Msg_Expand(*(void **)(node->data + 0xC)),
+                    (f32)gTabMenuOne, (f32)gTabMenuZero);
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+        str2 = Msg_Expand(((void **)*(void **)(self + 0x44))[(s8)node->data[2]]);
         {
-            s16 x = (s16)(((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
-            fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
+            s16 x = (s16)((s16)((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
+            fn_8001003C(x, (s16)y1, mark, 1, 0, str2, (f32)gTabMenuOne, (f32)gTabMenuZero);
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x1A0, y1, mark, 1, 0,
-                    Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
-                    gTabMenuOne, gTabMenuZero);
+        fn_8001003C(0x1A0, (s16)y1, mark, 1, 0,
+                    Msg_Expand(((void **)*(void **)(self + 0x48))[(s8)node->data[1]]),
+                    (f32)gTabMenuOne, (f32)gTabMenuZero);
     }
 
     node = node->next;
-    y1 = (s16)(y1 + 0x20);
-    y0 = (s16)(y0 + 0x20);
-    row = (s8)(row + 1);
+    y1 += 0x20;
+    y0 += 0x20;
+    row++;
 
     loop_chk:
-    unk36 = *(s16 *)((u8 *)self + 0x36);
+    unk36 = *(s16 *)(self + 0x36);
     rem = unk36 % 32;
     page = unk36 / 32;
-    lim = (s8)((s8)page + 8);
+    p = (s8)page;
+    lim = p + 8;
     if (rem != 0) {
-        lim = (s8)((s8)page + 9);
+        lim = p + 9;
     }
-    in_view = 0;
-    if ((s8)page <= row && row <= lim) {
-        in_view = 1;
-    }
-    if (in_view != 0 && node != (struct Node *)((u8 *)self + 0x54)) {
+    in_view = (p <= (s8)row && (s8)row <= lim);
+    if (in_view != 0 && node != end) {
         goto loop_body;
     }
 }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
+#pragma opt_loop_invariants reset
 #pragma push
 #pragma opt_propagation off
 void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, void *arg6) {
@@ -1094,9 +1093,12 @@ void fn_801E5C1C(s32 unused, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8 arg5, vo
     Prim2D_AddZ(lbl_8036B724);
     Prim2D_PrepareTex();
 }
-#pragma pop
-#pragma use_lmw_stmw on
-void TabMenu_DrawTab1(void *arg0) {
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_loop_invariants off
+void TabMenu_DrawTab1(u8 *arg0) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -1110,45 +1112,46 @@ void TabMenu_DrawTab1(void *arg0) {
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
-    void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
+    void fn_8001003C(s32, s16, u8, s32, s32, void *, ...);
     s32 Text_MeasureWidth(void *, s32, f32);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
-    void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
+    void fn_801E5C1C(void *, s16, s16, s16, s16, s32, void *);
     extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
     extern u8 gBattleState[];
     extern u8 lbl_80332000[];
-    extern s16 lbl_8036833C;
+    extern s16 lbl_8036833C[4];
 
     struct Node { struct Node *prev; struct Node *next; u8 *data; };
 
     u8 color[4];
     s32 color_word;
-    void *self;
+    u8 *self;
     struct Node *node;
+    s32 y1;
     s16 *rect;
-    void *tbl74;
-    void *tbl84;
-    s8 row;
-    s8 t;
+    s32 row;
     s16 y0;
-    s16 y1;
+    u8 *tbl74;
+    struct Node *end;
+    u8 *tbl84;
+    s8 t;
     s16 pad;
     s16 pad2;
     s16 y;
+    s32 yline;
     s16 w;
     s16 x2;
-    s16 yline;
     s32 rem;
     s32 page;
+    s8 p;
     s8 lim;
     u8 in_view;
     u8 mark;
-    u8 sel;
+    s32 sel;
     void *str;
     void *str2;
     s32 unk36;
-    u8 *data;
     struct Node *cur;
 
     self = arg0;
@@ -1156,8 +1159,9 @@ void TabMenu_DrawTab1(void *arg0) {
     Prim2D_SetTransform(lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne);
     Prim2D_PrepareTex();
 
-    unk36 = *(s16 *)((u8 *)self + 0x36);
-    node = *(struct Node **)((u8 *)self + 0x58);
+    unk36 = *(s16 *)(self + 0x36);
+    end = (struct Node *)(self + 0x54);
+    node = *(struct Node **)(self + 0x58);
     row = (s8)(unk36 / 32);
     t = row;
     if (row >= 0) {
@@ -1177,38 +1181,36 @@ void TabMenu_DrawTab1(void *arg0) {
     }
 
     rem = unk36 % 32;
-    y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
-    rect = &lbl_8036833C;
+    y0 = 8 - rem;
+    y1 = y0 + (s16)((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1);
+    rect = lbl_8036833C;
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
-    data = node->data;
-    if ((s8)data[0] < 0) {
+    if ((s8)node->data[0] < 0) {
         pad = (s16)((0x20 - (s16)(rect[3] - rect[1])) >> 1);
         pad2 = (s16)(pad + 0xC);
-        Ui_LoadAtlasTex(*(s32 *)((u8 *)self + 0x64), lbl_80332000, 0xC);
+        Ui_LoadAtlasTex(*(s32 *)(self + 0x64), lbl_80332000, 0xC);
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        y = (s16)((((s8)(row - (s8)page) << 5) + 8) - rem);
-        yline = (s16)(y + pad);
-        w = (s16)(rect[2] - rect[0]);
-        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)w, (f32)(s16)(rect[3] - rect[1]));
+        y = (s16)((((s8)(row - page) << 5) + 8) - rem);
+        yline = y + pad;
+        Prim2D_SetRectUv(lbl_8036B718, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)rect[1],
+                    (f32)(s16)(rect[2] - lbl_8036833C[0]), (f32)(s16)(rect[3] - rect[1]));
         Prim2D_SwapUvU();
-        x2 = (s16)(0x208 - (s16)(rect[2] - rect[0]));
+        x2 = (s16)(0x208 - (s16)(rect[2] - lbl_8036833C[0]));
         Prim2D_Begin();
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)rect[0], (f32)rect[1],
-                    (f32)(s16)(rect[2] - rect[0]), (f32)(s16)(rect[3] - rect[1]));
+        Prim2D_SetRectUv((f32)x2, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)rect[1],
+                    (f32)(s16)(rect[2] - lbl_8036833C[0]), (f32)(s16)(rect[3] - rect[1]));
         color[0] = 0xFF;
-        w = (s16)(rect[2] - rect[0]);
+        w = (s16)(rect[2] - lbl_8036833C[0]);
         color[1] = 0xFF;
         color[2] = 0xFF;
         x2 = (s16)(0x208 - w);
@@ -1226,13 +1228,13 @@ void TabMenu_DrawTab1(void *arg0) {
         Prim2D_SetColorPacked(&color_word);
         Prim2D_EndPrim();
     } else {
-        if (fn_801E4A60(self, data[1]) == row) {
-            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]);
+        if (fn_801E4A60(self, node->data[1]) == (s8)row) {
+            str = Msg_Expand(((void **)*(void **)(self + 0x48))[(s8)node->data[1]]);
             sel = 0;
-            t = (s8)*(u8 *)((u8 *)self + 0x33);
-            cur = *(struct Node **)((u8 *)self + 0x58);
+            t = (s8)*(u8 *)(self + 0x33);
+            cur = *(struct Node **)(self + 0x58);
             {
-                s8 idx = (s8)data[1];
+                s8 idx = (s8)node->data[1];
                 if (t >= 0) {
                     goto sel_fwd_chk;
                     sel_fwd:
@@ -1248,20 +1250,20 @@ void TabMenu_DrawTab1(void *arg0) {
                     sel_back_chk:
                     if (t < 0) goto sel_back;
                 }
-                switch ((s8)*(u8 *)((u8 *)self + 0x31)) {
+                switch ((s8)*(u8 *)(self + 0x31)) {
                 case 0:
-                    sel = (u8)(idx == (s8)*(u8 *)((u8 *)self + 0x32));
+                    sel = (idx == (s8)*(u8 *)(self + 0x32));
                     break;
                 case 1:
-                    switch ((s8)*(u8 *)((u8 *)self + 0x30)) {
+                    switch ((s8)*(u8 *)(self + 0x30)) {
                     case 0:
-                        sel = (u8)(idx == (s8)cur->data[2]);
+                        sel = (idx == (s8)cur->data[2]);
                         break;
                     case 1:
-                        sel = (u8)(idx == (s8)cur->data[1]);
+                        sel = (idx == (s8)cur->data[1]);
                         break;
                     case 2:
-                        sel = (u8)(idx == (s8)cur->data[4]);
+                        sel = (idx == (s8)cur->data[4]);
                         break;
                     }
                     break;
@@ -1270,51 +1272,45 @@ void TabMenu_DrawTab1(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (Status_Test(tbl74, data[0]) != 0) {
-            mark = 0x14;
-            if (Status_Test(tbl84, data[0]) != 0) {
-                mark = 1;
-            }
+        if (Status_Test(tbl74, node->data[0]) != 0) {
+            mark = Status_Test(tbl84, node->data[0]) != 0 ? 1 : 0x14;
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
-                    gTabMenuOne, gTabMenuZero);
+        fn_8001003C(0x88, (s16)y1, mark, 1, 0, Msg_Expand(*(void **)(node->data + 0xC)),
+                    (f32)gTabMenuOne, (f32)gTabMenuZero);
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        str2 = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+        str2 = Msg_Expand(((void **)*(void **)(self + 0x44))[(s8)node->data[2]]);
         {
-            s16 x = (s16)(((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
-            fn_8001003C(x, y1, mark, 1, 0, str2, gTabMenuOne, gTabMenuZero);
+            s16 x = (s16)((s16)((0x58 - Text_MeasureWidth(str2, -1, gTabMenuOne)) >> 1) + 0x140);
+            fn_8001003C(x, (s16)y1, mark, 1, 0, str2, (f32)gTabMenuOne, (f32)gTabMenuZero);
         }
     }
 
     node = node->next;
-    y1 = (s16)(y1 + 0x20);
-    y0 = (s16)(y0 + 0x20);
-    row = (s8)(row + 1);
+    y1 += 0x20;
+    y0 += 0x20;
+    row++;
 
     loop_chk:
-    unk36 = *(s16 *)((u8 *)self + 0x36);
+    unk36 = *(s16 *)(self + 0x36);
     rem = unk36 % 32;
     page = unk36 / 32;
-    lim = (s8)((s8)page + 8);
+    p = (s8)page;
+    lim = p + 8;
     if (rem != 0) {
-        lim = (s8)((s8)page + 9);
+        lim = p + 9;
     }
-    in_view = 0;
-    if ((s8)page <= row && row <= lim) {
-        in_view = 1;
-    }
-    if (in_view != 0 && node != (struct Node *)((u8 *)self + 0x54)) {
+    in_view = (p <= (s8)row && (s8)row <= lim);
+    if (in_view != 0 && node != end) {
         goto loop_body;
     }
 }
-
-#pragma use_lmw_stmw on
-void TabMenu_DrawTab0(void *arg0) {
+#pragma pop
+void TabMenu_DrawTab0(void *self) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -1328,11 +1324,11 @@ void TabMenu_DrawTab0(void *arg0) {
     void Prim2D_SetColorPacked(s32 *);
     void Prim2D_EndPrim(void);
     void *Msg_Expand(void *);
-    void fn_8001003C(s32, s16, u8, s32, s32, void *, f32, f32);
+    void fn_8001003C(s32, s32, s32, s32, s32, void *, ...);
     u8 Status_Test(void *, u8);
     s8 fn_801E4A60(void *, u8);
-    void fn_801E5C1C(void *, s16, s16, s16, s16, u8, void *);
-    extern f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
+    void fn_801E5C1C(void *, s16, s16, s16, s16, s32, void *);
+    extern const f32 lbl_8036B70C, lbl_8036B710, lbl_8036B714, gTabMenuOne, gTabMenuZero, lbl_8036B718, lbl_8036B71C;
     extern u8 gBattleState[];
     extern u8 lbl_80332000[];
     extern s16 lbl_8036833C[4];
@@ -1341,29 +1337,28 @@ void TabMenu_DrawTab0(void *arg0) {
 
     u8 color[4];
     s32 color_word;
-    void *self = arg0;
     struct Node *node;
+    struct Node *sent;
     void *tbl74;
     void *tbl84;
     s8 row;
     s8 t;
     s16 y0;
-    s16 y1;
+    s32 y1;
     s16 pad;
     s16 pad2;
     s16 y;
     s16 w;
     s16 x2;
-    s16 yline;
+    s32 yline;
     s32 rem;
     s32 page;
-    s8 lim;
+    s32 lim;
     u8 in_view;
-    u8 mark;
-    u8 sel;
+    u32 mark;
+    u32 sel;
     void *str;
     s32 unk36;
-    u8 *data;
     struct Node *cur;
 
     Prim2D_Begin();
@@ -1371,6 +1366,7 @@ void TabMenu_DrawTab0(void *arg0) {
     Prim2D_PrepareTex();
 
     unk36 = *(s16 *)((u8 *)self + 0x36);
+    sent = (struct Node *)((u8 *)self + 0x54);
     node = *(struct Node **)((u8 *)self + 0x58);
     row = (s8)(unk36 / 32);
     t = row;
@@ -1392,14 +1388,13 @@ void TabMenu_DrawTab0(void *arg0) {
 
     rem = unk36 % 32;
     y0 = (s16)(8 - rem);
-    y1 = (s16)(y0 + ((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1));
+    y1 = y0 + (s16)((0x20 - Text_MeasureHeight(-1, gTabMenuOne)) >> 1);
     tbl74 = gBattleState + 0x74;
     tbl84 = gBattleState + 0x84;
     goto loop_chk;
 
     loop_body:
-    data = node->data;
-    if ((s8)data[0] < 0) {
+    if ((s8)node->data[0] < 0) {
         pad = (s16)((0x20 - (s16)(lbl_8036833C[3] - lbl_8036833C[1])) >> 1);
         pad2 = (s16)(pad + 0xC);
         Ui_LoadAtlasTex(*(s32 *)((u8 *)self + 0x64), lbl_80332000, 0xC);
@@ -1408,9 +1403,9 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         y = (s16)((((s8)(row - (s8)page) << 5) + 8) - rem);
-        yline = (s16)(y + pad);
+        yline = y + pad;
         w = (s16)(lbl_8036833C[2] - lbl_8036833C[0]);
-        Prim2D_SetRectUv(lbl_8036B718, (f32)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
+        Prim2D_SetRectUv(lbl_8036B718, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
                     (f32)w, (f32)(s16)(lbl_8036833C[3] - lbl_8036833C[1]));
         Prim2D_SwapUvU();
         x2 = (s16)(0x208 - (s16)(lbl_8036833C[2] - lbl_8036833C[0]));
@@ -1418,7 +1413,7 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_SetTex(lbl_80332000, 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        Prim2D_SetRectUv((f32)x2, (f32)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
+        Prim2D_SetRectUv((f32)x2, (f32)(s16)yline, (f32)lbl_8036833C[0], (f32)lbl_8036833C[1],
                     (f32)(s16)(lbl_8036833C[2] - lbl_8036833C[0]), (f32)(s16)(lbl_8036833C[3] - lbl_8036833C[1]));
         color[0] = 0xFF;
         w = (s16)(lbl_8036833C[2] - lbl_8036833C[0]);
@@ -1439,13 +1434,13 @@ void TabMenu_DrawTab0(void *arg0) {
         Prim2D_SetColorPacked(&color_word);
         Prim2D_EndPrim();
     } else {
-        if (fn_801E4A60(self, data[2]) == row) {
-            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)data[2]]);
+        if (fn_801E4A60(self, node->data[2]) == (s8)row) {
+            str = Msg_Expand(((void **)*(void **)((u8 *)self + 0x44))[(s8)node->data[2]]);
             sel = 0;
             t = (s8)*(u8 *)((u8 *)self + 0x33);
             cur = *(struct Node **)((u8 *)self + 0x58);
             {
-                s8 idx = (s8)data[2];
+                s32 idx = (s8)node->data[2];
                 if (t >= 0) {
                     goto sel_fwd_chk;
                     sel_fwd:
@@ -1463,18 +1458,18 @@ void TabMenu_DrawTab0(void *arg0) {
                 }
                 switch ((s8)*(u8 *)((u8 *)self + 0x31)) {
                 case 0:
-                    sel = (u8)(idx == (s8)*(u8 *)((u8 *)self + 0x32));
+                    sel = (idx == (s8)*(u8 *)((u8 *)self + 0x32));
                     break;
                 case 1:
                     switch ((s8)*(u8 *)((u8 *)self + 0x30)) {
                     case 0:
-                        sel = (u8)(idx == (s8)cur->data[2]);
+                        sel = (idx == (s8)cur->data[2]);
                         break;
                     case 1:
-                        sel = (u8)(idx == (s8)cur->data[1]);
+                        sel = (idx == (s8)cur->data[1]);
                         break;
                     case 2:
-                        sel = (u8)(idx == (s8)cur->data[4]);
+                        sel = (idx == (s8)cur->data[4]);
                         break;
                     }
                     break;
@@ -1483,49 +1478,44 @@ void TabMenu_DrawTab0(void *arg0) {
             fn_801E5C1C(self, 0x13, (s16)(y0 + 3), 0x5A, 0x1A, sel, str);
         }
         mark = 0;
-        if (Status_Test(tbl74, data[0]) != 0) {
-            mark = 0x14;
-            if (Status_Test(tbl84, data[0]) != 0) {
-                mark = 1;
-            }
-            mark = mark;
+        if (Status_Test(tbl74, node->data[0]) != 0) {
+            mark = (u8)(Status_Test(tbl84, node->data[0]) != 0 ? 1 : 0x14);
         }
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x88, y1, mark, 1, 0, Msg_Expand(*(void **)(data + 0xC)),
+        fn_8001003C(0x88, (s16)y1, mark, 1, 0, Msg_Expand(*(void **)(node->data + 0xC)),
                     gTabMenuOne, gTabMenuZero);
         Prim2D_Begin();
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
-        fn_8001003C(0x148, y1, mark, 1, 0,
-                    Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)data[1]]),
+        fn_8001003C(0x148, (s16)y1, mark, 1, 0,
+                    Msg_Expand(((void **)*(void **)((u8 *)self + 0x48))[(s8)node->data[1]]),
                     gTabMenuOne, gTabMenuZero);
     }
 
     node = node->next;
-    y1 = (s16)(y1 + 0x20);
-    y0 = (s16)(y0 + 0x20);
-    row = (s8)(row + 1);
+    y1 += 0x20;
+    y0 += 0x20;
+    row += 1;
 
     loop_chk:
     unk36 = *(s16 *)((u8 *)self + 0x36);
     rem = unk36 % 32;
     page = unk36 / 32;
-    lim = (s8)((s8)page + 8);
+    lim = (s8)page + 8;
     if (rem != 0) {
-        lim = (s8)((s8)page + 9);
+        lim = (s8)page + 9;
     }
     in_view = 0;
-    if ((s8)page <= row && row <= lim) {
+    if ((s8)page <= (s8)row && (s8)row <= (s8)lim) {
         in_view = 1;
     }
-    if (in_view != 0 && node != (struct Node *)((u8 *)self + 0x54)) {
+    if (in_view != 0 && node != sent) {
         goto loop_body;
     }
 }
-
-#pragma peephole off
+#pragma pop
 void fn_801E6CEC(void *arg0) {
     typedef struct { s16 x, y, x2, y2; } Rect;
     typedef struct { u8 r, g, b, a; } Color;
@@ -1906,6 +1896,7 @@ void fn_801E7FC0(void *arg0) {
 #pragma optimization_level 2
 #pragma opt_common_subs off
 #pragma opt_propagation off
+#pragma opt_loop_unroll off
 void fn_801E80B4(void *arg0) {
     u8 fn_801E8B38(void *, void *, s8);
     s32 Abs(s32);
@@ -1923,18 +1914,20 @@ void fn_801E80B4(void *arg0) {
     extern u8 gUnitInfoPopup[];
     extern u8 gTabMenuStrings[];
     extern f64 lbl_8036B6E0;
-    s16 sp14[2];
     s16 sp1C[2];
-    s16 sp10[2];
     s16 sp18[2];
+    s16 sp14[2];
+    s16 sp10[2];
+    TabListIterator begin;
+    TabListIterator it;
     s32 old33;
     u8 *p33;
-    u32 held;
-    u32 buttons;
-    u32 cur;
-    u32 *pad;
-    u8 t;
     s32 max;
+    u8 t;
+    u32 *pad;
+    u32 cur;
+    u32 buttons;
+    u32 held;
     s32 pos;
     s32 tgt;
     s32 pos32;
@@ -2030,7 +2023,9 @@ void fn_801E80B4(void *arg0) {
     }
 
     if (buttons & 0x01000001U) {
-        node = *(void ***)((u8 *)arg0 + 0x58);
+        begin.node = *(void ***)((u8 *)arg0 + 0x58);
+        it = begin;
+        node = it.node;
         idx = (s8)t;
         if (idx >= 0) {
             while (idx > 0) {
