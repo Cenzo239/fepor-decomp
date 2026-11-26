@@ -1610,6 +1610,29 @@ extern "C" void fn_801FF50C(void *arg0) {
 }
 
 #pragma use_lmw_stmw on
+#pragma cplusplus on
+    struct CursorTextObject {
+        virtual void v0() = 0;
+        virtual void *v1() = 0;
+    };
+    struct CursorWidget {
+        u8 pad[4];
+        virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0; virtual void v3() = 0;
+        virtual void v4() = 0; virtual void v5() = 0; virtual void v6() = 0; virtual void v7() = 0;
+        virtual void v8() = 0; virtual void v9() = 0; virtual void v10() = 0; virtual void v11() = 0;
+        virtual void v12() = 0; virtual void v13() = 0; virtual void v14() = 0; virtual void v15() = 0;
+        virtual void v16() = 0; virtual void v17() = 0; virtual void v18() = 0; virtual void v19() = 0;
+        virtual s16 v20() = 0;
+        virtual void v21() = 0; virtual void v22() = 0; virtual void v23() = 0; virtual void v24() = 0;
+        virtual void v25() = 0; virtual void v26() = 0; virtual void v27() = 0; virtual void v28() = 0;
+        virtual void v29() = 0; virtual void v30() = 0; virtual void v31() = 0; virtual void v32() = 0;
+        virtual void v33() = 0; virtual void v34() = 0;
+        virtual s16 v35() = 0;
+        virtual void v36() = 0; virtual void v37() = 0;
+        virtual s16 v38() = 0;
+    };
+struct CursorTexture { u8 buf[0x20]; u16 w,h; };
+#pragma cplusplus reset
 void fn_801FF6B8(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void Prim2D_SetColorPacked(s32 *);
