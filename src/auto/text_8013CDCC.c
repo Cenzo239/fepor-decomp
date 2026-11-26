@@ -2925,33 +2925,42 @@ extern "C" void List_Insert(void *outNode, void *list, void *posRef, void *value
 #pragma cplusplus reset
 
 #pragma cplusplus on
+struct UUPW_Obj {
+    virtual void v0() = 0; virtual void v1() = 0;
+    virtual void v2() = 0; virtual void v3() = 0;
+    virtual void v4() = 0; virtual void v5() = 0;
+    virtual void v6() = 0; virtual void v7() = 0;
+};
+struct UUPW_Inner { u8 pad[8]; UUPW_Obj *obj; };
+struct UUPW_Panel { u8 pad[0x34]; void *flag; UUPW_Inner *inner; };
+static inline void UUPW_Do(UUPW_Panel *self, UUPW_Panel *p) {
+    if ((self->flag ? p->inner->obj : (UUPW_Obj *)0) != 0) {
+        (self->flag ? p->inner->obj : (UUPW_Obj *)0)->v7();
+    }
+}
 extern "C" void Ui_UpdatePanelWidgets(void *arg0) {
+    struct Obj {
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+    };
+    struct Inner {
+        u8 pad[8];
+        Obj *obj;
+    };
     struct Panel {
-        struct Obj {
-            virtual void v0() = 0;
-            virtual void v1() = 0;
-            virtual void v2() = 0;
-            virtual void v3() = 0;
-            virtual void v4() = 0;
-            virtual void v5() = 0;
-            virtual void v6() = 0;
-            virtual void v7() = 0;
-        };
-        struct Sub {
-            u32 pad0;
-            u32 pad4;
-            Obj *widget;
-        };
         u8 pad[0x34];
         void *flag;
-        Sub *sub;
-        Obj *get() {
-            return flag != 0 ? sub->widget : 0;
-        }
+        Inner *inner;
     };
-    Panel *panel = (Panel *)arg0;
-    if (panel->get() != 0) {
-        panel->get()->v7();
+    Panel *p = (Panel *)arg0;
+    if ((p->flag ? p->inner->obj : (Obj *)0) != 0) {
+        (p->flag ? p->inner->obj : (Obj *)0)->v7();
     }
 }
 
