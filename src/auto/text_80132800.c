@@ -1796,6 +1796,37 @@ void fn_80134BD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 #pragma global_optimizer off
 #pragma optimization_level 3
 #pragma peephole off
+static inline void Fn_80134C24_Body(s32 *dst, void *arg) {
+Vec2s out,in;
+u32 rowH;
+s16 kind,colW;
+u32 quot;
+s32 rem,hdiv,t;
+s16 x,y,half,off48,off4a;
+void *fn_8013F748(void *, void *, void *);
+s32 Text_MeasureHeight(s32, f32);
+colW=*(s16*)((u8*)arg+0x44);
+kind=*(s16*)((u8*)arg+0x3e);
+quot=kind/colW;
+t=*(s16*)((u8*)arg+0x12);
+rem=*(s16*)((u8*)arg+0x16);
+rem-=t;
+rowH=*(u16*)((u8*)arg+0x46);
+off48=*(s16*)((u8*)arg+0x48);
+off4a=*(s16*)((u8*)arg+0x4a);
+t=(s16)rem;
+hdiv=t/colW;
+t=(s16)hdiv;
+rem=kind%colW;
+rem=(s16)rem;
+rem=t*rem;
+x=(s16)(rem+off48);
+y=(s16)(rowH*(s16)quot+off4a);
+t=Text_MeasureHeight(-1,lbl_8036A5AC);
+half=(s16)(((s32)(s16)rowH-t)>>1);
+in.x=x; in.y=y+half;
+*dst=*(s32*)fn_8013F748(arg,&out,&in);
+}
 void fn_80134C24(s32 *arg0, void *arg1) {
 Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
 s32 Text_MeasureHeight(s32, f32);
