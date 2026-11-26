@@ -10361,34 +10361,33 @@ void fn_801C6E60(u32 arg0)
     extern u8 LightFade_script[];
     void *Process_Find(void *);
     void fn_8005F788(u32, s32, s32);
-    s32 i;
-    u8 *list;
-    s32 clear;
+    struct {
+        u8 unk_0[0x290];
+        u32 items[0x40];
+    } *list;
     void *p;
+    s32 i, j;
 
     p = Process_Find(LightFade_script);
     if (p == NULL) {
         list = NULL;
     } else {
-        list = *(u8 **)((u8 *)p + 0x30);
+        list = *(void **)((u8 *)p + 0x30);
     }
     if (list != NULL && arg0 != 0) {
-        clear = (s32)list;
+        u8 *walk = (u8 *)list;
         for (i = 0; i < 0x40; i++) {
-            if (*(u32 *)(list + 0x290) == arg0) {
+            if (*(u32 *)(walk + 0x290) == arg0) {
                 return;
             }
-            list += 4;
+            walk += 4;
         }
-        list = (u8 *)clear;
-        for (i = 0; i < 0x40; i++) {
-            if (*(u32 *)(list + 0x290) == 0) {
-                list = (u8 *)clear + i * 4;
-                *(u32 *)(list + 0x290) = arg0;
+        for (j = 0; j < 0x40; j++) {
+            if (list->items[j] == 0) {
+                list->items[j] = arg0;
                 fn_8005F788(arg0, 1, 1);
                 break;
             }
-            list += 4;
         }
     }
 }
@@ -11628,6 +11627,7 @@ void fn_801C8E84(void) {
 }
 
 #pragma push
+#pragma optimization_level 3
 #pragma opt_common_subs off
 void fn_801C9170(void *arg0) {
     void Process_ClearFunc(void *);
@@ -12153,19 +12153,19 @@ void fn_801C9D94(void *dst, void *win) {
     u8 *base = lbl_80331C88;
 
     if ((s8)lbl_803682BC == 0) {
-        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[0], CameraWin_str + 0x21, &sp18),
+        __register_global_object(String_Init(&((Str *)(base + 0x3C))[0], CameraWin_str + 0x21, &sp18),
                                  String_Destroy, &base[0]);
-        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[1], CameraWin_str + 0x2C, &sp14),
+        __register_global_object(String_Init(&((Str *)(base + 0x3C))[1], CameraWin_str + 0x2C, &sp14),
                                  String_Destroy, &base[0xC]);
-        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[2], CameraWin_str + 0x37, &sp10),
+        __register_global_object(String_Init(&((Str *)(base + 0x3C))[2], CameraWin_str + 0x37, &sp10),
                                  String_Destroy, &base[0x18]);
-        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[3], CameraWin_str + 0x42, &spC),
+        __register_global_object(String_Init(&((Str *)(base + 0x3C))[3], CameraWin_str + 0x42, &spC),
                                  String_Destroy, &base[0x24]);
-        __register_global_object(String_Init(&(*(Str (*)[5])(base + 0x3C))[4], CameraWin_str + 0x4D, &sp8),
+        __register_global_object(String_Init(&((Str *)(base + 0x3C))[4], CameraWin_str + 0x4D, &sp8),
                                  String_Destroy, &base[0x30]);
         lbl_803682BC = 1;
     }
-    String_Copy(dst, &(*(Str (*)[5])(base + 0x3C))[fn_8011C9E4(*(void **)((u8 *)win + 0x434))]);
+    String_Copy(dst, &((Str *)(base + 0x3C))[fn_8011C9E4(*(void **)((u8 *)win + 0x434))]);
 }
 
 #pragma use_lmw_stmw on
