@@ -768,119 +768,17 @@ void fn_8000B950(void *arg0, void (*arg1)(void *)) {
     }
 }
 
-#pragma use_lmw_stmw on
-#pragma inline_depth(0)
-#pragma optimization_level 3
+#pragma inline_depth(3)
 void fn_8000B9A4(void *arg0, void (*arg1)(void *)) {
-    void *v28;
-    void *v29;
-    void *v30;
-
-    v30 = *(void **)((u8 *)arg0 + 0x24);
-    if (v30 != NULL) {
-        v29 = *(void **)((u8 *)v30 + 0x24);
-        if (v29 != NULL) {
-            v28 = *(void **)((u8 *)v29 + 0x24);
-            if (v28 != NULL) {
-                if (*(void **)((u8 *)v28 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x24), arg1);
-                }
-                arg1(v28);
-                if (*(void **)((u8 *)v28 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x1C), arg1);
-                }
-            }
-            arg1(v29);
-            v28 = *(void **)((u8 *)v29 + 0x1C);
-            if (v28 != NULL) {
-                if (*(void **)((u8 *)v28 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x24), arg1);
-                }
-                arg1(v28);
-                if (*(void **)((u8 *)v28 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x1C), arg1);
-                }
-            }
-        }
-        arg1(v30);
-        v28 = *(void **)((u8 *)v30 + 0x1C);
-        if (v28 != NULL) {
-            v29 = *(void **)((u8 *)v28 + 0x24);
-            if (v29 != NULL) {
-                if (*(void **)((u8 *)v29 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x24), arg1);
-                }
-                arg1(v29);
-                if (*(void **)((u8 *)v29 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x1C), arg1);
-                }
-            }
-            arg1(v28);
-            v28 = *(void **)((u8 *)v28 + 0x1C);
-            if (v28 != NULL) {
-                if (*(void **)((u8 *)v28 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x24), arg1);
-                }
-                arg1(v28);
-                if (*(void **)((u8 *)v28 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x1C), arg1);
-                }
-            }
-        }
+    if (*(void **)((u8 *)arg0 + 0x24) != NULL) {
+        fn_8000B9A4(*(void **)((u8 *)arg0 + 0x24), arg1);
     }
     arg1(arg0);
-    v28 = *(void **)((u8 *)arg0 + 0x1C);
-    if (v28 != NULL) {
-        v29 = *(void **)((u8 *)v28 + 0x24);
-        if (v29 != NULL) {
-            v30 = *(void **)((u8 *)v29 + 0x24);
-            if (v30 != NULL) {
-                if (*(void **)((u8 *)v30 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v30 + 0x24), arg1);
-                }
-                arg1(v30);
-                if (*(void **)((u8 *)v30 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v30 + 0x1C), arg1);
-                }
-            }
-            arg1(v29);
-            if ((v29 = *(void **)((u8 *)v29 + 0x1C)) != NULL) {
-                if (*(void **)((u8 *)v29 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x24), arg1);
-                }
-                arg1(v29);
-                if (*(void **)((u8 *)v29 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x1C), arg1);
-                }
-            }
-        }
-        arg1(v28);
-        if ((v28 = *(void **)((u8 *)v28 + 0x1C)) != NULL) {
-            v29 = *(void **)((u8 *)v28 + 0x24);
-            if (v29 != NULL) {
-                if (*(void **)((u8 *)v29 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x24), arg1);
-                }
-                arg1(v29);
-                if (*(void **)((u8 *)v29 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v29 + 0x1C), arg1);
-                }
-            }
-            arg1(v28);
-            v28 = *(void **)((u8 *)v28 + 0x1C);
-            if (v28 != NULL) {
-                if (*(void **)((u8 *)v28 + 0x24) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x24), arg1);
-                }
-                arg1(v28);
-                if (*(void **)((u8 *)v28 + 0x1C) != NULL) {
-                    fn_8000B9A4(*(void **)((u8 *)v28 + 0x1C), arg1);
-                }
-            }
-        }
+    if (*(void **)((u8 *)arg0 + 0x1C) != NULL) {
+        fn_8000B9A4(*(void **)((u8 *)arg0 + 0x1C), arg1);
     }
 }
-
+#pragma inline_depth(0)
 void *Process_FindByName(u8 *arg0) {
     extern u8 gProcesses[];
     s32 c2;
