@@ -19,21 +19,6 @@ static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
     return NULL;
 }
 
-static inline void *map_find_xy_2(s8 arg1, s8 arg2, s32 *arg0) {
-    s32 *p;
-    s32 i;
-    s32 n;
-
-    n = *arg0;
-    p = arg0;
-    for (i = 0; i < n; p = (s32 *)((char *)p + 0x14), i++) {
-        if (arg1 == *(s8 *)((char *)p + 8) && arg2 == *(s8 *)((char *)p + 9)) {
-            return (void *)((char *)arg0 + i * 0x14 + 8);
-        }
-    }
-    return NULL;
-}
-
 static inline u8 *map_first(s32 *m) {
     s32 c;
     u8 *e;
