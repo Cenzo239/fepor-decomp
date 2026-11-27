@@ -5062,7 +5062,6 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
 
     volatile f32 *wgpipe = (volatile f32 *)0xCC008000;
     volatile u8 *colorpipe = (volatile u8 *)0xCC008000;
-    u8 rbottom, gbottom, abottom, bbottom;
     s32 x = (s32)fx;
     s32 y = (s32)fy;
     f32 dy0;
@@ -5073,6 +5072,7 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
     u8 a,b,g,r;
     u8 redge, gedge, aedge, bedge;
     u8 *rgba;
+    u8 rbottom, gbottom, abottom, bbottom;
 
     /* Center: tile (x, y) */
     color0 = *arg0;
