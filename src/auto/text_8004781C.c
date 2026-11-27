@@ -1218,9 +1218,7 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     void fn_8005F7B0(s32, u8);
     extern u8 lbl_80285738[];
     s32 sp8;
-    u8 b;
     void *var_r3;
-    u8 a;
     s32 temp_r31;
 
     if (arg3 == 0) {
@@ -1235,14 +1233,7 @@ void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
     } else {
         var_r3 = fn_8000CAF0(lbl_80285738, 3);
     }
-    b = ((u8 *)arg2)[1];
-    a = ((u8 *)arg2)[0];
-    ((u8 *)var_r3)[0x40] = a;
-    a = ((u8 *)arg2)[2];
-    ((u8 *)var_r3)[0x41] = b;
-    b = ((u8 *)arg2)[3];
-    ((u8 *)var_r3)[0x42] = a;
-    ((u8 *)var_r3)[0x43] = b;
+    CopyFourBytes((u8 *)var_r3, (u8 *)arg2);
     *(s32 *)((u8 *)var_r3 + 0x38) = arg3;
     *(s32 *)((u8 *)var_r3 + 0x30) = arg0;
 }
