@@ -4822,6 +4822,7 @@ static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
 #pragma optimization_level 2
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma opt_lifetimes off
 s32 Ai_TryUseHealItem(void *arg0) {
     void *Unit_GetItemSlot(void *, s32);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
@@ -4875,6 +4876,7 @@ s32 Ai_TryUseHealItem(void *arg0) {
     }
     return best != 0;
 }
+#pragma opt_lifetimes on
 #pragma opt_strength_reduction on
 #pragma use_lmw_stmw reset
 #pragma optimization_level reset
@@ -6535,6 +6537,7 @@ M2C_UNK *fn_8010FA2C(void *arg0) {
     return &lbl_803679E4;
 }
 
+#pragma opt_lifetimes off
 void fn_8010FAA8(void) {
     void fn_8001F91C(void *, u8, u8, s8);
     extern u8 lbl_8032BB58[];
@@ -6562,7 +6565,7 @@ void fn_8010FAA8(void) {
         i++;
     }
 }
-
+#pragma opt_lifetimes reset
 void fn_8010FB7C(s32 arg0, s32 arg1) {
     Stream_Read(arg1, 0x204, arg0);
 }
@@ -6899,7 +6902,7 @@ u8 Ai_TryHeldItemAction(void *arg0, s32 arg1) {
     void **Unit_GetHeldItemSlot(void *, s32);
     u8 fn_8009326C(void *, void *);
     extern u32 lbl_8028F5F8[48];
-    extern u8 gAiState[];
+    extern const u8 gAiState[];
 #pragma cplusplus on
     struct Handler {
         static u32 *Find(void *unit, u8 *item) {
