@@ -2632,6 +2632,76 @@ interpolate_ready:
     return lbl_80369208 * (f32)value;
 }
 
+static inline s32 Track_FindKey(u16 (*keys)[2], s32 count, s32 time) {
+    s32 lo, hi, mid;
+    if (count == 0) {
+        return -1;
+    }
+    lo = 0;
+    hi = count - 1;
+    while (lo <= hi) {
+        mid = lo + ((hi - lo) >> 1);
+        if (keys[mid][0] < time) {
+            lo = mid + 1;
+        } else if (keys[mid][0] > time) {
+            hi = mid - 1;
+        } else {
+            return mid;
+        }
+    }
+    if (hi < 0) {
+        return -1;
+    }
+    if (lo > count - 1) {
+        return count - 1;
+    }
+    if (keys[lo][0] <= time) {
+        return lo;
+    }
+    return lo - 1;
+}
+
+static inline u8 Track_GetKeyPair(u16 (*keys)[2], s32 count, s32 time, s16 *t0, s16 *t1, s16 *v0, s16 *v1) {
+    s32 mid = Track_FindKey(keys, count, time);
+    if (mid < 0) {
+        *v0 = keys[0][1];
+        return 0;
+    }
+    if (mid < count - 1) {
+        *t0 = keys[mid][0];
+        *t1 = keys[mid + 1][0];
+        *v0 = keys[mid][1];
+        *v1 = keys[mid + 1][1];
+        return 1;
+    }
+    *v0 = keys[mid][1];
+    return 0;
+}
+
+static inline s16 Track_Eval(u8 *track, f32 frame) {
+    u16 count = *(u16 *)track;
+    s16 t0 = -1;
+    u16 mode = *(u16 *)(track + 2);
+    s16 t1 = -1;
+    u16 (*keys)[2] = (u16 (*)[2])(track + 4);
+    s16 v1 = 0;
+    s16 v0;
+    if (count == 0) {
+        return 0;
+    }
+    if (!Track_GetKeyPair(keys, count, (s32)frame, &t0, &t1, &v0, &v1)) {
+        return v0;
+    }
+    switch (mode) {
+    case 0:
+        return (s16)((f32)v0 + ((f32)(v1 - v0) * (frame - (f32)t0)) / (f32)(t1 - t0));
+    case 1:
+        return v0;
+    default:
+        return 0;
+    }
+}
+
 extern f32 lbl_803691E4;
 extern f32 lbl_8036920C;
 f32 fn_80064164(void **arg0, s32 arg1, f32 frame) {
@@ -2776,8 +2846,9 @@ f32 fn_8006469C(void **arg0, s32 arg1, f32 frame) {
     if (offset == 0xFFFF) track = 0; else track = base + offset;
     if (!track) return lbl_803691E4;
     count = *(u16 *)track;
-    t1 = t0 = -1;
+    t0 = -1;
     mode = *(u16 *)(track+2);
+    t1 = t0;
     keys = (u16 (*)[2])(track+4);
     value = 0;
     if ((u32)count != 0) {
