@@ -13648,6 +13648,7 @@ extern "C" void fn_800DFE74(void *arg0, s32 idx) {
 #pragma use_lmw_stmw on
 #pragma push
 #pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_800DFEFC(void *arg0, const char *arg1, const char *arg2) {
     u8 fn_800DF298(void *, const char *);
     u8 fn_800DF258(void *, const char *);
@@ -23565,6 +23566,8 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 3
 void fn_800F18A4(s32 arg0, s32 arg1) {
     void fn_80060060(void *);
     f32 fn_80023068(void *, f32, f32);
@@ -24067,7 +24070,7 @@ result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
 if(best)fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19E],best[0x19F],(s8)item,0,0);
-ret=gAiState[0x21C];Item_Destroy(&weapon,0xFFFFFFFF);return ret;
+ret=gAiState[0x21C];Item_Destroy(&weapon,-1);return ret;
 }
 #pragma pop
 u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
