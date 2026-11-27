@@ -15,9 +15,9 @@ extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
 
 static inline void dvdClearDiStatus(void) {
-    u32 *base = (u32 *)0xCC000000;
+    volatile u32 *base = (volatile u32 *)0xCC000000;
     u32 tmp = base[0x1801];
-    u32 *di = base + 0x1800;
+    volatile u32 *di = base + 0x1800;
     di[1] = tmp;
 }
 
@@ -1431,14 +1431,12 @@ void stateBusy_8020E178(void *arg0) {
     void fn_8020BFE4(void *, void *);
     void stateReady(void);
     void fn_8020E4B8(void);
-    u8 *b;
+    u8 *b = (u8 *)arg0;
     void *old;
     void (*cb)(void *, void *);
     u32 remaining;
-    u32 len;
 
     lbl_803685E0 = stateBusy_8020E178;
-    b = (u8 *)arg0;
 
     switch (*(u32 *)(b + 0x8)) {
     case 5:
@@ -1460,14 +1458,9 @@ void stateBusy_8020E178(void *arg0) {
         } else {
             dvdClearDiStatus();
             remaining = *(u32 *)(b + 0x14) - *(u32 *)(b + 0x20);
-            if (remaining > 0x80000) {
-                len = 0x80000;
-            } else {
-                len = remaining;
-            }
-            *(u32 *)(b + 0x1c) = len;
+            *(u32 *)(b + 0x1c) = remaining > 0x80000 ? 0x80000U : remaining;
             fn_8020BAD0((void *)(*(u32 *)(b + 0x18) + *(u32 *)(b + 0x20)),
-                        *(void **)(b + 0x1c),
+                        (void *)(*(u32 *)(b + 0x1c)),
                         (void *)(*(u32 *)(b + 0x10) + *(u32 *)(b + 0x20)),
                         (void *)fn_8020E4B8);
         }
