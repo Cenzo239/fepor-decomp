@@ -714,6 +714,7 @@ u8 fn_800934CC(void *arg0, void *arg1) {
     return 0;
 }
   
+#pragma optimization_level 3
 u8 fn_80093708(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 fn_80105BC0(void *, s32);
