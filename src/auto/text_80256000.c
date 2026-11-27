@@ -1,15 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline void Sound_SetFlags(s32 one, s32 zero) {
-    extern s32 lbl_80368B14, lbl_80368B18, lbl_80368B10;
-    extern u8 lbl_80368B20;
-    lbl_80368B14 = zero;
-    lbl_80368B18 = one;
-    lbl_80368B20 = one;
-    lbl_80368B10 = zero;
-}
-
 static inline void Sound_InitDelayAt(u8 *record, s32 offset, s32 samples) {
     void *fn_802637A4(s32);
     void *memset(void *, s32, u32);
@@ -3942,14 +3933,16 @@ void fn_8025C9E0(void *arg0, u8 arg1)
     extern u8 gSoundStudios[];
     u8 *base;
     void *node;
+    u32 index;
 
     if (((u8 *)arg0)[0xF0] != 0) {
         fn_8025CA80();
         *(u32 *)((u8 *)arg0 + 0x24) |= 0x20;
     }
 
+    index = (u32)arg1 * 0xBC;
     ((u8 *)arg0)[0xF1] = 0;
-    base = gSoundStudios + arg1 * 0xBC;
+    base = gSoundStudios + index;
     node = *(void **)(base += 0x48);
     *(void **)((u8 *)arg0 + 0xC) = node;
     if (node != 0) {
@@ -8007,10 +8000,7 @@ s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     void fn_80213760(void *, s32);
     void fn_802632DC(void);
     extern void *lbl_80368B1C;
-    extern s32 lbl_80368B14;
-    extern s32 lbl_80368B18;
     extern u8 lbl_80368B20;
-    extern s32 lbl_80368B10;
     extern void (*lbl_80368B24)(void);
     extern u8 gSoundData[];
     void *buf;
@@ -8024,10 +8014,7 @@ s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     if (buf != NULL) {
         memset(buf, 0, 0xA00);
         DCFlushRange(lbl_80368B1C, 0xA00);
-        lbl_80368B14 = 0;
-        lbl_80368B18 = 1;
-        lbl_80368B20 = 1;
-        lbl_80368B10 = 0;
+        Sound_SetFlags(1, 0);
         lbl_80368B24 = cb;
         fn_8021371C(fn_802632DC);
         fn_80213760((void *)((u32)lbl_80368B1C + 0x80000000 + (u8)lbl_80368B20 * 0x280), 0x280);
