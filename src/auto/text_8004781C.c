@@ -5475,6 +5475,7 @@ if ((x) >= 0 && (y - 1) >= 0 &&
     }
     if (dy2 > lbl_80369050) {
         /* Below: tile (x, y + 1) */
+        u8 rbottom, gbottom, abottom, bbottom;
         color8 = *arg0;
 if ((x) >= 0 && (y + 1) >= 0 &&
             (x) < *(s32 *)(gBattleMap + 0) &&
