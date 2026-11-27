@@ -8522,6 +8522,7 @@ static u8 menuPad2[0x14];
 static s32 menuItems[8];
 static s32 *menuEntries[5];
 static struct MenuWorkPool { u8 first[0x14]; u8 second[0x28]; } menuWorkPool;
+static u8 menuWorkAlt[0x28];
 #pragma pop
 
 #pragma global_optimizer off
