@@ -5993,8 +5993,6 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 }
 #pragma cplusplus reset
 
-#pragma push
-#pragma opt_strength_reduction off
 void fn_8013B254(void *arg0)
 {
   s16 new_var;
