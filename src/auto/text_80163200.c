@@ -1579,9 +1579,9 @@ extern "C" void fn_8016533C(void *arg0, s32 arg1) {
     s16 x;
     s32 a1;
     Obj *self;
-    u32 t;
+    s16 t;
     s16 y;
-    u32 r;
+    s16 r;
     s16 avail;
     void *str;
     void *p;
@@ -7759,6 +7759,8 @@ extern "C" void fn_8016FD08(void *arg0) {
     }
 }
 
+#pragma push
+#pragma optimization_level 2
 extern "C" u8 fn_8016FDA4(u32 *arg0) {
     u64 *Item_GetFlagsPtr(void *);
     s32 var_r31;
@@ -7780,6 +7782,7 @@ extern "C" u8 fn_8016FDA4(u32 *arg0) {
     }
     return (u8)var_r31;
 }
+#pragma pop
 
 #pragma cplusplus reset
 
@@ -14087,8 +14090,9 @@ extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
         Sub sub1;
         Sub sub2;
     };
-    void *r8;
     Parent *self;
+    Parent *r29;
+    void *r8;
     void *mid2;
     void *mid3;
     void *vtdc;
@@ -14101,7 +14105,6 @@ extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     s16 t30;
     s16 t29;
     s32 tmp;
-    Parent *r29;
 
     z = 0;
     n1 = -1;
@@ -14116,7 +14119,7 @@ extern "C" void *fn_8017992C(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     *(void **)self = lbl_8028FDB0;
     mid2 = lbl_80285CCC;
     mid3 = gUiPanelCMidVtbl;
-    *(s32 *)((u8 *)r29 + 4) = z;
+    UiPanelC_SetMidHead(r8, z);
     *(void **)r29 = vt30;
     *(s16 *)((u8 *)r29 + 8) = n1;
     *(s16 *)((u8 *)r29 + 0xA) = arg1;
@@ -17141,19 +17144,19 @@ void fn_8017E5B0(void *arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3 sp1C;
     Vec3 sp10;
     s32 a1;
+    s32 a2;
     s32 count;
+    s32 max_y;
     s32 a3;
     s32 min_y;
-    s32 a2;
     s32 y;
-    s32 max_y;
     s32 i;
     void *walk;
     s32 *xs;
 
     a3 = arg3;
-    a1 = arg1;
     a2 = arg2;
+    a1 = arg1;
     *(s8 *)((u8 *)arg0 + 0x30) = (s8)a3;
     *(u8 *)((u8 *)arg0 + 0x31) = 0;
     *(s32 *)((u8 *)arg0 + 0x34) = fn_8006D948((u8 *)lbl_802788B8 + 0x122);
