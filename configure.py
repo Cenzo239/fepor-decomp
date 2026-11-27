@@ -475,7 +475,7 @@ config.libs = [
             Object(Matching, "dolphin/os/OSReboot.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSReset.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSResetSW.c"),
-            Object(NonMatching, "dolphin/os/OSResetSW_state.c", mw_version="GC/1.2.5n"),
+            Object(Matching, "dolphin/os/OSResetSW_state.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "dolphin/os/OSSram.c", mw_version="GC/1.2.5n"),
             Object(Matching, "dolphin/os/OSSram_unlock.c", mw_version="GC/1.2.5n"),
             Object(Matching, "dolphin/os/OSSram_tail.c", mw_version="GC/1.2.5n"),
