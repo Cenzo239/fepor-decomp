@@ -4103,7 +4103,7 @@ void fn_8002F0B0(void) {
 
 #pragma push
 #pragma cplusplus on
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_propagation off
 extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
@@ -4130,6 +4130,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
     s32 flags;
     u8 changed;
     u8 temp_r4;
+    u8 old_x;
     f32 fa;
     f32 fb;
     u8 t0;
@@ -4147,8 +4148,9 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         *(f32 *)((u8 *)arg1 + 0x38) = fa;
         ((u8 *)arg1)[0x3E] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x34);
         ((u8 *)arg1)[0x3F] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x38);
+        old_x = ((u8 *)arg1)[0x3C];
         temp_r4 = ((u8 *)arg1)[0x3E];
-        if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
+        if ((s8)old_x != (s8)temp_r4 ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
             found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
             *(void **)((u8 *)arg1 + 0x40) = found;
@@ -4182,8 +4184,9 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         }
         ((u8 *)arg1)[0x3E] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x34);
         ((u8 *)arg1)[0x3F] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x38);
+        old_x = ((u8 *)arg1)[0x3C];
         temp_r4 = ((u8 *)arg1)[0x3E];
-        if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
+        if ((s8)old_x != (s8)temp_r4 ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
             found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
             *(void **)((u8 *)arg1 + 0x40) = found;
