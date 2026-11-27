@@ -466,6 +466,7 @@ config.libs = [
             Object(NonMatching, "auto/text_801C9704.c"),
             Object(Matching, "auto/text_801CCEA8.c", mw_version="GC/2.0"),
             Object(NonMatching, "auto/text_801CCED4.c"),
+            Object(NonMatching, "SaveCard.c"),
             Object(Matching, "auto/text_801E11AC.c"),
             Object(NonMatching, "auto/text_801E1440.c"),
             Object(NonMatching, "auto/text_801E4540.c"),

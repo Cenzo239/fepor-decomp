@@ -680,7 +680,10 @@ auto/text_801CCEA8.c:
 	.text       start:0x801CCEA8 end:0x801CCED4
 
 auto/text_801CCED4.c:
-	.text       start:0x801CCED4 end:0x801E11AC
+	.text       start:0x801CCED4 end:0x801DF960
+
+SaveCard.c:
+	.text       start:0x801DF960 end:0x801E11AC
 
 auto/text_801E11AC.c:
 	.text       start:0x801E11AC end:0x801E1440
