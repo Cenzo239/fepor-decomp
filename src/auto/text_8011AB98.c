@@ -1824,19 +1824,23 @@ void fn_8011CB2C(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
-    s32 x;
-    s32 y;
+    s32 t48;
     u8 flag;
-    s32 t60;
+    s32 t4c;
+    s32 x;
     s32 t64;
+    s32 y;
+    s32 t60;
     s32 tc8;
 
-    x = arg1 - *(s32 *)((u8 *)arg0 + 0x48);
-    y = arg2 - *(s32 *)((u8 *)arg0 + 0x4C);
+    t48 = *(s32 *)((u8 *)arg0 + 0x48);
     flag = 0;
+    t4c = *(s32 *)((u8 *)arg0 + 0x4C);
+    x = arg1 - t48;
     t64 = *(s32 *)((u8 *)arg0 + 0x64);
+    y = arg2 - t4c;
     t60 = *(s32 *)((u8 *)arg0 + 0x60);
     tc8 = *(s32 *)((u8 *)arg0 + 0xC8);
     *(s32 *)((u8 *)arg0 + 0xCC) = flag;
