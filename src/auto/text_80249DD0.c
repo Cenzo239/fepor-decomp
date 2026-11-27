@@ -1,5 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
+static inline u8 *SoundSlots_Base(void) { extern u8 gSoundSlots[]; return gSoundSlots; }
 static inline s32 Sound_FindSlotIn(u32 id, u8 *slot) {
  s32 i;
  for(i=0;i<64;i++,slot+=0x68) {
@@ -1790,26 +1791,27 @@ void fn_8024C5C8(void) {
 
 #pragma optimization_level 3
 void fn_8024C5CC(u32 arg0) {
-    extern u8 gSoundSlots[];
+    extern u8 gSoundSlots[][0x68];
     extern void fn_80256DD8(u32);
-    register u8 *slot = gSoundSlots;
+    u8 (*slot)[0x68];
     s32 i;
     u32 id;
 
+    slot = gSoundSlots;
     for (i = 0x40; i != 0; i--) {
-        if (slot[0xC] == 1 || slot[0xC] == 2) {
-            id = *(u32 *)(slot + 0x4C);
+        if ((*slot)[0xC] == 1 || (*slot)[0xC] == 2) {
+            id = *(u32 *)(*slot + 0x4C);
             if (id == arg0) {
-                if (slot[0xC] == 2) {
+                if ((*slot)[0xC] == 2) {
                     fn_80256DD8(id);
                 }
-                slot[0xC] = 3;
-                (*(void (**)(s32, s32, s32, s32, s32))(slot + 0x10))(
-                    0, 0, 0, 0, *(s32 *)(slot + 0x50));
+                (*slot)[0xC] = 3;
+                (*(void (**)(s32, s32, s32, s32, s32))(*slot + 0x10))(
+                    0, 0, 0, 0, *(s32 *)(*slot + 0x50));
                 return;
             }
         }
-        slot += 0x68;
+        slot++;
     }
 }
 #pragma optimization_level reset
@@ -4899,6 +4901,9 @@ void fn_80253E90(u8 *self, u32 *arg1) {
 #pragma auto_inline off
 void fn_80253F6C(void *arg0)
 {
+#ifdef __MWERKS__
+#pragma auto_inline off
+#endif
     void *fn_8025FF28(u8, u8);
     u8 fn_802601B0(u8, u8);
     void fn_80260174(u8, u8, u8);
@@ -4974,8 +4979,8 @@ void fn_80253F6C(void *arg0)
     register u32 done;
     register u8 *sd;
     register u32 *cmd;
-    register u32 i;
     register u32 insn;
+    register u32 i;
     register u32 offset;
     u32 *pc;
     u8 *p;
@@ -5562,6 +5567,9 @@ void fn_80253F6C(void *arg0)
     next_command:
         ;
     } while (done == 0);
+#ifdef __MWERKS__
+#pragma auto_inline reset
+#endif
 }
 #pragma pop
 void fn_80254F00(u32 arg0) {
