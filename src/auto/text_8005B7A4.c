@@ -28,7 +28,7 @@ static inline u32 FileCache_AllocFromHeap(u32 size, s32 drive, char *name) {
 }
 
 static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
-    char *src; u8 c; s32 i; u8 *dst;
+    char *src; u8 *dst; u8 c; s32 i;
     src = arg1;
     if (*arg1 == '/') {
         src++;
@@ -1530,13 +1530,6 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     extern char lbl_8026B330[];
     extern u8 lbl_803672E8;
     u32 strlen(char *);
-    char *src;
-    u8 *dst;
-    s32 i;
-    char *p;
-    char *ext;
-    s32 match;
-    u8 c;
     s32 size;
     s8 drive;
     s32 off;
@@ -1564,7 +1557,7 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     if (*(u16 *)(arg0 + 0x30) & 0x410) {
         *(u32 *)(arg0 + 0x38) = fn_800C45B8(-*(s32 *)(arg0 + 0x3C), lbl_8026B330 + 5, 0);
     } else {
-        drive = arg0[0x29];
+        drive = ((char *)arg0)[0x29];
         size = *(s32 *)(arg0 + 0x3C);
         if (fn_800C44F4(drive) < (u32)size) {
             handle = 0;
@@ -1578,7 +1571,7 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
         *(u32 *)(arg0 + 0x38) = handle;
     }
     if (*(u32 *)(arg0 + 0x38) == 0) {
-        *(u32 *)(arg0 + 0x38) = fn_8005E594((s8)arg0[0x29], *(s32 *)(arg0 + 0x3C), arg1);
+        *(u32 *)(arg0 + 0x38) = fn_8005E594(((char *)arg0)[0x29], *(s32 *)(arg0 + 0x3C), arg1);
     }
     fn_801ED848(arg2, *(u32 *)(arg0 + 0x38), fn_8005E014, arg0);
 }
