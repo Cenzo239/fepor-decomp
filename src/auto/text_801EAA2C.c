@@ -1726,22 +1726,6 @@ void *AramCache_Find(s32 arg0) {
     return NULL;
 }
 
-static inline void *AramCache_Unlink(void *head, u8 *node) {
-    void *res = head;
-    void *next = *(void **)(node + 0x60);
-    void *prev;
-    if (next != 0) {
-        *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
-    }
-    prev = *(void **)(node + 0x5C);
-    if (prev != 0) {
-        *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
-    } else {
-        res = *(void **)(node + 0x60);
-    }
-    return res;
-}
-
 static inline void AramCache_EvictByFlag(u8 *node, s32 i) {
     void *AramCache_InsertFree(void *, void *);
     extern void *gAramUsedList;
@@ -1749,7 +1733,16 @@ static inline void AramCache_EvictByFlag(u8 *node, s32 i) {
 
     for (; i < 0x100; i++, node += 0x6C) {
         if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
-            gAramUsedList = AramCache_Unlink(gAramUsedList, node);
+            void *temp = gAramUsedList;
+            if (*(void **)(node + 0x60) != 0) {
+                *(void **)((u8 *)*(void **)(node + 0x60) + 0x5C) = *(void **)(node + 0x5C);
+            }
+            if (*(void **)(node + 0x5C) != 0) {
+                *(void **)((u8 *)*(void **)(node + 0x5C) + 0x60) = *(void **)(node + 0x60);
+            } else {
+                temp = *(void **)(node + 0x60);
+            }
+            gAramUsedList = temp;
             gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
         }
     }
