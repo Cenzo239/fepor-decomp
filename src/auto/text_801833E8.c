@@ -5547,6 +5547,9 @@ void fn_8018EBC0(void *arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
@@ -5591,16 +5594,12 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         count = 0;
         if (target != NULL) {
             e = gConvoy;
-            dummy = count;
-            for (ctr = 0x28; ctr != 0; ctr--) {
-                for (k = 0; k < 5; k++) {
+            for (ctr = 0; ctr < 200; ctr++) {
                     p0 = e->ptr;
                     if (p0 != NULL && (e->flags & 0x3F) == 0 && p0 == target) {
                         count++;
                     }
                     e++;
-                }
-                dummy += 4;
             }
         }
         fn_80006B18(y + 0xA4, x, 0, 0, count);
@@ -5615,6 +5614,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     str = Msg_Expand(lbl_80279C40 + 0x66);
     Text_Draw((s16)(y + 0xB0), (s16)x, 0xF, str);
 }
+#pragma pop
 #pragma push
 #pragma opt_propagation off
 void fn_8018EEB0(void *arg0, s16 arg1) {
@@ -17728,4 +17728,13 @@ s32 fn_80199028(void *arg0) {
 extern f32 lbl_8036ADF0;
 extern f32 lbl_8036ADF4;
 extern u8 lbl_80279C40[];
-
+static inline s32 Convoy_CountMatchingEC8C(void *target, u8 *entry) {
+    s32 count = 0;
+    s32 i;
+    if (!target) return count;
+    for (i = 0; i < 200; i++, entry += 8) {
+        void *item = *(void **)entry;
+        if (item && !(entry[5] & 0x3F) && target == item) count++;
+    }
+    return count;
+}
