@@ -437,52 +437,6 @@ extern f32 lbl_80369CD0;
 
 #pragma opt_strength_reduction reset
 
-static inline void IconInit(u8 *p, s32 n, u8 z, u8 m, u8 f) {
-    for (; n != 0; n--) {
-        p[0] = z;
-        p[1] = z;
-        p[0x13] = z;
-        p[0x12] = z;
-        p[0x11] = z;
-        p[0x10] = z;
-        p[0x16] = m;
-        p[0x15] = m;
-        p[0x14] = m;
-        p[0x17] = f;
-        p[0x18] = z;
-        p[0x19] = z;
-        p[0x2B] = z;
-        p[0x2A] = z;
-        p[0x29] = z;
-        p[0x28] = z;
-        p[0x2E] = m;
-        p[0x2D] = m;
-        p[0x2C] = m;
-        p[0x2F] = f;
-        p[0x30] = z;
-        p[0x31] = z;
-        p[0x43] = z;
-        p[0x42] = z;
-        p[0x41] = z;
-        p[0x40] = z;
-        p[0x46] = m;
-        p[0x45] = m;
-        p[0x44] = m;
-        p[0x47] = f;
-        p[0x48] = z;
-        p[0x49] = z;
-        p[0x5B] = z;
-        p[0x5A] = z;
-        p[0x59] = z;
-        p[0x58] = z;
-        p[0x5E] = m;
-        p[0x5D] = m;
-        p[0x5C] = m;
-        p[0x5F] = f;
-        p += 0x60;
-    }
-}
-
 void fn_800C32A4(u8 *p) {
     s32 n;
     u8 z;
