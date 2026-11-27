@@ -5422,6 +5422,8 @@ void GMaterial_SetCullMode(s32 *mat, void *node) {
     }
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_800690D4(void *arg0, void *arg1, void *arg2) {
     void fn_80222164(s32, void *);
     void GXSetCullMode(s32);
@@ -5429,12 +5431,13 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
     void *Light_GetChannel(s32);
     extern s32 lbl_80369260;
     extern f32 lbl_80369264;
+    typedef struct { u8 r, g, b, a; } Color4;
     s32 var_r31;
     s32 var_r30;
     s32 temp;
-    s32 sp10;
+    Color4 sp10;
     s32 spC;
-    s32 sp8;
+    Color4 sp8;
     void *chan;
     s32 r7;
     s32 r8;
@@ -5462,32 +5465,32 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
         r9 = 1;
         r8 = 2;
         r7 = M2C_FIELD(arg0, u8 *, 0x85);
-        sp10 = M2C_FIELD(chan, s32 *, 0);
+        sp10 = *(Color4 *)chan;
         if (M2C_FIELD(arg2, u16 *, 4) & 1) {
             r7 = ((r7 << 2) & 0xC) | (r7 & 0xF0);
             r9 = 0;
             r8 = 0;
         } else if (M2C_FIELD(arg1, u16 *, 8) & 0x200) {
             r7 = 0;
-            M2C_FIELD(&sp10, u8 *, 0) = (M2C_FIELD(&sp10, u8 *, 0) + M2C_FIELD(chan, u8 *, 4)) >> 1;
-            M2C_FIELD(&sp10, u8 *, 1) = (M2C_FIELD(&sp10, u8 *, 1) + M2C_FIELD(chan, u8 *, 5)) >> 1;
-            M2C_FIELD(&sp10, u8 *, 2) = (M2C_FIELD(&sp10, u8 *, 2) + M2C_FIELD(chan, u8 *, 6)) >> 1;
+            sp10.r = (sp10.r + M2C_FIELD(chan, u8 *, 4)) >> 1;
+            sp10.g = (sp10.g + M2C_FIELD(chan, u8 *, 5)) >> 1;
+            sp10.b = (sp10.b + M2C_FIELD(chan, u8 *, 6)) >> 1;
         }
         if (M2C_FIELD(arg0, s32 *, 0) & 0x1000000) {
-            if (M2C_FIELD(&sp10, u8 *, 0) > 0xAA) {
-                M2C_FIELD(&sp10, u8 *, 0) = 0xFF;
+            if (sp10.r > 0xAA) {
+                sp10.r = 0xFF;
             } else {
-                M2C_FIELD(&sp10, u8 *, 0) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 0) * lbl_80369264);
+                sp10.r = (u8)((f32)sp10.r * lbl_80369264);
             }
-            if (M2C_FIELD(&sp10, u8 *, 1) > 0xAA) {
-                M2C_FIELD(&sp10, u8 *, 1) = 0xFF;
+            if (sp10.g > 0xAA) {
+                sp10.g = 0xFF;
             } else {
-                M2C_FIELD(&sp10, u8 *, 1) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 1) * lbl_80369264);
+                sp10.g = (u8)((f32)sp10.g * lbl_80369264);
             }
-            if (M2C_FIELD(&sp10, u8 *, 2) > 0xAA) {
-                M2C_FIELD(&sp10, u8 *, 2) = 0xFF;
+            if (sp10.b > 0xAA) {
+                sp10.b = 0xFF;
             } else {
-                M2C_FIELD(&sp10, u8 *, 2) = (u8)((f32)M2C_FIELD(&sp10, u8 *, 2) * lbl_80369264);
+                sp10.b = (u8)((f32)sp10.b * lbl_80369264);
             }
         }
         GXSetBlendMode(0, 1, 0, var_r31, r7, r8, r9);
@@ -5496,13 +5499,7 @@ void fn_800690D4(void *arg0, void *arg1, void *arg2) {
         fn_80222164(4, &sp8);
     }
 }
-
-#pragma push
-#pragma use_lmw_stmw on
-#pragma optimization_level 4
-#pragma opt_common_subs off
-#pragma opt_propagation off
-#pragma opt_dead_code off
+#pragma pop
 void fn_80069354(void *arg0, void **arg1, void *arg2, void *arg3, void *arg4) {
     void fn_8006ECCC(void *, void *, u16);
     void fn_8006DA64(void *, s32, void *);
