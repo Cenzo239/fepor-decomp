@@ -30020,7 +30020,7 @@ static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_lifetimes off
 void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
