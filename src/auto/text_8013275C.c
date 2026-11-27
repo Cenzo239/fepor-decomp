@@ -40,3 +40,4 @@ void fn_8013275C(void) {
     p[1] = lbl_8029149C;
     lbl_80367ACC = lbl_80291448;
 }
+#pragma pop
