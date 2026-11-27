@@ -695,6 +695,7 @@ if(fn_8020CB38(lbl_803123A0,*(void **)(buffers+*(s32 *)(p+0xB8)*12),*(s32 *)(p+0
 }
 }
 #pragma optimization_level reset
+#pragma pop
 s32 fn_800A49F4(u8 *arg0) {
     void DCInvalidateRange(void *, u32);
     extern u8 lbl_803123A0[];
