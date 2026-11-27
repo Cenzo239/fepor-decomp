@@ -1726,16 +1726,16 @@ void *AramCache_Find(s32 arg0) {
     return NULL;
 }
 
-static inline void AramCache_EvictByFlag(u8 *node) {
+static inline void AramCache_EvictByFlag(s32 count, u8 *node) {
     void *AramCache_InsertFree(void *, void *);
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    s32 i;
-    void *next;
     void *temp;
+    void *next;
     void *prev;
+    s32 i;
 
-    for (i = 0; i < 0x100; i++, node += 0x6C) {
+    for (i = 0; i < count; i++, node += 0x6C) {
         if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
             next = *(void **)(node + 0x60);
             temp = gAramUsedList;
