@@ -1265,8 +1265,6 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     }
 }
 #pragma cplusplus off
-#pragma push
-#pragma optimization_level 3
 void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *self;
     u8 c;
@@ -1306,7 +1304,6 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
 
     return self + *(s16 *)(self + 0x70) * 4 + 0x3c;
 }
-#pragma pop
 
 #pragma opt_unroll off
 void *fn_801CDB74(void *arg0) {
