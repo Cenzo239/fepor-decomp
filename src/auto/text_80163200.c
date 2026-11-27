@@ -9660,8 +9660,6 @@ cancel:
 #pragma cplusplus reset
 }
 #pragma pop
-#pragma push
-#pragma peephole off
 void fn_80172B74(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, void *);
@@ -9684,17 +9682,17 @@ void fn_80172B74(void *arg0) {
         *(s32 *)((u8 *)obj + 0x60) = 2;
         *(u8 *)((u8 *)obj + 0x4B) = 1;
     }
-    p = *(void **)gUiContext;
-    *(void **)((u8 *)obj + 0x70) = (void *)fn_80172C68;
-    *(void **)((u8 *)obj + 0x74) = p;
-    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(obj, 0, p);
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(
+        (p, obj), 0,
+        (p = *(void **)gUiContext,
+         *(void **)((u8 *)obj + 0x70) = (void *)fn_80172C68,
+         *(void **)((u8 *)obj + 0x74) = p, p));
     Ui_BringChildToFront(self, obj);
     ret = Ui_FindChild(self, -0x1000, 0);
     if (ret != 0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x343);
     }
 }
-#pragma pop
 
 void fn_80172C44(void *arg0) {
     M2C_UNK Process_AdvanceStep(s32);
