@@ -2,6 +2,8 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+#pragma push
+#pragma optimization_level 3
 void fn_8013275C(void) {
     extern u8 gUiMenuDrawVtbl[128];
     extern u8 lbl_802916E0[80];
@@ -24,14 +26,10 @@ void fn_8013275C(void) {
     extern void *lbl_80367AC4[2];
     extern void *lbl_80367ACC;
     void **p;
-    void *v;
-    void *acc;
 
     p = lbl_80367AC4;
-    acc = lbl_80291448;
     p[1] = gUiMenuDrawVtbl;
-    v = lbl_802916E0;
-    lbl_80367AA8 = v;
+    lbl_80367AA8 = lbl_802916E0;
     lbl_80367AAC = lbl_80291694;
     lbl_80367AB0 = lbl_80291648;
     lbl_80367AB4 = lbl_802915FC;
@@ -40,5 +38,5 @@ void fn_8013275C(void) {
     lbl_80367AC0 = lbl_80291518;
     lbl_80367AC4[0] = lbl_80291428;
     p[1] = lbl_8029149C;
-    lbl_80367ACC = acc;
+    lbl_80367ACC = lbl_80291448;
 }
