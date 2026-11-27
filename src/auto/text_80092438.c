@@ -437,6 +437,8 @@ done2:
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 2
 u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void *self;
@@ -875,48 +877,69 @@ u8 fn_800939FC(void *arg0, void *arg1) {
 #pragma pop
 #pragma push
 #pragma optimization_level 4
-u8 fn_80093DA8(void *arg0, void *arg1) {
-    u8 fn_800940B0(void *, void *);
-    u8 Status_Test(void *, s32);
-    struct { unsigned ok : 8; unsigned result : 8; } t;
-    u32 lo;
-    u32 hi;
-    u64 flags;
-    u64 flags2;
-    u8 tmp;
-    u32 z;
-
-    z = 0;
-    t.result = z;
-    lo = *(u32 *)((u8 *)arg1 + 0x3C);
-    hi = *(u32 *)((u8 *)arg1 + 0x38);
-    flags = ((u64)hi << 32) | lo;
-    flags2 = flags;
-
-    if (flags & 8) {
-        return 1;
+u8 fn_80093DA8(void *arg0, void *arg1)
+{
+  u8 fn_800940B0(void *, void *);
+  u8 Status_Test(void *, s32);
+  struct 
+  {
+    unsigned ok : 8;
+    unsigned result : 8;
+  } t;
+  u32 lo;
+  u32 hi;
+  u64 flags;
+  u64 flags2;
+  void *new_var;
+  u8 tmp;
+  u32 z;
+  z = 0;
+  t.result = z;
+  lo = *((u32 *) (((u8 *) arg1) + 0x3C));
+  new_var = arg0;
+  hi = *((u32 *) (((u8 *) arg1) + 0x38));
+  hi = (((u64) hi) << 32) | lo;
+  flags = hi;
+  flags2 = flags;
+  if (flags & 8)
+  {
+    return 1;
+  }
+  if (flags & 5)
+  {
+    if (flags & 1)
+    {
+      t.result = Unit_CheckItemMask(arg0, arg1, flags, 1);
     }
-    if (flags & 5) {
-        if (flags & 1) t.result = Unit_CheckItemMask(arg0, arg1, flags, 1);
-        else if (flags & 4) t.result = Unit_CheckItemMask(arg0, arg1, flags, 4);
-        return t.result;
+    else
+      if (flags & 4)
+    {
+      t.result = Unit_CheckItemMask(arg0, arg1, flags, 4);
     }
-    if (flags & 0x18) {
-        if (flags & 8) {
-            t.result = Unit_CheckItemFlag8(flags);
-        } else {
-            if (flags & 0x10) {
-                if (flags2 & 0x10) {
-                    tmp = fn_800940B0(arg0, arg1);
-                } else {
-                    tmp = t.result;
-                }
-                t.result = tmp;
-            }
-        }
-        return t.result;
+    return t.result;
+  }
+  if (flags & 0x18)
+  {
+    if (flags & 8)
+    {
+      t.result = Unit_CheckItemFlag8(flags);
     }
-    return z;
+    else
+      if (flags & 0x10)
+    {
+      if (flags2 & 0x10)
+      {
+        tmp = fn_800940B0(new_var, arg1);
+      }
+      else
+      {
+        tmp = t.result;
+      }
+      t.result = tmp;
+    }
+    return t.result;
+  }
+  return z;
 }
 #pragma pop
 #pragma push
