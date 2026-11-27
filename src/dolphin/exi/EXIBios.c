@@ -820,7 +820,7 @@ void UnlockedHandler(s32 chan, void *context) {
 
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma scheduling off
 #pragma use_lmw_stmw on
 #pragma inline_depth(1)
@@ -869,7 +869,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     if (chan < 2 && dev == 0) {
         ok = 1;
     }
-    if (ok != 0) {
+    if (ok) {
         handler = UnlockedHandler;
     } else {
         handler = 0;
