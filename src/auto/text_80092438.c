@@ -140,24 +140,24 @@ void Unit_ApplyStatusWpnExp(void *unit) {
 
 #pragma use_lmw_stmw on
 s32 fn_80092528(void *arg0, s32 arg1) {
-    u8 fn_80105BC0(void *, s32);
-    u8 fn_8001CCE4(u8);
+    u8 Status_Test(void *, s32);
+    u8 WpnRank_GetNext(u8);
     u32 fn_8001CFA8(u8);
     void *self;
     s32 a1;
+    u32 idx;
     u8 result;
     u8 result2;
     u32 a;
     u32 b;
-    u32 idx;
 
-    idx = (u8)arg1;
     self = arg0;
     a1 = arg1;
+    idx = (u8)arg1;
     result = ((u8 *)self)[idx + 0x20C];
 
     if (idx == 7) {
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x28) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
             goto clamp79;
         }
     }
@@ -168,31 +168,31 @@ s32 fn_80092528(void *arg0, s32 arg1) {
 
     switch ((u8)a1) {
     case 0:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x24) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x24) != 0) {
             goto block_default;
         }
         result = 0;
         goto done1;
     case 1:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x25) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x25) != 0) {
             goto block_default;
         }
         result = 0;
         goto done1;
     case 2:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x26) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x26) != 0) {
             goto block_default;
         }
         result = 0;
         goto done1;
     case 3:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x27) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x27) != 0) {
             goto block_default;
         }
         result = 0;
         goto done1;
     case 7:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x28) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
             goto block_default;
         }
         result = 0;
@@ -200,7 +200,7 @@ s32 fn_80092528(void *arg0, s32 arg1) {
     }
 
 block_default:
-    if (fn_80105BC0((u8 *)self + 0x1BC, 2) == 0) {
+    if (Status_Test((u8 *)self + 0x1BC, 2) == 0) {
         goto clamp79;
     }
     if (result > 0xFB) {
@@ -213,10 +213,10 @@ clamp79:
         result = 0x79;
     }
 done1:
-    result2 = fn_8001CCE4(result);
+    result2 = WpnRank_GetNext(result);
 
     if ((u8)a1 == 7) {
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x28) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
             goto clamp79_2;
         }
     }
@@ -227,31 +227,31 @@ done1:
 
     switch ((u8)a1) {
     case 0:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x24) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x24) != 0) {
             goto block_default2;
         }
         result2 = 0;
         goto done2;
     case 1:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x25) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x25) != 0) {
             goto block_default2;
         }
         result2 = 0;
         goto done2;
     case 2:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x26) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x26) != 0) {
             goto block_default2;
         }
         result2 = 0;
         goto done2;
     case 3:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x27) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x27) != 0) {
             goto block_default2;
         }
         result2 = 0;
         goto done2;
     case 7:
-        if (fn_80105BC0((u8 *)self + 0x1BC, 0x28) != 0) {
+        if (Status_Test((u8 *)self + 0x1BC, 0x28) != 0) {
             goto block_default2;
         }
         result2 = 0;
@@ -259,7 +259,7 @@ done1:
     }
 
 block_default2:
-    if (fn_80105BC0((u8 *)self + 0x1BC, 2) == 0) {
+    if (Status_Test((u8 *)self + 0x1BC, 2) == 0) {
         goto clamp79_2;
     }
     if ((u8)result2 > 0xFB) {
@@ -277,6 +277,60 @@ done2:
     b = fn_8001CFA8(result2);
     return (u8)a != (u8)b;
 }
+static inline u8 Unit_ClampWpnExp(u8 *self, u32 idx, u32 result) {
+    u8 Status_Test(void *, s32);
+    if (idx != 7) {
+        goto after7;
+    }
+    if (Status_Test(self + 0x1BC, 0x28) != 0) {
+        goto clamp79;
+    }
+after7:
+    if ((*(u8 **)(self + 0x18C))[idx + 0x2C] != 0) {
+        goto block_default;
+    }
+    switch ((s32)idx) {
+    case 0:
+        if (Status_Test(self + 0x1BC, 0x24) != 0) {
+            goto block_default;
+        }
+        return 0;
+    case 1:
+        if (Status_Test(self + 0x1BC, 0x25) != 0) {
+            goto block_default;
+        }
+        return 0;
+    case 2:
+        if (Status_Test(self + 0x1BC, 0x26) != 0) {
+            goto block_default;
+        }
+        return 0;
+    case 3:
+        if (Status_Test(self + 0x1BC, 0x27) != 0) {
+            goto block_default;
+        }
+        return 0;
+    case 7:
+        if (Status_Test(self + 0x1BC, 0x28) != 0) {
+            goto block_default;
+        }
+        return 0;
+    }
+block_default:
+    if (Status_Test(self + 0x1BC, 2) == 0) {
+        goto clamp79;
+    }
+    if (result > 0xFB) {
+        result = 0xFB;
+    }
+    return (u8)result;
+clamp79:
+    if (result > 0x79) {
+        result = 0x79;
+    }
+    return (u8)result;
+}
+
 s32 Unit_AddWpnExp(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     s8 fn_8001CBA0(void *);
