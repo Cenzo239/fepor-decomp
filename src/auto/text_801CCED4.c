@@ -1265,11 +1265,9 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     }
 }
 #pragma cplusplus off
+struct NameEntryPair { u8 c0, c1; };
 static inline void NameEntry_CopyPair(u8 *src, u8 *dst) {
-    u8 c0 = src[0];
-    u8 c1 = src[1];
-    dst[0] = c0;
-    dst[1] = c1;
+    *(struct NameEntryPair *)dst = *(struct NameEntryPair *)src;
 }
 void *NameEntry_InsertChar(void *a, u8 *b)
 {
@@ -1304,7 +1302,7 @@ void *NameEntry_InsertChar(void *a, u8 *b)
   }
   if (is_double != 0)
   {
-    NameEntry_CopyPair(p, b);
+    NameEntry_CopyPair(b, p);
   }
   else
   {
