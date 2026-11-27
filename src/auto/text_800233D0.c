@@ -1957,6 +1957,8 @@ void fn_80025970(void) {
         fn_8021264C(mask);
     }
 }
+#pragma push
+#pragma opt_lifetimes off
 void fn_80025BA0(void) {
 void SISetSamplingRate(u32); void fn_80212870(void); s32 fn_8021275C(u32);
 extern u8 lbl_80368DC8; extern u8 lbl_802EF408[]; extern u32 gPadInput; extern s32 lbl_80367248; extern s32 lbl_8036724C;
@@ -1967,7 +1969,7 @@ for(i=0;i<4;i++){dst[0x1c]=(&lbl_80368DC8)[i]; *(u8**)dst=pads; *(s32*)(dst+0x18
 fn_8021275C(0xF0000000);
 lbl_8036724C=0; lbl_80367248=0; gPadInput=(u32)lbl_802EF438;
 }
-
+#pragma pop
 /* Read a two-unit record from stream: deployment ids become gUnits pointers, then trailing bytes. */
 void UnitPair_Read(void *dst, s32 stream) {
     u8 Stream_ReadU8(s32);
@@ -2449,6 +2451,8 @@ void fn_80026850(s32 arg0) {
     fn_800913D4((s32)Unit_GetItemSlot(gUiContext.unk0, gUiContext.unkA), arg0, gUiContext.unk0);
 }
 
+#pragma push
+#pragma optimization_level 3
 s32 fn_800268A8(s32 arg0) {
     void *fn_8003DDF8(void *, u8 *, u8 *, void *, u8);
     void Unit_SeparateRescue(void *, u8, u8);
@@ -2463,8 +2467,8 @@ s32 fn_800268A8(s32 arg0) {
     void *temp_r3;
     void *temp_r3_2;
     void *temp_r3_3;
-    s8 idx2;
-    s8 idx1;
+    s32 idx2;
+    s32 idx1;
 
     temp_r3 = Battle_GetActiveCombatant(gBattle);
     if (temp_r3 == 0) {
@@ -2485,7 +2489,7 @@ s32 fn_800268A8(s32 arg0) {
     Unit_SeparateRescue(temp_r30, sp9, sp8);
     return 1;
 }
-
+#pragma pop
 void fn_80026994(void) {
     void Unit_ApplyTransform(void *);
     extern u8 gUiContext[];
@@ -3304,12 +3308,13 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
-#pragma peephole off
+#pragma peephole on
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *mapBase;
 
-    *(void **)arg0 = arg1;
+    typedef struct CtxHead { void *unit; } CtxHead;
+    ((CtxHead *)arg0)->unit = arg1;
     *((u8 *)arg0 + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)arg0 + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)arg0 + 0x11) = Unit_GetMov(arg1);
