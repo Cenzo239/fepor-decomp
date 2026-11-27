@@ -1,6 +1,7 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
 #include "common.h"
 static inline void UiCtx_Put0(void **p, void *v) { *p = v; }
+static inline void UiCtx_PutFirst(void *v, void **p) { *p = v; }
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
 struct MenuController24768 { u32 pad;
@@ -3308,30 +3309,33 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
+#pragma push
 #pragma peephole off
-void UiCtx_BeginMoveSelect(s32 *arg0, void *arg1) {
+void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *map;
+    u8 *self;
 
-    UiCtx_Put0((void **)arg0, arg1);
-    *((u8 *)arg0 + 0xB) = *((u8 *)arg1 + 0x19E);
-    *((u8 *)arg0 + 0xC) = *((u8 *)arg1 + 0x19F);
-    *((s8 *)arg0 + 0x11) = Unit_GetMov(arg1);
+    self = (u8 *)arg0;
+    *(void **)self = arg1;
+    self[0xB] = ((u8 *)arg1)[0x19E];
+    self[0xC] = ((u8 *)arg1)[0x19F];
+    *(s8 *)(self + 0x11) = Unit_GetMov(arg1);
     map = (u8 *)&gBattleMap;
-    *(s32 *)((u8 *)arg0 + 4) = 0;
-    *((u8 *)arg0 + 8) = 0;
-    *((s8 *)arg0 + 0xA) = -1;
-    *((s8 *)arg0 + 0xD) = -1;
-    *((s8 *)arg0 + 0xE) = -1;
-    *((s8 *)arg0 + 0xF) = -1;
-    *((s8 *)arg0 + 0x10) = -1;
-    *((u8 *)arg0 + 0x14) = 0;
-    *((u8 *)arg0 + 0x15) = 0;
-    *((u8 *)arg0 + 0x12) = 0;
-    *((u8 *)arg0 + 0x16) = 0;
-    map[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
+    *(s32 *)(self + 4) = 0;
+    self[8] = 0;
+    *(s8 *)(self + 0xA) = -1;
+    *(s8 *)(self + 0xD) = -1;
+    *(s8 *)(self + 0xE) = -1;
+    *(s8 *)(self + 0xF) = -1;
+    *(s8 *)(self + 0x10) = -1;
+    self[0x14] = 0;
+    self[0x15] = 0;
+    self[0x12] = 0;
+    self[0x16] = 0;
+    map[(s8)self[0xB] + ((s8)self[0xC] << 6) + 0xD] = 0;
 }
-#pragma peephole reset
+#pragma pop
 void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
     M2C_FIELD(arg0, s32 *, 0) = 0;
