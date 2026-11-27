@@ -9695,8 +9695,6 @@ void fn_80172B74(void *arg0) {
     }
 }
 #pragma pop
-#pragma global_optimizer on
-#pragma scheduling on
 
 void fn_80172C44(void *arg0) {
     M2C_UNK Process_AdvanceStep(s32);
