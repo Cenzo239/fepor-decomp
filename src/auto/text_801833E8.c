@@ -52,6 +52,10 @@ if(!(entry[5]&63) && target==item) count++;
 return count;
 }
 
+static inline f32 Math_ModuloF(f32 a, f32 b) {
+    return a - b * (f32)(s32)(a / b);
+}
+
 typedef struct PathHeightPoint { s32 index; f32 height; f32 rawHeight; } PathHeightPoint;
 extern u16 gUnkGlobalVar_803306E0[];
 
@@ -1993,23 +1997,22 @@ void fn_80186E10(void *arg0) {
     void Unit_SetWorldXY(void *, f32, f32);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
-    extern f32 lbl_8036ACF8;
-    extern f32 lbl_8036AD00;
-    extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036ACF4;
+    extern const f32 lbl_8036ACF8;
+    extern const f32 lbl_8036AD00;
+    extern const f32 lbl_8036ACEC;
+    extern const f32 lbl_8036ACF4;
     void *p34;
     void *p30;
     void *r31;
     s32 r30;
     f32 f31;
     f32 tmp;
-    f32 *pf;
+    f32 inc = lbl_8036ACF8;
     f32 start = lbl_8036AD00;
     f32 end = lbl_8036ACEC;
     f32 duration = lbl_8036ACF4;
 
-    pf = (f32 *)((u8 *)arg0 + 0x44);
-    *pf = lbl_8036ACF8 + *pf;
+    *(f32 *)((u8 *)arg0 + 0x44) = inc + *(f32 *)((u8 *)arg0 + 0x44);
     p34 = *(void **)((u8 *)arg0 + 0x34);
     r31 = (u8 *)p34 + 0x1C;
     r30 = (s32)Math_EaseOutPow(2, start, end, duration, *(f32 *)((u8 *)arg0 + 0x44));
@@ -5842,6 +5845,8 @@ extern "C" s32 fn_8018F374(void *arg0) {
     u8 *unit;
     void *target;
     void *tmp;
+#pragma push
+#pragma scheduling off
 
     tmp = *(void **)((u8 *)arg0 + 0x3C);
     total = 0;
@@ -5851,6 +5856,7 @@ extern "C" s32 fn_8018F374(void *arg0) {
     if (fn_80105710(tmp) == NULL) {
         return -1;
     }
+#pragma pop
     target = fn_80105710(*(void **)((u8 *)arg0 + 0x3C));
     unit = *(u8 **)((u8 *)lbl_802CA264 + 0);
     goto loop1_test;
