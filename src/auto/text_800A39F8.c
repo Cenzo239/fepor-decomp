@@ -170,6 +170,9 @@ s32 fn_800A3D74(void *dst) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
 void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
     u32 fn_802097D4(void);
     void memcpy(void *, void *, u32);
@@ -202,10 +205,11 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
     u8 var_r30;
     u32 var_r29;
     s16 *var_r28;
+    u32 mono;
     s16 *out;
     s16 *in;
-    u32 left;
     u32 n;
+    u32 left;
     s16 *ring;
     s32 vol;
     s32 samp;
@@ -230,6 +234,7 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
             left = var_r29;
             out = var_r31;
             in = var_r28;
+            mono = var_r30;
             while (1) {
                 n = p->slots[p->slotIdx].remain;
                 if (n != 0) {
@@ -237,7 +242,7 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
                         n = left;
                     }
                     ring = p->slots[p->slotIdx].ptr;
-                    for (var_ctr = n; var_ctr != 0; var_ctr--) {
+                    for (var_ctr = 0; var_ctr < n; var_ctr++) {
                         if (p->d0 != 0) {
                             p->d0 = p->d0 - 1;
                             p->c4 = p->c4 + p->cc;
@@ -264,7 +269,7 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
                         out += 2;
                         in += 2;
                         ring += 2;
-                        if (var_r30) {
+                        if (mono) {
                             samp = (s32)(table[0x64] * (out[-1] + out[-2])) >> 15;
                             if (samp < -0x8000) {
                                 samp = -0x8000;
@@ -310,7 +315,7 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
                         n = left;
                     }
                     ring = p->slots[p->slotIdx].ptr;
-                    for (var_ctr = n; var_ctr != 0; var_ctr--) {
+                    for (var_ctr = 0; var_ctr < n; var_ctr++) {
                         if (p->d0 != 0) {
                             p->d0 = p->d0 - 1;
                             p->c4 = p->c4 + p->cc;
@@ -360,7 +365,8 @@ void fn_800A3DBC(s16 *arg0, s16 *arg1, u32 arg2) {
         }
     }
 }
-
+#pragma pop
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 s32 fn_800A41B4(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     extern u8 lbl_803123A0[];
@@ -2519,16 +2525,18 @@ void fn_800A7EC0(void) {
 
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
 void fn_800A7EC4(void *arg0) {
     void *Process_Create(void *, void *);
     void fn_8006EEFC(void *, s32);
     s32 Rand_Range(s32);
-    void Heap_AllocRaw(s32);
-    void *fn_8022C414(void (*)(void), s32, s32, s32);
+    void *Heap_AllocRaw(s32);
+    void *fn_8022C414(void *, void (*)(void), s32, s32, s32);
     void Ui_LoadAtlasTex(s32, void *, u16);
     u16 GXGetTexObjWidth(void *);
-    s16 GXGetTexObjHeight(void *);
+    u16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
     void Heap_FreeRaw(void *);
@@ -2537,64 +2545,66 @@ void fn_800A7EC4(void *arg0) {
     extern u8 lbl_8028C814[];
     extern s32 lbl_80369B28;
     extern s32 lbl_80369B2C;
-    extern f32 lbl_80369B30;
-    extern f32 lbl_80369B34;
-    extern f64 lbl_80369B38;
-    void *res;
-    s32 sp8;
-    s32 spC;
-    u8 sp10[0x20];
-    u16 sp30;
-    s16 sp32;
-    s32 unk30;
-    s32 retry;
-    void *arr;
-    s32 count;
-    u8 *cur;
-    u16 span;
-    u16 a;
-    s16 b;
-    s16 dy;
-    s16 dx;
-    u8 *scan;
+    extern const f32 lbl_80369B30;
+    extern const f32 lbl_80369B34;
+    struct {
+        s32 a;
+        s32 b;
+        u8 texObj[0x20];
+        u16 w;
+        u16 h;
+    } tex;
     s32 idx;
+    s32 span;
+    s32 count;
+    void *arr;
+    s32 retry;
+    s32 unk30;
+    void *res;
+    s16 dy;
+    u8 *scan;
     void *obj;
+    u8 *cur;
+    s16 dx;
+    u16 h;
+    u16 w;
+    u16 span16;
 
     res = Process_Create(lbl_8028C7F8, arg0);
-    sp8 = lbl_80369B28;
-    spC = lbl_80369B2C;
-    fn_8006EEFC((u8 *)res + 0x30, lbl_80369B28);
-    unk30 = M2C_FIELD(res, s32 *, 0x30);
+    tex.a = lbl_80369B28;
+    tex.b = lbl_80369B2C;
+    fn_8006EEFC((u8 *)res + 0x30, tex.a);
+    unk30 = *(s32 *)((u8 *)res + 0x30);
     retry = 0x64;
-    Heap_AllocRaw(0x110);
-    arr = fn_8022C414(fn_800A7EC0, 0, 8, 0x20);
+    arr = fn_8022C414(Heap_AllocRaw(0x110), fn_800A7EC0, 0, 8, 0x20);
     count = 0;
     cur = (u8 *)arr;
-    while (count < 0x20) {
+    do {
         span = Rand_Range(8) + 2;
-        Ui_LoadAtlasTex(unk30, sp10, span);
-        a = GXGetTexObjWidth(sp10);
-        b = GXGetTexObjHeight(sp10);
-        sp30 = a;
-        sp32 = b;
-        M2C_FIELD(cur, u16 *, 0) = 0;
-        M2C_FIELD(cur, u16 *, 2) = 0;
-        M2C_FIELD(cur, u16 *, 4) = sp30;
-        M2C_FIELD(cur, u16 *, 6) = sp32;
+        span16 = span;
+        Ui_LoadAtlasTex(unk30, tex.texObj, span16);
+        tex.w = GXGetTexObjWidth(tex.texObj);
+        h = GXGetTexObjHeight(tex.texObj);
+        w = tex.w;
+        tex.h = h;
+        *(s16 *)(cur + 0) = 0;
+        *(s16 *)(cur + 2) = 0;
+        *(u16 *)(cur + 4) = w;
+        *(u16 *)(cur + 6) = h;
 recompute:
         dy = Rand_Range(0x200);
+        dx = Rand_Range(tex.w + 0x260) - ((u32)tex.w >> 1);
+        *(s16 *)(cur + 0) += dx;
+        *(s16 *)(cur + 2) += dy;
+        *(s16 *)(cur + 4) += dx;
+        *(s16 *)(cur + 6) += dy;
         scan = (u8 *)arr;
         idx = 0;
-        dx = Rand_Range(span + 0x260) - (span >> 1);
-        M2C_FIELD(cur, s16 *, 0) += dx;
-        M2C_FIELD(cur, s16 *, 2) += dy;
-        M2C_FIELD(cur, s16 *, 4) += dx;
-        M2C_FIELD(cur, s16 *, 6) += dy;
         while (idx < count) {
             if (fn_80006650(cur, scan) != 0) {
                 fn_80006608(cur);
                 if (--retry < 0) {
-                    goto cleanup;
+                    goto next;
                 }
                 goto recompute;
             }
@@ -2602,21 +2612,21 @@ recompute:
             idx++;
         }
         obj = Process_Create(lbl_8028C814, res);
-        M2C_FIELD(obj, f32 *, 0x34) = (f32) M2C_FIELD(cur, s16 *, 0);
-        M2C_FIELD(obj, f32 *, 0x38) = (f32) M2C_FIELD(cur, s16 *, 2);
-        M2C_FIELD(obj, u32 *, 0x44) = span;
-        M2C_FIELD(obj, void **, 0x30) = res;
-        M2C_FIELD(obj, f32 *, 0x3C) = lbl_80369B30;
-        M2C_FIELD(obj, f32 *, 0x40) = (M2C_FIELD(obj, f32 *, 0x3C) / lbl_80369B34) * (f32) Rand_Range(0x8000);
+        *(f32 *)((u8 *)obj + 0x34) = (f32)*(s16 *)(cur + 0);
+        *(f32 *)((u8 *)obj + 0x38) = (f32)*(s16 *)(cur + 2);
+        *(s32 *)((u8 *)obj + 0x44) = span;
+        *(void **)((u8 *)obj + 0x30) = res;
+        *(f32 *)((u8 *)obj + 0x3C) = lbl_80369B30;
+        *(f32 *)((u8 *)obj + 0x40) = (*(f32 *)((u8 *)obj + 0x3C) / lbl_80369B34) * (f32)Rand_Range(0x8000);
+next:
         count++;
         cur += 8;
-    }
-cleanup:
+    } while (count < 0x20);
     if (arr != NULL) {
         Heap_FreeRaw((u8 *)arr - 0x10);
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_800A80F0(void *arg0) {
     M2C_UNK Prim2D_SetTex(void *, M2C_UNK);
@@ -2786,6 +2796,9 @@ u32 fn_800A8504(void *arg0, u32 arg1) {
     return temp >> 5;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 u8 *fn_800A8524(void *arg0, void *arg1, u8 arg2) {
 void strcpy(void *,void *);
 void strcat(void *,void *);
@@ -2814,7 +2827,7 @@ case 3: strcat(lbl_80312A80,(u8 *)lbl_8026E408+23); break;
 }
 return lbl_80312A80;
 }
-
+#pragma pop
 u8 *fn_800A8704(void *arg0) {
     void strcpy(void *, void *);
     void strcat(void *, char *);
