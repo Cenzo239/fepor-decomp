@@ -162,14 +162,6 @@ typedef struct {
 
 #pragma global_optimizer off
 
-static inline s32 Map_AbsDiff(s32 a, s32 b) {
-    s32 d = a - b;
-    if (0 > d) {
-        d = -d;
-    }
-    return d;
-}
-
 s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
     s32 sy1;
     s32 sy2;
@@ -183,16 +175,10 @@ s32 fn_8001F85C(u8 *map, s32 x1, s32 y1, s32 x2, s32 y2) {
 
     sy2 = (s8)y2;
     sy1 = (s8)y1;
-    dy = sy1 - sy2;
-    if (0 > dy) {
-        dy = -dy;
-    }
+    dy = Map_AbsDiff(sy1, sy2);
     sx2 = (s8)x2;
     sx1 = (s8)x1;
-    dx = sx1 - sx2;
-    if (0 > dx) {
-        dx = -dx;
-    }
+    dx = Map_AbsDiff(sx1, sx2);
     if (dx + dy != 1) {
         return 0;
     }
