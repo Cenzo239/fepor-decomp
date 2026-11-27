@@ -1,6 +1,6 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline void CopyTwoBytes(u8 *dst, u8 *src) {
+static inline void CopyTwoBytes(u8 *src, u8 *dst) {
     u8 a, b;
     a = src[0];
     b = src[1];
@@ -1278,8 +1278,6 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *p;
     u8 is_double;
     u8 d;
-    u8 t1;
-    u8 t0;
     s32 n;
 
     self = a;
@@ -1301,10 +1299,7 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
     }
 
     if (is_double != 0) {
-        t0 = b[0];
-        t1 = b[1] & 0xFFFFFFFF;
-        p[0] = t0;
-        p[1] = t1;
+        CopyTwoBytes(p, b);
     } else {
         p[0] = b[0];
     }
