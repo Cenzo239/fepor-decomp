@@ -760,6 +760,7 @@ u16 FileCache_GetFlags(char *name) {
 }
 
 void fn_8005C7A4(s32 arg0) {
+    void fn_8005CF6C(int);
     arg0 = (s8)arg0;
     fn_8005CF6C(arg0);
 }
