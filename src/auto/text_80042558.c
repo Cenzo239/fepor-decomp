@@ -2349,6 +2349,34 @@ s32 fn_80046424(void *arg0, void *arg1, void **arg2, s32 arg3) {
 
 void *fn_80046EB8(void *arg0,void *arg1) { u8 *base; s32 i; if(arg1==0)return 0; for(i=*(s16*)((u8*)arg0+6)-1;i>=0;i--) {base=*(u8**)((u8*)arg0+0x14); if(arg1==*(void**)(base+i*0xB4+0x10))return base+i*0xB4;} return 0; }
 
+static inline u8 MapObj_Contains(u8 *entry, s32 x, s32 y) {
+    if (x >= *(s8 *)(entry + 4) &&
+        x <= *(s8 *)(entry + 6) &&
+        y >= *(s8 *)(entry + 5) &&
+        y <= *(s8 *)(entry + 7)) {
+        return 1;
+    }
+    return 0;
+}
+
+static inline void *Map_FindObjAt_Inline(void *arg0, s32 x, s32 y, u32 arg3, u32 arg4) {
+    typedef struct { u8 pad[0xB4]; } MapObjEntry;
+    s32 i;
+    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
+        MapObjEntry *base = *(MapObjEntry **)((u8 *)arg0 + 0x14);
+        u8 *entry = (u8 *)&base[i];
+        u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+        if (!(flags & arg4)) {
+            if (arg3 == 0 || (arg3 & flags) == arg3) {
+                if (MapObj_Contains(entry, x, y)) {
+                    return &base[i];
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
 {
     void *found;
