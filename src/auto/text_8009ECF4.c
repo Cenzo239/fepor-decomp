@@ -61,62 +61,76 @@ void fn_8009ED1C(void) {
     void *fn_801E417C(void *);
     u8 fn_801E434C(void *);
     extern s32 gSaveDataBase;
-    void *obj;
-    s32 i;
-    s32 b;
-    u8 *base;
 
     if (Card_GetResult() == 0 || Card_GetResult() == -0x42) {
-        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        i = 0;
-        base = gMenuCmdStrings;
-        do {
-            DebugPrint((const char *)(base + 0x1C6), i);
-            obj = Save_GetSmallSlot(&gSaveDataBase, i);
-            if (fn_801E434C(obj) == 0) {
-                b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
-            } else if (*((u8 *)obj + 0x60) == 1) {
-                b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
-            } else {
-                b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
-            }
-            i += 1;
-        } while (i < 6);
-        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        i = 0;
-        base = gMenuCmdStrings;
-        do {
-            DebugPrint((const char *)(base + 0x220), i);
-            obj = fn_801E2324(&gSaveDataBase, i);
-            if (!obj) {
-                DebugPrint((const char *)(gMenuCmdStrings + 0x227));
-            } else {
-                b = *((u8 *)obj + 0x62);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
-            }
-            i += 1;
-        } while (i < 5);
-        DebugPrint((const char *)(gMenuCmdStrings + 0x198));
-        i = 0;
-        base = gMenuCmdStrings;
-        do {
-            DebugPrint((const char *)(base + 0x23D), i);
-            obj = Save_GetLargeSlot(&gSaveDataBase, i);
-            if (fn_801E434C(obj) == 0) {
-                b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
-            } else if (*((u8 *)obj + 0x60) == 1) {
-                b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
-            } else {
-                b = *((u8 *)obj + 0x63);
-                DebugPrint((const char *)(gMenuCmdStrings + 0x244), b, fn_801E417C(obj), gMenuCmdStrings);
-            }
-            i += 1;
-        } while (i < 2);
+        s32 b;
+        {
+            s32 b;
+            s32 i;
+            void *obj;
+            u8 *base;
+            DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+            base = gMenuCmdStrings;
+            i = 0;
+            do {
+                DebugPrint((const char *)(base + 0x1C6), i);
+                obj = Save_GetSmallSlot(&gSaveDataBase, i);
+                if (fn_801E434C(obj) == 0) {
+                    b = *((u8 *)obj + 0x62);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
+                } else if (*((u8 *)obj + 0x60) == 1) {
+                    b = *((u8 *)obj + 0x62);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
+                } else {
+                    b = *((u8 *)obj + 0x62);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
+                }
+                i += 1;
+            } while (i < 6);
+        }
+        {
+            s32 i;
+            void *obj;
+            u8 *base;
+            DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+            base = gMenuCmdStrings;
+            i = 0;
+            do {
+                DebugPrint((const char *)(base + 0x220), i);
+                obj = fn_801E2324(&gSaveDataBase, i);
+                if (!obj) {
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x227));
+                } else {
+                    b = *((u8 *)obj + 0x62);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x209), b, fn_801E417C(obj), gMenuCmdStrings);
+                }
+                i += 1;
+            } while (i < 5);
+        }
+        {
+            s32 i;
+            void *obj;
+            s32 b;
+            u8 *base;
+            DebugPrint((const char *)(gMenuCmdStrings + 0x198));
+            base = gMenuCmdStrings;
+            i = 0;
+            do {
+                DebugPrint((const char *)(base + 0x23D), i);
+                obj = Save_GetLargeSlot(&gSaveDataBase, i);
+                if (fn_801E434C(obj) == 0) {
+                    b = *((u8 *)obj + 0x63);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x1CD), b, fn_801E417C(obj), gMenuCmdStrings);
+                } else if (*((u8 *)obj + 0x60) == 1) {
+                    b = *((u8 *)obj + 0x63);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x1EC), b, fn_801E417C(obj), gMenuCmdStrings);
+                } else {
+                    b = *((u8 *)obj + 0x63);
+                    DebugPrint((const char *)(gMenuCmdStrings + 0x244), b, fn_801E417C(obj), gMenuCmdStrings);
+                }
+                i += 1;
+            } while (i < 2);
+        }
         DebugPrint((const char *)(gMenuCmdStrings + 0x198));
         DebugPrint((const char *)(gMenuCmdStrings + 0x25B), fn_801E2458(&gSaveDataBase), gMenuCmdStrings);
     }
