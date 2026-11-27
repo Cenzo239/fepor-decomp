@@ -356,9 +356,9 @@ void *GXInit(void *base, u32 size) {
     extern u32 GXTexRegionAddrTable_8029DD0C[];
 
     static u32 resetFuncRegistered;
-    void *fifo;
     u8 *gx;
     u32 i;
+    void *fifo;
 
     fifo = FifoObj_8033A440;
     OSRegisterVersion(__GXVersion);
@@ -455,6 +455,7 @@ void *GXInit(void *base, u32 size) {
                 oD8 = stride + 0xD8;
                 *(u32 *)(gx + oB8) = zero;
                 *(u32 *)(gx + oD8) = zero;
+                stride += 4;
                 *(u32 *)(gx + oB8) = __rlwimi(*(u32 *)(gx + oB8), c, 24, 0, 7);
                 c += 2;
                 *(u32 *)(gx + oD8) = __rlwimi(*(u32 *)(gx + oD8), d, 24, 0, 7);
@@ -1357,26 +1358,39 @@ void GXSetVtxDescv(s32 *arg0)
 }
 
 #pragma optimization_level 3
-void fn_8021F9D8(void) {
-extern u16 *const __GXData;
-u32 n;
-u32 colors;
-u32 tex;
-*(volatile u8 *)0xCC008000=8;
-*(volatile u8 *)0xCC008000=0x50;
-*(volatile u32 *)0xCC008000=*(u32 *)((u8 *)__GXData+0x14);
-*(volatile u8 *)0xCC008000=8;
-*(volatile u8 *)0xCC008000=0x60;
-*(volatile u32 *)0xCC008000=*(u32 *)((u8 *)__GXData+0x18);
-if(((u8 *)__GXData)[0x4d5]) n=2;
-else if(((u8 *)__GXData)[0x4d4]) n=1;
-else n=0;
-colors=(33-(u32)__cntlzw((*(u32 *)((u8 *)__GXData+0x14)>>13)&15))>>1;
-tex=(33-(u32)__cntlzw(*(u32 *)((u8 *)__GXData+0x18)&0xffff))>>1;
-*(volatile u8 *)0xCC008000=0x10;
-*(volatile u32 *)0xCC008000=0x1008;
-*(volatile u32 *)0xCC008000=(tex<<4)|(colors|(n<<2));
-__GXData[1]=1;
+void fn_8021F9D8(void)
+{
+  u32 new_var;
+  extern u16 * const __GXData;
+  u32 n;
+  u32 colors;
+  u32 tex;
+  *((volatile u8 *) 0xCC008000) = 8;
+  *((volatile u8 *) 0xCC008000) = 0x50;
+  *((volatile u32 *) 0xCC008000) = *((u32 *) (((u8 *) __GXData) + 0x14));
+  *((volatile u8 *) 0xCC008000) = 8;
+  *((volatile u8 *) 0xCC008000) = 0x60;
+  *((volatile u32 *) 0xCC008000) = *((u32 *) (((u8 *) __GXData) + 0x18));
+  if (((u8 *) __GXData)[0x4d5])
+  {
+    n = 2;
+  }
+  else
+    if (((u8 *) __GXData)[0x4d4])
+  {
+    n = 1;
+  }
+  else
+  {
+    n = 0;
+  }
+  new_var = (*((u32 *) (((u8 *) __GXData) + 0x14))) >> 13;
+  colors = (33 - ((u32) __cntlzw(new_var & 15))) >> 1;
+  tex = (33 - ((u32) __cntlzw((*((u32 *) (((u8 *) __GXData) + 0x18))) & 0xffff))) >> 1;
+  *((volatile u8 *) 0xCC008000) = 0x10;
+  *((volatile u32 *) 0xCC008000) = 0x1008;
+  *((volatile u32 *) 0xCC008000) = (tex << 4) | (colors | (n << 2));
+  __GXData[1] = 1;
 }
 #pragma peephole on
 void fn_8021FA94(void) {
@@ -2550,6 +2564,7 @@ void fn_80220EBC(void)
 
     *(u16 *)(__GXData + 2) = 1;
 }
+#pragma optimization_level reset
 #pragma global_optimizer reset
 void fn_80220F44(u32 arg0, u32 arg1) {
 extern u32 __GXData;
