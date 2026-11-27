@@ -2335,7 +2335,6 @@ void fn_800AC810(void *arg0)
   }
 }
 #pragma pop
-#pragma pop
 #pragma optimization_level reset
 void fn_800ACBD8(void *arg0) {
 extern u8 lbl_80312ACC[];
