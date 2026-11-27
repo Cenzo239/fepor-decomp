@@ -8520,7 +8520,18 @@ virtual void v11() = 0;
 };
 #pragma cplusplus reset
 
-void fn_80171004(void *arg0)
+#pragma cplusplus on
+static inline void Convoy_AddAllItems(void *panel, u8 *slot) {
+    void fn_801439F0(void *, void *, void *);
+    s32 i;
+    for (i = 0; i < 0xC8; i++, slot += 8) {
+        if (*(u32 *)slot != 0) {
+            fn_801439F0(panel, slot, NULL);
+        }
+    }
+}
+
+extern "C" void fn_80171004(void *arg0)
 {
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SlideWidgetChild(void *, void *, s16 *, s32);
@@ -8540,11 +8551,13 @@ void fn_80171004(void *arg0)
 
     u8 *self;
     u8 *child;
-    s32 i;
     u8 *list;
+    s32 i;
+    u8 *panel;
     u8 *slot;
     u8 *obj;
     void *p;
+    void *context;
     s16 pos[2];
     s16 slide[2];
     s16 height;
@@ -8555,7 +8568,7 @@ void fn_80171004(void *arg0)
     list[0x78] = 0;
     list[0x4A] = 1;
 
-    child = Ui_FindChild(self, 0x100, 0);
+    child = (u8 *)Ui_FindChild(self, 0x100, 0);
 
     if (child != NULL) {
         height = (s16)(
@@ -8591,18 +8604,18 @@ void fn_80171004(void *arg0)
             *(s32 *)(list + 4) + 1;
     }
 
-    i = 0;
     *(s16 *)(*(u8 **)(self + 0x54) + 8) = 0x105;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x24) = 8;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x8A) = 2;
+    i = 0;
     *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = i;
 
-    list = *(u8 **)(self + 0x54);
     slot = (u8 *)gConvoy;
+    panel = *(u8 **)(self + 0x54);
 
     do {
         if (*(u32 *)slot != 0) {
-            fn_801439F0(list, slot, NULL);
+            fn_801439F0(panel, slot, NULL);
         }
 
         i++;
@@ -8614,12 +8627,13 @@ void fn_80171004(void *arg0)
     list = *(u8 **)(self + 0x54);
     *(u32 *)(list + 0x11C) = 0;
 
+    context = *(void **)gUiContext;
     list = *(u8 **)(self + 0x54);
     *(void **)(list + 0x120) = (void *)fn_80175924;
-    *(void **)(list + 0x124) = *(void **)((s8 *)gUiContext + 0);
+    *(void **)(list + 0x124) = context;
 
     list = *(u8 **)(self + 0x54);
-    ((void (*)(void *))(*(void ***)list)[13])(list);
+    ((ConvoyPanel71004 *)list)->v11();
 
     Ui_AddChild(self, *(void **)(self + 0x54));
 
@@ -8635,10 +8649,10 @@ void fn_80171004(void *arg0)
         0
     );
 
-    obj = Heap_Alloc(0x40);
+    obj = (u8 *)Heap_Alloc(0x40);
 
     if (obj != NULL) {
-        obj = fn_80171218(
+        obj = (u8 *)fn_80171218(
             obj,
             0x198,
             0x38,
@@ -8657,6 +8671,7 @@ void fn_80171004(void *arg0)
         self
     );
 }
+#pragma cplusplus reset
 #pragma pop
 void fn_80171218(void *p, s32 x, s32 y, s32 w, s32 style)
 {
