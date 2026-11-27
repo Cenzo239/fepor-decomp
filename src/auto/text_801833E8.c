@@ -2,45 +2,6 @@
 #include "common.h"
 #include "global.h"
 
-static inline void Ui_InitPortraitPanelFields(void *temp_r31)
-{
-    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80291A3C[];
-    extern const f32 lbl_8036AE20;
-    f32 scale;
-        M2C_FIELD(temp_r31, void **, 0) = lbl_8028FDB0;
-        M2C_FIELD(temp_r31, s32 *, 4) = 0;
-        M2C_FIELD(temp_r31, void **, 0) = lbl_80292230;
-        M2C_FIELD(temp_r31, s16 *, 8) = -1;
-        M2C_FIELD(temp_r31, s16 *, 0xA) = 0x260;
-        M2C_FIELD(temp_r31, s16 *, 0xC) = 0xA7;
-        M2C_FIELD(temp_r31, s16 *, 0xE) = 0x368;
-        M2C_FIELD(temp_r31, s16 *, 0x10) = 0xFC;
-        M2C_FIELD(temp_r31, s16 *, 0x12) = 0;
-        M2C_FIELD(temp_r31, s16 *, 0x14) = 0;
-        M2C_FIELD(temp_r31, s16 *, 0x16) = 0x108;
-        M2C_FIELD(temp_r31, s16 *, 0x18) = 0x55;
-        M2C_FIELD(temp_r31, s16 *, 0x1A) = 0;
-        M2C_FIELD(temp_r31, s16 *, 0x1C) = 0;
-        M2C_FIELD(temp_r31, u8 *, 0x1E) = 0xFF;
-        M2C_FIELD(temp_r31, u8 *, 0x1F) = 0xFF;
-        M2C_FIELD(temp_r31, u8 *, 0x20) = 0xFF;
-        M2C_FIELD(temp_r31, u8 *, 0x21) = 0xFF;
-        M2C_FIELD(temp_r31, s16 *, 0x22) = 0x190;
-        M2C_FIELD(temp_r31, s16 *, 0x24) = 0;
-        scale = lbl_8036AE20;
-        M2C_FIELD(temp_r31, f32 *, 0x28) = scale;
-        M2C_FIELD(temp_r31, f32 *, 0x2C) = scale;
-        M2C_FIELD(temp_r31, f32 *, 0x30) = scale;
-        M2C_FIELD(temp_r31, s32 *, 0x34) = 0;
-        M2C_FIELD(temp_r31, s32 *, 0x38) = 0;
-        M2C_FIELD(temp_r31, void **, 0) = lbl_80291A3C;
-        M2C_FIELD(temp_r31, s32 *, 0x3C) = 0;
-        M2C_FIELD(temp_r31, s32 *, 0x40) = 0x1003A;
-        M2C_FIELD(temp_r31, s32 *, 0x4C) = 0;
-        M2C_FIELD(temp_r31, s32 *, 0x50) = 0;
-}
-
-
 
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
@@ -6021,6 +5982,9 @@ extern "C" void fn_8018F988(void *arg0, s32 arg1) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 extern "C" void fn_8018F9E4(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
@@ -6030,7 +5994,7 @@ extern "C" void fn_8018F9E4(void *arg0) {
     };
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
-    void Text_Draw(s16, s16, s32, ...);
+    void Text_Draw(s32, s32, s32, ...);
     s32 fn_80104E58(void);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
@@ -6048,7 +6012,8 @@ extern "C" void fn_8018F9E4(void *arg0) {
     s32 sp10, spC, sp8;
     void *msg;
     s32 z;
-    s16 y, x, w, a, b;
+    s32 x;
+    s16 y, w, a, b;
 
     ((Obj *)arg0)->v3();
     x = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
@@ -6065,14 +6030,15 @@ extern "C" void fn_8018F9E4(void *arg0) {
     Text_Draw(y, x, 0xF, Msg_Expand(lbl_80279C40 + 0xED));
     msg = Msg_Expand(lbl_80279C40 + 0xD1);
     z = w + 8;
-    Text_Draw(z, x, 0xF, msg);
+    Text_Draw((s16)z, x, 0xF, msg);
     Prim2D_AddPrim(6);
     sp10 = *Ui_GetColor(2);
     Prim2D_SetColorPacked(&sp10);
+    x = (s16)x;
     fn_80006B18(w, x, 0, 0, *(s32 *)(gBattleState + 0x18));
     Prim2D_EndPrim();
     Text_Draw(y, (s16)(x + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0x53));
-    Text_Draw(z, (s16)(x + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0x66));
+    Text_Draw((s16)z, (s16)(x + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0x66));
     if (*(u32 *)((u8 *)arg0 + 0x3C) != 0) {
         Prim2D_AddPrim(6);
         spC = *Ui_GetColor(2);
@@ -6087,6 +6053,7 @@ extern "C" void fn_8018F9E4(void *arg0) {
         Prim2D_EndPrim();
     }
 }
+#pragma pop
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
