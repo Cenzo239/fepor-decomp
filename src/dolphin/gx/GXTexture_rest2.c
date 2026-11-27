@@ -221,6 +221,9 @@ void fn_80224860(u8 arg0, u8 arg1)
   __GXFlushTextureState();
 }
 
+#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 2
 void fn_802248D8(u32 base, u32 size) {
     extern u8 lbl_8033AA70[];
     extern void *lbl_803687A8;
@@ -250,6 +253,7 @@ void fn_802248D8(u32 base, u32 size) {
     GXSetCPUFifo(save);
     fn_80220554();
 }
+#pragma pop
 #pragma push
 #pragma optimization_level 3
 s32 fn_802249A4(void) {
