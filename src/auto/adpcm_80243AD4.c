@@ -513,27 +513,3 @@ s32 fn_80243E84(void *arg0) {
     return var_r5;
 }
 #pragma optimization_level reset
-void fn_80243F14(void *arg0, u8 *arg1) {
-    M2C_FIELD(arg0, u8 **, 0) = arg1;
-    M2C_FIELD(arg0, s32 *, 4) = 2;
-    M2C_FIELD(arg0, s8 *, 8) = (s8) (((u8) *M2C_FIELD(arg0, u8 **, 0) >> 4U) & 7);
-    M2C_FIELD(arg0, s8 *, 9) = (s8) (*M2C_FIELD(arg0, u8 **, 0) & 0xF);
-    M2C_FIELD(arg0, u8 **, 0) = (u8 *) (M2C_FIELD(arg0, u8 **, 0) + 1);
-}
-
-static inline u32 SynthFindVoice(u32 arg0) {
-    extern SynthVoice *gActiveVoices;
-    extern SynthVoice *gKeyedVoices;
-    SynthVoice *p;
-    for (p = gKeyedVoices; p != NULL; p = p->next) {
-        if (p->vid == (arg0 & 0x7FFFFFFF)) {
-            return p->id | (arg0 & 0x80000000);
-        }
-    }
-    for (p = gActiveVoices; p != NULL; p = p->next) {
-        if (p->vid == (arg0 & 0x7FFFFFFF)) {
-            return p->id | (arg0 & 0x80000000);
-        }
-    }
-    return -1;
-}

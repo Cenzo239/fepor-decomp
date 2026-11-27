@@ -549,6 +549,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8023D0D8.c"),
             Object(NonMatching, "auto/text_8023D350.c", mw_version="GC/1.2.5n"),
             Object(NonMatching, "auto/adpcm_80243AD4.c"),
+            Object(NonMatching, "adpcm_80243F14.c"),
             Object(NonMatching, "auto/sound_80243FB8.c"),
             Object(NonMatching, "auto/text_80247D74.c"),
             Object(NonMatching, "auto/text_80249DD0.c"),
