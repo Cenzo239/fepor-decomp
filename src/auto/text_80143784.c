@@ -1002,13 +1002,13 @@ extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     struct Point *fn_8013F748(void *, struct Point *, struct Point *);
     struct Point out;
     struct Point in;
-    register s32 idx;
+    s32 idx;
     u8 *slot;
-    register s16 x88;
+    s16 x88;
     s16 c;
     s16 a;
     s16 b;
-
+#pragma opt_strength_reduction off
     idx = ((Obj *)arg1)->v10();
     slot = (u8 *)arg1 + (idx << 1);
     x88 = *(s16 *)((u8 *)arg1 + 0x88);
@@ -2384,13 +2384,10 @@ void fn_8014571C(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
-    extern f32 lbl_8036A77C;
+    extern const f32 gBgmVolTimerZero;
+    extern const f32 lbl_8036A77C;
     s32 base;
-    void *temp_r3;
-    f32 a;
-    f32 b;
-    volatile f32 *dst;
+    u8 *p;
 
     base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
@@ -2399,13 +2396,10 @@ void fn_8014571C(void) {
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    temp_r3 = Process_Create((void *)(base + 0x28), 3);
-    dst = (volatile f32 *)((u8 *)temp_r3 + 0x30);
-    a = gBgmVolTimerZero;
-    b = lbl_8036A77C;
-    dst[1] = b;
-    dst[0] = a;
-    dst[2] = (f32)gBgmVol;
+    p = (u8 *)Process_Create((void *)(base + 0x28), 3);
+    *(f32 *)(p + 0x30) = gBgmVolTimerZero;
+    *(f32 *)(p + 0x34) = lbl_8036A77C;
+    *(f32 *)(p + 0x38) = (f32)gBgmVol;
 }
 
 void fn_801457B4(void) {
@@ -3213,7 +3207,6 @@ extern "C" void fn_80147188(s32 arg0) {
     Entry *p;
     s32 i;
     s32 j;
-    s32 arg_save;
     Entry *base;
     s32 ext;
     s32 idx;
@@ -3223,14 +3216,13 @@ extern "C" void fn_80147188(s32 arg0) {
     s8 ca;
     s32 temp;
 
-    arg_save = arg0;
     base = gFxChannels;
     i = 0;
-    p = &base[0];
+    p = base + 0;
     ext = (s16)arg0;
     do {
         if (p->flags & 1) {
-            if ((s16)arg_save <= 0) {
+            if ((s16)arg0 <= 0) {
                 p->v2();
             } else if (!(p->flags & 8)) {
                 temp = (s32)((f32)ext / gMsPerFrame);
@@ -3255,7 +3247,7 @@ extern "C" void fn_80147188(s32 arg0) {
     p = (Entry *)((u8 *)base + 0xc0);
     do {
         if (p->flags & 1) {
-            if ((s16)arg_save <= 0) {
+            if ((s16)arg0 <= 0) {
                 p->v2();
             } else if (!(p->flags & 8)) {
                 temp = (s32)((f32)ext / gMsPerFrame);
@@ -3283,7 +3275,7 @@ extern "C" void fn_80147188(s32 arg0) {
         w = p;
         do {
             if (w->flags & 1) {
-                if ((s16)arg_save <= 0) {
+                if ((s16)arg0 <= 0) {
                     w->v2();
                 } else if (!(w->flags & 8)) {
                     temp = (s32)((f32)ext / gMsPerFrame);
