@@ -19,6 +19,27 @@ public:
 
 typedef struct NodeLightPosition { f32 x,y,z; } NodeLightPosition;
 typedef struct TrailNode40 { u32 v[9]; u8 r, g, b, a; } TrailNode40;
+typedef union {
+    u8 u8;
+    u16 u16;
+    u32 u32;
+    s8 s8;
+    s16 s16;
+    s32 s32;
+    f32 f32;
+} PPCWGPipe;
+volatile PPCWGPipe GXWGFifo : 0xCC008000;
+static inline void GXPosition3f32(const f32 x, const f32 y, const f32 z) {
+    GXWGFifo.f32 = x;
+    GXWGFifo.f32 = y;
+    GXWGFifo.f32 = z;
+}
+static inline void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a) {
+    GXWGFifo.u8 = r;
+    GXWGFifo.u8 = g;
+    GXWGFifo.u8 = b;
+    GXWGFifo.u8 = a;
+}
 static inline void TrailNode_Copy(TrailNode40 *d, const TrailNode40 *s) {
 d->v[0]=s->v[0]; d->v[1]=s->v[1]; d->v[2]=s->v[2];
 d->v[3]=s->v[3]; d->v[4]=s->v[4]; d->v[5]=s->v[5];
