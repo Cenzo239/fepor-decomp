@@ -7990,8 +7990,6 @@ void fn_802633F8(void) {
     fn_8020AEC4(&lbl_80368B00);
 }
 
-#pragma push
-#pragma optimization_level 3
 s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     void *fn_802637D0(u32);
     void *memset(void *, s32, u32);
