@@ -548,6 +548,14 @@ static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0) {
     }
 }
 
+static inline f32 CamPath_IntToFloat(s32 value) {
+    extern f64 lbl_80368C98;
+    union { f64 d; struct { u32 hi; u32 lo; } w; } u;
+    u.w.hi = 0x43300000;
+    u.w.lo = (u32)value ^ 0x80000000U;
+    return (f32)(u.d - lbl_80368C98);
+}
+
 #pragma use_lmw_stmw on
 void CamPath_Apply(void *arg0, f32 farg0) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
