@@ -59,6 +59,16 @@ static void *get_280(void **handle) {
     return NULL;
 }
 
+static void *get_280_reload(void **handle) {
+    void *t;
+
+    t = *(void * volatile *)handle;
+    if (t != NULL) {
+        return *(void **)((u8 *)t + 0x280);
+    }
+    return NULL;
+}
+
 void fn_80098D30(void *arg0) {
     s32 temp_r31;
     s32 temp_r30;
@@ -283,8 +293,9 @@ void fn_80099094(void *arg0)
   }
 }
 
+#pragma push
 #pragma use_lmw_stmw on
-void fn_8009933C(void *arg0) {
+void fn_8009933C(void *self) {
 s32 fn_80098140(void); u8 Pad_IsActive(void *); u8 Pad_IsButton(void *,s32);
 s32 Event_GetCmdKind(s16); s32 Event_GetCmdFlags(s16); void Event_AdvanceCmd(s16);
 void fn_8009A0A4(void *,s16); void *fn_800958C4(s32);
@@ -298,32 +309,32 @@ void Mu_StartBlend(void *,s32,s32,s32); void Mu_StartTransfer(void *,s32,s32,s32
 s16 fn_80097740(void); void *fn_80098094(void); void *fn_8009809C(void);
 u8 Mu_IsAnimDone(void *); void Process_ClearFunc(void *);
 extern u8 gEventUiSeCues[]; extern void *gPadInput;
-Word3 posC, tmpC, posA, tmpA, posB, tmpB;
-void *self;
-u8 *input;
+Word3 tmpC, posC, tmpA, posA, tmpB, posB;
+s32 command, flags, value, amount, kind;
+void *p;
+s16 index;
 void *unit;
+u8 *input;
+u8 advance;
+s32 old;
 unit=(void *)fn_80098140();
 input=(u8 *)unit+0x1c;
-self=arg0;
 if(Pad_IsActive(input)) {
-s32 command=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x46));
-s32 flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x46));
+command=Event_GetCmdKind(M2C_FIELD(self,s16 *,0x46));
+flags=Event_GetCmdFlags(M2C_FIELD(self,s16 *,0x46));
 switch(command) {
 case 0x50: case 0x51:
 if(Pad_IsButton(input,0)) {
 if(M2C_FIELD(self,s8 *,0x41)<=0) fn_8009A0A4(self,M2C_FIELD(self,s16 *,0x46));
 else { if(flags&1) {
-
-s32 value;
-void *p; s32 amount;
-s16 index=M2C_FIELD(self,s16 *,0x46);
+index=M2C_FIELD(self,s16 *,0x46);
 value=Event_GetCmdFlags(index);
 Event_AdvanceCmd(index);
 p=fn_800958C4(value);
 if(p) fn_8017DF54(M2C_FIELD(self,void **,0x3c),p,self);
 amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x3c),f32 *,12);
 if(amount==0) {
-s32 kind=Event_GetCmdKind(index);
+kind=Event_GetCmdKind(index);
 p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
 p=Effect_Create(p,self);
@@ -349,16 +360,14 @@ if(M2C_FIELD(self,u8 *,0x34)!=2) fn_8017F040(M2C_FIELD(self,void **,0x38),amount
 Mu_StartFlash(get_280(M2C_FIELD(self,void ***,0x38)),1,32,self);
 }
 } else {
-s32 value;
-void *p; s32 amount;
-s16 index=M2C_FIELD(self,s16 *,0x46);
+index=M2C_FIELD(self,s16 *,0x46);
 value=Event_GetCmdFlags(index);
 Event_AdvanceCmd(index);
 p=fn_800958C4(value);
 if(p) fn_8017DF54(M2C_FIELD(self,void **,0x3c),p,self);
 amount=(s32)M2C_FIELD(M2C_FIELD(self,void **,0x3c),f32 *,12);
 if(amount==0) {
-s32 kind=Event_GetCmdKind(index);
+kind=Event_GetCmdKind(index);
 p=fn_80095934(M2C_FIELD(self,void **,0x38),kind,Event_GetCmdFlags(index));
 if(p) {
 p=Effect_Create(p,self);
@@ -394,9 +403,8 @@ posC=tmpC; SeCue_PlayAtPos(gEventUiSeCues+0xf6,&posC,100);
 M2C_FIELD(self,u8 *,0x41)--;
 } break;
 }
-{u8 advance;
 if(input) {
-s8 old=M2C_FIELD(self,s8 *,0x43);
+old=M2C_FIELD(self,s8 *,0x43);
 if(Pad_IsButton(input,1)) M2C_FIELD(self,u8 *,0x43)--;
 if(Pad_IsButton(input,0)) M2C_FIELD(self,u8 *,0x43)++;
 if(old!=M2C_FIELD(self,s8 *,0x43) && M2C_FIELD(self,s8 *,0x43)==0 && M2C_FIELD(self,s8 *,0x41)>0) advance=1; else goto noAdvance;
@@ -408,10 +416,9 @@ M2C_FIELD(self,void **,0x3c)=fn_8009809C();
 M2C_FIELD(self,u8 *,0x43)=0;
 }
 }
-}
 if(Mu_IsAnimDone(unit)) {Mu_StartBlend(unit,8,4,0); Process_ClearFunc(self);}
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_8009991C(void *arg0) {
     s32 fn_80098140(void);
     void *fn_800984FC(void **);
