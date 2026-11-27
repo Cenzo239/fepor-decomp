@@ -6,6 +6,11 @@
 #include <dolphin/os.h>
 #include "global.h"
 #include "ef.h"
+static inline u8 *Card_GetBlock(s32 chan) {
+    extern u8 __CARDBlock[];
+    return __CARDBlock + chan * 0x110;
+}
+
 static inline u32 Card_ReverseScramble(u32 count, u32 value) {
     u32 i;
     for (i = 0; i < count; ++i) {
