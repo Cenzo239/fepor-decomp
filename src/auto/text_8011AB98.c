@@ -3456,208 +3456,304 @@ invalid_command:
     return 3;
 }
 
-s32 fn_8011F184(void *self,u8 **text) {
-void fn_80120F94(void);
-s32 fn_80049DA4(void *,void *,s32);
-void fn_8011FB58(void *,s32);
-void fn_800790D4(void *,void *);
-void fn_8007AD6C(void *);
-void fn_8007AD08(void *,s32,s32);
-extern u8 lbl_8032FE24[];
-s32 slot,want,c;
-u8 previous;
-void *child;
-char *out;
-previous=M2C_FIELD(self,u8 *,0x5e);
-want=(s8)previous;
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
+typedef struct TalkUi {
+    u8 pad0[0x48];
+    void *slots[4];
+    u8 pad58[4];
+    u16 flags;
+    s8 curSlot;
+    u8 pad5F[6];
+    u8 prevSlot;
+} TalkUi;
 
-c=(s8)**text;
-if(c>='0' && c<='9') {
-if(want!=c-'0') {
-M2C_FIELD(self,u8 *,0x65)=previous;
-M2C_FIELD(self,u8 *,0x5e)=c-'0';
-fn_80120F94();
-}
-++*text;
-return 1;
-}
-c=(s8)*(*text)++;
-switch(c) {
-case 'C':
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
+s32 fn_8011F184(void *arg0, u8 **arg1) {
+    void fn_80120F94(void);
+    s32 fn_80049DA4(void *, void *, s32);
+    void fn_8011FB58(void *, s32);
+    void fn_800790D4(void *, void *);
+    void fn_8007AD6C(void *);
+    void fn_8007AD08(void *, s32, s32);
+    extern u8 lbl_8032FE24[];
 
-if(child) *text-=2;
-else {
-out=(char *)lbl_8032FE24;
-while((s32)**text!='|') *out++=*(*text)++;
-*out=0; ++*text;
-fn_8011FB58(self,fn_80049DA4((u8 *)TalkUi_str+0x6f,lbl_8032FE24,0));
-}
-return 2;
-case 'D':
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
+    typedef struct {
+        u8 pad0[0x48];
+        void *slots[4];
+        u8 pad58[4];
+        u16 flags;
+        s8 curSlot;
+        u8 pad5F[6];
+        u8 prevSlot;
+    } TalkUi;
 
-if(!(gUiInputFlags&3)) {
-fn_800790D4(((void **)((u8 *)self + (s8)slot * 4))[18],self);fn_80120F94();
-} else fn_8007AD6C(((void **)((u8 *)self + (s8)slot * 4))[18]);
-((void **)((u8 *)self + (s8)slot * 4))[18]=0;
-M2C_FIELD(self,s8 *,0x5e)=-1;return 2;
-case 'S':
-if(child) M2C_FIELD(child,u16 *,0x46)&=~0x202;
-else M2C_FIELD(self,u16 *,0x5c)&=~0x202;
-return 1;
-case 'A':
-if(child) {M2C_FIELD(child,u16 *,0x46)&=~0x202;M2C_FIELD(child,u16 *,0x46)|=2;}
-else {M2C_FIELD(self,u16 *,0x5c)&=~0x202;M2C_FIELD(self,u16 *,0x5c)|=2;}
-return 1;
-case 'f':
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,2,-1);
-return 1;
-case 's':
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,1,-1);
-return 1;
-case 'd':
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,1,1);
-return 1;
-case 'c':
-if(child) {
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,-1,3);
-} else M2C_FIELD(self,u16 *,0x5c)|=4;
-return 1;
-case 'h':
-if(child) {
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,-1,4);
-} else M2C_FIELD(self,u16 *,0x5c)|=8;
-return 1;
-case 'o':
-if(child) {
-want=M2C_FIELD(self,s8 *,0x5e);
-if(want<0) slot=-1;
-else {
- child=M2C_FIELD(self,void **,0x48);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=0;
- else {child=M2C_FIELD(self,void **,0x4c);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=1;
- else {child=M2C_FIELD(self,void **,0x50);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=2;
- else {child=M2C_FIELD(self,void **,0x54);
- if(child && M2C_FIELD(child,s8 *,0x43)==want) slot=3; else slot=-1;
- }}}
-}
-if((s8)slot<0) child=0; else child=((void **)((u8 *)self + (s8)slot * 4))[18];
-fn_8007AD08(child,5,5);
-} else M2C_FIELD(self,u16 *,0x5c)|=12;
-return 1;
-}
-return 2;
+    TalkUi *self = (TalkUi *)arg0;
+    u8 **text = arg1;
+    s32 slot, want, c;
+    u8 previous;
+    void *child;
+    char *out;
+
+    previous = self->curSlot;
+    want = (s8)previous;
+    if (want < 0) {
+        slot = -1;
+    } else {
+        child = self->slots[0];
+        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+        else {
+            child = self->slots[1];
+            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+            else {
+                child = self->slots[2];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                else {
+                    child = self->slots[3];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                    else slot = -1;
+                }
+            }
+        }
+    }
+    if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+
+    c = (s8)**text;
+    if (c >= '0' && c <= '9') {
+        if (want != c - '0') {
+            self->prevSlot = previous;
+            self->curSlot = c - '0';
+            fn_80120F94();
+        }
+        ++*text;
+        return 1;
+    }
+    c = (s8)*(*text)++;
+    switch (c) {
+        case 'C':
+            want = self->curSlot;
+            if (want < 0) slot = -1;
+            else {
+                child = self->slots[0];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                else {
+                    child = self->slots[1];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                    else {
+                        child = self->slots[2];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                        else {
+                            child = self->slots[3];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                            else slot = -1;
+                        }
+                    }
+                }
+            }
+            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+
+            if (child) {
+                *text -= 2;
+            } else {
+                out = (char *)lbl_8032FE24;
+                while ((s32)**text != '|') *out++ = *(*text)++;
+                *out = 0;
+                ++*text;
+                fn_8011FB58(self, fn_80049DA4((u8 *)TalkUi_str + 0x6f, lbl_8032FE24, 0));
+            }
+            return 2;
+        case 'D':
+            want = self->curSlot;
+            if (want < 0) slot = -1;
+            else {
+                child = self->slots[0];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                else {
+                    child = self->slots[1];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                    else {
+                        child = self->slots[2];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                        else {
+                            child = self->slots[3];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                            else slot = -1;
+                        }
+                    }
+                }
+            }
+
+            if (!(gUiInputFlags & 3)) {
+                fn_800790D4(self->slots[(s8)slot], self);
+                fn_80120F94();
+            } else {
+                fn_8007AD6C(self->slots[(s8)slot]);
+            }
+            self->slots[(s8)slot] = 0;
+            self->curSlot = -1;
+            return 2;
+        case 'S':
+            if (child) M2C_FIELD(child, u16 *, 0x46) &= ~0x202;
+            else self->flags &= ~0x202;
+            return 1;
+        case 'A':
+            if (child) {
+                M2C_FIELD(child, u16 *, 0x46) &= ~0x202;
+                M2C_FIELD(child, u16 *, 0x46) |= 2;
+            } else {
+                self->flags &= ~0x202;
+                self->flags |= 2;
+            }
+            return 1;
+        case 'f':
+            want = self->curSlot;
+            if (want < 0) slot = -1;
+            else {
+                child = self->slots[0];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                else {
+                    child = self->slots[1];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                    else {
+                        child = self->slots[2];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                        else {
+                            child = self->slots[3];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                            else slot = -1;
+                        }
+                    }
+                }
+            }
+            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+            fn_8007AD08(child, 2, -1);
+            return 1;
+        case 's':
+            want = self->curSlot;
+            if (want < 0) slot = -1;
+            else {
+                child = self->slots[0];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                else {
+                    child = self->slots[1];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                    else {
+                        child = self->slots[2];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                        else {
+                            child = self->slots[3];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                            else slot = -1;
+                        }
+                    }
+                }
+            }
+            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+            fn_8007AD08(child, 1, -1);
+            return 1;
+        case 'd':
+            want = self->curSlot;
+            if (want < 0) slot = -1;
+            else {
+                child = self->slots[0];
+                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                else {
+                    child = self->slots[1];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                    else {
+                        child = self->slots[2];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                        else {
+                            child = self->slots[3];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                            else slot = -1;
+                        }
+                    }
+                }
+            }
+            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+            fn_8007AD08(child, 1, 1);
+            return 1;
+        case 'c':
+            if (child) {
+                want = self->curSlot;
+                if (want < 0) slot = -1;
+                else {
+                    child = self->slots[0];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                    else {
+                        child = self->slots[1];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                        else {
+                            child = self->slots[2];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                            else {
+                                child = self->slots[3];
+                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                                else slot = -1;
+                            }
+                        }
+                    }
+                }
+                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+                fn_8007AD08(child, -1, 3);
+            } else {
+                self->flags |= 4;
+            }
+            return 1;
+        case 'h':
+            if (child) {
+                want = self->curSlot;
+                if (want < 0) slot = -1;
+                else {
+                    child = self->slots[0];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                    else {
+                        child = self->slots[1];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                        else {
+                            child = self->slots[2];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                            else {
+                                child = self->slots[3];
+                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                                else slot = -1;
+                            }
+                        }
+                    }
+                }
+                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+                fn_8007AD08(child, -1, 4);
+            } else {
+                self->flags |= 8;
+            }
+            return 1;
+        case 'o':
+            if (child) {
+                want = self->curSlot;
+                if (want < 0) slot = -1;
+                else {
+                    child = self->slots[0];
+                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
+                    else {
+                        child = self->slots[1];
+                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
+                        else {
+                            child = self->slots[2];
+                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
+                            else {
+                                child = self->slots[3];
+                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
+                                else slot = -1;
+                            }
+                        }
+                    }
+                }
+                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+                fn_8007AD08(child, 5, 5);
+            } else {
+                self->flags |= 12;
+            }
+            return 1;
+    }
+    return 2;
 }
 
 static inline void *TalkUi_ResolveNamedUnit(s32 arg) {
