@@ -80,8 +80,6 @@ typedef struct {
 #pragma push
 #pragma opt_lifetimes off
 #pragma push
-#pragma cplusplus on
-#pragma cplusplus off
 void fn_8001EEEC(s8 *p)
 {
     while (1) {
