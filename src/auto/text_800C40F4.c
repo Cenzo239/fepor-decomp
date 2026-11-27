@@ -7084,7 +7084,7 @@ void *obj;
 s64 t0;
 s64 t1;
 void *p;
-struct References { f32 *cam; VObj *found; } refs;
+struct References { VObj *found; f32 *cam; } refs;
 f32 z;
 f32 f1;
 f32 f3;
@@ -13646,6 +13646,8 @@ extern "C" void fn_800DFE74(void *arg0, s32 idx) {
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma opt_propagation off
 extern "C" void fn_800DFEFC(void *arg0, const char *arg1, const char *arg2) {
     u8 fn_800DF298(void *, const char *);
     u8 fn_800DF258(void *, const char *);
@@ -13658,12 +13660,12 @@ extern "C" void fn_800DFEFC(void *arg0, const char *arg1, const char *arg2) {
         virtual void v3() = 0;
         virtual ~Obj() = 0;
     };
-    void *self;
-    const char *a;
-    const char *b;
     s32 off_load;
     s32 off_erase;
     s32 i;
+    const char *b;
+    const char *a;
+    void *self;
 
     off_load = 0;
     self = arg0;
@@ -13683,7 +13685,7 @@ extern "C" void fn_800DFEFC(void *arg0, const char *arg1, const char *arg2) {
         off_load += 4;
     }
 }
-
+#pragma pop
 #pragma cplusplus reset
 
 void fn_800DFFB8(void *arg0, s32 arg1) {
@@ -23588,7 +23590,7 @@ void fn_800F18A4(s32 arg0, s32 arg1) {
 
     f32 m108[12], mD8[12], mA8[12], m78[12], m48[12], m18[12], q[4];
     s32 i;
-    f32 f26, f27, f28;
+    f32 f28, f27, f26;
     void *terrain;
 
     fn_80060060(lbl_8032AC58 + 0x288);
@@ -24065,7 +24067,7 @@ result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
 if(best)fn_800FB96C(ctx[8],(s8)bx,(s8)by,best,best[0x19E],best[0x19F],(s8)item,0,0);
-ret=gAiState[0x21C];{s32 k=-1;Item_Destroy(&weapon,k);}return ret;
+ret=gAiState[0x21C];Item_Destroy(&weapon,0xFFFFFFFF);return ret;
 }
 #pragma pop
 u8 fn_800F3BA4(s16 *arg0, u8 arg1) {
