@@ -2983,20 +2983,22 @@ void fn_80188EF4(void *arg0) {
     void fn_8000C188(void);
     f32 fn_80059F64(f32, f32, f32, f32);
     void fn_8005F7B0(void *, u8);
-    extern f32 lbl_8036ACF8;
-    extern f64 lbl_8036AD10;
+    extern const f32 lbl_8036ACF8;
+    extern const f64 lbl_8036AD10;
     void *ptr;
+    void *self;
 
-    *(f32 *)((char *)arg0 + 0x3C) = lbl_8036ACF8 + *(f32 *)((char *)arg0 + 0x3C);
-    if (*(f32 *)((char *)arg0 + 0x3C) >= *(f32 *)((char *)arg0 + 0x38)) {
-        *(f32 *)((char *)arg0 + 0x3C) = *(f32 *)((char *)arg0 + 0x38);
+    self = arg0;
+    *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x3C) + lbl_8036ACF8;
+    if (*(f32 *)((char *)self + 0x3C) >= *(f32 *)((char *)self + 0x38)) {
+        *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x38);
         fn_8000C188();
     }
-    ptr = (void *)(*(s32 *)((char *)arg0 + 0x30) + 0x1C);
-    fn_8005F7B0(ptr, (u8)(s32)fn_80059F64((f32)*(u8 *)((char *)arg0 + 0x50),
-        (f32)*(u8 *)((char *)arg0 + 0x51),
-        *(f32 *)((char *)arg0 + 0x38),
-        *(f32 *)((char *)arg0 + 0x3C)));
+    ptr = (void *)(*(s32 *)((char *)self + 0x30) + 0x1C);
+    fn_8005F7B0(ptr, (u8)(s32)fn_80059F64((f32)*(u8 *)((char *)self + 0x50),
+        (f32)*(u8 *)((char *)self + 0x51),
+        *(f32 *)((char *)self + 0x38),
+        *(f32 *)((char *)self + 0x3C)));
 }
 
 #pragma push
@@ -5854,7 +5856,7 @@ extern "C" s32 fn_8018F374(void *arg0) {
     goto loop1_test;
 loop1_body:
     next = *(u8 **)(unit + 0x184);
-    total += CountUnitItemReferences(unit, (u8 *)target);
+    total += CountUnitItemReferences2(unit, (u8 *)target);
     unit = next;
 loop1_test:
     if (unit != NULL) {
@@ -5864,7 +5866,7 @@ loop1_test:
     goto loop2_test;
 loop2_body:
     next = *(u8 **)(unit + 0x184);
-    total += CountUnitItemReferences(unit, (u8 *)target);
+    total += CountUnitItemReferences2(unit, (u8 *)target);
     unit = next;
 loop2_test:
     if (unit != NULL) {
@@ -11714,11 +11716,11 @@ void fn_8019933C(f32 *arg0, void *arg1)
   else
   {
     ;
-    if ((other = *((void **) (obj + 0xEC))) != 0)
+    if ((*((void **) (obj + 0xEC))) != 0)
     {
       void (**vtable)(f32 *, void *, s32);
       vtable = *((void (***)(f32 *, void *, s32)) (((u8 *) other) + 0x40));
-      vtable[14](pos, other, 0);
+      vtable[14](pos, *((void **) (obj + 0xEC)), 0);
       x = pos[0];
       z = pos[2];
     }
