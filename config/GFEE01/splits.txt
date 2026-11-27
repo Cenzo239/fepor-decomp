@@ -500,7 +500,10 @@ auto/icon_rest.c:
 	.text       start:0x800C3220 end:0x800C32A4
 
 auto/icon_init_800C32A4.c:
-	.text       start:0x800C32A4 end:0x800C3F18
+	.text       start:0x800C32A4 end:0x800C3364
+
+auto/icon_convoy_800C3364.c:
+	.text       start:0x800C3364 end:0x800C3F18
 
 auto/text_800C3F18.c:
 	.text       start:0x800C3F18 end:0x800C40F4
