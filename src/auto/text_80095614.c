@@ -73,6 +73,7 @@ void fn_800956A0(s32 arg0) {
 }
 
 #pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_800956D8(u8 *arg0) {
  void *Camera_GetActive(void);
  void fn_80019384(void *,s32);
