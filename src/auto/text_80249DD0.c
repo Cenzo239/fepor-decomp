@@ -3378,32 +3378,32 @@ s32 fn_802509C8(u16 *arg0, u16 *arg1) {
 int Sound_FindEntry(int arg0)
 {
     extern u8 lbl_803596E4[12];
+    typedef struct {
+        u16 unk0;
+        u16 count;
+        u32 unk4;
+        void *data;
+    } SoundTableEntry;
 
     void *Bsearch(void *, void *, s32, s32, s32 (*)(void *, void *));
     s32 fn_802509C8(u16 *, u16 *);
 
-    u8 *entry;
     void *result;
     s32 i;
 
     *(u16 *)lbl_803596E4 = arg0;
 
-    entry = &lbl_803548B8[0];
-    i = 0;
-
-    while (i < (s32)lbl_80368A08) {
+    for (i = 0; i < (s32)lbl_80368A08; i++) {
         result = Bsearch(
             lbl_803596E4,
-            *(void **)(entry + 8),
-            *(u16 *)(entry + 2),
+            ((SoundTableEntry *)lbl_803548B8)[i].data,
+            ((SoundTableEntry *)lbl_803548B8)[i].count,
             0xA,
             (s32 (*)(void *, void *))fn_802509C8
         );
         if (result != 0) {
             return (int)result;
         }
-        entry += 0xC;
-        i++;
     }
 
     return 0;
