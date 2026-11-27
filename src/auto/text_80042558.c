@@ -2384,12 +2384,12 @@ static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 ar
 #pragma push
 #pragma opt_common_subs off
 void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4) {
+    void *found;
     s32 n;
     s32 direction;
-    s32 dir;
     s32 dx;
     s32 dy;
-    void *found;
+    s32 dir;
 
     n = *(s16 *)((u8 *)arg0 + 6) - 1;
     found = Map_FindObjAt_Inline(arg0, n, arg1, arg2, arg3, arg4);
@@ -3252,6 +3252,10 @@ void fn_80049174(void *arg0, void *arg1, void *arg2, void *arg3) {
     u32 rgba;
     u8 *model;
     s32 owner;
+    u8 c1;
+    u8 c0;
+    u8 c3;
+    u8 c2;
 
     self = arg0;
     color = arg2;
@@ -3274,10 +3278,14 @@ create:
         process = Process_Create(lbl_80285710, 3);
     }
 
-    process[0x40] = color[0];
-    process[0x41] = color[1];
-    process[0x42] = color[2];
-    process[0x43] = color[3];
+    c0 = color[0];
+    c1 = color[1];
+    process[0x40] = c0;
+    c2 = color[2];
+    process[0x41] = c1;
+    c3 = color[3];
+    process[0x42] = c2;
+    process[0x43] = c3;
 
     *(void **)(process + 0x38) = (void *)owner;
     *(void **)(process + 0x30) = self;
