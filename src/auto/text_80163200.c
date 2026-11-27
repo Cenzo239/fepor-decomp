@@ -7759,26 +7759,30 @@ extern "C" void fn_8016FD08(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_propagation off
 #pragma opt_common_subs on
-extern "C" u8 fn_8016FDA4(u32 *arg0) {
-    u64 *Item_GetFlagsPtr(void *);
-    s32 var_r31;
-    u64 *bits;
-    s32 zero;
-
-    if (arg0 == NULL || *arg0 == 0U) {
-        return 0U;
-    }
-    var_r31 = 0;
+extern "C" u8 fn_8016FDA4(u32 *arg0)
+{
+  u64 *Item_GetFlagsPtr(void *);
+  s32 new_var[2];
+  s64 new_var2;
+  u64 *bits;
+  if ((arg0 == NULL) || ((*arg0) == 0U))
+  {
+ do { return 0U; } while (0);
+  }
+  new_var[0] = 0;
+  bits = Item_GetFlagsPtr(arg0);
+  new_var[1] = 0;
+  if (((*((s64 *) bits)) & 0x20000000000LL) == ((s64) new_var[1]))
+  {
     bits = Item_GetFlagsPtr(arg0);
-    zero = 0;
-    if ((*(s64 *)bits & 0x20000000000LL) == (s64)zero) {
-        bits = Item_GetFlagsPtr(arg0);
-        zero = 0;
-        if ((*(s64 *)bits & 0x200LL) == (s64)zero) {
-            var_r31 = 1;
-        }
+    new_var[1] = 0;
+    new_var2 = *((s64 *) bits);
+    if ((new_var2 & 0x200LL) == ((s64) new_var[1]))
+    {
+      new_var[0] = 1;
     }
-    return (u8)var_r31;
+  }
+  return (u8) new_var[0];
 }
 #pragma pop
 
