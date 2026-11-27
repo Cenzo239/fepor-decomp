@@ -905,6 +905,7 @@ dolphin/exi/EXIBios.c:
 
 dolphin/si/SIBios.c:
 	.text       start:0x8023ABD4 end:0x8023C53C
+	.data       start:0x8029EF68 end:0x8029EFD0
 
 auto/text_8023C53C.c:
 	.text       start:0x8023C53C end:0x8023C56C

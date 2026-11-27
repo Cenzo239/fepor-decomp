@@ -192,7 +192,20 @@ typedef struct SIControl {
     void *input;
     void *callback;
 } SIControl;
-extern SIControl lbl_8029EF68;
+typedef struct {
+    s32 chan;
+    u32 poll;
+    u32 inputBytes;
+    void *input;
+    void (*callback)(s32, u32, s32);
+} TransferState;
+
+extern TransferState Si_8029EFAC;
+extern char lbl_8029EF68[];
+
+extern u32 Type_8029EFC0[];
+u32 __OSBusClock : 0x800000F8;
+
 
 typedef struct SIPacket {
     s32 chan;
@@ -213,7 +226,8 @@ static SIAlarm lbl_8033E2C8[4];
 static s64 TypeTime[4];
 static s64 XferTime[4];
 static void *TypeCallback[4][4];
-static u32 PollingHandler[4];
+typedef void (*SIPollingHandler)(s32, s32);
+static SIPollingHandler PollingHandler[4];
 static BOOL InputBufferValid[4];
 static u32 InputBuffer[4][2];
 static volatile u32 InputBufferVcount[4];
@@ -226,8 +240,8 @@ static s32 SI_CopyS32(s32 x) {
 static u32 cmdTypeAndStatus[4];
 
 s32 fn_8023ABD4(void) {
-    extern s32 Si_8029EFAC[];
-    if (Si_8029EFAC[0] != -1) {
+
+    if (Si_8029EFAC.chan != -1) {
         return 1;
     }
     return 0;
@@ -235,9 +249,9 @@ s32 fn_8023ABD4(void) {
 
 s32 fn_8023ABF4(s32 arg0) {
     extern SIPacket Packet_8033E248[4];
-    extern s32 Si_8029EFAC[];
+
     s32 var_r5 = 1;
-    if ((Packet_8033E248[arg0].chan == -1) && (Si_8029EFAC[0] != arg0)) {
+    if ((Packet_8033E248[arg0].chan == -1) && (Si_8029EFAC.chan != arg0)) {
         var_r5 = 0;
     }
     return var_r5;
@@ -257,7 +271,7 @@ u32 fn_8023AC30(void) {
     u32 *type;
     sr = __SIRegs[14];
     __SIRegs[13] = (__SIRegs[13] | 0x80000000) & ~1;
-    si = &lbl_8029EF68;
+    si = (SIControl *)lbl_8029EF68;
     if (si->chan != -1) {
         XferTime[si->chan] = __OSGetSystemTime();
         
@@ -292,170 +306,105 @@ u32 fn_8023AC30(void) {
     }
     return sr;
 }
-#pragma global_optimizer off
-void SIInterruptHandler(s32 interrupt, s32 context)
-{
-  s64 __OSGetSystemTime(void);
-  void OSCancelAlarm(void *);
-  u32 fn_8023AC30(void);
-  BOOL fn_8023B57C(s32, void *, u32, void *, u32, void *);
-  s32 fn_8023B99C(s32);
-  s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
-  s32 channel;
-  u32 fn_802117D8(void);
-  extern void GetTypeCallback(s32, u32);
-  extern u32 lbl_80368818;
-  extern SIPacket Packet_8033E248[4];
-  SIPacket *pktBase;
-  SIControl *si;
-  SIPacket *packet;
-  s32 j;
-  s32 i;
-  u32 new_var3;
-  u32 xfer;
-  s32 chan;
-  u32 sr;
-  s32 new_var;
-  void (*cb)(s32, u32, s32);
-  u32 *typep;
-  s32 ok;
-  u32 vc;
-  volatile u32 *cursor;
-  volatile u32 *vcp;
-  u32 *pollp;
-  u32 rdst;
-  int new_var2;
-  volatile u32 *vp;
-  void (**rdstCb)(s32, s32);
-  void (*handler)(s32, s32);
-  u32 delay;
-  u32 poll;
-  u32 bus;
-  u8 *alarm;
-  u32 hi;
-  u32 bit;
-  u32 half;
-  u32 *r3base;
-  u32 *r4sic;
-  u32 r5;
-  pktBase = Packet_8033E248;
-  si = &lbl_8029EF68;
-  sr = *((volatile u32 *) 0xCC006434);
-  if (((u32) ((sr & 0xC0000000) + 0x40000000)) == 0)
-  {
-    chan = si->chan;
-    xfer = fn_8023AC30();
-    cb = (void (*)(s32, u32, s32)) si->callback;
-    i = 0;
-    si->callback = (void *) i;
-    j = chan;
-    for (;;)
-    {
-      j = j + 1;
-      j = j % 4;
-      new_var = j << 5;
-      packet = (SIPacket *) (((u8 *) pktBase) + new_var);
-      if (packet->chan != (-1))
-      {
-        if (!(__OSGetSystemTime() < packet->fire))
-        {
-          if (fn_8023B57C(packet->chan, packet->output, packet->outputBytes, packet->input, packet->inputBytes, packet->callback))
-          {
-            alarm = ((u8 *) pktBase) + (j * 0x28);
-            OSCancelAlarm(alarm + 0x80);
-            packet->chan = -1;
-          }
-          break;
+#pragma global_optimizer on
+s64 __OSGetSystemTime(void);
+void OSCancelAlarm(void *);
+u32 fn_8023AC30(void);
+BOOL fn_8023B57C(s32, void *, u32, void *, u32, void *);
+s32 fn_8023B99C(s32);
+s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
+u32 fn_802117D8(void);
+extern void GetTypeCallback(s32, u32);
+extern u32 lbl_80368818;
+char lbl_8029EF68[] = "<< Dolphin SDK - SI\trelease build: Apr  5 2004 04:14:16 (0x2301) >>";
+TransferState Si_8029EFAC = { -1, 0, 0, 0, 0 };
+u32 Type_8029EFC0[4] = { 8, 8, 8, 8 };
+
+static inline BOOL SIIsChannelBusy(s32 chan) {
+    return Packet_8033E248[chan].chan != -1 || Si_8029EFAC.chan == chan;
+}
+
+static inline void SITransferNext(s32 chan) {
+    int i;
+    SIPacket *packet;
+
+    for (i = 0; i < 4; i++) {
+        chan++;
+        chan %= 4;
+        packet = &Packet_8033E248[chan];
+
+        if (packet->chan != -1) {
+            if (packet->fire <= __OSGetSystemTime()) {
+                if (fn_8023B57C(packet->chan, packet->output, packet->outputBytes,
+                                 packet->input, packet->inputBytes, packet->callback)) {
+                    OSCancelAlarm(&lbl_8033E2C8[chan]);
+                    packet->chan = -1;
+                }
+                return;
+            }
         }
-      }
-      i += 1;
-      if (i >= 4)
-      {
-        break;
-      }
+    }
+}
+
+void SIInterruptHandler(s32 interrupt, s32 context) {
+    u32 reg;
+    s32 chan;
+    u32 sr;
+    void (*callback)(s32, u32, s32);
+    int i;
+    u32 vcount;
+    u32 x;
+
+    reg = __SIRegs[13];
+    if ((reg & 0xC0000000) == 0xC0000000) {
+        chan = Si_8029EFAC.chan;
+        sr = fn_8023AC30();
+        callback = Si_8029EFAC.callback;
+        Si_8029EFAC.callback = NULL;
+        SITransferNext(chan);
+
+        if (callback) {
+            callback(chan, sr, context);
+        }
+
+        sr = __SIRegs[14];
+        sr &= 0x0F000000 >> (chan << 3);
+        __SIRegs[14] = sr;
+
+        if (Type_8029EFC0[chan] == 0x80 && !SIIsChannelBusy(chan)) {
+            SITransfer(chan, &lbl_80368818, 1, &Type_8029EFC0[chan], 3, GetTypeCallback,
+                       65 * ((__OSBusClock / 4) / 125000) / 8);
+        }
     }
 
-    if (cb != 0)
-    {
-      (*cb)(chan, xfer, context);
-    }
-    r3base = (u32 *) 0xCC006400;
-    r4sic = r3base;
-    r5 = r3base[0x38 / 4];
-    r5 &= (u32) (((s32) 0x0F000000) >> (chan * 8));
-    r4sic[0x38 / 4] = r5;
-    typep = (u32 *) (((u8 *) si) + (chan * 4));
-    typep = (u32 *) (((u8 *) typep) + 0x58);
-    if ((*typep) == 0x80)
-    {
-      ok = 1;
-      if ((pktBase[chan].chan == (-1)) && (si->chan != chan))
-      {
-        ok = 0;
-      }
-      if (ok == 0)
-      {
-        bus = *((u32 *) 0x800000F8);
-        delay = (bus >> 2) / 125000;
-        delay = delay * 0x41;
-        SITransfer(chan, &lbl_80368818, 1, typep, 3, GetTypeCallback, delay >> 3);
-      }
-    }
-  }
-  if (((u32) ((sr & 0x18000000) + 0xE8000000)) == 0)
-  {
-    vc = fn_802117D8();
-    new_var3 = *((u32 *) (((u8 *) si) + 0x48));
-    poll = new_var3;
-    vcp = (volatile u32 *) (((u8 *) pktBase) + 0x1E0);
-    pollp = &si->unk48;
-    cursor = vcp;
-    vc = vc + 1;
-    rdst = (poll >> 16) & 0x3FF;
-    channel = 0;
-    do
-    {
-      if (fn_8023B99C(channel) != 0)
-      {
-        *cursor = vc;
-      }
-      channel += 1;
-      cursor += 1;
-    }
-    while (4 > channel);
-    poll = *pollp;
-    half = rdst >> 1;
-    hi = (new_var2 = 0x80000000);
-    vp = vcp;
-    for (j = 0; j < 4; j++, vp++)
-    {
-      if (poll & (hi >> (24 + j)))
-      {
-        if (((*vp) == 0) || ((half + (*vp)) < vc))
-        {
-          return;
-        }
-      }
-    }
+    if ((reg & 0x18000000) == 0x18000000) {
+        vcount = 1 + fn_802117D8();
+        x = (Si_8029EFAC.poll & (0x3FF << 16)) >> 16;
 
-    channel = 0;
-    *vcp = channel;
-    rdstCb = (void (**)(s32, s32)) (((u8 *) pktBase) + 0x1A0);
-    *((u32 *) (((u8 *) pktBase) + 0x1E4)) = channel;
-    *((u32 *) (((u8 *) pktBase) + 0x1E8)) = channel;
-    *((u32 *) (((u8 *) pktBase) + 0x1EC)) = channel;
-    do
-    {
-      handler = *rdstCb;
-      if (handler != 0)
-      {
-        (*handler)(interrupt, context);
-      }
-      channel += 1;
-      rdstCb += 1;
+        for (i = 0; i < 4; i++) {
+            if (fn_8023B99C(i)) {
+                InputBufferVcount[i] = vcount;
+            }
+        }
+
+        for (i = 0; i < 4; i++) {
+            if ((Si_8029EFAC.poll & (0x80000000 >> (24 + i))) != 0) {
+                if (InputBufferVcount[i] == 0 || ((x >> 1) + InputBufferVcount[i]) < vcount) {
+                    return;
+                }
+            }
+        }
+
+        for (i = 0; i < 4; i++) {
+            InputBufferVcount[i] = 0;
+        }
+
+        for (i = 0; i < 4; i++) {
+            if (PollingHandler[i] != 0) {
+                (*PollingHandler[i])(interrupt, context);
+            }
+        }
     }
-    while (channel < 4);
-  }
 }
 
 #pragma global_optimizer reset
@@ -498,7 +447,7 @@ BOOL SIRegisterPollingHandler(void *handler) {
     }
     for (i = 0; i < 4; i++) {
         if (PollingHandler[i] == 0) {
-            PollingHandler[i] = (u32)handler;
+            PollingHandler[i] = (SIPollingHandler)handler;
             SIEnablePollingInterrupt(TRUE);
             OSRestoreInterrupts(enabled);
             return TRUE;
@@ -532,7 +481,7 @@ void SIInit(void) {
     void __OSUnmaskInterrupts(s32);
     u32 SIGetType(s32);
     extern s32 __SIVersion;
-    extern s32 Si_8029EFAC[];
+
     extern void SIInterruptHandler(void);
     volatile u32 *reg;
     OSRegisterVersion(__SIVersion);
@@ -540,7 +489,7 @@ void SIInit(void) {
     Packet_8033E248[2].chan = -1;
     Packet_8033E248[1].chan = -1;
     Packet_8033E248[0].chan = -1;
-    Si_8029EFAC[1] = 0;
+    Si_8029EFAC.poll = 0;
     SISetSamplingRate(0);
     do {
         reg = __SIRegs;
@@ -561,7 +510,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
     SIComCSR comcsr;
     u32 sr;
     SIControl *si;
-    si = &lbl_8029EF68;
+    si = (SIControl *)lbl_8029EF68;
     enabled = OSDisableInterrupts();
     if (si->chan != -1) {
         OSRestoreInterrupts(enabled);
@@ -619,7 +568,7 @@ void fn_8023B818(void) {
 u32 SISetXY(s32 chan, s32 xy) {
     BOOL OSDisableInterrupts(void);
     BOOL OSRestoreInterrupts(BOOL);
-    extern u32 Si_8029EFAC[];
+
     BOOL enabled;
     u32 *p;
     u32 cmd;
@@ -627,7 +576,7 @@ u32 SISetXY(s32 chan, s32 xy) {
     cmd = chan << 16;
     cmd |= xy << 8;
     enabled = OSDisableInterrupts();
-    p = &Si_8029EFAC[1];
+    p = &Si_8029EFAC.poll;
     *p &= 0xFC0000FF;
     *p |= cmd;
     cmd = *p;
@@ -638,11 +587,11 @@ u32 SISetXY(s32 chan, s32 xy) {
 #pragma dont_inline reset
 
 u32 fn_8023B894(u32 type) {
- extern u32 Si_8029EFAC[];
+
  BOOL enabled; u32 *p; u32 mask;
- if (type == 0) return Si_8029EFAC[1];
+ if (type == 0) return Si_8029EFAC.poll;
  enabled=OSDisableInterrupts();
- p=&Si_8029EFAC[1];
+ p=&Si_8029EFAC.poll;
  type >>= 24;
  mask=(type >> 4)&15;
  *p &= ~mask;
@@ -657,15 +606,15 @@ u32 fn_8023B894(u32 type) {
 }
 
 u32 fn_8023B930(u32 type) {
-    extern u32 Si_8029EFAC[];
+
     BOOL enabled;
     u32 *p;
 
     if (type == 0) {
-        return Si_8029EFAC[1];
+        return Si_8029EFAC.poll;
     }
     enabled = OSDisableInterrupts();
-    p = &Si_8029EFAC[1];
+    p = &Si_8029EFAC.poll;
     type = __rlwinm(type, 8, 24, 27);
     type = *p & ~type;
     __SIRegs[12] = type;
@@ -747,7 +696,7 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
     void OSRestoreInterrupts(s32);
     s64 __OSGetSystemTime(void);
     void OSSetAlarm(void *, s64, void (*)(void *, void *));
-    extern s32 Si_8029EFAC[];
+
     s32 enabled;
     s64 fire;
     s64 now;
@@ -757,7 +706,7 @@ s32 SITransfer(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBy
     base = (u8 *)Packet_8033E248;
     packet = &Packet_8033E248[chan];
     enabled = OSDisableInterrupts();
-    if (packet->chan != -1 || Si_8029EFAC[0] == chan) {
+    if (packet->chan != -1 || Si_8029EFAC.chan == chan) {
         OSRestoreInterrupts(enabled);
         return 0;
     }
@@ -904,7 +853,7 @@ s64 __OSGetSystemTime(void);
 s32 OSDisableInterrupts(void);
 void OSRestoreInterrupts(s32);
 extern u32 Type_8029EFC0[4];
-extern s32 Si_8029EFAC[];
+
 extern s64 TypeTime_8033E368[4];
 static u32 cmdTypeAndStatus;
 s32 enabled;
@@ -913,7 +862,7 @@ s64 elapsed;
 enabled=OSDisableInterrupts();
 type=Type_8029EFC0[chan];
 elapsed=__OSGetSystemTime()-TypeTime_8033E368[chan];
-if(Si_8029EFAC[1] & (0x80>>chan)) {
+if(Si_8029EFAC.poll & (0x80>>chan)) {
 if(type!=8) {
 TypeTime_8033E368[chan]=__OSGetSystemTime();
 OSRestoreInterrupts(enabled); return type;
