@@ -998,14 +998,14 @@ void fn_801EBBB8(void *arg0) {
         temp_r3->unk58 = 1;
         temp_r3->unk4E = 0x30;
         temp_r3->unk52 = 0x30;
-        temp_r3->unk8 = -0x1000;
-        temp_r3->unk48 = 1;
-        len = strlen((const char *)lbl_8027EE08 + 0x147);
-        String_AssignCStr(&temp_r3->unk3C, lbl_8027EE08 + 0x147, len);
-        temp_r3->unk34 |= 0x10;
-        temp_r3->unk58 = 1;
-        Ui_AddChild(arg0, temp_r3);
     }
+    temp_r3->unk8 = -0x1000;
+    temp_r3->unk48 = 1;
+    len = strlen((const char *)lbl_8027EE08 + 0x147);
+    String_AssignCStr(&temp_r3->unk3C, lbl_8027EE08 + 0x147, len);
+    temp_r3->unk34 |= 0x10;
+    temp_r3->unk58 = 1;
+    Ui_AddChild(arg0, temp_r3);
     {
         Unk5C *child = (Unk5C *)Ui_FindChild(arg0, -0x1000, 0);
         if (child) child->unk58 = 0;
