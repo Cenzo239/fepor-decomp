@@ -663,7 +663,10 @@ auto/text_801B3258.c:
 	.text       start:0x801B3258 end:0x801C9170
 
 auto/text_801C9170.c:
-	.text       start:0x801C9170 end:0x801C9704
+	.text       start:0x801C9170 end:0x801C9460
+
+auto/text_801C9460.c:
+	.text       start:0x801C9460 end:0x801C9704
 
 auto/text_801C9704.c:
 	.text       start:0x801C9704 end:0x801CCEA8
