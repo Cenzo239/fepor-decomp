@@ -1265,9 +1265,9 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     }
 }
 #pragma cplusplus off
-struct NameEntryPair { u8 c0, c1; };
 static inline void NameEntry_CopyPair(u8 *src, u8 *dst) {
-    *(struct NameEntryPair *)dst = *(struct NameEntryPair *)src;
+    dst[0] = src[0];
+    dst[1] = src[1];
 }
 void *NameEntry_InsertChar(void *a, u8 *b)
 {
