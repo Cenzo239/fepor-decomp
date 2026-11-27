@@ -880,7 +880,7 @@ void fn_802001F8(void *,u32);
 void fn_8005C7A4(s32);
 void fn_8005BA08(s8);
 u32 *table;
-s32 index,selected,diff;
+s32 index,selected;
 bool same;
 u32 *heap;
 table=lbl_80320B88;
@@ -2388,6 +2388,9 @@ void Xml_GetChildValue(void *arg0, void *arg1)
     *(Block *)arg0 = *(Block *)(p + 0x18);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void Xml_GetNamedValue(void *arg0, void *arg1, String *arg2) {
     u32 strlen(const char *);
     s32 String_Compare(String *, u32, u32, char *, u32);
@@ -2400,16 +2403,14 @@ void Xml_GetNamedValue(void *arg0, void *arg1, String *arg2) {
     u8 *entry;
     s32 offset;
     Block fallback;
-    s32 zero;
 
     out = (u8 *)arg0;
     xml = (u8 *)arg1;
     list = *(u8 **)(xml + 0x1C);
 
     if (list != NULL) {
-        zero = 0;
-        index = zero;
-        offset = zero;
+        index = 0;
+        offset = index;
 
         while (index < *(s32 *)list) {
             if (list != NULL && index < *(s32 *)list) {
@@ -2442,7 +2443,7 @@ void Xml_GetNamedValue(void *arg0, void *arg1, String *arg2) {
     fallback.d = 0;
     *(Block *)out = fallback;
 }
-
+#pragma pop
 s32 Xml_AdvanceChild(void *arg0) {
     s32 var_r6;
 
@@ -10448,12 +10449,13 @@ void fn_800DB67C(f32 *arg0, const f32 *arg1, s32 arg2) {
     }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
     f32 PSVECDistance(f32 *, f32 *);
     void fn_802031A8(f32 *, f32 *, f32 *);
     void fn_802031E8(f32 *, f32 *);
     void fn_802031CC(f32 *, f32 *, f32);
-    extern f32 lbl_80369E70;
     extern f32 lbl_80369E74;
     f32 current[3];
     f32 destination[3];
@@ -10461,16 +10463,12 @@ void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
     f32 scaled[3];
     f32 distance;
     f32 zero;
-    f32 x, y, z;
     void *self;
 
-    x = arg1[0];
     self = arg0;
-    y = arg1[1];
-    *(f32 *)((u8 *)arg0 + 0x78) = x;
-    z = arg1[2];
-    *(f32 *)((u8 *)self + 0x7C) = y;
-    *(f32 *)((u8 *)self + 0x80) = z;
+    *(f32 *)((u8 *)arg0 + 0x78) = arg1[0];
+    *(f32 *)((u8 *)arg0 + 0x7C) = arg1[1];
+    *(f32 *)((u8 *)arg0 + 0x80) = arg1[2];
 
     current[0] = *(f32 *)((u8 *)self + 0x48);
     current[1] = *(f32 *)((u8 *)self + 0x4C);
@@ -10481,7 +10479,7 @@ void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
 
     distance = PSVECDistance(destination, current);
     if (distance < lbl_80369E74) {
-        zero = lbl_80369E70;
+        zero = 0.0f;
         *(f32 *)((u8 *)self + 0x84) = zero;
         *(f32 *)((u8 *)self + 0x88) = zero;
         *(f32 *)((u8 *)self + 0x8C) = zero;
@@ -10494,9 +10492,9 @@ void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
     fn_802031A8(destination, current, delta);
     fn_802031E8(delta, delta);
 
-    if (lbl_80369E70 == farg1) {
+    if (0.0f == farg1) {
         fn_802031CC(delta, scaled, speed);
-        zero = lbl_80369E70;
+        zero = 0.0f;
         *(f32 *)((u8 *)self + 0x84) = scaled[0];
         *(f32 *)((u8 *)self + 0x88) = scaled[1];
         *(f32 *)((u8 *)self + 0x8C) = scaled[2];
@@ -10508,7 +10506,7 @@ void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
         *(f32 *)((u8 *)self + 0xA0) = zero;
         *(s32 *)((u8 *)self + 0x9C) = (s32)(distance / speed);
     } else {
-        zero = lbl_80369E70;
+        zero = 0.0f;
         *(f32 *)((u8 *)self + 0x84) = zero;
         *(f32 *)((u8 *)self + 0x88) = zero;
         *(f32 *)((u8 *)self + 0x8C) = zero;
@@ -10522,7 +10520,7 @@ void fn_800DB7A4(void *arg0, f32 *arg1, f32 speed, f32 farg1) {
         *(s32 *)((u8 *)self + 0x9C) = (s32)(distance / speed);
     }
 }
-
+#pragma pop
 void fn_800DB964(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0x48) = (f32) (M2C_FIELD(arg0, f32 *, 0x48) + farg0);
     M2C_FIELD(arg0, f32 *, 0x4C) = (f32) (M2C_FIELD(arg0, f32 *, 0x4C) + farg1);
@@ -12767,24 +12765,26 @@ void fn_800DEF4C(void *arg0, u8 *arg1) {
 #pragma scheduling reset
 #pragma global_optimizer reset
 #pragma dont_inline reset
-void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
+void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, const String *key) {
     void *Heap_Alloc(u32);
     void Tree_InsertFixup(void *, void *);
     void abort(void);
     void fprintf(void *, const char *, ...);
-    void memcpy(void *, void *, u32);
+    void *memcpy(void *, const void *, u32);
     extern char __files[];
     extern char lbl_80271860[];
     extern u8 lbl_80366E58;
 
     void *node;
-    u8 *value;
+    String *value;
     u32 len;
-    u8 *src;
-    u8 *end;
-    u8 *buf;
+    char *src;
+    char *end;
+    char *buf;
+    u32 sentinel;
 
-    if (M2C_FIELD(tree, u32 *, 0) > (u32)-2) {
+    sentinel = -2;
+    if (*(u32 *)((char *)tree + 0) > sentinel) {
         fprintf(__files + 0xA0, lbl_80271860 + 0x1B0);
         abort();
     }
@@ -12793,28 +12793,28 @@ void *fn_800DEF6C(void *tree, void *parent, u8 asLeft, u8 setFirst, void *key) {
         fprintf(__files + 0xA0, lbl_80271860 + 0x152);
         abort();
     }
-    value = (u8 *)((char *)node + 0xC);
+    value = (String *)((char *)node + 0xC);
     if (value != NULL) {
-        *(u32 *)(value + 4) = *(u32 *)((char *)key + 4);
-        *(u32 *)(value + 8) = 0;
-        src = *(u8 **)((char *)key + 8);
-        *(u32 *)(value + 0) = 0;
-        end = src + *(u32 *)((char *)key + 0);
-        *(u32 *)(value + 4) = 0;
+        value->cap = key->cap;
+        src = key->data;
+        end = src + key->size;
+        value->data = 0;
+        value->size = 0;
+        value->cap = 0;
         if (src != end) {
             len = end - src;
-            *(u32 *)(value + 4) = (len + 3) - (len & 3);
-            buf = Heap_Alloc(*(u32 *)(value + 4) + 1);
+            value->cap = (len + 3) - (len & 3);
+            buf = Heap_Alloc(value->cap + 1);
             if (!buf) {
                 fprintf(__files + 0xA0, lbl_80271860 + 0x152);
                 abort();
             }
-            *(u8 **)(value + 8) = buf;
-            memcpy(buf, src, len);
-            *(u32 *)(value + 0) = len;
-            buf[len] = lbl_80366E58;
-            *(u32 *)(value + 0xC) = *(u32 *)((char *)key + 0xC);
+            value->data = buf;
+            memcpy(value->data, src, len);
+            value->size = len;
+            value->data[len] = lbl_80366E58;
         }
+        *(u32 *)((char *)value + 0xC) = *(const u32 *)((const char *)key + 0xC);
     }
     *(u32 *)((char *)node + 4) = 0;
     *(u32 *)((char *)node + 0) = 0;
@@ -18224,10 +18224,11 @@ extern "C" void fn_800E8154(void *arg0) {
     ((Obj *)arg0)->v0();
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void fn_800E81A0(void *arg0, void *arg1) {
     struct Owner { u8 pad[0x10]; virtual void v0()=0; virtual void v1()=0; virtual void *v2(char *,void *)=0; };
-    struct Child { u8 pad[0x40]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4(int)=0; };
+    struct Child { u8 pad[0x40]; virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual ~Child()=0; };
     void fn_800DF700(void *);
     void fn_800DF6DC(void *,void *);
     s32 fn_800DC018(void *);
@@ -18250,7 +18251,7 @@ extern "C" void fn_800E81A0(void *arg0, void *arg1) {
             found=((Owner *)arg0)->v2(gUiClassNames+6,String_CStr(&id));
             String_Destroy(&id,-1);
             if(found) {
-                if(arg1) ((Child *)arg1)->v4(1);
+                delete (Child *)arg1;
                 return;
             }
             if(fn_800DC018(arg1)==-1) {
@@ -18262,7 +18263,7 @@ extern "C" void fn_800E81A0(void *arg0, void *arg1) {
         fn_800DFFB8(arg0,arg1);
     }
 }
-#pragma global_optimizer reset
+#pragma pop
 extern "C" s32 fn_800E82D8(void *arg0, void *arg1) {
 void String_Assign(void *,void *,s32,s32);
 void String_Init(void *,void *,void *);
@@ -31075,7 +31076,7 @@ s32 fn_80100F10(void *arg0, void *arg1, void **arg2) {
     if (*arg2 != NULL) bonus = (u8)Item_GetRangeForUnit(*arg2, arg1);
     else bonus = 0;
     mov = (s8)Unit_GetMov(arg1);
-    return dist <= (mov + bonus + (s8)Unit_GetMov(arg0));
+    return dist <= (((s32)bonus + mov) + (s32)(s8)Unit_GetMov(arg0));
 }
 
 #pragma global_optimizer off
