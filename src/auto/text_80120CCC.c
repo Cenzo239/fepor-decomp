@@ -1107,6 +1107,8 @@ void TalkUi_KeyWait2Proc(void *arg0) {
     }
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_801225D4(void *arg0) {
     extern s32 gUiInputFlags;
     extern u16 gUiPanelFlags;
@@ -1153,6 +1155,7 @@ void fn_801225D4(void *arg0) {
         }
     }
 }
+#pragma pop
 
 void fn_801226D0(void *arg0)
 {
@@ -1629,93 +1632,73 @@ void fn_80123300(void *arg0, s32 arg1) {
 #pragma use_lmw_stmw on
 void fn_80123308(void *arg0, s32 arg1)
 {
-    char *fn_80238ABC(s32, char *, s32);
-    void String_Init(void *, void *, void *);
-    void String_Destroy(void *, s32);
-    u8 *fn_80117CC0(void *, s32);
-    s32 fn_800E2E68(void *);
-    s32 fn_800E2E60(void *);
-    void fn_800E3040(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-    void SpriteSheet_DrawFrame(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-    extern f64 lbl_8036A2C8;
-    extern f64 lbl_8036A2F0;
-
-    char buf0[36];
-    char buf1[36];
-    u32 str0[3];
-    u32 str1[3];
-    void *alloc0;
-    void *alloc1;
-    s32 spacing;
-    s32 h;
-    s32 w;
-    s32 y;
-    s32 x;
-    s32 i;
-    s32 digit;
-
-    (void)lbl_8036A2C8;
-    (void)lbl_8036A2F0;
-
-    if (M2C_FIELD(arg0, s32 *, 0x64) == 0) {
-        String_Init(str0, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf0, 10), &alloc0);
-        x = (s32)(M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), s32 *, 0x60)));
-        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), s32 *, 0x64);
-        w = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E68(M2C_FIELD(arg0, void **, 0x60)));
-        h = (s32)(M2C_FIELD(arg0, f32 *, 0x6C) * (f32)fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
-        x += (s32)M2C_FIELD(arg0, f32 *, 0x88);
-        y += (s32)M2C_FIELD(arg0, f32 *, 0x8C);
-        y = y - (h - fn_800E2E60(M2C_FIELD(arg0, void **, 0x60)));
-        i = (s32)str0[0] - 1;
-        spacing = (s32)(M2C_FIELD(M2C_FIELD(arg0, void **, 0x38), f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
-        while (i >= 0) {
-            digit = (s8)(*fn_80117CC0(str0, i)) - 0x30;
-            fn_800E3040(
-                M2C_FIELD(arg0, void **, 0x60),
-                arg1,
-                digit,
-                x,
-                y,
-                M2C_FIELD(arg0, s32 *, 0x44),
-                w,
-                h,
-                M2C_FIELD(arg0, u8 *, 0x50),
-                M2C_FIELD(arg0, u8 *, 0x51),
-                M2C_FIELD(arg0, u8 *, 0x52),
-                spacing,
-                0);
-            i = i - 1;
-            x = x - (w + M2C_FIELD(arg0, s32 *, 0x94));
-        }
-        String_Destroy(str0, -1);
-    } else {
-        void *panel;
-        String_Init(str1, fn_80238ABC(M2C_FIELD(arg0, s32 *, 0x68), buf1, 10), &alloc1);
-        panel = M2C_FIELD(arg0, void **, 0x38);
-        i = 0;
-        x = (s32)(M2C_FIELD(panel, f32 *, 0x68) + (f32)(M2C_FIELD(arg0, s32 *, 0x48) + M2C_FIELD(panel, s32 *, 0x60)));
-        spacing = (s32)(M2C_FIELD(panel, f32 *, 0x6C) * (f32)M2C_FIELD(arg0, u8 *, 0x53));
-        w = (s32)str1[0];
-        y = M2C_FIELD(arg0, s32 *, 0x4C) + M2C_FIELD(panel, s32 *, 0x64);
-        for (; i < w; i++) {
-            digit = (s8)(*fn_80117CC0(str1, i)) - 0x30;
-            SpriteSheet_DrawFrame(
-                M2C_FIELD(arg0, void **, 0x60),
-                arg1,
-                digit,
-                x,
-                y,
-                M2C_FIELD(arg0, s32 *, 0x44),
-                M2C_FIELD(arg0, u8 *, 0x50),
-                M2C_FIELD(arg0, u8 *, 0x51),
-                M2C_FIELD(arg0, u8 *, 0x52),
-                spacing,
-                0);
-            x = x + fn_800E2E68(M2C_FIELD(arg0, void **, 0x60));
-            x = x + M2C_FIELD(arg0, s32 *, 0x94);
-        }
-        String_Destroy(str1, -1);
+  char *fn_80238ABC(s32, char *, s32);
+  void String_Init(void *, void *, void *);
+  void String_Destroy(void *, s32);
+  u8 *fn_80117CC0(void *, s32);
+  s32 fn_800E2E68(void *);
+  s32 fn_800E2E60(void *);
+  void fn_800E3040(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+  void SpriteSheet_DrawFrame(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+  extern f64 lbl_8036A2C8;
+  extern f64 lbl_8036A2F0;
+  char buf0[36];
+  char buf1[36];
+  u32 str0[3];
+  u32 str1[3];
+  void *alloc0;
+  void *alloc1;
+  unsigned int spacing;
+  s32 h;
+  s32 w;
+  s32 y;
+  s32 x;
+  s32 i;
+  s32 digit;
+  (void) lbl_8036A2C8;
+  (void) lbl_8036A2F0;
+  if ((*((s32 *) (((s8 *) arg0) + 0x64))) == 0)
+  {
+    String_Init(str0, fn_80238ABC(*((s32 *) (((s8 *) arg0) + 0x68)), buf0, 10), &alloc0);
+    x = (s32) ((*((f32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x68))) + ((f32) ((*((s32 *) (((s8 *) arg0) + 0x48))) + (*((s32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x60))))));
+    y = (*((s32 *) (((s8 *) arg0) + 0x4C))) + (*((s32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x64)));
+    w = (s32) ((*((f32 *) (((s8 *) arg0) + 0x6C))) * ((f32) fn_800E2E68(*((void **) (((s8 *) arg0) + 0x60)))));
+    h = (s32) ((*((f32 *) (((s8 *) arg0) + 0x6C))) * ((f32) fn_800E2E60(*((void **) (((s8 *) arg0) + 0x60)))));
+    x += (s32) (*((f32 *) (((s8 *) arg0) + 0x88)));
+    y += (s32) (*((f32 *) (((s8 *) arg0) + 0x8C)));
+    y = y - (h - fn_800E2E60(*((void **) (((s8 *) arg0) + 0x60))));
+    i = ((s32) str0[0]) - 1;
+    spacing = (s32) ((*((f32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x6C))) * ((f32) (*((u8 *) (((s8 *) arg0) + 0x53)))));
+    while (i >= 0)
+    {
+      digit = ((s8) (*fn_80117CC0(str0, i))) - 0x30;
+      fn_800E3040(*((void **) (((s8 *) arg0) + 0x60)), arg1, digit, x, y, *((s32 *) (((s8 *) arg0) + 0x44)), w, h, *((u8 *) (((s8 *) arg0) + 0x50)), *((u8 *) (((s8 *) arg0) + 0x51)), *((u8 *) (((s8 *) arg0) + 0x52)), spacing, 0);
+      i = i - 1;
+      x = x - (w + (*((s32 *) (((s8 *) arg0) + 0x94))));
     }
+
+    String_Destroy(str0, -1);
+  }
+  else
+  {
+    String_Init(str1, fn_80238ABC(*((s32 *) (((s8 *) arg0) + 0x68)), buf1, 10), &alloc1);
+    i = 0;
+    y = (*((s32 *) (((s8 *) arg0) + 0x4C))) + (*((s32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x64)));
+    x = (s32) ((*((f32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x68))) + ((f32) ((*((s32 *) (((s8 *) arg0) + 0x48))) + (*((s32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x60))))));
+    spacing = (s32) ((*((f32 *) (((s8 *) (*((void **) (((s8 *) arg0) + 0x38)))) + 0x6C))) * ((f32) (*((u8 *) (((s8 *) arg0) + 0x53)))));
+    w = (s32) str1[0];
+    while (i < w)
+    {
+      digit = ((s8) (*fn_80117CC0(str1, i))) - 0x30;
+      SpriteSheet_DrawFrame(*((void **) (((s8 *) arg0) + 0x60)), arg1, digit, x, y, *((s32 *) (((s8 *) arg0) + 0x44)), *((u8 *) (((s8 *) arg0) + 0x50)), *((u8 *) (((s8 *) arg0) + 0x51)), *((u8 *) (((s8 *) arg0) + 0x52)), spacing, 0);
+      x = fn_800E2E68(*((void **) (((s8 *) arg0) + 0x60)));
+      x = x + x;
+      i = i + 1;
+      x = x + (*((s32 *) (((s8 *) arg0) + 0x94)));
+    }
+
+    String_Destroy(str1, -1);
+  }
 }
 #pragma use_lmw_stmw reset
 
