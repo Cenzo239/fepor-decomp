@@ -15,10 +15,8 @@ extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
 
 static inline void dvdClearDiStatus(void) {
-    u32 *base = (u32 *)0xCC000000;
-    u32 tmp = base[0x1801];
-    u32 *di = base + 0x1800;
-    di[1] = tmp;
+    volatile u32 *di = (volatile u32 *)0xCC006000;
+    di[1] = di[1];
 }
 
 typedef struct {
@@ -240,12 +238,14 @@ u32 fn_8020C3E0(char *path) {
     s32 more;
     u32 parent;
     char *end;
-    s32 length;
+    u32 length;
     u32 entry;
     char *original;
     char *extension;
     s32 invalid;
     s32 dotted;
+    char *name;
+    s32 equal;
 
     original = path;
     entry = (u32)currentDirectory;
@@ -309,21 +309,22 @@ u32 fn_8020C3E0(char *path) {
         more = (*end == 0) ? 0 : 1;
         parent = entry;
         length = end - path;
-        for (entry++; entry < FstStart_8036857C[parent].nextEntryOrLength;) {
+        for (entry++; entry < FstStart_8036857C[parent].nextEntryOrLength;
+             entry = entryIsDir(entry) ? FstStart_8036857C[entry].nextEntryOrLength : entry + 1) {
             if (entryIsDir(entry) || more != 1) {
-                s32 equal = DVDComparePathComponent(path, FstStringStart_80368580 + stringOff(entry));
+                name = FstStringStart_80368580 + stringOff(entry);
+                equal = DVDComparePathComponent(path, name);
                 if (equal == 1) {
                     goto found;
                 }
             }
-            entry = entryIsDir(entry) ? FstStart_8036857C[entry].nextEntryOrLength : entry + 1;
         }
         return -1;
     found:
         if (!more) {
             return entry;
         }
-        path = length + path;
+        path += length;
         path++;
     }
 }
