@@ -4353,6 +4353,7 @@ extern "C" void fn_80148980(void *arg0, s16 arg1) {
 extern u8 lbl_80367AEA;
 extern u8 lbl_80367AEB;
 s32 fn_8014953C(u8 *, s32);
+void fn_802031A8(void *, void *, void *);
 #pragma cplusplus on
 extern "C" void fn_80148A28(void *arg0) {
     struct Obj {
@@ -4685,6 +4686,8 @@ extern "C" void fn_801490C8(void *arg0) {
     }
 }
 
+#pragma cplusplus reset
+#pragma opt_common_subs off
 s32 fn_8014953C(u8 *self, s32 delay) {
     void *Camera_Get(void);
     void fn_802029C4(void *, void *, void *);
@@ -4695,7 +4698,7 @@ s32 fn_8014953C(u8 *self, s32 delay) {
     extern f64 lbl_8036A780;
     extern f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
     f32 delta[3], a[3], b[3];
-    f32 scale, den, x, y, len, lim, sx, sy;
+    f32 scale, den, x, y, len, lo, sx, sy;
     u8 *cam;
     cam = (u8 *)Camera_Get();
     scale = (f32)lbl_80366E90;
@@ -4711,19 +4714,16 @@ s32 fn_8014953C(u8 *self, s32 delay) {
     } else {
         den = lbl_8036A7A4 * scale;
         x = lbl_8036A7A8 * delta[0] / den;
-        y = lbl_8036A7AC * delta[1] / den;
-        lim = lbl_8036A7AC;
-        if (x < lim)
-            x = lim;
-        lim = lbl_8036A7B0;
-        if (x > lim)
-            x = lim;
-        lim = lbl_8036A7AC;
-        if (y < lim)
-            y = lim;
-        lim = lbl_8036A7B0;
-        if (y > lim)
-            y = lim;
+        lo = lbl_8036A7AC;
+        y = lo * delta[1] / den;
+        if (x < lo)
+            x = lo;
+        if (x > lbl_8036A7B0)
+            x = lbl_8036A7B0;
+        if (y < lbl_8036A7AC)
+            y = lbl_8036A7AC;
+        if (y > lbl_8036A7B0)
+            y = lbl_8036A7B0;
         sx = lbl_8036A7A8 + x;
         sy = lbl_8036A7A8 + y;
         self[0xE] = (s32)sx;
@@ -4736,7 +4736,7 @@ s32 fn_8014953C(u8 *self, s32 delay) {
         len = scale;
     return (s32)Math_Ease(0, lbl_8036A794, gBgmVolTimerZero, len, scale);
 }
-#pragma cplusplus reset
+#pragma opt_common_subs reset
 
 #pragma cplusplus reset
 s8 fn_80149734(void) {
