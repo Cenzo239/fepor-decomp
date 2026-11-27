@@ -5994,7 +5994,7 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 #pragma cplusplus reset
 
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 2
 void fn_8013B254(void *arg0)
 {
   s32 tmp64;
