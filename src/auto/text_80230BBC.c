@@ -1010,7 +1010,7 @@ do { *++db=*++tail; } while(--size);
 }
 }
 
-static inline void CopyBackward32Words(u8 **sp, u8 **dp)
+static inline void CopyBackward32Words(u8 **dp, u8 **sp)
 {
     u8 *s = *sp;
     u8 *d = *dp;
