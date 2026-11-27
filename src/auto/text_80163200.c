@@ -8552,9 +8552,6 @@ extern "C" void fn_80171004(void *arg0)
     u8 *self;
     u8 *child;
     u8 *list;
-    s32 i;
-    u8 *panel;
-    u8 *slot;
     u8 *obj;
     void *p;
     void *context;
@@ -8607,20 +8604,9 @@ extern "C" void fn_80171004(void *arg0)
     *(s16 *)(*(u8 **)(self + 0x54) + 8) = 0x105;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x24) = 8;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x8A) = 2;
-    i = 0;
-    *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = i;
+    *(u8 *)(*(u8 **)(self + 0x54) + 0x4C) = 0;
 
-    slot = (u8 *)gConvoy;
-    panel = *(u8 **)(self + 0x54);
-
-    do {
-        if (*(u32 *)slot != 0) {
-            fn_801439F0(panel, slot, NULL);
-        }
-
-        i++;
-        slot += 8;
-    } while (i < 0xC8);
+    Convoy_AddAllItems(*(void **)(self + 0x54), (u8 *)gConvoy);
 
     fn_80143570(*(void **)(self + 0x54));
 
