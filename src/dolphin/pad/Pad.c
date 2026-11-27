@@ -1287,7 +1287,7 @@ __OSSetInterruptHandler(8,fn_80213CB0);
 __OSUnmaskInterrupts(0x00800000);
 lbl_803686A8=1;
 }
-#pragma optimization_level 1
+#pragma optimization_level 3
 void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
