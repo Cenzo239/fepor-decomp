@@ -223,8 +223,6 @@ typedef struct ListIter {
     ListNode *node;
 } ListIter;
 
-static inline ListNode *ListIter_Node(ListIter *it) { return it->node; }
-
 typedef struct List {
     s32 size;
 } List;
