@@ -4358,6 +4358,8 @@ case 2: strcpy(sp8, (char *)lbl_80277BC0 + 0x12B); break;
 fn_8005C8B4((s32)sp8);
 }
 
+#pragma push
+#pragma peephole off
 void fn_8016A0CC(void *arg0) {
     char *strcpy(char *, char *);
     s32 fn_80161FB8(void);
@@ -4395,6 +4397,7 @@ void fn_8016A0CC(void *arg0) {
     }
 done: ;
 }
+#pragma pop
 
 #pragma push
 #pragma optimization_level 3
