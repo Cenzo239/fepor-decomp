@@ -35,3 +35,4 @@ void fn_801F18D4(void) {
     p[1] = a;
 }
 #pragma pop
+__declspec(section ".ctors") static void (*const lbl_80267B1C)(void) = fn_801F18D4;
