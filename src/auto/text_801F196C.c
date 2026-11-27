@@ -4144,7 +4144,6 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 #pragma optimization_level 3
 #pragma opt_lifetimes off
 #pragma opt_pointer off
-#pragma scheduling off
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
