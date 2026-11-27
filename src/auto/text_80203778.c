@@ -340,50 +340,93 @@ s32 __DBIsExceptionMarked(u8 arg0) {
 void DBPrintf(u8 level, char *fmt, ...) {
 }
 
-M2C_UNK *__OSFPRInit(void) {
-    extern M2C_UNK ZeroPS_80368470;
-    s32 var_r3;
+extern u8 ZeroPS_80368470[];
+extern f64 ZeroF_80368468;
+#pragma push
+asm void __OSFPRInit(void) {
+    nofralloc
 
-    M2C_ERROR(/* unknown instruction: mfmsr $r3 */);
-    M2C_ERROR(/* unknown instruction: mtmsr $r3 */);
-    var_r3 = ((u32) M2C_ERROR(/* unknown instruction: mfspr $r3, HID2 */) >> 0x1DU) & 1;
-    if (var_r3 != 0) {
-        var_r3 = (s32) &ZeroPS_80368470;
-        M2C_ERROR(/* unknown instruction: ps_mr $f1, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f2, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f3, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f4, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f5, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f6, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f7, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f8, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f9, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f10, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f11, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f12, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f13, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f14, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f15, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f16, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f17, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f18, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f19, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f20, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f21, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f22, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f23, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f24, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f25, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f26, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f27, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f28, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f29, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f30, $f0 */);
-        M2C_ERROR(/* unknown instruction: ps_mr $f31, $f0 */);
-    }
-    M2C_ERROR(/* unknown instruction: mtfsf 0xff, $f0 */);
-    return (M2C_UNK *) var_r3;
+    mfmsr r3
+    ori r3, r3, 0x2000
+    mtmsr r3
+
+    mfspr r3, 0x398
+    rlwinm. r3, r3, 3, 0x1f, 0x1f
+    beq skip_ps_init
+
+    lis r3, ZeroPS_80368470@ha
+    addi r3, r3, ZeroPS_80368470@l
+    psq_l f0, 0(r3), 0, 0
+    ps_mr f1, f0
+    ps_mr f2, f0
+    ps_mr f3, f0
+    ps_mr f4, f0
+    ps_mr f5, f0
+    ps_mr f6, f0
+    ps_mr f7, f0
+    ps_mr f8, f0
+    ps_mr f9, f0
+    ps_mr f10, f0
+    ps_mr f11, f0
+    ps_mr f12, f0
+    ps_mr f13, f0
+    ps_mr f14, f0
+    ps_mr f15, f0
+    ps_mr f16, f0
+    ps_mr f17, f0
+    ps_mr f18, f0
+    ps_mr f19, f0
+    ps_mr f20, f0
+    ps_mr f21, f0
+    ps_mr f22, f0
+    ps_mr f23, f0
+    ps_mr f24, f0
+    ps_mr f25, f0
+    ps_mr f26, f0
+    ps_mr f27, f0
+    ps_mr f28, f0
+    ps_mr f29, f0
+    ps_mr f30, f0
+    ps_mr f31, f0
+
+skip_ps_init:
+    lfd f0, ZeroF_80368468(r13)
+    fmr f1, f0
+    fmr f2, f0
+    fmr f3, f0
+    fmr f4, f0
+    fmr f5, f0
+    fmr f6, f0
+    fmr f7, f0
+    fmr f8, f0
+    fmr f9, f0
+    fmr f10, f0
+    fmr f11, f0
+    fmr f12, f0
+    fmr f13, f0
+    fmr f14, f0
+    fmr f15, f0
+    fmr f16, f0
+    fmr f17, f0
+    fmr f18, f0
+    fmr f19, f0
+    fmr f20, f0
+    fmr f21, f0
+    fmr f22, f0
+    fmr f23, f0
+    fmr f24, f0
+    fmr f25, f0
+    fmr f26, f0
+    fmr f27, f0
+    fmr f28, f0
+    fmr f29, f0
+    fmr f30, f0
+    fmr f31, f0
+
+    mtfsf 0xff, f0
+    blr
 }
+#pragma pop
 
 #pragma peephole off
 u32 OSGetConsoleType(void)
@@ -690,23 +733,37 @@ void OSExceptionInit(void) {
 }
 #pragma pop
 
-void __OSDBIntegrator(void)
-{
-    register u32 *ptr;
-    register u32 lr;
-    register u32 value;
-
-    ptr = (u32 *)0x40;
-    lr = (u32)__builtin_return_address(0);
-    ptr[3] = lr;
-    value = ptr[2];
-    value |= 0x80000000;
-    __builtin_mtlr((void *)value);
-    __builtin_mtmsr(0x30);
+void __OSEVStart(void);
+void __OSEVEnd(void);
+void __OSEVSetNumber(void);
+void __DBVECTOR(void);
+void __OSDBINTSTART(void);
+void __OSDBINTEND(void);
+void __OSDBJUMPEND(void);
+#pragma push
+static asm void __OSDBIntegrator(void) {
+    nofralloc
+entry __OSDBINTSTART
+    li      r5, 0x40
+    mflr    r3
+    stw     r3, 0xC(r5)
+    lwz     r3, 0x8(r5)
+    oris    r3, r3, 0x8000
+    mtlr    r3
+    li      r3, 0x30 // MSR_IR | MSR_DR     // turn on memory addressing
+    mtmsr   r3
+    blr
+entry __OSDBINTEND
 }
+#pragma pop
 
-void fn_80204294(void) {
+#pragma push
+asm void fn_80204294(void) {
+    nofralloc
+    bla     0x60
+entry __OSDBJUMPEND
 }
+#pragma pop
 
 #pragma peephole off
 void *__OSSetExceptionHandler(u8 exception, void *handler) {
@@ -729,6 +786,91 @@ void *__OSGetExceptionHandler(u8 exception) {
     extern void **OSExceptionTable_8036847C;
     return OSExceptionTable_8036847C[exception];
 }
+
+void OSDefaultExceptionHandler(u8 exception, OSContext *context);
+#pragma push
+static asm void OSExceptionVector(void) {
+    nofralloc
+
+entry __OSEVStart
+    // Save r4 into SPRG0
+    mtsprg  0, r4
+
+    // Load current context physical address into r4
+    lwz     r4, 0x00C0
+
+    // Save r3 - r5 into the current context
+    stw     r3, 12(r4)
+    mfsprg  r3, 0
+    stw     r3, 16(r4)
+    stw     r5, 20(r4)
+
+    lhz     r3, 418(r4)
+    ori     r3, r3, 0x02
+    sth     r3, 418(r4)
+
+    // Save misc registers
+    mfcr    r3
+    stw     r3, 0x80(r4)
+    mflr    r3
+    stw     r3, 0x84(r4)
+    mfctr   r3
+    stw     r3, 0x88(r4)
+    mfxer   r3
+    stw     r3, 0x8C(r4)
+    mfsrr0  r3
+    stw     r3, 0x198(r4)
+    mfsrr1  r3
+    stw     r3, 0x19C(r4)
+    mr      r5, r3
+
+entry __DBVECTOR
+    nop
+
+    // Set SRR1[IR|DR] to turn on address
+    // translation at the next RFI
+    mfmsr   r3
+    ori     r3, r3, 0x30
+    mtsrr1  r3
+
+    // This lets us change the exception number based on the
+    // exception we're installing.
+entry __OSEVSetNumber
+    addi    r3, 0, 0x0000
+
+    // Load current context virtual address into r4
+    lwz     r4, 0xD4
+
+    // Check non-recoverable interrupt
+    rlwinm. r5, r5, 0, 30, 30
+    bne     recoverable
+    addis   r5, 0,  OSDefaultExceptionHandler@ha
+    addi    r5, r5, OSDefaultExceptionHandler@l
+    mtsrr0  r5
+    rfi
+    // NOT REACHED HERE
+
+recoverable:
+    // Locate exception handler.
+    rlwinm  r5, r3, 2, 22, 29               // r5 contains exception*4
+    lwz     r5, 0x3000(r5)
+    mtsrr0  r5
+
+    // Final state
+    // r3 - exception number
+    // r4 - pointer to context
+    // r5 - garbage
+    // srr0 - exception handler
+    // srr1 - address translation enalbed, not yet recoverable
+
+    rfi
+    // NOT REACHED HERE
+    // The handler will restore state
+
+entry __OSEVEnd
+    nop
+}
+#pragma pop
 
 #pragma push
 typedef u8 __OSException;
