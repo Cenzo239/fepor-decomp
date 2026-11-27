@@ -208,12 +208,6 @@ void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-static inline void SetHitFlag(u8 *p)
-{
-    u16 *q = (u16 *)(p + 0x20);
-    *q |= 1;
-}
-
 void fn_8003333C(u8 *arg0, s32 arg1)
 {
   s32 t3;
