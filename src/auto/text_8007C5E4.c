@@ -954,7 +954,7 @@ void fn_8007DAC4(void *arg0, void *arg1)
 {
   void strcpy(void *, void *);
   void *Unit_GetItemSlot(void *, s32);
-  void Ui_ShowUnitInfoText(void *, void *, f32, f32);
+  void Ui_ShowUnitInfoText(void *, f32, f32, void *);
   void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
   void *fn_80105814(void *);
   void *fn_800A8A64(void *);
@@ -964,12 +964,10 @@ void fn_8007DAC4(void *arg0, void *arg1)
   extern f32 lbl_80369480;
   extern f32 lbl_80369484;
   u8 sp8[0x20];
-  f32 *new_var;
   s16 v;
   u8 kind;
   s32 idx;
   s32 idx16;
-  void *text;
 
   kind = *((u8 *) (((u8 *) arg1) + 0xD));
   if ((kind >= 0xA) && (kind <= 0xE))
@@ -985,7 +983,7 @@ void fn_8007DAC4(void *arg0, void *arg1)
       case 30: strcpy(sp8, gUiStrings + 0x184); break;
       default: sp8[0] = 0; break;
     }
-    Ui_ShowUnitInfoText(gUnitInfoPopup, sp8, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+    Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), sp8);
   }
   else if ((kind >= 2) && (kind <= 9))
   {
@@ -993,15 +991,14 @@ void fn_8007DAC4(void *arg0, void *arg1)
   }
   else if ((kind >= 0xF) && (kind <= 0x16))
   {
-    new_var = (f32 *) (((u8 *) arg1) + 4);
     idx = kind - 0xF;
     if ((kind >= 0xF) && (kind <= 0x10))
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]), lbl_80369480 + (*((f32 *) arg1)), *((f32 *) (((u8 *) arg1) + 4)));
+      Ui_ShowUnitInfoText(gUnitInfoPopup, lbl_80369480 + (*((f32 *) arg1)), *((f32 *) (((u8 *) arg1) + 4)), fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]));
     }
     else
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]), *((f32 *) arg1), *new_var);
+      Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), fn_80105814(((void **)((u8 *)arg0 + 0x38))[idx]));
     }
   }
   else if (kind == 0x17)
@@ -1010,27 +1007,26 @@ void fn_8007DAC4(void *arg0, void *arg1)
     p = *((u8 **) (p + 0x18C));
     if ((*((u16 *) (p + 0x3A))) & 0x20)
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x18E, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+      Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), gUiStrings + 0x18E);
     }
     else
     {
-      Ui_ShowUnitInfoText(gUnitInfoPopup, gUiStrings + 0x194, *((f32 *) arg1), (*((f32 *) (((u8 *) arg1) + 4))) - lbl_80369484);
+      Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), (*((f32 *) (((u8 *) arg1) + 4))) - lbl_80369484, gUiStrings + 0x194);
     }
   }
   else if (kind == 0x18)
   {
     u8 *p = *((u8 **) (((u8 *) arg0) + 0x58));
-    Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A8A64(*((void **) (p + 0x188))), *((f32 *) arg1), *new_var);
+    Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), fn_800A8A64(*((void **) (p + 0x188))));
   }
   else if (kind == 0x19)
   {
     u8 *p = *((u8 **) (((u8 *) arg0) + 0x58));
-    Ui_ShowUnitInfoText(gUnitInfoPopup, fn_800A893C(*((void **) (p + 0x18C))), *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)));
+    Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), fn_800A893C(*((void **) (p + 0x18C))));
   }
   else
   {
-    text = *((void **) (((u8 *) arg1) + 0x10));
-    Ui_ShowUnitInfoText(gUnitInfoPopup, text, *((f32 *) arg1), *new_var);
+    Ui_ShowUnitInfoText(gUnitInfoPopup, *((f32 *) arg1), *((f32 *) (((u8 *) arg1) + 4)), *((void **) (((u8 *) arg1) + 0x10)));
   }
 }
 #pragma use_lmw_stmw on
