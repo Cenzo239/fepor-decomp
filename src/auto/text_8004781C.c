@@ -2,6 +2,18 @@
 #include "common.h"
 extern u8 gBattleMap[];
 
+static inline void CopyFourBytes(u8 *dst, u8 *src) {
+    u8 a, b;
+    a = src[0];
+    b = src[1];
+    dst[0x40] = a;
+    a = src[2];
+    dst[0x41] = b;
+    b = src[3];
+    dst[0x42] = a;
+    dst[0x43] = b;
+}
+
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
 static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, const s16 *upper)
