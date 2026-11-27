@@ -589,10 +589,9 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     void *info;
 
     self = (Obj *)arg0;
-    idx = arg1;
     self->v2();
     fn_8008BBF8(0, 0, (s16)(self->unkE - self->unkA), (s16)(self->unk10 - self->unkC), 0, 0xFF);
-    self->v3(idx);
+    self->v3(arg1);
 
     h = (s16)(self->unk18 - self->unk14);
     rect = &self->unk68;
@@ -9879,7 +9878,7 @@ extern "C" void fn_80172DA4(void *arg0) {
 }
 #pragma pop
 #pragma push
-#pragma optimization_level 3
+#pragma opt_lifetimes off
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, s32);
