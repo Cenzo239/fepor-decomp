@@ -8521,8 +8521,8 @@ virtual void v11() = 0;
 #pragma cplusplus reset
 
 #pragma cplusplus on
+extern "C" void fn_801439F0(void *, void *, void *);
 static inline void Convoy_AddAllItems(void *panel, u8 *slot) {
-    void fn_801439F0(void *, void *, void *);
     s32 i;
     for (i = 0; i < 0xC8; i++, slot += 8) {
         if (*(u32 *)slot != 0) {
