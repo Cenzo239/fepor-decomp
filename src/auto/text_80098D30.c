@@ -59,16 +59,6 @@ static void *get_280(void **handle) {
     return NULL;
 }
 
-static void *get_280_reload(void **handle) {
-    void *t;
-
-    t = *(void * volatile *)handle;
-    if (t != NULL) {
-        return *(void **)((u8 *)t + 0x280);
-    }
-    return NULL;
-}
-
 void fn_80098D30(void *arg0) {
     s32 temp_r31;
     s32 temp_r30;
