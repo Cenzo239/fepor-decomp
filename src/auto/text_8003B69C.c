@@ -1608,7 +1608,6 @@ void Unit_MoveToListHead(void *unit, s32 listId) {
 #pragma push
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
 void fn_8003D70C(s32 arg0) {
     extern u16 gBattleState[1400];
     void *fn_8014D8FC(void *);
