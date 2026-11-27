@@ -201,6 +201,10 @@ typedef struct MenuGridLayout {
 } MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
 static inline s32 MenuGridQuotient(s16 index, s16 columns) { return index / columns; }
+static inline s32 MenuGridQuotOf(const void *self) {
+    const MenuGridLayout *grid = self;
+    return grid->index / grid->columns;
+}
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
@@ -1171,15 +1175,23 @@ void fn_80133E50(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s32 arg5) {
 void fn_80133EA4(s32 *arg0, void *arg1) {
     Vec2s *fn_8013F748(void *, Vec2s *, Vec2s *);
     s32 Text_MeasureHeight(s32, f32);
-    Vec2s out, in;
+    Vec2s out;
+    Vec2s in;
     u32 rowH;
-    s32 kind, colW;
+    s32 kind;
+    s32 colW;
     s32 quot;
-    s32 rem, hdiv, t;
-    s16 x, y, half, off48, off4a;
+    s32 rem;
+    s32 hdiv;
+    s32 t;
+    s16 x;
+    s16 y;
+    s16 half;
+    s16 off48;
+    s16 off4a;
     colW = *(s16 *)((u8 *)arg1 + 0x44);
     kind = *(s16 *)((u8 *)arg1 + 0x3e);
-    quot = kind / colW;
+    quot = MenuGridQuotient(kind, colW);
     t = *(s16 *)((u8 *)arg1 + 0x12);
     rem = *(s16 *)((u8 *)arg1 + 0x16);
     rem -= t;
@@ -1194,12 +1206,12 @@ void fn_80133EA4(s32 *arg0, void *arg1) {
     rem = t * rem;
     x = (s16)(rem + off48);
     y = (s16)(rowH * quot + off4a);
-    t = Text_MeasureHeight(-1, 1.0f);
+    t = Text_MeasureHeight(-1, lbl_8036A5AC);
     half = (s16)(((s32)(s16)rowH - t) >> 1);
     if (*(s16 *)((u8 *)arg1 + 0x3E) == 4) {
- x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
- y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
-}
+        x = (s16)(*(s16 *)((u8 *)arg1 + 0x16) - *(s16 *)((u8 *)arg1 + 0x12)) - 0x50;
+        y = (s16)(*(s16 *)((u8 *)arg1 + 0x18) - *(s16 *)((u8 *)arg1 + 0x14)) - 0x10;
+    }
     in.x = x;
     in.y = (s32)y + half;
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
