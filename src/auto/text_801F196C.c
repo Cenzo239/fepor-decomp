@@ -1988,30 +1988,29 @@ void fn_801F5D08(void *arg0) {
 
 #pragma global_optimizer off
 void fn_801F5D14(void *arg0) {
-    s32 fn_802655A8(void *, u8 *);
+    s32 GBAGetStatus(void *, u8 *);
     void fn_80266840(void *, void *, u8 *);
-    void fn_800056CC(void *, ...);
-    void fn_8000C070(void *, s32);
-    void fn_8000C188(void *);
-    extern u16 lbl_80280B58[18];
-    s32 ret;
+    void DebugPrint(void *, ...);
+    void Process_Goto(void *, s32);
+    void Process_ClearFunc(void *);
+    extern u16 gCardLinkStr[18];
+    u8 status;
 
-    ret = fn_802655A8(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B);
-    if (ret == 0) {
-        if ((*(u8 *)((u8 *)arg0 + 0x4B) & 0x30) != 0x30) {
-            fn_8000C070(arg0, 2);
-            return;
-        }
-    } else if ((u32)ret != 0x38U) {
+    if (GBAGetStatus(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x4B) != 0 ||
+        ((status = *(u8 *)((u8 *)arg0 + 0x4B)) & 0x30) != 0x30) {
+        Process_Goto(arg0, 2);
+        return;
+    }
+    if (status != 0x38) {
         return;
     }
     fn_80266840(*(void **)((u8 *)arg0 + 0x38), (u8 *)arg0 + 0x40, (u8 *)arg0 + 0x4B);
-    fn_800056CC((u8 *)lbl_80280B58 + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
+    DebugPrint((u8 *)gCardLinkStr + 0x136, *(u32 *)((u8 *)arg0 + 0x40));
     if (*(u32 *)((u8 *)arg0 + 0x40) + 0x10000 != 0xFFFF) {
-        fn_8000C070(arg0, 3);
+        Process_Goto(arg0, 3);
         *(u8 *)((u8 *)arg0 + 0x4C) = 3;
     } else {
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 #pragma global_optimizer on
@@ -4853,6 +4852,8 @@ void *fn_801FB1C0(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
     struct Node {
         struct Node *prev;
@@ -4862,38 +4863,43 @@ void fn_801FB220(void **ret, s32 *list, void **start, void **end) {
     };
     void fn_800616A0(void *);
     void Heap_Free(void *);
+    void **end_p;
+    void **start_p;
+    s32 *list_p;
+    void **ret_p;
     struct Node *first;
     struct Node *last;
     struct Node *a;
     struct Node *node;
-    void **value;
+    void *value;
 
-    first = (struct Node *)*start;
-    last = (struct Node *)*end;
-    if (first == last) {
-        *ret = last;
+    end_p = end;
+    start_p = start;
+    if (*start == *end) {
+        *ret = *end;
         return;
     }
+    first = (struct Node *)*start;
+    list_p = list;
+    ret_p = ret;
+    last = (struct Node *)*end;
     a = last->prev;
     first->prev->next = a->next;
     a->next->prev = first->prev;
-    while (*start != *end) {
-        value = (void **)((u8 *)*(struct Node **)start + 8);
-        if (value != NULL) {
-            if (value[1] != NULL) {
-                fn_800616A0(value[1]);
-            }
+    while ((node = (struct Node *)*start_p) != (struct Node *)*end_p) {
+        value = (u8 *)node + 8;
+        if (value != NULL && *(void **)((u8 *)value + 4) != NULL) {
+            fn_800616A0(*(void **)((u8 *)value + 4));
         }
-        node = (struct Node *)*start;
-        *start = node->next;
+        node = (struct Node *)*start_p;
+        *start_p = node->next;
         Heap_Free(node);
-        (*list)--;
+        (*list_p)--;
     }
-    *ret = *end;
+    *ret_p = *end_p;
 }
-
+#pragma pop
 #pragma cplusplus on
-#pragma use_lmw_stmw on
 extern "C" void *Heap_Alloc(u32);
 extern "C" void Heap_Free(void *);
 extern "C" void fn_800506E0(s32, s32, void *);
