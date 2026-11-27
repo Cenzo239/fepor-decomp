@@ -1,5 +1,12 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void CopyTwoBytes(u8 *dst, u8 *src) {
+    u8 a, b;
+    a = src[0];
+    b = src[1];
+    dst[0] = a;
+    dst[1] = b;
+}
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
