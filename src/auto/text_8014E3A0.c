@@ -1373,7 +1373,7 @@ b->e=a->e; b->f=a->f; b->g=a->g; b->h=a->h;
 }
 }
 
-s32 fn_801506AC(void *arg0)
+void fn_801506AC(void *arg0)
 {
   u32 fn_80060638(void *);
   f32 new_var;
@@ -1436,290 +1436,262 @@ s32 fn_801506AC(void *arg0)
   work = *((u8 **) (self + 0x54));
   model = (u8 *) fn_80060638(self);
   outputBase = (u8 *) fn_80060664(self);
-  if (work == 0)
+  if (work != 0)
   {
-    return 0;
-  }
-  *((f32 *) (work + 0x30)) = (time = fn_80060468(self));
-  delta = time - (*((f32 *) (work + 0x30)));
-  new_var2 = (s16) ((s32) time);
-  frame = new_var2;
-  if (delta < lbl_8036A838)
-  {
-    outputBase = (u8 *) fn_80060664(self);
-    if (outputBase == 0)
+    *((f32 *) (work + 0x30)) = (time = fn_80060468(self));
+    delta = time - (*((f32 *) (work + 0x30)));
+    new_var2 = (s16) ((s32) time);
+    frame = new_var2;
+    if (delta < lbl_8036A838)
     {
-      return 0;
-    }
-    work = *((u8 **) (self + 0x54));
-    if (0, work == 0)
-    {
-      return 0;
-    }
-    *((f32 *) (work + 0x30)) = (f32) (*((s32 *) (outputBase + 0x14)));
-    header = *((u8 **) (work + 0x34));
-    group = header + 8;
-    groupOffset = 0;
-    for (groupIndex = 0; groupIndex < (*((u16 *) (header + 6))); groupIndex++, group += 0x34, groupOffset += 4)
-    {
-      trackOffset = 0;
-      outputOffset = 0;
-      for (entryIndex = 0; entryIndex < (*((u16 *) (group + 0x1E))); entryIndex++, trackOffset += 0xC, outputOffset += 0x2C)
+      outputBase = (u8 *) fn_80060664(self);
+      if (outputBase != 0)
       {
-        track = (*((u8 **) (group + 0x20))) + trackOffset;
-        output = *((u8 **) ((*((u8 **) (work + 0x38))) + groupOffset));
-        output += outputOffset;
-        scale = lbl_8036A81C;
-        *((f32 *) (output + 0x00)) = ((f32) (*((s16 *) (track + 6)))) * scale;
-        *((f32 *) (output + 0x04)) = ((f32) (*((s16 *) (track + 8)))) * scale;
-        *((f32 *) (output + 0x08)) = ((f32) (*((s16 *) (track + 10)))) * scale;
-        *((f32 *) (output + 0x0C)) = lbl_8036A838;
-        *((f32 *) (output + 0x10)) = lbl_8036A838;
-        *((f32 *) (output + 0x14)) = lbl_8036A838;
-        *((f32 *) (output + 0x18)) = lbl_8036A848;
-        *((f32 *) (output + 0x1C)) = lbl_8036A844;
-        *((f32 *) (output + 0x20)) = lbl_8036A844;
-        output[0x28] = 0;
-      }
-
-    }
-
-    return 0;
-  }
-  header = *((u8 **) (work + 0x34));
-  group = header + 8;
-  groupOffset = 0;
-  for (groupIndex = 0; ((0, groupIndex)) < (*((u16 *) (header + 6))); groupIndex++, groupOffset += 4, group += 0x34)
-  {
-    colorSource = (u8 *) model;
-    colorSource = *((u8 **) (colorSource + 0x34));
-    output = colorSource + (((s32) (*((s16 *) (group + 0xA)))) * 0x20);
-    color[0] = output[8];
-    color[1] = output[9];
-    color[2] = output[10];
-    color[3] = output[11];
-    GMaterial_EvalAlphaAnim((void **) outputBase, *((s16 *) (group + 0xA)), color, time);
-    GMaterial_EvalColorAnim(outputBase, *((s16 *) (group + 0xA)), color, time);
-    for (component = 0; component < 3; component++)
-    {
-      if (self[8 + component] < 0x80)
-      {
-        color[component] = (color[component] * self[8 + component]) >> 7;
-      }
-    }
-
-    alpha = color[3] * self[0xB];
-    color[3] = alpha / 128;
-    channelType = (*((u16 *) (group + 6))) & 7;
-    switch (channelType)
-    {
-      case 1:
-        selection = *((s16 *) (group + 0xE));
-        factor = lbl_8036A81C * selection;
-        break;
-
-      case 2:
-        selection = *((s16 *) (group + 0x12));
-        factor = lbl_8036A81C * selection;
-        break;
-
-      case 3:
-        selection = *((s16 *) (group + 0x16));
-        factor = lbl_8036A81C * selection;
-        break;
-
-      default:
-        factor = lbl_8036A844;
-        break;
-
-    }
-
-    switch (channelType)
-    {
-      case 1:
-        selection = *((s16 *) (group + 0xE));
-        weight = lbl_8036A81C * selection;
-        break;
-
-      case 2:
-        selection = *((s16 *) (group + 0x12));
-        weight = lbl_8036A81C * selection;
-        break;
-
-      case 3:
-        new_var = lbl_8036A81C;
-        selection = *((s16 *) (group + 0x18));
-        entryIndex += 0;
-        weight = new_var * selection;
-        break;
-
-      default:
-        weight = lbl_8036A844;
-        break;
-
-    }
-
-    scale = new_var * ((f32) (*((s16 *) (group + 0x1A))));
-    track = *((u8 **) (group + 0x24));
-    trackOffset = 0;
-    outputOffset = 0;
-    for (entryIndex = 0; entryIndex < (*((u16 *) (group + 0x1E))); entryIndex++, trackOffset += 8, outputOffset += 0x2C)
-    {
-      u8 *record;
-      if ((*record) != entryIndex)
-      {
-        record = track + trackOffset;
-        Game_Assert((const char *) (lbl_80277320 + 0x27), 0x145, (const char *) (lbl_80277320 + 0x35));
-      }
-      output = *((u8 **) (work + 0x38));
-      output = *((u8 **) (output + groupOffset));
-      output += outputOffset;
-      values = *((u8 **) (group + 0x20));
-      new_var2++;
-      new_var2--;
-      values += entryIndex * 0xC;
-      frameStart = *((s16 *) (values + 2));
-      frameEnd = *((s16 *) (values + 4));
-      if ((time < ((f32) frameStart)) || (time > ((f32) frameEnd)))
-      {
-        *((f32 *) (output + 0x18)) = lbl_8036A838;
-        output[0x28] = 0;
-        *((f32 *) (output + 0)) = (f32) (*((s16 *) (values + 6)));
-        *((f32 *) (output + 4)) = (f32) (*((s16 *) (8 + values)));
-        *((f32 *) (output + 8)) = (f32) (*((s16 *) (values + 10)));
-        continue;
-      }
-      first = (f32) frameStart;
-      second = (f32) frameEnd;
-      result = (time - first) / (second - first);
-      *((f32 *) (output + 0x18)) = result;
-      new_var3 = (lbl_8036A844 - result) * ((f32) color[3]);
-      *((f32 *) (output + 0x1C)) = factor;
-      *((f32 *) (output + 0x20)) = weight;
-      output[0x28] = (u8) ((s32) new_var3);
-      output[0x29] = color[0];
-      output[0x2A] = color[1];
-      output[0x2B] = color[2];
-      *((f32 *) (output + 0x0C)) = lbl_8036A838;
-      *((f32 *) (output + 0x10)) = lbl_8036A838;
-      *((f32 *) (output + 0x14)) = lbl_8036A838;
-      *((f32 *) (output + 0x24)) = scale;
-      curve = *((u8 **) (group + 0x28));
-      curve += (*((u16 *) (record + 4))) * 0xC;
-      for (trackIndex = 0; trackIndex < (*((u16 *) (record + 6))); trackIndex++, curve += 0xC)
-      {
-        u8 *keys;
-        channelType = *((u16 *) (curve + 0));
-        key = *((u8 **) (group + 0x2C));
-        key += (*((u32 *) (curve + 8))) * 4;
-        keys = key;
-        count = *((u16 *) (curve + 6));
-        if (count == 0)
+        work = *((u8 **) (self + 0x54));
+        if (work != 0)
         {
-          continue;
-        }
-        start = (f32) (*((s16 *) (keys + 2)));
-        end = (f32) (*((s16 *) ((keys + ((count - 1) * 4)) + 2)));
-        if (!(frame >= ((s16) end)))
-        {
-          if (frame < ((s16) start))
+          *((f32 *) (work + 0x30)) = (f32) (*((s32 *) (outputBase + 0x14)));
+          header = *((u8 **) (work + 0x34));
+          group = header + 8;
+          groupOffset = 0;
+          for (groupIndex = 0; groupIndex < (*((u16 *) (header + 6))); groupIndex++, group += 0x34, groupOffset += 4)
           {
-            result = (f32) (*((s16 *) (keys + 0)));
-          }
-          else
-          {
-            keyIndex = fn_80064F24(keys, frame);
-            position = keyIndex * 4;
-            key = keys + position;
-            first = (f32) (*((s16 *) (key + 2)));
-            if (result)
+            trackOffset = 0;
+            outputOffset = 0;
+            for (entryIndex = 0; entryIndex < (*((u16 *) (group + 0x1E))); entryIndex++, trackOffset += 0xC, outputOffset += 0x2C)
             {
-            }
-            second = (f32) (*((s16 *) (key + 6)));
-            value = frame;
-            result = (f32) ((long) (*(key + 0)));
-            if (second != first)
-            {
+              track = (*((u8 **) (group + 0x20))) + trackOffset;
+              output = *((u8 **) ((*((u8 **) (work + 0x38))) + groupOffset));
+              output += outputOffset;
+              scale = lbl_8036A81C;
+              *((f32 *) (output + 0x00)) = ((f32) (*((s16 *) (track + 6)))) * scale;
+              *((f32 *) (output + 0x04)) = ((f32) (*((s16 *) (track + 8)))) * scale;
+              *((f32 *) (output + 0x08)) = ((f32) (*((s16 *) (track + 10)))) * scale;
+              *((f32 *) (output + 0x0C)) = lbl_8036A838;
+              *((f32 *) (output + 0x10)) = lbl_8036A838;
+              *((f32 *) (output + 0x14)) = lbl_8036A838;
+              *((f32 *) (output + 0x18)) = lbl_8036A848;
+              *((f32 *) (output + 0x1C)) = lbl_8036A844;
+              *((f32 *) (output + 0x20)) = lbl_8036A844;
+              output[0x28] = 0;
             }
           }
         }
-        else
+      }
+    }
+    else
+    {
+      header = *((u8 **) (work + 0x34));
+      group = header + 8;
+      groupOffset = 0;
+      for (groupIndex = 0; ((0, groupIndex)) < (*((u16 *) (header + 6))); groupIndex++, groupOffset += 4, group += 0x34)
+      {
+        colorSource = (u8 *) model;
+        colorSource = *((u8 **) (colorSource + 0x34));
+        output = colorSource + (((s32) (*((s16 *) (group + 0xA)))) * 0x20);
+        color[0] = output[8];
+        color[1] = output[9];
+        color[2] = output[10];
+        color[3] = output[11];
+        GMaterial_EvalAlphaAnim((void **) outputBase, *((s16 *) (group + 0xA)), color, time);
+        GMaterial_EvalColorAnim(outputBase, *((s16 *) (group + 0xA)), color, time);
+        for (component = 0; component < 3; component++)
         {
-          result = (f32) (*((s16 *) ((keys + ((count - 1) * 4)) + 0)));
+          if (self[8 + component] < 0x80)
+          {
+            color[component] = (color[component] * self[8 + component]) >> 7;
+          }
+        }
+        alpha = color[3] * self[0xB];
+        color[3] = alpha / 128;
+        channelType = (*((u16 *) (group + 6))) & 7;
+        switch (channelType)
+        {
+          case 1:
+            selection = *((s16 *) (group + 0xE));
+            factor = lbl_8036A81C * selection;
+            break;
+          case 2:
+            selection = *((s16 *) (group + 0x12));
+            factor = lbl_8036A81C * selection;
+            break;
+          case 3:
+            selection = *((s16 *) (group + 0x16));
+            factor = lbl_8036A81C * selection;
+            break;
+          default:
+            factor = lbl_8036A844;
+            break;
         }
         switch (channelType)
         {
-          case 0:
-            *((f32 *) (output + 0x0C)) = result;
-            break;
-            result += (((f32) (*((s16 *) (key + 4)))) - result) * ((value - first) / (second - first));
-
           case 1:
-            *((f32 *) (output + 0x10)) = result;
+            selection = *((s16 *) (group + 0xE));
+            weight = lbl_8036A81C * selection;
             break;
-
           case 2:
-            *((f32 *) (output + 0x14)) = result;
+            selection = *((s16 *) (group + 0x12));
+            weight = lbl_8036A81C * selection;
             break;
-
           case 3:
-            *((f32 *) (output + 0x1C)) = result;
-            *((f32 *) (0x20 + output)) = result;
+            new_var = lbl_8036A81C;
+            selection = *((s16 *) (group + 0x18));
+            entryIndex += 0;
+            weight = new_var * selection;
             break;
-
-          case 4:
-            *((f32 *) (output + 0x1C)) = result;
+          default:
+            weight = lbl_8036A844;
             break;
-
-          case 5:
-            *((f32 *) (output + 0x20)) = result;
-            break;
-
-          case 6:
-            output[0x28] = (u8) ((s32) (result * color[3]));
-            break;
-
-          case 7:
-            output[0x29] = (u8) ((s32) (result * color[0]));
-            break;
-
-          case 8:
-            output[0x2A] = (u8) ((s32) (result * color[1]));
-            break;
-
-          case 9:
-            output[0x2B] = (u8) ((s32) (result * color[2]));
-            break;
-
-          case 10:
-            *((f32 *) (output + 0x24)) = result;
-            break;
-
         }
-
+        scale = new_var * ((f32) (*((s16 *) (group + 0x1A))));
+        track = *((u8 **) (group + 0x24));
+        trackOffset = 0;
+        outputOffset = 0;
+        for (entryIndex = 0; entryIndex < (*((u16 *) (group + 0x1E))); entryIndex++, trackOffset += 8, outputOffset += 0x2C)
+        {
+          u8 *record;
+          if ((*record) != entryIndex)
+          {
+            record = track + trackOffset;
+            Game_Assert((const char *) (lbl_80277320 + 0x27), 0x145, (const char *) (lbl_80277320 + 0x35));
+          }
+          output = *((u8 **) (work + 0x38));
+          output = *((u8 **) (output + groupOffset));
+          output += outputOffset;
+          values = *((u8 **) (group + 0x20));
+          new_var2++;
+          new_var2--;
+          values += entryIndex * 0xC;
+          frameStart = *((s16 *) (values + 2));
+          frameEnd = *((s16 *) (values + 4));
+          if ((time < ((f32) frameStart)) || (time > ((f32) frameEnd)))
+          {
+            *((f32 *) (output + 0x18)) = lbl_8036A838;
+            output[0x28] = 0;
+            *((f32 *) (output + 0)) = (f32) (*((s16 *) (values + 6)));
+            *((f32 *) (output + 4)) = (f32) (*((s16 *) (8 + values)));
+            *((f32 *) (output + 8)) = (f32) (*((s16 *) (values + 10)));
+            continue;
+          }
+          first = (f32) frameStart;
+          second = (f32) frameEnd;
+          result = (time - first) / (second - first);
+          *((f32 *) (output + 0x18)) = result;
+          new_var3 = (lbl_8036A844 - result) * ((f32) color[3]);
+          *((f32 *) (output + 0x1C)) = factor;
+          *((f32 *) (output + 0x20)) = weight;
+          output[0x28] = (u8) ((s32) new_var3);
+          output[0x29] = color[0];
+          output[0x2A] = color[1];
+          output[0x2B] = color[2];
+          *((f32 *) (output + 0x0C)) = lbl_8036A838;
+          *((f32 *) (output + 0x10)) = lbl_8036A838;
+          *((f32 *) (output + 0x14)) = lbl_8036A838;
+          *((f32 *) (output + 0x24)) = scale;
+          curve = *((u8 **) (group + 0x28));
+          curve += (*((u16 *) (record + 4))) * 0xC;
+          for (trackIndex = 0; trackIndex < (*((u16 *) (record + 6))); trackIndex++, curve += 0xC)
+          {
+            u8 *keys;
+            channelType = *((u16 *) (curve + 0));
+            key = *((u8 **) (group + 0x2C));
+            key += (*((u32 *) (curve + 8))) * 4;
+            keys = key;
+            count = *((u16 *) (curve + 6));
+            if (count == 0)
+            {
+              continue;
+            }
+            start = (f32) (*((s16 *) (keys + 2)));
+            end = (f32) (*((s16 *) ((keys + ((count - 1) * 4)) + 2)));
+            if (!(frame >= ((s16) end)))
+            {
+              if (frame < ((s16) start))
+              {
+                result = (f32) (*((s16 *) (keys + 0)));
+              }
+              else
+              {
+                keyIndex = fn_80064F24(keys, frame);
+                position = keyIndex * 4;
+                key = keys + position;
+                first = (f32) (*((s16 *) (key + 2)));
+                if (result)
+                {
+                }
+                second = (f32) (*((s16 *) (key + 6)));
+                value = frame;
+                result = (f32) ((long) (*(key + 0)));
+                if (second != first)
+                {
+                }
+              }
+            }
+            else
+            {
+              result = (f32) (*((s16 *) ((keys + ((count - 1) * 4)) + 0)));
+            }
+            switch (channelType)
+            {
+              case 0:
+                *((f32 *) (output + 0x0C)) = result;
+                break;
+                result += (((f32) (*((s16 *) (key + 4)))) - result) * ((value - first) / (second - first));
+              case 1:
+                *((f32 *) (output + 0x10)) = result;
+                break;
+              case 2:
+                *((f32 *) (output + 0x14)) = result;
+                break;
+              case 3:
+                *((f32 *) (output + 0x1C)) = result;
+                *((f32 *) (0x20 + output)) = result;
+                break;
+              case 4:
+                *((f32 *) (output + 0x1C)) = result;
+                break;
+              case 5:
+                *((f32 *) (output + 0x20)) = result;
+                break;
+              case 6:
+                output[0x28] = (u8) ((s32) (result * color[3]));
+                break;
+              case 7:
+                output[0x29] = (u8) ((s32) (result * color[0]));
+                break;
+              case 8:
+                output[0x2A] = (u8) ((s32) (result * color[1]));
+                break;
+              case 9:
+                output[0x2B] = (u8) ((s32) (result * color[2]));
+                break;
+              case 10:
+                *((f32 *) (output + 0x24)) = result;
+                break;
+            }
+          }
+          *((f32 *) (output + 0)) += (*((f32 *) (output + 0x0C))) * delta;
+          *((f32 *) (output + 4)) += (*((f32 *) (output + 0x10))) * delta;
+          *((f32 *) (output + 0x24)) = scale;
+          *((f32 *) (output + 8)) += (*((f32 *) (output + 0x14))) * delta;
+        }
       }
-
-      *((f32 *) (output + 0)) += (*((f32 *) (output + 0x0C))) * delta;
-      *((f32 *) (output + 4)) += (*((f32 *) (output + 0x10))) * delta;
-      *((f32 *) (output + 0x24)) = scale;
-      *((f32 *) (output + 8)) += (*((f32 *) (output + 0x14))) * delta;
     }
-
   }
-
-  return 0;
 }
 
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
+#pragma opt_propagation off
 void fn_80150F38(void *arg0) {
     void fn_800C4588(void *);
-    long i;
-    register int off;
     void *self;
-    void *work;
-    u32 z1;
+    void *z1;
     register void *z0;
+    register int off;
+    void *work;
     void *meta;
+    long i;
 
     self = arg0;
     work = *(void **)((u8 *)arg0 + 0x54);
@@ -1729,12 +1701,12 @@ void fn_80150F38(void *arg0) {
             off = 0;
             i = 0;
             z0 = (void *)off;
-            z1 = (u32)off;
+            z1 = (void *)off;
             while (i < (s32)*(u16 *)((u8 *)meta + 6)) {
                 fn_800C4588(*(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off));
                 i += 1;
                 *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = z0;
-                *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = (void *)z1;
+                *(void **)((u8 *)*(void **)((u8 *)work + 0x38) + off) = z1;
                 off += 4;
             }
             fn_800C4588(*(void **)((u8 *)work + 0x38));
@@ -1747,10 +1719,9 @@ void fn_80150F38(void *arg0) {
         *(void **)((u8 *)self + 0x54) = 0;
     }
 }
+#pragma opt_propagation reset
+#pragma optimization_level reset
 #pragma push
-#pragma optimization_level 4
-#pragma opt_common_subs off
-#pragma opt_strength_reduction off
 void fn_80150FEC(void *arg0) {
     void *fn_80060664(void *);
     void *fn_800C4638(s32, u8 *, s32);
@@ -3215,8 +3186,6 @@ void fn_80154370(s16 arg0, s16 arg1) {
     extern u8 gUiTexScratch[64];
     extern s32 gUiTexAtlas;
 
-    s16 ax;
-    s16 ay;
     f32 sp10;
     u8 spC[4];
     s32 sp8;
@@ -3231,6 +3200,8 @@ void fn_80154370(s16 arg0, s16 arg1) {
     s32 width;
     s16 temp_r30;
     s32 temp_r31;
+    s16 ax;
+    s16 ay;
 
     ax = arg0;
     ay = arg1;

@@ -1324,6 +1324,7 @@ void fn_801FF0F8(void *arg0) {
     Process_ClearFunc(arg0);
 }
 
+#pragma optimization_level 2
 void fn_801FF190(s32 arg0) {
     void Ui_CreateMenu(void *, s32, s32);
     void *Heap_Alloc(u32);
@@ -1370,8 +1371,7 @@ void fn_801FF190(s32 arg0) {
     Ui_CreateMenu(obj, arg0, 0);
 #pragma cplusplus reset
 }
-
-#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_801FF2D0(void) {
     extern u8 gUiContext[];
     extern s32 gGameFlags;

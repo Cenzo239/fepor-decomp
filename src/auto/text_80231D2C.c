@@ -828,15 +828,16 @@ static void fn_80233174(void *dec_, s32 new_length_) {
     dec->sig.length = new_length;
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
 char *double2hex(char *buffer, void *format, f64 value)
 {
   void fn_8022E660(void *, void *);
   void strcpy(char *, const char *);
   char *long2str_802338EC(s32, char *, void *);
   volatile int pad3;
-  s16 new_var;
-  u8 *new_var2;
-  typedef struct 
+  typedef struct
   {
     u8 unk0;
     u8 sign_style;
@@ -847,7 +848,7 @@ char *double2hex(char *buffer, void *format, f64 value)
     u8 pad6[6];
     s32 precision;
   } PrintFormat;
-  typedef struct 
+  typedef struct
   {
     s8 kind;
     s8 pad;
@@ -860,31 +861,27 @@ char *double2hex(char *buffer, void *format, f64 value)
   f64 sp18;
   DecCtrl sp10;
   PrintFormat *fmt = (PrintFormat *) format;
-  s32 prec;
   char *out;
   char *p;
   s32 exp;
+  u8 b;
+  u8 *cp;
   s32 i;
   s16 raw_exp;
   s8 nibble;
-  u8 b;
-  u32 sb;
   s32 ch;
-  value = value;
   sp18 = value;
-  if ((prec + 1) > (0x1FD + 1))
+  if (fmt->precision > 0x1FD)
   {
     return NULL;
   }
-  new_var2 = sp40;
   sp10.kind = 0;
   sp10.width = 0x20;
-  fn_8022E660(&sp10, new_var2);
-  if (new_var2[5] == 'I')
+  fn_8022E660(&sp10, sp40);
+  if (sp40[5] == 'I')
   {
     if ((*((s16 *) (&sp18))) & 0x8000)
     {
-      prec = fmt->precision;
       out = buffer - 5;
       if (fmt->conv == 'A')
       {
@@ -909,7 +906,7 @@ char *double2hex(char *buffer, void *format, f64 value)
     }
     return out;
   }
-  if (new_var2[5] == 'N')
+  if (sp40[5] == 'N')
   {
     if ((*((u8 *) (&value))) & 0x80)
     {
@@ -944,13 +941,12 @@ char *double2hex(char *buffer, void *format, f64 value)
   sp30[4] = 0;
   sp30[5] = 0x64;
   *((s32 *) (sp30 + 8)) = 0;
-  new_var = (*((s16 *) (&sp18))) >> 4;
+  raw_exp = (*((s16 *) (&sp18)) & 0x7FF0) >> 4;
   *((s32 *) (sp30 + 12)) = 1;
   *((s32 *) (sp20 + 0)) = *((s32 *) (sp30 + 0));
   *((s32 *) (sp20 + 4)) = *((s32 *) (sp30 + 4));
   *((s32 *) (sp20 + 8)) = 0;
   *((s32 *) (sp20 + 12)) = 1;
-  raw_exp = new_var & 0x7FF;
   exp = raw_exp - 0x3FF;
   p = long2str_802338EC(exp, buffer, sp20);
   if (fmt->conv == 'a')
@@ -963,19 +959,11 @@ char *double2hex(char *buffer, void *format, f64 value)
     p[-1] = 'P';
     out = p - 1;
   }
+  cp = (u8 *) &value;
   for (i = fmt->precision; i >= 1; i--)
   {
-    sb = ((u32) i) >> 31;
-    b = ((u8 *) (&value))[(((s32) (sb + i)) >> 1) + 1];
-    if ((((i & 1) ^ ((s32) sb)) - ((s32) sb)) != 0)
-    {
-      nibble = (s8) (b & 0xF);
-    }
-    else
-    {
-      nibble = (s8) ((b >> 4) & 0xF);
-    }
-    sb = sb;
+    b = cp[i / 2 + 1];
+    nibble = (i % 2 != 0) ? (s8) (b & 0xF) : (s8) ((b >> 4) & 0xF);
     if (nibble < 0xA)
     {
       ch = nibble + '0';
@@ -1024,7 +1012,8 @@ char *double2hex(char *buffer, void *format, f64 value)
   }
   return out;
 }
-
+#pragma pop
+#pragma optimization_level 3
 char *longlong2str_802335D8(s64 value, char *buffer, void *format)
 {
     typedef struct {

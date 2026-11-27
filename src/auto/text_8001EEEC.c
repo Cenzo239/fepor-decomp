@@ -362,10 +362,11 @@ void fn_8001F140(void *arg0) {
         r -= 1;
     }
 
-    var_r4 = 1;
+    one = 1;
+    var_r4 = one;
     temp = (u8)(lbl_80367289 - 1);
-    u = (u32)(1 - temp) >> 1;
-    t = ~temp | var_r4;
+    u = (u32)(one - temp) >> 1;
+    t = ~temp | one;
     if (((u32)(t - u) >> 31) == 0) {
         var_r4 = 0;
     }

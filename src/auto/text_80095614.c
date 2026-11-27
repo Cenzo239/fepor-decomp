@@ -80,14 +80,15 @@ void fn_800956D8(u8 *arg0) {
  void EventLock_Inc(void);
  extern u8 gBattle[],gEventSlots[];
  extern f32 lbl_803697B8,lbl_803697BC,lbl_803697C0;
- u8 *cam; s32 i; u8 *unit; s32 count; u8 *slot; f32 x,y; f32 minimum;
+ u8 *cam; s32 i; f32 x,y; f32 minimum;
  cam=Camera_GetActive(); minimum=40.0f;
  *(f32 *)(arg0+0x30)=*(f32 *)(cam+8);
  *(u32 *)(arg0+0x60)=*(u32 *)(cam+0x20);
  if(*(f32 *)(cam+8)<minimum) *(f32 *)(cam+8)=minimum;
  if(*(s32 *)(gBattle+0xCA8)>=5 && *(s32 *)(cam+0x20)==0) fn_80019384(cam,1);
  if(*(s32 *)(gBattle+0xCA8)>=5) {
- count=0; x=0.0f; y=0.0f;
+ u8 *slot; u8 *unit; s32 count;
+ x=0.0f; count=0; y=0.0f;
  for(i=0;i<3;i++) {
  u8 *event=*(u8 **)(gEventSlots+i*20);
  if(event) unit=*(u8 **)(event+0x280); else unit=0;

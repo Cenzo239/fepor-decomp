@@ -969,7 +969,7 @@ int fn_802368F4(f64 *y, f64 x) {
     extern const f64 lbl_8036C008;
     extern s32 lbl_80282E08[];
     extern s32 lbl_80282D00[];
-    f64 t, w, r, fn, z;
+    f64 t, w, r, z, fn;
     f64 pio2_1, pio2_2;
     f64 tx[3];
     int e0, i, j, nx, n, ix, hx;
@@ -985,11 +985,11 @@ int fn_802368F4(f64 *y, f64 x) {
         if (hx > 0) {
             z = x - lbl_8036BFC0;
             if ((unsigned)(ix - 0x3ff90000) != 0x21fbU) {
-                                y[0] = z - lbl_8036BFC8;
+                y[0] = z - lbl_8036BFC8;
                 y[1] = (z - y[0]) - lbl_8036BFC8;
             } else {
                 pio2_2 = lbl_8036BFD0;
-                                z -= pio2_2;
+                z -= pio2_2;
                 y[0] = z - lbl_8036BFD8;
                 y[1] = (z - y[0]) - lbl_8036BFD8;
             }
@@ -997,11 +997,11 @@ int fn_802368F4(f64 *y, f64 x) {
         } else {
             z = lbl_8036BFC0 + x;
             if ((unsigned)(ix - 0x3ff90000) != 0x21fbU) {
-                                y[0] = lbl_8036BFC8 + z;
+                y[0] = lbl_8036BFC8 + z;
                 y[1] = lbl_8036BFC8 + (z - y[0]);
             } else {
                 pio2_2 = lbl_8036BFD0;
-                                z += pio2_2;
+                z += pio2_2;
                 y[0] = lbl_8036BFD8 + z;
                 y[1] = lbl_8036BFD8 + (z - y[0]);
             }
@@ -1013,7 +1013,7 @@ int fn_802368F4(f64 *y, f64 x) {
         n = (int)(lbl_8036BFE8 * t + lbl_8036BFE0);
         fn = (f64)n;
         pio2_1 = lbl_8036BFC0;
-                r = t - pio2_1 * fn;
+        r = t - pio2_1 * fn;
         w = lbl_8036BFC8 * fn;
         if (n < 32 && ix != lbl_80282E08[n - 1]) {
             y[0] = r - w;

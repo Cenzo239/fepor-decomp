@@ -226,7 +226,6 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         virtual s32 v14() = 0;
         virtual s32 v15() = 0;
     };
-    s32 src;
     s32 nbytes;
     u8 *color;
     s32 a3;
@@ -235,6 +234,8 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
     s32 count;
     u8 *pixels;
     u32 off;
+    s32 src;
+    s32 raw;
     u8 *srcPtr;
     u16 pix;
     u16 r, g, b;
@@ -255,11 +256,11 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
             if (color[0] == 0 && color[1] == 0 && color[2] == 0) {
                 fn_8000A03C((u8 *)arg0 + 4, (u8 *)arg0 + 0x24, 0, 0x11);
             } else {
-                src = fn_80222CDC((u8 *)arg0 + 0x24);
-                count = fn_80222CE8((u8 *)arg0 + 0x24);
-                srcPtr = (u8 *)((u32)src + 0x80000000);
-                nbytes = ((u16)count) << 1;
-                count = (u16)count;
+                nbytes = fn_80222CDC((u8 *)arg0 + 0x24);
+                raw = fn_80222CE8((u8 *)arg0 + 0x24);
+                srcPtr = (u8 *)((u32)nbytes + 0x80000000);
+                nbytes = ((u16)raw) << 1;
+                count = (u16)raw;
                 memcpy(*(void **)((u8 *)arg0 + 0x3C), srcPtr, nbytes);
                 for (off = 0; count > 0; off += 2) {
                     pixels = *(u8 **)((u8 *)arg0 + 0x3C);

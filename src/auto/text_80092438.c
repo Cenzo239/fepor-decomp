@@ -808,6 +808,8 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 fn_80105BC0(void *, s32);
     struct { unsigned ok : 8; unsigned result : 8; } t;
+    u32 lo;
+    u32 hi;
     u64 flags;
     u64 flags2;
     u8 tmp;
@@ -815,7 +817,9 @@ u8 fn_800939FC(void *arg0, void *arg1) {
     u8 var_r0;
 
     t.result = 0;
-    flags = (u64)*(u32 *)((u8 *)arg1 + 0x3C) | ((u64)*(u32 *)((u8 *)arg1 + 0x38) << 32);
+    lo = *(u32 *)((u8 *)arg1 + 0x3C);
+    hi = *(u32 *)((u8 *)arg1 + 0x38);
+    flags = (u64)lo | ((u64)hi << 32);
     flags2 = flags;
 
     if (flags & 8) {

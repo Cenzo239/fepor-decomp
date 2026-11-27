@@ -329,6 +329,8 @@ void fn_8014CAD4(void *arg0, f32 farg0, f32 farg1) {
     *(f32 *)((u8 *)arg0 + 0x53C) = Map_SampleHeight(gBattleMap);
 }
 
+#pragma push
+#pragma optimization_level 4
 void fn_8014CB14(void *arg0, void *arg1) {
     f32 Map_SampleHeight(void *, f32, f32);
     extern f32 lbl_8036A7F0;
@@ -347,7 +349,7 @@ void fn_8014CB14(void *arg0, void *arg1) {
     *(f32 *)((u8 *)arg0 + 0x534) = temp_f31;
     *(f32 *)((u8 *)arg0 + 0x538) = temp_f30;
 }
-
+#pragma pop
 void BattleState_SetCamPos(void *arg0, f32 farg0, f32 farg1) {
     f32 Map_SampleHeight(void *, f32, f32);
     extern f32 lbl_8036A7F0;

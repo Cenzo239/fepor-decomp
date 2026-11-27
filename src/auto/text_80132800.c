@@ -6015,7 +6015,7 @@ void fn_8013B254(void *arg0)
   void *q;
   void *p;
   zero = 0;
-  *((s16 *) (((s8 *) arg0) + 0x64)) = Ui_IncrementByEight(*((s16 *) (((s8 *) arg0) + 0x64)));
+  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
   new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));

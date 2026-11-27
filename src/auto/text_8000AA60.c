@@ -871,9 +871,8 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
     u8 *b;
 
     var_r31 = gProcesses;
-    var_r30 = 0;
     var_r29 = arg0;
-    do {
+    for (var_r30 = 0; var_r30 < 0x100; var_r30++) {
         if (*(u32 *)var_r31 != 0) {
             s32 d;
             s32 c1;
@@ -900,9 +899,8 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
                 Process_Unlink(var_r31);
             }
         }
-        var_r30 += 1;
         var_r31 += 0x70;
-    } while (var_r30 < 0x100);
+    }
 }
 
 #pragma push
@@ -1566,51 +1564,60 @@ void fn_8000CD80(s32 arg0) {
     lbl_80367158 = arg0;
 }
 
-s32 Rand_TrueHit(s32 arg0) {
-    struct RandSt { u16 a; u16 b; u16 c; };
-    extern struct RandSt lbl_80367150;
-    s32 sum;
-    s32 scaled;
-    u16 t6;
-    s32 s1;
-    s32 s2;
-    s32 s0;
-    struct RandSt *st;
-
-    st = &lbl_80367150;
-    s0 = lbl_80367150.a;
-    s2 = st->c;
-    s1 = st->b;
-    s2 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    st->c = s2;
-    if (s1 & 0x8000) {
-        st->c = s2 + 1;
-    }
-    t6 ^= st->c;
-    st->c = st->b;
-    scaled = (u16)t6 * 100;
-    st->b = lbl_80367150.a;
-    lbl_80367150.a = t6;
-    sum = scaled / 65536;
-
-    s0 = lbl_80367150.a;
-    s2 = st->c;
-    s1 = st->b;
-    s2 = (s2 * 2) & 0xFFFE;
-    t6 = (u16)((s1 << 11) + (s0 >> 5));
-    st->c = s2;
-    if (s1 & 0x8000) {
-        st->c = s2 + 1;
-    }
-    t6 ^= st->c;
-    st->c = st->b;
-    scaled = (u16)t6 * 100;
-    st->b = lbl_80367150.a;
-    lbl_80367150.a = t6;
-    sum += scaled / 65536;
-
-    return (sum / 2) < arg0;
+s32 Rand_TrueHit(s32 arg0)
+{
+  struct RandSt
+  {
+    u16 a;
+    u16 b;
+    u16 c;
+  };
+  extern struct RandSt lbl_80367150;
+  s32 sum;
+  s32 scaled;
+  u16 t6;
+  unsigned short t4;
+  s32 s1;
+  s32 s2;
+  s32 s0;
+  s32 s0h;
+  u8 *st;
+  st = (u8 *)&lbl_80367150;
+  s0 = lbl_80367150.a;
+  s2 = *(u16 *)(st + 4);
+  s1 = *(u16 *)(st + 2);
+  t4 = (s2 * 2) & 0xFFFE;
+  s0h = s0 >> 5;
+  t6 = (u16) ((s1 << 11) + s0h);
+  *(u16 *)(st + 4) = t4;
+  if (s1 & 0x8000)
+  {
+    *(u16 *)(st + 4) = t4 + 1;
+  }
+  t6 ^= *(u16 *)(st + 4);
+  *(u16 *)(st + 4) = *(u16 *)(st + 2);
+  scaled = ((u16) t6) * 100;
+  *(u16 *)(st + 2) = lbl_80367150.a;
+  lbl_80367150.a = t6;
+  sum = scaled / 65536;
+  s0 = lbl_80367150.a;
+  s2 = *(u16 *)(st + 4);
+  s1 = *(u16 *)(st + 2);
+  t4 = (s2 * 2) & 0xFFFE;
+  s0h = s0 >> 5;
+  t6 = (u16) ((s1 << 11) + s0h);
+  *(u16 *)(st + 4) = (((((((((t4 & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF;
+  if (s1 & 0x8000)
+  {
+    *(u16 *)(st + 4) = t4 + 1;
+  }
+  t6 ^= *(u16 *)(st + 4);
+  *(u16 *)(st + 4) = *(u16 *)(st + 2);
+  scaled = ((u16) t6) * 100;
+  *(u16 *)(st + 2) = lbl_80367150.a;
+  lbl_80367150.a = t6;
+  sum += scaled / 65536;
+  return (sum / 2) < arg0;
 }
 
 #pragma global_optimizer off

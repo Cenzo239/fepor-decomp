@@ -2944,18 +2944,18 @@ extern "C" void fn_801AE154(void *arg0) {
     fn_8015267C(0x88, 0x40, 0x10);
 }
 #pragma cplusplus reset
-void fn_801AE1B0(void *arg0, void *arg1) {
-    s32 *fn_8013F748(void *, void *, s16 *);
-    void *spC;
+void fn_801AE1B0(s32 *arg0, void *arg1) {
+    s32 *fn_8013F748(void *, M2C_UNK *, s16 *);
+    M2C_UNK spC;
     s16 sp8[2];
     s16 a;
     s16 b;
-    s16 sel;
+    s32 sel;
 
-    sel = *(s16 *)((u8 *)arg1 + 0x3E);
+    sel = (s32)M2C_FIELD(arg1, s16 *, 0x3E);
     switch (sel) {
     case 0:
-        a = (s16)(*(s16 *)((u8 *)arg1 + 0x40) * 0x1A + 0x28);
+        a = M2C_FIELD(arg1, s16 *, 0x40) * 0x1A + 0x28;
         b = 0x18;
         break;
     case 1:
@@ -2969,7 +2969,7 @@ void fn_801AE1B0(void *arg0, void *arg1) {
     }
     sp8[0] = a;
     sp8[1] = b;
-    *(s32 *)arg0 = *fn_8013F748(arg1, &spC, sp8);
+    *arg0 = *(s32 *)fn_8013F748(arg1, &spC, sp8);
 }
 
 s32 fn_801AE24C(void *arg0) {

@@ -142,27 +142,26 @@ extern s32 RunQueueHint_8036851C;
 
 #pragma use_lmw_stmw on
 
+#pragma push
+#pragma optimization_level 3
 void OSClearStack(u8 fill) {
     void *fn_80205B50(void);
     u32 pattern;
     u32 *sp;
     u32 *p;
-    u32 limit;
     u32 size;
 
     pattern = ((u32)fill << 24) | ((u32)fill << 16) |
               ((u32)fill << 8) | (u32)fill;
     sp = fn_80205B50();
-    limit = (u32)sp + 3;
     p = *(u32 **)((u8 *)*(void **)0x800000E4 + 0x308) + 1;
-    size = (limit - (u32)p) >> 2;
+    size = (((u32)sp + 3) - (u32)p) >> 2;
 
-    if (p < sp) {
-        while (size) {
+    if ((u32)p < (u32)sp) {
+        while (size != 0) {
             *p++ = pattern;
             size--;
         }
     }
 }
-
-#pragma use_lmw_stmw reset
+#pragma pop

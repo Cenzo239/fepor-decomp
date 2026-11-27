@@ -1292,7 +1292,9 @@ void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
     OSContext tempContext;
+    OSContext *ctx;
     *(u32 *)0xCC006C00 |= 8;
+    ctx = context;
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
     if (lbl_80368698 != 0) {
@@ -1300,7 +1302,7 @@ void fn_80213CB0(s32 arg0, OSContext *context)
         lbl_80368698(regs[2]);
     }
     OSClearContext(&tempContext);
-    OSSetCurrentContext(context);
+    OSSetCurrentContext(ctx);
 }
 #pragma optimization_level reset
 #pragma opt_lifetimes off

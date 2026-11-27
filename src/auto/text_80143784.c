@@ -1008,7 +1008,7 @@ extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     s16 c;
     s16 a;
     s16 b;
-#pragma opt_strength_reduction off
+
     idx = ((Obj *)arg1)->v10();
     slot = (u8 *)arg1 + (idx << 1);
     x88 = *(s16 *)((u8 *)arg1 + 0x88);

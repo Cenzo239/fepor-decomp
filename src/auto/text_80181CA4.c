@@ -859,9 +859,9 @@ void fn_80181DF0(s32 *arg0, void **arg1) {
     void *sp8;
     void **node;
     void **node2;
-    void *idNode;
-    void *idNode2;
     void *unitNode2;
+    void *idNode2;
+    void *idNode;
     void *unitNode;
     s32 sNode2;
     s32 sNode;

@@ -1646,35 +1646,38 @@ extern "C" void fn_80113658(void *arg0, void *arg1) {
 void fn_801136EC(f32 *arg0, void *arg1) {
     s32 fn_800E4F0C(void *, char *);
     void fn_80060F70(void *, s32, f32 *);
-    extern f32 lbl_8036A1B4;
     extern f32 lbl_8036A1B8;
+    extern f32 lbl_8036A1B4;
 
-    f32 pos[3];
-    f32 x;
     f32 y;
-    f32 z;
+    f32 x;
+    f32 pos[3];
+    register f32 z;
     s32 index;
+    void (**vt)(f32 *, void *, s32);
 
-    index = fn_800E4F0C(arg1, (char *)((u32)gActorXmlStrs + 0x45b));
+    index = fn_800E4F0C(arg1, (char *)((u32)lbl_80273DF8 + 0x45b));
     if (index == -1) {
-        (*(void (**)(f32 *, void *, s32))(*(u8 **)((u8 *)arg1 + 0x40) + 0x38))(arg0, arg1, 0);
+        vt = *(void (***)(f32 *, void *, s32))((u8 *)arg1 + 0x40);
+        vt[0xe](arg0, arg1, 0);
     } else {
         fn_80060F70(*(void **)((u8 *)arg1 + 0xE0), index, pos);
         x = pos[0];
         if (x > lbl_8036A1B4 && x < lbl_8036A1B8) {
-            y = pos[1];
             z = pos[2];
+            y = pos[1];
         } else {
             z = lbl_8036A184;
-            y = z;
             x = z;
+            y = z;
         }
+        arg0[2] = z;
         arg0[0] = x;
         arg0[1] = y;
-        arg0[2] = z;
     }
 }
 
+#pragma optimization_level 2
 void fn_801137AC(f32 *out, void *arg1, u8 arg2) {
     s32 fn_800E4F0C(void *, char *);
     void fn_80060F70(void *, s32, f32 *);
@@ -1705,7 +1708,7 @@ void fn_801137AC(f32 *out, void *arg1, u8 arg2) {
     out[0] = x;
     out[2] = z;
 }
-
+#pragma optimization_level reset
 void fn_8011386C(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x14C) = -1;
 }

@@ -1819,7 +1819,11 @@ void fn_801E6CEC(void *arg0) {
     }
     fn_80057020(*(void **)((u8 *)arg0 + 0x5C));
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma peephole on
+#pragma opt_propagation off
+#pragma opt_lifetimes off
 void TabMenu_DrawHud(void *arg0) {
     f32 Math_Ease(s32, u8, f32, f32, f32, f32);
     void Prim2D_SetColorByte(s32);
@@ -1844,6 +1848,7 @@ void TabMenu_DrawHud(void *arg0) {
     extern f32 lbl_8036B770;
     extern f64 lbl_8036B778;
 
+    typedef struct { u8 pad[0x34]; u8 counter; } TabMenuCounter;
     void *self;
     s8 row;
     s32 mode;
@@ -1897,10 +1902,10 @@ void TabMenu_DrawHud(void *arg0) {
     m = *(u8 *)((u8 *)self + 0x31);
     if (m == 1) {
         if (*(u8 *)((u8 *)arg0 + 0x34) < 8) {
-            *(u8 *)((u8 *)self + 0x34) = *(u8 *)((u8 *)self + 0x34) + 1;
+            ((TabMenuCounter *)self)->counter = ((TabMenuCounter *)self)->counter + 1;
         }
     } else if (*(u8 *)((u8 *)arg0 + 0x34) != 0) {
-        *(u8 *)((u8 *)self + 0x34) = *(u8 *)((u8 *)self + 0x34) - 1;
+        ((TabMenuCounter *)self)->counter = ((TabMenuCounter *)self)->counter - 1;
     }
 
     fade = Math_Ease(5, *(u8 *)((u8 *)self + 0x34), gTabMenuZero, gTabMenuOne, (f32)*(u8 *)((u8 *)self + 0x34), lbl_8036B718);
@@ -3383,7 +3388,9 @@ void fn_801E9E30(s32 *arg0, u8 *arg1) {
     }
 }
 
-void fn_801EA018(void *arg0, const u8 *arg1) {
+#pragma push
+#pragma opt_propagation off
+void fn_801EA018(void *arg0, u8 *arg1) {
     typedef struct Node {
         struct Node *prev;
         struct Node *next;
@@ -3402,7 +3409,6 @@ void fn_801EA018(void *arg0, const u8 *arg1) {
 
     typedef struct Cmp {
         u8 v;
-        u8 pad[3];
     } Cmp;
 
     void Heap_Free(void *);
@@ -3491,9 +3497,7 @@ void fn_801EA018(void *arg0, const u8 *arg1) {
         break;
     }
 }
-
-#pragma push
-#pragma optimization_level 3
+#pragma pop
 void fn_801EA248(s32 *arg0, struct Key { u8 value; } arg1) {
     void Heap_Free(void *);
     void fn_801EA514(s32 *, s32 *, struct Key);

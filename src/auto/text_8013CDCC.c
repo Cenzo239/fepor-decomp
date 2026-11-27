@@ -865,9 +865,10 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
     s8 maxIdx = (s8)p[0x60];
     s32 rows = self->Rows();
     s32 cols = self->Cols();
+    s16 colW = cols;
     u8 skip = 0;
-    s16 row = (s16)((s8)p[0x62] / (s16)cols);
-    s16 col = (s16)((s8)p[0x62] % (s16)cols);
+    s16 row = (s16)((s8)p[0x62] / colW);
+    s16 col = (s16)((s8)p[0x62] % colW);
     u32 trig, held, edge;
     s16 rem;
     s16 sum;
@@ -884,7 +885,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         edge = held & (gPadInput[2] ^ held);
         p[0x63] = p[0x62];
         if ((s16)cols > 1) {
-            rem = (s16)(maxIdx - row * (s16)cols);
+            rem = (s16)(maxIdx - row * colW);
             if (rem > (s16)cols)
                 rem = cols;
             if (trig & 0x01000001) {
@@ -904,7 +905,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         if (trig & 0x08000008) {
             if (row == 0) {
                 if (trig == edge) {
-                    p[0x62] = (u8)(p[0x62] + (rows - 1) * (s16)cols);
+                    p[0x62] = (u8)(p[0x62] + (rows - 1) * colW);
                     if ((s8)p[0x62] > maxIdx - 1)
                         p[0x62] = (u8)(maxIdx - 1);
                 }
@@ -914,7 +915,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
         } else if (trig & 0x04000004) {
             if (row == (s16)rows - 1) {
                 if (trig == edge)
-                    p[0x62] = (u8)(p[0x62] - ((s16)rows - 1) * (s16)cols);
+                    p[0x62] = (u8)(p[0x62] - ((s16)rows - 1) * colW);
             } else {
                 p[0x62] = (u8)(p[0x62] + cols);
                 if ((s8)p[0x62] > maxIdx - 1)
@@ -935,8 +936,7 @@ extern "C" void fn_8013D2E0(void *arg0, void *arg1) {
                 fy = (f32)(*(s16 *)(p + 0x32) + *(s16 *)((u8 *)item + 0x32));
                 item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
                 inner = *(Inner **)((u8 *)item + 0x34);
-                obj = inner->v2();
-                if (obj != NULL) {
+                if ((obj = inner->v2()) != NULL) {
                     Ui_ShowUnitInfoText(gUnitInfoPopup, obj, fx, fy);
                 } else {
                     item = GfxEnt_Get(p[0x40 + (s8)p[0x62]]);
@@ -2318,28 +2318,27 @@ extern "C" void fn_8013EF00(void *arg0) {
         virtual void v2() = 0;
         virtual void v3() = 0;
     };
-    void Prim2D_Begin(void);
-    void Prim2D_SetTex(s32, u16);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_AddPrim(s32);
-    void Prim2D_SetRect(f32, f32, f32, f32);
-    void Prim2D_SetColorPacked(s32 *);
-    void Prim2D_EndPrim(void);
+    M2C_UNK fn_8000A258(void);
+    M2C_UNK fn_8000A174(s32, u16);
+    M2C_UNK fn_8000A248(void);
+    M2C_UNK fn_80007898(s32);
+    M2C_UNK fn_800077D8(f32, f32, f32, f32);
+    M2C_UNK fn_80007668(s32 *);
+    M2C_UNK fn_80007884(void);
     extern f32 lbl_8036A708;
     s32 sp8;
-    struct { s16 w, h; } size;
 
     ((Obj *)arg0)->v3();
-    Prim2D_Begin();
-    Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 2));
-    Prim2D_PrepareTex();
-    Prim2D_AddPrim(1);
-    size.w = (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12));
-    size.h = (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14));
-    Prim2D_SetRect(lbl_8036A708, lbl_8036A708, (f32)size.w, (f32)size.h);
-    sp8 = *(s32 *)((u8 *)arg0 + 0x1E);
-    Prim2D_SetColorPacked(&sp8);
-    Prim2D_EndPrim();
+    fn_8000A258();
+    fn_8000A174(0, (u16) (M2C_FIELD(arg0, u32 *, 0x34) | 2));
+    fn_8000A248();
+    fn_80007898(1);
+    fn_800077D8(lbl_8036A708, lbl_8036A708,
+                (f32) (s16) (M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)),
+                (f32) (s16) (M2C_FIELD(arg0, s16 *, 0x18) - M2C_FIELD(arg0, s16 *, 0x14)));
+    sp8 = M2C_FIELD(arg0, s32 *, 0x1E);
+    fn_80007668(&sp8);
+    fn_80007884();
 }
 #pragma cplusplus reset
 
@@ -5127,8 +5126,9 @@ extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
         u8 f;
         u32 v;
     };
-    u8 flag;
-    s32 table;
+    struct S a;
+    struct S b;
+    u8 *table;
     struct Node *sentinel;
     struct Node *head;
     struct Node *node;
@@ -5141,11 +5141,12 @@ extern "C" s16 fn_801435E0(void *arg0, u32 arg1) {
     if (idx == 0xC) {
         return -1;
     }
-    S a = { flag, arg1 };
-    table = (s32)self + idx * 0xC + 0x90;
+    a.v = arg1;
+    a.f = a.f;
+    table = (u8 *)self + idx * 0xC + 0x90;
     sentinel = (struct Node *)(table + 4);
     head = *(struct Node **)(table + 8);
-    S b = a;
+    b = a;
     node = head;
     while (node != sentinel && node->key != arg1) {
         node = node->next;

@@ -838,7 +838,7 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma opt_strength_reduction off
 
 #pragma push
-#pragma opt_common_subs off
+#pragma peephole on
 void fn_801C9170(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -847,7 +847,7 @@ void fn_801C9170(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
     extern u8 lbl_80366E9C;
-    extern struct PadInput { s32 a; s32 held; s32 raw; s32 buttons; } *gPadInput;
+    extern void *gPadInput;
     extern s8 lbl_803682B0;
     extern s8 lbl_803682B1;
     void *self;
@@ -861,9 +861,9 @@ void fn_801C9170(void *arg0) {
 
     self = arg0;
     b0 = lbl_803682B0;
-    held = gPadInput->held;
-    buttons = gPadInput->buttons;
-    trig = held & (gPadInput->raw ^ held);
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    buttons = *(s32 *)((u8 *)gPadInput + 0xC);
+    trig = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
 
     if ((s8)b0 > -0x14 && (buttons & 0x01000001)) {
         lbl_803682B0 = b0 - 1;

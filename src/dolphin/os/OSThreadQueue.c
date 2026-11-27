@@ -218,15 +218,15 @@ return 1;
 (void)pad;
 }
 
-#pragma optimization_level 2
+#pragma opt_lifetimes off
 void fn_8020A740(void *arg0) {
 s32 OSDisableInterrupts(void); void OSRestoreInterrupts(s32);
 void fn_802086A0(void*); void fn_8020AEC4(void*); void SelectThread_8020A2C4(s32);
-u8 *thread; s32 enabled; u8 *next; u8 *prev;
+u8 *thread; s32 enabled; u8 *prev; u8 *next;
 enabled=OSDisableInterrupts(); thread=*(u8**)0x800000e4;
 OSClearContext((OSContext*)thread);
 if (*(u16*)(thread+0x2ca)&1) {
-next=*(u8**)(thread+0x2fc); prev=*(u8**)(thread+0x300);
+prev=*(u8**)(thread+0x300); next=*(u8**)(thread+0x2fc);
 if(next==0) *(u8**)0x800000e0=prev; else *(u8**)(next+0x300)=prev;
 if(prev==0) *(u8**)0x800000dc=next; else *(u8**)(prev+0x2fc)=next;
 *(u16*)(thread+0x2c8)=0;
@@ -236,7 +236,7 @@ RunQueueHint_8036851C=1;
 __OSReschedule();
 OSRestoreInterrupts(enabled);
 }
-#pragma optimization_level reset
+#pragma opt_lifetimes reset
 void fn_8020A824(void *arg0) {
 typedef struct Thread Thread;
 typedef struct Queue {Thread *head,*tail;} Queue;

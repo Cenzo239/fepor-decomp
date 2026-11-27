@@ -118,11 +118,11 @@ void Ui_CreateMenu(void *, s32, s32);
 #pragma opt_strength_reduction off
 s32 fn_8014A4F8(s32 arg0, s32 arg1)
 {
-    extern u16 gSoundMenuStrings[];
-    void Heap_FreeRaw(s32);
-    s32 Heap_AllocRaw(s32);
-    void *Archive_Load(void *);
-    void Ui_CreateMenu(void *, s32, s32);
+    extern u16 lbl_80276F00[];
+    void fn_800C426C(s32);
+    s32 fn_800C42AC(s32);
+    void *fn_8003FCCC(void *);
+    void fn_80024398(void *, s32, s32);
     s32 var_r11;
     s32 var_ctr;
     s32 temp_r9, temp_r8, temp_r7, temp_r6, temp_r5, temp_r4, temp_r0, temp_r11;
@@ -132,10 +132,10 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
 
     (void)arg0;
     lbl_80367B08 = 1;
-    Heap_FreeRaw(lbl_80367B00);
+    fn_800C426C(lbl_80367B00);
     lbl_80367B00 = 0;
     var_ctr = 0x60;
-    lbl_80367B00 = Heap_AllocRaw(0x1800);
+    lbl_80367B00 = fn_800C42AC(0x1800);
     var_r11 = 0;
     for (; var_ctr != 0; var_ctr--) {
         *(s32 *)(lbl_80367B00 + var_r11) = 0;
@@ -165,7 +165,7 @@ s32 fn_8014A4F8(s32 arg0, s32 arg1)
         *(s32 *)(lbl_80367B00 + temp_r0) = 0;
     }
     lbl_80367B04 = 0;
-    var_r3 = Archive_Load((u8 *)gSoundMenuStrings + 0x6b);
+    var_r3 = fn_8003FCCC((u8 *)lbl_80276F00 + 0x6b);
     goto loop_check;
 loop_body:
     if ((s8)lbl_80367B08 == 0) {
@@ -193,7 +193,7 @@ loop_check:
     }
     lbl_80367B0D = var_r5;
     lbl_80367B0E = (lbl_80367B04 + 0x17) / 24;
-    Ui_CreateMenu(&lbl_80367B44, arg1, 0);
+    fn_80024398(&lbl_80367B44, arg1, 0);
     return 0;
 }
 void *fn_8014A6FC(void) {

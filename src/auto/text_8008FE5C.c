@@ -155,6 +155,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     fn_8007D044(0xB3, por[8], f1, f2, f3, f4);
     fn_8008CD64(lbl_80369768);
     fn_8008CD34();
+#pragma scheduling off
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
@@ -164,6 +165,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     fn_8001003C(0x86, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
     fn_8001003C(0x10, 0x48, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
+#pragma scheduling on
     UnitInfo_DrawIcons(self, 0x4A, gUiIconDrawer);
     self = *(u8 **)(self + 0x194);
     UnitInfo_DrawPanel(9, 0x68, ((u8 *)*(void **)(self + 0x190))[8]);
@@ -172,6 +174,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     b = (0xCF - Text_MeasureWidth(Msg_ResolveName(*(void **)(self + 0x188)), -1, lbl_80369754)) / 2;
     Text_Draw((s16)(b + 9), 0x6C, 1, Msg_ResolveName(*(void **)(self + 0x188)));
     Text_Draw((s16)(b - 0xF), 0x6C, 1, gBattleHelpStrings + 0x13D);
+#pragma scheduling off
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
@@ -181,6 +184,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     fn_8001003C(0x86, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
     p = Msg_Expand(gBattleHelpStrings + 0x135);
     fn_8001003C(0x10, 0xAC, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x12D, p);
+#pragma scheduling on
     UnitInfo_DrawIcons(self, 0xAE, gUiIconDrawer);
 }
 #pragma pop

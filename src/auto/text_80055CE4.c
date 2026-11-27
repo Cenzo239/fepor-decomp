@@ -255,85 +255,101 @@ void fn_800561C8(void *arg0) {
 #pragma optimization_level 2
 #pragma opt_common_subs off
 #pragma opt_lifetimes off
-void fn_800561EC(void *arg0) {
-    void Process_ClearFunc(void *);
-    extern u32 lbl_80369100;
-    extern const f64 lbl_80369118;
-    extern const f64 lbl_80369120;
-    extern const f32 gF32_0;
-    extern const f32 lbl_8036910C;
-    extern const f32 lbl_80369110;
-    extern const f32 lbl_80369114;
-    u8 sp8[4];
-    s32 half;
-    s32 period;
-    s32 pos;
-    s32 t;
-    f32 f;
-    u8 *dst;
-    u8 c0, c1, c2;
-    u8 r, g, b;
+volatile int fn_800561EC(void *arg0) {
+  void Process_ClearFunc(void *);
+  extern const f32 gF32_0;
+  extern const f32 lbl_8036910C;
+  extern const f32 lbl_80369110;
+  extern const f32 lbl_80369114;
+  extern const f64 lbl_80369118;
+  extern const f64 lbl_80369120;
+  extern u32 lbl_80369100;
+  s16 new_var2;
+  u8 new_var;
+  u8 sp8[4];
+  s32 period;
+  s32 pos;
+  s32 half;
+  s32 t;
+  f32 f;
+  u8 *dst;
+  u8 c1;
+  u8 c0;
+  u8 c2;
+  u8 b;
+  u8 r;
+  u8 g;
 
-    *(u32 *)sp8 = lbl_80369100;
-    switch (*(u8 *)((u8 *)arg0 + 0x31)) {
+  *((u32 *) sp8) = lbl_80369100;
+  switch (*((u8 *) (((u8 *) arg0) + 0x31)))
+  {
     case 0:
-        *(s16 *)((u8 *)arg0 + 0x36) += 1;
-        if (*(s16 *)((u8 *)arg0 + 0x36) >= *(s16 *)((u8 *)arg0 + 0x34)) {
-            *(s16 *)((u8 *)arg0 + 0x36) = *(s16 *)((u8 *)arg0 + 0x34);
-            Process_ClearFunc(arg0);
-        }
-        period = *(s16 *)((u8 *)arg0 + 0x34);
-        pos = *(s16 *)((u8 *)arg0 + 0x36);
-        half = period >> 1;
-        pos = pos % period;
-        if (pos < half) {
-            f = gF32_0 + (((f32)pos * lbl_8036910C) / (f32)half);
-        } else {
-            f = lbl_8036910C + (((f32)(pos - half) * lbl_80369110) / (f32)half);
-        }
-        t = (s32)f;
-        c0 = *(u8 *)((u8 *)arg0 + 0x38);
-        c1 = *(u8 *)((u8 *)arg0 + 0x39);
-        c2 = *(u8 *)((u8 *)arg0 + 0x3A);
-        dst = *(u8 **)((u8 *)arg0 + 0x4C);
-        r = (u8)(((f32)t * ((f32)c0 - gF32_0)) * lbl_80369114 + gF32_0);
-        g = (u8)(((f32)t * ((f32)c1 - gF32_0)) * lbl_80369114 + gF32_0);
-        b = (u8)(((f32)t * ((f32)c2 - gF32_0)) * lbl_80369114 + gF32_0);
-        dst[4] = r;
-        sp8[0] = r;
-        dst[5] = g;
-        sp8[1] = g;
-        dst[6] = b;
-        sp8[2] = b;
-        dst[7] = sp8[3];
-        break;
+      *((s16 *) (((u8 *) arg0) + 0x36)) += 1;
+      new_var2 = *((s16 *) (((u8 *) arg0) + 0x34));
+      if ((*((s16 *) (((u8 *) arg0) + 0x36))) >= new_var2)
+      {
+        *((s16 *) (((u8 *) arg0) + 0x36)) = *((s16 *) (((u8 *) arg0) + 0x34));
+        Process_ClearFunc(arg0);
+      }
+      period = *((s16 *) (((u8 *) arg0) + 0x34));
+      pos = *((s16 *) (((u8 *) arg0) + 0x36));
+      half = period >> 1;
+      pos = pos % period;
+      if (pos < half)
+      {
+        f = gF32_0 + ((((f32) pos) * lbl_8036910C) / ((f32) half));
+      }
+      else
+      {
+        f = lbl_8036910C + ((((f32) (pos - half)) * lbl_80369110) / ((f32) half));
+      }
+      t = (s32) f;
+      c0 = *((u8 *) (((u8 *) arg0) + 0x38));
+      c1 = *((u8 *) (((u8 *) arg0) + 0x39));
+      c2 = *((u8 *) (((u8 *) arg0) + 0x3A));
+      dst = *((u8 **) (((u8 *) arg0) + 0x4C));
+      r = (u8) (((((f32) t) * (((f32) c0) - gF32_0)) * lbl_80369114) + gF32_0);
+      g = (u8) (((((f32) t) * (((f32) c1) - gF32_0)) * lbl_80369114) + gF32_0);
+      b = (u8) (((((f32) t) * (((f32) c2) - gF32_0)) * lbl_80369114) + gF32_0);
+      dst[4] = r;
+      sp8[0] = r;
+      dst[5] = g;
+      sp8[1] = g;
+      dst[6] = b;
+      sp8[2] = b;
+      dst[7] = sp8[3];
+      break;
+
     case 1:
-        *(s16 *)((u8 *)arg0 + 0x36) += *(s8 *)((u8 *)arg0 + 0x32);
-        if (*(s16 *)((u8 *)arg0 + 0x36) <= 0) {
-            *(s16 *)((u8 *)arg0 + 0x36) = 0;
-            Process_ClearFunc(arg0);
-        }
-        if (*(s16 *)((u8 *)arg0 + 0x36) >= *(s16 *)((u8 *)arg0 + 0x34)) {
-            *(s16 *)((u8 *)arg0 + 0x36) = *(s16 *)((u8 *)arg0 + 0x34);
-        }
-        c1 = *(u8 *)((u8 *)arg0 + 0x39);
-        c0 = *(u8 *)((u8 *)arg0 + 0x38);
-        pos = *(s16 *)((u8 *)arg0 + 0x36);
-        c2 = *(u8 *)((u8 *)arg0 + 0x3A);
-        period = *(s16 *)((u8 *)arg0 + 0x34);
-        dst = *(u8 **)((u8 *)arg0 + 0x4C);
-        r = (u8)(gF32_0 + ((f32)pos * ((f32)c0 - gF32_0)) / (f32)period);
-        g = (u8)(gF32_0 + ((f32)pos * ((f32)c1 - gF32_0)) / (f32)period);
-        b = (u8)(gF32_0 + ((f32)pos * ((f32)c2 - gF32_0)) / (f32)period);
-        dst[4] = r;
-        dst[5] = g;
-        dst[6] = b;
-        sp8[0] = r;
-        sp8[1] = g;
-        sp8[2] = b;
-        dst[7] = sp8[3];
-        break;
-    }
+      *((s16 *) (((u8 *) arg0) + 0x36)) += *((s8 *) (((u8 *) arg0) + 0x32));
+      if ((*((s16 *) (((u8 *) arg0) + 0x36))) <= 0)
+      {
+        *((s16 *) (((u8 *) arg0) + 0x36)) = 0;
+        Process_ClearFunc(arg0);
+      }
+      if ((*((s16 *) (((u8 *) arg0) + 0x36))) >= (*((s16 *) (((u8 *) arg0) + 0x34))))
+      {
+        *((s16 *) (((u8 *) arg0) + 0x36)) = *((s16 *) (((u8 *) arg0) + 0x34));
+      }
+      c1 = *((u8 *) (((u8 *) arg0) + 0x39));
+      c0 = *((u8 *) (((u8 *) arg0) + 0x38));
+      new_var = *((u8 *) (((u8 *) arg0) + 0x3A));
+      pos = *((s16 *) (((u8 *) arg0) + 0x36));
+      c2 = new_var;
+      period = *((s16 *) (((u8 *) arg0) + 0x34));
+      dst = *((u8 **) (((u8 *) arg0) + 0x4C));
+      r = (u8) (gF32_0 + ((((f32) pos) * (((f32) c0) - gF32_0)) / ((f32) period)));
+      g = (u8) (gF32_0 + ((((f32) pos) * (((f32) c1) - gF32_0)) / ((f32) period)));
+      b = (u8) (gF32_0 + ((((f32) pos) * (((f32) c2) - gF32_0)) / ((f32) period)));
+      dst[4] = r;
+      dst[5] = g;
+      dst[6] = b;
+      sp8[0] = r;
+      sp8[1] = g;
+      sp8[2] = b;
+      dst[7] = sp8[3];
+      break;
+  }
 }
 #pragma pop
 void fn_80056580(void) {
@@ -1122,9 +1138,10 @@ void fn_80057AE0(void *arg0) {
         if (*(u8 *)((u8 *)temp_r28 + 0x54) != 0) {
             temp_r0 = *(s32 *)((u8 *)temp_r28 + 0x4C);
             temp_r3 = *(s32 *)((u8 *)temp_r28 + 0x44);
+            temp_f6 = lbl_80369154 * lbl_80369154;
             temp_f0 = lbl_80369154 - (f32)temp_r0;
             temp_f3 = lbl_80369134;
-            temp_r3 = (s32)(gF32_0 + (temp_f3 - ((temp_f3 * (temp_f0 * temp_f0)) / (lbl_80369154 * lbl_80369154))));
+            temp_r3 = (s32)(gF32_0 + (temp_f3 - ((temp_f3 * (temp_f0 * temp_f0)) / temp_f6)));
             switch (*(s32 *)((u8 *)temp_r28 + 0x44)) {
             case 8:
                 var_r27 -= temp_r3;

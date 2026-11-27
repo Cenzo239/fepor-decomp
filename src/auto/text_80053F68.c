@@ -767,6 +767,7 @@ void fn_80053F68(void *arg0) {
     extern void fn_80054314;
 
     typedef struct { f32 x, y, z; } Vec3;
+    u32 bit;
     u32 color;
     Vec3 tmp2;
     Vec3 tmp;
@@ -800,7 +801,8 @@ void fn_80053F68(void *arg0) {
     if (ok) {
         inner = *(void **)((u8 *)arg0 + 0x30);
         flags = *(u32 *)((u8 *)inner + 8);
-        if ((flags >> 28) & 1) {
+        bit = (flags >> 28) & 1;
+        if (bit) {
             other = *(void **)((u8 *)arg0 + 0x18);
             if (other != 0) {
                 *(u32 *)((u8 *)inner + 8) = flags | 0x10000000;

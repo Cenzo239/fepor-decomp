@@ -145,67 +145,57 @@ void fn_800059FC(s16 a, s16 b, s16 c, s16 d, s16 e) {
 }
 
 #pragma push
+#pragma optimization_level 3
 #pragma opt_common_subs off
-void fn_80005A84(s32 size, s32 count) {
-    void *fn_800C4638(s32, void *, s32);
-    extern s16 *lbl_80367100;
-    extern u8 lbl_80267B60[];
+void fn_80005A84(s32 size, s32 count)
+{
+  void *fn_800C4638(s32, void *, s32);
+  extern s16 *lbl_80367100;
+  extern u8 lbl_80267B60[];
+  u8 *self;
+  s32 tableSize;
+  u8 *p;
+  s16 x;
+  if (size == 0)
+  {
+    size = 0x34;
+  }
+  if (count == 0)
+  {
+    count = 0x200;
+  }
+  self = (u8 *) fn_800C4638(0x40, lbl_80267B60 + 0x1C, 0);
+  lbl_80367100 = (s16 *) self;
+  *((s16 *) (self + 4)) = (size + 8) & 0xFC;
+  *((s16 *) (self + 6)) = count;
+  *((s16 *) (self + 0x34)) = 8;
+  *((s16 *) (self + 0x36)) = 0;
+  self[0x16] = 0;
+  self[0x17] = 0;
+  self[0x18] = 1;
+  *((s16 *) (self + 0x3C)) = 0;
+  tableSize = (*((s16 *) (self + 6))) << 2;
+  *((u8 **) self) = (u8 *) fn_800C4638(tableSize + ((*((s16 *) (self + 4))) * (*((s16 *) (self + 6)))), lbl_80267B60 + 0x1C, 0);
+  (*((u8 ***) self))[0] = (*((u8 **) self)) + tableSize;
+  for (tableSize = 0; tableSize < (*((s16 *) (self + 6))); tableSize++)
+  {
+    (*((u8 ***) self))[tableSize] = (*((u8 ***) self))[0] + ((*((s16 *) (self + 4))) * tableSize);
+    (*((u8 ***) self))[tableSize][0] = 0;
+  }
 
-    u8 *self;
-    s32 tableSize;
-    s32 i;
-    u8 *p;
-    s16 x;
-
-    if (size == 0) {
-        size = 0x34;
-    }
-
-    if (count == 0) {
-        count = 0x200;
-    }
-
-    self = (u8 *)fn_800C4638(0x40, lbl_80267B60 + 0x1C, 0);
-    lbl_80367100 = (s16 *)self;
-
-    *(s16 *)(self + 4) = (size + 8) & 0xFC;
-    *(s16 *)(self + 6) = count;
-
-    *(s16 *)(self + 0x34) = 8;
-    *(s16 *)(self + 0x36) = 0;
-    self[0x16] = 0;
-    self[0x17] = 0;
-    self[0x18] = 1;
-    *(s16 *)(self + 0x3C) = 0;
-
-    tableSize = *(s16 *)(self + 6) << 2;
-    *(u8 **)self = (u8 *)fn_800C4638(
-        tableSize + (*(s16 *)(self + 4) * *(s16 *)(self + 6)),
-        lbl_80267B60 + 0x1C,
-        0
-    );
-
-    (*(u8 ***)self)[0] = *(u8 **)self + tableSize;
-
-    for (i = 0; i < *(s16 *)(self + 6); i++) {
-        (*(u8 ***)self)[i] = (*(u8 ***)self)[0] + (*(s16 *)(self + 4) * i);
-        (*(u8 ***)self)[i][0] = 0;
-    }
-
-    *(s16 *)((u8 *)lbl_80367100 + 8) = 0;
-    *(s16 *)((u8 *)lbl_80367100 + 0xA) = 0x10;
-    *(s16 *)((u8 *)lbl_80367100 + 0xC) = 0x260;
-    *(s16 *)((u8 *)lbl_80367100 + 0xE) = 0x1A0;
-    *(s16 *)((u8 *)lbl_80367100 + 0x12) = 0x10;
-
-    p = (u8 *)lbl_80367100;
-    x = *(s16 *)(p + 8);
-    if (x + *(s16 *)(p + 0xC) > 0x280) {
-        *(s16 *)(p + 0xC) = 0x27F - x;
-    }
-
-    *(s16 *)((u8 *)lbl_80367100 + 0x14) = 0x1A;
-    *(s16 *)(self + 0x10) = *(s16 *)(self + 0xE) - 0x41;
+  *((s16 *) (((u8 *) lbl_80367100) + 8)) = 0;
+  *((s16 *) (((u8 *) lbl_80367100) + 0xA)) = 0x10;
+  *((s16 *) (((u8 *) lbl_80367100) + 0xC)) = 0x260;
+  *((s16 *) (((u8 *) lbl_80367100) + 0xE)) = 0x1A0;
+  *((s16 *) (((u8 *) lbl_80367100) + 0x12)) = 0x10;
+  p = (u8 *) lbl_80367100;
+  x = *((s16 *) (p + 8));
+  if ((x + (*((s16 *) (p + 0xC)))) > 0x280)
+  {
+    *((s16 *) (p + 0xC)) = 0x27F - x;
+  }
+  *((s16 *) (((u8 *) lbl_80367100) + 0x14)) = 0x1A;
+  *((s16 *) (self + 0x10)) = (*((s16 *) (self + 0xE))) - 0x41;
 }
 #pragma pop
 void fn_80005C18(void) {

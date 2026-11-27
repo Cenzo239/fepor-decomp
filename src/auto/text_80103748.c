@@ -1132,9 +1132,8 @@ void *fn_80104BF4(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
         is_double = 0;
     }
     if (is_double) {
-        code = arg0[1];
         next = arg0 + 2;
-        code = ((s32)*(s8 *)arg0 << 8 & 0xFF00) | code;
+        code = (u16)(((*(s8 *)arg0 & 0xFF) << 8) | arg0[1]);
     } else {
         code = *(s8 *)arg0 & 0xFF;
         next = arg0 + 1;

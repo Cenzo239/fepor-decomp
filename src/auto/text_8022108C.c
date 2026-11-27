@@ -547,6 +547,8 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight)
 }
 #pragma use_lmw_stmw reset
 
+#pragma push
+#pragma optimization_level 3
 u32 fn_802216E0(f32 scale)
 {
     u32 yscale;
@@ -578,7 +580,7 @@ u32 fn_802216E0(f32 scale)
         result = 1024;
     return result;
 }
-
+#pragma pop
 void GXSetCopyClear(u8 *clear, u32 z) {
     u32 val;
 

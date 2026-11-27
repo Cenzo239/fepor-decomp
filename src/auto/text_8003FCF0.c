@@ -410,10 +410,11 @@ void fn_8003FED8(u8 *arg0) {
     j = 0;
     {
         u32 t4 = *(u32 *)(arg0 + 4);
+        u32 mask = t4 & ~3u;
         u32 tC = *(u32 *)(arg0 + 0xC);
         u32 t8 = *(u32 *)(arg0 + 8);
         u32 t10 = *(u32 *)(obj + 0x10);
-        p30 = (u32 *)(obj + (t4 & ~3u));
+        p30 = (u32 *)((u8 *)obj + mask);
         t8 <<= 2;
         tC <<= 3;
         t10 <<= 3;

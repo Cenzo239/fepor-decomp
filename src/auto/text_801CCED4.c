@@ -1275,6 +1275,8 @@ static inline void NameEntry_StorePair(u8 c0, u8 c1, u8 *dst) {
     dst[0] = c0;
     dst[1] = c1;
 }
+#pragma push
+#pragma optimization_level 4
 void *NameEntry_InsertChar(void *a, u8 *b)
 {
   u8 *self;
@@ -1316,8 +1318,7 @@ void *NameEntry_InsertChar(void *a, u8 *b)
   }
   return (self + ((*((s16 *) (self + 0x70))) * 4)) + 0x3c;
 }
-
-#pragma opt_unroll off
+#pragma pop
 void *fn_801CDB74(void *arg0) {
     s32 i;
     u32 *p;

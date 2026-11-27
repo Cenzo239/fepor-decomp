@@ -3916,6 +3916,8 @@ void fn_8007A46C(void *p) {
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
+#pragma push
+#pragma optimization_level 3
     void **fn_8006EDD8(void *, s32);
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -3940,7 +3942,7 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     void *info;
     void **pp;
     void *entry;
-    void *state;
+    register void *state;
     int w;
     int h;
     register u8 tint;
@@ -4006,6 +4008,7 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     pad = *(u8 *)((u8 *)obj + 0x42);
     Prim2D_SetColor(tint, tint, tint, pad);
     Prim2D_EndPrim();
+#pragma pop
 }
 
 #pragma push
@@ -4316,11 +4319,6 @@ void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
     void Prim2D_EndPrim(void);
     extern const f32 lbl_803693D4;
     u8 tint;
-    s16 x;
-    s16 y;
-    s32 mode;
-    u32 pad;
-    void *obj;
     void *info;
     void **pp;
     void *entry;
@@ -4329,63 +4327,61 @@ void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
     s32 w2;
     s32 h2;
     f32 scale;
+    s16 x;
+    s16 y;
 
-    mode = arg4;
-    obj = arg0;
-    pad = arg3;
     tint = *(u8 *)((u8 *)arg0 + 0x41);
-    if ((u32)(mode - 7) > 1U) {
-        if (mode == 9) {
-            info = *(void **)((u8 *)obj + 0x34);
+    if ((u32)(arg4 - 7) > 1U) {
+        if (arg4 == 9) {
+            info = *(void **)((u8 *)arg0 + 0x34);
             if (*(u16 *)((u8 *)info + 0xC) == *(u16 *)((u8 *)info + 0x10)) {
                 return;
             }
         }
     }
-    if (mode == 7) {
-        info = *(void **)((u8 *)obj + 0x34);
+    if (arg4 == 7) {
+        info = *(void **)((u8 *)arg0 + 0x34);
         x = *(u16 *)((u8 *)info + 0xC);
         y = *(u16 *)((u8 *)info + 0xE);
     } else {
-        info = *(void **)((u8 *)obj + 0x34);
+        info = *(void **)((u8 *)arg0 + 0x34);
         x = *(u16 *)((u8 *)info + 0x10);
         y = *(u16 *)((u8 *)info + 0x12);
     }
     if (x != -1) {
-        info = *(void **)((u8 *)obj + 0x34);
-        if ((*(u16 *)((u8 *)info + 0x18) & 2) == 0) {
-            mode -= 6;
+        if ((*(u16 *)(*(u8 **)((u8 *)arg0 + 0x34) + 0x18) & 2) == 0) {
+            arg4 -= 6;
         }
-        pp = fn_8006EDD8(*(void **)((u8 *)obj + 0x30), 0);
+        pp = fn_8006EDD8(*(void **)((u8 *)arg0 + 0x30), 0);
         entry = *pp;
         w = *(u16 *)((u8 *)entry + 2);
         h = *(u16 *)((u8 *)entry + 0);
-        if ((*(u16 *)((u8 *)obj + 0x46) & 1) != 0) {
+        if ((*(u16 *)((u8 *)arg0 + 0x46) & 1) != 0) {
             x = w - x;
         }
         x += arg1 - (w >> 1);
         y += arg2 - h;
-        pp = fn_8006EDD8(*(void **)((u8 *)obj + 0x30), mode);
+        pp = fn_8006EDD8(*(void **)((u8 *)arg0 + 0x30), arg4);
         entry = *pp;
         w2 = *(u16 *)((u8 *)entry + 2);
         h2 = *(u16 *)((u8 *)entry + 0);
-        if ((*(u16 *)((u8 *)obj + 0x46) & 1) != 0) {
+        if ((*(u16 *)((u8 *)arg0 + 0x46) & 1) != 0) {
             x -= w2;
         }
         Prim2D_Begin();
-        fn_80009EB0(*(void **)((u8 *)obj + 0x30), mode, *(u8 *)((u8 *)obj + 0x40), 0x11);
+        fn_80009EB0(*(void **)((u8 *)arg0 + 0x30), arg4, *(u8 *)((u8 *)arg0 + 0x40), 0x11);
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
-        if ((*(u16 *)((u8 *)obj + 0x46) & 1) != 0) {
+        if ((*(u16 *)((u8 *)arg0 + 0x46) & 1) != 0) {
             Prim2D_SetQuadMin((f32)x, (f32)y, (f32)w2, lbl_803693D4);
-            scale = *(f32 *)((u8 *)obj + 0x4C);
+            scale = *(f32 *)((u8 *)arg0 + 0x4C);
             Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, lbl_803693D4, (f32)h2);
         } else {
             Prim2D_SetQuadMin((f32)x, (f32)y, lbl_803693D4, lbl_803693D4);
-            scale = *(f32 *)((u8 *)obj + 0x4C);
+            scale = *(f32 *)((u8 *)arg0 + 0x4C);
             Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, (f32)w2, (f32)h2);
         }
-        Prim2D_SetColor(tint, tint, tint, pad);
+        Prim2D_SetColor(tint, tint, tint, (u8)arg3);
         Prim2D_EndPrim();
     }
 }
@@ -4551,20 +4547,19 @@ found:
 }
 
 #pragma push
-#pragma optimization_level 4
-#pragma opt_propagation off
+#pragma optimization_level 3
 void *fn_8007BD30(s32 index, void *name, s32 x, s32 y, u32 flags, s32 unused, void *parent) {
 extern void *gFaceSlots[]; extern u8 lbl_80288AD8[],lbl_8026C640[];
 extern f32 lbl_803693D8,lbl_803693D4;
 void *Res_GetByName(void *); void *Process_Create(void *,void *); void Process_Goto(void *,s32); s32 fn_802002F0(s32);
-u8 *found; u8 *res; u8 *face; u8 *child; s32 mode; u8 (*scripts)[0x18]=(void *)lbl_80288AD8;
+u8 *found; u8 *res; u8 *face; u8 *child; s32 mode; u8 *scripts=lbl_80288AD8;
 found=Res_GetByName(name);
 if(found) res=found; else res=Res_GetByName(lbl_8026C640+0xef);
 if(gFaceSlots[index]) return 0;
 mode=flags&0x100;
 if(mode) {
 if(!parent) parent=(void *)3;
-face=Process_Create(scripts[0],parent);
+face=Process_Create(scripts,parent);
 M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
 M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
 M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
@@ -4574,7 +4569,7 @@ M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
 gFaceSlots[index]=face; M2C_FIELD(face,s32 *,0x30)=0; return face;
 }
 if(!parent) parent=(void *)3;
-face=Process_Create(scripts[1],parent);
+face=Process_Create(scripts+0x18,parent);
 M2C_FIELD(face,void **,0x34)=res; face[0x40]=index;
 M2C_FIELD(face,f32 *,0x38)=x; M2C_FIELD(face,f32 *,0x3c)=y;
 M2C_FIELD(face,u16 *,0x46)=flags; face[0x41]=255; face[0x42]=0;
@@ -4582,9 +4577,9 @@ M2C_FIELD(face,f32 *,0x4c)=1.0f; M2C_FIELD(face,f32 *,0x48)=0.0f;
 if(flags&0x200) { M2C_FIELD(face,u16 *,0x46)&=~0x202; if(M2C_FIELD(M2C_FIELD(face,void **,0x34),u8 *,0x1c)==0) M2C_FIELD(face,u16 *,0x46)|=2; }
 M2C_FIELD(face,void **,0x50)=0; M2C_FIELD(face,void **,0x54)=0;
 if(!mode) {
-if(M2C_FIELD(res,u16 *,0x18)&2) M2C_FIELD(face,void **,0x50)=Process_Create((u8 *)scripts+0xc8,face);
+if(M2C_FIELD(res,u16 *,0x18)&2) M2C_FIELD(face,void **,0x50)=Process_Create(scripts+0xc8,face);
 if(M2C_FIELD(res,u16 *,0x18)&1) {
-M2C_FIELD(face,void **,0x54)=Process_Create((u8 *)scripts+0xe4,face);
+M2C_FIELD(face,void **,0x54)=Process_Create(scripts+0xe4,face);
 switch((s32)(flags&12)) {
 case 12: break;
 case 4: child=M2C_FIELD(face,void **,0x54); if(child) { M2C_FIELD(child,u16 *,0x36)=3; M2C_FIELD(child,u16 *,0x38)=5; Process_Goto(child,8); } break;

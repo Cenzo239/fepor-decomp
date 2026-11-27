@@ -1257,46 +1257,60 @@ void __OSInitAudioSystem(void) {
     u32 OSGetTick(void);
     void *memcpy(void *, void *, u32);
     extern u8 DSPInitCode_8029BB30[];
-    extern volatile u16 OS_DSPRegs[];
-    volatile u16 *dsp, *csr, *p30, *p29;
-    volatile u32 *p27, *p26, *p25;
     u32 tick, v;
     u16 tmp;
+
     memcpy(OSGetArenaHi() - 0x80, (void *)0x81000000, 0x80);
     memcpy((void *)0x81000000, DSPInitCode_8029BB30, 0x80);
     DCFlushRange((void *)0x81000000, 0x80);
-    dsp = OS_DSPRegs;
-    dsp[9] = 0x43;
-    csr = dsp + 5;
-    *csr = 0x8AC;
-    *csr |= 1;
-    while (*csr & 1) {}
-    dsp[0] = 0;
-    do {
-        p30 = dsp + 2;
-        p29 = dsp + 3;
-        v = ((u32)*p30 << 16) | *p29;
-    } while (v & 0x80000000);
-    p27 = (volatile u32 *)((u8 *)dsp + 0x20);
-    p26 = (volatile u32 *)((u8 *)dsp + 0x24);
-    p25 = (volatile u32 *)((u8 *)dsp + 0x28);
-    *p27 = 0x01000000; *p26 = 0; *p25 = 0x20;
-    for (tmp = *csr; !(tmp & 0x20); tmp = *csr) {}
-    *csr = tmp;
+
+    __DSPRegsInit[9] = 0x43;
+    __DSPRegsInit[5] = 0x8AC;
+    __DSPRegsInit[5] |= 1;
+    while (__DSPRegsInit[5] & 1) {}
+
+    __DSPRegsInit[0] = 0;
+    while (((__DSPRegsInit[2] << 16) | __DSPRegsInit[3]) & 0x80000000) {}
+
+    *(volatile u32 *)(&__DSPRegsInit[16]) = 0x01000000;
+    *(volatile u32 *)(&__DSPRegsInit[18]) = 0;
+    *(volatile u32 *)(&__DSPRegsInit[20]) = 0x20;
+
+    tmp = __DSPRegsInit[5];
+    while (!(tmp & 0x20)) {
+        tmp = __DSPRegsInit[5];
+    }
+    __DSPRegsInit[5] = tmp;
+
     tick = OSGetTick();
     while ((s32)(OSGetTick() - tick) < 0x892) {}
-    *p27 = 0x01000000; *p26 = 0; *p25 = 0x20;
-    for (tmp = *csr; !(tmp & 0x20); tmp = *csr) {}
-    *csr = tmp;
-    *csr &= ~0x800;
-    while (*csr & 0x400) {}
-    *csr &= ~4;
-    for (tmp = *p30; !(tmp & 0x8000); tmp = *p30) {}
-    v = ((u32)tmp << 16) | *p29;
-    *csr |= 4;
-    *csr = 0x8AC;
-    *csr |= 1;
-    while (*csr & 1) {}
+
+    *(volatile u32 *)(&__DSPRegsInit[16]) = 0x01000000;
+    *(volatile u32 *)(&__DSPRegsInit[18]) = 0;
+    *(volatile u32 *)(&__DSPRegsInit[20]) = 0x20;
+
+    tmp = __DSPRegsInit[5];
+    while (!(tmp & 0x20)) {
+        tmp = __DSPRegsInit[5];
+    }
+    __DSPRegsInit[5] = tmp;
+
+    __DSPRegsInit[5] &= ~0x800;
+    while (__DSPRegsInit[5] & 0x400) {}
+    __DSPRegsInit[5] &= ~4;
+
+    tmp = __DSPRegsInit[2];
+    while (!(tmp & 0x8000)) {
+        tmp = __DSPRegsInit[2];
+    }
+    v = tmp;
+    v = __DSPRegsInit[3];
+
+    __DSPRegsInit[5] |= 4;
+    __DSPRegsInit[5] = 0x8AC;
+    __DSPRegsInit[5] |= 1;
+    while (__DSPRegsInit[5] & 1) {}
+
     memcpy((void *)0x81000000, OSGetArenaHi() - 0x80, 0x80);
 }
 
@@ -2234,9 +2248,9 @@ void __OSUnhandledException(u8 exception, OSContext *context, u32 dsisr, u32 dar
     OSErrorHandler *table;
     char *msgs;
     u32 srr1;
-    OSErrorHandler *entry;
     u32 exc;
     s64 now;
+    OSErrorHandler *entry;
 
     table = __OSErrorTable;
     msgs = lbl_8029BFB8;
@@ -2765,133 +2779,163 @@ u16 fn_802072A0(void) {
     return lbl_80366F48;
 }
 #pragma opt_common_subs reset
-u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2) {
-    s32 fn_802096B0(void *, s32, s32);
-    void Yay0_Decode(u8 *, u8 *);
-    s32 OSFontCodeToIndex(u16, u16);
-    extern u32 lbl_8036BCA0;
-    extern u32 lbl_8036BCA4;
-    s32 var_r25;
-    s32 var_r26;
-    s32 var_r27;
-    u8 *var_r31;
-    u32 size;
-    s32 idx;
-    s32 sheet;
-    s32 pos;
-    s32 row;
-    s32 col;
-    s32 x;
-    u8 *base;
-    s32 temp_r0;
-    s32 temp_r3;
-    s32 temp_r5;
-    s32 temp_r8;
-    s32 temp_r9;
-    u32 imageOffset;
-    u32 sp1C;
-    u32 sp20;
-
-    if (arg1 == 1) {
-        var_r31 = arg0;
-        var_r26 = 0x1AFF00;
-        var_r27 = 0x4D000;
-        while (var_r27 > 0) {
-            if (var_r27 <= 0x100) {
-                var_r25 = var_r27;
-            } else {
-                var_r25 = 0x100;
-            }
-            var_r27 -= var_r25;
-            do {
-            } while (fn_802096B0(var_r31, var_r25, var_r26) == 0);
-            var_r26 += var_r25;
-            var_r31 += var_r25;
-        }
-    } else {
-        var_r27 = (s32)arg0;
-        var_r31 = (u8 *)0x1FCF00;
-        var_r26 = 0x3000;
-        while (var_r26 > 0) {
-            if (var_r26 <= 0x100) {
-                var_r25 = var_r26;
-            } else {
-                var_r25 = 0x100;
-            }
-            var_r26 -= var_r25;
-            do {
-            } while (fn_802096B0((u8 *)var_r27, var_r25, (s32)var_r31) == 0);
-            var_r31 += var_r25;
-            var_r27 += var_r25;
-        }
+u32 fn_80207304(u8 *arg0, u16 arg1, FontImageHeader *arg2)
+{
+  s32 fn_802096B0(void *, s32, s32);
+  void Yay0_Decode(u8 *, u8 *);
+  s32 OSFontCodeToIndex(u16, u16);
+  u16 *new_var5;
+  extern u32 lbl_8036BCA0;
+  extern u32 lbl_8036BCA4;
+  s32 var_r25;
+  s32 var_r26;
+  s32 var_r27;
+  int new_var2;
+  u8 *var_r31;
+  u32 size;
+  s32 idx;
+  u32 new_var4;
+  s32 sheet;
+  s32 pos;
+  s32 row;
+  s32 col;
+  s32 x;
+  u8 *base;
+  int new_var3;
+  s32 temp_r0;
+  s32 temp_r3;
+  s32 temp_r5;
+  int new_var6;
+  s32 temp_r8;
+  s32 temp_r9;
+  u32 imageOffset;
+  u32 sp1C;
+  u32 sp20;
+  u8 *new_var;
+  if (arg1 == 1)
+  {
+    var_r31 = arg0;
+    var_r26 = 0x1AFF00;
+    var_r27 = 0x4D000;
+    while (var_r27 > 0)
+    {
+      if (var_r27 < (0x100 + 1))
+      {
+        var_r25 = var_r27;
+      }
+      else
+      {
+        var_r25 = 0x100;
+      }
+      var_r27 -= var_r25;
+      do
+      {
+      }
+      while (fn_802096B0(var_r31, var_r25, var_r26) == 0);
+      var_r26 += var_r25;
+      var_r31 += var_r25;
     }
 
-    if (arg0[0] == 0x59 && arg0[1] == 0x61 && arg0[2] == 0x79) {
-        size = *(u32 *)(arg0 + 4);
-    } else {
-        size = 0;
+  }
+  else
+  {
+    var_r27 = (s32) arg0;
+    var_r31 = (u8 *) 0x1FCF00;
+    var_r26 = 0x3000;
+    while (var_r26 > 0)
+    {
+      if (var_r26 <= 0x100)
+      {
+        var_r25 = var_r26;
+      }
+      else
+      {
+        var_r25 = 0x100;
+      }
+      var_r26 -= var_r25;
+      new_var = var_r31;
+      do
+      {
+      }
+      while (fn_802096B0((u8 *) var_r27, var_r25, (s32) new_var) == 0);
+      var_r31 += var_r25;
+      var_r27 += var_r25;
     }
-    if (size == 0) {
-        return 0;
-    }
-    Yay0_Decode(arg0, (u8 *)arg2);
-    if (arg1 == 1) {
-        sp1C = lbl_8036BCA0;
-        sp20 = lbl_8036BCA4;
-        idx = OSFontCodeToIndex(arg1, 0x54);
-        temp_r9 = arg2->columns;
-        temp_r8 = temp_r9 * arg2->rows;
-        imageOffset = arg2->imageOffset;
-        temp_r5 = arg2->height;
-        temp_r0 = arg2->sheetWidth;
-        sheet = idx / temp_r8;
-        pos = idx % temp_r8;
-        row = pos / temp_r9;
-        col = pos - row * temp_r9;
-        row *= temp_r5;
-        x = col * arg2->width;
-        base = (u8 *)arg2 + imageOffset;
-        base += ((u32)(sheet * arg2->sheetSize) >> 1);
-        temp_r0 = ((temp_r0 / 8) << 5) / 2;
 
-
-        {
-            s32 a = row + 4;
-            u8 *dst = base + temp_r0 * (a / 8);
-            dst += (x / 8) * 16;
-            dst += (a % 8) * 2;
-            dst += (x % 8) / 4;
-            *(u16 *)dst = ((u16 *)&sp1C)[0];
-        }
-        {
-            s32 a = row + 5;
-            s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            u8 *dst = base + f * (a / 8);
-            dst += (x / 8) * 16;
-            dst += (a % 8) * 2;
-            dst += (x % 8) / 4;
-            *(u16 *)dst = ((u16 *)&sp1C)[1];
-        }
-        {
-            s32 a = row + 6;
-            s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            u8 *dst = base + f * (a / 8);
-            dst += (x / 8) * 16;
-            dst += (a % 8) * 2;
-            dst += (x % 8) / 4;
-            *(u16 *)dst = ((u16 *)&sp20)[0];
-        }
-        {
-            s32 a = row + 7;
-            s32 f = ((((s32)arg2->sheetWidth / 8) << 5) / 2);
-            u8 *dst = base + f * (a / 8);
-            dst += (x / 8) * 16;
-            dst += (a % 8) * 2;
-            dst += (x % 8) / 4;
-            *(u16 *)dst = ((u16 *)&sp20)[1];
-        }
+  }
+  if (((arg0[0] == 0x59) && (arg0[1] == 0x61)) && (arg0[2] == 0x79))
+  {
+    size = *((u32 *) (arg0 + 4));
+  }
+  else
+  {
+    size = 0;
+  }
+  if (size == 0)
+  {
+    return 0;
+  }
+  Yay0_Decode(arg0, (u8 *) arg2);
+  if (arg1 == 1)
+  {
+    sp1C = lbl_8036BCA0;
+    temp_r0 += 0;
+    sp20 = lbl_8036BCA4;
+    idx = OSFontCodeToIndex(arg1, 0x54);
+    temp_r9 = arg2->columns;
+    temp_r8 = temp_r9 * arg2->rows;
+    imageOffset = arg2->imageOffset;
+    temp_r5 = arg2->height;
+    temp_r0 = arg2->sheetWidth;
+    sheet = idx / temp_r8;
+    pos = idx % temp_r8;
+    row = pos / temp_r9;
+    temp_r5 = temp_r5 * row;
+    col = pos - (row * temp_r9);
+    x = col * arg2->width;
+    base = ((u8 *) arg2) + (new_var4 = imageOffset);
+    new_var6 = ((u32) (new_var2 = sheet * arg2->sheetSize)) >> 1;
+    base += new_var6;
+    temp_r0 = ((temp_r0 / 8) << 5) / 2;
+    {
+      s32 a = temp_r5 + 4;
+      u8 *dst = base + (temp_r0 * (a / 8));
+      dst += (x / 8) * 16;
+      dst += (a % 8) * 2;
+      dst += (x % 8) / 4;
+      *((u16 *) dst) = ((u16 *) (&sp1C))[0];
     }
-    return size;
+    new_var5 = &((u16 *) (&sp20))[1];
+    {
+      s32 a = temp_r5 + 5;
+      s32 f = ((((s32) arg2->sheetWidth) / 8) << 5) / 2;
+      u8 *dst = base + (f * (a / 8));
+      dst += (x / 8) * 16;
+      dst += (a % 8) * 2;
+      dst += (x % 8) / 4;
+      *((u16 *) dst) = ((u16 *) (&sp1C))[1];
+    }
+    {
+      s32 a = temp_r5 + 6;
+      s32 f = ((((s32) arg2->sheetWidth) / 8) << 5) / 2;
+      u8 *dst = base + (f * (a / 8));
+      dst += (x / 8) * 16;
+      dst += (a % 8) * 2;
+      dst += (x % 8) / 4;
+      *((u16 *) dst) = ((u16 *) (&sp20))[0];
+    }
+    new_var3 = 16;
+    {
+      s32 a = temp_r5 + 7;
+      s32 f = ((((s32) arg2->sheetWidth) / 8) << 5) / 2;
+      u8 *dst = base + (f * (a / 8));
+      dst += (x / 8) * new_var3;
+      dst += (a % 8) * 2;
+      dst += (x % 8) / 4;
+      *((u16 *) dst) = *new_var5;
+    }
+  }
+  return size;
 }
 
 s32 fn_80207628(s32 arg0, s32 arg1) {

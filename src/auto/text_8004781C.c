@@ -4950,7 +4950,7 @@ void Map_InitGfx(void) {
 
     Allegiance_FillMask(5, sp8);
     {
-        s32 id = 1;
+        u8 id = 1;
         s32 ctr;
         void *unit;
         height = lbl_80368FCC;

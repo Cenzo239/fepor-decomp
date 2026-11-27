@@ -118,6 +118,8 @@ extern s32 lbl_80368508;
 extern u32 lbl_8036850C;
 extern s64 __OSStartTime;
 extern void (*lbl_803684F8)();
+#pragma push
+#pragma optimization_level 3
 void __OSResetSWInterruptHandler(void)
 {
   s64 __OSGetSystemTime(void);
@@ -148,8 +150,7 @@ void __OSResetSWInterruptHandler(void)
   }
   *((u32 *) 0xCC003000) = 2;
 }
-
-#pragma peephole off
+#pragma pop
 
 #pragma peephole reset
 

@@ -1148,7 +1148,11 @@ void fn_800875B4(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_PrepareTex();
     (void)lbl_80369440;
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_register_coloring off
 void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
@@ -1170,12 +1174,12 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
 
     char buf[8];
     s32 widths[10];
+    s32 abs_val;
     s32 saved;
     s32 sign;
     s32 x;
     s16 v_base;
     s16 y;
-    s32 abs_val;
     s16 u_off;
     s32 len;
     s32 i;
@@ -1237,9 +1241,7 @@ void fn_80087F50(s32 arg0, f32 farg0, f32 farg1) {
         }
     }
 }
-#pragma push
-#pragma optimization_level 4
-#pragma opt_register_coloring off
+#pragma pop
 void fn_80088300(void *arg0) {
 typedef struct { u8 pad[8]; s8 dir[4]; s8 next; u8 type; u8 pad2[6]; } LocalEntry;
 u32 *Unit_GetItemSlot(void *, s32);
@@ -1598,7 +1600,8 @@ void fn_80088F8C(void *arg0) {
     *(s16 *)((u8 *)arg0 + 0x34) = (s16)Math_Ease(0, temp_r4, *(f32 *)((u8 *)arg0 + 0x38), *(f32 *)((u8 *)arg0 + 0x3C), (f32)(6 - temp_r4), f4);
 }
 
-#pragma scheduling on
+#pragma push
+#pragma optimization_level 2
 void fn_80088FFC(void *arg0) {
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
@@ -1705,7 +1708,7 @@ void fn_80088FFC(void *arg0) {
         Process_Unlink(arg0);
     }
 }
-
+#pragma pop
 void fn_800892E8(void *arg0) {
     s32 GXGetTexBufferSize(s32, s32, s32, s32, s32);
     void *fn_800C45B8(s32, void *, s32);

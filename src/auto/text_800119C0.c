@@ -2256,18 +2256,26 @@ void fn_80014790(void) {
     f32 fw;
     f32 fh;
     f32 scale;
-    f32 a60;
-    f32 a64;
 
     for (;;) {
         code = -1;
         status = DVDGetDriveStatus();
         switch (status + 1) {
-        case 6: code = 0; break;
-        case 5: code = 1; break;
-        case 7: code = 2; break;
-        case 12: code = 3; break;
-        case 0: code = 4; break;
+        case 6:
+            code = 0;
+            break;
+        case 5:
+            code = 1;
+            break;
+        case 7:
+            code = 2;
+            break;
+        case 12:
+            code = 3;
+            break;
+        case 0:
+            code = 4;
+            break;
         }
 
         if (code >= 0) {
@@ -2354,11 +2362,9 @@ void fn_80014790(void) {
             }
             uiColor = *Ui_GetColor(1);
             scale = lbl_80368C5C;
-            a60 = lbl_80368C60;
-            a64 = lbl_80368C64;
             fw = (f32)(s32)(0x260 - tmp29);
             fh = (f32)(s32)(0x1C0 - tmp30);
-            fn_801FB5D8(&uiColor, tmp28, fw * scale, a60, fh * scale, a64);
+            fn_801FB5D8(&uiColor, tmp28, fw * scale, lbl_80368C60, fh * scale, lbl_80368C64);
             fn_8006E660();
             if (status == -1) {
                 VIWaitForRetrace();

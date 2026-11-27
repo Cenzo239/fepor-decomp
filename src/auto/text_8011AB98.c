@@ -1825,8 +1825,8 @@ void fn_8011CB2C(void *arg0) {
 
 void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
     s32 t48;
-    s32 t4c;
     u8 flag;
+    s32 t4c;
     s32 x;
     s32 t64;
     s32 y;

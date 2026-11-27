@@ -162,7 +162,7 @@ void __DVDInitWA(void) {
     OSInitAlarm();
 }
 
-#pragma use_lmw_stmw on
+#pragma optimization_level 3
 void __DVDInterruptHandler(s32 type, OSContext *context) {
     s64 __OSGetSystemTime(void);
     void OSCancelAlarm(void *);
@@ -239,14 +239,12 @@ void __DVDInterruptHandler(s32 type, OSContext *context) {
     if (WaitingCoverClose_8036854C != 0) {
         {
             volatile u32 *diPtr = (volatile u32 *)0xCC006000;
-            u32 bit2;
             reg = *++diPtr;
-            bit2 = reg & 2;
             masked = (reg & 4) & ((reg << 1) & 4);
             if (masked & 4) {
                 intVal |= 4;
             }
-            *diPtr = masked | bit2;
+            *diPtr = masked | (reg & 2);
         }
         WaitingCoverClose_8036854C = 0;
     } else {
@@ -292,6 +290,7 @@ check_finished:
     OSClearContext(&sp10);
     OSSetCurrentContext(context);
 }
+#pragma optimization_level reset
 #pragma use_lmw_stmw reset
 
 #pragma opt_common_subs off
@@ -667,17 +666,16 @@ void DVDLowReset(void) {
  extern s32 ResetOccurred_80368548;
  extern s64 LastResetEnd_80368540;
  s64 __OSGetSystemTime(void);
- u32 old;
- u32 *reg = (u32 *)0xCC003000;
- s64 delay;
+ u32 delay;
  s64 start;
- *(u32 *)0xCC006004 = 2;
- old = reg[9];
- *(reg += 9) = (old & ~4) | 1;
+ u32 old;
+ DI_CFG = 2;
+ old = __PIRegs[9];
+ __PIRegs[9] = (old & ~4) | 1;
  start = __OSGetSystemTime();
  delay = (((*(u32 *)0x800000F8 >> 2) / 125000) * 12) >> 3;
  while (__OSGetSystemTime() - start < delay) {}
- *reg = old | 5;
+ __PIRegs[9] = old | 5;
  ResetOccurred_80368548 = 1;
  LastResetEnd_80368540 = __OSGetSystemTime();
 }

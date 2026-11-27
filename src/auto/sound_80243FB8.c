@@ -1112,7 +1112,7 @@ void fn_8024534C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
     }
   }
 
- }
+}
 #pragma pop
  #pragma opt_common_subs reset
  #pragma dont_inline reset

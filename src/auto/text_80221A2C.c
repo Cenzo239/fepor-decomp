@@ -384,22 +384,29 @@ void fn_80221FE8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0x30) = farg2;
 }
 
+#pragma optimization_level 2
 void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     extern f32 lbl_8036BCE0;
     extern f32 lbl_8036BCF8;
     extern f32 lbl_8036BD20;
     extern f64 lbl_8036BD10;
     extern f64 lbl_8036BD18;
-    typedef struct { u8 pad[0x28]; f32 a[3]; f32 b[3]; } Vec;
-    Vec *v = (Vec *)arg0;
-    f32 x, y, z, xx, yy, zz, mag, scale, root;
+    f32 x = -farg0;
+    f32 y = -farg1;
+    f32 z = lbl_8036BCF8 - farg2;
+    f32 xx;
+    f32 yy;
+    f32 zz;
+    f32 mag;
+    f32 scale;
+    f32 root;
     volatile f32 sp18;
-    f64 r, t;
-    f32 px, py, pz;
+    f64 r;
+    f64 t;
+    f32 px;
+    f32 py;
+    f32 pz;
 
-    x = -farg0;
-    y = -farg1;
-    z = lbl_8036BCF8 - farg2;
     xx = x * x;
     yy = y * y;
     zz = z * z;
@@ -431,17 +438,17 @@ void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
         }
         scale = lbl_8036BCF8 / root;
     }
-    v->b[0] = x * scale;
-    v->b[1] = y * scale;
-    v->b[2] = z * scale;
+    *(f32 *)((u8 *)arg0 + 0x34) = x * scale;
+    *(f32 *)((u8 *)arg0 + 0x38) = y * scale;
+    *(f32 *)((u8 *)arg0 + 0x3C) = z * scale;
     px = lbl_8036BD20 * farg0;
     py = lbl_8036BD20 * farg1;
     pz = lbl_8036BD20 * farg2;
-    v->a[0] = px;
-    v->a[1] = py;
-    v->a[2] = pz;
+    *(f32 *)((u8 *)arg0 + 0x28) = px;
+    *(f32 *)((u8 *)arg0 + 0x2C) = py;
+    *(f32 *)((u8 *)arg0 + 0x30) = pz;
 }
-
+#pragma optimization_level reset
 void fn_802220DC(void *arg0, s32 *arg1) {
     M2C_FIELD(arg0, s32 *, 0xC) = (s32) *arg1;
 }

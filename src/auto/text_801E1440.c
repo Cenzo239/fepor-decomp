@@ -1341,111 +1341,113 @@ void fn_801E1540(u8 **arg0, void *arg1, s32 arg2, u8 arg3, u8 arg4) {
 #pragma pop
 #pragma push
 #pragma optimization_level 4
-void fn_801E1CB4(u8 **arg0, void *arg1) {
-    void fn_80006298(void *, s32, s32);
-    void fn_800167E4(void *);
-    void Unit_WriteAll(void *);
-    void fn_80048C5C(void *);
-    void Icon_WriteSlots(void *, void *);
-    void fn_800C33C0(void *, void *);
-    void fn_800C4588(void *);
-    void fn_8010FBA8(void *, void *);
-    void BattleState_Write(void *, void *);
-    void fn_8017A38C(void *, void *);
-    void fn_801E3CA8(void *);
-    extern u8 gSaveStrings[];
-    extern u8 gStreamBaseVtbl[];
-    extern u8 gMemStreamVtbl[];
-    extern u8 gConvoy[];
-    extern u8 gIconSlots[];
-    extern u8 gMapObjEventList[];
-    extern u8 gBattleState[];
-    extern u8 gSystemSave[];
-
-    u32 minSize;
-    s32 off;
-    u8 *best;
-    s32 i;
-    void *other;
-    s32 ctr;
-    u8 *base;
-    u8 *slot;
-    u8 hdrOk;
-    u32 clamped;
-    u8 saved47;
-    struct {
-        void *start;
-        void *cur;
-        u32 size;
-        u8 owned;
-        u8 pad[3];
-        void *vtbl;
-    } w;
-    u8 *p;
-    u8 *battle;
-
-    other = arg1;
-    saved47 = gSystemSave[0x47];
-    best = Save_FindUnusedSlotIn(arg0);
-
-    fn_80006298(best, 0, 0x4000);
-    battle = gBattleState;
-    *(s32 *)(best + 0x4C) = 0x4000;
-    *(u32 *)(best + 0x40) = 0x4645384AU;
-    *(u32 *)(best + 0x44) = 0x20050201U;
-    *(u32 *)(best + 0x48) = 0;
-    *(u32 *)(best + 0x5C) = 0;
-    *(u32 *)(best + 0x58) = 0;
-    best[0x60] = 2;
-    best[0x61] = 0;
-    best[0x62] = saved47;
-    best[0x63] = 0;
-    best[0x64] = 0;
-    best[0x65] = 0;
-    best[0x66] = 0;
-    *(u64 *)(best + 0x58) = *(u64 *)(battle + 0x58);
-    best[0x61] = battle[0x51C];
-    best[0x64] = battle[0x10];
-    best[0x65] = battle[0x54];
-    best[0x66] = battle[0xA6];
-
-    p = best + 0xB8;
-    w.vtbl = gStreamBaseVtbl;
-    w.cur = NULL;
+void fn_801E1CB4(u8 **arg0, void *arg1)
+{
+  void fn_80006298(void *, s32, s32);
+  void fn_800167E4(void *);
+  void Unit_WriteAll(void *);
+  void fn_80048C5C(void *);
+  void Icon_WriteSlots(void *, void *);
+  void fn_800C33C0(void *, void *);
+  void fn_800C4588(void *);
+  void fn_8010FBA8(void *, void *);
+  void BattleState_Write(void *, void *);
+  void fn_8017A38C(void *, void *);
+  void fn_801E3CA8(void *);
+  extern u8 gSaveStrings[];
+  extern u8 gStreamBaseVtbl[];
+  extern u8 gMemStreamVtbl[];
+  extern u8 gConvoy[];
+  extern u8 gIconSlots[];
+  extern u8 gMapObjEventList[];
+  extern u8 gBattleState[];
+  extern u8 gSystemSave[];
+  u32 minSize;
+  s32 off;
+  u8 *best;
+  s32 i;
+  void *other;
+  s32 ctr;
+  u8 *base;
+  u8 *slot;
+  u8 hdrOk;
+  long long new_var;
+  u32 clamped;
+  u8 saved47;
+  struct 
+  {
+    void *start;
+    void *cur;
+    u32 size;
+    u8 owned;
+    u8 pad[3];
+    void *vtbl;
+  } w;
+  u8 *p;
+  other = arg1;
+  saved47 = gSystemSave[0x47];
+  best = Save_FindUnusedSlotIn(arg0);
+  fn_80006298(best, 0, 0x4000);
+  *((s32 *) (best + 0x4C)) = 0x4000;
+  *((u32 *) (best + 0x40)) = 0x4645384AU;
+  *((u32 *) (best + 0x44)) = 0x20050201U;
+  *((u32 *) (best + 0x48)) = 0;
+  *((u32 *) (best + 0x5C)) = 0;
+  *((u32 *) (best + 0x58)) = 0;
+  best[0x60] = 2;
+  best[0x61] = 0;
+  best[0x62] = saved47;
+  best[0x63] = 0;
+  best[0x64] = 0;
+  best[0x65] = 0;
+  best[0x66] = 0;
+  *((u64 *) (best + 0x58)) = *((u64 *) (gBattleState + 0x58));
+  best[0x61] = gBattleState[0x51C];
+  new_var = gBattleState[0x54];
+  best[0x64] = gBattleState[0x10];
+  best[0x65] = new_var;
+  best[0x66] = gBattleState[0xA6];
+  p = best + 0xB8;
+  w.vtbl = gStreamBaseVtbl;
+  w.cur = NULL;
+  w.start = NULL;
+  w.size = 0;
+  w.owned = 0;
+  w.vtbl = gMemStreamVtbl;
+  w.owned = 0;
+  w.start = p;
+  w.cur = p;
+  w.size = 0x100000;
+  fn_8017A38C(&w, gSaveStrings + 0x14F);
+  BattleState_Write(gBattleState, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x154);
+  fn_80048C5C(&w);
+  fn_8017A38C(&w, gSaveStrings + 0x159);
+  if (gBattleState[0x55] != 0)
+  {
+    fn_800167E4(&w);
+  }
+  else
+  {
+    Unit_WriteAll(&w);
+  }
+  fn_8017A38C(&w, gSaveStrings + 0x15E);
+  fn_800C33C0(gConvoy, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x163);
+  Icon_WriteSlots(gIconSlots, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x168);
+  fn_8010FBA8(gMapObjEventList, &w);
+  w.vtbl = gMemStreamVtbl;
+  w.vtbl = gStreamBaseVtbl;
+  if (w.owned != 0)
+  {
+    fn_800C4588(w.start);
     w.start = NULL;
-    w.size = 0;
     w.owned = 0;
-    w.vtbl = gMemStreamVtbl;
-    w.owned = 0;
-    w.start = p;
-    w.cur = p;
-    w.size = 0x100000;
-    fn_8017A38C(&w, gSaveStrings + 0x14F);
-    BattleState_Write(gBattleState, &w);
-    fn_8017A38C(&w, gSaveStrings + 0x154);
-    fn_80048C5C(&w);
-    fn_8017A38C(&w, gSaveStrings + 0x159);
-    if (gBattleState[0x55] != 0) {
-        fn_800167E4(&w);
-    } else {
-        Unit_WriteAll(&w);
-    }
-    fn_8017A38C(&w, gSaveStrings + 0x15E);
-    fn_800C33C0(gConvoy, &w);
-    fn_8017A38C(&w, gSaveStrings + 0x163);
-    Icon_WriteSlots(gIconSlots, &w);
-    fn_8017A38C(&w, gSaveStrings + 0x168);
-    fn_8010FBA8(gMapObjEventList, &w);
-    w.vtbl = gMemStreamVtbl;
-    w.vtbl = gStreamBaseVtbl;
-    if (w.owned != 0) {
-        fn_800C4588(w.start);
-        w.start = NULL;
-        w.owned = 0;
-    }
-    fn_801E3CA8(best);
-    arg0[1] = best;
-    *(u8 **)((u8 *)other + 0x54) = best;
+  }
+  fn_801E3CA8(best);
+  arg0[1] = best;
+  *((u8 **) (((u8 *) other) + 0x54)) = best;
 }
 #pragma pop
 void fn_801E2014(s32 unused, u8 arg1, s32 arg2) {
@@ -2303,20 +2305,17 @@ void fn_801E38E0(void *unused, void *data) {
 }
 #pragma pop
 void fn_801E3A60(void *arg0, u32 *hours, u32 *mins, u32 *secs) {
-#pragma use_lmw_stmw on
-    unsigned long long __div2i(s32, s32, s32, s32);
-    u32 total;
-    s32 *m;
-    s32 *h;
-    s32 *s;
+    s64 __div2i(s32, s32, s32, s32);
+    u32 bus;
+    u32 q;
+    s32 zero;
 
-    m = (s32 *)mins;
-    h = (s32 *)hours;
-    s = (s32 *)secs;
-    total = (u32)__div2i(*(s32 *)((u8 *)arg0 + 0x58), *(s32 *)((u8 *)arg0 + 0x5C), 0, *(u32 *)0x800000F8 >> 2);
-    *s = (s32)(total % 60);
-    *m = (s32)((total / 60) % 60);
-    *h = (s32)(total / 3600);
+    zero = 0;
+    bus = *(u32 *)0x800000F8 >> 2;
+    q = (u32)__div2i(*(s32 *)((u8 *)arg0 + 0x5C), *(s32 *)((u8 *)arg0 + 0x58), zero, (s32)bus);
+    *secs = q % 60U;
+    *mins = (q / 60U) % 60U;
+    *hours = q / 3600U;
 }
 #pragma opt_strength_reduction off
 #pragma global_optimizer off

@@ -638,7 +638,8 @@ char *fn_800A0E24(void) {
     return gItemMenuTextBuf;
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma opt_loop_invariants off
 s32 fn_800A0E74(void) {
 #pragma optimization_level 3
     u8 SystemSave_CountPackedSlots(void *);
@@ -646,9 +647,9 @@ s32 fn_800A0E74(void) {
     extern u8 gSystemSave[];
     s32 dir;
     s32 i;
-    int new_var;
     s32 limit;
-    s32 zero;
+    s32 zero = 0;
+    int new_var;
     s32 ctr;
     u8 count;
 
@@ -675,12 +676,12 @@ s32 fn_800A0E74(void) {
         if (i < new_var) {
             gSystemSave[i + 0x12] = i + 1;
         } else {
-            gSystemSave[i + 0x12] = 0;
+            gSystemSave[i + 0x12] = zero;
         }
     }
     return 0;
 }
-#pragma global_optimizer on
+#pragma pop
 char *fn_800A101C(void) {
     void sprintf(void *, void *, ...);
     extern u8 gBattleState[];

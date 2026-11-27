@@ -1826,30 +1826,38 @@ s32 ScriptCmd_GetDiedPlayerCount(void) {
 }
 
 #pragma use_lmw_stmw on
-s32 ScriptCmd_ShooterBulletCheck(void) {
-    void DebugPrint(void *, ...);
-    void *MapObjEvent_Find(void *, s8, s8, s32);
-    extern u8 gWinCondCmdNames[];
-    extern u8 gBattleMap[];
-    extern u8 gMapObjEventList[];
-    s32 sum = 0;
-    s32 y;
-    s32 x;
-    void *tmp;
-    u8 *map;
-
-    DebugPrint(gWinCondCmdNames + 0x18B);
-    map = gBattleMap;
-    y = (s8)map[9];
-    for (; y <= (s8)map[0xB] - 1; y++) {
-        for (x = (s8)map[8]; x <= (s8)map[0xA] - 1; x++) {
-            tmp = MapObjEvent_Find(gMapObjEventList, (s8)x, (s8)y, 7);
-            if (tmp != NULL) {
-                sum += 5 - ((u8 *)tmp)[5];
-            }
-        }
+s32 ScriptCmd_ShooterBulletCheck(void)
+{
+  unsigned char new_var;
+  void DebugPrint(void *, ...);
+  s32 sum;
+  void *MapObjEvent_Find(void *, s8, s8, s32);
+  extern u8 gWinCondCmdNames[];
+  extern u8 gBattleMap[];
+  extern u8 gMapObjEventList[];
+  s32 y;
+  s32 x;
+  void *tmp;
+  u8 *map;
+  sum = 0;
+  DebugPrint(gWinCondCmdNames + 0x18B);
+  map = gBattleMap;
+  new_var = (s8) map[9];
+  y = new_var;
+  for (; y <= (((s8) map[0xB]) - 1); y++)
+  {
+    for (x = map[8]; x <= (((s8) map[0xA]) - 1); x++)
+    {
+      tmp = MapObjEvent_Find(gMapObjEventList, (s8) x, (s8) y, 7);
+      if (tmp != NULL)
+      {
+        sum += 5 - ((u8 *) tmp)[5];
+      }
     }
-    return sum;
+
+  }
+
+  return sum;
 }
 
 s32 ScriptCmd_PlayerEscapeCount(void) {
@@ -6241,18 +6249,21 @@ s32 Ui_SkillCapacityMenuItem(s32 unused, void *parent, void *entry) {
     void Ui_CreateMsgPopup(void *, void *, f32, f32);
     extern u8 gUiUnitPanelStrings[];
     extern u32 gUiContext[];
-    s16 px, ex, py, ey;
+    extern const f64 lbl_8036B2D0;
+    s16 py, ey, px, ex;
     f32 x;
     f32 y;
+    u8 *str;
 
     if (*(u8 *)((u8 *)entry + 0x39) == 2) {
+        str = gUiUnitPanelStrings + 0x2AB;
         px = *(s16 *)((u8 *)parent + 0x30);
         ex = *(s16 *)((u8 *)entry + 0x30);
         py = *(s16 *)((u8 *)parent + 0x32);
         ey = *(s16 *)((u8 *)entry + 0x32);
         x = (f32)(px + ex);
         y = (f32)(py + ey);
-        Ui_CreateMsgPopup(gUiUnitPanelStrings + 0x2AB, parent, x, y);
+        Ui_CreateMsgPopup(str, parent, x, y);
         return 0;
     }
     *((u8 *)gUiContext + 8) = 0x83;
@@ -10291,12 +10302,12 @@ return 1;
 
 void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
-    void *Process_Find(void *);
-    void Process_Goto(void *, s32);
-    void *Process_Create(void *, s32);
+    void *fn_8000C0C0(void *);
+    void fn_8000C070(void *, s32);
+    void *fn_8000CAF0(void *, s32);
 
     extern u8 lbl_802981F4[];
-    extern u8 LightFade_script[];
+    extern u8 lbl_802981D0[];
 
     u8 *entry;
     u8 *source;
@@ -10304,14 +10315,14 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     struct { u32 temp; u32 value; } s;
     u32 z;
 
-    entry = (u8 *)Process_Find(lbl_802981F4);
+    entry = (u8 *)fn_8000C0C0(lbl_802981F4);
     if (entry != NULL) {
         if (*(s32 *)(entry + 0x38) < arg3) {
             return;
         }
-        Process_Goto(entry, 0);
+        fn_8000C070(entry, 0);
     } else {
-        entry = (u8 *)Process_Create(lbl_802981F4, arg2);
+        entry = (u8 *)fn_8000CAF0(lbl_802981F4, arg2);
     }
 
     z = 0;
@@ -10320,7 +10331,7 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     *(s32 *)(entry + 0x34) = arg1;
     *(s32 *)(entry + 0x38) = arg3;
 
-    source = (u8 *)Process_Find(LightFade_script);
+    source = (u8 *)fn_8000C0C0(lbl_802981D0);
     if (source == NULL) {
         dest = NULL;
     } else {
@@ -10343,6 +10354,8 @@ void fn_801C6CBC(u32 *arg0, s32 arg1, s32 arg2, s32 arg3)
     dest[0x287] = ((u8 *)&s.temp)[3];
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_801C6DB8(u32 arg0)
 {
     extern u8 LightFade_script[];
@@ -10371,8 +10384,7 @@ void fn_801C6DB8(u32 arg0)
         }
     }
 }
-
-#pragma optimization_level 3
+#pragma pop
 void fn_801C6E60(u32 arg0)
 {
     extern u8 LightFade_script[];

@@ -320,6 +320,8 @@ Unit_SetWorldXY(child,fx,fy);
 }
 }
 
+#pragma push
+#pragma optimization_level 3
 void Unit_SetHp(void *arg0, s8 arg1) {
     s8 var_r4;
     s8 var_r5;
@@ -468,7 +470,7 @@ void Unit_SetHp(void *arg0, s8 arg1) {
     }
     *(s8 *)((u8 *)arg0 + 0x1A8) = var_r4;
 }
-
+#pragma pop
 u8 fn_80038570(s32 arg0) {
     u8 Status_Test(s32, s32);
     s32 fn_801F1B44(void);
@@ -1366,10 +1368,9 @@ s8 fn_8003A778(void *arg0) {
     extern u8 gBattleState[];
     UnkRet800378CC sp10;
     UnkRet800378CC sp8;
-    void *b;
     s8 var_r31;
     int var_r30;
-    u32 temp;
+    s8 index;
     void *obj;
     void *other;
     void *p;
@@ -1377,9 +1378,7 @@ s8 fn_8003A778(void *arg0) {
     s32 id;
     void *t;
     s8 result;
-    void *a;
-    s32 sum;
-    s32 lim;
+    void *slot;
     s32 cls;
 
     cls = (s32)*(void **)((u8 *)arg0 + 0x18C);
@@ -1390,49 +1389,45 @@ s8 fn_8003A778(void *arg0) {
 
     var_r30 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        temp = var_r30;
+        index = var_r30;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
-        temp = 1;
+        index = 1;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
-        temp = 2;
+        index = 2;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
-        temp = 3;
+        index = 3;
     } else {
-        temp = -1;
+        index = -1;
     }
-    if ((s8)temp < 0) {
-        temp = 0;
+    if (index < 0) {
+        slot = 0;
     } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1CC;
-        temp = temp + (s32)arg0;
+        slot = (u8 *)arg0 + (index * 8) + 0x1CC;
     }
-    if (temp != 0) {
-        var_r30 = *(s8 *)((u8 *)*(void **)temp + 0x26);
+    if (slot != 0) {
+        var_r30 = *(s8 *)((u8 *)*(void **)slot + 0x26);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
-        temp = 0;
+        index = 0;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
-        temp = 1;
+        index = 1;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
-        temp = 2;
+        index = 2;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
-        temp = 3;
+        index = 3;
     } else {
-        temp = -1;
+        index = -1;
     }
-    if ((s8)temp < 0) {
-        temp = 0;
+    if (index < 0) {
+        slot = 0;
     } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1EC;
-        temp = temp + (s32)arg0;
+        slot = (u8 *)arg0 + (index * 8) + 0x1EC;
     }
-    if (temp != 0) {
-        obj = *(void **)temp;
+    if (slot != 0) {
+        obj = *(void **)slot;
         var_r30 += *(u8 *)((u8 *)obj + 0x26);
-        if ((*Item_GetFlagsPtr((void *)temp) & 0x200000000ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)slot) & 0x200000000ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -1638,6 +1633,7 @@ s8 fn_8003AF28(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
+#pragma opt_propagation off
 s8 Unit_GetMagAtk(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
@@ -1647,9 +1643,8 @@ s8 Unit_GetMagAtk(void *arg0) {
     extern u8 gBattleState[];
     UnkRet800378CC sp10;
     UnkRet800378CC sp8;
-    void *b;
     s8 var_r31;
-    int var_r30;
+    s8 index;
     u32 temp;
     void *obj;
     void *other;
@@ -1659,8 +1654,9 @@ s8 Unit_GetMagAtk(void *arg0) {
     void *t;
     s8 result;
     void *a;
-    s32 sum;
+    void *slot;
     s32 lim;
+    int var_r30;
 
     a = (void *)*(u32 *)((u8 *)arg0 + 0x18C);
     var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + *(u8 *)((u8 *)a + 0x46)) + *(u8 *)((u8 *)arg0 + 0x1AD);
@@ -1670,49 +1666,45 @@ s8 Unit_GetMagAtk(void *arg0) {
 
     var_r30 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        temp = var_r30;
+        index = var_r30;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
-        temp = 1;
+        index = 1;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
-        temp = 2;
+        index = 2;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
-        temp = 3;
+        index = 3;
     } else {
-        temp = -1;
+        index = -1;
     }
-    if ((s8)temp < 0) {
-        temp = 0;
+    if (index < 0) {
+        slot = 0;
     } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1CC;
-        temp = temp + (s32)arg0;
+        slot = (u8 *)arg0 + (index * 8) + 0x1CC;
     }
-    if (temp != 0) {
-        var_r30 = *(s8 *)((u8 *)*(void **)temp + 0x21);
+    if (slot != 0) {
+        var_r30 = (s8)*(u8 *)((u8 *)*(void **)slot + 0x21);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
-        temp = 0;
+        index = 0;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
-        temp = 1;
+        index = 1;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
-        temp = 2;
+        index = 2;
     } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
-        temp = 3;
+        index = 3;
     } else {
-        temp = -1;
+        index = -1;
     }
-    if ((s8)temp < 0) {
-        temp = 0;
+    if (index < 0) {
+        slot = 0;
     } else {
-        temp = (s8)temp * 8;
-        temp = temp + 0x1EC;
-        temp = temp + (s32)arg0;
+        slot = (u8 *)arg0 + (index * 8) + 0x1EC;
     }
-    if (temp != 0) {
-        obj = *(void **)temp;
+    if (slot != 0) {
+        obj = *(void **)slot;
         var_r30 += *(u8 *)((u8 *)obj + 0x21);
-        if ((*Item_GetFlagsPtr((void *)temp) & 0x200000000ULL) != 0) {
+        if ((*Item_GetFlagsPtr((void *)slot) & 0x200000000ULL) != 0) {
             p = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0xC);
             if (p != NULL) {
                 other = Res_GetByName(p);
@@ -1720,7 +1712,8 @@ s8 Unit_GetMagAtk(void *arg0) {
                 other = NULL;
             }
             diff = (s8)*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x46) - (s8)*(u8 *)((u8 *)other + 0x46);
-            var_r30 = (s8)(var_r30 - diff / 2);
+            var_r30 = var_r30 - diff / 2;
+            var_r30 = (s8)var_r30;
         }
     }
 

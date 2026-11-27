@@ -611,7 +611,7 @@ void fn_802107FC(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4)
   u32 var;
   u32 tmp;
   u8 *new_var;
-  *p1 = v30 + sum;
+  *p1 = sum + v30;
   if (v20 == 0)
   {
     var = *p1;
@@ -636,7 +636,7 @@ void fn_802107FC(void *arg0, void *arg1, void *arg2, void *arg3, void *arg4)
     u32 term2 = term = ((*((u16 *) (a + 0x16))) * 2) & 0xFFFFFFE0;
     s32 v20b = *((s32 *) (a + 0x20));
     s32 v0Ab = *((u16 *) (a + 0xA));
-    u32 val2 = (*((u32 *) (a + 0x48))) + (term2 + prod2);
+    u32 val2 = (term2 + prod2) + (*((u32 *) (a + 0x48)));
     *p3 = val2;
     if (v20b == 0)
     {

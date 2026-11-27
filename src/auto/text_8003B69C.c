@@ -1609,13 +1609,13 @@ void Unit_MoveToListHead(void *unit, s32 listId) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 void fn_8003D70C(s32 arg0) {
-    extern u16 gBattleState[1400];
+    extern u8 lbl_80330708[];
     void *fn_8014D8FC(void *);
     s32 fn_801661CC(void *);
-    void *Res_GetByName(void *);
-    u8 Status_Test(s32, s32);
+    void *fn_8000D354(void *);
+    u8 fn_80105BC0(s32, s32);
     s8 fn_801F1A2C(void);
-    s32 Rand_Range(s32);
+    s32 fn_8000CEE4(s32);
 
     void *partner;
     s16 s7;
@@ -1631,7 +1631,7 @@ void fn_8003D70C(s32 arg0) {
     u8 *cls;
     s32 factor;
 
-    level = fn_801661CC(fn_8014D8FC(gBattleState));
+    level = fn_801661CC(fn_8014D8FC(lbl_80330708));
     if (*(u8 *)(*(u8 **)(arg0 + 0x190) + 8) != 1) {
         level = 0;
     }
@@ -1654,17 +1654,17 @@ void fn_8003D70C(s32 arg0) {
     s6 = level * cls[0x5A];
     s7 = level * cls[0x5B];
     if (*(void **)(cls + 0xC) != NULL) {
-        partner = Res_GetByName(*(void **)(cls + 0xC));
+        partner = fn_8000D354(*(void **)(cls + 0xC));
     } else {
         partner = NULL;
     }
 
     if (partner != NULL) {
-        if (Status_Test(arg0 + 0x1BC, 2) != 0) {
-            if (Status_Test(arg0 + 0x1BC, 8) == 0) {
-                if (Status_Test((s32)partner + 0x1C, 2) == 0) {
+        if (fn_80105BC0(arg0 + 0x1BC, 2) != 0) {
+            if (fn_80105BC0(arg0 + 0x1BC, 8) == 0) {
+                if (fn_80105BC0((s32)partner + 0x1C, 2) == 0) {
                     bonus = (s8)fn_801F1A2C();
-                    bonus += fn_801661CC(fn_8014D8FC(gBattleState));
+                    bonus += fn_801661CC(fn_8014D8FC(lbl_80330708));
                     s0 += bonus * ((u8 *)partner)[0x54];
                     s1 += bonus * ((u8 *)partner)[0x55];
                     s2 += bonus * ((u8 *)partner)[0x56];
@@ -1678,21 +1678,21 @@ void fn_8003D70C(s32 arg0) {
         }
     }
 
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AB) = *(u8 *)(arg0 + 0x1AB) + (s0 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AC) = *(u8 *)(arg0 + 0x1AC) + (s1 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AD) = *(u8 *)(arg0 + 0x1AD) + (s2 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AE) = *(u8 *)(arg0 + 0x1AE) + (s3 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1AF) = *(u8 *)(arg0 + 0x1AF) + (s4 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B0) = *(u8 *)(arg0 + 0x1B0) + (s5 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B1) = *(u8 *)(arg0 + 0x1B1) + (s6 * factor) / 10000;
-    factor = 0x64 - (0xA - Rand_Range(0x14));
+    factor = 0x64 - (0xA - fn_8000CEE4(0x14));
     *(u8 *)(arg0 + 0x1B2) = *(u8 *)(arg0 + 0x1B2) + (s7 * factor) / 10000;
 }
 #pragma pop

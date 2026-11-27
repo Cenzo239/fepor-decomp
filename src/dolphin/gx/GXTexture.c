@@ -305,6 +305,7 @@ void fn_8022257C(s32 fmt_, u16 wd, u16 ht, u32 * rowTiles, u32 * colTiles, u32 *
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_lifetimes off
 void fn_80222644(void *obj, void *image, u16 width, u16 height, s32 format, s32 wrapS, s32 wrapT, u8 mipmap)
 {
   u32 *p = obj;
