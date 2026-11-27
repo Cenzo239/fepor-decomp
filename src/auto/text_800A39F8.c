@@ -470,8 +470,8 @@ s32 fn_800A424C(s32 arg0) {
     ready = (u8 *)&p->slotA[0].flag;
     if (*(s32 *)(ready + p->fb4 * 12) != 0) {
     buffers = (u8 *)&p->slotA[0].ptr;
-    r26 = p->f6c * 4 + 8;
     r25 = (s32 *)((u8 *)*(void **)(buffers + p->fb4 * 12) + 8);
+    r26 = p->f6c * 4 + 8;
     r26 = (s32)*(void **)(buffers + p->fb4 * 12) + r26;
     if (p->fa7 != 0) {
         if (arg0 < 0 || (u32)arg0 >= (u32)p->f98) {
@@ -552,7 +552,6 @@ s32 fn_800A424C(s32 arg0) {
     return 2;
 }
 #pragma pop
-#pragma use_lmw_stmw reset
 s32 fn_800A45C4(void) {
     void fn_8020F334(void *);
     extern u8 lbl_803123A0[];
