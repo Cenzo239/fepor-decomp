@@ -500,6 +500,14 @@ void fn_80132CDC(void) {
     Process_ClearFunc();
 }
 
+static inline u8 Ui_80132CFC_Counter(s8 lim, s8 v, s8 other, s32 adjust, s32 mul, s32 invert, s32 threshold, u8 *ltOut) {
+    u8 canDec = 0;
+    s32 delta = invert ? adjust - v : adjust + (s8)(v * mul);
+    if ((invert ? v < lim : lim < v) && delta > threshold) canDec = 1;
+    *ltOut = (u8)(invert ? other < v : v < other);
+    return canDec;
+}
+
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 4
@@ -524,11 +532,11 @@ extern "C" void fn_80132CFC(void *arg0) {
     s16 dir;
     s32 pad;
     u8 *p;
-    s32 canDec;
     u8 lt;
     u8 v;
     u8 lim;
     u8 other;
+    u8 canDec;
 
     state = *(s32 *)((u8 *)arg0 + 0x4C);
     if (state == 0) {
@@ -606,7 +614,7 @@ extern "C" void fn_80132CFC(void *arg0) {
             return;
         }
     }
-    if ((u8)canDec) {
+    if (canDec) {
         if (pad & 0x04000004) {
             if (dir != 3) {
                 *p = *p - 1;
@@ -1241,6 +1249,10 @@ void Ui_ConfirmChild_BindItem(void *arg0, void *arg1) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -1269,7 +1281,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
         s16 unk46;
         s16 unk48;
         s16 unk4A;
-        s32 unk4C;
+        u32 unk4C;
         u8 *unk50;
     };
     void Prim2D_Begin(void);
@@ -1285,8 +1297,8 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     extern const f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D0;
     extern f32 lbl_8036A5BC;
-    extern u8 gUiIconDrawer[];
     Obj *self;
+    extern u8 gUiIconDrawer[];
     s32 startX;
 
     self = (Obj *)arg0;
@@ -1294,7 +1306,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
     self->v12();
     self->v3(startX);
     {
-        s16 cols;
+        s32 cols;
         s16 rows;
         s32 rowH;
         s16 startY0;
@@ -1309,7 +1321,7 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
         u8 *rowBase;
         u8 *cell;
         s32 vret;
-        s32 rowHs;
+        s16 rowHs;
         s16 colsExt;
         s16 x16;
         s16 curY16;
@@ -1335,8 +1347,8 @@ extern "C" void fn_8013406C(void *arg0, s32 arg1) {
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A5D0);
         Prim2D_PrepareTex();
-        y = (s16)(startY0 + yOff);
         row = 0;
+        y = startY0 + yOff;
         rowBase = self->unk50 + self->unk4C * 0x48;
         colsExt = cols;
         while ((s16)row < rows) {
@@ -1374,7 +1386,7 @@ done:
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-
+#pragma pop
 #pragma push
 #pragma global_optimizer on
 #pragma scheduling on
@@ -1450,8 +1462,8 @@ void *fn_801343F8(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     return arg0;
 }
 
-#pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma use_lmw_stmw on
 extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -1489,83 +1501,76 @@ extern "C" void fn_801344AC(void *arg0, s32 arg1) {
     typedef struct {
         Cell c[5];
     } Cells;
-    void fn_8000A258(void);
-    void fn_80009C0C(f32);
-    void fn_8000A248(void);
-    s32 fn_800102BC(s32, s16, s32, f32);
-    void *fn_8000E0E4(void *);
-    void fn_8005AC24(void *, s16, s16, s16);
-    void fn_8000A174(s32, u16);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    s32 Text_MeasureHeight(s32, f32);
+    void *Msg_Expand(void *);
+    void Ui_DrawIcon(void *, s16, s16, s16);
+    void Prim2D_SetTex(s32, u16);
     void fn_8001003C(s16, s16, s32, s32, s32, void *, ...);
-    void fn_80009B80(s32);
+    void Prim2D_SetAlphaByte(s32);
     extern const f32 lbl_8036A5AC;
     extern f32 lbl_8036A5D0;
     extern f32 lbl_8036A5BC;
     extern Cells lbl_80276318;
     extern u8 lbl_802764BC[];
-    extern u8 lbl_802F0308[];
+    extern u8 gUiIconDrawer[];
     Cells cells;
     s16 temp_r31;
     s16 temp_r30;
-    s32 temp_r29;
+    s16 temp_r29;
     s16 temp_r28;
     s16 temp_r27;
-    s16 x1;
-    s16 y1;
-    s16 y2;
+    register Obj *self;
+    s32 x1;
     Cell *p;
+    s32 i;
     s16 cx;
     s16 cy;
-    s32 i;
-    s32 startX;
-    Obj *self;
 
     self = (Obj *)arg0;
-    startX = arg1;
     self->v12();
-    self->v3(startX);
+    self->v3(arg1);
     temp_r31 = self->unk46;
-    temp_r29 = (s16)(self->unk16 - self->unk12) / self->unk44;
+    temp_r29 = (s16)((s16)(self->unk16 - self->unk12) / self->unk44);
     temp_r30 = self->unk48;
     temp_r28 = (s16)(self->unk4A + ((temp_r31 - 0x18) >> 1));
-    temp_r27 = (s16)((0x18 - fn_800102BC(-1, self->unk4A, temp_r29, lbl_8036A5AC)) >> 1);
-    fn_8000A258();
-    fn_80009C0C(lbl_8036A5D0);
-    fn_8000A248();
+    temp_r27 = (s16)((0x18 - Text_MeasureHeight(-1, lbl_8036A5AC)) >> 1);
+    Prim2D_Begin();
+    Prim2D_AddZ(lbl_8036A5D0);
+    Prim2D_PrepareTex();
     cells = lbl_80276318;
     cells.c[0].x = temp_r30;
     cells.c[0].y = temp_r28;
-    cells.c[0].str = fn_8000E0E4(lbl_802764BC + 0x23A);
-    x1 = (s16)(temp_r30 + (s16)temp_r29);
+    cells.c[0].str = Msg_Expand(lbl_802764BC + 0x23A);
+    x1 = cells.c[0].x + temp_r29;
     cells.c[1].x = x1;
     cells.c[1].y = temp_r28;
-    cells.c[1].str = fn_8000E0E4(lbl_802764BC + 0x241);
-    y1 = (s16)(temp_r28 + temp_r31);
+    cells.c[1].str = Msg_Expand(lbl_802764BC + 0x241);
     cells.c[2].x = temp_r30;
-    cells.c[2].y = y1;
-    cells.c[2].str = fn_8000E0E4(lbl_802764BC + 0x248);
+    cells.c[2].y = temp_r28 + temp_r31;
+    cells.c[2].str = Msg_Expand(lbl_802764BC + 0x248);
+    cells.c[3].y = temp_r28 + temp_r31;
     cells.c[3].x = x1;
-    cells.c[3].y = y1;
-    cells.c[3].str = fn_8000E0E4(lbl_802764BC + 0x24F);
-    y2 = y1;
-    y2 = (s16)(temp_r31 + y2);
+    cells.c[3].str = Msg_Expand(lbl_802764BC + 0x24F);
     cells.c[4].x = temp_r30;
-    cells.c[4].y = y2;
-    cells.c[4].str = fn_8000E0E4(lbl_802764BC + 0x256);
+    cells.c[4].y = temp_r28 + temp_r31 + temp_r31;
+    cells.c[4].str = Msg_Expand(lbl_802764BC + 0x256);
     p = cells.c;
     for (i = 0; i < 5; i++) {
         cx = p->x;
         cy = p->y;
-        fn_8005AC24(lbl_802F0308, cx, cy, p->unk4);
-        fn_8000A258();
-        fn_8000A174(0, (u16)(self->unk34 | 0x13));
-        fn_8000A248();
+        Ui_DrawIcon(gUiIconDrawer, cx, cy, p->unk4);
+        Prim2D_Begin();
+        Prim2D_SetTex(0, (u16)(self->unk34 | 0x13));
         fn_8001003C((s16)(cx + 0x18), (s16)(cy + temp_r27), 1, 1, 0, p->str, lbl_8036A5AC, lbl_8036A5BC);
+        Prim2D_PrepareTex();
         p++;
     }
-    fn_8000A258();
-    fn_80009B80(0x80);
-    fn_8000A248();
+    Prim2D_Begin();
+    Prim2D_SetAlphaByte(0x80);
+    Prim2D_PrepareTex();
 }
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -2046,8 +2051,11 @@ s32 fn_8013507C(void) {
     return 0;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction off
 #pragma cplusplus on
+#pragma use_lmw_stmw on
 extern "C" void fn_80135084(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -2100,17 +2108,18 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     s16 ay;
     Obj *self;
     s16 pad;
-    u8 *str;
+    u8 *end;
     u8 *p;
     s32 arg;
     s16 w;
     s16 h;
-    u8 *end;
+    u8 *str;
     u8 done;
     s32 buf[3];
     s32 ch;
     s16 *rect;
     s32 tmp;
+    void (*draw)(Obj *, s16, s16, s32);
 
     self = (Obj *)arg0;
     arg = arg1;
@@ -2132,14 +2141,17 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     Prim2D_AddZ(lbl_8036A5D8);
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
+    draw = (void (*)(Obj *, s16, s16, s32))(*(void ***)self)[11];
     ax = self->unk40;
     ay = self->unk42;
-    self->v9(ax, ay, saved);
+    draw(self, ax, ay, saved);
     Prim2D_Begin();
     Prim2D_SetTex(0, (u16)(self->unk34 | 3));
     Prim2D_PrepareTex();
     pad = (s16)((0x1A - Text_MeasureHeight(-1, lbl_8036A5DC)) >> 1);
-    tmp = Text_MeasureHeight(-1, lbl_8036A5DC) * 2 + ay;
+    tmp = Text_MeasureHeight(-1, lbl_8036A5DC);
+    tmp = tmp * 2;
+    tmp += ay;
     ay = (s16)(pad + tmp);
     p = fn_801057BC(saved);
     str = lbl_80276720;
@@ -2150,34 +2162,25 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
         buf[2] = 0;
         buf[1] = 0;
         while (done == 0) {
-            ch = (s8)*p;
-            if (ch == 0xA) {
-                goto newline;
-            }
-            if (ch >= 0xA) {
-                goto copy_run;
-            }
-            if (ch == 0) {
-                goto newline;
-            }
-            goto copy_run;
-        newline:
-            fn_800C9874(buf, 1, 0);
-            done = 1;
-            continue;
-        copy_run:
+            switch ((s8)*p) {
+            case 0:
+            case 10:
+                fn_800C9874(buf, 1, 0);
+                done = 1;
+                break;
+            default:
             end = fn_80104970(p);
-            do {
+            while (p != end) {
                 fn_800C9874(buf, 1, (s8)*p);
                 p += 1;
-            } while (p != end);
+            }
+            }
         }
         Text_Draw(ax, ay, 1, str + 0x1D, String_CStr(buf));
-        ch = *p;
-        if (ch == 0xA) {
+        if ((s32)(u8)*p == 0xA) {
             ay += 0x1A;
             String_Destroy(buf, -1);
-        } else if ((s8)ch == 0) {
+        } else if ((s8)*p == 0) {
             String_Destroy(buf, -1);
             break;
         } else {
@@ -2189,7 +2192,8 @@ extern "C" void fn_80135084(void *arg0, s32 arg1) {
     Prim2D_ClearCallbacks();
     Prim2D_PrepareTex();
 }
-
+#pragma pop
+#pragma cplusplus on
 extern "C" void fn_801352F0(void *arg0) {
     void fn_80154A74(s32, s32, s16, s16, s32, s32);
     struct Obj {
@@ -3124,12 +3128,17 @@ return self;
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma opt_propagation off
+#pragma opt_common_subs off
 extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    struct Sub { virtual void v0() = 0; virtual void v1(s32, s32, f32) = 0; };
+    struct Sub {
+        virtual void v0() = 0;
+        virtual void v1(s32, s32, f32) = 0;
+    };
     extern u8 lbl_8028FDB0[]; extern u8 lbl_80292230[]; extern u8 lbl_80291914[];
     extern u8 gEmptyVtbl[]; extern u8 lbl_802918E0[];
-    extern f32 lbl_8036A5DC; extern f32 lbl_8036A5E4;
-    s32 temp_r31; void *temp_r30; void *temp_r29; s32 temp_r28; void *temp_r27;
+    extern const f32 lbl_8036A5DC; extern const f32 lbl_8036A5E4;
+    void *temp_r27; s32 temp_r28; void *temp_r29; void *temp_r30; s32 temp_r31;
     s32 flag; s32 a; s32 b; f32 f0; f32 f;
     temp_r30 = arg0; temp_r27 = temp_r30; temp_r31 = arg1; temp_r28 = 0;
     temp_r29 = (u8 *)temp_r30 + 0x4C; f0 = lbl_8036A5DC;
@@ -3207,6 +3216,8 @@ extern "C" void *fn_80136AC4(void *arg0, s32 arg1, s16 arg2, s16 arg3, s16 arg4,
     *(u8 *)((u8 *)temp_r27 + 0xD) = 0;
     return temp_r30;
 }
+#pragma opt_common_subs reset
+#pragma opt_propagation reset
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
@@ -3368,6 +3379,10 @@ extern "C" void fn_80136FDC(void *arg0) {
     ((Obj *)arg0)->v2();
     fn_8008B464(*(s32 *)((char *)arg0 + 0x3C), 0, 0);
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 extern "C" void fn_80137024(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -3395,7 +3410,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     u8 fn_8005A310(void *, u8, s32);
     void fn_8001E5D0(u8, s32);
     s32 Text_MeasureHeight(s32, f32);
-    void Ui_DrawIcon(void *, s16, s16, u8);
+    void Ui_DrawIcon(void *, s16, s32, u8);
     void Prim2D_SetTex(s32, u16);
     void Text_Draw(s16, s16, s32, void *, ...);
     s8 Unit_GetMov(s32);
@@ -3440,20 +3455,20 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
         if ((s32)*str != 0x2D) {
             s16 *row;
             slot_ext = (s8)slot;
-            row = (s16 *)((u8 *)coords + (idx & 0));
-            slot = row[slot_ext + 4];
+            row = (s16 *)coords;
+            slot = ((s16 *)(coords + 2))[slot_ext];
             x = row[slot_ext];
             if ((s8)idx == 7) {
                 if (Status_Test((u8 *)unit + 0x1BC, 0x23) != 0) {
                     unit = 0x53;
-                    Msg_Expand(&lbl_802767E0[0x3B + (idx - 7)]);
+                    Msg_Expand(&lbl_802767E0[0x3B]);
                     goto after_icon;
                 }
             }
             unit = (u8)fn_8005A310(gUiIconDrawer, idx_u8, 0);
             fn_8001E5D0(idx_u8, 0);
         after_icon:
-            Ui_DrawIcon(gUiIconDrawer, x, (s16)((s16)slot + ((Text_MeasureHeight(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
+            Ui_DrawIcon(gUiIconDrawer, x, ((s16)slot + ((Text_MeasureHeight(-1, lbl_8036A620) - 0x18) >> 1)), (u8)unit);
             Prim2D_Begin();
             Prim2D_SetTex(0, (u16)(flags | 3));
             Prim2D_PrepareTex();
@@ -3469,7 +3484,7 @@ extern "C" void fn_80137024(void *arg0, s32 arg1) {
     Text_Draw(0xE0, 0x34, 2, lbl_802767E0 + 0x44, fn_8003A1E0(((Obj *)arg0)->unk3C));
     Text_Draw(0xE0, 0x54, 2, lbl_802767E0 + 0x44, Unit_GetCon(((Obj *)arg0)->unk3C));
 }
-
+#pragma pop
 #pragma push
 #pragma opt_lifetimes off
 extern "C" void fn_8013729C(void *arg0, s32 arg1) {
@@ -4277,6 +4292,10 @@ void *fn_80138DCC(void *arg0, s16 arg1) {
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 extern "C" void fn_80138E58(void *self, void *other) {
     struct Obj {
         virtual void v0() = 0;
@@ -4389,7 +4408,7 @@ extern "C" void fn_80138E58(void *self, void *other) {
     fn_80009B80(0x80);
     fn_8000A248();
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
@@ -6824,7 +6843,9 @@ extern "C" void fn_8013C3B4(void *unused, void *arg1) {
 }
 #pragma cplusplus reset
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
 #pragma cplusplus on
 extern "C" void fn_8013C600(void *arg0, void *arg1) {
     struct Inner {
@@ -6888,7 +6909,7 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     extern f32 lbl_8036A6C0;
     extern f32 lbl_8036A6D0;
     extern f64 lbl_8036A6C8;
-    extern f32 lbl_8036A6D4;
+    extern const f32 lbl_8036A6D4;
     extern f32 lbl_8036A6D8;
     extern f32 lbl_8036A6DC;
     s32 iconH;
@@ -6897,10 +6918,10 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
     s32 v;
     s16 t3a;
     s16 t38;
+    s32 halfW;
     s16 w;
     s16 x;
     void *item;
-    s32 halfW;
     void *self;
     u8 *a1;
     f32 scaled;
@@ -6953,7 +6974,8 @@ extern "C" void fn_8013C600(void *arg0, void *arg1) {
         Prim2D_PrepareTex();
     }
 }
-
+#pragma pop
+#pragma cplusplus on
 #pragma push
 #pragma optimization_level 3
 extern "C" void fn_8013C814(void *arg0) {
