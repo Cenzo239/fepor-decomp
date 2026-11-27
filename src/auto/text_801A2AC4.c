@@ -952,22 +952,20 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 }
 
 #pragma opt_common_subs off
-void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
+void Battle_ApplyHpDelta(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
     s32 orig;
-    s32 delta;
     s32 cur;
 
     orig = obj[0x1A8];
-    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
+    a1 = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), a1);
     cur = obj[0x1A8];
-    delta = (s8)delta;
-    Unit_SetHp(obj, delta + (s8)cur);
+    Unit_SetHp(obj, a1 + (s8)cur);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
-    BattleAnim_Queue(obj + 0x8A0, 0x9, delta);
+    BattleAnim_Queue(obj + 0x8A0, 0x9, a1);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
     if ((s8)obj[0x1A8] <= 0) {
         BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
