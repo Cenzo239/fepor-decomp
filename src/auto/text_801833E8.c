@@ -4193,8 +4193,8 @@ void fn_8018B920(void *arg0) {
 #pragma push
 #pragma optimization_level 2
 void fn_8018B934(void *arg0) {
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_8000C188(void *);
+    f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
+    void Process_ClearFunc(void *);
     extern f32 lbl_8036ACE8;
     extern f32 lbl_8036AD48;
     f32 ad48;
@@ -4204,7 +4204,7 @@ void fn_8018B934(void *arg0) {
     void *temp_r4;
 
     M2C_FIELD(arg0, s32 *, 0x3C) = M2C_FIELD(arg0, s32 *, 0x3C) + 1;
-    temp_f1 = fn_8005A028(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
+    temp_f1 = Math_EaseOutPow(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
     ad48 = lbl_8036AD48;
     ace8 = lbl_8036ACE8;
     rem = temp_f1;
@@ -4213,7 +4213,7 @@ void fn_8018B934(void *arg0) {
     if (M2C_FIELD(arg0, s32 *, 0x3C) == M2C_FIELD(arg0, s32 *, 0x38)) {
         temp_r4 = M2C_FIELD(arg0, void **, 0x30);
         M2C_FIELD(temp_r4, s16 *, 0x15C) = (s16) (ace8 * M2C_FIELD(arg0, f32 *, 0x34));
-        fn_8000C188(arg0);
+        Process_ClearFunc(arg0);
     }
 }
 #pragma pop
