@@ -144,7 +144,7 @@ void TRKNubMainLoop(void) {
                 break;
             }
             TRKDestructEvent(event);
-        } else if (isIdle == 0 || **(u8 ***)0x803687B0 != 0) {
+        } else if (isIdle == 0 || *gTRKInputPendingPtr != 0) {
             isIdle = 1;
             TRKGetInput();
         } else {
@@ -3868,7 +3868,6 @@ s32 __va_arg(u8 *arg0, s32 arg1)
   s32 limit;
   s32 size;
   s32 count;
-  u8 *new_var;
   s32 offset;
   s32 stride;
   u32 result;
@@ -3900,19 +3899,21 @@ s32 __va_arg(u8 *arg0, s32 arg1)
   }
   if (index < limit)
   {
+    s32 prod;
     index += pad;
     result = *((u32 *) (arg0 + 8));
+    prod = index * stride;
     *counter = index + count;
-    value = (((u8 *) result) + offset) + (index * stride);
+    value = (((u8 *) result) + offset) + prod;
   }
   else
   {
+    u32 new_var;
     *counter = 8;
     value = (u8 *) (~(size - 1));
     result = size + (*((u32 *) (arg0 + 4)));
-    new_var = (u8 *) (((u32) value) & (result - 1));
-    ;
-    *((u32 *) (arg0 + 4)) = ((u32) new_var) + size;
+    new_var = ((u32) value) & (result - 1);
+    *((u32 *) (arg0 + 4)) = new_var + size;
   }
   if (arg1 == 0)
   {
