@@ -1,13 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-typedef struct PadSnapshot { s32 held; s32 raw; s32 buttons; } PadSnapshot;
-static inline PadSnapshot UiCtx_ReadPad(void *pad) {
-    PadSnapshot s;
-    s.held = *(s32 *)((u8 *)pad + 4);
-    s.raw = *(s32 *)((u8 *)pad + 8);
-    s.buttons = *(s32 *)((u8 *)pad + 0xC);
-    return s;
-}
 static inline u8 *Battle_FindEligibleUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
