@@ -4358,8 +4358,6 @@ case 2: strcpy(sp8, (char *)lbl_80277BC0 + 0x12B); break;
 fn_8005C8B4((s32)sp8);
 }
 
-#pragma push
-#pragma peephole off
 void fn_8016A0CC(void *arg0) {
     char *strcpy(char *, char *);
     s32 fn_80161FB8(void);
@@ -4386,18 +4384,18 @@ void fn_8016A0CC(void *arg0) {
     }
     if (fn_80161FB8() != 0) {
         if (FileCache_IsReady((void *)fn_801620AC()) != 0) {
-            while (FileCache_IsReady(sp8) == 0) {
+            if (FileCache_IsReady(sp8) != 0) {
+                fn_80162054();
+                *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
+                *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
+                Process_ClearFunc(arg0);
+            } else {
                 goto done;
             }
-            fn_80162054();
-            *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
-            *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
-            Process_ClearFunc(arg0);
         }
     }
 done: ;
 }
-#pragma pop
 
 #pragma push
 #pragma optimization_level 3
