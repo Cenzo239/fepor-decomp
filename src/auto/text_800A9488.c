@@ -2135,7 +2135,7 @@ void fn_800AC5DC(void *arg0) {
 }
 #pragma pop
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_lifetimes off
