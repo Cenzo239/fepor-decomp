@@ -104,8 +104,9 @@ void fn_80081CF4(void *arg0) {
   while (i < 8);
   Prim2D_Begin();
   Prim2D_AddZ(lbl_80369430);
-  Prim2D_PrepareTex();
+      Prim2D_PrepareTex();
 }
+#pragma pop
 
 void fn_80081E68(s32 arg0, u16 *arg1, f32 farg0, f32 farg1) {
     extern char gUiStrings[];
