@@ -1589,13 +1589,14 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 }
 #pragma use_lmw_stmw reset
 
+#pragma optimization_level 3
 void fn_8012323C(void *arg0) {
     extern f32 lbl_8036A2DC;
     f64 fn_80238638(f64);
     extern f64 lbl_8036A2E0;
     extern f32 lbl_8036A2E8;
-    register f32 halfpi;
-    register f32 cos_v;
+    f32 halfpi;
+    f32 cos_v;
     f32 clamp;
     f32 sin_v;
 
@@ -1614,7 +1615,7 @@ void fn_8012323C(void *arg0) {
         M2C_FIELD(arg0, s32 *, 0x90)--;
     }
 }
-
+#pragma optimization_level reset
 void fn_801232F4(void *arg0, f32 farg0, f32 farg1) {
     M2C_FIELD(arg0, f32 *, 0x70) = farg0;
     M2C_FIELD(arg0, f32 *, 0x74) = farg1;
@@ -3208,19 +3209,18 @@ void fn_80125AE0(void *arg0)
   extern f32 lbl_8036A39C;
   extern f64 lbl_8036A3A0;
   extern f64 lbl_8036A3A8;
-  f32 a;
   f32 b;
   f32 limit;
+  f32 a;
   f32 x;
   f64 t;
   f32 temp_f31;
   double new_var;
   if (fn_800AA188() != 0)
   {
-    limit = lbl_8036A398;
     a = *((f32 *) (((char *) arg0) + 0x4C));
-    b = *((f32 *) (((char *) arg0) + 0x34));
-    *((f32 *) (((char *) arg0) + 0x4C)) = a + b;
+    limit = lbl_8036A398;
+    *((f32 *) (((char *) arg0) + 0x4C)) = a + *((f32 *) (((char *) arg0) + 0x34));
     a = *((f32 *) (((char *) arg0) + 0x4C));
     if (a >= limit)
     {
