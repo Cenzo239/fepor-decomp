@@ -24020,7 +24020,7 @@ outside=0;cx=unit[0x19E];cy=unit[0x19F];
 if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
 if(outside)continue;
 r=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
-fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
+fn_800FDDBC(((s8*)unit)[0x19E],((s8*)unit)[0x19F],t,r,6);
 result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
@@ -29976,7 +29976,6 @@ static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_lifetimes off
 void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
     void Sort_Three(s32 *, s32 *, s32 *, u8 (*)(s32, s32));
