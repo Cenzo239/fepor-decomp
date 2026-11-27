@@ -15593,6 +15593,7 @@ void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     fn_80009B8C(0xFF);
     fn_8000A248();
 }
+#pragma pop
 #pragma use_lmw_stmw reset
 s32 fn_8017B8F8(s32 unused, s32 arg1) {
     return arg1 != 0;
