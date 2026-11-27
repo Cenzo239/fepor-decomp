@@ -1551,11 +1551,8 @@ void fn_80058D84(void *arg0) {
     void GXBegin(s32, s32, s32);
 
     struct Vert { f32 f0, f4, f8; f32 fC, f10, f14; f32 f18, f1C, f20; u8 b24; };
-    u8 r, g, bl, al;
-    f32 a, b, c;
     u8 *obj;
     s32 i;
-    struct Vert *v;
     s32 off;
 
     obj = (u8 *)arg0;
@@ -1582,47 +1579,19 @@ void fn_80058D84(void *arg0) {
         off = *(u16 *)(obj + 0x4C) * *(u8 *)(obj + 0x51) - *(u16 *)(obj + 0x4A);
         GXBegin(0x98, 0, (*(u16 *)(obj + 0x4A) * 2) & 0xFFFE);
         for (i = 0; i < *(u16 *)(obj + 0x4A); i++) {
-            v = *(struct Vert **)(obj + 0x44) + (i + off);
-            c = v->f20; b = v->f1C; a = v->f18;
-            *(f32 *)0xCC008000 = a;
-            *(f32 *)0xCC008000 = b;
-            *(f32 *)0xCC008000 = c;
-            al = v->b24; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
-            *(u8 *)0xCC008000 = r;
-            *(u8 *)0xCC008000 = g;
-            *(u8 *)0xCC008000 = bl;
-            *(u8 *)0xCC008000 = al;
-            c = v->f14; b = v->f10; a = v->fC;
-            *(f32 *)0xCC008000 = a;
-            *(f32 *)0xCC008000 = b;
-            *(f32 *)0xCC008000 = c;
-            al = 0; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
-            *(u8 *)0xCC008000 = r;
-            *(u8 *)0xCC008000 = g;
-            *(u8 *)0xCC008000 = bl;
-            *(u8 *)0xCC008000 = al;
+            struct Vert *v = &(*(struct Vert **)(obj + 0x44))[i + off];
+            GXPosition3f32(v->f18, v->f1C, v->f20);
+            GXColor4u8(obj[0x38], obj[0x39], obj[0x3A], v->b24);
+            GXPosition3f32(v->fC, v->f10, v->f14);
+            GXColor4u8(obj[0x38], obj[0x39], obj[0x3A], 0);
         }
         GXBegin(0x98, 0, (*(u16 *)(obj + 0x4A) * 2) & 0xFFFE);
         for (i = 0; i < *(u16 *)(obj + 0x4A); i++) {
-            v = *(struct Vert **)(obj + 0x44) + (i + off);
-            c = v->f8; b = v->f4; a = v->f0;
-            *(f32 *)0xCC008000 = a;
-            *(f32 *)0xCC008000 = b;
-            *(f32 *)0xCC008000 = c;
-            al = 0; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
-            *(u8 *)0xCC008000 = r;
-            *(u8 *)0xCC008000 = g;
-            *(u8 *)0xCC008000 = bl;
-            *(u8 *)0xCC008000 = al;
-            c = v->f20; b = v->f1C; a = v->f18;
-            *(f32 *)0xCC008000 = a;
-            *(f32 *)0xCC008000 = b;
-            *(f32 *)0xCC008000 = c;
-            al = v->b24; bl = obj[0x3A]; g = obj[0x39]; r = obj[0x38];
-            *(u8 *)0xCC008000 = r;
-            *(u8 *)0xCC008000 = g;
-            *(u8 *)0xCC008000 = bl;
-            *(u8 *)0xCC008000 = al;
+            struct Vert *v = &(*(struct Vert **)(obj + 0x44))[i + off];
+            GXPosition3f32(v->f0, v->f4, v->f8);
+            GXColor4u8(obj[0x38], obj[0x39], obj[0x3A], 0);
+            GXPosition3f32(v->f18, v->f1C, v->f20);
+            GXColor4u8(obj[0x38], obj[0x39], obj[0x3A], v->b24);
         }
         fn_80066D00(-1);
     }
