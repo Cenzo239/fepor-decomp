@@ -3,7 +3,7 @@
 #include "common.h"
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 void fn_801F18D4(void) {
     void fn_8022C260(void *, void (*)(void), void *, s32, s32);
     void fn_801F196C(void);
@@ -17,21 +17,21 @@ void fn_801F18D4(void) {
     extern u8 lbl_8029A758[];
     extern u8 lbl_8029A7F4[];
     volatile u32 *p;
-    u32 a, b, c;
+    void *a, *b, *c;
 
     fn_8022C260(lbl_80339270, fn_801F196C, 0, 8, 9);
-    a = (u32)gUiMenuDrawVtbl;
+    a = (void *)gUiMenuDrawVtbl;
     p = (volatile u32 *)lbl_803392B8;
-    p[1] = a;
+    p[1] = (u32)a;
     p[1] = (u32)lbl_80286664;
     p[1] = (u32)lbl_802863BC;
-    a = (u32)lbl_802866E4;
-    b = (u32)lbl_802861E4;
-    c = (u32)lbl_8029A758;
-    p[1] = a;
-    a = (u32)lbl_8029A7F4;
-    p[1] = b;
-    p[0] = c;
-    p[1] = a;
+    a = (void *)lbl_802866E4;
+    b = (void *)lbl_802861E4;
+    c = (void *)lbl_8029A758;
+    p[1] = (u32)a;
+    a = (void *)lbl_8029A7F4;
+    p[1] = (u32)b;
+    p[0] = (u32)c;
+    p[1] = (u32)a;
 }
 #pragma pop
