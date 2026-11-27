@@ -7104,6 +7104,7 @@ entry=gSoundVoices+offset; *(u16 *)(entry+0xD2)=ten;
 #pragma global_optimizer on
 #pragma push
 #pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2, s32 arg6,
                  f32 arg3, f32 arg4, f32 arg5)
 {
@@ -7140,10 +7141,9 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2, s32 arg6,
         arg5 = lbl_8036C35C;
     }
 
-    index = *(u8 *)(entry + 0xF3);
     flags = *(u32 *)(entry + 0xF4);
 
-    table = gSoundStudios + index * 0xBC;
+    table = gSoundStudios + *(u8 *)(entry + 0xF3) * 0xBC;
 
     sign = flags >> 31;
     option = (*(u32 *)(table + 0x54) == 1);
