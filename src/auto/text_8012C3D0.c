@@ -14,8 +14,6 @@ struct UnitListDrawablePanel {
 };
 #pragma cplusplus reset
 
-static inline s32 Ui_IsTileAligned(s16 value) { return value % 32 == 0; }
-
 f32 lbl_8036A500 = 300.0f;
 f32 lbl_8036A50C = 1.0f;
 f32 lbl_8036A510 = 0.0f;
