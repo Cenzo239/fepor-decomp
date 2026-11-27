@@ -10045,9 +10045,8 @@ loop2:
         goto loop2;
     }
     base = *arg0;
-    dst = base + 0x1A000;
-    if (save_slot_size(dst) < save_slot_size(base + 0x20000)) return dst;
-    return base + 0x20000;
+    if (save_slot_size(base + 0x1A000) >= save_slot_size(base + 0x20000)) return base + 0x20000;
+    return base + 0x1A000;
 
 }
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
