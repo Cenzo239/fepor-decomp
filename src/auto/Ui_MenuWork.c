@@ -533,27 +533,32 @@ static inline void MenuEntries_8006F10C(s32 *table, s32 **entries, s32 a, s32 b)
 #pragma push
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
+u8 lbl_80311CA8[0x10];
+u8 lbl_80311CB8[0x28];
+u8 lbl_80311CE0[0x14];
+static s32 menuItems[8];
+static s32 *menuEntries[5];
+static u8 menuWork[0x28];
+
 void fn_8006F10C(s32 arg0, s32 arg1)
 {
-  extern u8 lbl_80311CA8[];
   s32 fn_800C0658(void);
   void Ui_CreateMenu(void *, s32, s32);
-  typedef struct 
-  {
-    void *e0;
-    void *e1;
-    void *e2;
-  } Entries;
-  u8 *base = lbl_80311CA8;
-  s32 *table = (s32 *) (base + 0x4c);
-  Entries *entries = (Entries *) (base + 0x6c);
-  entries->e0 = table;
-  table = (s32 *)entries->e0;
+  s32 *table;
+  s32 **list;
+  /* MWCC lays out the BSS pool in first-reference order. */
+  (void)lbl_80311CA8;
+  (void)lbl_80311CB8;
+  (void)lbl_80311CE0;
+  table = menuItems;
+  list = menuEntries;
+  list[0] = table;
+  table = list[0];
   table[1] = arg0;
-  entries->e1 = (void *)(table + 2);
-  ((s32 *)entries->e1)[1] = arg1;
-  entries->e2 = 0;
-  Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
+  list[1] = table + 2;
+  table[3] = arg1;
+  list[2] = 0;
+  Ui_CreateMenu(menuWork, fn_800C0658(), 0);
 }
 #pragma pop
 
