@@ -5279,10 +5279,51 @@ u32 fn_801FB9CC(void *arg0, u16 arg1) {
 }
 
 #pragma opt_common_subs off
+#pragma push
+#pragma dont_inline off
+#pragma auto_inline on
+#pragma inline_depth(8)
+#pragma inline_max_size(1000)
+#pragma opt_propagation on
+#pragma scheduling on
+#pragma opt_common_subs on
+#pragma opt_lifetimes on
+#pragma opt_loop_invariants on
+#pragma opt_strength_reduction on
+#pragma opt_dead_code on
+#pragma cplusplus off
+#pragma global_optimizer on
+#pragma optimization_level 4
+#pragma peephole on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw on
 #pragma global_optimizer off
-s32 fn_801FB9E0(u8 *arg0)
-{
-    u16 fn_802072A0(s32);
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma opt_common_subs on
+#pragma opt_common_subs off
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma opt_common_subs on
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma peephole off
+#pragma peephole on
+#pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma global_optimizer off
+s32 fn_801FB9E0(u8 *arg0_c_) {
+    const u8 *arg0_c = (const u8 *)arg0_c_; u8 *arg0 = (u8 *)arg0_c;
+    u16 OSGetFontEncode(s32);
 
     if ((s8)*arg0 == 0) {
         return 0;
@@ -5304,7 +5345,7 @@ s32 fn_801FB9E0(u8 *arg0)
             var_r30 += 1;
             goto loop_check;
         }
-        if (fn_802072A0(temp_r3) != 1) {
+        if (OSGetFontEncode(temp_r3) != 1) {
             var_r30 += 1;
             goto loop_check;
         }
@@ -5329,7 +5370,7 @@ s32 fn_801FB9E0(u8 *arg0)
         return var_r31;
     }
 }
-#pragma global_optimizer reset
+#pragma pop
 s32 fn_801FBAD4(s8 *arg0) {
     u16 fn_802072A0(s32);
     void *fn_801FBF98(void *, void *, u16 *, u32 (*)(void *, u16));
