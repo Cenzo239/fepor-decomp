@@ -3308,6 +3308,9 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
+#pragma push
+#pragma scheduling off
+#pragma global_optimizer off
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *map;
@@ -3330,6 +3333,7 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     *((u8 *)arg0 + 0x16) = 0;
     map[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
 }
+#pragma pop
 void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
     M2C_FIELD(arg0, s32 *, 0) = 0;
