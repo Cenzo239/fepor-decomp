@@ -14401,7 +14401,6 @@ extern "C" void fn_80142060(void *);
 static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80292208[];
     extern const f32 gF32_1;
-    s16 x0;
     void *self;
     s16 y0;
     s16 x1;
@@ -14410,6 +14409,7 @@ static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) 
     void *baseVtbl;
     f32 one;
     void *tmp;
+    s16 x0;
 
     zero = 0;
     baseVtbl = lbl_80292230;
