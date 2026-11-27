@@ -860,7 +860,7 @@ void *Process_FindByName(u8 *arg0) {
     return 0;
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 4
 void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
     extern u8 gProcesses[];
