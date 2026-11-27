@@ -1704,6 +1704,7 @@ got_dst:
 #pragma push
 #pragma optimization_level 2
 #pragma opt_common_subs off
+#pragma peephole off
 void fn_801E047C(u8 **arg0, s32 arg1)
 {
   void fn_80006298(void *, s32, s32);
