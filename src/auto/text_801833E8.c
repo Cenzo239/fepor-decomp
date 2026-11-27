@@ -1126,7 +1126,8 @@ void fn_80185244(void *arg0) {
     }
 }
 
-#pragma opt_strength_reduction off
+#pragma push
+#pragma opt_propagation off
 void fn_80185280(void *arg0) {
     void fn_8000A388(void *, void *, void *);
     void fn_8000C070(void *, s32);
@@ -1168,8 +1169,7 @@ void fn_80185280(void *arg0) {
         if ((s32)lvl > 0x14) {
             if ((s32)lvl > 0x28) {
                 count <<= 1;
-            }
-            if ((s32)lvl <= 0x28) {
+            } else {
                 count = (s32)((f32)count + fn_80059F64(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
             }
         }
@@ -1199,7 +1199,7 @@ void fn_80185280(void *arg0) {
     }
     *(s32 *)((u8 *)arg0 + 0x34) = 0;
 }
-#pragma opt_strength_reduction on
+#pragma pop
 void fn_8018548C(void *arg0) {
     fn_8004FC70(M2C_FIELD(arg0, s32 *, 0x30), 0xB);
 }
@@ -3022,65 +3022,92 @@ void fn_80188FAC(void *p) {
     }
 }
 #pragma pop
-void fn_801890B4(u8 *self) {
-void fn_80050C90(void *);
-void fn_8004FE98(void *,s32);
-void GfxEnt_ForEachKey(void *,void *,void *);
-void MuFade_UnlinkSame(void *,void *);
-void Unit_SetModelAlpha(void *,s32);
-void DebugPrint(void *,...);
-void SeCue_FadeOut(s32,s32);
-void fn_800C4588(void *);
-extern u16 E_MuFade_script[36];
-extern u8 gBattleMap[],gSeCueSlots[],MoveAnim_str[],gMapBlendMode;
-u8 key[0x34];
-s32 x,y;
-u8 tx,ty;
-u8 *unit;
-f32 angle;
-s16 degrees;
-s32 alpha;
-u8 blend;
-if(*(u16 *)(self+0x52)&0x80) {
-unit=*(u8 **)(self+0x30);
-tx=unit[0x19e]; ty=unit[0x19f]; x=(s8)tx; y=(s8)ty;
-fn_80050C90(unit);
-unit=*(u8 **)(self+0x30);
-switch(self[0x5a]) {
-case 4: degrees=0;break;
-case 6: degrees=45;break;
-case 2: degrees=90;break;
-case 10: degrees=135;break;
-case 8: degrees=180;break;
-case 9: degrees=225;break;
-case 1: degrees=270;break;
-case 5: degrees=315;break;
-default: degrees=0;break;
-}
-angle=degrees;
-*(void **)(key+0x30)=unit;
-GfxEnt_ForEachKey(E_MuFade_script,MuFade_UnlinkSame,key);
-if(angle!=(f32)*(s16 *)(unit+0x15c)/50.0f) *(s16 *)(unit+0x15c)=50.0f*angle;
-unit=*(u8 **)(self+0x30);
-if(unit[2]) fn_8004FE98(unit,0);
-alpha=255;
-if(*(u16 *)(self+0x52)&0x10) {}
-if(*(u16 *)(self+0x52)&0x20) alpha=0;
-blend=1;
-if(!((u8)(gMapBlendMode-1)<=1)) blend=0;
-if(blend) {
-if((*(u8 **)(*(u8 **)(self+0x30)+0x190))[8]==1) {
-if(gBattleMap[0x200d+x+(y<<6)]==0) alpha=0;
-}
-}
-Unit_SetModelAlpha(*(void **)(self+0x30),alpha);
-}
-if((s8)self[0x6a]!=-1) {
-DebugPrint(MoveAnim_str+0x4c3,**(void ***)(gSeCueSlots+self[0x6a]*0x30));
-SeCue_FadeOut(self[0x6a],250);
-}
-fn_800C4588(*(void **)(self+0x54));*(void **)(self+0x54)=0;
-fn_800C4588(*(void **)(self+0x6c));*(void **)(self+0x6c)=0;
+void fn_801890B4(void *anim) {
+    void fn_80050C90(void *);
+    void fn_8004FE98(void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void MuFade_UnlinkSame(void *, void *);
+    void Unit_SetModelAlpha(void *, s32);
+    s32 DebugPrint(const char *, ...);
+    void SeCue_FadeOut(s32, s32);
+    void fn_800C4588(void *);
+
+    extern u16 E_MuFade_script[36];
+    extern u8 gMapBlendMode;
+    extern u8 gBattleMap[];
+    extern u8 gSeCueSlots[];
+    extern u8 MoveAnim_str[];
+
+    u8 fadeKey[0x34];
+    u8 *self;
+    s32 x, y;
+    u8 *unit;
+    s16 degrees;
+    f32 angle;
+    s32 alpha;
+    u8 blend;
+    u8 slot;
+
+    self = (u8 *)anim;
+    if (M2C_FIELD(self, u16 *, 0x52) & 0x80) {
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        x = (s8)unit[0x19E];
+        y = (s8)unit[0x19F];
+        fn_80050C90(unit);
+
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        switch (self[0x5A]) {
+        case 4:  degrees = 0;   break;
+        case 6:  degrees = 45;  break;
+        case 2:  degrees = 90;  break;
+        case 10: degrees = 135; break;
+        case 8:  degrees = 180; break;
+        case 9:  degrees = 225; break;
+        case 1:  degrees = 270; break;
+        case 5:  degrees = 315; break;
+        default: degrees = 0;   break;
+        }
+
+        angle = (f32)degrees;
+        *(void **)(fadeKey + 0x30) = unit;
+        GfxEnt_ForEachKey(E_MuFade_script, MuFade_UnlinkSame, fadeKey);
+
+        if (angle != (f32)M2C_FIELD(unit, s16 *, 0x15C) / 50.0f) {
+            M2C_FIELD(unit, s16 *, 0x15C) = (s16)(50.0f * angle);
+        }
+
+        unit = M2C_FIELD(self, u8 **, 0x30);
+        if (unit[2] != 0) {
+            fn_8004FE98(unit, 0);
+        }
+
+        alpha = (M2C_FIELD(self, u16 *, 0x52) & 0x10) ? 255 : 255;
+        if (M2C_FIELD(self, u16 *, 0x52) & 0x20) {
+            alpha = 0;
+        }
+        blend = MoveAnim_IsBlendMode(gMapBlendMode);
+        if (blend) {
+            unit = M2C_FIELD(self, u8 **, 0x30);
+            if (M2C_FIELD(unit, u8 **, 0x190)[8] == 1 &&
+                (gBattleMap + x + y * 0x40)[0x200D] == 0) {
+                alpha = 0;
+            }
+        }
+
+        Unit_SetModelAlpha(M2C_FIELD(self, void **, 0x30), alpha);
+    }
+
+    slot = self[0x6A];
+    if ((s8)slot != -1) {
+        DebugPrint((const char *)(MoveAnim_str + 0x4C3),
+                   **(const char ***)(gSeCueSlots + slot * 0x30));
+        SeCue_FadeOut(self[0x6A], 250);
+    }
+
+    fn_800C4588(M2C_FIELD(self, void **, 0x54));
+    M2C_FIELD(self, void **, 0x54) = NULL;
+    fn_800C4588(M2C_FIELD(self, void **, 0x6C));
+    M2C_FIELD(self, void **, 0x6C) = NULL;
 }
 
 #pragma global_optimizer off
@@ -3524,7 +3551,7 @@ void fn_8018A0A8(void *arg0) {
  f32 Math_Lerp(f32,f32,f32,f32);
  extern u8 E_MuBlend_script[];
  extern f32 lbl_8036ACEC,lbl_8036AD20,lbl_8036AD0C,lbl_8036ACF0,lbl_8036AD24,lbl_8036ACE8;
- register u8 *base=E_MuBlend_script;
+ u8 *base=E_MuBlend_script;
  void *info;
 
  M2C_FIELD(arg0,u8 *,0x58)=0;
@@ -7143,14 +7170,16 @@ extern "C" void fn_80191590(void *arg0) {
     s16 spC[2];
     s16 sp8[2];
     Child *c6;
+    Self *self;
     void *saved;
     Child *c2;
     Child *c4;
     Child *c5;
-    Self *self;
     s16 t;
+    Child *text;
 
     self = (Self *)arg0;
+    c6 = (Child *)self->unk68->unk44;
     saved = self->unk50;
     c2 = Ui_FindChild(self, 2, 0);
     c4 = Ui_FindChild(self, 4, 0);
@@ -7203,11 +7232,11 @@ extern "C" void fn_80191590(void *arg0) {
     }
     TalkUi_ShowMsg(self->unk68->unk8);
     fn_80193344(self);
-    c6 = (Child *)self->unk68->unk44;
+    text = (Child *)self->unk68->unk44;
     {
         Child *res = Ui_FindChild(self, -0x1000, 0);
         if (res != 0) {
-            Ui_SetWidgetText(res, (s32)c6);
+            Ui_SetWidgetText(res, (s32)text);
         }
     }
     Process_Goto(self, 3);
@@ -8319,7 +8348,7 @@ extern "C" void fn_80193344(void *arg0) {
         Ui_AddChild(arg0, obj);
     }
     if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
-        register int tmp = M2C_FIELD(obj, s16 *, 0xC);
+        register tmp = M2C_FIELD(obj, s16 *, 0xC);
         spC.x = 0x108;
         spC.y = tmp;
         Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);
@@ -9390,14 +9419,15 @@ extern "C" void fn_80194988(void *arg0) {
         s16 f8A;
     };
 
-    register void *walk;
     register s32 i;
     void *dst;
+    void *w2;
+    register void *walk;
     void *unit;
     void *self;
     void *obj;
     void **entry;
-    void *saved;
+    s32 saved;
     u32 res;
     Panel *panel;
 
@@ -9461,14 +9491,14 @@ loop2_body:
         i += 1;
     }
     i = 0;
-    walk = unit;
+    w2 = unit;
     while (i < 4) {
-        if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+        if (*(u32 *)((u8 *)w2 + 0x1EC) == 0) {
             break;
         }
-        fn_801439F0(dst, (u8 *)walk + 0x1EC, unit);
+        fn_801439F0(dst, (u8 *)w2 + 0x1EC, unit);
         i += 1;
-        walk = (u8 *)walk + 8;
+        w2 = (u8 *)w2 + 8;
     }
     unit = *(void **)((u8 *)unit + 0x184);
 loop2_cond:
@@ -9496,10 +9526,10 @@ loop2_cond:
     ((Obj *)*(void **)((u8 *)self + 0x40))->v11();
     fn_801400F4(self, *(void **)((u8 *)self + 0x40));
     fn_8011D908(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x44) + 4), self);
-    saved = *(void **)((u8 *)*(void **)((u8 *)self + 0x44) + 0x2C);
+    saved = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x44) + 0x2C);
     res = (u32)fn_8013FF94(self, -0x1000, 0);
     if (res != 0U) {
-        fn_801658DC(res, (s32)saved);
+        fn_801658DC(res, saved);
     }
 }
 
@@ -10369,6 +10399,7 @@ s32 fn_801964C8(s32 arg0) {
 #pragma global_optimizer on
 #pragma push
 #pragma optimization_level 1
+#pragma opt_lifetimes on
 s32 fn_80196558(void *arg0, void *arg1) {
     s32 Unit_GetCarryWtLimit(void *);
     s32 Unit_GetMagAtk(void *);
