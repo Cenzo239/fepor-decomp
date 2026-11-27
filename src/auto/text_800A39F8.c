@@ -2419,108 +2419,108 @@ void fn_800A7938(s32 arg0, s32 arg1, void *arg2) {
     Prim2D_EndPrim();
     Prim2D_ResetState();
 }
-#pragma pop
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs off
 void fn_800A7C94(void *arg0) {
     void *Process_Create(void *, void *);
-    void fn_8006EEFC(void **, s32);
-    void *Heap_AllocRaw(s32);
-    void *fn_8022C414(void *, void *, void *, s32, s32);
+    void fn_8006EEFC(void *, s32);
     s32 Rand_Range(s32);
-    void Ui_LoadAtlasTex(void *, void *, u16);
+    void *Heap_AllocRaw(s32);
+    void *fn_8022C414(void *, void (*)(void), s32, s32, s32);
+    void Ui_LoadAtlasTex(s32, void *, u16);
     u16 GXGetTexObjWidth(void *);
-    s16 GXGetTexObjHeight(void *);
+    u16 GXGetTexObjHeight(void *);
     u8 fn_80006650(void *, void *);
     void fn_80006608(void *);
     void Heap_FreeRaw(void *);
+    void fn_800A7EC0(void);
     extern u8 lbl_8028C7F8[];
     extern u8 lbl_8028C814[];
-    extern s32 lbl_80369B2C;
     extern s32 lbl_80369B28;
-    extern f32 lbl_80369B30;
-    extern f32 lbl_80369B34;
-    extern f64 lbl_80369B38;
-    extern void fn_800A7EC0();
-
+    extern s32 lbl_80369B2C;
+    extern const f32 lbl_80369B30;
+    extern const f32 lbl_80369B34;
     struct {
-        s32 sp8;
-        s32 spC;
-        u8 sp10[0x20];
-        u16 sp30;
-        s16 sp32;
-    } st;
-    s32 r31;
-    s32 r30;
-    s32 r29;
-    void *r28;
-    s32 r27;
-    void *r26;
-    void *r25;
-    s16 r24;
-    void *r23;
-    s16 *r22;
+        s32 a;
+        s32 b;
+        u8 texObj[0x20];
+        u16 w;
+        u16 h;
+    } tex;
+    s32 idx;
+    s32 span;
+    s32 count;
+    void *arr;
+    s32 retry;
+    s32 unk30;
+    void *res;
+    s16 dy;
+    u8 *scan;
+    void *obj;
+    u8 *cur;
+    s16 dx;
+    u16 h;
+    u16 w;
+    u16 span16;
 
-    r25 = Process_Create(lbl_8028C7F8, arg0);
-    st.spC = lbl_80369B2C;
-    st.sp8 = lbl_80369B28;
-    fn_8006EEFC((void **)((u8 *)r25 + 0x30), st.spC);
-    r26 = *(void **)((u8 *)r25 + 0x30);
-    r27 = 0x64;
-    r28 = fn_8022C414(Heap_AllocRaw(0x110), (void *)fn_800A7EC0, NULL, 8, 0x20);
-    r29 = 0;
-    r22 = (s16 *)r28;
+    res = Process_Create(lbl_8028C7F8, arg0);
+    tex.b = lbl_80369B2C;
+    tex.a = lbl_80369B28;
+    fn_8006EEFC((u8 *)res + 0x30, tex.b);
+    unk30 = *(s32 *)((u8 *)res + 0x30);
+    retry = 0x64;
+    arr = fn_8022C414(Heap_AllocRaw(0x110), fn_800A7EC0, 0, 8, 0x20);
+    count = 0;
+    cur = (u8 *)arr;
     do {
-        s16 adj;
-        s16 tmp16;
-        u16 t;
-        u16 texIdx;
-        r30 = Rand_Range(8) + 2;
-        texIdx = (u16)r30;
-        Ui_LoadAtlasTex(r26, st.sp10, texIdx);
-        st.sp30 = GXGetTexObjWidth(st.sp10);
-        tmp16 = GXGetTexObjHeight(st.sp10);
-        t = st.sp30;
-        st.sp32 = tmp16;
-        r22[0] = 0;
-        r22[1] = 0;
-        r22[2] = t;
-        r22[3] = tmp16;
-        for (;;) {
-            r24 = Rand_Range(0x200);
-            adj = (s16)(Rand_Range(st.sp30 + 0x260) - ((u32)st.sp30 >> 1));
-            r22[0] += adj;
-            r22[1] += r24;
-            r22[2] += adj;
-            r22[3] += r24;
-            for (r31 = 0, r23 = r28; r31 < r29; r23 = (u8 *)r23 + 8, r31++) {
-                if (fn_80006650(r22, r23)) {
-                    fn_80006608(r22);
-                    if (--r27 < 0)
-                        goto cleanup;
-                    goto next_try;
+        span = Rand_Range(8) + 2;
+        span16 = span;
+        Ui_LoadAtlasTex(unk30, tex.texObj, span16);
+        tex.w = GXGetTexObjWidth(tex.texObj);
+        h = GXGetTexObjHeight(tex.texObj);
+        w = tex.w;
+        tex.h = h;
+        *(s16 *)(cur + 0) = 0;
+        *(s16 *)(cur + 2) = 0;
+        *(u16 *)(cur + 4) = w;
+        *(u16 *)(cur + 6) = h;
+recompute:
+        dy = Rand_Range(0x200);
+        dx = Rand_Range(tex.w + 0x260) - ((u32)tex.w >> 1);
+        *(s16 *)(cur + 0) += dx;
+        *(s16 *)(cur + 2) += dy;
+        *(s16 *)(cur + 4) += dx;
+        *(s16 *)(cur + 6) += dy;
+        scan = (u8 *)arr;
+        idx = 0;
+        while (idx < count) {
+            if (fn_80006650(cur, scan) != 0) {
+                fn_80006608(cur);
+                if (--retry < 0) {
+                    goto next;
                 }
+                goto recompute;
             }
-            break;
-        next_try:
-            ;
+            scan += 8;
+            idx++;
         }
-        r23 = Process_Create(lbl_8028C814, r25);
-        *(f32 *)((u8 *)r23 + 0x34) = (f32)r22[0];
-        *(f32 *)((u8 *)r23 + 0x38) = (f32)r22[1];
-        *(s32 *)((u8 *)r23 + 0x44) = r30;
-        *(void **)((u8 *)r23 + 0x30) = r25;
-        *(f32 *)((u8 *)r23 + 0x3C) = lbl_80369B30;
-        *(f32 *)((u8 *)r23 + 0x40) = (*(f32 *)((u8 *)r23 + 0x3C) / lbl_80369B34) * (f32)Rand_Range(0x8000);
-        r29 += 1;
-        r22 += 4;
-    } while (r29 < 0x20);
-cleanup:
-    if (r28 != NULL)
-        Heap_FreeRaw((u8 *)r28 - 0x10);
+        obj = Process_Create(lbl_8028C814, res);
+        *(f32 *)((u8 *)obj + 0x34) = (f32)*(s16 *)(cur + 0);
+        *(f32 *)((u8 *)obj + 0x38) = (f32)*(s16 *)(cur + 2);
+        *(s32 *)((u8 *)obj + 0x44) = span;
+        *(void **)((u8 *)obj + 0x30) = res;
+        *(f32 *)((u8 *)obj + 0x3C) = lbl_80369B30;
+        *(f32 *)((u8 *)obj + 0x40) = (*(f32 *)((u8 *)obj + 0x3C) / lbl_80369B34) * (f32)Rand_Range(0x8000);
+next:
+        count++;
+        cur += 8;
+    } while (count < 0x20);
+    if (arr != NULL) {
+        Heap_FreeRaw((u8 *)arr - 0x10);
+    }
 }
-#pragma optimization_level reset
-#pragma opt_common_subs reset
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_800A7EC0(void) {
 
 }
