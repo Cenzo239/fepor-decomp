@@ -44,10 +44,7 @@ extern f32 lbl_803697E0;
 extern f32 lbl_803697E4;
 
 #pragma use_lmw_stmw on
-#pragma push
-#pragma optimization_level 3
-void fn_80081CF4(void *arg0)
-{
+void fn_80081CF4(void *arg0) {
   extern f32 lbl_8036948C;
   void **new_var;
   extern f32 lbl_80369494;
