@@ -3,7 +3,7 @@
 #include "common.h"
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 void fn_8013275C(void) {
     extern u8 gUiMenuDrawVtbl[128];
     extern u8 lbl_802916E0[80];
