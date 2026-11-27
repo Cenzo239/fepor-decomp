@@ -208,8 +208,6 @@ void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
-#pragma push
-#pragma optimization_level 3
 void fn_8003333C(u8 *arg0, s32 arg1)
 {
   s32 t3;
@@ -244,7 +242,6 @@ void fn_8003333C(u8 *arg0, s32 arg1)
   arg0 = arg0 + (t4 << 1);
   *((u16 *) (arg0 + 0x20)) |= 1;
 }
-#pragma pop
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 void fn_800333DC(u8 *arg0, s32 arg1) {
