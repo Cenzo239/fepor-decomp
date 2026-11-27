@@ -32627,7 +32627,6 @@ extern f32 fn_802031A8(f32*, f32*, f32*);
 extern f32 fn_802031CC(f32*, f32*, f32);
 extern f32 fn_802031E8(f32*, f32*);
 
-extern u16 gBattleMap;
 extern u8 lbl_802723E8[136]; // Size determined from assembly
 #include "common.h"
 #include "structs.h"
