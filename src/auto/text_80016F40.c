@@ -505,10 +505,12 @@ void fn_80017BFC(void) {
     fn_8001840C();
 }
 
-static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0, Vec3_800193D8 def) {
+static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
+    extern s32 lbl_80268318[];
     extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
+    Vec3_800193D8 def = *(Vec3_800193D8 *)lbl_80268318;
     Vec3_800193D8 a = def;
     Vec3_800193D8 out = def;
     s32 i;
@@ -527,8 +529,7 @@ static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0, Vec3_
             } else {
                 s32 prevKey = *(s32 *)((u8 *)pt - 0x10);
                 f32 denom = (f32)(key - prevKey);
-                f32 prev_f = (f32)prevKey;
-                f32 t = (lbl_80368C88 == denom) ? lbl_80368C8C : (farg0 - prev_f) / denom;
+                f32 t = (lbl_80368C88 == denom) ? lbl_80368C8C : (farg0 - (f32)prevKey) / denom;
                 void *p0 = (i >= 2) ? (void *)((u8 *)pt - 0x28) : (void *)((u8 *)pt - 0x14);
                 void *p2 = (i < n - 1) ? (void *)((u8 *)pt + 0x14) : pt;
                 out.x = Math_Hermite(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
