@@ -1954,6 +1954,7 @@ u8 fn_80113F68(void *arg0) {
 }
 
 #pragma cplusplus reset
+#pragma opt_lifetimes off
 void fn_80113F88(void *arg0) {
     void fn_800E4C14(void *, f32);
     void fn_800E4BE0(void *, s32, s32, f32);
