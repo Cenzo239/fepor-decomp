@@ -23608,8 +23608,8 @@ void fn_800F18A4(s32 arg0, s32 arg1) {
     terrain = fn_80040844();
     for (i = 0; i < 4; i++) {
         f26 = *(f32 *)(lbl_8032AC58 + 0x5E0) + lbl_8028E578[i];
-        f27 = *(f32 *)(lbl_8032AC58 + 0x5E4) + lbl_8028E588[i];
         f28 = *(f32 *)(lbl_8032AC58 + 0x5E8 + i * 4);
+        f27 = *(f32 *)(lbl_8032AC58 + 0x5E4) + lbl_8028E588[i];
         if (terrain != 0) {
             fn_80043F9C(terrain, m18, f26, f27);
             fn_802033AC(q, m18);
@@ -30021,7 +30021,6 @@ static inline s32 *Sort_PivotAt(s32 *begin, s32 offset) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_lifetimes off
 void fn_800FEC9C(s32 *begin, s32 *end, u8 (*cmp)(s32, s32)) {
     void fn_800FEC9C(s32 *, s32 *, u8 (*)(s32, s32));
     void Sort_Three(s32 *, s32 *, s32 *, u8 (*)(s32, s32));
