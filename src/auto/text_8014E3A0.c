@@ -3167,11 +3167,10 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
         }
     }
     {
-        s16 *p80 = (s16 *)&lbl_80367F80;
-        s16 raw = (s16)(p80[2] - lbl_80367F80.f0);
-        x = (s16)(x + raw);
-        temp_r31 = (s16)(rect[2] - lbl_80367F90.f0);
+        s16 off = (s16)(lbl_80367F80.f4 - lbl_80367F80.f0);
+        x = (s16)(x + off);
         temp_r30 = (s16)(rect[3] - rect[1]);
+        temp_r31 = (s16)(rect[2] - lbl_80367F90.f0);
         if (temp_r31 != 0 && temp_r30 != 0) {
             Prim2D_Begin();
             Prim2D_SetTex((void *)&gUiTexScratch, (u16)(flags | 1));
