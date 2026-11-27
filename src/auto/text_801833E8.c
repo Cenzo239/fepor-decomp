@@ -1129,24 +1129,24 @@ void fn_80185244(void *arg0) {
 #pragma push
 #pragma opt_propagation off
 void fn_80185280(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
-    void fn_8000C070(void *, s32);
-    void *fn_8000CA64(void *, s32);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void Process_Goto(void *, s32);
+    void *Process_CreateEx(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
     void fn_8004FE98(void *, s32);
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
-    f32 fn_80059F64(f32, f32, f32, f32);
+    f32 Math_Lerp(f32, f32, f32, f32);
     void fn_8005FC74(void *, void *, s32);
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(void *);
     void *fn_80060664(void *);
     void *fn_800639B4(void);
-    u8 fn_80105BC0(void *, s32);
-    void fn_80185078(void *, void *);
-    extern u8 lbl_80295A00[];
-    extern u8 lbl_80295A20[];
+    u8 Status_Test(void *, s32);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u8 E_MuBlend_script[];
+    extern u8 E_MuTransfer_script[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1162,21 +1162,21 @@ void fn_80185280(void *arg0) {
     obj = *(void **)((u8 *)arg0 + 0x30);
     if (fn_8004C0F0(obj) != 0) {
         *(void **)(sp40 + 0x30) = obj;
-        fn_8000A388(lbl_80295A00, fn_80185078, sp40);
+        GfxEnt_ForEachKey(E_MuBlend_script, MuFade_UnlinkSame, sp40);
         *(void **)(sp8 + 0x30) = obj;
-        fn_8000A388(lbl_80295A20, fn_80185078, sp8);
+        GfxEnt_ForEachKey(E_MuTransfer_script, MuFade_UnlinkSame, sp8);
         lvl = *(u8 *)((u8 *)fn_800508C4(obj) + 9);
         if ((s32)lvl > 0x14) {
             if ((s32)lvl > 0x28) {
                 count <<= 1;
             } else {
-                count = (s32)((f32)count + fn_80059F64(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
+                count = (s32)((f32)count + Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
             }
         }
         if ((count == 0) || (fn_80060440((u8 *)obj + 0x1C) >= 4)) {
             fn_8004FE98(obj, 0xB);
         } else {
-            tmp = fn_8000CA64(lbl_80295A00, 0);
+            tmp = Process_CreateEx(E_MuBlend_script, 0);
             *(void **)((u8 *)tmp + 0x30) = obj;
             *(s32 *)((u8 *)tmp + 0x34) = (s32)obj + 0x1C;
             *(s32 *)((u8 *)tmp + 0x38) = 0xB;
@@ -1188,8 +1188,8 @@ void fn_80185280(void *arg0) {
             fn_8004FE90(*(void **)((u8 *)tmp + 0x30), (u8)*(s32 *)((u8 *)tmp + 0x38));
         }
     }
-    if (fn_80105BC0((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
-        fn_8000C070(arg0, 0xA);
+    if (Status_Test((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1BC, 0x5C) != 0) {
+        Process_Goto(arg0, 0xA);
         return;
     }
     end = fn_80060664((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x1C);
