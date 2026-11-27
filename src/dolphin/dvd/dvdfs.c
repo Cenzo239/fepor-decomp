@@ -15,8 +15,10 @@ extern u16 Scb_80339420[];
 extern volatile u32 __DIRegs[16];
 
 static inline void dvdClearDiStatus(void) {
-    volatile u32 *di = (volatile u32 *)0xCC006000;
-    di[1] = di[1];
+    u32 *base = (u32 *)0xCC000000;
+    u32 tmp = base[0x1801];
+    u32 *di = base + 0x1800;
+    di[1] = tmp;
 }
 
 typedef struct {
