@@ -1625,76 +1625,9 @@ void fn_80036150(s32 arg0) {
         fn_800351FC(arg0, var_r30, 0, arg0 + 0x8A0);
     }
 }
-static inline u8 Battle_CalcBaseExp(s32 atk, s32 def) {
-    s8 fn_801F1C5C(void);
-    u8 fn_8003863C(void *);
-    s32 t = fn_801F1C5C();
-    s32 u = (u8)fn_8003863C((void *)def);
-    t = t + (u - (u8)fn_8003863C((void *)atk));
-    t = (t + 1) / 2;
-    if (t < 1) {
-        t = 1;
-    }
-    return (u8)t;
-}
-
-static inline u8 Battle_CalcBonusExp(s32 atk, s32 def) {
-    s8 fn_801F1CE8(void);
-    u8 fn_800385E4(void *);
-    u8 fn_80038570(void *);
-    s32 t;
-    if (*(s8 *)(def + 0x1A8) != 0) {
-        return 0;
-    }
-    t = fn_801F1CE8();
-    t = t + (u8)fn_800385E4((void *)def);
-    t = t - (u8)fn_800385E4((void *)atk);
-    t = t + (u8)fn_80038570((void *)def);
-    if (t < 0) {
-        t = 0;
-    }
-    return (u8)t;
-}
-
-static inline u8 Battle_CalcSideHits(s32 atk, s32 def, s32 out) {
-    extern u8 lbl_8026A120[];
-    extern u8 gBattleState[];
-    void DebugPrint(void *, ...);
-    void BattleAnim_Queue(void *, s32, s8);
-    u8 fn_800386B0(void *);
-    u8 fn_8003D094(void *, u8);
-    u8 fn_8003D13C(void *);
-    u8 Status_Test(void *, s32);
-    void fn_8014C5F4(void *, s32);
-    u8 hit;
-
-    if ((u8)Status_Test((void *)(def + 0x1BC), 7) != 0) {
-        return 0;
-    }
-    BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)atk));
-    if (*(u8 *)(atk + 0x2D6) == 0) {
-        hit = fn_8003D094((void *)atk, 1);
-    } else {
-        u8 base = Battle_CalcBaseExp(atk, def);
-        u8 bonus = Battle_CalcBonusExp(atk, def);
-        hit = fn_8003D094((void *)atk, (u8)(base + bonus));
-    }
-    if ((u8)hit > (u8)fn_8003D13C((void *)atk)) {
-        hit = fn_8003D13C((void *)atk);
-    }
-    BattleAnim_Queue((void *)out, 0x28, (s8)hit);
-    *(u8 *)(atk + 0x2C9) = hit;
-    fn_8014C5F4(gBattleState, (u8)hit);
-    {
-        u8 base = Battle_CalcBaseExp(atk, def);
-        u8 bonus = Battle_CalcBonusExp(atk, def);
-        DebugPrint(lbl_8026A120 + 0x256, (u8)hit, base, bonus);
-    }
-    return hit;
-}
-
 #pragma push
 #pragma optimization_level 4
+#pragma opt_common_subs off
 #pragma use_lmw_stmw on
 void Battle_CalcHits(s32 self) {
     extern u8 lbl_8026A120[];
