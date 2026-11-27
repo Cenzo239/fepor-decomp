@@ -560,28 +560,5 @@ void fn_8006F10C(s32 arg0, s32 arg1)
   list[2] = 0;
   Ui_CreateMenu(menuWork, fn_800C0658(), 0);
 }
-
-void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
-{
-  s32 fn_800C0658(void);
-  void Ui_CreateMenu(void *, s32, s32);
-  s32 *table;
-  s32 **list;
-  /* MWCC lays out the BSS pool in first-reference order. */
-  (void)lbl_80311CA8;
-  (void)lbl_80311CB8;
-  (void)lbl_80311CE0;
-  table = menuItems;
-  list = menuEntries;
-  list[0] = table;
-  table = list[0];
-  table[1] = arg0;
-  list[1] = table + 2;
-  table[3] = arg1;
-  list[2] = table + 4;
-  table[5] = arg2;
-  list[3] = 0;
-  Ui_CreateMenu(menuWork, fn_800C0658(), 0);
-}
 #pragma pop
 
