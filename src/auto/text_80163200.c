@@ -15547,9 +15547,7 @@ void fn_8017B728(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5,
     fn_8000A248();
 }
 
-#pragma push
 #pragma use_lmw_stmw on
-#pragma opt_lifetimes off
 void fn_8017B810(void *arg0, s32 arg1, s32 arg2, s32 arg3, void *arg4, s32 arg5, u8 arg6) {
     void fn_8000A258(void);
     void fn_8000A174(s32, u16);
