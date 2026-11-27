@@ -710,6 +710,7 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
+#pragma opt_copy_propagation off
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
@@ -1357,7 +1358,7 @@ extern "C" void fn_80018E0C(void) {
         gActiveCamIndex = index;
         switch (index) {
         case 0:
-            gActiveCam = (s32)((u32)base + 0);
+            gActiveCam = (s32)(base + index);
             break;
         case 1:
             gActiveCam = (s32)(base + 0x78);
