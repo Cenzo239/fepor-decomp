@@ -2362,18 +2362,13 @@ static inline u8 MapObj_Contains(u8 *entry, s32 x, s32 y) {
 static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 arg3, u32 arg4) {
     typedef struct { u8 pad[0xB4]; } MapObjEntry;
     s32 i;
-    u8 *entry;
-    MapObjEntry *base;
     for (i = n; i >= 0; i--) {
-        base = *(MapObjEntry **)((u8 *)arg0 + 0x14);
-        entry = (u8 *)&base[i];
-        {
-            u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-            if (!(flags & arg4)) {
-                if (arg3 == 0 || (arg3 & flags) == arg3) {
-                    if (MapObj_Contains(entry, x, y)) {
-                        return &base[i];
-                    }
+        u8 *entry = (u8 *)&(*(MapObjEntry **)((u8 *)arg0 + 0x14))[i];
+        u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+        if (!(flags & arg4)) {
+            if (arg3 == 0 || (arg3 & flags) == arg3) {
+                if (MapObj_Contains(entry, x, y)) {
+                    return &(*(MapObjEntry **)((u8 *)arg0 + 0x14))[i];
                 }
             }
         }
@@ -2383,6 +2378,7 @@ static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 ar
 
 #pragma push
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4) {
     void *found;
     s32 n;
