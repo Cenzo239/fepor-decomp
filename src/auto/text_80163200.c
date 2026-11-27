@@ -9912,7 +9912,6 @@ extern "C" void fn_8017312C(void *arg0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x370);
     }
 }
-#pragma global_optimizer on
 #pragma scheduling on
 
 #pragma use_lmw_stmw reset
