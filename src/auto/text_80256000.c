@@ -1,6 +1,15 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void Sound_SetFlags(s32 one, s32 zero) {
+    extern s32 lbl_80368B14, lbl_80368B18, lbl_80368B10;
+    extern u8 lbl_80368B20;
+    lbl_80368B14 = zero;
+    lbl_80368B18 = one;
+    lbl_80368B20 = one;
+    lbl_80368B10 = zero;
+}
+
 static inline void Sound_InitDelayAt(u8 *record, s32 offset, s32 samples) {
     void *fn_802637A4(s32);
     void *memset(void *, s32, u32);
