@@ -841,12 +841,38 @@ void Prim2D_EndPrim(void) {
     *(s16 *)(gPrim2D + 0x92) += 1;
 }
 
+static inline void *Prim2D_FindNode(void) {
+    extern void *gPrim2D;
+    s32 fn_80006264(void *, void *, s32);
+    void *prev = 0;
+    void *self = gPrim2D;
+    void *node = *(void **)((u8 *)self + 0xC);
+    while (node != 0) {
+        if (*(u32 *)((u8 *)node + 8) == *(u32 *)((u8 *)self + 0x18)) {
+            if (fn_80006264((u8 *)node + 0x10, (u8 *)self + 0x20, 0x70) == 0) {
+                if (*(void **)((u8 *)gPrim2D + 0xC) == node) {
+                    return node;
+                }
+                if (prev != 0) {
+                    *(void **)prev = *(void **)node;
+                }
+                *(void **)node = *(void **)((u8 *)gPrim2D + 0xC);
+                *(void **)((u8 *)gPrim2D + 0xC) = node;
+                return node;
+            }
+        }
+        prev = node;
+        node = *(void **)node;
+    }
+    return 0;
+}
+
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void Prim2D_AddPrim(u8 arg0) {
     extern void *gPrim2D;
-    extern f32 lbl_80368B98;
-    extern f32 gFloat1;
+    extern const f32 lbl_80368B98;
+    extern const f32 gFloat1;
     extern char lbl_80267C70[];
     s32 fn_80006AF4(void *);
     s32 fn_80006264(void *, void *, s32);
@@ -898,17 +924,13 @@ void Prim2D_AddPrim(u8 arg0) {
             *(s16 *)((u8 *)entry + 0xC) = -1;
             *(s32 *)((u8 *)entry + 8) = *(s32 *)((u8 *)gPrim2D + 0x18);
             fn_800062CC((u8 *)entry + 0x10, (u8 *)gPrim2D + 0x20, 0x70);
-            ctx = gPrim2D;
-            *(s16 *)((u8 *)ctx + 0x90) = (s16)(*(s16 *)((u8 *)ctx + 0x90) + 1);
+            *(s16 *)((u8 *)gPrim2D + 0x90) += 1;
         }
         *(u8 *)((u8 *)gPrim2D + 0xA8) = 3;
     }
     {
         u32 type;
-        register void *entry;
-        void *ctx;
-        s32 neg1;
-        f32 ftmp;
+        void *entry;
         type = arg0;
         switch (type) {
         case 1:
@@ -936,68 +958,49 @@ void Prim2D_AddPrim(u8 arg0) {
         default:
             OSPanic(lbl_80267C70 + 0x1A, 0x54B, lbl_80267C70 + 0x23);
         }
-        ctx = gPrim2D;
-        neg1 = -1;
-        ftmp = lbl_80368B98;
-        entry = *(void **)((u8 *)ctx + 8);
-        *(void **)((u8 *)ctx + 8) = (u8 *)entry + size;
+        entry = *(void **)((u8 *)gPrim2D + 8);
+        *(void **)((u8 *)gPrim2D + 8) = (u8 *)entry + size;
         *(u8 *)((u8 *)entry + 4) = arg0;
         *(u8 *)((u8 *)entry + 5) = (u8)size;
-        *(f32 *)((u8 *)entry + 8) = ftmp;
-        *(s32 *)((u8 *)entry + 0xC) = (unsigned)neg1;
-        {
-            void *head;
-            head = *(void **)((u8 *)gPrim2D + 0xC);
-            *(void **)entry = *(void **)((u8 *)head + 4);
-            head = *(void **)((u8 *)gPrim2D + 0xC);
-            *(void **)((u8 *)head + 4) = entry;
+        *(f32 *)((u8 *)entry + 8) = lbl_80368B98;
+        *(s32 *)((u8 *)entry + 0xC) = -1;
+        *(void **)entry = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
+        *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4) = entry;
+        switch ((s32)type) {
+        case 5:
+        case 6:
+        case 7:
+        case 10:
+            {
+                u8 *p;
+                node = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
+                *(f32 *)((u8 *)node + 0x1C) = gFloat1;
+                *(f32 *)((u8 *)node + 0x20) = lbl_80368B98;
+                *(s16 *)((u8 *)node + 0x24) = 0;
+                *(s16 *)((u8 *)node + 0x26) = 0;
+                p = Ui_GetColor(1);
+                *(u8 *)((u8 *)node + 0x18) = p[0];
+                *(u8 *)((u8 *)node + 0x19) = p[1];
+                *(u8 *)((u8 *)node + 0x1A) = p[2];
+                *(u8 *)((u8 *)node + 0x1B) = p[3];
+            }
+            break;
         }
-        if ((s32)type == 10) {
-            goto init_extra;
-        }
-        if ((s32)type >= 10) {
-            goto skip_extra;
-        }
-        if ((s32)type >= 8) {
-            goto skip_extra;
-        }
-        if ((s32)type >= 5) {
-            goto init_extra;
-        }
-        goto skip_extra;
-    init_extra:
-        {
-            f32 f1;
-            f32 f0;
-            s16 z;
-            void *e;
-            u8 *p;
-            z = 0;
-            f1 = gFloat1;
-            ctx = gPrim2D;
-            f0 = lbl_80368B98;
-            e = *(void **)((u8 *)*(void **)((u8 *)ctx + 0xC) + 4);
-            *(f32 *)((u8 *)e + 0x20) = f0;
-            *(f32 *)((u8 *)e + 0x1C) = f1;
-            *(s16 *)((u8 *)e + 0x24) = z;
-            *(s16 *)((u8 *)e + 0x26) = z;
-            p = Ui_GetColor(1);
-            *(u8 *)((u8 *)e + 0x18) = p[0];
-            *(u8 *)((u8 *)e + 0x19) = p[1];
-            *(u8 *)((u8 *)e + 0x1A) = p[2];
-            *(u8 *)((u8 *)e + 0x1B) = p[3];
-        }
-    skip_extra:
-        ;
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
+#pragma opt_propagation off
+#pragma opt_strength_reduction off
 void fn_80007B04(void)
 {
     extern u8 *gPrim2D;
     extern s16 lbl_802837B0[];
-    extern f32 lbl_80368B98, lbl_80368BA0, lbl_80368BA4;
-    extern f32 lbl_80368BA8, lbl_80368BAC, lbl_80368BB0, lbl_80368BB4;
+    extern const f32 lbl_80368B98, lbl_80368BA0, lbl_80368BA4;
+    extern const f32 lbl_80368BA8, lbl_80368BAC, lbl_80368BB0, lbl_80368BB4;
     u32 OSGetTick(void);
     void C_MTXOrtho(void *, f32, f32, f32, f32, f32, f32);
     void GXSetProjection(void *, s32);
@@ -1019,15 +1022,16 @@ void fn_80007B04(void)
     void fn_80009008(void *, u8, u8);
 
     f32 ortho[5][4][4];
-    u32 oldScissor[4], curScissor[4];
+    u32 oldX, oldY, oldW, oldH;
+    u32 curX, curY, curW, curH;
     u8 *prim, *node, *other, *walker;
-    u8 **items, **cursor, **matrixCursor;
     s16 *matrixIds;
-    u32 flags, changed, alpha;
+    u8 **items, **matrixCursor, **cursor;
+    u32 flags, alpha, savedX;
+    u8 changed;
     s32 count, j, k;
 
-    prim = gPrim2D;
-    *(u32 *)(prim + 0xA4) = OSGetTick();
+    *(u32 *)(gPrim2D + 0xA4) = OSGetTick();
     C_MTXOrtho(ortho[4], lbl_80368B98, lbl_80368BAC,
                 lbl_80368B98, lbl_80368BB0,
                 lbl_80368B98, lbl_80368BB4);
@@ -1046,9 +1050,10 @@ void fn_80007B04(void)
     prim = gPrim2D;
     items = *(u8 ***)(prim + 8);
     count = *(s16 *)(prim + 0x90);
-    *(u8 ***)(prim + 8) = items + count + 1;
+    *(u8 ***)(prim + 8) = items + (count + 1);
+    changed = 1;
     cursor = items;
-    for (node = *(u8 **)(prim + 12); node != 0; node = *(u8 **)node) {
+    for (node = *(u8 **)(gPrim2D + 12); node != 0; node = *(u8 **)node) {
         *cursor++ = node;
         flags = *(u16 *)(node + 0x10);
         if ((flags & 0xF0) == 0) {
@@ -1061,7 +1066,7 @@ void fn_80007B04(void)
         }
     }
 
-    do {
+    while (changed) {
         changed = 0;
         cursor = items;
         for (k = 0; k < *(s16 *)(gPrim2D + 0x90) - 1; ++k, ++cursor) {
@@ -1073,25 +1078,26 @@ void fn_80007B04(void)
                 changed = 1;
             }
         }
-    } while (changed);
+    }
 
     items[*(s16 *)(gPrim2D + 0x90)] = 0;
-    fn_802250D0(&oldScissor[0], &oldScissor[1], &oldScissor[2], &oldScissor[3]);
+    cursor = items;
+    fn_802250D0(&oldX, &oldY, &oldW, &oldH);
     GXSetViewport(lbl_80368B98, lbl_80368B98,
                   lbl_80368BB0, lbl_80368BAC,
                   *(f32 *)(gPrim2D + 0x9C), *(f32 *)(gPrim2D + 0xA0));
     GXSetZMode(1, 3, 1);
     fn_802246B8(0);
     fn_80223E5C(6, 0x80, 1, 0, 0);
-    cursor = items;
     while ((node = *cursor) != 0) {
         flags = *(u16 *)(node + 0x10);
         if (flags & 0xF0) goto pass3;
         if (flags & 0x800) goto pass2;
-        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
-        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
-            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
-            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        fn_802250D0(&curX, &curY, &curW, &curH);
+        savedX = oldX;
+        if (savedX != curX || oldY != curY ||
+            oldW != curW || oldH != curH) {
+            GXSetScissor(savedX, oldY, oldW, oldH);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1109,11 +1115,11 @@ void fn_80007B04(void)
             while ((walker = *matrixCursor) != 0 && j < 10) {
                 if (*(u16 *)(walker + 0x10) & 0x400) {
                     *(s16 *)(walker + 0xC) = lbl_802837B0[j];
-                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    GXLoadPosMtxImm(*matrixCursor + 0x50, lbl_802837B0[j]);
                     break;
                 }
                 *(s16 *)(walker + 0xC) = *matrixIds;
-                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                GXLoadPosMtxImm(*matrixCursor + 0x50, *matrixIds);
                 ++matrixCursor;
                 ++matrixIds;
                 ++j;
@@ -1121,20 +1127,19 @@ void fn_80007B04(void)
         }
         node = *cursor;
         GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        node = *cursor;
         flags = *(u16 *)(node + 0x10);
         if (flags & 0x2000) {
             ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
                 (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
         }
         alpha = gPrim2D[0xA9];
-        if (alpha != 255) {
+        if (alpha == 255 || (*(u16 *)(*cursor + 0x10) & 0x400)) {
             node = *cursor;
-            if (*(u16 *)(node + 0x10) & 0x400) {
-                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
-            } else if (alpha != 0) {
-                fn_80009008(*(void **)(node + 4),
-                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
-            }
+            fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+        } else if (alpha != 0) {
+            node = *cursor;
+            fn_80009008(*(void **)(node + 4), (u8)(((s32)alpha * node[0x13]) >> 8), node[0x14]);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1144,14 +1149,14 @@ void fn_80007B04(void)
         }
         flags = *(u16 *)(*cursor + 0x10);
         if (flags & 0x400) {
-            if (flags & 0xF0) {
-                GXSetZMode(1, 3, 0);
-                fn_802246B8(1);
-                fn_80223E5C(7, 0, 1, 7, 0);
-            } else {
+            if (!(flags & 0xF0)) {
                 GXSetZMode(1, 3, 1);
                 fn_802246B8(0);
                 fn_80223E5C(6, 0x80, 1, 0, 0);
+            } else {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
             }
             C_MTXOrtho(ortho[3], lbl_80368B98, lbl_80368BAC,
                        lbl_80368B98, lbl_80368BB0,
@@ -1176,10 +1181,11 @@ pass2:
     while ((node = *cursor) != 0) {
         flags = *(u16 *)(node + 0x10);
         if (flags & 0xF0) goto pass3;
-        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
-        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
-            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
-            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        fn_802250D0(&curX, &curY, &curW, &curH);
+        savedX = oldX;
+        if (savedX != curX || oldY != curY ||
+            oldW != curW || oldH != curH) {
+            GXSetScissor(savedX, oldY, oldW, oldH);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1197,11 +1203,11 @@ pass2:
             while ((walker = *matrixCursor) != 0 && j < 10) {
                 if (*(u16 *)(walker + 0x10) & 0x400) {
                     *(s16 *)(walker + 0xC) = lbl_802837B0[j];
-                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    GXLoadPosMtxImm(*matrixCursor + 0x50, lbl_802837B0[j]);
                     break;
                 }
                 *(s16 *)(walker + 0xC) = *matrixIds;
-                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                GXLoadPosMtxImm(*matrixCursor + 0x50, *matrixIds);
                 ++matrixCursor;
                 ++matrixIds;
                 ++j;
@@ -1209,20 +1215,19 @@ pass2:
         }
         node = *cursor;
         GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        node = *cursor;
         flags = *(u16 *)(node + 0x10);
         if (flags & 0x2000) {
             ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
                 (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
         }
         alpha = gPrim2D[0xA9];
-        if (alpha != 255) {
+        if (alpha == 255 || (*(u16 *)(*cursor + 0x10) & 0x400)) {
             node = *cursor;
-            if (*(u16 *)(node + 0x10) & 0x400) {
-                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
-            } else if (alpha != 0) {
-                fn_80009008(*(void **)(node + 4),
-                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
-            }
+            fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+        } else if (alpha != 0) {
+            node = *cursor;
+            fn_80009008(*(void **)(node + 4), (u8)(((s32)alpha * node[0x13]) >> 8), node[0x14]);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1232,14 +1237,14 @@ pass2:
         }
         flags = *(u16 *)(*cursor + 0x10);
         if (flags & 0x400) {
-            if (flags & 0xF0) {
-                GXSetZMode(1, 3, 0);
-                fn_802246B8(1);
-                fn_80223E5C(7, 0, 1, 7, 0);
-            } else {
+            if (!(flags & 0xF0)) {
                 GXSetZMode(1, 3, 1);
                 fn_802246B8(0);
                 fn_80223E5C(6, 0x80, 1, 0, 0);
+            } else {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
             }
             C_MTXOrtho(ortho[2], lbl_80368B98, lbl_80368BAC,
                        lbl_80368B98, lbl_80368BB0,
@@ -1267,10 +1272,11 @@ pass3:
     while ((node = *cursor) != 0) {
         flags = *(u16 *)(node + 0x10);
         if (!(flags & 0x800)) goto pass4;
-        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
-        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
-            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
-            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        fn_802250D0(&curX, &curY, &curW, &curH);
+        savedX = oldX;
+        if (savedX != curX || oldY != curY ||
+            oldW != curW || oldH != curH) {
+            GXSetScissor(savedX, oldY, oldW, oldH);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1288,11 +1294,11 @@ pass3:
             while ((walker = *matrixCursor) != 0 && j < 10) {
                 if (*(u16 *)(walker + 0x10) & 0x400) {
                     *(s16 *)(walker + 0xC) = lbl_802837B0[j];
-                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    GXLoadPosMtxImm(*matrixCursor + 0x50, lbl_802837B0[j]);
                     break;
                 }
                 *(s16 *)(walker + 0xC) = *matrixIds;
-                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                GXLoadPosMtxImm(*matrixCursor + 0x50, *matrixIds);
                 ++matrixCursor;
                 ++matrixIds;
                 ++j;
@@ -1300,20 +1306,19 @@ pass3:
         }
         node = *cursor;
         GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        node = *cursor;
         flags = *(u16 *)(node + 0x10);
         if (flags & 0x2000) {
             ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
                 (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
         }
         alpha = gPrim2D[0xA9];
-        if (alpha != 255) {
+        if (alpha == 255 || (*(u16 *)(*cursor + 0x10) & 0x400)) {
             node = *cursor;
-            if (*(u16 *)(node + 0x10) & 0x400) {
-                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
-            } else if (alpha != 0) {
-                fn_80009008(*(void **)(node + 4),
-                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
-            }
+            fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+        } else if (alpha != 0) {
+            node = *cursor;
+            fn_80009008(*(void **)(node + 4), (u8)(((s32)alpha * node[0x13]) >> 8), node[0x14]);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1323,14 +1328,14 @@ pass3:
         }
         flags = *(u16 *)(*cursor + 0x10);
         if (flags & 0x400) {
-            if (flags & 0xF0) {
-                GXSetZMode(1, 3, 0);
-                fn_802246B8(1);
-                fn_80223E5C(7, 0, 1, 7, 0);
-            } else {
+            if (!(flags & 0xF0)) {
                 GXSetZMode(1, 3, 1);
                 fn_802246B8(0);
                 fn_80223E5C(6, 0x80, 1, 0, 0);
+            } else {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
             }
             C_MTXOrtho(ortho[1], lbl_80368B98, lbl_80368BAC,
                        lbl_80368B98, lbl_80368BB0,
@@ -1353,10 +1358,11 @@ pass4:
     GXSetViewport(lbl_80368B98, lbl_80368B98, lbl_80368BB0, lbl_80368BAC,
                   *(f32 *)(gPrim2D + 0x9C), *(f32 *)(gPrim2D + 0xA0));
     while ((node = *cursor) != 0) {
-        fn_802250D0(&curScissor[0], &curScissor[1], &curScissor[2], &curScissor[3]);
-        if (oldScissor[0] != curScissor[0] || oldScissor[1] != curScissor[1] ||
-            oldScissor[2] != curScissor[2] || oldScissor[3] != curScissor[3]) {
-            GXSetScissor(oldScissor[0], oldScissor[1], oldScissor[2], oldScissor[3]);
+        fn_802250D0(&curX, &curY, &curW, &curH);
+        savedX = oldX;
+        if (savedX != curX || oldY != curY ||
+            oldW != curW || oldH != curH) {
+            GXSetScissor(savedX, oldY, oldW, oldH);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1374,11 +1380,11 @@ pass4:
             while ((walker = *matrixCursor) != 0 && j < 10) {
                 if (*(u16 *)(walker + 0x10) & 0x400) {
                     *(s16 *)(walker + 0xC) = lbl_802837B0[j];
-                    GXLoadPosMtxImm(walker + 0x50, lbl_802837B0[j]);
+                    GXLoadPosMtxImm(*matrixCursor + 0x50, lbl_802837B0[j]);
                     break;
                 }
                 *(s16 *)(walker + 0xC) = *matrixIds;
-                GXLoadPosMtxImm(walker + 0x50, *matrixIds);
+                GXLoadPosMtxImm(*matrixCursor + 0x50, *matrixIds);
                 ++matrixCursor;
                 ++matrixIds;
                 ++j;
@@ -1386,20 +1392,19 @@ pass4:
         }
         node = *cursor;
         GXSetCurrentMtx(*(s16 *)(node + 0xC));
+        node = *cursor;
         flags = *(u16 *)(node + 0x10);
         if (flags & 0x2000) {
             ((void (*)(u32, void *, void *, void *, u8))*(void **)(node + 0x1C))
                 (flags, *(void **)(node + 0x20), node + 0x24, node + 0x44, node[0x12]);
         }
         alpha = gPrim2D[0xA9];
-        if (alpha != 255) {
+        if (alpha == 255 || (*(u16 *)(*cursor + 0x10) & 0x400)) {
             node = *cursor;
-            if (*(u16 *)(node + 0x10) & 0x400) {
-                fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
-            } else if (alpha != 0) {
-                fn_80009008(*(void **)(node + 4),
-                             (u8)((alpha * node[0x13]) >> 8), node[0x14]);
-            }
+            fn_80009008(*(void **)(node + 4), node[0x13], node[0x14]);
+        } else if (alpha != 0) {
+            node = *cursor;
+            fn_80009008(*(void **)(node + 4), (u8)(((s32)alpha * node[0x13]) >> 8), node[0x14]);
         }
         node = *cursor;
         flags = *(u16 *)(node + 0x10);
@@ -1409,14 +1414,14 @@ pass4:
         }
         flags = *(u16 *)(*cursor + 0x10);
         if (flags & 0x400) {
-            if (flags & 0xF0) {
-                GXSetZMode(1, 3, 0);
-                fn_802246B8(1);
-                fn_80223E5C(7, 0, 1, 7, 0);
-            } else {
+            if (!(flags & 0xF0)) {
                 GXSetZMode(1, 3, 1);
                 fn_802246B8(0);
                 fn_80223E5C(6, 0x80, 1, 0, 0);
+            } else {
+                GXSetZMode(1, 3, 0);
+                fn_802246B8(1);
+                fn_80223E5C(7, 0, 1, 7, 0);
             }
             C_MTXOrtho(ortho[0], lbl_80368B98, lbl_80368BAC,
                        lbl_80368B98, lbl_80368BB0,
@@ -1439,7 +1444,7 @@ pass4:
     *(u32 *)(prim + 0xA4) = OSGetTick() - *(u32 *)(prim + 0xA4);
     gPrim2D[0xA9] = 0xFF;
 }
-
+#pragma pop
 #pragma global_optimizer on
 void fn_80008B94(void)
 {
