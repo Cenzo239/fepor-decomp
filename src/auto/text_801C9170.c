@@ -841,11 +841,9 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
+#pragma cplusplus on
 
-void fn_801C9170(void *arg0) {
-    void Process_ClearFunc(void *);
-    void Ui_PlaySeCue(void *, s32);
-    void fn_801E3560(void *, u8, u8, u8);
+extern "C" void fn_801C9170(void *arg0) {
     extern char lbl_8027D740[];
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
