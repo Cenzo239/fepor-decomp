@@ -1897,6 +1897,7 @@ void fn_80144D80(void) {
 
 }
 
+#pragma opt_propagation off
 void fn_80144D84(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     ListNode *first;
     ListNode *last;
@@ -1915,12 +1916,12 @@ void fn_80144D84(ListIter *ret, List *list, ListIter *start, ListIter *end) {
     while (start->node != end->node) {
         node = start->node;
         start->node = node->next;
-        Heap_Free(node);
+        fn_800C428C(node);
         list->size--;
     }
     ret->node = end->node;
 }
-
+#pragma opt_propagation reset
 void fn_80144E34(ListIter *ret, List *list, ListIter *it) {
     ListNode *node = it->node;
     ListNode *next = node->next;
@@ -1991,104 +1992,122 @@ extern "C" void fn_80144EAC(void *arg0, void *arg1, void *arg2, void *arg3) {
     }
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_80144F78(List *dst, List *src)
 {
-#pragma scheduling off
-    typedef struct {
-        u8 pad[0xe];
-        u16 key;
-    } KeyObj;
-    typedef struct {
-        KeyObj *obj;
-        u8 unk4;
-    } Entry;
-    typedef struct Node {
-        struct Node *prev;
-        struct Node *next;
-        Entry *val;
-    } Node;
-
-    void fn_80145124(u32 *, Node **, List *);
-
-    Node *first;
-    Node *second;
-    Node *dstEnd;
-    Node *srcEnd;
-    Node *scan;
-    Node *last;
-    Entry *a;
-    Entry *b;
-    s32 count;
-    u8 less;
-
-    if (dst == src) {
-        return;
+  typedef struct 
+  {
+    u8 pad[0xe];
+    u16 key;
+  } KeyObj;
+  typedef struct 
+  {
+    KeyObj *obj;
+    u8 unk4;
+  } Entry;
+  typedef struct Node
+  {
+    struct Node *prev;
+    struct Node *next;
+    Entry *val;
+  } Node;
+  void fn_80145124(u32 *, Node **, List *);
+  Node *second;
+  Node *first;
+  Node *dstEnd;
+  Node *scan;
+  Node *srcEnd;
+  Node *last;
+  Entry *a;
+  Entry *b;
+  s32 count;
+  u8 less;
+  u8 a4;
+  u8 b4;
+  if (dst != src) {
+  first = *((Node **) (((u8 *) dst) + 8));
+  dstEnd = (Node *) (((u8 *) dst) + 4);
+  second = *((Node **) (((u8 *) src) + 8));
+  srcEnd = (Node *) (((u8 *) src) + 4);
+  while ((first != dstEnd) && (second != srcEnd))
+  {
+    b = second->val;
+    a = first->val;
+    if (a->obj->key == b->obj->key)
+    {
+      a4 = a->unk4;
+      b4 = b->unk4;
+      if (b4 != a4)
+      {
+        less = b4 < a4;
+      }
+      else
+      {
+        less = ((u32) b) < ((u32) a);
+      }
     }
-
-    first = *(Node **)((u8 *)dst + 8);
-    dstEnd = (Node *)((u8 *)dst + 4);
-    second = *(Node **)((u8 *)src + 8);
-    srcEnd = (Node *)((u8 *)src + 4);
-
-    while (first != dstEnd && second != srcEnd) {
-        b = second->val;
-        a = first->val;
-        if (b->obj->key == a->obj->key) {
-            u8 a4 = a->unk4;
-            u8 b4 = b->unk4;
-            if (b4 != a4) {
-                less = b4 < a4;
-            } else {
-                less = (u32)b < (u32)a;
-            }
-        } else {
-            less = b->obj->key < a->obj->key;
+    else
+    {
+      less = a->obj->key > b->obj->key;
+    }
+    if (less)
+    {
+      scan = second->next;
+      a = first->val;
+      count = 1;
+      while (scan != srcEnd)
+      {
+        b = scan->val;
+        if (b->obj->key == a->obj->key)
+        {
+          a4 = a->unk4;
+          b4 = b->unk4;
+          if (b4 != a4)
+          {
+            less = b4 < a4;
+          }
+          else
+          {
+            less = ((u32) b) < ((u32) a);
+          }
         }
-        if (less) {
-            a = first->val;
-            scan = second->next;
-            count = 1;
-            while (scan != srcEnd) {
-                b = scan->val;
-                if (b->obj->key == a->obj->key) {
-                    u8 a4 = a->unk4;
-                    u8 b4 = b->unk4;
-                    if (b4 != a4) {
-                        less = b4 < a4;
-                    } else {
-                        less = (u32)b < (u32)a;
-                    }
-                } else {
-                    less = b->obj->key < a->obj->key;
-                }
-                if (!less) {
-                    break;
-                }
-                scan = scan->next;
-                count++;
-            }
-            last = scan->prev;
-            second->prev->next = last->next;
-            last->next->prev = second->prev;
-            first->prev->next = second;
-            second->prev = first->prev;
-            second = scan;
-            first->prev = last;
-            last->next = first;
-            *(s32 *)src -= count;
-            *(s32 *)dst += count;
+        else
+        {
+          less = b->obj->key < a->obj->key;
         }
-        first = first->next;
-    }
+        if (!less)
+        {
+          break;
+        }
+        scan = scan->next;
+        count++;
+      }
 
-    if (second != srcEnd) {
-        Node *remaining = first;
-        fn_80145124((u32 *)dst, &remaining, src);
+      last = scan->prev;
+      second->prev->next = last->next;
+      last->next->prev = second->prev;
+      first->prev->next = second;
+      second->prev = first->prev;
+      second = scan;
+      first->prev = last;
+      last->next = first;
+      *((s32 *) src) -= count;
+      *((s32 *) dst) += count;
     }
-#pragma scheduling reset
+    first = first->next;
+  }
+
+  if (second != srcEnd)
+  {
+    Node *remaining = first;
+    fn_80145124((u32 *) dst, &remaining, src);
+  }
 }
-
-#pragma cplusplus reset
+}
+#pragma pop
+#pragma cplusplus off
 
 int fn_8014510C(void *arg0) {
     u32 *ptr;
@@ -4177,7 +4196,7 @@ extern "C" s32 fn_80148618(void *arg0, void *arg1) {
     };
     extern Entry gFxChannels[];
     u32 Hash_Lookup(void *);
-    s32 Fx_StartSlot(u32, void *, s32, void *);
+    s32 Fx_StartSlot(u8, void *, s32, void *);
 
     u8 active;
     s32 i;
@@ -4185,7 +4204,7 @@ extern "C" s32 fn_80148618(void *arg0, void *arg1) {
     Entry *base;
     u32 h1;
     s8 slot;
-    s32 freeSlot;
+    s8 freeSlot;
 
     base = gFxChannels;
     i = 0;
@@ -4209,21 +4228,20 @@ found:
     if (slot != -1) {
         return -1;
     }
-    if (!(gFxChannels[0].flags & 1)) {
-        freeSlot = 0;
-    } else if (!(gFxChannels[1].flags & 1)) {
-        freeSlot = 1;
-    } else if (!(gFxChannels[2].flags & 1)) {
-        freeSlot = 2;
-    } else if (!(gFxChannels[3].flags & 1)) {
-        freeSlot = 3;
-    } else {
-        freeSlot = -1;
+    entry = gFxChannels;
+    for (i = 0; i < 4; i++) {
+        if (!(entry->flags & 1)) {
+            freeSlot = i;
+            goto found_free;
+        }
+        entry = (Entry *)((u8 *)entry + 0x30);
     }
-    if ((s8)freeSlot == -1) {
+    freeSlot = -1;
+found_free:
+    if (freeSlot == -1) {
         return -1;
     }
-    return Fx_StartSlot((u8)freeSlot, arg0, 0x64, arg1);
+    return Fx_StartSlot(freeSlot, arg0, 0x64, arg1);
 }
 
 #pragma cplusplus reset
