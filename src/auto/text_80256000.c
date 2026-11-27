@@ -5332,6 +5332,7 @@ void fn_8025F0EC(u8 arg0, u8 arg1) {
 }
 #pragma pop
 #pragma push
+#pragma optimization_level 3
 #pragma opt_common_subs off
 void fn_8025F310(u8 arg0, u8 arg1) {
     extern u8 gSoundChanParams[];
@@ -5341,8 +5342,9 @@ void fn_8025F310(u8 arg0, u8 arg1) {
 
     u8 *cell;
     u16 code;
-    s32 mul90;
+    s32 t86;
     s32 mul9;
+    s32 mul90;
     u8 *row;
     u8 *p;
     u32 i;
@@ -5353,8 +5355,9 @@ void fn_8025F310(u8 arg0, u8 arg1) {
 
     u0 = arg0;
     u1 = arg1;
-    cell = gSoundChanParams + u0 * 0x860 + u1 * 0x86;
-    code = (u16)(cell[0x64] | (cell[0x65] << 8));
+    cell = gSoundChanParams + u0 * 0x860;
+    t86 = u1 * 0x86;
+    code = (u16)(cell[t86 + 0x64] | (cell[t86 + 0x65] << 8));
     switch ((s32)code) {
     case 0:
         mul9 = u1 * 9;
