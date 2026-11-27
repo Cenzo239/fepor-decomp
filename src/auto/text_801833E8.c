@@ -722,7 +722,6 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     ((u8 *)temp_r3)[0x36] = c;
     ((u8 *)temp_r3)[0x37] = d;
 }
-#pragma scheduling on
 #pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
  void GfxEnt_ForEachKey(void *, void *, void *);
