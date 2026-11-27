@@ -824,7 +824,6 @@ void UnlockedHandler(s32 chan, void *context) {
 #pragma scheduling off
 #pragma use_lmw_stmw on
 #pragma inline_depth(1)
-#pragma peephole on
 s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     EXIControl *exi;
     s32 err;
@@ -835,6 +834,7 @@ s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     s32 ok;
     void (*handler)(s32,void *);
     extern u32 IDSerialPort1_80368800;
+    void UnlockedHandler(s32, void *);
     BOOL EXIClearInterrupts(s32, BOOL, BOOL, BOOL);
     s32 EXILock(s32,u32,void (*)(s32,void *));
     BOOL EXISelect(s32, u32, u32);
