@@ -30958,6 +30958,7 @@ return count;
 
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
+#pragma opt_register_coloring off
 void fn_801007A0(void *arg0) {
     struct UnitBits {
         u16 f0 : 3;
@@ -30969,8 +30970,8 @@ void fn_801007A0(void *arg0) {
     void Unit_IsLowHp(void *);
     u8 fn_8009339C(void *, void *);
     u64 *Item_GetFlagsPtr(void **);
-    s32 i;
     void **item;
+    s32 i;
     void *unit = arg0;
 
     M2C_FIELD(unit, u32 *, 0x254) &= 0xFEFF80EB;
