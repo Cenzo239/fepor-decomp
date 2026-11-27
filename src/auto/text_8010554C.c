@@ -1180,7 +1180,6 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     u8 Bin_ReadU8(u32 *);
     u32 Bin_ReadU32(u32 *);
     void Dispos_ParseEntry(u32 *, u32 *, u8);
-    s32 i;
     u8 parsed[0x68];
     u8 new_var2;
     u32 header;
@@ -1215,17 +1214,20 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     }
     cursor = data;
     if (data) {
+        s32 i;
         count = (u8)new_var3[0];
         for (i = 0; i < 8; i++) {
             *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
             parsed[0x30 + i] = 0;
             *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
         }
-        for (i = 0; i < count; i++) {
+        i = 0;
+        while (i < count) {
             Dispos_ParseEntry(&cursor, (u32 *)parsed, new_var3[1]);
             sumX += (s8)parsed[0xD];
             new_var2 = parsed[0xE];
             sumY += (s8)new_var2;
+            i++;
         }
         *outX = sumX / count;
         *outY = sumY / count;
