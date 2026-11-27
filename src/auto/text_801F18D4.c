@@ -3,7 +3,7 @@
 #include "common.h"
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 void fn_801F18D4(void) {
     void fn_8022C260(void *, void (*)(void), void *, s32, s32);
     void fn_801F196C(void);
@@ -17,9 +17,7 @@ void fn_801F18D4(void) {
     extern u8 lbl_8029A758[];
     extern u8 lbl_8029A7F4[];
     volatile u32 *p;
-    u32 a;
-    u32 b;
-    u32 c;
+    u32 a, b, c;
 
     fn_8022C260(lbl_80339270, fn_801F196C, 0, 8, 9);
     a = (u32)gUiMenuDrawVtbl;
@@ -28,8 +26,8 @@ void fn_801F18D4(void) {
     p[1] = (u32)lbl_80286664;
     p[1] = (u32)lbl_802863BC;
     a = (u32)lbl_802866E4;
-    c = (u32)lbl_8029A758;
     b = (u32)lbl_802861E4;
+    c = (u32)lbl_8029A758;
     p[1] = a;
     a = (u32)lbl_8029A7F4;
     p[1] = b;
