@@ -14404,12 +14404,12 @@ static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) 
     void *self;
     s16 y0;
     s16 x1;
+    s16 x0;
     s16 y1;
     s32 zero;
     void *baseVtbl;
     f32 one;
     void *tmp;
-    s16 x0;
 
     zero = 0;
     baseVtbl = lbl_80292230;
