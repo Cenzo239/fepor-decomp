@@ -1,6 +1,9 @@
 /* Functions from 0x801101D0 to 0x80120CC0, found by decomp-toolkit. */
 #include "common.h"
 #include "actor.h"
+#pragma cplusplus on
+struct DirectionVector { f32 x, y, z; DirectionVector(f32 xx, f32 yy, f32 zz) : x(xx), y(yy), z(zz) {} };
+#pragma cplusplus reset
 static inline u8 Ui_IsTargetTile(s8 x, s8 y)
 {
     extern u8 gBattleMap[], gUnits[], gTargetList[];
