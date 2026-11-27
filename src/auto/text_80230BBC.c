@@ -1011,7 +1011,7 @@ do { *++db=*++tail; } while(--size);
 }
 
 #pragma push
-#pragma push
+#pragma opt_common_subs off
 void fn_80231C20(u8 *dst, u8 *src, u32 n)
 {
   u32 blocks;
@@ -1036,8 +1036,9 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
     {
       u32 b;
       u32 a;
-      b = *((u32 *) (s - 8));
+      b = 0;
       a = *((u32 *) (s - 4));
+      b = *((u32 *) (s - 8));
       --blocks;
       *((u32 *) (d - 4)) = a;
       a = *((u32 *) (s - 12));
@@ -1080,5 +1081,4 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
     while (--n);
   }
 }
-
-#pragma optimization_level 3
+#pragma pop
