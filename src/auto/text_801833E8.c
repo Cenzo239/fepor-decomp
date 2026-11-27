@@ -16,11 +16,6 @@ static inline void CopyFourBytes(u8 *dst, u8 *src) {
     dst[3] = b;
 }
 
-static inline void Effect_SetFinalXY(void *obj, f32 x, f32 y) {
-    *(f32 *)((u8 *)obj + 0x18) = x;
-    *(f32 *)((u8 *)obj + 0x24) = y;
-}
-
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
