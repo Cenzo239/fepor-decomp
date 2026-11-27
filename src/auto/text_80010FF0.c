@@ -394,7 +394,6 @@ extern "C" void fn_800116F0(void *arg0) {
     void PSMTXScale(void *, f32, f32, f32);
     void fn_80224E50(void *, s32, s32);
     extern f32 lbl_80368BDC;
-    extern f64 lbl_80368C28;
     struct Obj {
         virtual s32 v0() = 0;
         virtual s32 v1() = 0;
