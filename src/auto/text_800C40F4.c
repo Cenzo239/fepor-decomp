@@ -1078,13 +1078,10 @@ static inline HeapC55 *DLExtract_C55(HeapC55 *list, HeapC55 *cell) {
 
 int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
     if ((s32)block->size < 0) {
-        HeapC55 *next, *prev, *head, *owner;
+        HeapC55 *next, *prev, *head;
         s32 size;
         block->size = -block->size;
-        owner = heap->owner;
-        if (block->next) block->next->prev = block->prev;
-        if (block->prev) block->prev->next = block->next; else owner = block->next;
-        heap->owner = owner;
+        heap->owner = DLExtract_C55(heap->owner, block);
         prev = 0;
         head = heap->free;
         next = head;
@@ -1116,12 +1113,9 @@ int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
         heap->free = head;
         return;
     } else {
-        HeapC55 *next, *prev, *head, *owner;
+        HeapC55 *next, *prev, *head;
         s32 size;
-        owner = heap->owner;
-        if (block->next) block->next->prev = block->prev;
-        if (block->prev) block->prev->next = block->next; else owner = block->next;
-        heap->owner = owner;
+        heap->owner = DLExtract_C55(heap->owner, block);
         prev = 0;
         head = heap->free;
         next = head;
@@ -5595,14 +5589,14 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
     s32 j;
     s32 count;
     s32 secondIndex;
-    s32 i;
     s32 mode;
-    u8 *self;
+    s32 i;
     u8 *stat;
+    u8 *self;
     s32 index;
 
-    self = (u8 *)arg0;
     stat = (u8 *)arg1;
+    self = (u8 *)arg0;
 
     header = *(s16 **)(self + 0x1FC);
     j = *header;
