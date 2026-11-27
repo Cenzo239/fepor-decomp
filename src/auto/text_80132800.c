@@ -1864,6 +1864,7 @@ void fn_80134C24(s32 *arg0, const s16 *arg1)
 #pragma use_lmw_stmw reset
 
 #pragma cplusplus on
+#pragma opt_strength_reduction off
 extern "C" void Ui_LayoutListPanel(void *arg0) {
 struct Obj {
 virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual void v7()=0; virtual void v8()=0; virtual void v9()=0; virtual s16 v10()=0;
@@ -1873,19 +1874,21 @@ Obj *self=(Obj*)arg0;
 s16 h=self->unk44;
 s16 v=self->v10();
 s32 sum=h+v;
-s16 t=(sum + -1)/h;
+s16 t=(sum-1)/h;
 s32 tmp=t*self->unk46+self->unk4A*2;
 tmp+=0x10;
 self->unk10=self->unkC+(s16)tmp;
-s16 dw;
-s16 dh=self->unk10-self->unkC;
-dw=self->unkE-self->unkA;
+s16 w,h2,w8,h22;
+w=(s16)(self->unk10-self->unkC);
+h2=(s16)(self->unkE-self->unkA);
+w8=(s16)(w-8);
+h22=(s16)(h2-2);
 self->unk12=2;
-dh-=8;
 self->unk14=8;
-self->unk16=dw-2;
-self->unk18=dh;
+self->unk16=h22;
+self->unk18=w8;
 }
+#pragma opt_strength_reduction reset
 #pragma cplusplus reset
 void *fn_80134DA8(void *arg0, s16 arg1) {
     extern u8 lbl_80291758[];
@@ -2353,12 +2356,12 @@ while(it!=sent) { (it->obj->*p[0].ptmf)(p[0].arg); it=it->next; }
 #pragma opt_common_subs off
 extern "C" void fn_8013577C(void *arg0) {
     void Ui_PlaySeCue(void *, s32);
-    void fn_8013ED84(void *, s16);
     extern u8 lbl_80276720[];
+    void fn_8013ED84(void *, s16);
     extern u32 gUiInputFlags;
     extern u32 *gPadInput;
-    extern const f32 lbl_8036A5EC;
     extern const f32 lbl_8036A5F0;
+    extern const f32 lbl_8036A5EC;
     struct Obj {
         virtual void v0() = 0; virtual void v1() = 0; virtual void v2() = 0;
         virtual void v3() = 0; virtual void v4() = 0; virtual void v5() = 0;
@@ -2370,16 +2373,16 @@ extern "C" void fn_8013577C(void *arg0) {
     s32 rows;
     s32 raw;
     s32 total;
+    register s32 rows2;
     s16 pages;
-    s16 page;
     s16 col;
     u8 skip;
     s32 trig;
+    s16 page;
+    register s16 saved;
     s32 edge;
-    s16 saved;
-    s32 rows2;
     s32 held;
-    s32 rows_m1;
+    long rows_m1;
 
     vret = ((Obj *)arg0)->v10();
     rows = *(s16 *)((u8 *)arg0 + 0x56);
@@ -2392,7 +2395,7 @@ extern "C" void fn_8013577C(void *arg0) {
     }
     skip = 0;
     {
-        s16 t = *(s16 *)((u8 *)arg0 + 0x4E);
+        register s16 t = *(s16 *)((u8 *)arg0 + 0x4E);
         page = (s16)(t / rows);
         col = (s16)(t % rows);
     }
@@ -2401,26 +2404,28 @@ extern "C" void fn_8013577C(void *arg0) {
             skip = 1;
         }
     }
-    if (skip == 0) {
+    if (!skip) {
         rows2 = (s16)rows;
         saved = *(s16 *)((u8 *)arg0 + 0x4E);
         held = (s32)gPadInput[1];
-        trig = (s32)gPadInput[3];
-        edge = held & ((s32)gPadInput[2] ^ held);
-        if (rows2 > 1) {
+        trig = gPadInput[3];
+        edge = held & (gPadInput[2] ^ held);
+        if (1 < rows2) {
             held = total - page * rows;
-            held = held > rows ? rows2 : held;
+            if (held > rows) {
+                held = rows2;
+            }
             if ((trig & 0x01000001) != 0) {
                 if (col > 0) {
-                    *(s16 *)((u8 *)arg0 + 0x4E) = (s16)(*(s16 *)((u8 *)arg0 + 0x4E) - 1);
+                    *(s16 *)((u8 *)arg0 + (s32)0x4E) = (s16)(*(s16 *)((u8 *)arg0 + 0x4E) - 1);
                 } else if (trig == edge) {
-                    s32 idx = *(s16 *)((u8 *)arg0 + 0x4E);
+                    register s32 idx = *(s16 *)((u8 *)arg0 + 0x4E);
                     idx = held + idx;
                     idx = idx - 1;
                     *(s16 *)((u8 *)arg0 + 0x4E) = idx;
                 }
             } else if ((trig & 0x02000002) != 0) {
-                s32 lim = held - 1;
+                int lim = held - 1;
                 if (col < lim) {
                     *(s16 *)((u8 *)arg0 + 0x4E) = (s16)(*(s16 *)((u8 *)arg0 + 0x4E) + 1);
                 } else if (trig == edge) {
@@ -2430,17 +2435,17 @@ extern "C" void fn_8013577C(void *arg0) {
         }
         if ((s16)(s32)*(f32 *)((u8 *)arg0 + 0x58) == 0) {
             if ((trig & 0x08000008) != 0) {
-                if (page == 0) {
+                if (!page) {
                     if (trig == edge) {
                         s32 pm1 = pages - 1;
-                        s16 vr = (s16)vret;
-                        s32 add = pm1 * rows;
+                        register s16 vr = (s16)vret;
+                        register s32 add = pm1 * rows;
                         s16 cur = *(s16 *)((u8 *)arg0 + 0x4E);
-                        s32 d = pages - vr;
+                        unsigned int d = pages - vr;
                         s32 tmax = total - 1;
-
+                        long tmp = (-d) & ~d;
                         *(s16 *)((u8 *)arg0 + 0x4E) = (s16)(cur + add);
-                        *(s16 *)((u8 *)arg0 + 0x54) = (s16)(d > 0 ? d : 0);
+                        *(s16 *)((u8 *)arg0 + 0x54) = (s16)(d & (tmp >> 31));
                         if (*(s16 *)((u8 *)arg0 + 0x4E) > tmax) {
                             *(s16 *)((u8 *)arg0 + 0x4E) = (s16)tmax;
                         }
@@ -2474,7 +2479,7 @@ extern "C" void fn_8013577C(void *arg0) {
                         *(s16 *)((u8 *)arg0 + 0x4E) = (s16)tmax;
                     }
                     {
-                        s16 np = (s16)(*(s16 *)((u8 *)arg0 + 0x4E) / rows);
+                        register s16 np = (s16)(*(s16 *)((u8 *)arg0 + 0x4E) / rows);
                         if (np < pm1) {
                             s16 sc = *(s16 *)((u8 *)arg0 + 0x54);
                             if ((s32)((s16)vret - 1) == (s32)(np - sc)) {
@@ -2768,7 +2773,7 @@ s32 sp8; s32 y,tx,x,name; s32 flag;
 flag=arg5!=0;
 Prim2D_Begin(); Prim2D_SetTex(0,(u16)(*(u32 *)((u8 *)arg0+0x34)|0x13)); Prim2D_PrepareTex();
 name=fn_8010586C(arg4);
-y=arg2; x=arg1; tx=x+0x20;
+y=arg1; x=arg2; tx=x+0x20;
 Text_Draw(tx,y+4,flag,lbl_80276720+0x1d,name);
 Prim2D_AddPrim(6); sp8=*Ui_GetColor(flag); Prim2D_SetColorPacked(&sp8);
 Prim2D_SetTextScale(1,lbl_8036A5E0);
@@ -4838,9 +4843,7 @@ extern "C" void fn_80139884(void *arg0, s32 arg1)
 }
 #pragma cplusplus reset
 
-#pragma push
 #pragma cplusplus on
-#pragma opt_common_subs off
 extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -4878,8 +4881,7 @@ extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
     s16 x;
     s16 y;
 
-    v4e = *(s16 *)((u8 *)arg1 + 0x4E);
-    if (v4e != 0x7FFF) {
+    if (*(s16 *)((u8 *)arg1 + 0x4E) != 0x7FFF) {
         vret = ((Obj *)arg1)->v11();
         v4e = *(s16 *)((u8 *)arg1 + 0x4E);
         v58 = *(s16 *)((u8 *)arg1 + 0x58);
@@ -4902,7 +4904,7 @@ extern "C" void fn_80139A50(s32 *arg0, void *arg1) {
         *arg0 = *(s32 *)fn_8013F748(arg1, &out2, &in2);
     }
 }
-#pragma pop
+#pragma cplusplus reset
 
 #pragma use_lmw_stmw on
 #pragma cplusplus on
