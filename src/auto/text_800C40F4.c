@@ -7432,8 +7432,6 @@ M2C_UNK abort(void);
 M2C_UNK fprintf(void *, const char *, ...);
 extern char __files[];
 
-#pragma push
-#pragma scheduling off
 void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     M2C_UNK fn_800D6898(u32 *, u32 *, u32, u32, void *);
     M2C_UNK abort(void);
@@ -7453,7 +7451,6 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     n = MinU32(&arg3, &rem);
     fn_800D6898(arg0, arg1, arg2, *n, &alloc);
 }
-#pragma pop
 
 #pragma push
 #pragma cplusplus on
