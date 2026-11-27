@@ -691,7 +691,7 @@ flags=*(u16 *)(anim+0x52)&15;
 if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
-#pragma optimization_level 3
+#pragma optimization_level 4
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
@@ -700,10 +700,10 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     u8 sp8[0x34];
     u32 var_r31;
     void *temp_r3;
-    u8 d;
-    u8 c;
-    u8 b;
     u8 a;
+    u8 b;
+    u8 c;
+    u8 d;
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
@@ -714,9 +714,9 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     temp_r3 = Process_Create(lbl_80295B64, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
     a = arg1[0];
-    b = arg1[1];
-    ((u8 *)temp_r3)[0x34] = a;
     c = arg1[2];
+    ((u8 *)temp_r3)[0x34] = a;
+    b = arg1[1];
     ((u8 *)temp_r3)[0x35] = b;
     d = arg1[3];
     ((u8 *)temp_r3)[0x36] = c;
