@@ -1731,8 +1731,8 @@ static inline void AramCache_EvictByFlag(u8 *node) {
     extern void *gAramUsedList;
     extern void *gAramFreeList;
     s32 i;
-    void *temp;
     void *next;
+    void *temp;
     void *prev;
 
     for (i = 0; i < 0x100; i++, node += 0x6C) {
