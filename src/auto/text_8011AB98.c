@@ -678,13 +678,10 @@ void fn_8011B310(void *arg0) {
     register u8 skip;
     register u8 *base;
 
-    skip = 0;
     base = (u8 *)gBattleState;
     saved_x = (u8)(s32)*(f32 *)(base + 0x524);
     saved_y = (u8)(s32)*(f32 *)(base + 0x528);
-    if ((gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20)) {
-        skip = 1;
-    }
+    skip = (gUiInputFlags & 0x10) && !(gUiInputFlags & 0x20);
     if (skip == 0) {
         flags = gPadInput[3];
         if (flags & 1) {
@@ -3716,7 +3713,7 @@ void fn_8011FB58(void *arg0, s32 arg1) {
     u8 *info;
     u8 v;
     u8 sp[0x40];
-    s32 flags;
+    u32 flags;
     void *tmp;
     void *self;
     s32 arg;
@@ -3731,40 +3728,12 @@ void fn_8011FB58(void *arg0, s32 arg1) {
         unit = fn_8003A064(*(void **)gUiContext);
         goto got_unit;
     }
-    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0x9F) == 0) {
-        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
-        if (tmp != NULL) {
-            unit = fn_8003A114(tmp);
-            goto got_unit;
-        }
-    }
-    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xAF) == 0) {
-        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xA7);
-        if (tmp != NULL) {
-            unit = fn_8003A064(tmp);
-            goto got_unit;
-        }
-    }
-    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xB9) == 0) {
-        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
-        if (tmp != NULL) {
-            unit = fn_8003A114(tmp);
-            goto got_unit;
-        }
-    }
-    if (Str_Cmp(arg, (u8 *)TalkUi_str + 0xCB) == 0) {
-        tmp = Unit_FindByName((u8 *)TalkUi_str + 0xC2);
-        if (tmp != NULL) {
-            unit = fn_8003A064(tmp);
-            goto got_unit;
-        }
-    }
-    unit = (void *)arg;
+    unit = TalkUi_ResolveNamedUnit(arg);
 got_unit:
     flags = gUiInputFlags & 3;
     if (flags != 0) {
         for (i = 0; i < 4; i++) {
-            if (*(void **)((u8 *)self + 0x48 + i * 4) == NULL) {
+            if (*(void **)(((u8 *)self + i * 4) + 0x48) == NULL) {
                 if (flags != 0) {
                     *(u16 *)((u8 *)self + 0x5C) = 0x180;
                 }
@@ -3777,7 +3746,7 @@ got_unit:
                 if (flag == 0) {
                     *(u16 *)((u8 *)self + 0x5C) |= 0x4000;
                 }
-                *(void **)((u8 *)self + 0x48 + i * 4) = fn_8007BC3C(unit, 0, 0, *(u16 *)((u8 *)self + 0x5C), self);
+                *(void **)(((u8 *)self + i * 4) + 0x48) = fn_8007BC3C(unit, 0, 0, *(u16 *)((u8 *)self + 0x5C), self);
                 *(u16 *)((u8 *)self + 0x5C) = 0x82;
                 if (*(void **)((u8 *)self + 0x58) != NULL && fn_80109B24(*(void **)((u8 *)self + 0x58)) != 0
                     && fn_80109B24(*(void **)((u8 *)self + 0x58)) != 0xFF) {
@@ -3785,10 +3754,10 @@ got_unit:
                 } else {
                     v = 0xFF;
                 }
-                *(u8 *)((u8 *)*(void **)((u8 *)self + 0x48 + i * 4) + 0x41) = (u8)(v - 0x4D);
-                fn_80079300(*(void **)((u8 *)self + 0x48 + i * 4), *(u8 *)((u8 *)self + 0x5E));
+                *(u8 *)((u8 *)*(void **)(((u8 *)self + i * 4) + 0x48) + 0x41) = (u8)(v - 0x4D);
+                fn_80079300(*(void **)(((u8 *)self + i * 4) + 0x48), *(u8 *)((u8 *)self + 0x5E));
                 if ((gUiInputFlags & 3) == 0) {
-                    fn_800791F0(*(void **)((u8 *)self + 0x48 + i * 4), self);
+                    fn_800791F0(*(void **)(((u8 *)self + i * 4) + 0x48), self);
                 }
                 {
                     u8 t = *(u8 *)((u8 *)self + 0x5E);
@@ -3807,7 +3776,7 @@ got_unit:
         strcat(sp, *(void **)((u8 *)fn_8007C3BC(unit) + 8));
         if (FileCache_Probe(sp) & 0x2000) {
             for (i = 0; i < 4; i++) {
-                if (*(void **)((u8 *)self + 0x48 + i * 4) == NULL) {
+                if (*(void **)(((u8 *)self + i * 4) + 0x48) == NULL) {
                     if (gUiInputFlags & 3) {
                         *(u16 *)((u8 *)self + 0x5C) = 0x180;
                     }
@@ -3820,7 +3789,7 @@ got_unit:
                     if (flag == 0) {
                         *(u16 *)((u8 *)self + 0x5C) |= 0x4000;
                     }
-                    *(void **)((u8 *)self + 0x48 + i * 4) = fn_8007BC3C(unit, 0, 0, *(u16 *)((u8 *)self + 0x5C), self);
+                    *(void **)(((u8 *)self + i * 4) + 0x48) = fn_8007BC3C(unit, 0, 0, *(u16 *)((u8 *)self + 0x5C), self);
                     *(u16 *)((u8 *)self + 0x5C) = 0x82;
                     if (*(void **)((u8 *)self + 0x58) != NULL && fn_80109B24(*(void **)((u8 *)self + 0x58)) != 0
                         && fn_80109B24(*(void **)((u8 *)self + 0x58)) != 0xFF) {
@@ -3828,10 +3797,10 @@ got_unit:
                     } else {
                         v = 0xFF;
                     }
-                    *(u8 *)((u8 *)*(void **)((u8 *)self + 0x48 + i * 4) + 0x41) = (u8)(v - 0x4D);
-                    fn_80079300(*(void **)((u8 *)self + 0x48 + i * 4), *(u8 *)((u8 *)self + 0x5E));
+                    *(u8 *)((u8 *)*(void **)(((u8 *)self + i * 4) + 0x48) + 0x41) = (u8)(v - 0x4D);
+                    fn_80079300(*(void **)(((u8 *)self + i * 4) + 0x48), *(u8 *)((u8 *)self + 0x5E));
                     if ((gUiInputFlags & 3) == 0) {
-                        fn_800791F0(*(void **)((u8 *)self + 0x48 + i * 4), self);
+                        fn_800791F0(*(void **)(((u8 *)self + i * 4) + 0x48), self);
                     }
                     {
                         u8 t = *(u8 *)((u8 *)self + 0x5E);
