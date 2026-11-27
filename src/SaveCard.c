@@ -1703,6 +1703,7 @@ got_dst:
 }
 #pragma push
 #pragma optimization_level 2
+#pragma opt_common_subs off
 void fn_801E047C(u8 **arg0, s32 arg1)
 {
   void fn_80006298(void *, s32, s32);
@@ -1799,8 +1800,6 @@ void fn_801E047C(u8 **arg0, s32 arg1)
     {
       goto do_init;
     }
-    goto incr;
-    incr:
     i += 1;
     off += 0x6000;
   }
@@ -1809,11 +1808,8 @@ void fn_801E047C(u8 **arg0, s32 arg1)
   slot = base + 0x1A000;
   if (save_slot_size(base + 0x1A000) >= save_slot_size(base + 0x20000))
   {
-    goto pick;
+    slot = base + 0x20000;
   }
-  goto do_init;
-  pick:
-  slot = base + 0x20000;
   do_init:
   fn_80006298(slot, 0, 0x6000);
 
