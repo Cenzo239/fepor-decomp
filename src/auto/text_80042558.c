@@ -2706,7 +2706,7 @@ void Map_PrepareEntryRange(void *arg0, s32 arg1, s32 arg2) {
     u8 *sub;
     u8 *entry = M2C_FIELD(arg0, u8 **, 0x14) + arg1 * 0xB4;
     s32 i; u8 *e; u32 mask = 0x10040;
-    f32 maxY, maxX, minY, minX, x, y, *p, f2c; s32 j; u8 hit;
+    f32 minX, minY, maxX, maxY, x, y, *p; s32 j; u8 hit;
 
     for (i = arg1; i < arg2; i++, entry += 0xB4) {
         e = entry + 0x14;
@@ -2798,15 +2798,10 @@ checks:
         if (!hit) continue;
         if (!(M2C_FIELD(sub, u32 *, 0xBC) & 8)) goto mark;
         minX = lbl_80368F64; minY = minX; maxX = lbl_80368F68; maxY = maxX;
-        f2c = lbl_80368F2C;
         p = &wk.corners[0][0];
-        for (j = 0; j < 4; j++, p += 6) {
+        for (j = 0; j < 8; p += 3, j++) {
             x = p[0]; y = p[1];
-            if (p[2] > lbl_80368EE4) { x *= f2c; y *= f2c; }
-            if (minX > x) minX = x; if (minY > y) minY = y;
-            if (maxX < x) maxX = x; if (maxY < y) maxY = y;
-            x = p[3]; y = p[4];
-            if (p[5] > lbl_80368EE4) { x *= f2c; y *= f2c; }
+            if (p[2] > lbl_80368EE4) { x *= lbl_80368F2C; y *= lbl_80368F2C; }
             if (minX > x) minX = x; if (minY > y) minY = y;
             if (maxX < x) maxX = x; if (maxY < y) maxY = y;
         }
@@ -4868,21 +4863,23 @@ void fn_8004C148(void)
   extern f32 gUnitShadowZ;
   extern u32 lbl_80368FB0;
   extern u8 gUnits[];
-  u8 tex[0x20];
-  u8 mask[4];
-  f32 trans[3][4];
-  f32 view[3][4];
+  u32 color2;
   u32 color;
+  u8 mask[4];
+  u8 tex[0x20];
+  f32 view[3][4];
+  f32 trans[3][4];
   u8 *channel;
-  u8 *unit;
   u8 *classData;
   s32 red;
   s32 green;
   s32 blue;
   s32 id;
+  register u8 *unit;
   s32 x;
   s32 y;
   s32 valid;
+
   Ui_LoadAtlasTex(gUnitShadowMat, tex, 1);
   fn_80222C50(tex, 0);
   fn_8022100C(2);
@@ -4898,23 +4895,15 @@ void fn_8004C148(void)
   red = channel[4] + channel[0];
   green = channel[5] + channel[1];
   blue = channel[6] + channel[2];
-  if (red > 255)
-  {
-    red = 255;
-  }
-  if (green > 255)
-  {
-    green = 255;
-  }
-  if (blue > 255)
-  {
-    blue = 255;
-  }
+  if (red > 255) red = 255;
+  if (green > 255) green = 255;
+  if (blue > 255) blue = 255;
   color = lbl_80368FB0;
-  ((u8 *) (&color))[0] = red;
-  ((u8 *) (&color))[1] = green;
-  ((u8 *) (&color))[2] = blue;
-  fn_80222164(4, &color);
+  ((u8 *)&color)[0] = red;
+  ((u8 *)&color)[1] = green;
+  ((u8 *)&color)[2] = blue;
+  color2 = color;
+  fn_80222164(4, &color2);
   GXSetNumTevStages(1);
   GXSetTevOrder(0, 0, 0, 4);
   GXSetNumChans(1);
@@ -4929,40 +4918,29 @@ void fn_8004C148(void)
   Allegiance_FillMask(3, mask);
   for (id = 1; id <= 159; id++)
   {
-    if (((u8) id) != 0)
+    if ((u8)id != 0)
     {
-      unit = gUnits + (10 * ((((u8) id) - 1) * 64));
+      unit = gUnits + ((u8)id - 1) * 0x280;
     }
     else
     {
       unit = 0;
     }
-    if ((*((void **) (unit + 0x188))) == 0)
-    {
-      continue;
-    }
-    classData = *((u8 **) (unit + 0x190));
-    if (mask[classData[8]] == 0)
-    {
-      continue;
-    }
-    x = (s32) (*((f32 *) (unit + 4)));
-    y = (s32) (*((f32 *) (unit + 8)));
-    if (fn_80040B1C(Map_Get(), x, y) != 0)
-    {
-      continue;
-    }
-    if (((*((u32 *) (unit + 0x1A0))) & 0x010000FC) != 0)
+    if (*(void **)(unit + 0x188) == 0) continue;
+    classData = *(u8 **)(unit + 0x190);
+    if (mask[classData[8]] == 0) continue;
+    x = (s32)*(f32 *)(unit + 4);
+    y = (s32)*(f32 *)(unit + 8);
+    if (fn_80040B1C(Map_Get(), x, y) != 0) continue;
+    if ((*(u32 *)(unit + 0x1A0) & 0x010000FC) != 0)
     {
       valid = 0;
     }
-    else
-      if ((unit[3] & 0x22) != 2)
+    else if ((unit[3] & 0x22) != 2)
     {
       valid = 0;
     }
-    else
-      if (unit[0x27] == 0)
+    else if (unit[0x27] == 0)
     {
       valid = 0;
     }
@@ -4975,7 +4953,6 @@ void fn_8004C148(void)
       fn_8004C444(unit);
     }
   }
-
   fn_80066D00(-1);
 }
 
@@ -6478,10 +6455,12 @@ void *fn_8004B078(void *,s32);
 u16 FileCache_Probe(void *);
 void fn_8005F434(void *,void *,s32);
 extern void *lbl_80366DC8;
+s32 value;
 void *result; void *dest;
 if(M2C_FIELD(arg0,u8 *,3)&2) {
 dest=(u8 *)arg0+0x1C;
-result=get_4F128_resource(arg0,get_4F128_id(arg0));
+value=get_4F128_id(arg0);
+result=get_4F128_resource(arg0,value);
 switch(M2C_FIELD(M2C_FIELD(arg0,void **,0x190),u8 *,8)) {
 case 0: result=fn_8004B078(result,0); break;
 case 1: result=fn_8004B078(result,1); break;
@@ -8048,6 +8027,8 @@ typedef struct {
     s32 unkBC;
 } Struct_800330F8_B;
 
+#pragma push
+#pragma optimization_level 3
 void fn_8004781C(void *arg0)
 {
     struct EntryTail {
@@ -8062,7 +8043,6 @@ void fn_8004781C(void *arg0)
         struct EntryTail tail;
     };
 
-    s32 nextOffset;
     u8 *map;
     u8 *base;
     u8 *node;
@@ -8148,13 +8128,16 @@ inner_loop:
     }
 
     if (firstPriority > secondPriority) {
+        s32 nextOffset;
+        u8 *swapBase;
+
         temp = *first;
 
         nextOffset = (j + 1) * 0xB4;
 
-        base = *(u8 *volatile *)(map + 0x14);
-        second = (struct MapEntry *)(base + nextOffset);
-        first = (struct MapEntry *)(base + offset);
+        swapBase = *(u8 **)(map + 0x14);
+        second = (struct MapEntry *)(swapBase + nextOffset);
+        first = (struct MapEntry *)(swapBase + offset);
 
         first->bytes[0] = second->bytes[0];
         first->bytes[1] = second->bytes[1];
@@ -8170,22 +8153,22 @@ inner_loop:
         first->object = second->object;
         first->tail = second->tail;
 
-        base = *(u8 *volatile *)(map + 0x14);
-        second = (struct MapEntry *)(base + nextOffset);
+        swapBase = *(u8 **)(map + 0x14);
+        first = (struct MapEntry *)(swapBase + nextOffset);
 
-        second->bytes[0] = temp.bytes[0];
-        second->bytes[1] = temp.bytes[1];
-        second->bytes[2] = temp.bytes[2];
-        second->bytes[3] = temp.bytes[3];
-        second->bytes[4] = temp.bytes[4];
-        second->bytes[5] = temp.bytes[5];
-        second->bytes[6] = temp.bytes[6];
-        second->bytes[7] = temp.bytes[7];
+        first->bytes[0] = temp.bytes[0];
+        first->bytes[1] = temp.bytes[1];
+        first->bytes[2] = temp.bytes[2];
+        first->bytes[3] = temp.bytes[3];
+        first->bytes[4] = temp.bytes[4];
+        first->bytes[5] = temp.bytes[5];
+        first->bytes[6] = temp.bytes[6];
+        first->bytes[7] = temp.bytes[7];
 
-        second->x = temp.x;
-        second->y = temp.y;
-        second->object = temp.object;
-        second->tail = temp.tail;
+        first->x = temp.x;
+        first->y = temp.y;
+        first->object = temp.object;
+        first->tail = temp.tail;
     }
 
     offset += 0xB4;
