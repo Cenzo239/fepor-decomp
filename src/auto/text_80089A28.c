@@ -1159,7 +1159,9 @@ void fn_8008BA50(s32 unused, s32 arg1) {
     GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
 }
 
+#pragma push
 #pragma optimization_level 3
+#pragma scheduling off
 void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
@@ -1198,7 +1200,7 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     M2C_UNK fn_8007D004(s32, u8, f32, f32, f32, f32);
     s32 var_r5;
