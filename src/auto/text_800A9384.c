@@ -86,5 +86,4 @@ void fn_800A9384(void) {
     a[0] = pad31;
     a[1] = lbl_8028C9A0;
 }
-#pragma pop
 #pragma use_lmw_stmw reset
