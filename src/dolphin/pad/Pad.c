@@ -371,9 +371,6 @@ void fn_80212108(s32 chan, u32 type) {
 #pragma opt_common_subs off
 void fn_802121E0(s32 chan, u32 type) {
     s32 SITransfer(s32, void *, u32, void *, u32, void *, s64);
-    void fn_8023B804(s32, u32);
-    void fn_8023B894(u32);
-    void fn_8023BA70(s32, u32 *);
     void fn_8023C188(s32, void (*)(s32, u32));
     void *memset(void *, int, u32);
     extern void fn_80211F78(s32, u32);
@@ -388,13 +385,13 @@ void fn_802121E0(s32 chan, u32 type) {
     extern u16 lbl_80366FBC;
     extern u16 cmdGetOrigin;
     extern u32 lbl_80368680;
-    u32 mask;
     u32 bitConst;
     u8 *padType;
     u8 *origin;
     u8 *command;
     s32 chanIdx;
     u32 chanBit;
+    u32 mask;
     s32 result;
 
     bitConst = 0x80000000U;
@@ -585,9 +582,9 @@ return fn_8021264C(0xf0000000);
 }
 
 #pragma push
-#pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma use_lmw_stmw on
+#pragma opt_lifetimes off
 u32 fn_802129C0(PADStatus *status)
 {
   s32 OSDisableInterrupts(void);
@@ -939,7 +936,8 @@ void PADMakeStatus(s32 chan, PADStatus* status, u32* data) {
     ClampU8(&status->triggerRight, origin[7]);
 }
 
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 2
 s32 fn_80213530(s32 arg0)
 {
   s32 fn_8021275C(M2C_UNK);
@@ -953,6 +951,7 @@ s32 fn_80213530(s32 arg0)
   s32 var_r31;
   s32 var_r3;
   u32 t;
+  u8 pad[8];
   if (lbl_80368688 != 0U)
   {
     fn_8021364C(0);
@@ -961,7 +960,7 @@ s32 fn_80213530(s32 arg0)
   {
     t = lbl_80368670;
     var_r31 = 0;
-    var_r3 = (s32)(s16)var_r31;
+    var_r3 = var_r31;
     if (t == 0 && lbl_80366FA4 == 0x20)
     {
       var_r3 = 1;
@@ -981,7 +980,7 @@ s32 fn_80213530(s32 arg0)
   lbl_8036868C = 0;
   return 1;
 }
-#pragma optimization_level reset
+#pragma pop
 void fn_802135EC(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368688)(void);
@@ -1174,6 +1173,8 @@ s32 fn_802139F4(void) {
     return (((u32) *(u32 *)0xCC006C00 >> 6U) & 1) ^ 1;
 }
 
+#pragma push
+#pragma opt_strength_reduction off
 void fn_80213A08(u32 arg0) {
 u32 fn_80213ADC(void);
 u32 fn_80213B08(void);
@@ -1199,9 +1200,9 @@ right=fn_80213B34();
 fn_80213B18(0);
 fn_80213AEC(0);
 value=*reg;
-rate=(u32)value & 0x40;
+rate=value & 0x40;
 value=*reg;
-*reg=(unsigned short)value & ~0x40;
+*reg=(u16)value & ~0x40;
 interrupts=OSDisableInterrupts();
 fn_80213E30();
 *reg |= rate;
@@ -1218,7 +1219,7 @@ fn_80213AEC(left);
 fn_80213B18(right);
 }
 }
-
+#pragma pop
 s32 fn_80213ADC(void) {
     return ((u32) *(u32 *)0xCC006C00 >> 1U) & 1;
 }
@@ -1286,7 +1287,7 @@ __OSSetInterruptHandler(8,fn_80213CB0);
 __OSUnmaskInterrupts(0x00800000);
 lbl_803686A8=1;
 }
-#pragma pop
+#pragma optimization_level 1
 void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
@@ -1295,13 +1296,14 @@ void fn_80213CB0(s32 arg0, OSContext *context)
     OSClearContext(&tempContext);
     OSSetCurrentContext(&tempContext);
     if (lbl_80368698 != 0) {
- u32 *regs = (u32 *)0xCC006C00;
- lbl_80368698(regs[2]);
- }
+        u32 *regs = (u32 *)0xCC006C00;
+        lbl_80368698(regs[2]);
+    }
     OSClearContext(&tempContext);
     OSSetCurrentContext(context);
 }
-
+#pragma optimization_level reset
+#pragma opt_lifetimes off
 void fn_80213D2C(s32 arg0, OSContext *context) {
     void OSClearContext(void *);
     void OSSetCurrentContext(void *);
@@ -1481,6 +1483,7 @@ s32 fn_80214184(s32 arg0) {
 
 #pragma peephole off
 s32 fn_802141EC(s32 arg0, s32 arg1) {
+    #pragma global_optimizer off
 s32 OSDisableInterrupts(void);
 void OSRestoreInterrupts(s32);
 void OSRegisterVersion(const char *);
@@ -1512,6 +1515,7 @@ regs->val = value;
 fn_80214368();
 lbl_803686F4=1;
 OSRestoreInterrupts(enabled);
+    #pragma global_optimizer on
 return lbl_803686E8;
 }
 #pragma peephole on
@@ -3330,7 +3334,7 @@ __OSUnmaskInterrupts(0x01000000);
 p=(volatile PadReg *)__PADRegs;
 p->val=(p->val & ~0xa8)|0x800;
 v=p->val;
-p->val=v & ~0xac;
+p->val=v & -0xad;
 lbl_80368730=0;
 lbl_8036873C=0;
 lbl_80368734=0;
