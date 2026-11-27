@@ -10061,9 +10061,7 @@ slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
 else valid=1;
-if(valid) {
-if(id==slot[0x62]) return slot;
-}
+if(valid && id==slot[0x62]) return slot;
 off+=0x4000;
 }
 return 0;
