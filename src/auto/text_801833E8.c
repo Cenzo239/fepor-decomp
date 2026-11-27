@@ -1,6 +1,11 @@
 /* Functions from 0x801833E8 to 0x801A2AB4, found by decomp-toolkit. */
 #include "common.h"
 #include "global.h"
+static inline void Fn_GetPositionViaVtable(f32 *out, void *obj) {
+    void (**vtable)(f32 *, void *, s32);
+    vtable = *((void (***)(f32 *, void *, s32))((u8 *)obj + 0x40));
+    vtable[14](out, obj, 0);
+}
 
 
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
