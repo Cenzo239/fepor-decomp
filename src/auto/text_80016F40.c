@@ -710,7 +710,6 @@ void CamPath_Apply(void *arg0, f32 farg0) {
 #pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
-#pragma opt_instruction_scheduling off
 void fn_800180F4(void *arg0, u8 arg1) {
     void fn_80018594(void *);
     void CamPath_Apply(void *, f32);
