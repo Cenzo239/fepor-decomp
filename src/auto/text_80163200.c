@@ -18334,6 +18334,7 @@ void fn_80180620(void) {
 #pragma cplusplus on
 #pragma optimization_level 2
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 extern "C" void fn_80180624(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
