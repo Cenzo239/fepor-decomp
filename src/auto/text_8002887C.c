@@ -4200,7 +4200,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         temp_r4 = ((u8 *)arg1)[0x3E];
         if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
-            found = map_find_xy_2(temp_r4, ((u8 *)arg1)[0x3F], gTargetList);
+            found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
             *(void **)((u8 *)arg1 + 0x40) = found;
             if (found != NULL) {
                 *(void **)((u8 *)arg1 + 0x44) = found;
