@@ -3732,8 +3732,8 @@ found:
     return slot;
 }
 
-#pragma opt_common_subs off
 #pragma cplusplus on
+#pragma opt_strength_reduction off
 extern "C" void fn_80147EBC(s16 arg0) {
     struct Obj {
         u8 pad[8];
@@ -3764,8 +3764,8 @@ extern "C" void fn_80147EBC(s16 arg0) {
         virtual void v24() = 0;
         virtual u8 v25() = 0;
     };
-    extern Obj gFxChannels[];
-    extern f32 gMsPerFrame;
+    extern Obj lbl_8032FF08[];
+    extern f32 lbl_8036A7A0;
     s32 a;
     s16 val;
     Obj *p;
@@ -3774,11 +3774,11 @@ extern "C" void fn_80147EBC(s16 arg0) {
     u8 t;
 
     a = arg0;
+    p = lbl_8032FF08;
     i = 0;
-    p = gFxChannels;
     do {
         if ((*(u8 *)((u8 *)p + 0xC) & 1) && p->v25() != 0) {
-            temp = (s32)((f32)a / gMsPerFrame);
+            temp = (s32)((f32)a / lbl_8036A7A0);
             val = (s16)temp;
             if (val <= 0) {
                 val = 1;
@@ -3794,6 +3794,7 @@ extern "C" void fn_80147EBC(s16 arg0) {
         p = (Obj *)((u8 *)p + 0x30);
     } while (i < 4);
 }
+#pragma opt_strength_reduction reset
 #pragma cplusplus reset
 #pragma opt_common_subs reset
 void fn_80147FA8(s16 arg0) {
@@ -4351,7 +4352,7 @@ extern "C" void fn_80148980(void *arg0, s16 arg1) {
 #pragma cplusplus reset
 extern u8 lbl_80367AEA;
 extern u8 lbl_80367AEB;
-s32 fn_8014953C(u8 *);
+s32 fn_8014953C(u8 *, s32);
 #pragma cplusplus on
 extern "C" void fn_80148A28(void *arg0) {
     struct Obj {
@@ -4410,7 +4411,7 @@ extern "C" void fn_80148A28(void *arg0) {
         u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
-                rate = fn_8014953C((u8 *)self);
+                rate = fn_8014953C((u8 *)self, delay);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -4441,7 +4442,7 @@ extern "C" void fn_80148A28(void *arg0) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C((u8 *)self);
+                    rate = fn_8014953C((u8 *)self, delay);
                 }
                 level = (u8)(lbl_80367AEA * rate / 100);
                 self->unk_d = (u8)(level * (self->cur * self->v19()) / 10000);
@@ -4453,7 +4454,7 @@ extern "C" void fn_80148A28(void *arg0) {
 }
 
 extern "C" void fn_80148D54(void *arg0) {
-    s32 fn_8014953C(u8 *);
+    s32 fn_8014953C(u8 *, s32);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
     extern u8 lbl_80367AEE;
@@ -4518,7 +4519,7 @@ extern "C" void fn_80148D54(void *arg0) {
         register u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
-                rate = fn_8014953C((u8 *)self);
+                rate = fn_8014953C((u8 *)self, delay);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -4550,7 +4551,7 @@ extern "C" void fn_80148D54(void *arg0) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C((u8 *)self);
+                    rate = fn_8014953C((u8 *)self, delay);
                 }
                 level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
                 factor = lbl_80367AE8;
@@ -4628,7 +4629,7 @@ extern "C" void fn_801490C8(void *arg0) {
         register u8 delay = self->delay;
         if (delay == 0) {
             if (flags & 2) {
-                rate = fn_8014953C((u8 *)self);
+                rate = fn_8014953C((u8 *)self, delay);
             }
             if (self->frame <= self->frames) {
                 self->cur = (u8)((f32)self->start + (f32)self->frame * ((f32)self->end - (f32)self->start) / (f32)self->frames);
@@ -4666,7 +4667,7 @@ extern "C" void fn_801490C8(void *arg0) {
             self->delay = delay - 1;
             if (self->delay == 0) {
                 if (self->flags & 2) {
-                    rate = fn_8014953C((u8 *)self);
+                    rate = fn_8014953C((u8 *)self, delay);
                 }
                 if((void *)lbl_8032FF08==self) {
  rate=(u8)(rate*(lbl_80367AEC*lbl_80367AF0)/10000);
@@ -4684,7 +4685,7 @@ extern "C" void fn_801490C8(void *arg0) {
     }
 }
 
-s32 fn_8014953C(u8 *self) {
+s32 fn_8014953C(u8 *self, s32 delay) {
     void *Camera_Get(void);
     void fn_802029C4(void *, void *, void *);
     void fn_802031A8(void *, void *, void *);
