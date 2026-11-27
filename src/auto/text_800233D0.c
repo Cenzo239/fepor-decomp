@@ -3309,14 +3309,14 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma push
-#pragma peephole off
+#pragma opt_lifetimes off
 void UiCtx_BeginMoveSelect(s32 *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *map;
     s32 *dst;
 
     dst = arg0;
-    arg0[0] = (s32)arg1;
+    *(s32 * volatile)arg0 = (s32)arg1;
     *((u8 *)dst + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)dst + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)dst + 0x11) = Unit_GetMov(arg1);
