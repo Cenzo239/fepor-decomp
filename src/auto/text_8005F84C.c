@@ -8537,7 +8537,9 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     d->table[4] = 0;
     Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
+#pragma push
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
 {
   extern u8 lbl_80311CA8[];
