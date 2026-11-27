@@ -208,6 +208,8 @@ void BattleHit_SetBraveFlags(u8 *hitTbl, s32 count) {
 
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 3
 void fn_8003333C(u8 *arg0, s32 arg1)
 {
   s32 t3;
@@ -222,9 +224,9 @@ void fn_8003333C(u8 *arg0, s32 arg1)
   t2 = arg1 + 2;
   t3 = arg1 + 3;
   idx = n + arg1;
-  t4 = (new_var = arg1 + 4);
   idx = (s32) (arg0 + (idx << 1));
   *((u16 *) (idx + 0x20)) |= 1;
+  t4 = (new_var = arg1 + 4);
   n = arg0[0x60];
   t1 = n + t1;
   t1 = (s32) (arg0 + (t1 << 1));
@@ -242,6 +244,7 @@ void fn_8003333C(u8 *arg0, s32 arg1)
   arg0 = arg0 + (t4 << 1);
   *((u16 *) (arg0 + 0x20)) |= 1;
 }
+#pragma pop
 #pragma opt_strength_reduction reset
 #pragma global_optimizer reset
 void fn_800333DC(u8 *arg0, s32 arg1) {
@@ -1394,6 +1397,7 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
     void *tmp;
     void **pp;
     s32 i;
+    s8 level;
 
     if (fn_8014DA68() == 0) {
         if (arg1 != 0) {
@@ -1404,7 +1408,8 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
             arg1 -= 0x64;
             ((s8 *)arg0)[0x19A]++;
             *(u32 *)(gBattle + 0xCAC) |= 0x800;
-            if (Unit_GetLevel_19A(arg0) > 0x14) {
+            level = ((s8 *)arg0)[0x19A];
+            if (level > 0x14) {
                 *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
                 *(u32 *)(gBattle + 0xCAC) |= 0x10;
             } else {
@@ -1588,7 +1593,8 @@ void fn_800351FC(void *arg0, u8 arg1, void *arg2, void *arg3) {
         arg1 -= 0x64;
         ((s8 *)arg0)[0x19A]++;
         *(u32 *)(gBattle + 0xCAC) |= 0x800;
-        if (Unit_GetLevel_19A(arg0) > 0x14) {
+        level = ((s8 *)arg0)[0x19A];
+        if (level > 0x14) {
             *(u32 *)((u8 *)arg0 + 0x1A0) |= 0x40000;
             *(u32 *)(gBattle + 0xCAC) |= 0x10;
         } else {
