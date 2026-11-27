@@ -1,5 +1,10 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+#pragma cplusplus on
+extern "C" void Process_ClearFunc(void *);
+extern "C" void Ui_PlaySeCue(void *, s32);
+extern "C" void fn_801E3560(void *, u8, u8, u8);
+#pragma cplusplus off
 static inline u8 *Battle_FindEligibleUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -851,8 +856,8 @@ void fn_801C9170(void *arg0) {
     void *self;
     u8 b2;
     u8 b1;
-    s32 held;
     u8 b0;
+    s32 held;
     s32 trig;
     s32 buttons;
     void *obj;
