@@ -1047,7 +1047,6 @@ s32 fn_8021371C(s32 arg0) {
     return temp_r31;
 }
 
-volatile u16 gPadRegsAbs[32] : 0xCC005000;
 void fn_80213760(u32 arg0, u32 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
