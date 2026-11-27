@@ -2991,16 +2991,25 @@ s32 fn_8022A230(u32 start, s32 length, s32 mode) {
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
 
-u8 fn_8022A4E0(s32 command, s32 file_handle, s32 *length_ptr, s32 buffer_ptr) {
-    (void)command;
-    (void)file_handle;
-    (void)length_ptr;
-    (void)buffer_ptr;
-    return 0;
+#pragma push
+#pragma use_lmw_stmw off
+#pragma global_optimizer on
+asm void fn_8022A4E0(void) {
+    nofralloc
+    twi 31, r0, 0x0
+    blr
 }
+#pragma pop
 
-void fn_8022A4E8(void) {
+#pragma push
+#pragma use_lmw_stmw off
+#pragma global_optimizer on
+asm void fn_8022A4E8(void) {
+    nofralloc
+    twi 31, r0, 0x0
+    blr
 }
+#pragma pop
 
 void InitMetroTRK_BBA(void) {
     void TRKSaveExtended1Block(void);
@@ -3975,6 +3984,18 @@ extern u32 lbl_8033CFC8;
 extern u8 gTRKCPUState[1072];
 #include "common.h"
 extern u8 gTRKCPUState[1072];
+
+asm void fn_8022A4F0(void) {
+    nofralloc
+    twi 31, r0, 0x0
+    blr
+}
+
+asm void fn_8022A4F8(void) {
+    nofralloc
+    twi 31, r0, 0x0
+    blr
+}
 
 void TRKSaveExtended1Block(void) {
     *(u32 *)gTRKCPUState = 0;
