@@ -1192,33 +1192,57 @@ extern "C" void fn_8002A784(void *arg0, u8 *arg1) {
     }
 }
 
+#pragma push
+#pragma use_lmw_stmw on
+#pragma opt_lifetimes off
 extern "C" void fn_8002A8CC(void *arg0, void *arg1) {
-extern u8 lbl_80284E20[],lbl_80284DA0[],lbl_80284D90[],gTargetList[],gBattleMap[],gUnits[];
-void fn_8002F728(void *); void Map_SelectRangeBuffer(void *,s32);
-s32 Item_GetRangeForUnit(void *,void *); void Map_FillAttackRange(void *,s32,s32,s32,s32);
-struct Visitor { virtual void visit(void *)=0; };
-struct {void *vtbl; void *unit;} obj;
-s32 y,x,rowOffset,index;
-u8 *row,*cell,*map;
-s32 range;
-u8 ir,iy,ix;
-obj.vtbl=lbl_80284E20;obj.vtbl=lbl_80284DA0;obj.unit=arg0;obj.vtbl=lbl_80284D90;
-fn_8002F728(gTargetList);Map_SelectRangeBuffer(gBattleMap,6);
-ir=((u8*)arg1)[0x1D];iy=((u8*)obj.unit)[0x19F];ix=((u8*)obj.unit)[0x19E];
-Map_FillAttackRange(gBattleMap,ix,iy,ir,Item_GetRangeForUnit(arg1,obj.unit));
-range=((s8*)arg1)[0x1D];map=gBattleMap;
-for(y=0,rowOffset=0,row=map;(s8)y<*(s32*)(map+4);y++,rowOffset+=64,row+=64){
-for(x=0,index=rowOffset,cell=row;(s8)x<*(s32*)map;x++,index++,cell++){
-if((*(s16**)(map+0x14190))[index]>=range){
-u8 id=cell[13];
-if(id){void *unit;if(id)unit=gUnits+(id-1)*0x280;else unit=0;
-((Visitor*)&obj)->visit(unit);
-}
-}
-}
-}
-}
+    extern u8 lbl_80284E20[], lbl_80284DA0[], lbl_80284D90[], gTargetList[], gBattleMap[], gUnits[];
+    void fn_8002F728(void *);
+    void Map_SelectRangeBuffer(void *, s32);
+    s32 Item_GetRangeForUnit(void *, void *);
+    void Map_FillAttackRange(void *, s32, s32, s32, s32);
+    struct Visitor { virtual void visit(void *) = 0; };
+    struct { void *vtbl; void *unit; } obj;
+    s8 range;
+    s32 x;
+    s32 y;
+    s32 index;
+    u8 *cell;
+    s32 rowOffset;
+    u8 *row;
+    u8 *mapHi;
+    u8 ir, iy, ix;
 
+    obj.vtbl = lbl_80284E20;
+    obj.vtbl = lbl_80284DA0;
+    obj.unit = arg0;
+    obj.vtbl = lbl_80284D90;
+    fn_8002F728(gTargetList);
+    Map_SelectRangeBuffer(gBattleMap, 6);
+    ir = ((u8 *)arg1)[0x1D];
+    iy = ((u8 *)obj.unit)[0x19F];
+    ix = ((u8 *)obj.unit)[0x19E];
+    Map_FillAttackRange(gBattleMap, ix, iy, ir, Item_GetRangeForUnit(arg1, obj.unit));
+    range = ((s8 *)arg1)[0x1D];
+    mapHi = gBattleMap + 0x10000;
+    for (y = 0, rowOffset = 0, row = gBattleMap; (s8)y < *(s32 *)(gBattleMap + 4); rowOffset += 64, row += 64, y++) {
+        for (x = 0, index = rowOffset, cell = row; (s8)x < *(s32 *)gBattleMap; index++, cell++, x++) {
+            if ((*(s16 **)(mapHi + 0x4190))[index] >= range) {
+                u8 id = cell[13];
+                if (id) {
+                    void *unit;
+                    if (id) {
+                        unit = gUnits + (id - 1) * 0x280;
+                    } else {
+                        unit = 0;
+                    }
+                    ((Visitor *)&obj)->visit(unit);
+                }
+            }
+        }
+    }
+}
+#pragma pop
 extern "C" void fn_8002AA34(void *arg0, void *arg1)
 {
 #pragma use_lmw_stmw on
@@ -1330,14 +1354,14 @@ extern "C" void fn_8002AB9C(void *arg0, void *arg1)
     void *vtable;
     void *unit;
   } visitor;
-  u8 *mapHi;
-  u8 *row;
-  s32 rowOffset;
-  u8 *cell;
-  s32 bufferOffset;
-  s32 rowIndex;
-  s32 colIndex;
   u8 *map;
+  s32 colIndex;
+  s32 rowIndex;
+  s32 bufferOffset;
+  u8 *cell;
+  s32 rowOffset;
+  u8 *row;
+  u8 *mapHi;
   u8 range;
   u8 y;
   u8 x;
@@ -1400,70 +1424,84 @@ extern "C" void fn_8002AB9C(void *arg0, void *arg1)
 #pragma cplusplus on
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
-extern "C" void fn_8002AD04(void *arg0, void *arg1) {
-    extern u8 lbl_80284E20[];
-    extern u8 lbl_80284DA0[];
-    extern u8 lbl_80284D60[];
-    extern u8 gTargetList[];
-    extern u8 gBattleMap[];
-    extern u8 gUnits[];
-    void fn_8002F728(void *);
-    void Map_SelectRangeBuffer(void *, s32);
-    s32 Item_GetRangeForUnit(void *, void *);
-    void Map_FillAttackRange(void *, s32, s32, s32, s32);
-    struct { void *vtable; void *unit; } visitor;
-    u8 *row;
-    u8 *map;
-    u8 *cell;
-    u8 *item;
-    u8 range;
-    u8 y;
-    u8 x;
-    u8 id;
-    void *target;
-    s32 rowIndex;
-    s32 rowOffset;
-    s32 bufferOffset;
-    s32 colIndex;
-    visitor.vtable = lbl_80284E20;
-    visitor.vtable = lbl_80284DA0;
-    visitor.unit = arg0;
-    visitor.vtable = lbl_80284D60;
-    fn_8002F728(gTargetList);
-    Map_SelectRangeBuffer(gBattleMap, 6);
-    item = (u8 *)arg1;
-    range = item[0x1D];
-    y = ((u8 *)visitor.unit)[0x19F];
-    x = ((u8 *)visitor.unit)[0x19E];
-    Map_FillAttackRange(gBattleMap, x, y, range, Item_GetRangeForUnit(arg1, visitor.unit));
-    map = gBattleMap;
-    range = (s8)item[0x1D];
-    rowOffset = rowIndex = 0;
-    row = map;
-    while ((s8)rowIndex < *(s32 *)(map + 4)) {
-        bufferOffset = rowOffset;
-        cell = row;
-        colIndex = 0;
-        while ((s8)colIndex < *(s32 *)map) {
-            if (*(s16 *)((u8 *)*(void **)(map + 0x14190) + bufferOffset * 2) >= (s8)range) {
-                id = cell[0xD];
-                if (id != 0) {
-                    if (id != 0) {
-                        target = gUnits + (id - 1) * 0x280;
-                    } else {
-                        target = 0;
-                    }
-                    ((void (*)(void *, void *))((void **)visitor.vtable)[2])((void *)&visitor.vtable, target);
-                }
-            }
-            bufferOffset++;
-            cell++;
-            colIndex++;
+extern "C" void fn_8002AD04(void *arg0, void *arg1)
+{
+  extern u8 lbl_80284E20[];
+  extern u8 lbl_80284DA0[];
+  extern u8 lbl_80284D60[];
+  extern u8 gTargetList[];
+  extern u8 gBattleMap[];
+  extern u8 gUnits[];
+  void fn_8002F728(void *);
+  void Map_SelectRangeBuffer(void *, s32);
+  s32 Item_GetRangeForUnit(void *, void *);
+  void Map_FillAttackRange(void *, s32, s32, s32, s32);
+  struct
+  {
+    void *vtable;
+    void *unit;
+  } visitor;
+  u8 *map;
+  s32 colIndex;
+  s32 rowIndex;
+  s32 bufferOffset;
+  u8 *cell;
+  s32 rowOffset;
+  u8 *row;
+  u8 *mapHi;
+  u8 *item;
+  u8 range;
+  u8 y;
+  u8 x;
+  u8 id;
+  void *target;
+  visitor.vtable = lbl_80284E20;
+  visitor.vtable = lbl_80284DA0;
+  visitor.unit = arg0;
+  visitor.vtable = lbl_80284D60;
+  fn_8002F728(gTargetList);
+  Map_SelectRangeBuffer(gBattleMap, 6);
+  item = (u8 *) arg1;
+  range = item[0x1D];
+  y = ((u8 *) visitor.unit)[0x19F];
+  x = ((u8 *) visitor.unit)[0x19E];
+  Map_FillAttackRange(gBattleMap, x, y, range, Item_GetRangeForUnit(arg1, visitor.unit));
+  map = gBattleMap;
+  range = (s8) item[0x1D];
+  row = map;
+  mapHi = map + 0x14190;
+  for (rowOffset = rowIndex = 0; (s8) rowIndex < *((s32 *) (map + 4)); rowIndex++)
+  {
+    bufferOffset = rowOffset;
+    cell = row;
+    colIndex = 0;
+    while (((s8) colIndex) < (*((s32 *) map)))
+    {
+      if ((*((s16 *) (((u8 *) (*((void **) mapHi))) + (bufferOffset * 2)))) >= ((s8) range))
+      {
+        id = cell[0xD];
+        if (id != 0)
+        {
+          if (id != 0)
+          {
+            target = gUnits + ((id - 1) * 0x280);
+          }
+          else
+          {
+            target = 0;
+          }
+          ((void (*)(void *, void *)) ((void **) visitor.vtable)[2])((void *) (&visitor.vtable), target);
         }
-        rowOffset += 0x40;
-        row += 0x40;
-        rowIndex++;
+      }
+      bufferOffset++;
+      cell++;
+      colIndex++;
     }
+
+    rowOffset += 0x40;
+    row += 0x40;
+  }
+
 }
 #pragma global_optimizer reset
 extern "C" void fn_8002AE6C(void *arg0) {
@@ -1916,37 +1954,47 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
     extern u8 gTargetList[];
     extern u8 gBattleMap[];
     extern u8 gUnits[];
+    void fn_8002F728(void *);
     struct Visitor {
         virtual void apply(void *unit) = 0;
     };
     struct {
         void *vtbl;
-        void *arg;
+        void *unit;
     } obj;
-    s8 y;
-    s8 x;
+    s32 x;
+    s32 y;
     u16 *flags;
-    unsigned yOff;
+    s32 yOff;
     void *unit;
     u8 id;
     u16 f;
+    u8 *entry;
+    u8 *map;
+    u8 *col;
+    u8 *row;
 
     (void)arg1;
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284D00;
-    obj.arg = arg0;
+    obj.unit = arg0;
     fn_8002F728(gTargetList);
+    map = gBattleMap;
     x = (s8)*((u8 *)arg0 + 0x19E);
     y = (s8)*((u8 *)arg0 + 0x19F);
-    if ((gBattleMap + x)[((unsigned)y << 6) + 0x100D] != 0x16) {
-        x = (s8)*((u8 *)obj.arg + 0x19E);
-        y = (s8)*((u8 *)obj.arg + 0x19F);
+    col = map + x;
+    row = col + ((unsigned)y << 6);
+    if (row[0x100D] != 0x16) {
+        x = *(s8 *)((u8 *)obj.unit + 0x19E);
+        y = (s8)*((u8 *)obj.unit + 0x19F);
         yOff = y << 6;
-        flags = (u16 *)(gBattleMap + ((x + (s32)yOff) << 1));
+        flags = (u16 *)(map + ((x + yOff) << 1));
         f = *(u16 *)((u8 *)flags + 0x408E);
         flags = (u16 *)((u8 *)flags + 0x408E);
         if ((f & 8) != 0) {
-            id = gBattleMap[x + ((s8)(y - 1) << 6) + 0xD];
+            entry = map + x;
+            entry = entry + ((s8)(y - 1) << 6);
+            id = entry[0xD];
             if (id) {
                 unit = gUnits + (id - 1) * 0x280;
             } else {
@@ -1957,7 +2005,12 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
             }
         }
         if ((*flags & 2) != 0) {
-            id = gBattleMap[(s8)(x + 1) + (s32)yOff + 0xD];
+            u8 *m;
+            u8 *t;
+            m = gBattleMap;
+            t = m + (s8)(x + 1);
+            entry = t + yOff;
+            id = entry[0xD];
             if (id) {
                 unit = gUnits + (id - 1) * 0x280;
             } else {
@@ -1968,7 +2021,9 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
             }
         }
         if ((*flags & 4) != 0) {
-            id = gBattleMap[x + ((s8)(y + 1) << 6) + 0xD];
+            entry = gBattleMap + x;
+            entry = entry + ((s8)(y + 1) << 6);
+            id = entry[0xD];
             if (id != 0) {
                 unit = gUnits + (id - 1) * 0x280;
             } else {
@@ -1979,7 +2034,12 @@ extern "C" void fn_8002B89C(void *arg0, void *arg1) {
             }
         }
         if ((*flags & 1) != 0) {
-            id = gBattleMap[(s8)(x - 1) + (s32)yOff + 0xD];
+            u8 *m;
+            u8 *t;
+            m = gBattleMap;
+            t = m + (s8)(x - 1);
+            entry = t + yOff;
+            id = entry[0xD];
             if (id) {
                 unit = gUnits + (id - 1) * 0x280;
             } else {
@@ -2673,27 +2733,29 @@ void fn_8002C940(void *arg0, void *arg1) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
 void fn_8002C9A0(void *arg0, void *arg1) {
     extern u8 gBattleMap[];
     extern u8 gTargetList[];
 
     s32 fn_8003DD20(void *);
     void fn_800227F8(void *, s32);
-    s16 fn_8002134C(void *);
-    u8 fn_8001F85C(void *, s32, s32, s32, s32);
+    s16 fn_8002134C(void *, s8, s8);
+    u8 fn_8001F85C(void *, s32, s32, s8, s8);
     void fn_8002F6E8(void *, s32, s32, s32, s32);
 
-    u8 x;
-    u8 y;
-    s32 dx, dy;
-    s32 nextX, nextY;
-    s32 secondX, secondY;
-    s32 index;
-    u8 *self = arg0;
-    u8 *unit = arg1;
-    u8 *other;
+    register s32 x, y;
+    s32 nextY, nextX;
     u8 *occupancy;
     u8 *terrain;
+    s8 dx, dy;
+    u8 *self = arg0;
+    u8 *unit = arg1;
+    s32 secondY, secondX;
+    s32 index;
+    u8 *other;
 
     if ((u8)fn_8003DD20(*(void **)(self + 4)) == 0) {
         return;
@@ -2716,16 +2778,16 @@ void fn_8002C9A0(void *arg0, void *arg1) {
     nextY = (s8)y + dy;
 
     occupancy = gBattleMap + 0xD;
-    terrain = gBattleMap + 0x300D;
 
     index = (s8)nextX + ((s8)nextY << 6);
     if (occupancy[index] != 0) {
         return;
     }
+    terrain = gBattleMap + 0x300D;
     if (terrain[index] != 0) {
         return;
     }
-    if (fn_8002134C(gBattleMap) > 0x7530) {
+    if (fn_8002134C(gBattleMap, (s8)nextX, (s8)nextY) > 0x7530) {
         return;
     }
     if (fn_8001F85C(gBattleMap, x, y, (s8)nextX, (s8)nextY) == 0) {
@@ -2733,8 +2795,10 @@ void fn_8002C9A0(void *arg0, void *arg1) {
     }
 
     if (*(s32 *)(self + 8) == 2) {
-        secondX = nextX + dx;
-        secondY = nextY + dy;
+        nextY = y + dy;
+        nextX = x + dx;
+        secondX = (s8)nextX + dx;
+        secondY = (s8)nextY + dy;
         index = (s8)secondX + ((s8)secondY << 6);
         if (occupancy[index] != 0) {
             return;
@@ -2742,7 +2806,7 @@ void fn_8002C9A0(void *arg0, void *arg1) {
         if (terrain[index] != 0) {
             return;
         }
-        if (fn_8002134C(gBattleMap) > 0x7530) {
+        if (fn_8002134C(gBattleMap, (s8)secondX, (s8)secondY) > 0x7530) {
             return;
         }
         if (fn_8001F85C(gBattleMap, nextX, nextY, (s8)secondX, (s8)secondY) == 0) {
@@ -2752,7 +2816,7 @@ void fn_8002C9A0(void *arg0, void *arg1) {
 
     fn_8002F6E8(gTargetList, unit[0x19E], unit[0x19F], unit[0x198], 0);
 }
-
+#pragma pop
 void fn_8002CB50(void *arg0, void *arg1) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8002F6E8(void *, u8, u8, u8, u8);
@@ -3266,7 +3330,9 @@ void Battle_ClearProcIfFxActive(s32 proc) {
     }
 }
 
-#pragma optimization_level 1
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 #pragma cplusplus on
 extern "C" void fn_8002DA30(void)
 {
@@ -3301,17 +3367,15 @@ extern "C" void fn_8002DA30(void)
         u16 unk2C;
         u16 unk2E;
     };
-    extern Obj gFxChannels;
+    extern Obj gFxChannels[];
 
-    void *str;
-    Obj *obj;
     void *ctx;
-    void *base;
     u8 ok;
-    s8 idx;
+    Obj *obj;
+    void *str;
+    s32 idx;
     u8 any;
     s32 slot;
-    s32 timer;
 
     str = 0;
     ctx = fn_8014D8FC(gBattleState);
@@ -3325,11 +3389,10 @@ extern "C" void fn_8002DA30(void)
         return;
     }
     if (Process_FindByName(Battle_str + 0x23B) != 0) {
-        timer = 0xA;
-        lbl_80367254 = timer;
         str = Battle_str + 0x246;
-    } else if ((timer = lbl_80367254) > 0) {
-        lbl_80367254 = timer - 1;
+        lbl_80367254 = 0xA;
+    } else if (lbl_80367254 > 0) {
+        lbl_80367254--;
         return;
     } else if (fn_80015680(gUnitLists + 0xC) >= 1
         || (slot = *(u8 *)((u8 *)ctx + 0x3C), slot == 1)
@@ -3346,14 +3409,11 @@ extern "C" void fn_8002DA30(void)
         str = Battle_str + 0x260;
     }
 
-    base = gBattleState;
-    if (EventFlag_IsSet((u8 *)base + 0xB4, Battle_str + 0x26D, base) == 0) {
+    if (EventFlag_IsSet(gBattleState + 0xB4, Battle_str + 0x26D, gBattleState) == 0) {
+        obj = &gFxChannels[0];
         ok = 0;
-        obj = &gFxChannels;
-        if (obj->flag & 1) {
-            if (obj->v0()) {
-                ok = 1;
-            }
+        if ((obj->flag & 1) && obj->v0()) {
+            ok = 1;
         }
         if (ok == 0) {
             lbl_80367250 = 0;
@@ -3369,7 +3429,7 @@ extern "C" void fn_8002DA30(void)
 
     idx = Fx_FindSlotByName(str);
     if (idx != -1) {
-        obj = (Obj *)((u8 *)&gFxChannels + (u8)idx * 0x30);
+        obj = &gFxChannels[(u8)idx];
         if (Fx_FindSlotByName(Battle_str + 0x1E3) != -1
             || Fx_FindSlotByName(Battle_str + 0x1F1) != -1
             || Fx_FindSlotByName(Battle_str + 0x1FF) != -1
@@ -3394,7 +3454,9 @@ extern "C" void fn_8002DA30(void)
         }
     }
 }
-#pragma cplusplus reset
+#pragma cplusplus off
+#pragma opt_strength_reduction reset
+#pragma opt_common_subs reset
 #pragma optimization_level reset
 
 void fn_8002DEB4(s32 arg0) {
@@ -4478,7 +4540,9 @@ void fn_8002FBA8(s32 arg0) {
     fn_8002EB54(lbl_802EFD88, arg0);
 }
 
-#pragma dont_inline on
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u32 *Ui_GetColor(s32);
     void fn_8005C8B4(void *);
@@ -4544,10 +4608,11 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     extern f32 lbl_80367270;
     extern u8 lbl_80367274;
 
-    void *slot;
     u8 *battle;
+    u8 *state;
     s32 mode;
     u32 color;
+    void *slot;
     u32 bgColors[4];
     u32 altColors[4];
     u32 indicatorColors[4];
@@ -4578,7 +4643,8 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     color = *Ui_GetColor(1);
     battle = gBattle;
-    if (arg0 == 0 || ((gBattleState[0x9D] >> 6) & 3) == 2) {
+    state = gBattleState;
+    if (arg0 == 0 || ((state[0x9D] >> 6) & 3U) == 2U) {
         return;
     }
     fn_8005C8B4(gMapUiStrs + 0x11C);
@@ -4588,7 +4654,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     fn_8006EEFC(&slot, gMapUiStrs + 0x11C);
 
     ticks = OSGetTime();
-    rate = (u32)(((u64)0x10624DD3U * (*(volatile u32 *)0x800000F8 >> 2)) >> 38);
+    rate = (*(volatile u32 *)0x800000F8 >> 2) / 1000;
     t = (u32)(ticks / rate) % 500;
     if (t <= 200) {
         shift = Math_Ease(4, lbl_80368E10, lbl_80368E14, (f32)t, lbl_80368E18);
@@ -4600,7 +4666,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Prim2D_SetTransform((f32)(arg1 + 0x20), (f32)(arg2 + 0x4C), gUnitInfoDrawScale, gUnitInfoDrawDepth);
     Prim2D_SetColorByte(arg3 & 0xFF);
     Prim2D_PrepareTex();
-    mode = (gBattleState[0x9D] >> 6) & 3;
+    mode = (state[0x9D] >> 6) & 3;
     if (mode == 0) {
         Prim2D_Begin();
         Prim2D_BindTexture(slot, 1, 0x11);
@@ -4968,7 +5034,7 @@ void fn_8002FC64(u32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Prim2D_PrepareTex();
     FileCache_ReleaseSlot(&slot);
 }
-  #pragma dont_inline reset
+#pragma pop
   
   void fn_80031508(s32 arg0) {
     extern u16 gUiContext[];
