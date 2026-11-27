@@ -8501,6 +8501,25 @@ if (p) {
 
 #pragma push
 #pragma opt_common_subs off
+#pragma optimization_level 4
+#pragma opt_propagation off
+#pragma cplusplus on
+struct ConvoyPanel71004 { u32 pad;
+virtual void v0() = 0;
+virtual void v1() = 0;
+virtual void v2() = 0;
+virtual void v3() = 0;
+virtual void v4() = 0;
+virtual void v5() = 0;
+virtual void v6() = 0;
+virtual void v7() = 0;
+virtual void v8() = 0;
+virtual void v9() = 0;
+virtual void v10() = 0;
+virtual void v11() = 0;
+};
+#pragma cplusplus reset
+
 void fn_80171004(void *arg0)
 {
     void *Ui_FindChild(void *, s32, s32);
@@ -8531,7 +8550,6 @@ void fn_80171004(void *arg0)
     s16 height;
 
     self = (u8 *)arg0;
-    i = 0;
 
     list = *(u8 **)(self + 0x4C);
     list[0x78] = 0;
@@ -8573,6 +8591,7 @@ void fn_80171004(void *arg0)
             *(s32 *)(list + 4) + 1;
     }
 
+    i = 0;
     *(s16 *)(*(u8 **)(self + 0x54) + 8) = 0x105;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x24) = 8;
     *(s16 *)(*(u8 **)(self + 0x54) + 0x8A) = 2;
