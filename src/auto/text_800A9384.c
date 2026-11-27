@@ -36,8 +36,6 @@ extern void *lbl_803677F4;
 extern void *lbl_803677F8;
 extern u8 lbl_80366E30;
 #pragma use_lmw_stmw on
-#pragma push
-#pragma optimization_level 2
 void fn_800A9384(void) {
     void *pad31;
     void **a;
