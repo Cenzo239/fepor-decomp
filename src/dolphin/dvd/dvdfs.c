@@ -191,7 +191,8 @@ static inline BOOL DVDComparePathComponent(char *path, char *name) {
     s32 fn_80230CE0(s32);
     while (*name) {
         s32 first = fn_80230CE0(*name++);
-        if (first != fn_80230CE0(*path++)) return FALSE;
+        s32 second = fn_80230CE0(*path++);
+        if (first != second) return FALSE;
     }
     if (*path == '/' || *path == 0) return TRUE;
     return FALSE;
@@ -236,16 +237,16 @@ u32 fn_8020C3E0(char *path) {
     extern s32 lbl_80366F60;
     void OSPanic(void *, s32, char *, ...);
 
-    char *end;
-    u32 parent;
     s32 more;
+    u32 parent;
+    char *end;
     s32 length;
     u32 entry;
     char *original;
     char *extension;
     s32 invalid;
     s32 dotted;
-    s32 equal;
+    s32 i;
 
     original = path;
     entry = (u32)currentDirectory;
@@ -315,7 +316,7 @@ u32 fn_8020C3E0(char *path) {
         length = end - path;
         for (entry++; entry < FstStart_8036857C[parent].nextEntryOrLength;) {
             if (entryIsDir(entry) || more != 1) {
-                equal = DVDComparePathComponent(path, FstStringStart_80368580 + stringOff(entry));
+                s32 equal = DVDComparePathComponent(path, FstStringStart_80368580 + stringOff(entry));
                 if (equal == 1) {
                     goto found;
                 }
