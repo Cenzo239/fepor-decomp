@@ -4141,27 +4141,28 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
+#pragma opt_lifetimes off
+#pragma opt_pointer off
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
     extern f32 lbl_8036BA00;
     void *Process_CreateChild(void *, void *);
     void StaffRoll_VecReserve(void *, u32);
-    typedef struct { u32 x, y, z; } Vec3;
     u8 *entry;
     u8 *tmp;
-    Vec3 *vec;
+    u32 *vec;
     f32 zero;
 
     entry = Process_CreateChild(lbl_8029B32C, arg0);
     tmp = entry;
     if (tmp != NULL) {
-        vec = (Vec3 *)(tmp + 0x30);
-        vec->x = 0;
+        vec = (u32 *)(tmp + 0x30);
+        *(u32 *)(tmp + 0x30) = 0;
         zero = lbl_8036BA00;
-        vec->y = 0;
-        vec->z = 0;
+        *(u32 *)(tmp + 0x34) = 0;
+        vec[2] = 0;
         *(f32 *)(tmp + 0x3C) = zero;
         *(u32 *)(tmp + 0x4C) = 0;
         StaffRoll_VecReserve(vec, 0x28);
