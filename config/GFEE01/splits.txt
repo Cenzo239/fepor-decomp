@@ -660,7 +660,10 @@ auto/text_801B3220.c:
 	.ctors      start:0x80267B10 end:0x80267B14
 
 auto/text_801B3258.c:
-	.text       start:0x801B3258 end:0x801CCEA8
+	.text       start:0x801B3258 end:0x801C9170
+
+auto/text_801C9170.c:
+	.text       start:0x801C9170 end:0x801CCEA8
 
 auto/text_801CCEA8.c:
 	.text       start:0x801CCEA8 end:0x801CCED4
