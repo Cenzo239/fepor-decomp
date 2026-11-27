@@ -4,7 +4,7 @@
 
 #pragma push
 #pragma optimization_level 3
-#pragma opt_lifetimes off
+#pragma global_optimizer off
 void fn_801F18D4(void) {
     void fn_8022C260(void *, void (*)(void), void *, s32, s32);
     void fn_801F196C(void);
