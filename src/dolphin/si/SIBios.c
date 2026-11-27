@@ -554,6 +554,8 @@ void SIInit(void) {
     SIGetType(3);
 }
 
+#pragma push
+#pragma opt_lifetimes off
 BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 inputBytes, void *callback) {
     BOOL enabled;
     u32 i;
@@ -567,10 +569,10 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
         OSRestoreInterrupts(enabled);
         return FALSE;
     }
-    sr = ((volatile u32 *)0xCC000000)[0x6438 / 4];
-    sr = sr & (u32)(0x0F000000 >> (8 * chan));
-    ((volatile u32 *)0xCC000000)[0x6438 / 4] = sr;
-    rlen = (outputBytes + 3) >> 2;
+    sr = __SIRegs[14];
+    sr &= (u32)((s32)0x0F000000 >> (chan * 8));
+    __SIRegs[14] = sr;
+    rlen = (outputBytes + 3) / 4;
     si->chan = chan;
     si->callback = callback;
     si->inputBytes = inputBytes;
@@ -589,7 +591,7 @@ BOOL fn_8023B57C(s32 chan, void *output, u32 outputBytes, void *input, u32 input
     OSRestoreInterrupts(enabled);
     return TRUE;
 }
-
+#pragma pop
 u32 fn_8023B788(s32 chan) {
     extern u32 Type_8029EFC0[4];
     BOOL enabled;
