@@ -1271,7 +1271,7 @@ static inline void NameEntry_CopyPair(u8 *dst, u8 *src) {
     dst[1] = c1;
     dst[0] = c0;
 }
-static inline void NameEntry_StorePair(u8 c0, u8 c1, u8 *dst) {
+static inline void NameEntry_StorePair(u8 c1, u8 c0, u8 *dst) {
     dst[0] = c0;
     dst[1] = c1;
 }
