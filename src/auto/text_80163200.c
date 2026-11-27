@@ -4359,7 +4359,8 @@ fn_8005C8B4((s32)sp8);
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma scheduling off
+#pragma global_optimizer off
 void fn_8016A0CC(void *arg0) {
     char *strcpy(char *, char *);
     s32 fn_80161FB8(void);
