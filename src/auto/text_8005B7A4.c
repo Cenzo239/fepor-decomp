@@ -32,6 +32,7 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
     if (*arg1 == '/') {
         src++;
     }
+    *(s32 *)(arg0 + 0x2C) = 0;
     for (i = 0x29; i > 0; i--) {
         c = *src;
         if ((s8)c >= 'A' && (s8)c <= 'Z') {
