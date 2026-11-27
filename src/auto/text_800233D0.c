@@ -3334,6 +3334,7 @@ void UiCtx_BeginMoveSelect(s32 *arg0, void *arg1) {
     *((u8 *)dst + 0x16) = 0;
     map[(s8)*((u8 *)dst + 0xB) + ((s8)*((u8 *)dst + 0xC) << 6) + 0xD] = 0;
 }
+#pragma pop
 #pragma peephole reset
 void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
