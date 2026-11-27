@@ -223,6 +223,8 @@ typedef struct ListIter {
     ListNode *node;
 } ListIter;
 
+static inline ListNode *ListIter_Node(ListIter *it) { return it->node; }
+
 typedef struct List {
     s32 size;
 } List;
@@ -1388,7 +1390,7 @@ s32 off = *(s32 *)((u8*)arg0+0x4C)*0x48;
 s16 count=0;
 s16 lim=*(s16*)((u8*)arg0+0x3E);
 u32 *p=(u32*)(*(u8**)((u8*)arg0+0x50)+off);
-for(u32 i=0;i<9;i++,p+=2) {
+for(s32 i=0;i<9;i++,p+=2) {
 if(*p && count++==(s16)lim) break;
 }
 Item_GetByIid(*p);
@@ -6385,6 +6387,7 @@ fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
 
 #pragma cplusplus reset
 
+#pragma global_optimizer on
 void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     struct Node {
         struct Node *prev;
@@ -6394,22 +6397,16 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     };
     void fn_800616A0(void *);
     void Heap_Free(void *);
-    void **end_p;
-    void **start_p;
-    s32 *list_p;
-    void **ret_p;
-    struct Node *first;
-    struct Node *last;
+    void **end_p = end;
+    void **start_p = start;
+    s32 *list_p = list;
+    void **ret_p = ret;
+    struct Node *first = (struct Node *)*start;
+    struct Node *last = (struct Node *)*end;
     struct Node *a;
     struct Node *node;
     void *value;
 
-    end_p = end;
-    start_p = start;
-    first = (struct Node *)*start;
-    list_p = list;
-    ret_p = ret;
-    last = (struct Node *)*end;
     if (first == last) {
         *ret_p = last;
         return;
@@ -6429,8 +6426,7 @@ void fn_8013BA08(void **ret, s32 *list, void **start, void **end) {
     }
     *ret_p = *end_p;
 }
-
-#pragma use_lmw_stmw on
+#pragma global_optimizer reset
 void fn_8013BAD4(void **outNode, s32 *listHead, void ***insertBefore, s32 *unitPtr) {
     void *Heap_Alloc(s32);
     void Heap_Free(void *);
