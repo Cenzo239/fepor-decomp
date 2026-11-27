@@ -11416,10 +11416,10 @@ u8 fn_80175924(s32 **arg0, s32 arg1) {
 }
 
 void fn_80175954(void *arg0) {
-void *fn_80024398(void *, void *, s32);
-u8 fn_8011AC10(void); u32 fn_8013FF94(void *, s32, s32);
-void fn_801658DC(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
-extern u16 lbl_80278080[]; extern const f32 lbl_8036AB78; extern const f32 lbl_8036AB7C;
+void *Ui_CreateMenu(void *, void *, s32);
+u8 fn_8011AC10(void); u32 Ui_FindChild(void *, s32, s32);
+void Ui_SetWidgetText(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
+extern u16 gUiMsgStrings[]; extern const f32 lbl_8036AB78; extern const f32 lbl_8036AB7C;
 struct Params { u8 pad[8]; s16 x,y,z; u8 padE[6]; s16 a; u8 pad16[2]; f32 scale; u8 pad1c[2]; s16 mode; };
 void *self; struct Params *obj; u32 ret;
 f32 value=lbl_8036AB78;
@@ -11435,9 +11435,9 @@ obj->z=0xc8;
 obj->a=0;
 obj->scale=value;
 obj->mode=4;
-*(void**)((u8*)self+0x5c)=fn_80024398(obj,self,0);
-ret=fn_8013FF94(self,-0x1000,0);
-if(ret) fn_801658DC(ret,(u8*)lbl_80278080+0x1fd);
+*(void**)((u8*)self+0x5c)=Ui_CreateMenu(obj,self,0);
+ret=Ui_FindChild(self,-0x1000,0);
+if(ret) Ui_SetWidgetText(ret,(u8*)gUiMsgStrings+0x1fd);
 }
 
 void *fn_80175A2C(void) {
