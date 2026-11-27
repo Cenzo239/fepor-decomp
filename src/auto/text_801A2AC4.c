@@ -953,8 +953,8 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 
 #pragma opt_common_subs off
 #pragma push
-#pragma optimization_level 4
-void Battle_ApplyHpDelta(u8 *obj, s8 a1) {
+#pragma optimization_level 2
+void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
@@ -964,7 +964,7 @@ void Battle_ApplyHpDelta(u8 *obj, s8 a1) {
     s32 cur;
 
     orig = obj[0x1A8];
-    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), a1);
+    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
     cur = obj[0x1A8];
     delta = (s8)delta;
     Unit_SetHp(obj, delta + (s8)cur);
