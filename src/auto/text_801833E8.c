@@ -713,10 +713,6 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     u8 sp8[0x34];
     u32 var_r31;
     void *temp_r3;
-    u8 a;
-    u8 b;
-    u8 c;
-    u8 d;
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
@@ -726,14 +722,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     }
     temp_r3 = Process_Create(lbl_80295B64, var_r31);
     *(s32 *)((u8 *)temp_r3 + 0x30) = arg0;
-    a = arg1[0];
-    c = arg1[2];
-    ((u8 *)temp_r3)[0x34] = a;
-    b = arg1[1];
-    ((u8 *)temp_r3)[0x35] = b;
-    d = arg1[3];
-    ((u8 *)temp_r3)[0x36] = c;
-    ((u8 *)temp_r3)[0x37] = d;
+    CopyFourBytes((u8 *)temp_r3 + 0x34, arg1);
 }
 #pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
