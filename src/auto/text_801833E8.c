@@ -691,9 +691,7 @@ flags=*(u16 *)(anim+0x52)&15;
 if(flags) anim[0x5A]=flags;
 anim[0x59]+=count;MoveAnim_BuildPathHeights(anim);return anim;
 }
-#pragma push
 #pragma optimization_level 3
-#pragma scheduling off
 void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     void GfxEnt_ForEachKey(void *, void *, void *);
     void *Process_Create(void *, u32);
@@ -724,7 +722,7 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     ((u8 *)temp_r3)[0x36] = c;
     ((u8 *)temp_r3)[0x37] = d;
 }
-#pragma pop
+#pragma optimization_level reset
 void fn_80184618(s32 arg0, u32 arg1) {
  void GfxEnt_ForEachKey(void *, void *, void *);
  void *Process_Create(void *, u32);
