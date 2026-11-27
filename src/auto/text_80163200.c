@@ -678,6 +678,7 @@ loop_test:
 
 #pragma push
 #pragma opt_common_subs off
+#pragma global_optimizer off
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
