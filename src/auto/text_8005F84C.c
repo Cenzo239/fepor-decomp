@@ -2632,6 +2632,8 @@ interpolate_ready:
     return lbl_80369208 * (f32)value;
 }
 
+#pragma push
+#pragma always_inline on
 static inline s32 Track_FindKey(u16 (*keys)[2], s32 count, s32 time) {
     s32 lo, hi, mid;
     if (count == 0) {
