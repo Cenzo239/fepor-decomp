@@ -1,6 +1,10 @@
 /* Functions from 0x800AD24C to 0x800C3F18, found by decomp-toolkit. */
 #include "common.h"
 
+static inline char *IconTextAt(void *base, s32 offset) {
+    return (char *)base + offset;
+}
+
 typedef struct {
     u8 flag : 1;
     u8 unk : 7;
@@ -578,13 +582,13 @@ s32 fn_800C2D74(Unk800C2ACC *arr, s32 idx, u8 val) {
 }
 
 char *fn_800C2E3C(void *arg0, s32 index) {
-    extern f32 lbl_80369D58;
-    extern f32 lbl_80369D5C;
-    extern f32 lbl_80369D60;
+    extern const f32 lbl_80369D58;
+    extern const f32 lbl_80369D5C;
+    extern const f32 lbl_80369D60;
     extern char lbl_80270088[];
     extern char lbl_80320B6C[];
-    s32 fn_80010B78(void *, s32, f32);
-    s32 fn_80231D94(char *, const char *, ...);
+    s32 Text_MeasureWidth(void *, s32, f32);
+    s32 sprintf(char *, const char *, ...);
     f32 scale;
     s32 offset;
     char *text;
@@ -595,15 +599,15 @@ char *fn_800C2E3C(void *arg0, s32 index) {
     offset = offset + 1;
     text = (char *)offset;
     text += (u32)arg0;
-    width = (s16)fn_80010B78(text, -1, scale);
+    width = (s16)Text_MeasureWidth(text, -1, scale);
 
     if (width < 0x70) {
         return text;
     }
 
-    fn_80231D94(lbl_80320B6C, lbl_80270088 + 8,
-                (u8)(s32)(lbl_80369D5C * (lbl_80369D60 / (f32)width)),
-                text);
+    sprintf(lbl_80320B6C, lbl_80270088 + 8,
+            (u8)(s32)(lbl_80369D5C * (lbl_80369D60 / (f32)width)),
+            text);
     return lbl_80320B6C;
 }
 
