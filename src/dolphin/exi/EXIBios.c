@@ -824,7 +824,6 @@ void UnlockedHandler(s32 chan, void *context) {
 #pragma scheduling off
 #pragma use_lmw_stmw on
 #pragma inline_depth(1)
-#pragma opt_propagation off
 s32 EXIGetID(s32 chan, u32 dev, u32 *id) {
     EXIControl *exi;
     s32 err;
