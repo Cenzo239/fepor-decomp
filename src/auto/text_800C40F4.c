@@ -5049,7 +5049,7 @@ if(madeA) String_Destroy(name,-1);
 
 #pragma push
 #pragma opt_dead_code off
-extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 arg5,u8 arg6) {
+extern "C" void *fn_800CD79C(void *arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 arg5,u8 arg6) {
  void String_Init(void *,void *,void *); void String_Concat(void *,void *,s32); void String_ConcatCStr(void *,void *,void *);
  void *Heap_Alloc(u32); void *String_CStr(s32); void *String_AssignCStr(void *,void *,s32);
  char *fn_801992F8(u32); s32 strlen(const char *);
@@ -5060,16 +5060,16 @@ extern "C" void *fn_800CD79C(s32 arg0,void *arg1,s32 arg2,u32 arg3,u32 arg4,s32 
  void fn_800E4D24(void *); void fn_800E4BA4(void *,s32); void fn_800E4B84(void *); void fn_800E4B44(void *);
  extern char lbl_802704F8[]; extern u8 lbl_8036788C;
  struct Obj { u8 pad[16]; virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(void *); };
- s32 self;
  String sp74,sp68,sp5C,sp50,sp44,sp38,sp2C,sp20,sp14;
  u32 sp10,spC,sp8;
  void *result;
  s8 made1,made2;
- self=arg0;
+ void *self;
 
  String_Init(&sp74,lbl_802704F8+0x3DB,&sp10);
  sp68.cap=0; sp5C.cap=0; sp68.size=0; sp68.data=0; sp68.cap=0;
  sp5C.size=0; sp5C.data=0; sp5C.cap=0;
+ self=arg0;
  if(M2C_FIELD(self,s32 *,0x274)) {
  if(arg6) arg6=0; else arg6=1;
  }
@@ -7854,28 +7854,26 @@ void fn_800D6878(void *arg0, u8 *arg1) {
 #pragma dont_inline reset
 u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
     struct Tag { u8 b; } tag;
-    M2C_UNK String_InitFromRange(u32 *, char *, char *, void *, struct Tag);
-    M2C_UNK abort(void);
-    M2C_UNK fprintf(void *, const char *, ...);
+    M2C_UNK fn_800CA728(u32 *, char *, char *, void *, struct Tag);
+    M2C_UNK fn_8022CF78(void);
+    M2C_UNK fn_80232058(void *, const char *, ...);
     extern char __files[];
     u32 size;
     u32 len;
     char *p;
-    void *alloc;
 
-    size = String_Size(arg1);
+    size = arg1[0];
     arg0[1] = 0;
     if (arg2 > size) {
-        fprintf(__files + 0xA0, lbl_802704F8 + 0x9B3);
-        abort();
+        fn_80232058(__files + 0xA0, lbl_802704F8 + 0x9B3);
+        fn_8022CF78();
     }
-    alloc = arg4;
     len = size - arg2;
     if (len > arg3) {
         len = arg3;
     }
     p = (char *)arg1[2] + arg2;
-    String_InitFromRange(arg0, p, p + len, alloc, tag);
+    fn_800CA728(arg0, p, p + len, arg4, tag);
     return arg0;
 }
 #pragma use_lmw_stmw reset
@@ -9390,8 +9388,8 @@ String_Destroy(s78,-1);String_Destroy(s84,-1);String_Destroy(s90,-1);
 #pragma use_lmw_stmw on
 s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 #pragma opt_common_subs off
-    u16 FileCache_Probe(void);
-    s32 FileCache_Load(void);
+    u16 FileCache_Probe(const char *);
+    s32 FileCache_Load(const char *);
     char *String_CStr(String *);
     void String_AssignCStr(String *, char *, u32);
     void String_Assign(String *, String *, s32, s32);
@@ -9403,12 +9401,14 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
     u32 strlen(const char *);
     extern char lbl_802711B0[];
 
-    s32 ret;
+    struct Result { s32 value; } ret;
     char *p;
     String result;
     String name;
+    s32 path;
 
     (void)arg0;
+    path = arg1;
     result.cap = 0;
     name.cap = 0;
     result.size = 0;
@@ -9427,9 +9427,9 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
 
     {
         String a, b, c, d, e, f;
-        String_JoinCStr(&a, &lbl_802711B0[0x189], arg1);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
-        String_Concat(&c, &b, (void *)arg1);
+        String_Concat(&c, &b, (void *)path);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
         String_Concat(&e, &d, &result);
         String_ConcatCStr(&f, &e, &lbl_802711B0[0x1F6]);
@@ -9441,20 +9441,18 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    String_CStr(&name);
-    if ((u16)FileCache_Probe() != 0x8000) {
-        String_CStr(&name);
-        ret = FileCache_Load();
+    if ((u16)FileCache_Probe(String_CStr(&name)) != 0x8000) {
+        ret.value = FileCache_Load(String_CStr(&name));
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
-        return ret;
+        return ret.value;
     }
 
     {
         String a, b, c, d, e, f;
-        String_JoinCStr(&a, &lbl_802711B0[0x189], arg1);
+        String_JoinCStr(&a, &lbl_802711B0[0x189], path);
         String_ConcatCStr(&b, &a, &lbl_802711B0[0x18D]);
-        String_Concat(&c, &b, (void *)arg1);
+        String_Concat(&c, &b, (void *)path);
         String_ConcatCStr(&d, &c, &lbl_802711B0[0x1F4]);
         String_Concat(&e, &d, &result);
         String_ConcatCStr(&f, &e, &lbl_802711B0[0x1FB]);
@@ -9466,13 +9464,11 @@ s32 fn_800D9804(void *arg0, s32 arg1, u32 arg2) {
         String_Destroy(&b, -1);
         String_Destroy(&a, -1);
     }
-    String_CStr(&name);
-    if ((u16)FileCache_Probe() != 0x8000) {
-        String_CStr(&name);
-        ret = FileCache_Load();
+    if ((u16)FileCache_Probe(String_CStr(&name)) != 0x8000) {
+        ret.value = FileCache_Load(String_CStr(&name));
         String_Destroy(&name, -1);
         String_Destroy(&result, -1);
-        return ret;
+        return ret.value;
     }
 
     String_Destroy(&name, -1);
@@ -24620,13 +24616,13 @@ u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
     void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
     u8 flags[8];
     struct { u8 x,y; u16 item; u8 *unit; s32 score; } result;
+    s32 score;
+    u8 *best;
     u8 *ctx=gUiContext;
     u8 *map;
     u8 *self;
     u8 *unit;
     void **slot;
-    s32 score;
-    u8 *best;
     u8 bx,by;
     u16 item;
     s32 i,j;
@@ -27060,7 +27056,7 @@ void fn_800F9FC4(void *arg0) {
     s32 dx;
     s32 dy;
     s32 t0;
-    register s32 t1;
+    s32 t1;
     u8 *ctx;
 
     unit = (u8 *)arg0;
