@@ -346,11 +346,11 @@ f64 fn_802387E8(f64 x) {
         if ((ix0 & 0x100000) == 0) {
             goto denorm_bit_shift;
         }
-        a = 32 - i;
         b = i - 1;
+        m -= b;
+        a = 32 - i;
         t = ix1 >> a;
         ix1 <<= i;
-        m -= b;
         ix0 |= (s32)t;
     }
 
