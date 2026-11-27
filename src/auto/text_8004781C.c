@@ -1211,31 +1211,31 @@ Stream_WriteU16(stream,x); Stream_WriteU16(stream,y);
 for(i=22;i<32;i++) Stream_WriteU8(stream,0);
 }
 
-void fn_80048E08(s32 arg0, u32 arg1, void *arg2, s32 arg3) {
-    void *fn_8000CAA0(void *);
-    void *fn_8000CAF0(void *, s32);
-    void fn_8005F7E0(s32, u8, u8, u8);
-    void fn_8005F7B0(s32, u8);
+void fn_80048E08(void *arg0, void *arg1, void *arg2, void *arg3) {
+    void Model_SetColor(void *, u8, u8, u8);
+    void Model_SetAlpha(void *, u8);
+    void *Process_CreateChild(void *, void *);
+    void *Process_Create(void *, s32);
     extern u8 lbl_80285738[];
-    s32 sp8;
-    void *var_r3;
-    s32 temp_r31;
+    u32 rgba;
+    void *process;
+    u8 *model;
 
     if (arg3 == 0) {
-        temp_r31 = arg0 + 0x14;
-        sp8 = *(s32 *)arg2;
-        fn_8005F7E0(temp_r31, ((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2]);
-        fn_8005F7B0(temp_r31, ((u8 *)&sp8)[3]);
+        rgba = *(u32 *)arg2;
+        model = (u8 *)arg0 + 0x14;
+        Model_SetColor(model, ((u8 *)&rgba)[0], ((u8 *)&rgba)[1], ((u8 *)&rgba)[2]);
+        Model_SetAlpha(model, ((u8 *)&rgba)[3]);
         return;
     }
-    if (arg1 != 0U) {
-        var_r3 = fn_8000CAA0(lbl_80285738);
+    if (arg1) {
+        process = Process_CreateChild(lbl_80285738, arg1);
     } else {
-        var_r3 = fn_8000CAF0(lbl_80285738, 3);
+        process = Process_Create(lbl_80285738, 3);
     }
-    CopyFourBytes((u8 *)var_r3, (u8 *)arg2);
-    *(s32 *)((u8 *)var_r3 + 0x38) = arg3;
-    *(s32 *)((u8 *)var_r3 + 0x30) = arg0;
+    CopyFourBytes((u8 *)process, (u8 *)arg2);
+    *(void **)((u8 *)process + 0x38) = arg3;
+    *(void **)((u8 *)process + 0x30) = arg0;
 }
 
 #pragma global_optimizer off
