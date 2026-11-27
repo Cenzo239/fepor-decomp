@@ -3953,6 +3953,7 @@ void fn_8025C9E0(void *arg0, u8 arg1)
     ((u8 *)arg0)[0xF0] = 1;
     ((u8 *)arg0)[0xF3] = arg1;
 }
+#pragma pop
 
 void fn_8025CA80(void *arg0) {
     typedef struct { u8 pad[0x48]; u32 val; u8 pad2[0xBC - 0x4C]; } SoundStudio;
