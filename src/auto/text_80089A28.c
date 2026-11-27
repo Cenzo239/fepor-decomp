@@ -1159,7 +1159,7 @@ void fn_8008BA50(s32 unused, s32 arg1) {
     GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
 }
 
-#pragma optimization_level 3
+#pragma optimization_level 2
 void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
