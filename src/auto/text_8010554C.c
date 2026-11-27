@@ -4784,7 +4784,6 @@ static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
     s8 Unit_GetMaxHp(void *);
     s32 Abs(s32);
     extern u8 lbl_80273B40[];
-    s32 missing;
     s8 valBest;
     void *chosen;
     s8 temp;
@@ -4803,9 +4802,9 @@ static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
             chosen = slot;
             slot = best;
         }
-        missing = (s8)(Unit_GetMaxHp(unit) - ((u8 *)unit)[0x1A8]);
-        a = Abs(missing - valCur);
-        if (Abs(missing - temp) <= a) {
+        valBest = Unit_GetMaxHp(unit) - ((u8 *)unit)[0x1A8];
+        a = Abs(valBest - valCur);
+        if (Abs(valBest - temp) <= a) {
             return chosen;
         }
         return slot;
