@@ -7035,6 +7035,7 @@ extern "C" void GameScene_StopWorlds(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma global_optimizer off
 extern "C" void fn_800D540C(void *arg0) {
 s64 OSGetTime(void);
 s64 __div2i(s64, s64);
@@ -7084,8 +7085,7 @@ void *obj;
 s64 t0;
 s64 t1;
 void *p;
-struct Camera { f32 *value; } cam;
-struct Found { VObj *value; } found;
+struct References { f32 *cam; VObj *found; } refs;
 f32 z;
 f32 f1;
 f32 f3;
@@ -7142,16 +7142,16 @@ fn_800D06BC(obj);
 if (gBattleReplayActive != 0) {
 fn_800CFDDC(obj);
 }
-cam.value = (f32 *)UiObj_FindEnabledCamera(*(void **)((u8 *)obj + 4));
+refs.cam = (f32 *)UiObj_FindEnabledCamera(*(void **)((u8 *)obj + 4));
 String_Init(&sp4C, lbl_802704F8 + 0x315, &sp18);
-found.value = (VObj *)fn_800E7DA4(*(void **)((u8 *)obj + 4), &sp4C);
+refs.found = (VObj *)fn_800E7DA4(*(void **)((u8 *)obj + 4), &sp4C);
 String_Destroy(&sp4C, -1);
-fn_800DBBC8(sp58, cam.value);
+fn_800DBBC8(sp58, refs.cam);
 f1 = sp58[0];
 f3 = sp58[2];
-if (found.value != NULL) {
-found.value->v7(f1, lbl_80369DC8, f3);
-found.value->v11(*(f32 *)((u8 *)gGame + 0x24), *(f32 *)((u8 *)gGame + 0x28), *(f32 *)((u8 *)gGame + 0x2C));
+if (refs.found != NULL) {
+refs.found->v7(f1, lbl_80369DC8, f3);
+refs.found->v11(*(f32 *)((u8 *)gGame + 0x24), *(f32 *)((u8 *)gGame + 0x28), *(f32 *)((u8 *)gGame + 0x2C));
 }
 if (*(u8 *)((u8 *)obj + 0x187) != 0) {
 if (gBattleReplayScene != NULL && *(s32 *)((u8 *)gBattleReplayScene + 0x444) != 2) {
