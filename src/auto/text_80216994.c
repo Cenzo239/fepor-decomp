@@ -1503,48 +1503,65 @@ static inline void CARD_CheckSumInline(void *ptr, s32 length, u16 *checksum, u16
 }
 #pragma push
 #pragma opt_lifetimes off
-s32 fn_80219CF4(s32 card, s32 *alternative) {
-    void *memcpy(void *, const void *, u32);
-    u8 *block[2];
-    u8 *check[2];
-    s32 cBlock;
-    s32 cCheck;
-    s32 i;
-    u16 sum;
-    u16 inv;
+s32 fn_80219CF4(s32 card, s32 *alternative)
+{
+  void *memcpy(void *, const void *, u32);
+  u8 *block[2];
+  u8 *check[2];
+  s32 cBlock;
+  s32 cCheck;
+  s32 i;
+  u16 sum;
+  u8 *new_var2;
+  u8 **new_var;
+  u16 inv;
+  cBlock = 0;
+  cCheck = 0;
+  for (i = 0; i < 2; i++)
+  {
+    new_var2 = (u8 *) card;
+    if (((!card) && (!card)) && (!card))
+    {
+    }
+    block[i] = (*((u8 **) (new_var2 + 0x80))) + ((i + 1) << 13);
+    check[i] = block[i] + 0x1FC0;
+    CARD_CheckSumInline(block[i], 0x1FFC, &sum, &inv);
+    if ((sum != (*((u16 *) (check[i] + 0x3C)))) || (inv != (*((u16 *) (check[i] + 0x3E)))))
+    {
+      *((u8 **) (new_var2 + 0x84)) = 0;
+      cCheck = i;
+      cBlock++;
+    }
+  }
 
-    cBlock = 0;
-    cCheck = 0;
-    for (i = 0; i < 2; i++) {
-        block[i] = *(u8 **)((u8 *)card + 0x80) + ((i + 1) << 13);
-        check[i] = block[i] + 0x1FC0;
-        CARD_CheckSumInline(block[i], 0x1FFC, &sum, &inv);
-        if (sum != *(u16 *)(check[i] + 0x3C) || inv != *(u16 *)(check[i] + 0x3E)) {
-            *(u8 **)((u8 *)card + 0x84) = 0;
-            cCheck = i;
-            cBlock++;
-        }
+  if (cBlock == 0)
+  {
+    if ((*((u8 **) (((u8 *) card) + 0x84))) == 0)
+    {
+      if (((*((s16 *) (check[0] + 0x3A))) - (*((s16 *) (check[1] + 0x3A)))) < 0)
+      {
+        cCheck = 0;
+      }
+      else
+      {
+        cCheck = 1;
+      }
+      *((u8 **) (new_var2 + 0x84)) = block[cCheck];
+      memcpy(block[cCheck], block[cCheck ^ 1], 0x2000);
     }
-    if (cBlock == 0) {
-        if (*(u8 **)((u8 *)card + 0x84) == 0) {
-            if (*(s16 *)(check[0] + 0x3A) - *(s16 *)(check[1] + 0x3A) < 0) {
-                cCheck = 0;
-            } else {
-                cCheck = 1;
-            }
-            *(u8 **)((u8 *)card + 0x84) = block[cCheck];
-            memcpy(block[cCheck], block[cCheck ^ 1], 0x2000);
-        } else {
-            cCheck = (*(u8 **)((u8 *)card + 0x84) == block[0]) ? 0 : 1;
-        }
+    else
+    {
+      cCheck = ((*((u8 **) (((u8 *) card) + 0x84))) == (new_var = block)[0]) ? (0) : (1);
     }
-    if (alternative != 0) {
-        *alternative = cCheck;
-    }
-    return cBlock;
+  }
+  if (alternative != 0)
+  {
+    *alternative = cCheck;
+  }
+  return cBlock;
 }
-#pragma pop
-#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
 s32 fn_80219F34(s32 card,s32 *alternative) {
 void *memcpy(void*,const void*,u32);
 u8 *block[2];
@@ -1589,7 +1606,7 @@ memcpy(*chosen,block[cCheck^1],0x2000);}
 if(alt)*alt=cCheck;
 return cBlock;
 }
-#pragma pop
+#pragma global_optimizer on
 s32 fn_8021A1B8(s32 arg0) {
     s32 temp_r31;
     s32 temp_r0;
