@@ -688,8 +688,8 @@ void fn_80129464(void *arg0) {
     f32 f31;
     f32 f30;
     s32 b0;
-    s32 t;
     s32 b1;
+    s32 path;
     void *ptr;
     void *self;
 
@@ -698,11 +698,10 @@ void fn_80129464(void *arg0) {
     b0 = *(s8 *)ptr;
     b1 = *((s8 *)ptr + 1);
     fn_800498A4(ptr, self, 0);
-    t = b1;
-    b1 = Effect_Create(lbl_80275740 + 0x15B, self);
-    f31 = gTileCenter + (f32)t;
+    path = Effect_Create(lbl_80275740 + 0x15B, self);
+    f31 = gTileCenter + (f32)b1;
     f30 = gTileCenter + (f32)b0;
-    Effect_SetPos(b1, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
+    Effect_SetPos(path, f30, f31, Map_SampleHeight(gBattleMap, f30, f31));
 }
 
 void fn_8012955C(void) {
@@ -1175,8 +1174,7 @@ void fn_80129FA4(void *arg0) {
     u8 sp8[0x30];
     void *self;
     void *sub;
-    void *child;
-    void *cam;
+    struct { void *cam; void *child; } cc;
     f32 scale;
     f32 unk38;
     f32 unk2c;
@@ -1189,9 +1187,9 @@ void fn_80129FA4(void *arg0) {
     *(f32 *)((u8 *)sub + 0x2C) = lbl_8036A420;
     sub = *(void **)((u8 *)self + 0x30);
     fn_80201FC4((u8 *)sub + 0x3C);
-    cam = fn_80040844();
+    cc.cam = fn_80040844();
     sub = *(void **)((u8 *)self + 0x30);
-    child = *(void **)sub;
+    cc.child = *(void **)sub;
     fn_802024D0(sp38, (u8 *)sub + 0x20, lbl_8036A434 * *(f32 *)((u8 *)sub + 0x2C));
     sub = *(void **)((u8 *)self + 0x30);
     fn_80202024(sp38, (u8 *)sub + 0x3C, (u8 *)sub + 0x3C);
@@ -1200,7 +1198,7 @@ void fn_80129FA4(void *arg0) {
     fn_80202024((u8 *)sub + 0x3C, sp68, sp38);
     fn_80202540(sp68, lbl_8036A440, lbl_8036A444, lbl_8036A440);
     fn_80202024(sp68, sp38, sp98);
-    scale = *(f32 *)((u8 *)cam + 0x6C);
+    scale = *(f32 *)((u8 *)cc.cam + 0x6C);
     fn_802025C0(sp8, scale, scale, scale);
     fn_80202024(sp8, sp98, sp98);
     sub = *(void **)((u8 *)self + 0x30);
@@ -1209,7 +1207,7 @@ void fn_80129FA4(void *arg0) {
         lbl_8036A430 * (-*(f32 *)((u8 *)sub + 0x18) * scale),
         lbl_8036A430 * (*(f32 *)((u8 *)sub + 0x14) * scale));
     fn_80202024(sp68, sp98, sp98);
-    fn_80202024((u8 *)cam + 0x70, sp98, (u8 *)child + 0x24);
+    fn_80202024((u8 *)cc.cam + 0x70, sp98, (u8 *)cc.child + 0x24);
     sub = *(void **)((u8 *)self + 0x30);
     unk38 = *(f32 *)((u8 *)sub + 0x38);
     unk2c = *(f32 *)((u8 *)sub + 0x2C);
@@ -1884,7 +1882,7 @@ void fn_8012B554(void *arg0) {
 
     void **list;
     u8 *p;
-    unsigned int count;
+    s32 count;
     s32 i;
     s32 remaining;
     s32 index;
