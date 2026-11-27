@@ -173,9 +173,8 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     u8 Text_MeasureWidth(void *, f32, s32);
     extern u8 gUiTooltipProc[];
     extern u16 gUiPanelFlags;
-    extern f32 lbl_8036A268;
+    extern const f32 lbl_8036A268;
     void *obj;
-    f32 scale;
 
     obj = Process_Find(gUiTooltipProc);
     if (obj) {
@@ -195,9 +194,8 @@ void Ui_SetTooltip(void *arg0, s16 arg1, s16 arg2, s32 arg3) {
     *(void **)((u8 *)obj + 0x44) = arg0;
     strcpy((char *)((u8 *)obj + 0x30), (char *)fn_8007C378(arg0));
     *(s16 *)((u8 *)obj + 0x48) = arg1;
-    scale = lbl_8036A268;
     *(s16 *)((u8 *)obj + 0x4A) = arg2;
-    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, scale, -1);
+    *(u8 *)((u8 *)obj + 0x51) = Text_MeasureWidth((u8 *)obj + 0x30, lbl_8036A268, -1);
 }
 #pragma global_optimizer on
 /* Draw the tooltip balloon sprite and its text when UI input is idle. */
@@ -599,6 +597,8 @@ void fn_80121A70(void) {
     fn_80121A98(&lbl_8032BDE8);
 }
 
+#pragma push
+#pragma opt_lifetimes off
 int fn_80121A98(void *arg0) {
 extern u8 lbl_80274D20[];
 extern f32 lbl_8036A278,lbl_8036A27C,lbl_8036A280,lbl_8036A284,lbl_8036A288,lbl_8036A28C,lbl_8036A290,lbl_8036A294,lbl_8036A298;
@@ -647,7 +647,7 @@ fn_80057020(M2C_FIELD(arg0,u32 *,0x4018));
 }
 Prim2D_Begin(); Prim2D_SetColorByte(255); Prim2D_PrepareTex();
 }
-
+#pragma pop
 void fn_80121D30(void) {
     M2C_UNK GXSetScissor(M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK);
     GXSetScissor(0, 0x33, 0x260, 0x177);
@@ -2323,10 +2323,10 @@ void fn_80124424(void *self) {
     extern f32 lbl_8036A32C;
     u32 rangeX;
     u32 rangeY;
-    s32 i;
+    register f32 *pairs;
+    register s32 i;
     s16 *pts;
     f32 scale;
-    f32 *pairs;
 
     rangeX = ((s8)*((u8 *)self + 0x50) + 0x10) << 8;
     rangeY = ((s8)*((u8 *)self + 0x51) + 0x10) << 8;
