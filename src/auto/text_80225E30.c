@@ -1699,13 +1699,13 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
     s32 sp10;
     s32 spC;
     s32 sp8;
+    s32 temp_r19;
+    s32 temp_r20;
+    void *var_r22;
+    s32 var_r21;
     s32 var_r31;
     u32 var_r30;
     s32 var_r29;
-    s32 temp_r19;
-    s32 temp_r20;
-    s32 var_r21;
-    void *var_r22;
 
     if (arg1 == NULL || *arg2 == 0) {
         return 2;
@@ -1749,7 +1749,7 @@ s32 fn_80228588(u32 arg0, u8 *arg1, u32 *arg2, s32 *arg3, s32 arg4, s32 arg5) {
                 if ((arg5 != 0) && (arg0 == 0U)) {
                     flag = 1;
                 }
-                var_r21 = fn_802283A8(sp8, &sp10, 5, 3, flag == 0);
+                var_r21 = fn_802283A8(sp8, &sp10, arg5 ? 5 : 5, 3, flag == 0);
                 if (var_r21 == 0) {
                     var_r22 = TRKGetBuffer(sp10);
                 }
@@ -2817,49 +2817,36 @@ s32 TRKTargetAccessFP(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4)
 }
 
 #pragma optimization_level reset
-s32 TRKTargetAccessDefault(s32 arg0, u32 arg1, s32 arg2, s32 *arg3, s32 arg4)
-{
-  u32 *new_var3;
-  s32 new_var;
-  int new_var2;
-  typedef struct 
-  {
-    u32 words[4];
-  } ExceptionStatus;
-  extern u8 gTRKExceptionStatus_8029E574[];
-  ExceptionStatus saved;
-  u8 *status;
-  u32 *registers;
-  s32 count;
-  s32 result;
-  if (arg1 > 0x24U)
-  {
-    return 0x701;
-  }
-  status = gTRKExceptionStatus_8029E574;
-  saved = *((ExceptionStatus *) status);
-  count = (arg1 - arg0) + 1;
-  new_var3 = ((u32 *) gTRKCPUState) + arg0;
-  status[0xD] = 0;
-  registers = new_var3;
-  *arg3 = count * 4;
-  if (arg4 != 0)
-  {
-    new_var = count;
-    result = fn_8022659C((void *) arg2, registers, new_var);
-  }
-  else
-  {
-    result = fn_8022632C((void *) arg2, registers, new_var);
-  }
-  new_var2 = status[0xD] != 0;
-  if (new_var2)
-  {
-    result = 0x702;
-    *arg3 = 0;
-  }
-  *((ExceptionStatus *) gTRKExceptionStatus_8029E574) = saved;
-  return result;
+s32 TRKTargetAccessDefault(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4) {
+    extern u8 gTRKExceptionStatus_8029E574[];
+    typedef struct {
+        u32 words[4];
+    } ExceptionStatus;
+    ExceptionStatus saved;
+    u8 *status;
+    s32 count;
+    u32 *registers;
+
+    if (arg1 > 0x24) {
+        return 0x701;
+    }
+    status = gTRKExceptionStatus_8029E574;
+    saved = *(ExceptionStatus *)status;
+    status[0xd] = 0;
+    count = (arg1 - arg0) + 1;
+    registers = (u32 *)gTRKCPUState + arg0;
+    *arg3 = count * 4;
+    if (arg4) {
+        arg0 = fn_8022659C(arg2, registers, count);
+    } else {
+        arg0 = fn_8022632C(arg2, registers, count);
+    }
+    if (status[0xd]) {
+        arg0 = 0x702;
+        *arg3 = 0;
+    }
+    *(ExceptionStatus *)gTRKExceptionStatus_8029E574 = saved;
+    return arg0;
 }
 
 s32 fn_8022A098(u32 *arg0, u32 arg1) {
@@ -3745,6 +3732,7 @@ s32 gdev_cc_pre_continue(void) {
     return 0;
 }
 
+#pragma optimization_level 3
 s32 gdev_cc_write(void *arg0, s32 arg1) {
     void MWTRACE(u8, char *, ...);
     s32 fn_80267004(void *, s32);
@@ -3762,7 +3750,7 @@ s32 gdev_cc_write(void *arg0, s32 arg1) {
     messages = lbl_802829E0;
 
     if (lbl_803687C0 == 0) {
-        MWTRACE(8, messages);
+        MWTRACE(8, messages += 0);
         return -0x2711;
     }
 
@@ -3782,7 +3770,7 @@ s32 gdev_cc_write(void *arg0, s32 arg1) {
 
     return 0;
 }
-
+#pragma optimization_level reset
 u32 gdev_cc_read(void *arg0, u32 arg1) {
     extern s32 lbl_803687C0;
     extern u8 lbl_80282A3C[], lbl_80282A64[], lbl_8033DD08[];
