@@ -10399,6 +10399,7 @@ s32 fn_80196388(s32 arg0) {
     StatBonus_ShowHelp(temp_r30, arg0, gBattle);
     return 1;
 }
+#pragma pop
 
 s32 fn_80196420(s32 arg0, void *arg1) {
     s8 Unit_GetMov();
