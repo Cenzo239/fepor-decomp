@@ -1175,6 +1175,62 @@ after_sw:
 }
 #pragma use_lmw_stmw reset
 
+static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
+    u32 Hash_Lookup(void *);
+    u8 Bin_ReadU8(u32 *);
+    u32 Bin_ReadU32(u32 *);
+    void Dispos_ParseEntry(u32 *, u32 *, u8);
+    u8 parsed[0x68];
+    u8 new_var2;
+    u32 cursor;
+    u32 header;
+    u8 new_var;
+    u32 data;
+    s32 sumX = 0;
+    s32 sumY = 0;
+    u8 new_var3[2];
+    s32 i;
+    header = Hash_Lookup(name);
+    if (!header) {
+        data = 0;
+    } else {
+        new_var3[0] = Bin_ReadU8(&header);
+        switch (Bin_ReadU8(&header)) {
+        case 2:
+            new_var3[1] = 0;
+            break;
+        case 3:
+            Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
+            Bin_ReadU32(&header);
+            break;
+        case 4:
+            Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
+            break;
+        }
+        header = (header + 3) & (~3);
+        data = header;
+    }
+    cursor = data;
+    if (data) {
+        for (i = 0; i < 8; i++) {
+            *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
+            parsed[0x30 + i] = 0;
+            *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
+        }
+        for (i = 0; i < (u8)new_var3[0]; i++) {
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, new_var3[1]);
+            sumX += (s8)parsed[0xD];
+            new_var2 = parsed[0xE];
+            sumY += (s8)new_var2;
+        }
+        new_var = (u8)new_var3[0];
+        *outX = sumX / new_var;
+        *outY = sumY / (u8)new_var3[0];
+    }
+}
+
 #pragma use_lmw_stmw on
 void fn_801069A0(u8 *arg0) {
     void *fn_800C45B8(s32, void *, s32);
@@ -1184,100 +1240,77 @@ void fn_801069A0(u8 *arg0) {
     u32 Hash_Lookup(void *);
     u8 Bin_ReadU8(u32 *);
     u32 Bin_ReadU32(u32 *);
-    void Dispos_ParseEntry(u32 *, void *, s32);
+    void Dispos_ParseEntry(u32 *, u32 *, u8);
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
-    u8 *self;
-    u32 spC;
-    u32 sp8;
-    u8 sp10[0x68];
-    s32 var_r26;
-    s32 var_r27;
-    s32 var_r28;
-    s32 var_r29;
-    s32 var_r30;
-    s32 var_r31;
-    u32 var_r0;
 
-    self = arg0;
-    *(void **)(self + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
-    self[0x63] = fn_80107874(self + 0x30, *(void **)(self + 0x68));
-    self[0x62] = 0;
-    self[0x61] = 0;
-    if (self[0x63] == 0) {
-        Process_Goto(self, 0x63);
+    u8 parsed[0x68];
+    u8 new_var2;
+    u32 cursor;
+    u32 header;
+    u8 new_var;
+    u32 data;
+    s8 outX;
+    s8 outY;
+    s32 i;
+    u8 new_var3[2];
+    s32 sumX;
+    s32 sumY;
+
+    *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
+    arg0[0x63] = fn_80107874(arg0 + 0x30, *(void **)(arg0 + 0x68));
+    arg0[0x62] = 0;
+    arg0[0x61] = 0;
+    if (arg0[0x63] == 0) {
+        Process_Goto(arg0, 0x63);
         return;
     }
     if (fn_801A2300() == 0) {
         return;
     }
-    var_r31 = 0;
-    var_r30 = var_r31;
-    sp8 = Hash_Lookup((void *)(self + 0x30));
-    if (sp8 == 0) {
-        var_r0 = 0;
+    sumX = 0;
+    sumY = sumX;
+    header = Hash_Lookup(arg0 + 0x30);
+    if (!header) {
+        data = 0;
     } else {
-        var_r29 = Bin_ReadU8(&sp8);
-        switch ((u8)Bin_ReadU8(&sp8)) {
+        new_var3[0] = Bin_ReadU8(&header);
+        switch (Bin_ReadU8(&header)) {
         case 2:
-            var_r28 = 0;
+            new_var3[1] = 0;
             break;
         case 3:
-            Bin_ReadU8(&sp8);
-            var_r28 = Bin_ReadU8(&sp8);
-            Bin_ReadU32(&sp8);
+            Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
+            Bin_ReadU32(&header);
             break;
         case 4:
-            Bin_ReadU8(&sp8);
-            var_r28 = Bin_ReadU8(&sp8);
+            Bin_ReadU8(&header);
+            new_var3[1] = Bin_ReadU8(&header);
             break;
         }
-        var_r0 = (sp8 + 3) & ~3;
-        sp8 = var_r0;
+        header = (header + 3) & (~3);
+        data = header;
     }
-    spC = var_r0;
-    if (var_r0 != 0) {
-        var_r26 = 0;
-        var_r27 = (u8)var_r29;
-        *(s32 *)(sp10 + 0x10) = var_r26;
-        sp10[0x30] = var_r26;
-        *(s32 *)(sp10 + 0x48) = var_r26;
-        *(s32 *)(sp10 + 0x14) = var_r26;
-        sp10[0x31] = var_r26;
-        *(s32 *)(sp10 + 0x4C) = var_r26;
-        *(s32 *)(sp10 + 0x18) = var_r26;
-        sp10[0x32] = var_r26;
-        *(s32 *)(sp10 + 0x50) = var_r26;
-        *(s32 *)(sp10 + 0x1C) = var_r26;
-        sp10[0x33] = var_r26;
-        *(s32 *)(sp10 + 0x54) = var_r26;
-        *(s32 *)(sp10 + 0x20) = var_r26;
-        sp10[0x34] = var_r26;
-        *(s32 *)(sp10 + 0x58) = var_r26;
-        *(s32 *)(sp10 + 0x24) = var_r26;
-        sp10[0x35] = var_r26;
-        *(s32 *)(sp10 + 0x5C) = var_r26;
-        *(s32 *)(sp10 + 0x28) = var_r26;
-        sp10[0x36] = var_r26;
-        *(s32 *)(sp10 + 0x60) = var_r26;
-        *(s32 *)(sp10 + 0x2C) = var_r26;
-        sp10[0x37] = var_r26;
-        *(s32 *)(sp10 + 0x64) = var_r26;
-        goto loop_cmp;
-    loop_body:
-        Dispos_ParseEntry(&spC, sp10, var_r28);
-        var_r26 += 1;
-        var_r30 += (s8)sp10[0xD];
-        var_r31 += (s8)sp10[0xE];
-    loop_cmp:
-        if (var_r26 < var_r27) {
-            goto loop_body;
+    cursor = data;
+    if (data) {
+        for (i = 0; i < 8; i++) {
+            *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
+            parsed[0x30 + i] = 0;
+            *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
         }
-        var_r27 = (s8)(var_r30 / var_r27);
-        var_r26 = (s8)(var_r31 / (s32)(u8)var_r29);
+        for (i = 0; i < (u8)new_var3[0]; i++) {
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, new_var3[1]);
+            sumX += (s8)parsed[0xD];
+            new_var2 = parsed[0xE];
+            sumY += (s8)new_var2;
+        }
+        new_var = (u8)new_var3[0];
+        outX = sumX / new_var;
+        outY = sumY / (u8)new_var3[0];
     }
-    BattleState_SetCamPos(gBattleState, (f32)(s8)var_r27, (f32)(s8)var_r26);
+    BattleState_SetCamPos(gBattleState, (f32)outX, (f32)outY);
 }
 
 #pragma push
