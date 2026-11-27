@@ -97,7 +97,6 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
     s32 Text_MeasureWidth(u8 *, s32, f32);
     extern f64 lbl_80368B88;
 
-    u8 buffer[16];
     u8 *digits;
     u8 *write;
     u8 *read;
@@ -115,6 +114,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
         f64 value;
         struct { u32 hi; u32 lo; } bits;
     } fx, fy;
+    u8 buffer[16];
 
     sign = 0;
     count = 0;
@@ -142,7 +142,7 @@ void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
         count++;
     } while (arg4 != 0);
 
-    for (i = 0; i < count / 2; ++i) {
+    for (i = 0; i < (count >> 1); ++i) {
         tmp = digits[i];
         digits[i] = buffer[sign + count - 1 - i];
         buffer[sign + count - 1 - i] = tmp;
@@ -397,6 +397,7 @@ void Prim2D_SetTint(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
 
 #pragma push
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void Prim2D_SetCornerColors(u8 *a, u8 *b, u8 *c, u8 *d) {
     extern void *gPrim2D;
     u8 *ptr;
@@ -438,6 +439,7 @@ void Prim2D_SetCornerColors(u8 *a, u8 *b, u8 *c, u8 *d) {
     ptr[0x5A] = t2;
     ptr[0x5B] = t3;
 }
+#pragma opt_strength_reduction reset
 #pragma pop
 void fn_80007340(s32 arg0, s32 arg1) {
     extern void *gPrim2D;
@@ -885,12 +887,14 @@ void Prim2D_AddPrim(u8 arg0) {
     u8 *Ui_GetColor(s32);
 
     s32 size;
+    void *node;
 
     if (*(u8 *)((u8 *)gPrim2D + 0xA8) == 2) {
         s32 tmp;
         tmp = fn_80006AF4((u8 *)gPrim2D + 0x20);
         *(s32 *)((u8 *)gPrim2D + 0x18) = tmp;
-        if (Prim2D_FindNode() == 0) {
+        node = Prim2D_FindNode();
+        if (node == 0) {
             void *ctx;
             void *entry;
             ctx = gPrim2D;
@@ -950,18 +954,17 @@ void Prim2D_AddPrim(u8 arg0) {
         case 7:
         case 10:
             {
-                void *e;
                 u8 *p;
-                e = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
-                *(f32 *)((u8 *)e + 0x1C) = gFloat1;
-                *(f32 *)((u8 *)e + 0x20) = lbl_80368B98;
-                *(s16 *)((u8 *)e + 0x24) = 0;
-                *(s16 *)((u8 *)e + 0x26) = 0;
+                node = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
+                *(f32 *)((u8 *)node + 0x1C) = gFloat1;
+                *(f32 *)((u8 *)node + 0x20) = lbl_80368B98;
+                *(s16 *)((u8 *)node + 0x24) = 0;
+                *(s16 *)((u8 *)node + 0x26) = 0;
                 p = Ui_GetColor(1);
-                *(u8 *)((u8 *)e + 0x18) = p[0];
-                *(u8 *)((u8 *)e + 0x19) = p[1];
-                *(u8 *)((u8 *)e + 0x1A) = p[2];
-                *(u8 *)((u8 *)e + 0x1B) = p[3];
+                *(u8 *)((u8 *)node + 0x18) = p[0];
+                *(u8 *)((u8 *)node + 0x19) = p[1];
+                *(u8 *)((u8 *)node + 0x1A) = p[2];
+                *(u8 *)((u8 *)node + 0x1B) = p[3];
             }
             break;
         }
@@ -1443,6 +1446,8 @@ void fn_80008B94(void)
     gPrim2D[0xA8] = 0;
 }
 
+#pragma push
+#pragma optimization_level 2
 void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     void *fn_80005C40(void);
     s32 fn_80011010(s32);
@@ -1454,7 +1459,7 @@ void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, 
     void fn_80222C50(void *, s32);
     void fn_80224E50(f32 (*)[4], s32, s32);
 
-    s32 saved;
+    int saved;
     u8 *font;
     f32 mtx[3][4];
     u32 texObj[8];
@@ -1462,7 +1467,7 @@ void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, 
     s32 sp14;
     s32 sp10;
     s32 spC;
-    s32 sp8;
+    long sp8;
     u8 *glyph;
     f32 u;
     f32 v;
@@ -1478,8 +1483,8 @@ void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, 
     f32 y2;
     f32 u2;
     f32 v2;
-    u8 r0, g0, b0, a0;
     u8 r1, g1, b1, a1;
+    u8 r0, g0, b0, a0;
 
     saved = fn_80011010(-1);
     font = (u8 *)fn_80005C40();
@@ -1560,6 +1565,7 @@ void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, 
 
     fn_80011010(saved);
 }
+#pragma pop
 
 #pragma use_lmw_stmw on
 void fn_80009008(void *list, s32 a, s32 b) {
