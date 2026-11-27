@@ -875,6 +875,7 @@ u8 fn_800939FC(void *arg0, void *arg1) {
 #pragma pop
 #pragma push
 #pragma optimization_level 4
+#pragma opt_lifetimes off
 u8 fn_80093DA8(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 Status_Test(void *, s32);
