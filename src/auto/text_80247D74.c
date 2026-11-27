@@ -458,7 +458,6 @@ void fn_80247D74(void)
 
     struct { VidList *node; VidList *prev; SynthVoice *sv; u16 *table; void *z; } s;
     u32 i = 0;
-    u32 j;
 
     s.z = 0;
     gKeyedVoices = s.z;
@@ -499,20 +498,17 @@ void fn_80247D74(void)
         s.table += 16;
     }
 
+    gSynthVoicePool[i - 1].next = NULL;
     s.prev = NULL;
-    j = (u32)s.prev;
-
-    gSynthVoicePool[i - 1].next = s.z;
-    lbl_80368964 = (VidList *)lbl_8033E590;
     s.sv = (SynthVoice *)lbl_8033E590;
-    *(void **)((u8 *)s.sv + 4) = s.prev;
+    lbl_80368964 = (VidList *)s.sv;
 
-    for (; j < 0x100; j++) {
+    for (i = 0; i < 0x100; i++) {
+        *(void **)((u8 *)s.sv + 4) = s.prev;
         if (s.prev != NULL) {
             *(void **)s.prev = (void *)s.sv;
         }
         s.prev = (VidList *)s.sv;
-        *(void **)((u8 *)s.sv + 0x18) = s.prev;
         s.sv = (SynthVoice *)((u8 *)s.sv + 0x14);
     }
 
