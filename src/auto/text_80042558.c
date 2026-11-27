@@ -7577,14 +7577,15 @@ void *fn_80052B54(void *name, u32 priority) {
     return proc;
 }
 
-static inline u8 *Obj_GetActiveUnit(u8 *object) {
+static inline void Obj_GetActiveUnit(u8 *object, u8 **out) {
     if (*(u32 *)(object + 8) & 0x20000000) {
         u8 *unit = *(u8 **)(object + 0x34);
         if (unit != 0) {
-            return unit;
+            *out = unit;
+            return;
         }
     }
-    return *(u8 **)(object + 0x30);
+    *out = *(u8 **)(object + 0x30);
 }
 
 void fn_80052CA8(void *arg0) {
