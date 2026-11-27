@@ -2,6 +2,8 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "common.h"
 
+#pragma push
+#pragma global_optimizer off
 void fn_8013275C(void) {
     extern u8 gUiMenuDrawVtbl[128];
     extern u8 lbl_802916E0[80];
