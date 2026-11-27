@@ -5256,7 +5256,6 @@ void fn_8025EF0C(u8 arg0, u8 arg1, u8 arg2)
 #pragma push
 #pragma optimization_level 3
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 void fn_8025F0EC(u8 arg0, u8 arg1) {
     extern u8 gSoundChanParams[];
     extern u8 lbl_80361618[];
