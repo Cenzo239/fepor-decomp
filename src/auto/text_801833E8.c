@@ -40,6 +40,21 @@ for(i=0,entry=unit+0x1EC;i<4;i++,entry+=8) { item=*(void **)entry;if(!item) brea
 if(!(entry[5]&63) && target==item) count++;
 }
 }
+ return count;
+}
+
+static inline s32 CountUnitItemReferences2(u8 *unit,u8 *target) {
+void **Unit_GetHeldItemSlot(void *,s32);
+s32 count=0; s32 i; u8 *entry; void *item;
+if((*(u64 *)(target+0x38)&5ULL)!=0) {
+for(i=count;i<4;i++) { entry=(u8 *)Unit_GetHeldItemSlot(unit,i);item=*(void **)entry; if(!item) break;
+if(!(entry[5]&63) && target==item) count++;
+}
+} else {
+for(i=0,entry=unit+0x1EC;i<4;i++,entry+=8) { item=*(void **)entry;if(!item) break;
+if(!(entry[5]&63) && target==item) count++;
+}
+}
 return count;
 }
 
