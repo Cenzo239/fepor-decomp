@@ -8027,8 +8027,6 @@ typedef struct {
     s32 unkBC;
 } Struct_800330F8_B;
 
-#pragma push
-#pragma optimization_level 3
 void fn_8004781C(void *arg0)
 {
     struct EntryTail {
