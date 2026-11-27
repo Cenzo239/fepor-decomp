@@ -1,9 +1,9 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline void SaveBattleCursorBytes(u8 *state, u8 *p0, u8 *p1, u8 *p2) {
-    state[0xA1] = *p0;
-    state[0xA3] = *p1;
-    state[0xA2] = *p2;
+static inline void SaveBattleCursorBytes(u8 *state, const s8 *p0, const s8 *p1, const s8 *p2) {
+    state[0xA1] = (u8)*p0;
+    state[0xA3] = (u8)*p1;
+    state[0xA2] = (u8)*p2;
 }
 static inline u8 *Battle_FindEligibleUnit(void) {
     extern u8 gBattle[];
