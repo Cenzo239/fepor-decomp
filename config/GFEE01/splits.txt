@@ -70,7 +70,10 @@ auto/text_80011968.c:
 	.ctors      start:0x80267A88 end:0x80267A8C
 
 auto/text_800119C0.c:
-	.text       start:0x800119C0 end:0x80016EE8
+	.text       start:0x800119C0 end:0x80014B34
+
+auto/main.c:
+	.text       start:0x80014B34 end:0x80016EE8
 
 auto/text_80016EE8.c:
 	.text       start:0x80016EE8 end:0x80016F40
