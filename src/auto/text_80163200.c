@@ -16069,7 +16069,6 @@ return 1;
 }
 return 0;
 }
-#pragma optimization_level reset
 #pragma global_optimizer on
 void fn_8017C304(void *arg0) {
     s32 temp_r5;
