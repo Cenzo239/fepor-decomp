@@ -1175,8 +1175,8 @@ void fn_80129FA4(void *arg0) {
     u8 sp8[0x30];
     void *self;
     void *sub;
-    void *cam;
     void *child;
+    void *cam;
     f32 scale;
     f32 unk38;
     f32 unk2c;
@@ -1875,6 +1875,7 @@ void fn_8012B488(s32 arg0) {
     *(s32 *)((u8 *)self + 0x44) = 0;
 }
 #pragma optimization_level reset
+#pragma opt_propagation off
 void fn_8012B554(void *arg0) {
     s32 Rand_Range(s32);
     void fn_8007ADC8(s32);
