@@ -1614,96 +1614,72 @@ void fn_800B3490(void) {
 }
 
 #pragma use_lmw_stmw on
-s32 fn_800B34B0(u8 *arg0) {
-    s32 fn_800B4A84(void *, s32, s32);
-    s32 fn_800B49C8(void *);
-    void fn_800B49D0(void *);
-    s32 fn_800B4A14(void *, s32, s32, s32);
-    s32 fn_800C4638(s32, void *, s32);
-    void fn_800C4588(s32);
-    void fn_800062EC(s32, s32, u32);
-    u32 OSGetResetCode();
-    void DCFlushRange(void *, u32);
-    void fn_80258D74(u8 *(*)(s32, u32), s32);
-    u8 fn_80258D94(s32, u16, s32, s32, s32);
-    u8 *fn_800B3F8C(s32, u32);
-    extern u8 lbl_80317338[];
-    extern void *lbl_80367814;
+typedef struct { void *x0; u8 pad0[0x1c]; void *x20; u8 pad1[0x1c]; void *x40; u8 pad2[0x7c]; s32 xc0[8]; u32 xe0; u8 pad3[4]; s32 xe8; u8 pad4[0x56]; char name[0x302]; void *x444; void *x448; } SoundSys_800B34B0;
+static inline void *LoadFile_800B34B0(const char *name) {
     extern s32 lbl_8036780C;
-    extern u8 lbl_8026EB70[];
-    u8 *base;
-    s32 handle;
-    u32 buffer;
-    s32 size;
-    u32 value;
+    extern u8 Sound_str[];
+    void *fn_800B4A84(const char *, s32, s32);
+    u32 fn_800B49C8(void *);
+    void *fn_800C4638(u32, const char *, s32);
+    u32 OSGetResetCode(void);
+    void fn_800062EC(void *, u32, u32);
+    void DCFlushRange(void *, u32);
+    s32 fn_800B4A14(void *, void *, u32, s32);
+    void fn_800C4588(void *);
+    void fn_800B49D0(void *);
+    void *f = fn_800B4A84(name, 2, 0);
+    u32 size;
+    void *buf;
+    if (f == 0) return 0;
+    size = fn_800B49C8(f);
+    if (size == 0) return 0;
+    size = (size + 0x1f) & ~0x1f;
+    buf = fn_800C4638(size, (const char *)Sound_str + 0x2E, 0);
+    if (buf == 0) return 0;
+    (*(u32 *)&lbl_8036780C) = size;
+    if ((OSGetResetCode() >> 31) && (OSGetResetCode() & 0x100)) {
+        fn_800062EC(buf, 0x81200000 - size, size);
+        DCFlushRange(buf, size);
+    } else if (fn_800B4A14(f, buf, size, 0) <= 0) {
+        fn_800C4588(buf);
+        return 0;
+    }
+    fn_800B49D0(f);
+    return buf;
+}
+s32 fn_800B34B0(u8 *list) {
+    extern u16 gSoundSys[4976];
+    extern void *gSoundLoadBuf;
+    void fn_800C4588(void *);
+    void fn_80258D74(void *, u32);
+    u8 Sound_PushGroup(void *, u16, s32, void *, void *);
+    void Sound_CopyLoadChunk(void);
+    s32 *cnt;
     s32 i;
-
-    base = lbl_80317338;
-    if (*(u32 *)(base + 0xE0) >= 8) {
-        return 0;
+    if ((*(SoundSys_800B34B0 *)&gSoundSys).xe0 >= 8) return 0;
+    gSoundLoadBuf = 0;
+    gSoundLoadBuf = LoadFile_800B34B0((*(SoundSys_800B34B0 *)&gSoundSys).name);
+    if (gSoundLoadBuf == 0) return 0;
+    if ((*(SoundSys_800B34B0 *)&gSoundSys).x444 == 0) {
+        (*(SoundSys_800B34B0 *)&gSoundSys).x444 = (*(SoundSys_800B34B0 *)&gSoundSys).x448;
+        fn_80258D74(Sound_CopyLoadChunk, 0x20000);
     }
-    lbl_80367814 = NULL;
-    handle = fn_800B4A84(base + 0x142, 2, 0);
-    if (handle == 0) {
-        buffer = 0;
+cnt = (*(SoundSys_800B34B0 *)&gSoundSys).xc0; *cnt = 0;
+    if (list != 0) {
+        for (; *list != 0xff; list++) {
+            Sound_PushGroup((*(SoundSys_800B34B0 *)&gSoundSys).x20, *list, 0, (*(SoundSys_800B34B0 *)&gSoundSys).x40, (*(SoundSys_800B34B0 *)&gSoundSys).x0);
+            (*cnt)++;
+        }
     } else {
-        value = fn_800B49C8((void *)handle);
-        if (value == 0) {
-            buffer = 0;
-        } else {
-            size = (value + 0x1F) & 0xFFFFFFE0;
-            buffer = fn_800C4638(size, lbl_8026EB70 + 0x2E, 0);
-            if (buffer == 0) {
-                buffer = 0;
-            } else {
-                lbl_8036780C = size;
-                if (((OSGetResetCode() >> 31) != 0) && ((OSGetResetCode() & 0x100) != 0)) {
-                    fn_800062EC(buffer, 0x81200000 - size, size);
-                    DCFlushRange((void *)buffer, size);
-                } else if (fn_800B4A14((void *)handle, buffer, size, 0) <= 0) {
-                    fn_800C4588(buffer);
-                    buffer = 0;
-                    goto stored;
-                }
-                fn_800B49D0((void *)handle);
+        for (i = 0; i < 6; i++) {
+            if (Sound_PushGroup((*(SoundSys_800B34B0 *)&gSoundSys).x20, i, 0, (*(SoundSys_800B34B0 *)&gSoundSys).x40, (*(SoundSys_800B34B0 *)&gSoundSys).x0) == 1) {
+                (*cnt)++;
+                (*(SoundSys_800B34B0 *)&gSoundSys).xe8++;
             }
         }
     }
-stored:
-    lbl_80367814 = (void *)buffer;
-    if (buffer == 0) {
-        return 0;
-    }
-    {
-        u8 *p = lbl_80317338;
-        if (*(u32 *)(p + 0x444) == 0) {
-            *(u32 *)(p + 0x444) = *(u32 *)(p + 0x448);
-            fn_80258D74(fn_800B3F8C, 0x20000);
-        }
-    }
-    {
-        u8 *ptr = lbl_80317338;
-        u32 *counter = (u32 *)(ptr + 0xC0);
-        *(u32 *)(ptr + 0xC0) = 0;
-        if (arg0 != NULL) {
-            while (*arg0 != 0xFF) {
-                fn_80258D94(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
-                *counter += 1;
-                arg0++;
-            }
-        } else {
-            for (i = 0; i < 6; i++) {
-                if (fn_80258D94(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
-                    *counter += 1;
-                    *(u32 *)(ptr + 0xE8) += 1;
-                }
-            }
-        }
-        if (lbl_80367814 != NULL) {
-            fn_800C4588((s32)lbl_80367814);
-        }
-        *(u32 *)((u8 *)counter + *(u32 *)(base + 0xE0) * 4) = 0;
-    }
+    if (gSoundLoadBuf != 0) fn_800C4588(gSoundLoadBuf);
+    cnt[(*(SoundSys_800B34B0 *)&gSoundSys).xe0] = 0;
     return 1;
 }
 
