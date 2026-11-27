@@ -8504,7 +8504,7 @@ if (p) {
 #pragma optimization_level 4
 #pragma opt_propagation off
 #pragma cplusplus on
-struct ConvoyPanel71004 { u32 pad;
+struct ConvoyPanel71004 {
 virtual void v0() = 0;
 virtual void v1() = 0;
 virtual void v2() = 0;
