@@ -1065,61 +1065,93 @@ DebugPrint(lbl_802700D8+0x13D);
 DebugPrint(lbl_802700D8+0x152,lbl_80367860,lbl_80367864);
 }
 
-int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
-HeapC55 *next, *prev, *head, *owner, *link;
-s32 size;
-if((s32)block->size < 0) {
-block->size = -block->size;
-owner = heap->owner; link = block->next;
-if(link) link->prev = block->prev;
-link = block->prev;
-if(link) link->next = block->next; else owner = block->next;
-heap->owner = owner;
-prev = 0; head = heap->free; next = head;
-while(next) {prev = next; next = next->next;}
-while(prev) {if(prev <= block) break; next = prev; prev = prev->prev;}
-block->next = next; block->prev = prev;
-if(next) {
-next->prev = block;
-size = block->size;
-if((u8*)block + size == (u8*)next) {
-block->size = size + next->size;
-next = next->next; block->next = next;
-if(next) next->prev = block;
-}}
-if(prev) {
-prev->next = block; size = prev->size;
-if((u8*)prev + size == (u8*)block) {
-prev->size = size + block->size; prev->next = next;
-if(next) next->prev = prev;
-}} else head = block;
-heap->free = head;
-return;
+static inline HeapC55 *DLExtract_C55(HeapC55 *list, HeapC55 *cell) {
+    if (cell->next != NULL) {
+        cell->next->prev = cell->prev;
+    }
+    if (cell->prev != NULL) {
+        cell->prev->next = cell->next;
+        return list;
+    }
+    return cell->next;
 }
-owner = heap->owner; link = block->next;
-if(link) link->prev = block->prev;
-link = block->prev;
-if(link) link->next = block->next; else owner = block->next;
-heap->owner = owner;
-prev = 0; head = heap->free; next = head;
-while(next) {if(block <= next) break; prev = next; next = next->next;}
-block->next = next; block->prev = prev;
-if(next) {
-next->prev = block;
-size = block->size;
-if((u8*)block + size == (u8*)next) {
-block->size = size + next->size;
-next = next->next; block->next = next;
-if(next) next->prev = block;
-}}
-if(prev) {
-prev->next = block; size = prev->size;
-if((u8*)prev + size == (u8*)block) {
-prev->size = size + block->size; prev->next = next;
-if(next) next->prev = prev;
-}} else head = block;
-heap->free = head;
-return;
+
+int fn_800C53B0(HeapC55 *heap, HeapC55 *block) {
+    if ((s32)block->size < 0) {
+        HeapC55 *next, *prev, *head, *owner;
+        s32 size;
+        block->size = -block->size;
+        owner = heap->owner;
+        if (block->next) block->next->prev = block->prev;
+        if (block->prev) block->prev->next = block->next; else owner = block->next;
+        heap->owner = owner;
+        prev = 0;
+        head = heap->free;
+        next = head;
+        while (next) { prev = next; next = next->next; }
+        while (prev) { if (prev <= block) break; next = prev; prev = prev->prev; }
+        block->next = next;
+        block->prev = prev;
+        if (next) {
+            next->prev = block;
+            size = block->size;
+            if ((u8 *)block + size == (u8 *)next) {
+                block->size = size + next->size;
+                next = next->next;
+                block->next = next;
+                if (next) next->prev = block;
+            }
+        }
+        if (prev) {
+            prev->next = block;
+            size = prev->size;
+            if ((u8 *)prev + size == (u8 *)block) {
+                prev->size = size + block->size;
+                prev->next = next;
+                if (next) next->prev = prev;
+            }
+        } else {
+            head = block;
+        }
+        heap->free = head;
+        return;
+    } else {
+        HeapC55 *next, *prev, *head, *owner;
+        s32 size;
+        owner = heap->owner;
+        if (block->next) block->next->prev = block->prev;
+        if (block->prev) block->prev->next = block->next; else owner = block->next;
+        heap->owner = owner;
+        prev = 0;
+        head = heap->free;
+        next = head;
+        while (next) { if (block <= next) break; prev = next; next = next->next; }
+        block->next = next;
+        block->prev = prev;
+        if (next) {
+            next->prev = block;
+            size = block->size;
+            if ((u8 *)block + size == (u8 *)next) {
+                block->size = size + next->size;
+                next = next->next;
+                block->next = next;
+                if (next) next->prev = block;
+            }
+        }
+        if (prev) {
+            prev->next = block;
+            size = prev->size;
+            if ((u8 *)prev + size == (u8 *)block) {
+                prev->size = size + block->size;
+                prev->next = next;
+                if (next) next->prev = prev;
+            }
+        } else {
+            head = block;
+        }
+        heap->free = head;
+        return;
+    }
 }
 
 #pragma push
@@ -5556,17 +5588,15 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
     void fn_80232138(char *, ...);
     void fn_800056A0(s32);
 
-
     s16 *stream;
     s16 *header;
-    u32 code;
+    u8 opcode;
 
     s32 j;
-    s32 *list;
     s32 count;
     s32 secondIndex;
-    s32 mode;
     s32 i;
+    s32 mode;
     u8 *self;
     u8 *stat;
     s32 index;
@@ -5586,50 +5616,118 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
     i = 0;
 
     while (i < count) {
-        u8 opcode;
         stream = *(s16 **)(self + 0x1FC);
         opcode = *(u8 *)((u8 *)stream + (*stream * 4) + 4);
-        code = opcode - 0x0A;
 
-        {
-            switch (opcode) {
-            case 0xb: index = 0x1A; mode = 1; break;
-            case 0xa: index = 0; mode = 0; break;
-            case 0xc: index = 0x1A; mode = 0; break;
-            case 0x16: index = 0; mode = 1; break;
-            case 0x18: index = 1; mode = 1; break;
-            case 0xf: mode = -1; break;
-            case 0x35: case 0x36: case 0x37: case 0x38: case 0x39:
-            case 0x3a: case 0x3b: case 0x3c: case 0x3d: case 0x3e:
-            case 0x3f: case 0x40: case 0x41: case 0x42: case 0x43:
-                index = opcode - 0x35; mode = 0; break;
-            case 0x44: case 0x45: case 0x46: case 0x47: case 0x48:
-            case 0x49: case 0x4a: case 0x4b: case 0x4c: case 0x4d:
-                index = opcode - 0x35; mode = 1; break;
-            case 0x4e:
-                index = 0xC; secondIndex = 0x1B; mode = 2; break;
-            default:
-                break;
+        switch (opcode) {
+        case 0x22: index = 0x1A; mode = 1; break;
+        case 0xa: index = 0; mode = 0; break;
+        case 0xc: index = 0x1A; mode = 0; break;
+        case 0x16: index = 0; mode = 1; break;
+        case 0x18: index = 1; mode = 1; break;
+        case 0x24: case 0x26: case 0x28: case 0x2a: case 0x2c:
+        case 0x2e: case 0x30: case 0x32: case 0x34:
+            mode = -1; break;
+        case 0x35: case 0x36: case 0x37: case 0x38: case 0x39:
+        case 0x3a: case 0x3b: case 0x3c: case 0x3d: case 0x3e:
+        case 0x3f: case 0x40: case 0x41: case 0x42: case 0x43:
+            index = opcode - 0x35; mode = 0; break;
+        case 0x44: case 0x45: case 0x46: case 0x47: case 0x48:
+        case 0x49: case 0x4a: case 0x4b: case 0x4c: case 0x4d:
+            index = opcode - 0x35; mode = 1; break;
+        case 0x4e:
+            index = 0xC; secondIndex = 0x1B; mode = 2; break;
+        default:
+            break;
+        }
+
+        if (index == 3) {
+            s32 n = *(s32 *)(stat + 0x50);
+            s32 *p = (s32 *)stat;
+            s32 k;
+            for (k = 0; k < n; k++, p++) {
+                if (p[0xC] == 4) goto next_command;
             }
+        }
 
-            if (index == 3) {
-                list = (s32 *)stat;
-                for (j = *(s32 *)(stat + 0x50); j > 0; j--,list++) {
-                    if (list[12] == 4) goto next_command;
-                }
+        if (mode == 0) {
+            s32 used = *(s32 *)(stat + 0x50);
+            j = used;
+            if (used < 4) {
+                *(s32 *)(stat + 0x30 + j * 4) = index;
+                (*(s32 *)(stat + 0x50))++;
+            } else {
+                DebugPrint(lbl_802704F8 + 0x4AE);
             }
-
-            if (mode == 0) {
-                s32 used = *(s32 *)(stat + 0x50);
-                j = used;
-                if (used < 4) {
-                    *(s32 *)(stat + 0x30 + j * 4) = index;
-                    (*(s32 *)(stat + 0x50))++;
-                } else {
-                    DebugPrint(lbl_802704F8 + 0x4AE);
+            if (index < 0) goto next_command;
+            if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+            s32 offset = index * 0xC;
+            String *entry;
+            char *name;
+            u32 length;
+            entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+            length = strlen(lbl_802704F8 + 0x16F);
+            if (String_Compare(entry, 0, entry->size,
+                    lbl_802704F8 + 0x16F, length) != 0) {
+                name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                if ((u32)Res_GetByName(name) == 0U) {
+                    fn_800056A0(0);
+                    goto next_command;
                 }
-                if (index < 0) goto next_command;
-                if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+                GActor_RequestRes(name);
+                fn_80232138(lbl_802704F8 + 0x172, name);
+            }
+            goto next_command;
+        }
+
+        if (mode == 1) {
+            s32 used54 = *(s32 *)(stat + 0x54);
+            j = used54;
+            if (used54 < 4) {
+                *(s32 *)(stat + 0x40 + j * 4) = index;
+                (*(s32 *)(stat + 0x54))++;
+            } else {
+                DebugPrint(lbl_802704F8 + 0x4AE);
+            }
+            if (index < 0) goto next_command;
+            if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+            s32 offset = index * 0xC;
+            String *entry;
+            char *name;
+            u32 length;
+            entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
+            length = strlen(lbl_802704F8 + 0x16F);
+            if (String_Compare(entry, 0, entry->size,
+                    lbl_802704F8 + 0x16F, length) != 0) {
+                name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
+                if ((u32)Res_GetByName(name) == 0U) {
+                    fn_800056A0(0);
+                    goto next_command;
+                }
+                GActor_RequestRes(name);
+                fn_80232138(lbl_802704F8 + 0x172, name);
+            }
+            goto next_command;
+        }
+
+        if (mode == 2) {
+            s32 used = *(s32 *)(stat + 0x50);
+            j = used;
+            if (used < 4) {
+                *(s32 *)(stat + 0x30 + j * 4) = index;
+                (*(s32 *)(stat + 0x50))++;
+            } else {
+                DebugPrint(lbl_802704F8 + 0x4AE);
+            }
+            s32 used54 = *(s32 *)(stat + 0x54);
+            j = used54;
+            if (used54 < 4) {
+                *(s32 *)(stat + 0x40 + j * 4) = secondIndex;
+                (*(s32 *)(stat + 0x54))++;
+            } else {
+                DebugPrint(lbl_802704F8 + 0x4AE);
+            }
+            if (index >= 0 && (u32)index < *(u32 *)(self + 0x1C0)) {
                 s32 offset = index * 0xC;
                 String *entry;
                 char *name;
@@ -5641,26 +5739,15 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
                     name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
                     if ((u32)Res_GetByName(name) == 0U) {
                         fn_800056A0(0);
-                        goto next_command;
+                    } else {
+                        GActor_RequestRes(name);
+                        fn_80232138(lbl_802704F8 + 0x172, name);
                     }
-                    GActor_RequestRes(name);
-                    fn_80232138(lbl_802704F8 + 0x172, name);
                 }
-                goto next_command;
             }
-
-            if (mode == 1) {
-                s32 used54 = *(s32 *)(stat + 0x54);
-                j = used54;
-                if (used54 < 4) {
-                    *(s32 *)(stat + 0x40 + j * 4) = index;
-                    (*(s32 *)(stat + 0x54))++;
-                } else {
-                    DebugPrint(lbl_802704F8 + 0x4AE);
-                }
-                if (index < 0) goto next_command;
-                if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
-                s32 offset = index * 0xC;
+            if (secondIndex >= 0 &&
+                (u32)secondIndex < *(u32 *)(self + 0x1C0)) {
+                s32 offset = secondIndex * 0xC;
                 String *entry;
                 char *name;
                 u32 length;
@@ -5671,66 +5758,9 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
                     name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
                     if ((u32)Res_GetByName(name) == 0U) {
                         fn_800056A0(0);
-                        goto next_command;
-                    }
-                    GActor_RequestRes(name);
-                    fn_80232138(lbl_802704F8 + 0x172, name);
-                }
-                goto next_command;
-            }
-
-            if (mode == 2) {
-                s32 used = *(s32 *)(stat + 0x50);
-                j = used;
-                if (used < 4) {
-                    *(s32 *)(stat + 0x30 + j * 4) = index;
-                    (*(s32 *)(stat + 0x50))++;
-                } else {
-                    DebugPrint(lbl_802704F8 + 0x4AE);
-                }
-                s32 used54 = *(s32 *)(stat + 0x54);
-                j = used54;
-                if (used54 < 4) {
-                    *(s32 *)(stat + 0x40 + j * 4) = secondIndex;
-                    (*(s32 *)(stat + 0x54))++;
-                } else {
-                    DebugPrint(lbl_802704F8 + 0x4AE);
-                }
-                if (index >= 0 && (u32)index < *(u32 *)(self + 0x1C0)) {
-                    s32 offset = index * 0xC;
-                String *entry;
-                char *name;
-                u32 length;
-                    entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
-                    length = strlen(lbl_802704F8 + 0x16F);
-                    if (String_Compare(entry, 0, entry->size,
-                            lbl_802704F8 + 0x16F, length) != 0) {
-                        name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
-                        if ((u32)Res_GetByName(name) == 0U) {
-                            fn_800056A0(0);
-                        } else {
-                            GActor_RequestRes(name);
-                            fn_80232138(lbl_802704F8 + 0x172, name);
-                        }
-                    }
-                }
-                if (secondIndex >= 0 &&
-                    (u32)secondIndex < *(u32 *)(self + 0x1C0)) {
-                    s32 offset = secondIndex * 0xC;
-                    String *entry;
-                    char *name;
-                    u32 length;
-                    entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
-                    length = strlen(lbl_802704F8 + 0x16F);
-                    if (String_Compare(entry, 0, entry->size,
-                            lbl_802704F8 + 0x16F, length) != 0) {
-                        name = String_CStr(*(u8 **)(self + 0x1C4) + offset);
-                        if ((u32)Res_GetByName(name) == 0U) {
-                            fn_800056A0(0);
-                        } else {
-                            GActor_RequestRes(name);
-                            fn_80232138(lbl_802704F8 + 0x172, name);
-                        }
+                    } else {
+                        GActor_RequestRes(name);
+                        fn_80232138(lbl_802704F8 + 0x172, name);
                     }
                 }
             }
@@ -24529,6 +24559,8 @@ s32 Unit_IsInMovAttackRange(void *unit, void *target, void **itemSlot) {
     return dist <= (mov + itemRange);
 }
 
+#pragma push
+#pragma optimization_level 3
 u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
     extern u8 gAiState[], gUiContext[], gBattleMap[], gUnits[];
     void Map_FillLayer(void *,s32,s32);
@@ -24539,31 +24571,31 @@ u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
     s32 Abs(s32);
     u8 Item_GetRangeForUnit(void *,void *);
     s8 Unit_GetMov(void *);
-    void fn_800FDDBC(s8,s8,u8,u8,s32);
+    void fn_800FDDBC(s32,s32,s32,s32,s32);
     u8 fn_800F7F00(void *,void *);
     void fn_800951D0(void *,u16);
     void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
     u8 flags[8];
     struct { u8 x,y; u16 item; u8 *unit; s32 score; } result;
-    s32 dy;
-    u8 sx, range, outside, maxRange, minRange;
-    u8 *unit;
-    u8 *self;
-    s32 dist;
-    u8 cx, cy;
-    u8 *ctx;
+    u8 *ctx=gUiContext;
     u8 *map;
+    u8 *self;
+    u8 *unit;
     void **slot;
     s32 score;
     u8 *best;
     u8 bx,by;
     u16 item;
     s32 i,j;
-    ctx=gUiContext; map=gBattleMap; score=(s32)0x80000000; best=0;
+    s32 a=(s32)gBattleMap;
+    u8 b, outside, cx, cy, maxRange, minRange;
+    s32 range;
+    s32 dy, dist;
+    score=(s32)0x80000000; best=0;
     ctx[8]=action; self=*(u8 **)ctx;
     if ((gAiState[1]&2) || (*(u32 *)(self+0x254)&0x03000000)) {
-        Map_FillLayer(map,5,-1); Map_SelectRangeBuffer(map,5);
-        (*(u16 **)(map+0x14190))[(s8)self[0x19e]+((s8)self[0x19f]<<6)]=0;
+        Map_FillLayer((void *)a,5,-1); Map_SelectRangeBuffer((void *)a,5);
+        (*(u16 **)(a+0x14190))[(s8)self[0x19e]+((s8)self[0x19f]<<6)]=0;
     } else Map_BuildUnitMoveRange(self,5,-1);
     map=gBattleMap;
     for(i=0;i<4;i++) {
@@ -24577,19 +24609,22 @@ u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
             if(!*(u32 *)(unit+0x188))continue;
             if(!flags[(*(u8 **)(unit+0x190))[8]])continue;
             if(!filter(unit))continue;
-            cx=unit[0x19e]; sx=self[0x19e];
+            a=unit[0x19e]; b=self[0x19e];
             dy=Abs((s8)self[0x19f]-(s8)unit[0x19f]);
-            dist=dy+Abs((s8)sx-(s8)cx);
+            dist=Abs((s8)b-(s8)a);
+            a=dist+dy;
             range=*slot ? Item_GetRangeForUnit(*slot,self) : 0;
-            if(dist>(u8)range+(s8)Unit_GetMov(self))continue;
+            dist=(s8)Unit_GetMov(self);
+            if(a>dist+(u8)range)continue;
             if(*(u32 *)(unit+0x1a0)&0x010000dc)continue;
-            cx=unit[0x19e]; cy=unit[0x19f]; outside=0;
+            outside=0; cx=unit[0x19e]; cy=unit[0x19f];
             if((s8)cx<(s8)map[8] || (s8)map[10]-1<(s8)cx ||
                (s8)cy<(s8)map[9] || (s8)map[11]-1<(s8)cy)outside=1;
             if(outside)continue;
             maxRange=*slot ? Item_GetRangeForUnit(*slot,unit) : 0;
             minRange=*slot ? ((u8 *)*slot)[0x1d] : 0;
-            fn_800FDDBC((s8)unit[0x19e],(s8)unit[0x19f],minRange,maxRange,6);
+            cx=unit[0x19e]; cy=unit[0x19f];
+            fn_800FDDBC((s8)cx,(s8)cy,minRange,maxRange,6);
             result.unit=unit;
             if(fn_800F7F00(self,&result) && result.score>score) {
                 bx=result.x; score=result.score; by=result.y; item=result.item; best=result.unit;
@@ -24602,7 +24637,7 @@ u8 fn_800F4E3C(u8 (*filter)(void *), u8 action) {
     }
     return gAiState[0x21c];
 }
-
+#pragma pop
 u8 fn_800F51A0(u8 (*filter)(void *), u8 action) {
     extern u8 gAiState[], gUiContext[], gBattleMap[], gUnits[];
     void Map_FillLayer(void *,s32,s32);
