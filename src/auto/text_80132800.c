@@ -201,10 +201,6 @@ typedef struct MenuGridLayout {
 } MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
 static inline s32 MenuGridQuotient(s16 index, s16 columns) { return index / columns; }
-static inline s32 MenuGridQuotOf(const void *self) {
-    const MenuGridLayout *grid = self;
-    return grid->index / grid->columns;
-}
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
