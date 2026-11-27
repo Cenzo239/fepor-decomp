@@ -488,6 +488,8 @@ u32 fwrite(const void *ptr, u32 size, u32 count, void *stream)
     return result;
 }
 
+#pragma push
+#pragma opt_propagation off
 char *fn_8023108C(s32 value, char *p, u32 base) {
  s32 strlen(const char *);
  s8 negative;
@@ -498,7 +500,7 @@ char *fn_8023108C(s32 value, char *p, u32 base) {
  s32 j;
  char *buffer=p;
  negative=0; length=0;
- if(value<0) {value=-value; negative=1; p=buffer;}
+ if(value<0) {p=buffer; value=-value; negative=1;}
  do {digit=(u32)value%base; if(digit>9) {length++; *p++=digit+0x37;} else {length++; *p++=digit+0x30;} value=(u32)value/base;} while(value!=0);
  if(negative) {buffer[length]='-'; length++;}
  buffer[length]=(i=0);
@@ -506,7 +508,7 @@ char *fn_8023108C(s32 value, char *p, u32 base) {
  while(i<j) {temp=buffer[i]; buffer[i]=buffer[j]; buffer[j]=temp; i++; j--;}
  return buffer;
 }
-
+#pragma pop
 int fflush(void *file) {
     /* Flush a FILE's buffer to the device, or flush every open file when file is NULL. */
     s32 __flush_buffer(void *, s32 *);
@@ -733,23 +735,24 @@ s32 fn_802314D8(s32 arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
+#pragma optimization_level 3
 s32 fn_80231748(void *arg0) {
  void __begin_critical_region(s32);
  void __end_critical_region(s32);
  extern s32 errno;
  u8 *file=arg0;
  s32 result;
- u8 *p;
- s32 n;
  u32 mode;
  u32 state;
- s32 count;
  s32 adj;
  __begin_critical_region(2);
  adj=0;
  mode=(*(u16 *)(file+4)>>6)&7;
  if((mode!=1 && mode!=2)||file[10]!=0) { errno=40; result=-1; }
  else {
+ u8 *p;
+ s32 n;
+ s32 count;
  state=(file[8]>>5)&7;
  if(state==0) result=*(s32 *)(file+0x18);
  else {
@@ -763,7 +766,7 @@ s32 fn_80231748(void *arg0) {
  __end_critical_region(2);
  return result;
 }
-
+#pragma optimization_level reset
 static inline s32 __unicode_to_UTF8_helper(char *s, u32 wchar) {
     extern u32 lbl_8036BDF8;
     u32 prefixes = lbl_8036BDF8;
@@ -1007,14 +1010,14 @@ do { *++db=*++tail; } while(--size);
 }
 }
 
+#pragma push
+#pragma optimization_level 2
 void fn_80231C20(u8 *dst, u8 *src, u32 n)
 {
   u32 blocks;
   u8 *s;
-  u32 new_var2;
   u8 *d;
   unsigned int i;
-  u8 *new_var;
   s = src + n;
   d = dst + n;
   i = ((u32) d) & 3;
@@ -1033,17 +1036,12 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
     {
       u32 b;
       u32 a;
-      new_var = d - 4;
+      b = *((u32 *) (s - 8));
       a = *((u32 *) (s - 4));
       --blocks;
-      ;
-      new_var2 = *((u32 *) (s - 12));
-      *((u32 *) new_var) = a;
-      a = new_var2;
-      if ((s && s) && s)
-      {
-      }
-      *((u32 *) (d - 8)) = *((u32 *) (s - 8));
+      *((u32 *) (d - 4)) = a;
+      a = *((u32 *) (s - 12));
+      *((u32 *) (d - 8)) = b;
       b = *((u32 *) (s - 16));
       *((u32 *) (d - 12)) = a;
       a = *((u32 *) (s - 20));
@@ -1052,10 +1050,10 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
       *((u32 *) (d - 20)) = a;
       a = *((u32 *) (s - 28));
       *((u32 *) (d - 24)) = b;
-      b = *((u32 *) (s - 32));
       s -= 32;
-      *((u32 *) (d - 28)) = a;
       d -= 32;
+      b = *((u32 *) s);
+      *((u32 *) (d + 4)) = a;
       *((u32 *) d) = b;
     }
     while (blocks != 0);
