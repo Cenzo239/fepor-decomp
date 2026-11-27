@@ -500,14 +500,6 @@ void fn_80132CDC(void) {
     Process_ClearFunc();
 }
 
-static inline u8 Ui_80132CFC_Counter(s8 lim, s8 v, s8 other, s32 adjust, s32 mul, s32 invert, s32 threshold, u8 *ltOut) {
-    u8 canDec = 0;
-    s32 delta = invert ? adjust - v : adjust + (s8)(v * mul);
-    if ((invert ? v < lim : lim < v) && delta > threshold) canDec = 1;
-    *ltOut = (u8)(invert ? other < v : v < other);
-    return canDec;
-}
-
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 4
