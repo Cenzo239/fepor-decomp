@@ -2703,6 +2703,7 @@ static inline s16 Track_Eval(u8 *track, f32 frame) {
         return 0;
     }
 }
+#pragma pop
 
 extern f32 lbl_803691E4;
 extern f32 lbl_8036920C;
