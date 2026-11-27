@@ -1985,7 +1985,6 @@ void fn_8012B554(void *arg0) {
         }
     }
 }
-#pragma opt_propagation reset
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs on
