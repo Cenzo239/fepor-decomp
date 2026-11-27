@@ -8547,17 +8547,6 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     d->table[4] = 0;
     Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
-#pragma push
-#pragma opt_strength_reduction off
-#pragma opt_common_subs off
-static u8 lbl_80311CA8[0x10];
-static u8 menuPad1[0x28];
-static u8 menuPad2[0x14];
-static s32 menuItems[8];
-static s32 *menuEntries[5];
-static u8 menuWork[0x28];
-#pragma pop
-
 #pragma opt_common_subs off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2) {
     s32 fn_800C0658(void);
