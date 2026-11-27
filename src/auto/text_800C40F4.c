@@ -4721,11 +4721,12 @@ Xml_Destroy(f,1);String_Destroy(&sp38,-1);
 
 #pragma use_lmw_stmw on
 void fn_800CCB9C(s32 self, char *arg1) {
-void *fn_800C42D8(u32); void fn_800C9ABC(void *,void *,void *); void *fn_800C91EC(void *,void *,void *);
-void fn_8023440C(void *,void *,u32); void fn_800C908C(void *,void *,void *);
-void fn_800C8CB4(void *,void *); void fn_800C8D58(void *,void *); u8 fn_800C8EFC(void *);
-void fn_800C9758(void *,void *,s32,s32); void *fn_800C96F8(void *,void *,s32); s32 strlen(char *);
-void fn_800CA18C(void *,void *,s32,void *); void fn_800C9120(void *,s16);
+void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
+void Str_CopyPad(void *,void *,u32); void fn_800C908C(void *,void *,void *);
+void Xml_GetChildName(void *,void *); void Xml_GetChildValue(void *,void *); u8 Xml_AdvanceChild(void *);
+void String_Assign(void *,void *,s32,s32); void *String_AssignCStr(void *,void *,s32); s32 strlen(char *);
+void fn_800CA18C(void *,void *,s32,void *); void Xml_Destroy(void *,s16);
+void String_Destroy(void *, s32);
 extern char lbl_802704F8[];
 struct Block { u32 a,b,c,d,e,f,g,h; };
 struct Block sp118,spF8;
@@ -4742,35 +4743,35 @@ arg0 = self;
 path = (u32)arg1;
 made1 = 0;
 made2 = 0;
-f = fn_800C42D8(0x60);
+f = Heap_Alloc(0x60);
 if (f != 0) {
-fn_800C9ABC(&sp54, lbl_802704F8 + 0x1D6, &sp14);
+String_Init(&sp54, lbl_802704F8 + 0x1D6, &sp14);
 made1 = 1;
-fn_800C9ABC(&sp48, (char *)path, &sp10);
+String_Init(&sp48, (char *)path, &sp10);
 made2 = 1;
-f = fn_800C91EC(f, &sp48, &sp54);
+f = Xml_ParseFile(f, &sp48, &sp54);
 }
-if ((s8)made2 != 0) fn_800C9A60(&sp48, -1);
-if ((s8)made1 != 0) fn_800C9A60(&sp54, -1);
+if ((s8)made2 != 0) String_Destroy(&sp48, -1);
+if ((s8)made1 != 0) String_Destroy(&sp54, -1);
 sp6C.cap=0; sp60.cap=0; sp6C.size=0; sp6C.data=0; sp6C.cap=0; sp60.size=0; sp60.data=0; sp60.cap=0;
-fn_800C9ABC(&sp3C, lbl_802704F8 + 0x1EB, &spC);
-fn_8023440C(&spF8, lbl_802704F8 + 0x359, 32); sp118 = spF8;
-fn_800C908C(f, &sp3C, &sp118); fn_800C9A60(&sp3C, -1);
+String_Init(&sp3C, lbl_802704F8 + 0x1EB, &spC);
+Str_CopyPad(&spF8, lbl_802704F8 + 0x359, 32); sp118 = spF8;
+fn_800C908C(f, &sp3C, &sp118); String_Destroy(&sp3C, -1);
 path = (u32)spD8;
-while (fn_800C8EFC(f) != 0) {
-fn_800C8CB4(&sp30, f); fn_800C9758(&sp6C, &sp30, 0, -1); fn_800C9A60(&sp30, -1);
-fn_800C8D58(spD8, f); fn_800C96F8(&sp60, (char *)path, strlen((char *)path));
+while (Xml_AdvanceChild(f) != 0) {
+Xml_GetChildName(&sp30, f); String_Assign(&sp6C, &sp30, 0, -1); String_Destroy(&sp30, -1);
+Xml_GetChildValue(spD8, f); String_AssignCStr(&sp60, (char *)path, strlen((char *)path));
 fn_800CA18C((void *)(arg0 + 0x1C8), M2C_FIELD(arg0, u8 **, 0x1D0) + M2C_FIELD(arg0, s32 *, 0x1CC) * 12, 1, &sp60);
 }
-fn_800C9ABC(&sp24, lbl_802704F8 + (short)0x1EB, &sp8); fn_8023440C(&sp98, lbl_802704F8 + 0x365, 32); spB8 = sp98;
-fn_800C908C(f, &sp24, &spB8); fn_800C9A60(&sp24, -1);
+String_Init(&sp24, lbl_802704F8 + (short)0x1EB, &sp8); Str_CopyPad(&sp98, lbl_802704F8 + 0x365, 32); spB8 = sp98;
+fn_800C908C(f, &sp24, &spB8); String_Destroy(&sp24, -1);
 path = (u32)sp78;
-while (fn_800C8EFC(f) != 0) {
-fn_800C8CB4(&sp18, f); fn_800C9758(&sp6C, &sp18, 0, -1); fn_800C9A60(&sp18, -1);
-fn_800C8D58(sp78, f); fn_800C96F8(&sp60, (char *)path, strlen((char *)path));
+while (Xml_AdvanceChild(f) != 0) {
+Xml_GetChildName(&sp18, f); String_Assign(&sp6C, &sp18, 0, -1); String_Destroy(&sp18, -1);
+Xml_GetChildValue(sp78, f); String_AssignCStr(&sp60, (char *)path, strlen((char *)path));
 fn_800CA18C((void *)(arg0 + 0x1D4), M2C_FIELD(arg0, u8 **, 0x1DC) + M2C_FIELD(arg0, s32 *, 0x1D8) * 12, 1, &sp60);
 }
-fn_800C9120(f, 1); fn_800C9A60(&sp60, -1); fn_800C9A60(&sp6C, -1);
+Xml_Destroy(f, 1); String_Destroy(&sp60, -1); String_Destroy(&sp6C, -1);
 }
 #pragma push
 #pragma cplusplus on
@@ -24020,11 +24021,7 @@ outside=0;cx=unit[0x19E];cy=unit[0x19F];
 if((s8)cx<(s8)map[8]||(s8)map[10]-1<(s8)cx||(s8)cy<(s8)map[9]||(s8)map[11]-1<(s8)cy)outside=1;
 if(outside)continue;
 r=weapon.ptr?Item_GetRangeForUnit(weapon.ptr,unit):0;t=weapon.ptr?M2C_FIELD(weapon.ptr,u8 *,29):0;
-{
- s8 x=(s8)unit[0x19E];
- s8 y=(s8)unit[0x19F];
- fn_800FDDBC(x,y,t,r,6);
-}
+fn_800FDDBC((s8)unit[0x19E],(s8)unit[0x19F],t,r,6);
 result.unit=unit;
 if(fn_800F7D28(self,&result)&&result.score>score){bx=result.x;score=result.score;by=result.y;item=result.item;best=result.unit;}
 }
