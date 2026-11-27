@@ -23641,6 +23641,7 @@ void fn_800F18A4(s32 arg0, s32 arg1) {
     }
     lbl_8032AC58[0x65C] = 1;
 }
+#pragma pop
 
 extern s8 lbl_8032AC58[];
 void fn_800F1C24(void *);
