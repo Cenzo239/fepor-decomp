@@ -293,6 +293,8 @@ void fn_80202A6C(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
  m[10]=-farg2*r; m[11]=r*-(farg3*farg2); m[12]=z; m[13]=z; m[14]=lbl_8036BC64; m[15]=z;
 }
 #pragma scheduling reset
+#pragma push
+#pragma scheduling off
 void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
 {
   extern f32 lbl_8036BC58;
