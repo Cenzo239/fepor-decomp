@@ -6049,6 +6049,7 @@ void fn_8013B254(void *arg0)
   x1 = *((s16 *) (((s8 *) new_var3) + 0x10));
   *((s16 *) (((s8 *) new_var3) + 0x10)) = (s16) (c + ((s16) (x1 - x0)));
 }
+#pragma pop
 
 void fn_8013B308(void) {
 
