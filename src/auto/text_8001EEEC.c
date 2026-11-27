@@ -108,7 +108,22 @@ void fn_8001EEEC(s8 *p)
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
+#pragma push
+#pragma opt_loop_invariants off
+typedef struct {
+    u8 pad0[0xC18E];
+    s16 marks[0x1000];
+    u8 padE18E[0x14190 - 0xE18E];
+    s16 *costs;
+} MapRangeBuffers;
+
+static inline void Map_ClearRangeCell(MapRangeBuffers *map, s32 index, s32 offset)
+{
+    *(s16 *)((u8 *)map->costs + offset) = -1;
+    map->marks[index] = 0;
+}
+
+void Map_ClipRangeByFacing(void *arg0, s8 x0, s8 y0, u8 facing)
 {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[];
@@ -120,8 +135,9 @@ void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
     s32 yoff;
     u8 *row;
     struct MapHi *mapHi;
-    s32 dir;
-    
+    u8 dir;
+    s32 ox;
+    s32 oy;
     s32 off;
     s32 idx;
     s32 y;
@@ -129,16 +145,16 @@ void Map_ClipRangeByFacing(void *arg0, s32 ox, s32 oy, u32 facing)
     s32 xv;
     s16 *costs;
 
-    base = gBattleMap;
     dir = (u8)facing;
+    base = gBattleMap;
     mapHi = (struct MapHi *)(base + 0x10000);
-    ox = (s8)ox;
-    oy = (s8)oy;
-    y = (s8)base[9];
+    ox = x0;
+    oy = y0;
+    y = ((s8 *)base)[9];
     goto outer_test;
 outer:
     yoff = (s8)y << 6;
-    x = (s8)base[8];
+    x = ((s8 *)base)[8];
     row = base + yoff;
     goto inner_test;
 inner:
@@ -152,26 +168,22 @@ inner:
                 switch (dir) {
                 case 1:
                     if (ox < x) {
-                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
-                        *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        Map_ClearRangeCell((MapRangeBuffers *)arg0, idx, off);
                     }
                     break;
                 case 2:
                     if (x < ox) {
-                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
-                        *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        Map_ClearRangeCell((MapRangeBuffers *)arg0, idx, off);
                     }
                     break;
                 case 8:
                     if (oy < y) {
-                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
-                        *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        Map_ClearRangeCell((MapRangeBuffers *)arg0, idx, off);
                     }
                     break;
                 case 4:
                     if (y < oy) {
-                        *(s16 *)((u8 *)(*(s16 **)((u8 *)arg0 + 0x14190)) + off) = -1;
-                        *(s16 *)((u8 *)arg0 + off + 0xC18E) = 0;
+                        Map_ClearRangeCell((MapRangeBuffers *)arg0, idx, off);
                     }
                     break;
                 }
@@ -189,6 +201,7 @@ outer_test:
         goto outer;
     }
 }
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
