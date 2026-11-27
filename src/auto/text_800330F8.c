@@ -1625,7 +1625,76 @@ void fn_80036150(s32 arg0) {
         fn_800351FC(arg0, var_r30, 0, arg0 + 0x8A0);
     }
 }
-#pragma optimization_level 3
+static inline u8 Battle_CalcBaseExp(s32 atk, s32 def) {
+    s8 fn_801F1C5C(void);
+    u8 fn_8003863C(void *);
+    s32 t = fn_801F1C5C();
+    s32 u = (u8)fn_8003863C((void *)def);
+    t = t + (u - (u8)fn_8003863C((void *)atk));
+    t = (t + 1) / 2;
+    if (t < 1) {
+        t = 1;
+    }
+    return (u8)t;
+}
+
+static inline u8 Battle_CalcBonusExp(s32 atk, s32 def) {
+    s8 fn_801F1CE8(void);
+    u8 fn_800385E4(void *);
+    u8 fn_80038570(void *);
+    s32 t;
+    if (*(s8 *)(def + 0x1A8) != 0) {
+        return 0;
+    }
+    t = fn_801F1CE8();
+    t = t + (u8)fn_800385E4((void *)def);
+    t = t - (u8)fn_800385E4((void *)atk);
+    t = t + (u8)fn_80038570((void *)def);
+    if (t < 0) {
+        t = 0;
+    }
+    return (u8)t;
+}
+
+static inline u8 Battle_CalcSideHits(s32 atk, s32 def, s32 out) {
+    extern u8 lbl_8026A120[];
+    extern u8 gBattleState[];
+    void DebugPrint(void *, ...);
+    void BattleAnim_Queue(void *, s32, s8);
+    u8 fn_800386B0(void *);
+    u8 fn_8003D094(void *, u8);
+    u8 fn_8003D13C(void *);
+    u8 Status_Test(void *, s32);
+    void fn_8014C5F4(void *, s32);
+    u8 hit;
+
+    if ((u8)Status_Test((void *)(def + 0x1BC), 7) != 0) {
+        return 0;
+    }
+    BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)atk));
+    if (*(u8 *)(atk + 0x2D6) == 0) {
+        hit = fn_8003D094((void *)atk, 1);
+    } else {
+        u8 base = Battle_CalcBaseExp(atk, def);
+        u8 bonus = Battle_CalcBonusExp(atk, def);
+        hit = fn_8003D094((void *)atk, (u8)(base + bonus));
+    }
+    if ((u8)hit > (u8)fn_8003D13C((void *)atk)) {
+        hit = fn_8003D13C((void *)atk);
+    }
+    BattleAnim_Queue((void *)out, 0x28, (s8)hit);
+    *(u8 *)(atk + 0x2C9) = hit;
+    fn_8014C5F4(gBattleState, (u8)hit);
+    {
+        u8 base = Battle_CalcBaseExp(atk, def);
+        u8 bonus = Battle_CalcBonusExp(atk, def);
+        DebugPrint(lbl_8026A120 + 0x256, (u8)hit, base, bonus);
+    }
+    return hit;
+}
+
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 void Battle_CalcHits(s32 self) {
     extern u8 lbl_8026A120[];
@@ -1643,145 +1712,148 @@ void Battle_CalcHits(s32 self) {
     void fn_8014C5F4(void *, s32);
     s8 fn_801F1C5C(void);
     s8 fn_801F1CE8(void);
-    s32 unit = self;
-    u32 out;
     s32 t;
     s32 u;
-    s32 v;
+    u8 v;
     u8 hit;
+    u32 out;
 
-    if (*(u32 *)(unit + 0x190) != *(u32 *)(unit + 0x470)) {
-        if ((u8)fn_8003D13C((void *)unit) != 0) {
-            out = unit + 0x8A0;
-            if ((u8)Status_Test((void *)(unit + 0x49C), 7) != 0) {
+    if (*(u32 *)(self + 0x190) != *(u32 *)(self + 0x470)) {
+        if ((u8)fn_8003D13C((void *)self) != 0) {
+            out = self + 0x8A0;
+            if ((u8)Status_Test((void *)(self + 0x49C), 7) != 0) {
                 hit = 0;
             } else {
-                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)unit));
-                if (*(u8 *)(unit + 0x2D6) == 0) {
-                    u = 1;
+                u8 arg;
+                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)self));
+                if (*(u8 *)(self + 0x2D6) == 0) {
+                    arg = 1;
                 } else {
                     t = fn_801F1C5C();
-                    u = (u8)fn_8003863C((void *)(unit + 0x2E0));
-                    t = t + (u - (u8)fn_8003863C((void *)unit));
+                    u = (u8)fn_8003863C((void *)(self + 0x2E0));
+                    t = t + (u - (u8)fn_8003863C((void *)self));
                     t = (t + 1) / 2;
                     if (t < 1) {
                         t = 1;
                     }
                     u = (u8)t;
-                    if ((s8)*(u8 *)(unit + 0x488) != 0) {
+                    if ((s8)*(u8 *)(self + 0x488) != 0) {
                         v = 0;
                     } else {
                         t = fn_801F1CE8();
-                        t = t + (u8)fn_800385E4((void *)(unit + 0x2E0));
-                        t = t - (u8)fn_800385E4((void *)unit);
-                        v = t + (u8)fn_80038570((void *)(unit + 0x2E0));
-                        if (v < 0) {
-                            v = 0;
+                        t = t + (u8)fn_800385E4((void *)(self + 0x2E0));
+                        t = t - (u8)fn_800385E4((void *)self);
+                        t = t + (u8)fn_80038570((void *)(self + 0x2E0));
+                        if (t < 0) {
+                            t = 0;
                         }
+                        v = (u8)t;
                     }
-                    u = (u8)u + (u8)v;
+                    arg = (u8)((u8)u + v);
                 }
-                hit = fn_8003D094((void *)unit, (u8)u);
-                if ((u8)hit > (u8)fn_8003D13C((void *)unit)) {
-                    hit = fn_8003D13C((void *)unit);
+                hit = fn_8003D094((void *)self, arg);
+                if ((u8)hit > (u8)fn_8003D13C((void *)self)) {
+                    hit = fn_8003D13C((void *)self);
                 }
                 BattleAnim_Queue((void *)out, 0x28, (s8)hit);
                 out = (u8)hit;
-                *(u8 *)(unit + 0x2C9) = hit;
+                *(u8 *)(self + 0x2C9) = hit;
                 fn_8014C5F4(gBattleState, out);
                 t = fn_801F1C5C();
-                u = (u8)fn_8003863C((void *)(unit + 0x2E0));
-                t = t + (u - (u8)fn_8003863C((void *)unit));
+                u = (u8)fn_8003863C((void *)(self + 0x2E0));
+                t = t + (u - (u8)fn_8003863C((void *)self));
                 t = (t + 1) / 2;
                 if (t < 1) {
                     t = 1;
                 }
                 u = (u8)t;
-                if ((s8)*(u8 *)(unit + 0x488) != 0) {
+                if ((s8)*(u8 *)(self + 0x488) != 0) {
                     v = 0;
                 } else {
                     t = fn_801F1CE8();
-                    t = t + (u8)fn_800385E4((void *)(unit + 0x2E0));
-                    t = t - (u8)fn_800385E4((void *)unit);
-                    v = t + (u8)fn_80038570((void *)(unit + 0x2E0));
-                    if (v < 0) {
-                        v = 0;
+                    t = t + (u8)fn_800385E4((void *)(self + 0x2E0));
+                    t = t - (u8)fn_800385E4((void *)self);
+                    t = t + (u8)fn_80038570((void *)(self + 0x2E0));
+                    if (t < 0) {
+                        t = 0;
                     }
+                    v = (u8)t;
                 }
-                DebugPrint(lbl_8026A120 + 0x256, (u8)out, (u8)u, (u8)v);
+                DebugPrint(lbl_8026A120 + 0x256, (u8)out, (u8)u, v);
             }
-            if ((u8)hit != 0) {
-                BattleAnim_Queue((void *)(unit + 0x8A0), 0x25, 0);
-                fn_800351FC((void *)unit, hit, (void *)(unit + 0x2E0), (void *)(unit + 0x8A0));
-            } else {
+            if ((u8)hit == 0) {
                 return;
             }
+            BattleAnim_Queue((void *)(self + 0x8A0), 0x25, 0);
+            fn_800351FC((void *)self, hit, (void *)(self + 0x2E0), (void *)(self + 0x8A0));
         }
-        if ((u8)fn_8003D13C((void *)(unit + 0x2E0)) != 0) {
-            out = unit + 0x8A0;
-            if ((u8)Status_Test((void *)(unit + 0x1BC), 7) != 0) {
+        if ((u8)fn_8003D13C((void *)(self + 0x2E0)) != 0) {
+            out = self + 0x8A0;
+            if ((u8)Status_Test((void *)(self + 0x1BC), 7) != 0) {
                 hit = 0;
             } else {
-                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)(unit + 0x2E0)));
-                if (*(u8 *)(unit + 0x5B6) == 0) {
-                    u = 1;
+                u8 arg;
+                BattleAnim_Queue((void *)out, 0x27, (s8)fn_800386B0((void *)(self + 0x2E0)));
+                if (*(u8 *)(self + 0x5B6) == 0) {
+                    arg = 1;
                 } else {
                     t = fn_801F1C5C();
-                    u = (u8)fn_8003863C((void *)unit);
-                    t = t + (u - (u8)fn_8003863C((void *)(unit + 0x2E0)));
+                    u = (u8)fn_8003863C((void *)self);
+                    t = t + (u - (u8)fn_8003863C((void *)(self + 0x2E0)));
                     t = (t + 1) / 2;
                     if (t < 1) {
                         t = 1;
                     }
                     u = (u8)t;
-                    if ((s8)*(u8 *)(unit + 0x1A8) != 0) {
+                    if ((s8)*(u8 *)(self + 0x1A8) != 0) {
                         v = 0;
                     } else {
                         t = fn_801F1CE8();
-                        t = t + (u8)fn_800385E4((void *)unit);
-                        t = t - (u8)fn_800385E4((void *)(unit + 0x2E0));
-                        v = t + (u8)fn_80038570((void *)unit);
-                        if (v < 0) {
-                            v = 0;
+                        t = t + (u8)fn_800385E4((void *)self);
+                        t = t - (u8)fn_800385E4((void *)(self + 0x2E0));
+                        t = t + (u8)fn_80038570((void *)self);
+                        if (t < 0) {
+                            t = 0;
                         }
+                        v = (u8)t;
                     }
-                    u = (u8)u + (u8)v;
+                    arg = (u8)((u8)u + v);
                 }
-                hit = fn_8003D094((void *)(unit + 0x2E0), (u8)u);
-                if ((u8)hit > (u8)fn_8003D13C((void *)(unit + 0x2E0))) {
-                    hit = fn_8003D13C((void *)(unit + 0x2E0));
+                hit = fn_8003D094((void *)(self + 0x2E0), arg);
+                if ((u8)hit > (u8)fn_8003D13C((void *)(self + 0x2E0))) {
+                    hit = fn_8003D13C((void *)(self + 0x2E0));
                 }
                 BattleAnim_Queue((void *)out, 0x28, (s8)hit);
                 out = (u8)hit;
-                *(u8 *)(unit + 0x5A9) = hit;
+                *(u8 *)(self + 0x5A9) = hit;
                 fn_8014C5F4(gBattleState, out);
                 t = fn_801F1C5C();
-                u = (u8)fn_8003863C((void *)unit);
-                t = t + (u - (u8)fn_8003863C((void *)(unit + 0x2E0)));
+                u = (u8)fn_8003863C((void *)self);
+                t = t + (u - (u8)fn_8003863C((void *)(self + 0x2E0)));
                 t = (t + 1) / 2;
                 if (t < 1) {
                     t = 1;
                 }
                 u = (u8)t;
-                if ((s8)*(u8 *)(unit + 0x1A8) != 0) {
+                if ((s8)*(u8 *)(self + 0x1A8) != 0) {
                     v = 0;
                 } else {
                     t = fn_801F1CE8();
-                    t = t + (u8)fn_800385E4((void *)unit);
-                    t = t - (u8)fn_800385E4((void *)(unit + 0x2E0));
-                    v = t + (u8)fn_80038570((void *)unit);
-                    if (v < 0) {
-                        v = 0;
+                    t = t + (u8)fn_800385E4((void *)self);
+                    t = t - (u8)fn_800385E4((void *)(self + 0x2E0));
+                    t = t + (u8)fn_80038570((void *)self);
+                    if (t < 0) {
+                        t = 0;
                     }
+                    v = (u8)t;
                 }
-                DebugPrint(lbl_8026A120 + 0x256, (u8)out, (u8)u, (u8)v);
+                DebugPrint(lbl_8026A120 + 0x256, (u8)out, (u8)u, v);
             }
             if ((u8)hit != 0) {
-                BattleAnim_Queue((void *)(unit + 0x8A0), 0x26, 0);
-                fn_800351FC((void *)(unit + 0x2E0), hit, (void *)unit, (void *)(unit + 0x8A0));
+                BattleAnim_Queue((void *)(self + 0x8A0), 0x26, 0);
+                fn_800351FC((void *)(self + 0x2E0), hit, (void *)self, (void *)(self + 0x8A0));
             }
         }
     }
 }
-#pragma optimization_level reset
-#pragma use_lmw_stmw reset
+#pragma pop
