@@ -527,6 +527,7 @@ void fn_8020CED0(void) {
 }
 
 #pragma dont_inline on
+extern volatile u32 __DIRegs_abs[16] : 0xCC006000;
 void DVDInit(void) {
  extern s32 DVDInitialized_803685DC;
  extern const char *__DVDVersion;
@@ -543,7 +544,8 @@ void DVDInit(void) {
  __DVDFSInit(); __DVDClearWaitingQueue(); __DVDInitWA();
  MotorState_803685D8=0; bootInfo_803685A0=(u8*)0x80000000; IDShouldBe_8036859C=bootInfo_803685A0;
  __OSSetInterruptHandler(0x15,__DVDInterruptHandler); __OSUnmaskInterrupts(0x400); OSInitThreadQueue((void*)&__DVDThreadQueue);
- *(volatile u32*)0xCC006000=0x2a; *(volatile u32*)0xCC006004=0;
+ __DIRegs_abs[0] = 0x2a;
+ __DIRegs_abs[1] = 0;
  if(*(u32*)(bootInfo_803685A0+0x20)==0xE5207C22) { OSReport("load fst\n"); __fstLoad(); }
  else if(*(u32*)(bootInfo_803685A0+0x20)!=0x0D15EA5E) FirstTimeInBootrom_803685D4=1;
  }
