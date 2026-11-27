@@ -1538,8 +1538,8 @@ void fn_8005DB40(u8 *arg0, char *arg1, u8 *arg2, u16 arg3) {
     char *ext;
     s32 match;
     u8 c;
-    u8 drive;
     s32 size;
+    u8 drive;
     s32 off;
     u32 handle;
 
