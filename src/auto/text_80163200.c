@@ -11419,7 +11419,7 @@ void fn_80175954(void *arg0) {
 void *fn_80024398(void *, void *, s32);
 u8 fn_8011AC10(void); u32 fn_8013FF94(void *, s32, s32);
 void fn_801658DC(u32, void *); void *fn_80175A2C(void); void *fn_80175CA0(void); u8 fn_801EAA88(void);
-extern u16 lbl_80278080[]; extern f32 lbl_8036AB78; extern f32 lbl_8036AB7C;
+extern u16 lbl_80278080[]; extern const f32 lbl_8036AB78; extern const f32 lbl_8036AB7C;
 struct Params { u8 pad[8]; s16 x,y,z; u8 padE[6]; s16 a; u8 pad16[2]; f32 scale; u8 pad1c[2]; s16 mode; };
 void *self; struct Params *obj; u32 ret;
 f32 value=lbl_8036AB78;
