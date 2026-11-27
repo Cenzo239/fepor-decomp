@@ -1,6 +1,5 @@
 /* string pool for double2hex / printf float specials */
-const char stringBase0_80282C60[] =
-    "\0-INF\0-inf\0INF\0inf\0-NAN\0-nan\0NAN\0nan";
+extern const char stringBase0_80282C60[];
 #define double2hex_strpool stringBase0_80282C60
 
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
