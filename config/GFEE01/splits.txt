@@ -168,7 +168,10 @@ auto/text_800536CC.c:
 	.text       start:0x800536CC end:0x800537E8
 
 auto/text_800537E8.c:
-	.text       start:0x800537E8 end:0x80054314
+	.text       start:0x800537E8 end:0x80053F68
+
+auto/text_80053F68.c:
+	.text       start:0x80053F68 end:0x80054314
 
 auto/text_80054314.c:
 	.text       start:0x80054314 end:0x80054850
