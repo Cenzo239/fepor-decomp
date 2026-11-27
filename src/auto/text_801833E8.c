@@ -10379,22 +10379,24 @@ s32 fn_80196268(void *arg0) {
     return 1;
 }
 
+#pragma push
+#pragma optimization_level 3
 s32 fn_80196388(s32 arg0) {
-    void **fn_800285C0(void *);
+    void **UiCtx_GetItemSlot(void *);
     void fn_80037040(s32, u8, u8);
     void fn_80094A08(s32, s32);
-    extern u8 lbl_802EF4C8[];
-    void fn_8009127C(void *, s32, void *);
+    extern u8 gUiContext[];
+    void StatBonus_ShowHelp(void *, s32, void *);
     s32 temp_r31;
-    extern u8 lbl_80330EAC[];
+    extern u8 gBattle[];
     void *temp_r30;
 
-    temp_r31 = *(s32 *)lbl_802EF4C8;
-    temp_r30 = *fn_800285C0(lbl_802EF4C8);
+    temp_r31 = *(s32 *)gUiContext;
+    temp_r30 = *UiCtx_GetItemSlot(gUiContext);
     fn_80037040(temp_r31, ((u8 *)temp_r30)[0x28], ((u8 *)temp_r30)[0x27]);
-    fn_80094A08(temp_r31, *(s8 *)&lbl_802EF4C8[0xA]);
-    *(u32 *)((unsigned short)lbl_80330EAC + 0xCAC) |= 0x2000;
-    fn_8009127C(temp_r30, arg0, lbl_80330EAC);
+    fn_80094A08(temp_r31, *(s8 *)&gUiContext[0xA]);
+    *(u32 *)((unsigned short)gBattle + 0xCAC) |= 0x2000;
+    StatBonus_ShowHelp(temp_r30, arg0, gBattle);
     return 1;
 }
 
