@@ -3128,7 +3128,10 @@ M2C_FIELD(M2C_FIELD(arg0,void **,0x48),s32 *,0x48)=1;
 fn_8013F1A0(arg0,M2C_FIELD(arg0,void **,0x48));
 }
 
-extern "C" void fn_8013692C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+extern "C" void *fn_8013692C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
 struct Sub { virtual void v0()=0; virtual void v1()=0; virtual void v2()=0; virtual void v3()=0; virtual void v4()=0; virtual void v5()=0; virtual void v6()=0; virtual s16 height()=0; };
 extern u8 lbl_802921B0[];
 extern f32 lbl_8036A5FC;
@@ -3138,16 +3141,12 @@ s32 bottom;
 s16 halfWidth, halfHeight;
 fn_80136AC4(self,1,arg1,arg2,arg3,arg4,arg5);
 *(void **)self=lbl_802921B0;
-bottom=(s32)((f32)arg4-lbl_8036A5FC*(f32)((Sub *)(self+0x74))->height());
-{ s16 height=((Sub *)(self+0x4c))->height();
-f32 h;
-f32 scale;
-h=(f32)height;
-scale=lbl_8036A5FC;
+arg4=(s32)((f32)arg4-lbl_8036A5FC*(f32)((Sub *)(self+0x74))->height());
+{ s32 top=(s32)(lbl_8036A5FC * (f32)((Sub *)(self+0x4c))->height());
 *(s16 *)(self+0x12)=0;
-*(s16 *)(self+0x14)=(s32)(h*scale); }
+*(s16 *)(self+0x14)=top; }
 *(s16 *)(self+0x16)=arg3;
-*(s16 *)(self+0x18)=bottom;
+*(s16 *)(self+0x18)=arg4;
 halfWidth=((s16)(*(s16 *)(self+0x16)-*(s16 *)(self+0x12))+1)>>1;
 halfHeight=((Sub *)(self+0x74))->height()>>1;
 *(s16 *)(self+0x5a)=halfWidth;
@@ -3157,9 +3156,9 @@ halfHeight=((Sub *)(self+0x74))->height()>>1;
 *(s16 *)(self+0x82)=halfWidth;
 *(s16 *)(self+0x84)=halfHeight+span; }
 *(s16 *)(self+0x86)=0;
-
+return self;
 }
-
+#pragma pop
 #pragma cplusplus reset
 
 #pragma use_lmw_stmw on
@@ -4666,77 +4665,79 @@ extern "C" void fn_80139538(void *arg0, s32 arg1) {
 changed:
  if(old!=M2C_FIELD(arg0,s16 *,0x4E)) Ui_PlaySeCue(lbl_802768A0+0x1D,100);
 }
-#pragma pop
+#pragma optimization_level 2
+#pragma opt_propagation off
 extern "C" void fn_801396C4(void *self, void *other) {
-struct Obj {
-virtual void v0()=0;
-virtual void v1()=0;
-virtual void v2()=0;
-virtual void v3()=0;
-virtual void v4()=0;
-virtual void v5()=0;
-virtual void v6()=0;
-virtual void v7()=0;
-virtual void v8()=0;
-virtual void v9()=0;
-virtual void v10()=0;
-virtual s32 v11()=0;
-virtual void v12()=0;
-virtual void v13()=0;
-virtual void v14()=0;
-virtual void v15()=0;
-virtual void v16(s16,s16,s32,s16,u8)=0;
-};
-void fn_8013A39C(void *,void *);
-void Prim2D_Begin(void);
-void Prim2D_AddZ(f32);
-void Prim2D_PrepareTex(void);
-void Prim2D_SetAlphaByte(s32);
-s32 Text_MeasureHeight(s32,f32);
-void Ui_DrawRouteIconEx(s16,s32,u8);
-extern f32 lbl_8036A670,lbl_8036A674,lbl_8036A678;
-s32 x;
-s16 height;
-s16 y;
-u8 active;
-s32 width;
-s16 old;
-if(M2C_FIELD(self,s16 *,0x4E)!=0x7FFF) {fn_8013A39C(self,other);return;}
-((Obj *)self)->v3();
-width=((Obj *)self)->v11();
-old=M2C_FIELD(self,s16 *,0x52);
-height=M2C_FIELD(self,s16 *,0x5A);
-y=M2C_FIELD(self,s16 *,0x18)-M2C_FIELD(self,s16 *,0x14);
-x=M2C_FIELD(self,s16 *,0x62);
-if(old<0 || M2C_FIELD(self,s16 *,0x54)<0) {
-M2C_FIELD(self,s16 *,0x52)=x;
-M2C_FIELD(self,s16 *,0x54)=y;
-} else {
-M2C_FIELD(self,s16 *,0x52)=(old+((s16)x+1))>>1;
-M2C_FIELD(self,s16 *,0x54)=(M2C_FIELD(self,s16 *,0x54)+(y+1))>>1;
+    struct Obj {
+        virtual void v0()=0;
+        virtual void v1()=0;
+        virtual void v2()=0;
+        virtual void v3()=0;
+        virtual void v4()=0;
+        virtual void v5()=0;
+        virtual void v6()=0;
+        virtual void v7()=0;
+        virtual void v8()=0;
+        virtual void v9()=0;
+        virtual void v10()=0;
+        virtual s32 v11()=0;
+        virtual void v12()=0;
+        virtual void v13()=0;
+        virtual void v14()=0;
+        virtual void v15()=0;
+        virtual void v16(s16,s32,s32,s16,u8)=0;
+    };
+    void fn_8013A39C(void *,void *);
+    void Prim2D_Begin(void);
+    void Prim2D_AddZ(f32);
+    void Prim2D_PrepareTex(void);
+    void Prim2D_SetAlphaByte(s32);
+    s32 Text_MeasureHeight(s32,f32);
+    void Ui_DrawRouteIconEx(s16,s32,u8);
+    extern f32 lbl_8036A670,lbl_8036A674,lbl_8036A678;
+    s16 x;
+    s16 height;
+    s32 y;
+    u8 active;
+    s32 width;
+    s32 old;
+    if(M2C_FIELD(self,s16 *,0x4E)!=0x7FFF) {fn_8013A39C(self,other);return;}
+    ((Obj *)self)->v3();
+    width=((Obj *)self)->v11();
+    old=M2C_FIELD(self,s16 *,0x52);
+    height=M2C_FIELD(self,s16 *,0x5A);
+    x=M2C_FIELD(self,s16 *,0x62);
+    y=(s16)(M2C_FIELD(self,s16 *,0x18)-M2C_FIELD(self,s16 *,0x14));
+    if((s16)old<0 || M2C_FIELD(self,s16 *,0x54)<0) {
+        M2C_FIELD(self,s16 *,0x52)=x;
+        M2C_FIELD(self,s16 *,0x54)=y;
+    } else {
+        s32 x1 = x + 1;
+        s32 y1 = y + 1;
+        M2C_FIELD(self,s16 *,0x52)=(old+x1)>>1;
+        M2C_FIELD(self,s16 *,0x54)=(M2C_FIELD(self,s16 *,0x54)+y1)>>1;
+    }
+    if(M2C_FIELD(self,u8 *,0x4C)) {
+        u8 flag;
+        void *ptr;
+        s16 h;
+        active=0;
+        flag=active;
+        if(!M2C_FIELD(other,u8 *,0x2D)&&!M2C_FIELD(other,u8 *,0x2E))flag=1;
+        if(flag) {
+            ptr=M2C_FIELD(other,u32 *,0x34)?M2C_FIELD(M2C_FIELD(other,void **,0x38),void **,8):0;
+            if(ptr==self)active=1;
+        }
+        Prim2D_Begin();Prim2D_AddZ(lbl_8036A670);Prim2D_PrepareTex();
+        h=M2C_FIELD(self,s16 *,0x5A);
+        Ui_DrawRouteIconEx(M2C_FIELD(self,s16 *,0x52),M2C_FIELD(self,s16 *,0x54)+(s16)((h-Text_MeasureHeight(-1,lbl_8036A674))>>1),active);
+        Prim2D_Begin();Prim2D_AddZ(lbl_8036A678);Prim2D_PrepareTex();
+        ((Obj *)self)->v16((s16)(x-M2C_FIELD(self,s16 *,0x62)),y,width,height,active);
+    }
+    Prim2D_Begin();Prim2D_SetAlphaByte(0x80);Prim2D_PrepareTex();
 }
-if(M2C_FIELD(self,u8 *,0x4C)) {
-u8 flag;
-void *ptr;
-s32 h;
-active=0;
-flag=active;
-if(!M2C_FIELD(other,u8 *,0x2D)&&!M2C_FIELD(other,u8 *,0x2E))flag=1;
-if(flag) {
-ptr=M2C_FIELD(other,u32 *,0x34)?M2C_FIELD(M2C_FIELD(other,void **,0x38),void **,8):0;
-if(ptr==self)active=1;
-}
-Prim2D_Begin();Prim2D_AddZ(lbl_8036A670);Prim2D_PrepareTex();
-h=M2C_FIELD(self,s16 *,0x5A);
-Ui_DrawRouteIconEx(M2C_FIELD(self,s16 *,0x52),M2C_FIELD(self,s16 *,0x54)+(s16)(((s16)h-Text_MeasureHeight(-1,lbl_8036A674))>>1),active);
-Prim2D_Begin();Prim2D_AddZ(lbl_8036A678);Prim2D_PrepareTex();
-((Obj *)self)->v16((s16)(x-M2C_FIELD(self,s16 *,0x62)),y,width,height,active);
-}
-Prim2D_Begin();Prim2D_SetAlphaByte(0x80);Prim2D_PrepareTex();
-}
-
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
+#pragma opt_propagation reset
+#pragma optimization_level reset
 
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset
@@ -7155,71 +7156,68 @@ extern "C" void fn_8013CA2C(void *arg0) {
 extern "C" void fn_8013CA68(void *arg0, void *arg1) {
     struct Obj {
         u8 pad[4];
-        virtual s32 v0() = 0;
-        virtual s32 v1() = 0;
-        virtual s32 v2() = 0;
-        virtual s32 v3() = 0;
-        virtual s32 v4() = 0;
-        virtual s32 v5() = 0;
-        virtual s32 v6() = 0;
-        virtual s32 v7() = 0;
-        virtual s32 v8() = 0;
-        virtual s32 v9() = 0;
-        virtual s32 v10() = 0;
-        virtual s32 v11() = 0;
-        virtual s32 v12() = 0;
-        virtual s32 v13() = 0;
-        virtual s32 v14() = 0;
-        virtual s32 v15() = 0;
-        virtual s32 v16() = 0;
-        virtual s32 v17() = 0;
-        virtual s16 v18(s32, s16) = 0;
-        virtual s16 v19() = 0;
-        virtual s32 v20() = 0;
-        virtual s16 v21() = 0;
-        virtual s16 v22() = 0;
-        virtual s32 v23() = 0;
-        virtual s32 v24() = 0;
-        virtual f32 v25(s32, s16) = 0;
+        virtual void v0() = 0;
+        virtual void v1() = 0;
+        virtual void v2() = 0;
+        virtual void v3() = 0;
+        virtual void v4() = 0;
+        virtual void v5() = 0;
+        virtual void v6() = 0;
+        virtual void v7() = 0;
+        virtual void v8() = 0;
+        virtual void v9() = 0;
+        virtual void v10() = 0;
+        virtual void v11() = 0;
+        virtual void v12() = 0;
+        virtual void v13() = 0;
+        virtual void v14() = 0;
+        virtual void v15() = 0;
+        virtual void v16() = 0;
+        virtual void v17() = 0;
+        virtual s16 getW() = 0;
+        virtual s16 getH() = 0;
+        virtual void v20() = 0;
+        virtual s16 getX() = 0;
+        virtual s16 getY() = 0;
+        virtual void v23() = 0;
+        virtual void v24() = 0;
+        virtual f32 getZ() = 0;
     };
     f32 UiWin_GetFade(void *);
     f32 Math_Ease(s32, f32, f32, f32, f32);
-    void Prim2D_Begin(void);
     void fn_80009C20(f32, f32, f32, f32, f32, f32, f32, f32);
-    void Prim2D_SetColorByte(u8);
-    void Prim2D_SetAlphaByte(u8);
+    void Prim2D_Begin(void);
+    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetAlphaByte(s32);
     void Prim2D_PrepareTex(void);
-    extern f32 lbl_8036A6C0;
-    extern f64 lbl_8036A6C8;
-    extern f32 lbl_8036A6E0;
-    extern f32 lbl_8036A6E4;
-    f32 f31;
-    f32 f30;
-    f32 half2_f;
-    f32 half_f;
-    f32 fade;
-    f32 eased;
-    s16 v;
-    s16 v2;
-    u8 flag;
-    u8 alpha;
+
+    f32 fade, scale;
+    u8 focused, alpha;
+    void *o;
 
     fade = UiWin_GetFade(arg1);
-    eased = Math_Ease(5, lbl_8036A6E0, lbl_8036A6C0, fade, lbl_8036A6C0);
+    scale = Math_Ease(5, 0.0f, 1.0f, fade, 1.0f);
     Prim2D_Begin();
-    v = ((Obj *)arg0)->v19();
-    half_f = (f32)((v + (s32)((u32)v >> 31)) >> 1);
-    v2 = ((Obj *)arg0)->v18((s32)half_f, v);
-    half2_f = (f32)((v2 + (s32)((u32)v2 >> 31)) >> 1);
-    f30 = ((Obj *)arg0)->v25((s32)half2_f, v2);
-    f31 = ((Obj *)arg0)->v22();
-    fn_80009C20((f32)((Obj *)arg0)->v21(), f31, f30, half2_f, half_f, eased, eased, lbl_8036A6E0);
-    Prim2D_SetColorByte((s32)(lbl_8036A6E4 * fade));
-    flag = 0;
-    if (*(u8 *)((u8 *)arg1 + 0x2d) == 0 && *(u8 *)((u8 *)arg1 + 0x2e) == 0) {
-        flag = 1;
+    o = arg0;
+    fn_80009C20(
+        ((Obj *)o)->getX(),
+        ((Obj *)o)->getY(),
+        ((Obj *)o)->getZ(),
+        ((Obj *)o)->getW() / 2,
+        ((Obj *)o)->getH() / 2,
+        scale,
+        scale,
+        0.0f
+    );
+    Prim2D_SetColorByte((s32)(255.99f * fade));
+    focused = 0;
+    if (*((u8 *)arg1 + 0x2D) == 0 && *((u8 *)arg1 + 0x2E) == 0) {
+        focused = 1;
     }
-    alpha = flag ? 0x80 : 0x40;
+    alpha = 0x40;
+    if (focused) {
+        alpha = 0x80;
+    }
     Prim2D_SetAlphaByte(alpha);
     Prim2D_PrepareTex();
 }
