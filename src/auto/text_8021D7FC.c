@@ -2533,6 +2533,7 @@ void GXBegin(s32 primitive, s32 format, s32 count) {
     *(volatile u16 *)0xCC008000 = (u16)count;
 }
 
+#pragma optimization_level 2
 #pragma global_optimizer off
 void fn_80220EBC(void)
 {
