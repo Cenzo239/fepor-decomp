@@ -37,10 +37,10 @@ static inline u8 Ui_TickMarker(void *pos) {
 extern "C" void *Heap_Alloc(s32);
 #pragma cplusplus off
 static inline s32 AchieveList_GoldAt(void *arg0,s32 i) { return *(s32*)((u8*)arg0+0x200+i*4); }
-static inline void UiMenu_LoadPadState(s8 *b0, s32 *held, s32 *buttons, s32 *trig) {
+static inline void UiMenu_LoadPadState(u8 *b0, s32 *held, s32 *buttons, s32 *trig) {
     extern void *gPadInput;
     extern s8 lbl_803682B0;
-    *b0 = lbl_803682B0;
+    *b0 = (u8)lbl_803682B0;
     *held = *(s32 *)((u8 *)gPadInput + 4);
     *buttons = *(s32 *)((u8 *)gPadInput + 0xC);
     *trig = *held & (*(s32 *)((u8 *)gPadInput + 8) ^ *held);
