@@ -12,7 +12,6 @@ static inline s32 Heap_FindUnusedIndexFrom(void **table, s32 i) {
     for (; i < 16; i++) if (table[i] == 0) return i;
     return -1;
 }
-static inline u32 String_Size(const u32 *str) { return str[0]; }
 typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
 typedef struct AiActionMap {
         s32 width;
@@ -7859,30 +7858,24 @@ u32 *fn_800D6898(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3, void *arg4) {
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
     extern char __files[];
-
     u32 size;
     u32 len;
     char *p;
+    void *alloc;
 
-    size = *(volatile u32 *)arg1;
-
+    size = String_Size(arg1);
     arg0[1] = 0;
-
     if (arg2 > size) {
         fprintf(__files + 0xA0, lbl_802704F8 + 0x9B3);
         abort();
     }
-
+    alloc = arg4;
     len = size - arg2;
-
     if (len > arg3) {
         len = arg3;
     }
-
     p = (char *)arg1[2] + arg2;
-
-    String_InitFromRange(arg0, p, p + len, arg4, tag);
-
+    String_InitFromRange(arg0, p, p + len, alloc, tag);
     return arg0;
 }
 #pragma use_lmw_stmw reset
