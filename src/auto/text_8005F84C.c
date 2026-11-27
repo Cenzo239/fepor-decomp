@@ -3479,29 +3479,22 @@ void *MTXRotDegOrder(void *node, void *out)
 #pragma inline_max_size(1000)
 #pragma inline_depth(2)
 void fn_80065AF8(s32 arg0, void *arg1, void *arg2, void *arg3) {
-    void fn_80202024(void *, void *, void *);
-    void *out = arg3;
-    void *base = arg2;
-    s32 root = arg0;
-    void *child;
-    void *n;
-    void *p;
-    void *dst;
-    u32 off;
+    void PSMTXConcat(void *, void *, void *);
 
-    p = *(void **)arg1;
-    if (p) {
-        dst = (u8 *)base + *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
-        fn_80202024((u8 *)base + *(u16 *)((u8 *)p + 0xEC) * 0x30, dst, dst);
+    if (*(void **)arg1) {
+        void *dst = (u8 *)arg2 + *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
+        PSMTXConcat((u8 *)arg2 + *(u16 *)((u8 *)*(void **)arg1 + 0xEC) * 0x30, dst, dst);
     }
-    if (out) {
-        off = *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
-        fn_80202024((u8 *)base + off, (u8 *)arg1 + 0x10, (u8 *)out + off);
+    if (arg3) {
+        u32 off = *(u16 *)((u8 *)arg1 + 0xEC) * 0x30;
+        PSMTXConcat((u8 *)arg2 + off, (u8 *)arg1 + 0x10, (u8 *)arg3 + off);
     }
-    child = *(void **)((u8 *)arg1 + 8);
-    if (child) fn_80065AF8(root, child, base, out);
-    arg1 = *(void **)((u8 *)arg1 + 4);
-    if (arg1) fn_80065AF8(root, arg1, base, out);
+    if (*(void **)((u8 *)arg1 + 8)) {
+        fn_80065AF8(arg0, *(void **)((u8 *)arg1 + 8), arg2, arg3);
+    }
+    if (*(void **)((u8 *)arg1 + 4)) {
+        fn_80065AF8(arg0, *(void **)((u8 *)arg1 + 4), arg2, arg3);
+    }
 }
 #pragma inline_depth(0)
 #pragma pop
@@ -4179,6 +4172,7 @@ void fn_80067058(void) {
     }
 }
 #pragma optimization_level reset
+#pragma opt_propagation off
 void fn_8006720C(void *arg0) {
     void fn_80202300(void *, s32, f32);
     void fn_80202024(void *, void *, void *);
@@ -4196,24 +4190,26 @@ void fn_8006720C(void *arg0) {
     f32 scale;
 
     if ((lights = lbl_80366DDC) != NULL) {
-    scale = lbl_80369248;
-    src = lbl_8026B75C;
-    for (i = 0; i < 8; i++) {
-        vec[0] = src[0];
-        vec[1] = src[1];
-        vec[2] = src[2];
-        fn_80202300(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
-        fn_80202300(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
-        fn_80202024(m74, m44, m14);
-        if (arg0 != NULL) {
-            fn_80202024(arg0, m14, m14);
+        scale = lbl_80369248;
+        i = 0;
+        src = lbl_8026B75C;
+        for (; i < 8; i++) {
+            vec[0] = src[0];
+            vec[1] = src[1];
+            vec[2] = src[2];
+            fn_80202300(m44, 0x5A, scale * *(f32 *)((u8 *)lights + 0x28));
+            fn_80202300(m74, 0x59, scale * (-*(f32 *)((u8 *)lights + 0x24)));
+            fn_80202024(m74, m44, m14);
+            if (arg0 != NULL) {
+                fn_80202024(arg0, m14, m14);
+            }
+            fn_802029C4(m14, vec, (u8 *)lights + 0x14);
+            lights = (u8 *)lights + 0x2C;
         }
-        fn_802029C4(m14, vec, (u8 *)lights + 0x14);
-        lights = (u8 *)lights + 0x2C;
-    }
     }
 }
-
+#pragma opt_propagation reset
+#pragma optimization_level reset
 #pragma global_optimizer off
 void fn_80067304(void *arg0) {
 #pragma push
@@ -5095,19 +5091,17 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
                     p = arr;
                     off = 0;
                     for (k = 0; k < 8; k++) {
-                        if (arr[k] == arg2) {
+                        if (p[k] == arg2) {
                             off = k * 4;
-                            
                             for (; k < 7; k++) {
-                                    arr = *(void ***)((u8 *)entry + 0x18);
-                                    *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
-                                    off += 4;
+                                arr = *(void ***)((u8 *)entry + 0x18);
+                                *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
+                                off += 4;
                             }
                             *(void **)((u8 *)*(void **)((u8 *)entry + 0x18) + 0x1C) = NULL;
                             break;
                         }
                         off += 4;
-                        p += 1;
                     }
                 } else {
                     fn_800C4588(*(void **)((u8 *)entry + 0x18));
@@ -5138,21 +5132,18 @@ void fn_80068558(void *arg0, void *arg1, void *arg2)
         if (found != NULL && (arr = *(void ***)((u8 *)found + 0x18), arr != NULL)) {
             if (arg2 != NULL) {
                 p = arr;
-                off = 0;
                 for (k = 0; k < 8; k++) {
-                    if (*p == arg2) {
+                    if (p[k] == arg2) {
                         off = k * 4;
-                        
                         for (; k < 7; k++) {
-                                arr = *(void ***)((u8 *)found + 0x18);
-                                *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
-                                off += 4;
-                            }
+                            arr = *(void ***)((u8 *)found + 0x18);
+                            *(void **)((u8 *)arr + off) = *(void **)((u8 *)arr + off + 4);
+                            off += 4;
+                        }
                         *(void **)((u8 *)*(void **)((u8 *)found + 0x18) + 0x1C) = NULL;
                         break;
                     }
                     off += 4;
-                    p++;
                 }
             } else {
                 fn_800C4588(arr);
@@ -8547,31 +8538,5 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
 }
 #pragma opt_common_subs off
-void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
-{
-  extern u8 lbl_80311CA8[];
-  void *new_var;
-  s32 fn_800C0658(void);
-  void Ui_CreateMenu(void *, s32, s32);
-  typedef struct 
-  {
-    void *e0;
-    void *e1;
-    void *e2;
-    void *e3;
-  } Entries;
-  u8 *base = lbl_80311CA8;
-  s32 *table = (s32 *) ((((u32) base) & 0xFFFFu) + 0x4c);
-  Entries *entries = (Entries *) (((u32) base) + 0x6c);
-  entries->e0 = table;
-  table = (s32 *) entries->e0;
-  new_var = (void *) (table + 4);
-  table[1] = arg0;
-  entries->e1 = (void *) (table + 2);
-  ((s32 *) entries->e1)[1] = arg1;
-  entries->e2 = new_var;
-  ((s32 *) entries->e2)[1] = arg2;
-  entries->e3 = 0;
-  Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
-}
+/* fn_8006F09C lives with its menu tables in src/auto/Ui_MenuWork.c. */
 #pragma opt_common_subs on
