@@ -1702,155 +1702,185 @@ got_dst:
     Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
 }
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 #pragma opt_common_subs off
-void fn_801E047C(u8 **arg0, s32 arg1) {
-    void fn_80006298(void *, s32, s32);
-    void fn_800167E4(void *);
-    void fn_80016A3C(void *);
-    void fn_80048C5C(void *);
-    void fn_800C2980(void *, void *);
-    void fn_800C33C0(void *, void *);
-    void fn_800C4588(void *);
-    void *fn_800C4638(s32, void *, s32);
-    void fn_800E9B80(void *, s32, s32, s32, s32);
-    u32 fn_800EC0A4(void *, void *, s32);
-    void fn_800EC1F8(void);
-    void fn_8010FBA8(void *, void *);
-    void fn_8014C39C(void *, void *);
-    void fn_8017A38C(void *, void *);
-    void fn_801E3CA8(void *);
-    extern u8 lbl_8027E980[];
-    extern u8 lbl_802842A4[];
-    extern u8 lbl_80284C98[];
-    extern u8 lbl_803200AC[];
-    extern u8 lbl_803206EC[];
-    extern u8 lbl_8032BB58[];
-    extern u8 lbl_80330708[];
-    extern u8 lbl_80331FB8[];
-    extern u8 *lbl_803682F0;
-
-    s32 i;
-    s32 off;
-    u8 *slot;
-    u8 hdrOk;
-    u8 chkOk;
-    void *buf;
-    u32 sum;
-    u8 *base;
-    u8 *picked;
-    struct {
-        void *start;
-        void *cur;
-        u32 size;
-        u8 owned;
-        u8 pad[3];
-        void *vtbl;
-    } w;
-    u8 *p;
-
-    i = 0;
-    off = 0x1A000;
-    do {
-        slot = *arg0 + off;
-        if ((u32)(*(u32 *)(slot + 0x40) + 0xB9BB0000) != 0x384AU) {
-            hdrOk = 0;
-        } else if ((u32)(*(u32 *)(slot + 0x44) + 0xDFFB0000) != 0x201U) {
-            hdrOk = 0;
-        } else {
-            hdrOk = 1;
-        }
-        if (hdrOk == 0) {
-            goto do_init;
-        }
-        if (*(u32 *)(slot + 0x50) == 0x12345678U) {
-            chkOk = 1;
-        } else if (slot[0x60] == 1) {
-            chkOk = 1;
-        } else {
-            buf = fn_800C4638(0x400, lbl_8027E980 + 0x14E, 0);
-            fn_800EC1F8();
-            sum = fn_800EC0A4(buf, slot + 0x70, *(s32 *)(slot + 0x4C) - 0x70);
-            fn_800C4588(buf);
-            if (*(u32 *)(slot + 0x50) != sum) {
-                chkOk = 0;
-            } else {
-                chkOk = 1;
-            }
-        }
-        if (chkOk == 0) {
-            goto do_init;
-        }
-        i += 1;
-        off += 0x6000;
-    } while (i < 2);
-
-    base = *arg0;
-    slot = base + 0x1A000;
-    if (save_slot_size(base + 0x1A000) >= save_slot_size(base + 0x20000)) {
-        slot = base + 0x20000;
+void fn_801E047C(u8 **arg0, s32 arg1)
+{
+  void fn_80006298(void *, s32, s32);
+  void fn_800167E4(void *);
+  void fn_80016A3C(void *);
+  void fn_80048C5C(void *);
+  void fn_800C2980(void *, void *);
+  void fn_800C33C0(void *, void *);
+  void fn_800C4588(void *);
+  void *fn_800C4638(s32, void *, s32);
+  int new_var;
+  void fn_800E9B80(void *, s32, s32, s32, s32);
+  u32 fn_800EC0A4(void *, void *, s32);
+  void fn_800EC1F8(void);
+  void fn_8010FBA8(void *, void *);
+  void fn_8014C39C(void *, void *);
+  void fn_8017A38C(void *, void *);
+  void fn_801E3CA8(void *);
+  extern u8 gSaveStrings[];
+  extern u8 gStreamBaseVtbl[];
+  extern u8 gMemStreamVtbl[];
+  extern u8 gConvoy[];
+  extern u8 gIconSlots[];
+  extern u8 gMapObjEventList[];
+  extern u8 gBattleState[];
+  extern u8 gSystemSave[];
+  extern void *gSaveDataBase;
+  s32 i;
+  s32 off;
+  u8 *slot;
+  u8 hdrOk;
+  u8 chkOk;
+  void *buf;
+  u8 *base;
+  u32 sum;
+  u8 *picked;
+  struct 
+  {
+    void *start;
+    void *cur;
+    u32 size;
+    u8 owned;
+    u8 pad[3];
+    void *vtbl;
+  } w;
+  u8 *p;
+  i = 0;
+  off = 0x1A000;
+  do
+  {
+    slot = (*arg0) + off;
+    if (((u32) ((*((u32 *) (slot + 0x40))) + 0xB9BB0000)) != 0x384AU)
+    {
+      hdrOk = 0;
     }
+    else
+      if (((u32) ((*((u32 *) (slot + 0x44))) + 0xDFFB0000)) != 0x201U)
+    {
+      hdrOk = 0;
+    }
+    else
+    {
+      hdrOk = 1;
+    }
+    if (hdrOk == 0)
+    {
+      goto do_init;
+    }
+    if ((*((u32 *) (slot + 0x50))) == 0x12345678U)
+    {
+      chkOk = 1;
+    }
+    else
+      if (slot[0x60] == 1)
+    {
+      chkOk = 1;
+    }
+    else
+    {
+      buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+      fn_800EC1F8();
+      sum = fn_800EC0A4(buf, slot + 0x70, (*((s32 *) (slot + 0x4C))) - 0x70);
+      fn_800C4588(buf);
+      if ((*((u32 *) (slot + 0x50))) != sum)
+      {
+        chkOk = 0;
+      }
+      else
+      {
+        chkOk = 1;
+      }
+    }
+    if (chkOk == 0)
+    {
+      goto do_init;
+    }
+    goto incr;
+    incr:
+    i += 1;
+    off += 0x6000;
+  }
+  while (i < 2);
+  base = *arg0;
+  slot = base + 0x1A000;
+  if (save_slot_size(base + 0x1A000) >= save_slot_size(base + 0x20000))
+  {
+    goto pick;
+  }
+  goto do_init;
+  pick:
+  slot = base + 0x20000;
+  do_init:
+  fn_80006298(slot, 0, 0x6000);
 
-do_init:
-    fn_80006298(slot, 0, 0x6000);
-    *(s32 *)(slot + 0x4C) = 0x6000;
-    *(u32 *)(slot + 0x40) = 0x4645384AU;
-    *(u32 *)(slot + 0x44) = 0x20050201U;
-    *(u32 *)(slot + 0x48) = 0;
-    *(u32 *)(slot + 0x5C) = 0;
-    *(u32 *)(slot + 0x58) = 0;
-    p = slot + 0xB8;
-    slot[0x60] = 3;
-    slot[0x61] = 0;
-    slot[0x62] = 0;
-    slot[0x63] = 0;
-    slot[0x64] = 0;
-    slot[0x65] = 0;
-    slot[0x66] = 0;
-    slot[0x63] = lbl_80331FB8[0x47];
-    *(u64 *)(slot + 0x58) = *(u64 *)(lbl_80330708 + 0x58);
-    slot[0x61] = lbl_80330708[0x51C];
-    slot[0x64] = lbl_80330708[0x10];
-    slot[0x65] = 8;
-    slot[0x66] = lbl_80330708[0xA6];
-
-    w.vtbl = lbl_802842A4;
-    w.cur = NULL;
+  *((s32 *) (slot + 0x4C)) = 0x6000;
+  *((u32 *) (slot + 0x40)) = 0x4645384AU;
+  *((u32 *) (slot + 0x44)) = 0x20050201U;
+  *((u32 *) (slot + 0x48)) = 0;
+  *((u32 *) (slot + 0x5C)) = 0;
+  *((u32 *) (slot + 0x58)) = 0;
+  p = slot + 0xB8;
+  slot[0x60] = 3;
+  slot[0x61] = 0;
+  slot[0x62] = 0;
+  slot[0x63] = 0;
+  new_var = 0x64;
+  slot[new_var] = 0;
+  slot[0x65] = 0;
+  slot[0x66] = 0;
+  slot[0x63] = gSystemSave[0x47];
+  *((u64 *) (slot + 0x58)) = *((u64 *) (gBattleState + 0x58));
+  slot[0x61] = gBattleState[0x51C];
+  slot[new_var] = gBattleState[0x10];
+  slot[0x65] = 8;
+  slot[0x66] = gBattleState[0xA6];
+  w.vtbl = gStreamBaseVtbl;
+  w.cur = NULL;
+  w.start = NULL;
+  w.size = 0;
+  new_var = 0x4C;
+  w.owned = 0;
+  w.vtbl = gMemStreamVtbl;
+  w.owned = 0;
+  w.start = p;
+  w.cur = p;
+  w.size = 0x100000;
+  fn_8017A38C(&w, gSaveStrings + 0x14F);
+  fn_8014C39C(gBattleState, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x154);
+  fn_80048C5C(&w);
+  fn_8017A38C(&w, gSaveStrings + 0x159);
+  if (gBattleState[0x55] != 0)
+  {
+    fn_800167E4(&w);
+  }
+  else
+  {
+    fn_80016A3C(&w);
+  }
+  fn_8017A38C(&w, gSaveStrings + 0x15E);
+  fn_800C33C0(gConvoy, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x163);
+  fn_800C2980(gIconSlots, &w);
+  fn_8017A38C(&w, gSaveStrings + 0x168);
+  fn_8010FBA8(gMapObjEventList, &w);
+  w.vtbl = gMemStreamVtbl;
+  w.vtbl = gStreamBaseVtbl;
+  if (w.owned != 0)
+  {
+    fn_800C4588(w.start);
     w.start = NULL;
-    w.size = 0;
     w.owned = 0;
-    w.vtbl = lbl_80284C98;
-    w.owned = 0;
-    w.start = p;
-    w.cur = p;
-    w.size = 0x100000;
-    fn_8017A38C(&w, lbl_8027E980 + 0x14F);
-    fn_8014C39C(lbl_80330708, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x154);
-    fn_80048C5C(&w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x159);
-    if (lbl_80330708[0x55] != 0) {
-        fn_800167E4(&w);
-    } else {
-        fn_80016A3C(&w);
-    }
-    fn_8017A38C(&w, lbl_8027E980 + 0x15E);
-    fn_800C33C0(lbl_803200AC, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x163);
-    fn_800C2980(lbl_803206EC, &w);
-    fn_8017A38C(&w, lbl_8027E980 + 0x168);
-    fn_8010FBA8(lbl_8032BB58, &w);
-    w.vtbl = lbl_80284C98;
-    w.vtbl = lbl_802842A4;
-    if (w.owned != 0) {
-        fn_800C4588(w.start);
-        w.start = NULL;
-        w.owned = 0;
-    }
-    fn_801E3CA8(slot);
-    arg0[1] = slot;
-    picked = slot;
-    fn_800E9B80(picked, *(s32 *)(picked + 0x4C), (s32)picked - (s32)lbl_803682F0, (s32)picked - (s32)lbl_803682F0, arg1);
+  }
+  fn_801E3CA8(slot);
+  arg0[1] = slot;
+  picked = slot;
+  fn_800E9B80(picked, *((s32 *) (picked + new_var)), ((s32) picked) - ((s32) gSaveDataBase), ((s32) picked) - ((s32) gSaveDataBase), arg1);
 }
 #pragma pop
 
