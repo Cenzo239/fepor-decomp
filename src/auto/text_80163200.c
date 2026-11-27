@@ -15712,8 +15712,8 @@ void fn_8017BA98(s32 *arg0, void *arg1) {
     *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
 
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 2
 void fn_8017BB94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -15734,7 +15734,7 @@ void fn_8017BB94(void *arg0) {
     base = (s32)*(void **)((u8 *)arg0 + 0x4C);
     do {
         p = fn_80105C5C((void *)(base + 0x1BC), (u8)i);
-        if (p) {
+        if (p != NULL) {
             if (*(u8 *)((u8 *)p + 0x19) != 0) {
                 if (*(u8 *)((u8 *)p + 0x19) != 0) {
                     r = Status_Test(
@@ -15764,8 +15764,8 @@ void fn_8017BB94(void *arg0) {
     if (total == 0) {
         *(s16 *)((u8 *)self + 0x3E) = -1;
     } else {
-        lim = total - 1;
         cur = *(s16 *)((u8 *)self + 0x3E);
+        lim = total - 1;
         if (total > cur) {
             lim = cur;
         }
@@ -15775,8 +15775,7 @@ void fn_8017BB94(void *arg0) {
         }
     }
 }
-#pragma global_optimizer on
-#pragma scheduling on
+#pragma pop
 
 #pragma use_lmw_stmw reset
 
