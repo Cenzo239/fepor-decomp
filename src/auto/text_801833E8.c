@@ -2980,9 +2980,9 @@ void fn_80188DBC(void *arg0) {
 }
 
 void fn_80188EF4(void *arg0) {
-    void fn_8000C188(void);
-    f32 fn_80059F64(f32, f32, f32, f32);
-    void fn_8005F7B0(void *, u8);
+    void Process_ClearFunc(void);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void Model_SetAlpha(void *, u8);
     extern const f32 lbl_8036ACF8;
     extern const f64 lbl_8036AD10;
     void *ptr;
@@ -2992,10 +2992,10 @@ void fn_80188EF4(void *arg0) {
     *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x3C) + lbl_8036ACF8;
     if (*(f32 *)((char *)self + 0x3C) >= *(f32 *)((char *)self + 0x38)) {
         *(f32 *)((char *)self + 0x3C) = *(f32 *)((char *)self + 0x38);
-        fn_8000C188();
+        Process_ClearFunc();
     }
     ptr = (void *)(*(s32 *)((char *)self + 0x30) + 0x1C);
-    fn_8005F7B0(ptr, (u8)(s32)fn_80059F64((f32)*(u8 *)((char *)self + 0x50),
+    Model_SetAlpha(ptr, (u8)(s32)Math_Lerp((f32)*(u8 *)((char *)self + 0x50),
         (f32)*(u8 *)((char *)self + 0x51),
         *(f32 *)((char *)self + 0x38),
         *(f32 *)((char *)self + 0x3C)));
