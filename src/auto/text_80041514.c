@@ -397,7 +397,6 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma optimization_level reset
 #pragma global_optimizer off
 #pragma opt_lifetimes on
-#pragma optimization_level 2
 
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
