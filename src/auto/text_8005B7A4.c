@@ -41,8 +41,7 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
             *src = (char)(c + 0x20);
         }
         *dst = *src;
-        c = *src;
-        if ((s8)c == 0) {
+        if ((s8)(c = *src) == 0) {
             break;
         }
         dst++;
