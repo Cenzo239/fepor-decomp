@@ -4133,10 +4133,11 @@ void fn_801207D8(void *arg0) {
     void fn_80109BB4(void *, u8);
     extern u32 lbl_80367A5C;
     void *self = arg0;
-    void *obj;
     void *p;
+    void *obj;
     s32 i;
     void *t;
+    s32 i2;
 
     obj = *(void **)((u8 *)self + 0x30);
     if (*(u8 *)((u8 *)obj + 0x63) != 0) {
@@ -4150,14 +4151,10 @@ void fn_801207D8(void *arg0) {
             fn_80079198(t, self);
         }
     }
-    {
-        s32 i2;
-        void *p2;
-        for (i2 = 0, p2 = obj; i2 < 4; i2 += 1, p2 = (u8 *)p2 + 4) {
-            t = *(void **)((u8 *)p2 + 0x34);
-            if (t != NULL) {
-                fn_80122238(t, self);
-            }
+    for (i2 = 0, p = obj; i2 < 4; i2 += 1, p = (u8 *)p + 4) {
+        t = *(void **)((u8 *)p + 0x34);
+        if (t != NULL) {
+            fn_80122238(t, self);
         }
     }
     fn_80120F94();
