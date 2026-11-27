@@ -7035,7 +7035,6 @@ extern "C" void GameScene_StopWorlds(void) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
-#pragma global_optimizer off
 extern "C" void fn_800D540C(void *arg0) {
 s64 OSGetTime(void);
 s64 __div2i(s64, s64);
