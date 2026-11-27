@@ -505,6 +505,50 @@ void fn_80017BFC(void) {
     fn_8001840C();
 }
 
+static inline Vec3_800193D8 CamPath_Eval(void *keys, s32 n, f32 farg0) {
+    f32 Math_Hermite(f32, f32, f32, f32, f32);
+    extern s32 lbl_80268318[];
+    extern f32 lbl_80368C88;
+    extern f32 lbl_80368C8C;
+    Vec3_800193D8 def = *(Vec3_800193D8 *)lbl_80268318;
+    Vec3_800193D8 a = def;
+    Vec3_800193D8 out = def;
+    s32 i;
+    void *pt;
+    if (n == 0) {
+        return def;
+    }
+    pt = keys;
+    for (i = 0; i < n; i++, pt = (u8 *)pt + 0x14) {
+        s32 key = *(s32 *)((u8 *)pt + 4);
+        if ((f32)key >= farg0) {
+            if (i == 0) {
+                out.x = *(f32 *)((u8 *)pt + 8);
+                out.y = *(f32 *)((u8 *)pt + 0xC);
+                out.z = *(f32 *)((u8 *)pt + 0x10);
+            } else {
+                s32 prevKey = *(s32 *)((u8 *)pt - 0x10);
+                f32 denom = (f32)(key - prevKey);
+                f32 prev_f = (f32)prevKey;
+                f32 t = (lbl_80368C88 == denom) ? lbl_80368C8C : (farg0 - prev_f) / denom;
+                void *p0 = (i >= 2) ? (void *)((u8 *)pt - 0x28) : (void *)((u8 *)pt - 0x14);
+                void *p2 = (i < n - 1) ? (void *)((u8 *)pt + 0x14) : pt;
+                out.x = Math_Hermite(*(f32 *)((u8 *)p0 + 8), *(f32 *)((u8 *)pt - 0xC), *(f32 *)((u8 *)pt + 8), *(f32 *)((u8 *)p2 + 8), t);
+                out.y = Math_Hermite(*(f32 *)((u8 *)p0 + 0xC), *(f32 *)((u8 *)pt - 8), *(f32 *)((u8 *)pt + 0xC), *(f32 *)((u8 *)p2 + 0xC), t);
+                out.z = Math_Hermite(*(f32 *)((u8 *)p0 + 0x10), *(f32 *)((u8 *)pt - 4), *(f32 *)((u8 *)pt + 0x10), *(f32 *)((u8 *)p2 + 0x10), t);
+            }
+            return out;
+        }
+    }
+    {
+        u8 *last = (u8 *)pt + ((n - 1) * 0x14) + 8;
+        out.x = *(f32 *)(last + 0);
+        out.y = *(f32 *)(last + 4);
+        out.z = *(f32 *)(last + 8);
+        return out;
+    }
+}
+
 #pragma use_lmw_stmw on
 void CamPath_Apply(void *arg0, f32 farg0) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
@@ -882,103 +926,116 @@ void fn_8001840C(void *arg0)
     *(s32 *)(obj + 0x40) = 0;
 }
 
-void fn_80018594(void *arg0) {
-    struct Rec {
-        u32 w0;
-        s32 w4;
-        s32 w8;
-        s32 wC;
-        s32 w10;
-    };
-    struct Rec tmpA;
-    struct Rec tmpB;
-    struct Rec *cur;
-    struct Rec *nxt;
-    struct Rec *base;
-    s32 mul;
-    s32 j;
-    s32 i;
-    s32 off;
-    s32 a;
-    s32 b;
-    u32 idx;
-    void **slot;
-    s32 val;
-
-    i = 0;
-    *((u8 *)arg0 + 0x45) = 0;
-    *(s32 *)((u8 *)arg0 + 0x48) = 0;
-    *((u8 *)arg0 + 0x46) = 0;
-    *(s32 *)((u8 *)arg0 + 0x4C) = 0;
-    *((u8 *)arg0 + 0x47) = 0;
-    *(s32 *)((u8 *)arg0 + 0x50) = 0;
-    *(s32 *)((u8 *)arg0 + 0x34) = 0;
-    *(s32 *)((u8 *)arg0 + 0x38) = 0;
-
-    while (i < *((u8 *)arg0 + 0x44)) {
-        for (off = 0, j = 0; j < (*((u8 *)arg0 + 0x44) - 1) - i; off += 0x14, j++) {
-            base = *(struct Rec **)((u8 *)arg0 + 0x40);
-            cur = (struct Rec *)((u8 *)base + off);
-            if (cur->w4 > ((struct Rec *)((u8 *)cur + 0x14))->w4) {
-                mul = (j + 1) * 0x14;
-                nxt = (struct Rec *)((u8 *)base + mul);
-                tmpA = *cur;
-                *(u8 *)cur = *(u8 *)nxt;
-                cur->w4 = nxt->w4;
-                a = nxt->w8;
-                b = nxt->wC;
-                cur->w8 = a;
-                cur->wC = b;
-                cur->w10 = nxt->w10;
-                nxt = (struct Rec *)((u8 *)*(struct Rec **)((u8 *)arg0 + 0x40) + mul);
-                *(u8 *)nxt = *(u8 *)&tmpA;
-                nxt->w4 = tmpA.w4;
-                nxt->w8 = tmpA.w8;
-                nxt->wC = tmpA.wC;
-                nxt->w10 = tmpA.w10;
-            }
-        }
-        i++;
+void fn_80018594(void *arg0)
+{
+  struct Rec
+  {
+    u32 w0;
+    s32 w4;
+    s32 w8;
+    s32 wC;
+    s32 w10;
+  };
+  struct Rec tmpA;
+  struct Rec tmpB;
+  struct Rec *cur;
+  struct Rec *nxt;
+  struct Rec *base;
+  s32 mul;
+  s32 j;
+  s32 i;
+  s32 off;
+  s32 a;
+  s32 b;
+  u32 idx;
+  void **slot;
+  s32 val;
+  i = 0;
+  *(((u8 *) arg0) + 0x45) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x48)) = 0;
+  *(((u8 *) arg0) + 0x46) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x4C)) = 0;
+  *(((u8 *) arg0) + 0x47) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x50)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x34)) = 0;
+  *((s32 *) (((u8 *) arg0) + 0x38)) = 0;
+  while (i < (*(((u8 *) arg0) + 0x44)))
+  {
+    for (j = 0, off = 0; j < (((*(((u8 *) arg0) + 0x44)) - 1) - i); off += 0x14, j++)
+    {
+      base = *((struct Rec **) (((u8 *) arg0) + 0x40));
+      cur = (struct Rec *) (((u8 *) base) + off);
+      if (cur->w4 > ((struct Rec *) (((u8 *) cur) + 0x14))->w4)
+      {
+        tmpA = *cur;
+        mul = (j + 1) * 0x14;
+        nxt = (struct Rec *) (((u8 *) base) + mul);
+        *((u8 *) cur) = *((u8 *) nxt);
+        cur->w4 = nxt->w4;
+        a = nxt->w8;
+        b = nxt->wC;
+        cur->w8 = a;
+        cur->wC = b;
+        cur->w10 = nxt->w10;
+        nxt = (struct Rec *) (((u8 *) (*((struct Rec **) (((u8 *) arg0) + 0x40)))) + mul);
+        *((u8 *) nxt) = *((u8 *) (&tmpA));
+        nxt->w4 = tmpA.w4;
+        nxt->w10 = tmpA.w10;
+        nxt->w8 = tmpA.w8;
+        nxt->wC = tmpA.wC;
+      }
     }
 
-    for (j = 0; j < *((u8 *)arg0 + 0x44); j++) {
-        for (off = 0, i = 0; i < (*((u8 *)arg0 + 0x44) - 1) - j; off += 0x14, i++) {
-            base = *(struct Rec **)((u8 *)arg0 + 0x40);
-            cur = (struct Rec *)((u8 *)base + off);
-            if (*(u8 *)cur > *(u8 *)((u8 *)cur + 0x14)) {
-                mul = (i + 1) * 0x14;
-                nxt = (struct Rec *)((u8 *)base + mul);
-                tmpB = *cur;
-                *(u8 *)cur = *(u8 *)nxt;
-                cur->w4 = nxt->w4;
-                a = nxt->w8;
-                b = nxt->wC;
-                cur->w8 = a;
-                cur->wC = b;
-                cur->w10 = nxt->w10;
-                nxt = (struct Rec *)((u8 *)*(struct Rec **)((u8 *)arg0 + 0x40) + mul);
-                *(u8 *)nxt = *(u8 *)&tmpB;
-                nxt->w4 = tmpB.w4;
-                nxt->w8 = tmpB.w8;
-                nxt->wC = tmpB.wC;
-                nxt->w10 = tmpB.w10;
-            }
-        }
+    i++;
+  }
+
+  for (j = 0; j < (*(((u8 *) arg0) + 0x44)); j++)
+  {
+    for (i = 0, off = 0; i < (((*(((u8 *) arg0) + 0x44)) - 1) - j); off += 0x14, i++)
+    {
+      base = *((struct Rec **) (((u8 *) arg0) + 0x40));
+      cur = (struct Rec *) (((u8 *) base) + off);
+      nxt = nxt;
+      if ((*((u8 *) cur)) > (*((u8 *) (((u8 *) cur) + 0x14))))
+      {
+        mul = (i + 1) * 0x14;
+        nxt = (struct Rec *) (((u8 *) base) + mul);
+        tmpB = *cur;
+        *((u8 *) cur) = *((u8 *) nxt);
+        cur->w4 = nxt->w4;
+        a = nxt->w8;
+        b = nxt->wC;
+        cur->w8 = a;
+        cur->wC = b;
+        cur->w10 = nxt->w10;
+        nxt = (struct Rec *) (((u8 *) (*((struct Rec **) (((u8 *) arg0) + 0x40)))) + mul);
+        *((u8 *) nxt) = *((u8 *) (&tmpB));
+        nxt->w8 = tmpB.w8;
+        nxt->w4 = tmpB.w4;
+        nxt->wC = tmpB.wC;
+        nxt->w10 = tmpB.w10;
+      }
     }
 
-    for (off = 0, i = 0; i < *((u8 *)arg0 + 0x44); off += 0x14, i++) {
-        cur = (struct Rec *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + off);
-        idx = *(u8 *)cur;
-        slot = (void **)((u8 *)arg0 + idx * 4 + 0x48);
-        if (*slot == NULL) {
-            *slot = cur;
-        }
-        *((u8 *)arg0 + idx + 0x45) = *((u8 *)arg0 + idx + 0x45) + 1;
-        val = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + off + 4);
-        if (val > *(s32 *)((u8 *)arg0 + 0x38)) {
-            *(s32 *)((u8 *)arg0 + 0x38) = val;
-        }
+  }
+
+  for (i = 0, off = 0; i < (*(((u8 *) arg0) + 0x44)); off += 0x14, i++)
+  {
+    cur = (struct Rec *) (((u8 *) (*((void **) (((u8 *) arg0) + 0x40)))) + off);
+    idx = *((u8 *) cur);
+    slot = (void **) ((((u8 *) arg0) + (idx * 4)) + 0x48);
+    if ((*slot) == NULL)
+    {
+      *slot = cur;
     }
+    *((((u8 *) arg0) + idx) + 0x45) = (*((((u8 *) arg0) + idx) + 0x45)) + 1;
+    val = *((s32 *) ((((u8 *) (*((void **) (((u8 *) arg0) + 0x40)))) + off) + 4));
+    if (val > (*((s32 *) (((u8 *) arg0) + 0x38))))
+    {
+      *((s32 *) (((u8 *) arg0) + 0x38)) = val;
+    }
+  }
+
 }
 
 void Camera_SyncFromBattleState(void) {
