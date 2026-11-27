@@ -380,6 +380,10 @@ void fn_80023A4C(void *arg0) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma opt_propagation off
 void fn_80023B80(void *arg0) {
     void *Map_Get(void);
     void fn_800062B0(void *, s32, s32);
@@ -391,16 +395,17 @@ void fn_80023B80(void *arg0) {
     s32 x;
     s32 y;
     s32 width;
+    s32 sx, sy;
     s32 tile;
     s32 off;
     s32 row;
     s32 flags;
     s32 t;
     u16 uflags;
-    s8 yb;
-    s8 xb;
     u8 *rowp;
     u8 *cell;
+    s32 yb;
+    s32 xb;
     struct Terrain *terrain;
     u8 *bmp;
 
@@ -431,13 +436,13 @@ inner:
     flags = uflags | t;
     uflags = flags;
     t = 2;
-    if ((s8)x == width - 1) {
+    if (sx == width - 1) {
         t = 0x20;
     }
     flags = uflags | t;
     uflags = flags;
     t = 4;
-    if ((s8)y == *(s32 *)(map + 4) - 1) {
+    if (sy == *(s32 *)(map + 4) - 1) {
         t = 0x40;
     }
     flags = uflags | t;
@@ -446,13 +451,15 @@ inner:
     x += 1;
 inner_test:
     width = *(s32 *)map;
-    if ((s8)x < width) {
+    sx = (s8)x;
+    if (sx < width) {
         goto inner;
     }
     row += 0x40;
     y += 1;
 outer_test:
-    if ((s8)y < *(s32 *)(map + 4)) {
+    sy = (s8)y;
+    if (sy < *(s32 *)(map + 4)) {
         goto outer;
     }
 
@@ -460,14 +467,14 @@ outer_test:
     Map_PruneFlatEdges(map);
 
     bmp = (u8 *)&gBattleMap;
-    yb = bmp[9];
+    yb = ((s8 *)bmp)[9];
     goto y_test;
 y_loop:
-    xb = bmp[8];
-    rowp = map + (yb << 6);
+    xb = ((s8 *)bmp)[8];
+    rowp = map + ((s8)yb << 6);
     goto x_test;
 x_loop:
-    cell = rowp + xb;
+    cell = rowp + (s8)xb;
     terrain = Terrain_GetEntry(cell[0x100D]);
     xb++;
     cell[0xE18E] = terrain->data[7];
@@ -481,6 +488,7 @@ y_test:
         goto y_loop;
     }
 }
+#pragma pop
 #pragma global_optimizer on
 void fn_80023D14(void *arg0) {
     void *Map_Get(void);
@@ -610,7 +618,9 @@ extern "C" f32 UiWin_GetFade(void *arg0) {
         return lbl_80368DAC;
     }
 }
-#pragma cplusplus reset
+#pragma cplusplus on
+#pragma push
+#pragma optimization_level 3
 void Ui_RebuildListEntries(u8 *self) {
 void *GfxEnt_Get(u8);
 void Process_Unlink(void *);
@@ -700,7 +710,8 @@ entry=(u8 *)GfxEnt_Get(self[0x40+(s8)self[0x62]]);
 (*(Controller **)(self+0x3c))->v5(self);
 #pragma cplusplus reset
 }
-
+#pragma pop
+#pragma cplusplus off
 void *fn_800241C8(void *arg0) {
     void *var_r5;
     void *var_r6;
@@ -1858,21 +1869,36 @@ void fn_80025970(void) {
     void Pad_UpdateButtons(void *);
     void fn_80211CC0(void *);
     void fn_8021264C(u32);
-    void fn_802129C0(void *, u16 *, u16 *, u16 *);
+    void fn_802129C0(void *);
     void fn_80212CC0(u8, s32);
     extern s32 lbl_80367248;
     extern u32 lbl_8036724C;
     extern u8 lbl_802EF408[48];
     extern u8 lbl_802EF438[144];
     extern s32 lbl_80268E30[4];
-    u8 *status;
-    s32 *flags;
-    u8 *pad;
+    struct PadStatus {
+        u8 pad[0xA];
+        s8 err;
+        u8 padB;
+    };
+    struct PadState {
+        u16 *status;
+        u32 buttons;
+        u32 prevButtons;
+        u32 trigC;
+        u32 trig10;
+        s32 rawButtons;
+        u8 pad18[4];
+        u8 port;
+        u8 rep1;
+        u8 rep2;
+        u8 frame;
+        u8 rumbleTimer;
+        u8 pad21[3];
+    };
     u32 mask;
     u64 now;
     s32 i;
-    u8 tmp;
-    s8 mode;
 
     while (1) {
         now = OSGetTime();
@@ -1883,60 +1909,49 @@ void fn_80025970(void) {
     lbl_8036724C = (u32)now;
     lbl_80367248 = (u32)(now >> 32);
     mask = 0;
-    pad = lbl_802EF438;
-    *(s32 *)(pad + 0x14) = *(u16 *)*(void **)(pad + 0);
-    *(s32 *)(pad + 0x38) = *(u16 *)*(void **)(pad + 0x24);
-    *(s32 *)(pad + 0x5C) = *(u16 *)*(void **)(pad + 0x48);
-    *(s32 *)(pad + 0x80) = *(u16 *)*(void **)(pad + 0x6C);
-    fn_802129C0(lbl_802EF408, *(u16 **)(pad + 0x6C), *(u16 **)(pad + 0x48), *(u16 **)(pad + 0x24));
-    fn_80211CC0(lbl_802EF408);
-    status = lbl_802EF408;
-    flags = lbl_80268E30;
     for (i = 0; i < 4; i++) {
-        mode = (s8)status[0xA];
-        if (mode == -1) goto set_mask;
-        if (mode >= -1) goto do_body;
-        if (mode == -3) goto skip_body;
-        goto do_body;
-    set_mask:
-        mask |= (u32)*flags;
-    do_body:
-        *(u32 *)(pad + 8) = *(u32 *)(pad + 4);
-        Pad_UpdateButtons(pad);
-        tmp = *(u8 *)(pad + 0x20);
-        if (tmp != 0) {
-            *(u8 *)(pad + 0x20) = (u8)(tmp - 1);
-            if (*(u8 *)(pad + 0x20) == 0) {
-                fn_80212CC0(*(u8 *)(pad + 0x1C), 0);
+        ((struct PadState *)lbl_802EF438)[i].rawButtons = *((struct PadState *)lbl_802EF438)[i].status;
+    }
+    fn_802129C0(lbl_802EF408);
+    fn_80211CC0(lbl_802EF408);
+    for (i = 0; i < 4; i++) {
+        switch (((struct PadStatus *)lbl_802EF408)[i].err) {
+        case -3:
+            continue;
+        case -1:
+            mask |= (u32)lbl_80268E30[i];
+            break;
+        case 0:
+            break;
+        }
+        ((struct PadState *)lbl_802EF438)[i].prevButtons = ((struct PadState *)lbl_802EF438)[i].buttons;
+        Pad_UpdateButtons(&((struct PadState *)lbl_802EF438)[i]);
+        if (((struct PadState *)lbl_802EF438)[i].rumbleTimer != 0) {
+            ((struct PadState *)lbl_802EF438)[i].rumbleTimer--;
+            if (((struct PadState *)lbl_802EF438)[i].rumbleTimer == 0) {
+                fn_80212CC0(((struct PadState *)lbl_802EF438)[i].port, 0);
             }
         }
-        {
-            u32 cur = *(u32 *)(pad + 4);
-            u32 diff2 = cur & (*(u32 *)(pad + 8) ^ cur);
-            *(u32 *)(pad + 0x10) = diff2;
-            *(u32 *)(pad + 0xC) = diff2;
-            cur = *(u32 *)(pad + 4);
-            if (cur != 0 && *(u32 *)(pad + 8) == cur) {
-                *(u8 *)(pad + 0x1D) = (u8)(*(u8 *)(pad + 0x1D) - 1);
-                *(u8 *)(pad + 0x1E) = (u8)(*(u8 *)(pad + 0x1E) - 1);
-                if (*(u8 *)(pad + 0x1D) == 0) {
-                    *(u32 *)(pad + 0x10) = *(u32 *)(pad + 4);
-                    *(u8 *)(pad + 0x1D) = 2;
-                }
-                if (*(u8 *)(pad + 0x1E) == 0) {
-                    *(u32 *)(pad + 0xC) = *(u32 *)(pad + 4);
-                    *(u8 *)(pad + 0x1E) = 4;
-                }
-            } else {
-                *(u8 *)(pad + 0x1E) = 0xC;
-                *(u8 *)(pad + 0x1D) = 0xC;
+        ((struct PadState *)lbl_802EF438)[i].trigC = ((struct PadState *)lbl_802EF438)[i].trig10 =
+            (((struct PadState *)lbl_802EF438)[i].prevButtons ^ ((struct PadState *)lbl_802EF438)[i].buttons) &
+            ((struct PadState *)lbl_802EF438)[i].buttons;
+        if (((struct PadState *)lbl_802EF438)[i].buttons != 0 &&
+            ((struct PadState *)lbl_802EF438)[i].prevButtons == ((struct PadState *)lbl_802EF438)[i].buttons) {
+            ((struct PadState *)lbl_802EF438)[i].rep1--;
+            ((struct PadState *)lbl_802EF438)[i].rep2--;
+            if (((struct PadState *)lbl_802EF438)[i].rep1 == 0) {
+                ((struct PadState *)lbl_802EF438)[i].trig10 = ((struct PadState *)lbl_802EF438)[i].buttons;
+                ((struct PadState *)lbl_802EF438)[i].rep1 = 2;
             }
-            *(u8 *)(pad + 0x1F) = (u8)(*(u8 *)(pad + 0x1F) + 1);
+            if (((struct PadState *)lbl_802EF438)[i].rep2 == 0) {
+                ((struct PadState *)lbl_802EF438)[i].trigC = ((struct PadState *)lbl_802EF438)[i].buttons;
+                ((struct PadState *)lbl_802EF438)[i].rep2 = 4;
+            }
+        } else {
+            ((struct PadState *)lbl_802EF438)[i].rep2 = 0xC;
+            ((struct PadState *)lbl_802EF438)[i].rep1 = 0xC;
         }
-    skip_body:
-        status += 0xC;
-        flags++;
-        pad += 0x24;
+        ((struct PadState *)lbl_802EF438)[i].frame++;
     }
     if (mask != 0) {
         fn_8021264C(mask);
