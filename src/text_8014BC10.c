@@ -94,8 +94,8 @@ u8 fn_8014BC10(void *arg0) {
     void Allegiance_FillMask(s32, void *);
     extern u8 gUnitLists[];
     extern u8 gUnits[];
-    register s32 score asm("r31");
-    register u32 self asm("r30");
+    register s32 score;
+    register u32 self;
     s32 n;
     void *tbl;
     void *p;

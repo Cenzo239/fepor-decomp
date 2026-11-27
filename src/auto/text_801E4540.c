@@ -470,7 +470,6 @@ void fn_801E4E8C(void *arg0)
   struct _PermuterAnon2 b;
   struct _PermuterAnon2 aCopy;
   struct _PermuterAnon2 a;
-  u8 *entry;
   void *end;
   s32 index;
   void *node;
@@ -520,7 +519,6 @@ void fn_801E4E8C(void *arg0)
     lbl_80332020[1] = index;
     pos.node = node;
     List_Insert(&result, ((u8 *) arg0) + 0x50, &pos, &data);
-    entry += 0x18;
     index++;
   }
 

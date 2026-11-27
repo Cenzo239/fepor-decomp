@@ -2703,14 +2703,12 @@ if(unit) ((Visitor *)obj)->apply(unit);
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
-void fn_8002C8E0(void) {
+void fn_8002C8E0(void *arg0, s8 x, s8 y) {
     void *MapObjEvent_Find(void *, s8, s8, u8);
     void fn_8002F6E8(void *, u8, u8, s32, s32);
     extern u8 gMapObjEventList[];
     extern u8 gTargetList[];
     void *ptr;
-    s8 x;
-    s8 y;
 
     ptr = MapObjEvent_Find(gMapObjEventList, x, y, 4);
     if (ptr != NULL) {

@@ -1861,7 +1861,7 @@ extern "C" void fn_80113BA0(void *arg0) {
         pos.z = got.z;
     }
     if (fn_80199310(*(void **)((u8 *)arg0 + 0x11C)) == 3 && *(void **)((u8 *)arg0 + 0x120) != NULL) {
-        register ch = *(u8 *)fn_80117CC0((u8 *)arg0 + 0xB0, 0);
+        register int ch = *(u8 *)fn_80117CC0((u8 *)arg0 + 0xB0, 0);
         if (ch == 0x73) {
             fn_80198910(*(void **)((u8 *)arg0 + 0x120), &pos, *(s32 *)((u8 *)arg0 + 0x144));
         } else {

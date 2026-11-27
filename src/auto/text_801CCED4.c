@@ -3693,7 +3693,7 @@ extern "C" void fn_801D1CAC(void *arg0) {
                     *(u8 *)((u8 *)arg0 + 0x85) = 1;
                 }
             } else if (pad3 & 0x04000004) {
-                register temp_r4_3 = (s16)temp_r0 - 1;
+                register int temp_r4_3 = (s16)temp_r0 - 1;
                 if (temp_r7 == temp_r4_3) {
                     if (pad3 == pressed) {
                         *(s16 *)((u8 *)arg0 + 0x4E) = temp_r5 - temp_r4_3;

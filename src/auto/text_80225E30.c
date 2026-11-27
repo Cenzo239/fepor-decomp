@@ -1937,7 +1937,7 @@ typedef struct TRKExceptionStatus {
     u8 exceptionDetected;
 } TRKExceptionStatus;
 extern u8 gTRKExceptionStatus_8029E574[];
-asm void TRKExceptionHandler(u16 r3)
+asm void TRKExceptionHandler(u16 exceptionID)
 {
 nofralloc
 lis r2, gTRKExceptionStatus_8029E574@h

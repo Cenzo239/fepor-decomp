@@ -8360,7 +8360,7 @@ extern "C" void fn_80193344(void *arg0) {
         Ui_AddChild(arg0, obj);
     }
     if (M2C_FIELD(obj, s16 *, 0xA) != 0x108) {
-        register tmp = M2C_FIELD(obj, s16 *, 0xC);
+        register int tmp = M2C_FIELD(obj, s16 *, 0xC);
         spC.x = 0x108;
         spC.y = tmp;
         Ui_SlideWidgetChildMode1(arg0, obj, &spC.x, 0);

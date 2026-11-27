@@ -650,7 +650,6 @@ void EXIIntrruptHandler(s16 interrupt, OSContext *context)
     OSContext exceptionContext;
     u8 filler[8];
 
-    (void)filler[0];
     chan = (interrupt - 9) / 3;
     exi = &Ecb_8033E188[chan];
     __EXIRegs[chan * 5] = (__EXIRegs[chan * 5] & 0x7F5) | 2;

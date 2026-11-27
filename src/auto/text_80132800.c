@@ -3598,7 +3598,7 @@ extern "C" void fn_8013729C(void *arg0, s32 arg1) {
         fn_8000A248();
         obj = fn_8007BA4C(fn_8003A114(unit), 0x100);
         lim = 0x130;
-        register mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
+        register int mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
         *(u16 *)((u8 *)obj + 0x46) |= (u16)(lim > mid);
         dw = (s16)(self->unk16 - self->unk12);
@@ -3802,7 +3802,7 @@ extern "C" void fn_8013795C(void *arg0, s32 arg1) {
         Prim2D_PrepareTex();
         obj = Face_Create(fn_8003A114(unit), 0x100);
         lim = 0x130;
-        register mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
+        register int mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
         *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
         *(u16 *)((u8 *)obj + 0x46) = (u16)(lim > mid) | *(u16 *)((u8 *)obj + 0x46);
         x0 = self->unk12;

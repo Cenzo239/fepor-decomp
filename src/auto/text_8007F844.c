@@ -949,7 +949,6 @@ void fn_80081830(void *arg0)
   s8 spC;
   s8 sp8;
   char buf[8];
-  bx = bx;
   fn_800875B4(0xB3, 0, obj58, x, y, lbl_8036953C, lbl_80369458);
   Prim2D_Begin();
   Prim2D_AddZ(lbl_8036942C);

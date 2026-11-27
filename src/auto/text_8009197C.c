@@ -117,8 +117,6 @@ void fn_80091B38(void *arg0)
   f32 y;
   f32 z;
   f32 x;
-  z++;
-  z--;
   zero = 0;
   eight = 8;
   new_var = ((u8 *) arg0) + 0x3C;

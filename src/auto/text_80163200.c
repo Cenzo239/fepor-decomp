@@ -11609,7 +11609,7 @@ extern "C" void Ui_HandleUnitSelectCursorInput(void *panel) {
         gate = 1;
     }
     if (!gate) {
-        register btn = *(s32 *)((u8 *)gPadInput + 4);
+        register int btn = *(s32 *)((u8 *)gPadInput + 4);
         btn = btn & (*(s32 *)((u8 *)gPadInput + 8) ^ btn);
         if ((btn & 0x100) && (unit)) {
             UiCtx_BindUnit(gUiContext, unit);

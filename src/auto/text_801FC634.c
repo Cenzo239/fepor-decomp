@@ -1580,7 +1580,7 @@ extern "C" void fn_801FF50C(void *arg0) {
         Prim2D_AddZ(lbl_8036BB88);
         Prim2D_SetTex(0,19);
         Prim2D_PrepareTex();
-        register width=self->v18();
+        register int width=self->v18();
         x=(f32)((width - Text_MeasureWidth(fn_8013CD90(self),-1,lbl_8036BB58)) >> 1);
         height=self->v38();
         offset=(height-Text_MeasureHeight(-1,lbl_8036BB58)) >> 1;

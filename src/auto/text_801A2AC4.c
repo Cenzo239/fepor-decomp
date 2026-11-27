@@ -27,9 +27,9 @@ void fn_801A2AC4(void) {
     extern u8 gMapAnimStr[];
     extern u16 lbl_80297118[];
 
-    register u32 r31_reg asm("r31");
-    register u32 r4_reg asm("r4");
-    register u32 r3_reg asm("r3");
+    register u32 r31_reg;
+    register u32 r4_reg;
+    register u32 r3_reg;
 
     r31_reg = (u32)&lbl_80297118[0];
 

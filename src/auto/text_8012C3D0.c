@@ -371,7 +371,7 @@ void fn_8012CA6C(void *arg0) {
     if (delta < 1 || delta >= 8) {
         if (index == 0) *(s16 *)(object + 0x6A) = 0;
         else {
-            register count = object[0x61];
+            register int count = object[0x61];
             if (index == count - 1) *(s16 *)(object + 0x6A) = (count - 9) << 5;
             else if (delta <= 0) *(s16 *)(object + 0x6A) = (index - 1) << 5;
             else *(s16 *)(object + 0x6A) = (index - 7) << 5;
@@ -683,7 +683,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             col = (s8)col_u;
             base = (u8 *)item;
             base += col * 2;
-            register xpos = *(s16 *)(base + 0x38);
+            register int xpos = *(s16 *)(base + 0x38);
             text = item->v2(col);
             fn_80167190(lbl_80330D68, text, (f32)xpos, lbl_8036A4E8);
         }
@@ -739,7 +739,7 @@ extern "C" void fn_8012CF7C(void *arg0) {
             col = (s8)col_u;
             base = (u8 *)item;
             base += col * 2;
-            register xpos = *(s16 *)(base + 0x38);
+            register int xpos = *(s16 *)(base + 0x38);
             text = item->v2(col);
             fn_80167190(lbl_80330D68, text, (f32)xpos, lbl_8036A4E8);
         }
