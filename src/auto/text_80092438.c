@@ -277,6 +277,9 @@ done2:
     b = fn_8001CFA8(result2);
     return (u8)a != (u8)b;
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 s32 Unit_AddWpnExp(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     s8 fn_8001CBA0(void *);
@@ -435,7 +438,7 @@ done2:
         return result != (u8)b;
     }
 }
-#pragma optimization_level 3
+#pragma pop
 u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void *self;
@@ -717,15 +720,13 @@ u8 fn_80093708(void *arg0, void *arg1) {
     struct { unsigned ok : 8; unsigned result : 8; } t;
     u64 flags;
     u64 flags2;
-    u32 mask;
     u8 tmp;
 
     t.result = 0;
-    mask = 5;
     flags = *(u64 *)((u8 *)arg1 + 0x38);
     flags2 = flags;
 
-    if (flags & mask) {
+    if (flags & 5) {
         t.ok = 1;
         if (flags & 1) {
             if (!(flags2 & 1)) {
@@ -737,13 +738,14 @@ u8 fn_80093708(void *arg0, void *arg1) {
                     } else {
                         t.ok = 0;
                     }
-                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                } else if (flags & 2) {
-                    t.ok = t.result;
-                } else if (flags & 4) {
-                    t.ok = t.result;
-                } else if (flags & 0x40) {
-                    t.ok = 1;
+                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) != 0) {
+                    if (flags & 2) {
+                        t.ok = t.result;
+                    } else if (flags & 4) {
+                        t.ok = t.result;
+                    } else if (flags & 0x40) {
+                        t.ok = 1;
+                    }
                 }
                 if (t.ok == 0) {
                     t.result = 0;
@@ -764,13 +766,14 @@ u8 fn_80093708(void *arg0, void *arg1) {
                         } else {
                             t.ok = 0;
                         }
-                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                    } else if (flags & 2) {
-                        t.ok = t.result;
-                    } else if (flags & 4) {
-                        t.ok = t.result;
-                    } else if (flags & 0x40) {
-                        t.ok = 1;
+                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) != 0) {
+                        if (flags & 2) {
+                            t.ok = t.result;
+                        } else if (flags & 4) {
+                            t.ok = t.result;
+                        } else if (flags & 0x40) {
+                            t.ok = 1;
+                        }
                     }
                     if (t.ok == 0) {
                         t.result = 0;
@@ -788,8 +791,7 @@ u8 fn_80093708(void *arg0, void *arg1) {
         if (flags & 8) {
             if (!(flags2 & 8)) {
                 return t.result;
-            } else if (flags & ((u64)0x100 << 32)) {
-            } else {
+            } else if (!(flags & ((u64)0x100 << 32))) {
                 t.result = 1;
             }
         } else {
@@ -806,6 +808,7 @@ u8 fn_80093708(void *arg0, void *arg1) {
     }
     return 0;
 }
+#pragma optimization_level reset
 
 #pragma push
 #pragma optimization_level 4
