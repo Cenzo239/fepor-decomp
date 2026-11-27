@@ -90,6 +90,7 @@ asm s32 fn_80006AF4(s32 *arg0) {
     blr
 }
 #pragma opt_unroll reset
+#pragma use_lmw_stmw on
 void fn_80006B18(s32 arg0, s32 arg1, s32 arg2, u8 arg3, s32 arg4)
 {
     extern void *gPrim2D;
