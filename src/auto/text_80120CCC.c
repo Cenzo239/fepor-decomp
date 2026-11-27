@@ -1107,8 +1107,6 @@ void TalkUi_KeyWait2Proc(void *arg0) {
     }
 }
 
-#pragma push
-#pragma opt_propagation off
 void fn_801225D4(void *arg0) {
     extern s32 gUiInputFlags;
     extern u16 gUiPanelFlags;
@@ -1155,7 +1153,6 @@ void fn_801225D4(void *arg0) {
         }
     }
 }
-#pragma pop
 
 void fn_801226D0(void *arg0)
 {
