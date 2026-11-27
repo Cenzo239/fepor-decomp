@@ -1242,12 +1242,14 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
     (*(Item **)((u8 *)item + 0x34))->v12(arg1, item);
 }
 #pragma opt_strength_reduction reset
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    void Ui_ShowUnitInfoText(void *, f32, f32);
+    void Ui_ShowUnitInfoText(void *, void *, f32, f32);
     extern u8 lbl_80268D90[];
     extern u8 gUnitInfoPopup[];
     struct Obj {
@@ -1286,8 +1288,6 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     f32 f31;
     f32 f30;
     u8 *p;
-    u8 cur;
-    u8 prev;
 
     pad = *(u32 **)&gPadInput;
     trig = pad[3];
@@ -1313,40 +1313,42 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
         }
         (*(u8 *)((u8 *)arg1 + 0x62))++;
     }
-    cur = *(u8 *)((u8 *)arg1 + 0x62);
-    prev = *(u8 *)((u8 *)arg1 + 0x63);
-    if ((s8)cur != (s8)prev) {
-        p = (u8 *)arg1;
-        p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
-        node = (Node *)GfxEnt_Get(p[0x40]);
-        node->obj->v15(arg1, node);
-        p = (u8 *)arg1;
-        p += *(s8 *)((u8 *)arg1 + 0x62);
-        node = (Node *)GfxEnt_Get(p[0x40]);
-        node->obj->v14(arg1, node);
-        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+    {
+        u8 cur = *(u8 *)((u8 *)arg1 + 0x62);
+        u8 prev = *(u8 *)((u8 *)arg1 + 0x63);
+        if ((s8)cur != (s8)prev) {
+            p = (u8 *)arg1;
+            p += (s8)*(u8 *)((u8 *)arg1 + 0x63);
+            node = (Node *)GfxEnt_Get(p[0x40]);
+            node->obj->v15(arg1, node);
             p = (u8 *)arg1;
             p += *(s8 *)((u8 *)arg1 + 0x62);
             node = (Node *)GfxEnt_Get(p[0x40]);
-            f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + node->x);
-            p = (u8 *)arg1;
-            p += *(s8 *)((u8 *)arg1 + 0x62);
-            node = (Node *)GfxEnt_Get(p[0x40]);
-            f30 = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + node->y);
-            p = (u8 *)arg1;
-            p += *(s8 *)((u8 *)arg1 + 0x62);
-            node = (Node *)GfxEnt_Get(p[0x40]);
-            ret = node->obj->v2();
-            if (ret != NULL) {
-                Ui_ShowUnitInfoText(gUnitInfoPopup, f31, f30);
-            } else {
+            node->obj->v14(arg1, node);
+            if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
                 p = (u8 *)arg1;
                 p += *(s8 *)((u8 *)arg1 + 0x62);
-                node2 = (Node *)GfxEnt_Get(p[0x40]);
-                Ui_ShowUnitInfoPopup(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
+                node = (Node *)GfxEnt_Get(p[0x40]);
+                f31 = (f32)(*(s16 *)((u8 *)arg1 + 0x30) + node->x);
+                p = (u8 *)arg1;
+                p += *(s8 *)((u8 *)arg1 + 0x62);
+                node = (Node *)GfxEnt_Get(p[0x40]);
+                f30 = (f32)(*(s16 *)((u8 *)arg1 + 0x32) + node->y);
+                p = (u8 *)arg1;
+                p += *(s8 *)((u8 *)arg1 + 0x62);
+                node = (Node *)GfxEnt_Get(p[0x40]);
+                ret = node->obj->v2();
+                if (ret != NULL) {
+                    Ui_ShowUnitInfoText(gUnitInfoPopup, ret, f31, f30);
+                } else {
+                    p = (u8 *)arg1;
+                    p += *(s8 *)((u8 *)arg1 + 0x62);
+                    node2 = (Node *)GfxEnt_Get(p[0x40]);
+                    Ui_ShowUnitInfoPopup(gUnitInfoPopup, node2->obj->v16(node2), f31, f30);
+                }
             }
+            Ui_PlaySeCue(lbl_80268D90 + 0x71, 0x64);
         }
-        Ui_PlaySeCue(lbl_80268D90 + 0x71, 0x64);
     }
 end:
     ;
