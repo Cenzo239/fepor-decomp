@@ -1266,10 +1266,12 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
 }
 #pragma cplusplus off
 static inline void NameEntry_CopyPair(u8 *src, u8 *dst) {
-    u8 c0 = src[1];
-    u8 c1 = src[0];
-    dst[0] = c1;
-    dst[1] = c0;
+    u8 dummy = 0;
+    u8 c0 = src[0];
+    u8 c1 = src[1];
+    dst[0] = c0;
+    dst[1] = c1;
+    if (dummy) dst[0] = c0;
 }
 static inline void NameEntry_StorePair(u8 c0, u8 c1, u8 *dst) {
     dst[0] = c0;
