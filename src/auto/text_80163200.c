@@ -16604,7 +16604,8 @@ void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
     sp8[0] = (s16)(r->xe - r->xa) >> 2;
     *ret = *fn_8013F748(r, &spC, sp8);
 }
-#pragma scheduling off
+#pragma push
+#pragma opt_lifetimes off
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
@@ -16629,7 +16630,7 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     }
     return var_r30;
 }
-#pragma scheduling on
+#pragma pop
 
 /* Gold cost for qty after base calc, status 0x4B markup (*10/7), and 0xB half-price. */
 s16 Unit_GetGoldCost(s32 unit, s16 qty) {
