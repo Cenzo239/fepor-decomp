@@ -8547,7 +8547,7 @@ void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     list[3] = table + 6;
     table[7] = (s32)arg3;
     list[4] = 0;
-    Ui_CreateMenu(menuWorkPool.second, fn_800C0658(), 0);
+    Ui_CreateMenu(menuWorkPool.first, fn_800C0658(), 0);
 }
 #pragma opt_common_subs off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2) {
