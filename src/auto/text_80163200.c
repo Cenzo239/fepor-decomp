@@ -678,6 +678,7 @@ loop_test:
 
 #pragma push
 #pragma opt_common_subs off
+#pragma scheduling off
 void fn_80163C98(s32 *arg0, void *arg1) {
     s32 *fn_8013F748(void *, s32 *, s16 *);
     s32 spC;
@@ -17977,7 +17978,7 @@ void fn_8017FD84(void *arg0) {
     void *other;
     register void *obj82;
     void *node;
-    s32 index;
+    s16 index;
     void *self;
 
     self = arg0;
@@ -17988,13 +17989,13 @@ void fn_8017FD84(void *arg0) {
     unit = fn_8013AC54(obj81);
     index = *(s16 *)((u8 *)obj82 + 0x4E);
     node = *(void **)((u8 *)obj82 + 0x64);
-    if ((s16)index >= 0) {
-        while ((s16)index > 0) {
+    if (index >= 0) {
+        while (index > 0) {
             node = *(void **)((u8 *)node + 4);
             index--;
         }
     } else {
-        while ((s16)index < 0) {
+        while (index < 0) {
             node = *(void **)node;
             index++;
         }
