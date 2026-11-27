@@ -30958,7 +30958,6 @@ return count;
 
 #pragma opt_loop_invariants off
 #pragma use_lmw_stmw on
-#pragma opt_register_coloring off
 void fn_801007A0(void *arg0) {
     struct UnitBits {
         u16 f0 : 3;
