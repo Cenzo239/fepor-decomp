@@ -6957,87 +6957,68 @@ void fn_8006CC6C(s32 arg0) {
 
 #pragma push
 #pragma opt_propagation off
-void *fn_8006CCBC(char *name, s32 flags) {
-    extern u32 FileCache_GetFlags(void *);
-    void *Archive_LoadFlags(char *, s32);
-    u8 fresh = 1;
-    void *archive;
-    u32 *reloc;
-    s32 i;
-    s32 b, g, r;
-    u8 *material;
-    if (FileCache_GetFlags(name) & 0x4000) fresh = 0;
-    archive = Archive_LoadFlags(name, flags);
-    if (fresh) {
-        reloc = M2C_FIELD(archive, u32 **, 0x48);
-        if (reloc) {
-            reloc[0] += (u32)reloc;
-            reloc[1] += (u32)reloc;
-        }
-        for (i = 0; i < M2C_FIELD(archive, u16 *, 0x54); i++) {
-            material = M2C_FIELD(archive, u8 **, 0x34) + i * 0x20;
-            r = (s32)(1.25f * (f32)material[8]);
-            g = (s32)(1.25f * (f32)material[9]);
-            b = (s32)(1.25f * (f32)material[10]);
-            if (r > 255) r = 255;
-            if (g > 255) g = 255;
-            if (b > 255) b = 255;
-            material[8] = r;
-            material[9] = g;
-            material[10] = b;
-        }
+#pragma push
+#pragma inline_max_size(1000)
+#pragma optimization_level 4
+typedef struct Vtx20 {
+    u8 pad[8];
+    u8 r, g, b;
+    u8 pad2[0x20 - 0xb];
+} Vtx20;
+static inline void Reloc(u8 *m) {
+    u32 *h = *(u32 **)(m + 0x48);
+    if (h != NULL) {
+        h[0] += (u32)h;
+        h[1] += (u32)h;
     }
-    return archive;
+}
+static inline void Scale(u8 *m, s32 z) {
+    extern f32 lbl_803692AC;
+    s32 i;
+    f32 s = lbl_803692AC;
+    for (i = z; i < *(u16 *)(m + 0x54); i++) {
+        Vtx20 *v = &(*(Vtx20 **)(m + 0x34))[i];
+        s32 r = s * v->r;
+        s32 g = s * v->g;
+        s32 b = s * v->b;
+        if (r > 0xff) r = 0xff;
+        if (g > 0xff) g = 0xff;
+        if (b > 0xff) b = 0xff;
+        v->r = r; v->g = g; v->b = b;
+    }
+}
+void * fn_8006CCBC(char *id_, s32 k) {
+    u8 *Archive_LoadFlags(s32, s32);
+    s32 FileCache_GetFlags(void);
+    u8 *m;
+    u8 ok = 1;
+    if (FileCache_GetFlags() & 0x4000) ok = 0;
+    m = Archive_LoadFlags((s32)id_, k);
+    if (ok) {
+        Reloc(m);
+        Scale(m, 0);
+    }
+    return m;
 }
 #pragma pop
-void *fn_8006CE14(char *name) {
-    extern u32 FileCache_GetFlags(void *);
-    void *Archive_LoadFlags(char *, s32);
-    extern f32 lbl_803692AC;
-    u8 fresh;
-    void *archive;
-    u32 *reloc;
-    s32 b, g, r;
-    u8 *material;
-    s32 i;
-    s32 offset;
-    f32 factor;
-
-    fresh = 1;
-    if (FileCache_GetFlags(name) & 0x4000) {
-        fresh = 0;
+#pragma pop
+#pragma push
+#pragma inline_max_size(1000)
+#pragma optimization_level 4
+void * fn_8006CE14(char *id_) {
+    u8 *Archive_LoadFlags(s32, s32);
+    s32 FileCache_GetFlags(void);
+    u8 *m;
+    u8 ok = 1;
+    if (FileCache_GetFlags() & 0x4000) ok = 0;
+    m = Archive_LoadFlags((s32)id_, 0);
+    if (ok) {
+        Reloc(m);
+        Scale(m, 0);
     }
-    archive = Archive_LoadFlags(name, 0);
-    if (fresh) {
-        reloc = *(u32 **)((u8 *)archive + 0x48);
-        if (reloc != 0) {
-            reloc[0] += (u32)reloc;
-            reloc[1] += (u32)reloc;
-        }
-        i = fresh - 1;
-        factor = lbl_803692AC;
-        offset = i;
-        for (; i < *(u16 *)((u8 *)archive + 0x54); offset += 0x20, i++) {
-            material = *(u8 **)((u8 *)archive + 0x34) + offset;
-            r = (s32)(factor * (f32)(u32)material[8]);
-            g = (s32)(factor * (f32)(u32)material[9]);
-            b = (s32)(factor * (f32)(u32)material[10]);
-            if (r > 255) {
-                r = 255;
-            }
-            if (g > 255) {
-                g = 255;
-            }
-            if (b > 255) {
-                b = 255;
-            }
-            material[8] = (u8)r;
-            material[9] = (u8)g;
-            material[10] = (u8)b;
-        }
-    }
-    return archive;
+    return m;
 }
+#pragma pop
 
 #pragma use_lmw_stmw on
 void fn_8006CF60(void *arg0)
