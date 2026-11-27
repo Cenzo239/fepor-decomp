@@ -5994,7 +5994,8 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 #pragma cplusplus reset
 
 #pragma push
-#pragma opt_strength_reduction off
+#pragma optimization_level 3
+static inline s16 Ui_IncrementByEight(s16 v) { return (s16) (v + 8); }
 void fn_8013B254(void *arg0)
 {
   s16 new_var;
@@ -6014,10 +6015,8 @@ void fn_8013B254(void *arg0)
   s16 new_a;
   void *q;
   void *p;
-  s16 *vp;
   zero = 0;
-  vp = (s16 *) (((s8 *) arg0) + 0x64);
-  *vp = (s16)(*vp + 8);
+  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
   new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
@@ -6049,7 +6048,7 @@ void fn_8013B254(void *arg0)
   x1 = *((s16 *) (((s8 *) new_var3) + 0x10));
   *((s16 *) (((s8 *) new_var3) + 0x10)) = (s16) (c + ((s16) (x1 - x0)));
 }
-#pragma opt_strength_reduction off
+#pragma pop
 void fn_8013B308(void) {
 
 }
