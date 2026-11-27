@@ -4456,11 +4456,12 @@ void fn_8018C9A4(void *arg0) {
     fn_8005FA14(M2C_FIELD(arg0, s32 *, 0x34), 1);
 }
 
+#pragma optimization_level 2
 void fn_8018C9CC(void *arg0) {
     f32 Math_EaseOutPow(M2C_UNK, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
-    extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036ACF8;
+    extern const f32 lbl_8036ACEC;
+    extern const f32 lbl_8036ACF8;
     s32 cnt;
 
     cnt = *(s32 *)((u8 *)arg0 + 0x40);
@@ -4470,7 +4471,7 @@ void fn_8018C9CC(void *arg0) {
         Process_ClearFunc(arg0);
     }
 }
-
+#pragma optimization_level reset
 extern u8 LightScale_script[];
 #pragma opt_strength_reduction off
 void fn_8018CA68(u32 arg0) {
@@ -6077,8 +6078,6 @@ extern "C" void fn_8018FC1C(void *arg0) {
     fn_80154004(0, 0, 0x10);
 }
 
-#pragma push
-#pragma optimization_level 4
 extern "C" s32 fn_8018FC58(void *arg0)
 {
   void **fn_80037BBC(void *, s32);
@@ -6139,7 +6138,6 @@ extern "C" s32 fn_8018FC58(void *arg0)
   }
   return total;
 }
-#pragma pop
 #pragma cplusplus reset
 
 void *fn_8018FFB4(void *arg0, s16 arg1) {
