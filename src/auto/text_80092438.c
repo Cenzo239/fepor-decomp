@@ -696,71 +696,11 @@ return fn_800940B0(arg0,arg1)!=0;
 }
 #pragma optimization_level reset
 u8 fn_800934CC(void *arg0, void *arg1) {
-    u8 fn_800940B0(void *, void *);
-    u8 fn_80105BC0(void *, s32);
-    u8 ok;
-    u32 lo;
-    u8 result;
-    u32 hi;
-    u64 flags;
-
-    result = 0;
-    ok = 1;
-    lo = *(u32 *)((u8 *)arg1 + 0x3C);
-    hi = *(u32 *)((u8 *)arg1 + 0x38) & result;
-    flags = ((u64)hi << 32) | lo;
-
-    if (flags & 1) {
-        if (!(flags & 1)) {
-        } else {
-            if (flags & 0x200) {
-                if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-            } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-            } else if (flags & 2) {
-                ok = result;
-            } else if (flags & 4) {
-                ok = result;
-            } else if (flags & 0x40) {
-            }
-            if (ok == 0) {
-                result = 0;
-            } else if (fn_800940B0(arg0, arg1) == 0) {
-                result = 0;
-            } else {
-                result = 1;
-            }
-        }
-        return result;
+    if (*(u64 *)((u8 *)arg1 + 0x38) & 1) {
+        return Unit_CheckItemMask(arg0, arg1, *(u64 *)((u8 *)arg1 + 0x38), 1);
     }
-    if (flags & 4) {
-        if (!(flags & 4)) {
-        } else {
-            if (flags & 0x200) {
-                if (fn_80105BC0((u8 *)arg0 + 0x1BC, 9) != 0) {
-                    ok = 1;
-                } else {
-                    ok = 0;
-                }
-            } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-            } else if (flags & 2) {
-                ok = result;
-            } else if (flags & 4) {
-                ok = result;
-            } else if (flags & 0x40) {
-            }
-            if (ok == 0) {
-                result = 0;
-            } else if (fn_800940B0(arg0, arg1) == 0) {
-                result = 0;
-            } else {
-                result = 1;
-            }
-        }
-        return result;
+    if (*(u64 *)((u8 *)arg1 + 0x38) & 4) {
+        return Unit_CheckItemMask(arg0, arg1, *(u64 *)((u8 *)arg1 + 0x38), 4);
     }
     return 0;
 }
@@ -991,8 +931,8 @@ u8 fn_800940B0(void *arg0, void *arg1) {
     void *other;
     void *self;
     u8 type;
-    u8 lim;
     u8 result;
+    u8 lim;
     void *unit;
 
     other = arg1;
@@ -1144,7 +1084,7 @@ clamp79:
 done:
     lim = *((u8 *)other + 0x16);
     lim = (u8)(lim + (u8)(lim == 0));
-    return (u8)((u32)lim <= (u32)result);
+    return (u8)((u32)result >= (u32)lim);
 }
 #pragma pop
 
