@@ -33,7 +33,7 @@ extern void *__stdio_exit;
 extern void __close_all(void);
 extern u8 gSoundData[];
 extern f64 lbl_8036C368;
-extern u16 Ecb_8033E188[192];u16 *D_80256B30;
+extern u16 Ecb_8033E188[192];extern u16 *D_80256B30;
 extern s32 UART_Initialized;
 extern f32 lbl_8036C374;
 extern s32 gSynthTimeHi;
