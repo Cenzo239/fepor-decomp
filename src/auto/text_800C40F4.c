@@ -1881,36 +1881,69 @@ valid:
 #pragma global_optimizer reset
 #pragma peephole reset
 #pragma cplusplus reset
-s32 fn_800C7D3C(void *self,void *list,s32 index,void *out) {
-extern char gStringErrorMsgs[];
-void fn_800C7EF8(void*); s32 fn_800C7F10(void*,void*,s32); void fn_800C8328(void*,void*,s32,String*);
-u32 strlen(const char*);
-s32 String_Compare(String*,u32,u32,char*,u32);
-String *String_Assign(String*,String*,s32,s32);
-void String_Init(void*,void*,void*);
-void *Heap_AllocRaw(u32);
-void *fn_8022C414(void*,void (*)(void*),void*,u32,u32);
-u8 fn_800C7B04(void*,String*,void*,void*,s32*);
-void strcpy(void*,void*);
-u8 buffer[0x100];u8 values[0x18];String str;String tmp;s32 count;u8 alloc;
-u8 *value; s32 total; s32 offset; u8 *dest; String *entry; s32 i;char *messages;
-str.cap=0;str.size=0;str.data=0;str.cap=0;
-*(s32*)out=fn_800C7F10(self,list,index);
-total=*(s32*)out;
-*(void**)((u8*)out+4)=fn_8022C414(Heap_AllocRaw(total*0x38+0x10),fn_800C7EF8,0,0x38,total);
-while((entry=*(String**)((u8*)list+8)+index,String_Compare(entry,0,entry->size,gStringErrorMsgs,strlen(gStringErrorMsgs)))!=0) index++;
-offset=0;messages=gStringErrorMsgs;
-while((entry=String_Assign(&str,*(String**)((u8*)list+8)+index++,0,-1),String_Compare(entry,0,entry->size,messages+2,strlen(messages+2)))!=0) {
-dest=*(u8**)((u8*)out+4)+offset;
-if(fn_800C7B04(self,&str,values,buffer,&count)) {
-strcpy(dest,values);
-for(i=0,value=buffer;i<count;value+=0x20,i++) {
-String_Init(&tmp,value,&alloc);fn_800C8328(self,dest,i,&tmp);String_Destroy(&tmp,-1);
-}
-offset+=0x38;
-}
-}
-String_Destroy(&str,-1);return index;
+s32 fn_800C7D3C(void *self, void *list, s32 index, void *out) {
+    extern char gStringErrorMsgs[];
+    void fn_800C7EF8(void *);
+    s32 fn_800C7F10(void *, void *, s32);
+    void fn_800C8328(void *, void *, s32, String *);
+    u32 strlen(const char *);
+    s32 String_Compare(String *, u32, u32, char *, u32);
+    String *String_Assign(String *, String *, s32, s32);
+    void String_Init(void *, void *, void *);
+    void *Heap_AllocRaw(u32);
+    void *fn_8022C414(void *, void (*)(void *), void *, u32, u32);
+    u8 fn_800C7B04(void *, String *, void *, void *, s32 *);
+    void strcpy(void *, void *);
+
+    u8 buffer[0x100];
+    u8 values[0x18];
+    String str;
+    String tmp;
+    s32 count;
+    u8 alloc;
+    String *entry;
+    s32 stride;
+    u8 *value;
+    s32 offset;
+    u8 *dest;
+    s32 i;
+    char *messages;
+
+    str.cap = 0;
+    str.size = 0;
+    str.data = 0;
+    str.cap = 0;
+    *(s32 *)out = fn_800C7F10(self, list, index);
+    *(void **)((u8 *)out + 4) = fn_8022C414(
+        Heap_AllocRaw(*(s32 *)out * 0x38 + 0x10),
+        fn_800C7EF8,
+        0,
+        0x38,
+        *(s32 *)out
+    );
+    stride = index * 0xC;
+    while ((entry = (String *)(*(u8 **)((u8 *)list + 8) + stride),
+            String_Compare(entry, 0, entry->size, gStringErrorMsgs, strlen(gStringErrorMsgs))) != 0) {
+        index++;
+        stride += 0xC;
+    }
+    offset = 0;
+    messages = gStringErrorMsgs;
+    while ((entry = String_Assign(&str, *(String **)((u8 *)list + 8) + index++, 0, -1),
+            String_Compare(entry, 0, entry->size, messages + 2, strlen(messages + 2))) != 0) {
+        dest = *(u8 **)((u8 *)out + 4) + offset;
+        if (fn_800C7B04(self, &str, values, buffer, &count)) {
+            strcpy(dest, values);
+            for (i = 0, value = buffer; i < count; value += 0x20, i++) {
+                String_Init(&tmp, value, &alloc);
+                fn_800C8328(self, dest, i, &tmp);
+                String_Destroy(&tmp, -1);
+            }
+            offset += 0x38;
+        }
+    }
+    String_Destroy(&str, -1);
+    return index;
 }
 
 void fn_800C7EF8(void *arg0) {
@@ -14093,25 +14126,22 @@ extern "C" void StableSort(s32 *begin,s32 *end,SortIterator a,SortIterator b,Sor
 extern "C" void fn_800E1340(SortIterator first1, SortIterator last1, SortIterator first2, SortIterator last2, s32 *result, SortCompare comp) {
     s32 Sort_GetKey(void *);
     s32 key;
-    while (first1.ptr != last1.ptr && first2.ptr != last2.ptr) {
+    for (; first1.ptr != last1.ptr && first2.ptr != last2.ptr; ++result) {
         SortIterator t2 = first2;
         SortIterator t1 = first1;
         s32 value = *t1.ptr;
         key = Sort_GetKey((void *)*t2.ptr);
         if (Sort_GetKey((void *)value) > key) {
             SortIterator tmp = first2;
-            s32 value = *tmp.ptr;
-            s32 *next = first2.ptr + 1;
-            *result = value;
-            first2.ptr = next;
+            s32 val = *tmp.ptr;
+            first2.ptr++;
+            *result = val;
         } else {
             SortIterator tmp = first1;
-            s32 value = *tmp.ptr;
-            s32 *next = first1.ptr + 1;
-            *result = value;
-            first1.ptr = next;
+            s32 val = *tmp.ptr;
+            first1.ptr++;
+            *result = val;
         }
-        result++;
     }
     if (first1.ptr == last1.ptr) {
         s32 *out = result;
