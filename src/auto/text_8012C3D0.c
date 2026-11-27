@@ -2474,11 +2474,11 @@ void fn_801302F4(void *arg0) {
     int ah;
     s8 unk62;
     int t;
+    s16 temp;
     s16 y;
     register s16 w;
     register s16 h;
     register s32 aw;
-    s16 temp;
 
     temp = *(s16 *)((u8 *)arg0 + 0x6A);
     if (temp % 32 == 0) {
