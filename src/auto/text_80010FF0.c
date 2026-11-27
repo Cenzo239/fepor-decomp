@@ -38,10 +38,10 @@ static inline s32 Text_FindFontIndex(u32 *p, u32 result) {
     }
     return -1;
 }
-extern f64 lbl_80368C28;    // global float constant
+extern const f64 lbl_80368C28;    // global float constant
 extern u16 jumptable_80283AE8[];
 
-extern f64 lbl_80368C28;
+extern const f64 lbl_80368C28;
 
 extern u16 gPrim2D;
 
