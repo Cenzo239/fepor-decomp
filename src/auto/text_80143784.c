@@ -1492,51 +1492,33 @@ extern "C" void fn_80144698(void *arg0) {
 
 #pragma cplusplus reset
 extern void fn_801446C4(void *arg0);
-void fn_801446C4(void *arg0) {
+#pragma cplusplus on
+extern "C" void fn_801446C4(void *arg0) {
+#pragma cplusplus reset
     void *Heap_Alloc(s32);
     void *fn_8013692C(void *, s32, s32, s32, s32, s32);
     void fn_8013F0F0(void *, void *);
     void fn_8013F1A0(void *, void *);
+#pragma cplusplus on
+    struct Rect {
+        s16 left, top, right, bottom;
+        s16 width() { return right - left; }
+        s16 height() { return bottom - top; }
+        void set(s16 l, s16 t, s16 r, s16 b) { left = l; top = t; right = r; bottom = b; }
+    };
     void *child;
-    s16 t;
-    s16 s;
-    s16 r8;
-    s16 r7;
-    s16 r6;
-    s16 r5;
+    Rect *outer = (Rect *)((u8 *)arg0 + 0xA);
+    Rect *inner = (Rect *)((u8 *)arg0 + 0x12);
 
-    t = 3;
-    s = 6;
-    r7 = *(s16 *)((u8 *)arg0 + 0x10);
-    r8 = *(s16 *)((u8 *)arg0 + 0xc);
-    r6 = *(s16 *)((u8 *)arg0 + 0xa);
-    r5 = *(s16 *)((u8 *)arg0 + 0xe);
-    r7 = (s16)(r7 - r8);
-    *(s16 *)((u8 *)arg0 + 0x12) = t;
-    t = (s16)(r5 - r6);
-    r5 = r7 - 6;
-    *(s16 *)((u8 *)arg0 + 0x14) = s;
-    t = t - 3;
-    *(s16 *)((u8 *)arg0 + 0x16) = t;
-    *(s16 *)((u8 *)arg0 + 0x18) = r5;
-    if (*(void **)((u8 *)arg0 + 0x48)) {
-        fn_8013F0F0(arg0, *(void **)((u8 *)arg0 + 0x48));
-    }
-    child = Heap_Alloc(0x9c);
-    if (child) {
-        child = fn_8013692C(
-            child,
-            (s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) - 12,
-            0,
-            9,
-            (s16)(*(s16 *)((u8 *)arg0 + 0x18) - *(s16 *)((u8 *)arg0 + 0x14)),
-            *(s16 *)((u8 *)arg0 + 0x22) - 5);
-    }
-    *(void **)((u8 *)arg0 + 0x48) = child;
-    *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x48) = 1;
-    fn_8013F1A0(arg0, *(void **)((u8 *)arg0 + 0x48));
+    inner->set(3, 6, outer->width() - 3, outer->height() - 6);
+    if (M2C_FIELD(arg0, void **, 0x48)) fn_8013F0F0(arg0, M2C_FIELD(arg0, void **, 0x48));
+    child = Heap_Alloc(0x9C);
+    if (child) child = fn_8013692C(child, (s16)(M2C_FIELD(arg0, s16 *, 0x16) - M2C_FIELD(arg0, s16 *, 0x12)) - 12, 0, 9, (s16)(M2C_FIELD(arg0, s16 *, 0x18) - M2C_FIELD(arg0, s16 *, 0x14)), M2C_FIELD(arg0, s16 *, 0x22) - 5);
+    M2C_FIELD(arg0, void **, 0x48) = child;
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x48), s32 *, 0x48) = 1;
+    fn_8013F1A0(arg0, M2C_FIELD(arg0, void **, 0x48));
 }
-
+#pragma cplusplus reset
 void fn_801447A4(void *arg0, s32 arg1) {
     extern s32 lbl_80367AE0;
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x128), s32 *, 0x3C) = arg1;
@@ -2787,8 +2769,9 @@ void fn_80146B00(void) {
     lbl_80367AF8 |= 1;
 }
 
+#pragma opt_lifetimes off
 s32 fn_80146B10(s32 arg0) {
-    void *Hash_Lookup(void *);
+    void *fn_8000D2BC(void *);
     void fn_800056A0(s32);
     extern u8 lbl_80276BC8[];
     s32 *table;
@@ -2799,9 +2782,9 @@ s32 fn_80146B10(s32 arg0) {
     s32 key;
     s32 result;
 
-    table = (s32 *)Hash_Lookup(lbl_80276BC8 + 0x30b);
+    table = (s32 *)fn_8000D2BC(lbl_80276BC8 + 0x30b);
     count = *table;
-    table = (s32 *)((s32)table + 4);
+    table++;
     lo = 0;
     hi = count - 1;
     while (lo <= hi) {
@@ -2826,7 +2809,7 @@ s32 fn_80146B10(s32 arg0) {
     fn_800056A0(0);
     return result;
 }
-
+#pragma opt_lifetimes reset
 #pragma use_lmw_stmw on
 #pragma cplusplus on
 extern "C" s8 fn_80146BE4(void *arg0) {
