@@ -1010,6 +1010,30 @@ do { *++db=*++tail; } while(--size);
 }
 }
 
+static inline void CopyBackward32Words(u8 *s, u8 *d)
+{
+    u32 b;
+    u32 a;
+    b = *((u32 *) (s - 8));
+    a = *((u32 *) (s - 4));
+    *((u32 *) (d - 4)) = a;
+    a = *((u32 *) (s - 12));
+    *((u32 *) (d - 8)) = b;
+    b = *((u32 *) (s - 16));
+    *((u32 *) (d - 12)) = a;
+    a = *((u32 *) (s - 20));
+    *((u32 *) (d - 16)) = b;
+    b = *((u32 *) (s - 24));
+    *((u32 *) (d - 20)) = a;
+    a = *((u32 *) (s - 28));
+    *((u32 *) (d - 24)) = b;
+    s -= 32;
+    d -= 32;
+    b = *((u32 *) s);
+    *((u32 *) (d + 4)) = a;
+    *((u32 *) d) = b;
+}
+
 #pragma push
 #pragma push
 void fn_80231C20(u8 *dst, u8 *src, u32 n)
