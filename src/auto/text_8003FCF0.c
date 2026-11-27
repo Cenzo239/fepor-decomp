@@ -394,7 +394,7 @@ done2:
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 3
 void fn_8003FED8(u8 *arg0) {
     void Hash_Remove(void *);
     u32 j;
