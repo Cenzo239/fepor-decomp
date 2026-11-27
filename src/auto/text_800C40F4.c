@@ -26665,7 +26665,6 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     }
     return best != 0x80000000;
 }
-#pragma pop
 
 void fn_800F94D4(void *arg0) {
     extern u8 gAiState[];
