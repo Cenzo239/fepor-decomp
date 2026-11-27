@@ -1109,6 +1109,7 @@ void *fn_801049E0(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *a
 
 #pragma push
 #pragma use_lmw_stmw on
+#pragma scheduling off
 void *fn_80104BF4(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     u16 sp8;
     u8 is_double;
