@@ -8,6 +8,12 @@ extern f64 lbl_8036A100;
 extern f32 lbl_8036A0F8;
 extern u16 lbl_80366E80;
 
+static inline u16 EncodeSjis(u8 lead, u8 trail) {
+    u16 code = trail;
+    code = (u16)(code | ((s32)(s8)lead << 8 & 0xFF00));
+    return code;
+}
+
 void Status_Clear(void *, u8);
 
 s32 fn_80103748(void) {
@@ -1132,8 +1138,9 @@ void *fn_80104BF4(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
         is_double = 0;
     }
     if (is_double) {
+        code = arg0[1];
         next = arg0 + 2;
-        code = (u16)(((*(s8 *)arg0 & 0xFF) << 8) | arg0[1]);
+        code = ((s32)*(s8 *)arg0 << 8 & 0xFF00) | code;
     } else {
         code = *(s8 *)arg0 & 0xFF;
         next = arg0 + 1;
