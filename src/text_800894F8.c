@@ -87,15 +87,75 @@ void fn_80089490(void *);
 
 #pragma opt_strength_reduction on
 
+void fn_8008A5AC(void *);
+void Ui_DrawColorFade(void *);
+void fn_80089A28(void *);
+void fn_800898E4(void *);
+void fn_80089680(void *);
+extern u8 lbl_8026CC5F[];
+extern u8 lbl_8026CC67[];
+extern u8 lbl_8026CC6E[];
+
+void fn_80089554(void);
+void fn_800893E0(void *);
+void fn_800892E8(void *);
+void fn_80089460(void *);
+void fn_80088FFC(void *);
+void fn_80088F8C(void *);
+extern u8 lbl_8026CC7A[];
+
+#pragma force_active on
+u32 lbl_80289950[] = {
+    0x2003, (u32)lbl_8026CC58, 0x54911001,
+    0x201A, (u32)fn_8008A5AC, 0,
+};
+static u32 colorFadeScript[] = {
+    0x2003, (u32)lbl_8026CC5F, 0x54911001,
+    0x201A, (u32)Ui_DrawColorFade, 0,
+};
+static u32 overlayScript[] = {
+    0x2003, (u32)lbl_8026CC67, 0x54911001,
+    0x201A, (u32)fn_80089A28, 0,
+};
+u32 lbl_80289998[] = {
+    0x100A, 0x200F, (u32)fn_800898E4, 0,
+};
+static u32 panelScript[] = {
+    0x2003, (u32)lbl_8026CC6E, 0x54911001,
+    0x201A, (u32)fn_80089680, 0,
+};
+u32 lbl_802899C0[] = {
+    0x201A, (u32)fn_80089554, 0,
+};
+u32 lbl_802899CC[] = {
+    0x2003, (u32)lbl_8026CC7A, 0x54911001,
+    0x2004, (u32)fn_800893E0, 0x200F, (u32)fn_800892E8,
+    0x100A, 0x200F, (u32)fn_80089460, 0x100A,
+    0x2005, (u32)fn_80088FFC, 0x6101B, 0x201A, (u32)fn_80088F8C,
+    0x100B, 0,
+};
+#pragma force_active reset
+
+void fn_80089490(void *proc) {
+    void fn_8000A408(void *);
+    u32 *script;
+
+    if (*((u8 *)proc + 0x2B) != 0x7B) {
+        script = *(u32 **)proc;
+        if (script != lbl_802899CC && script != lbl_80289950 &&
+            script != panelScript && script != lbl_80289998) {
+            fn_8000A408(proc);
+        }
+    }
+}
+
 s32 fn_800894F8(void) {
     void Process_UnlinkByKey(void *);
-    extern u8 lbl_802899C0[];
     Process_UnlinkByKey(lbl_802899C0);
     return 1;
 }
 
 s32 fn_80089524(void) {
-    extern u16 lbl_802899C0[];
     Process_Create(lbl_802899C0, 4);
     return 1;
 }
@@ -118,36 +178,6 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
-void fn_8008A5AC(void *);
-void Ui_DrawColorFade(void *);
-void fn_80089A28(void *);
-void fn_800898E4(void *);
-void fn_80089680(void *);
-extern u8 lbl_8026CC5F[];
-extern u8 lbl_8026CC67[];
-extern u8 lbl_8026CC6E[];
-
-#pragma force_active on
-u32 lbl_80289950[] = {
-    0x2003, (u32)lbl_8026CC58, 0x54911001,
-    0x201A, (u32)fn_8008A5AC, 0,
-};
-static u32 colorFadeScript[] = {
-    0x2003, (u32)lbl_8026CC5F, 0x54911001,
-    0x201A, (u32)Ui_DrawColorFade, 0,
-};
-static u32 overlayScript[] = {
-    0x2003, (u32)lbl_8026CC67, 0x54911001,
-    0x201A, (u32)fn_80089A28, 0,
-};
-u32 lbl_80289998[] = {
-    0x100A, 0x200F, (u32)fn_800898E4, 0,
-};
-static u32 panelScript[] = {
-    0x2003, (u32)lbl_8026CC6E, 0x54911001,
-    0x201A, (u32)fn_80089680, 0,
-};
-#pragma force_active reset
 
 #pragma push
 #pragma opt_lifetimes off
