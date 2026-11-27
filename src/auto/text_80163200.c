@@ -9878,7 +9878,6 @@ extern "C" void fn_80172DA4(void *arg0) {
     }
 }
 #pragma pop
-#pragma scheduling off
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, s32);
