@@ -30,6 +30,29 @@ static inline void *fn_800AA794_helper(void) {
     return NULL;
 }
 
+static inline void BattleMap_FillRangeAll(u8 minRange, u8 maxRange) {
+    void Map_FillAttackRange(void *, s8, s8, u8, u8);
+    struct BattleMap {
+        s32 width;
+        s32 height;
+        u8 pad8[5];
+        u8 unitMap[0x6101];
+        s16 cost[0x4040];
+        s8 fog[0x4000];
+    };
+    extern struct BattleMap gBattleMap;
+    s8 x, y;
+    for (y = 0; y < gBattleMap.height; y++) {
+        for (x = 0; x < gBattleMap.width; x++) {
+            if (gBattleMap.cost[x + y * 64] >= 0
+                && gBattleMap.fog[x + y * 64] == 0
+                && gBattleMap.unitMap[x + y * 64] == 0) {
+                Map_FillAttackRange(&gBattleMap, x, y, minRange, maxRange);
+            }
+        }
+    }
+}
+
 void *fn_800A9488(void) {
     extern u8 gOptionsStr[];
     return (void *)((u32)gOptionsStr + 0xCC);
@@ -1056,146 +1079,86 @@ void fn_800AA80C(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_strength_reduction on
 void fn_800AA89C(void *arg0) {
     u8 Item_GetMaxRange(void *);
-    void Map_FillAttackRange(u8 *, s8, s8, u8, u8);
+    void Map_FillAttackRange(void *, s8, s8, u8, u8);
     void **Unit_GetHeldItemSlot(void *, s32);
-    u8 fn_8009339C(void *);
+    u8 fn_8009339C(void *, void *);
     u8 Status_Test(void *, s32);
-    extern u8 gBattleMap[151280];
+    struct BattleMap {
+        s32 width;
+        s32 height;
+        u8 pad8[5];
+        u8 unitMap[0x6101];
+        s16 cost[0x4040];
+        s8 fog[0x4000];
+    };
+    extern struct BattleMap gBattleMap;
 
-    u8 saved;
     void *self;
-    s32 slot;
-    s8 bestMax;
     s8 bestMin;
-    u8 *map;
-    u8 *unitSlot;
-    u32 pp;
-    u8 *item;
-    u32 atk;
-    u8 minRange;
-    s8 y;
-    s8 x;
-    s32 yOff;
-    u8 *rowBase;
-    u8 *cell;
-    s32 cellOff;
+    s8 bestMax;
+    s32 slot;
+    void **held;
+    void *item;
+    u32 min, max;
+    u8 saved;
+    s8 x, y;
 
     self = arg0;
-    bestMin = 0x64;
-    map = gBattleMap;
+    bestMin = 100;
     bestMax = 0;
-    unitSlot = map + 0xD;
-    slot = 0;
-    saved = unitSlot[(s8)*(u8 *)((u8 *)self + 0x19E) + ((s8)*(u8 *)((u8 *)self + 0x19F) << 6)];
-    unitSlot[(s8)*(u8 *)((u8 *)self + 0x19E) + ((s8)*(u8 *)((u8 *)self + 0x19F) << 6)] = 0;
+    saved = gBattleMap.unitMap[(s8)((u8 *)self)[0x19E] + ((s8)((u8 *)self)[0x19F] << 6)];
+    gBattleMap.unitMap[(s8)((u8 *)self)[0x19E] + ((s8)((u8 *)self)[0x19F] << 6)] = 0;
 
-    goto slot_cmp;
-slot_loop:
-    pp = (u32)Unit_GetHeldItemSlot(self, slot);
-    if (*(void **)pp == NULL) {
-        goto slots_done;
-    }
-    if (fn_8009339C(self) == 0) {
-        goto slot_next;
-    }
-    item = *(u8 **)pp;
-    if (item != NULL) {
-        minRange = item[0x1D];
-    } else {
-        minRange = 0;
-    }
-    pp = minRange;
-    if (item != NULL) {
-        atk = Item_GetMaxRange(item);
-    } else {
-        atk = 0;
-    }
-    atk = (u8)atk;
-    if (bestMin > (s32)pp || (s32)atk > bestMax) {
-        if ((s32)pp < bestMin) {
-            bestMin = (s8)pp;
+    for (slot = 0; slot < 4; ++slot) {
+        held = Unit_GetHeldItemSlot(self, slot);
+        item = *held;
+        if (item == NULL) {
+            break;
         }
-        if (bestMax < (s32)atk) {
-            bestMax = (s8)atk;
-        }
-        y = 0;
-        yOff = 0;
-        rowBase = gBattleMap;
-        goto y_cmp;
-y_loop:
-        cell = rowBase;
-        cellOff = yOff;
-        x = 0;
-        goto x_cmp;
-x_loop:
-        if (*(s16 *)((map + (cellOff << 1)) + 0x610E) >= 0
-            && (s8)cell[0xE18E] == 0
-            && cell[0xD] == 0) {
-            Map_FillAttackRange(gBattleMap, x, y, (u8)pp, (u8)atk);
-        }
-        cell += 1;
-        cellOff += 1;
-        x += 1;
-x_cmp:
-        if ((s32)x < *(s32 *)map) {
-            goto x_loop;
-        }
-        yOff += 0x40;
-        rowBase += 0x40;
-        y += 1;
-y_cmp:
-        if ((s32)y < *(s32 *)(map + 4)) {
-            goto y_loop;
+        if (fn_8009339C(self, item) != 0) {
+            item = *held;
+            min = (u8)(item ? ((u8 *)item)[0x1D] : 0);
+            max = (u8)(item ? Item_GetMaxRange(item) : 0);
+            if (bestMin > (s32)min || (s32)max > bestMax) {
+                if ((s32)min < bestMin) {
+                    bestMin = (s8)min;
+                }
+                if (bestMax < (s32)max) {
+                    bestMax = (s8)max;
+                }
+                for (y = 0; y < gBattleMap.height; y++) {
+                    for (x = 0; x < gBattleMap.width; x++) {
+                        if (gBattleMap.cost[x + y * 64] >= 0
+                            && gBattleMap.fog[x + y * 64] == 0
+                            && gBattleMap.unitMap[x + y * 64] == 0) {
+                            Map_FillAttackRange(&gBattleMap, x, y, min, max);
+                        }
+                    }
+                }
+            }
         }
     }
-slot_next:
-    slot += 1;
-slot_cmp:
-    if (slot < 4) {
-        goto slot_loop;
-    }
-slots_done:
+
     if (Status_Test((u8 *)self + 0x1BC, 0x43) != 0) {
-        u8 *map2 = gBattleMap;
-        y = 0;
-        yOff = 0;
-        rowBase = map2;
-        goto y2_cmp;
-y2_loop:
-        cell = rowBase;
-        cellOff = yOff;
-        x = 0;
-        goto x2_cmp;
-x2_loop:
-        if (*(s16 *)((map2 + (cellOff << 1)) + 0x610E) >= 0
-            && (s8)cell[0xE18E] == 0
-            && cell[0xD] == 0) {
-            Map_FillAttackRange(gBattleMap, x, y, 1, 2);
-        }
-        cell += 1;
-        cellOff += 1;
-        x += 1;
-x2_cmp:
-        if ((s32)x < *(s32 *)map2) {
-            goto x2_loop;
-        }
-        yOff += 0x40;
-        rowBase += 0x40;
-        y += 1;
-y2_cmp:
-        if ((s32)y < *(s32 *)(map + 4)) {
-            goto y2_loop;
+        for (y = 0; y < gBattleMap.height; y++) {
+            for (x = 0; x < gBattleMap.width; x++) {
+                if (gBattleMap.cost[x + y * 64] >= 0
+                    && gBattleMap.fog[x + y * 64] == 0
+                    && gBattleMap.unitMap[x + y * 64] == 0) {
+                    Map_FillAttackRange(&gBattleMap, x, y, 1, 2);
+                }
+            }
         }
     }
 
-    unitSlot[(s8)*(u8 *)((u8 *)self + 0x19E) + ((s8)*(u8 *)((u8 *)self + 0x19F) << 6)] = saved;
+    gBattleMap.unitMap[(s8)((u8 *)self)[0x19E] + ((s8)((u8 *)self)[0x19F] << 6)] = saved;
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_800AAB3C(void *arg0) {
 u8 Item_GetMaxRange(void *);
