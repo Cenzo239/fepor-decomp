@@ -13916,7 +13916,7 @@ void *fn_801795C0(void) {
 }
 
 #pragma push
-#pragma opt_propagation off
+#pragma global_optimizer off
 s32 fn_801795D0(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u32 *Unit_GetItemSlot(void *, s32);
