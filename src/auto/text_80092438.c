@@ -799,7 +799,8 @@ u8 fn_80093708(void *arg0, void *arg1) {
 #pragma optimization_level reset
 
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 4
+#pragma opt_propagation off
 u8 fn_800939FC(void *arg0, void *arg1) {
     s32 fn_800061F4(void);
     u8 fn_8001C914(void *, void *);
