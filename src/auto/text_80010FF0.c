@@ -284,7 +284,6 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
     extern f64 lbl_80368C38;
     extern f64 lbl_80368C40;
     extern f32 lbl_80368BF0;
-    extern f64 lbl_80368C28;
     struct Obj {
         virtual s32 v0() = 0;
         virtual s32 v1() = 0;
