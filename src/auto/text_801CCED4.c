@@ -9883,22 +9883,20 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
   
 #pragma push
 #pragma optimization_level 4
-#pragma opt_propagation off
 void fn_801DFE60(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
     void Card_RequestWrite(void *, s32, s32, s32, s32);
     extern void *gSaveDataBase;
 
-    u32 minSize;
-    s32 off;
-    u8 *best;
     s32 i;
-    s32 self;
-    s32 ctr;
+    u32 minSize;
     u8 *slot;
+    s32 off;
+    u32 size;
+    u8 *best;
+    s32 self;
     u8 hdrOk;
-    u32 clamped;
     u8 *found;
     s32 diff;
 
@@ -9918,16 +9916,15 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
             hdrOk = 1;
         }
         if (hdrOk == 0) {
-            clamped = save_slot_size(slot);
-            if (minSize > clamped) {
+            size = *(u32 *)(slot + 0x48);
+            if (minSize > (size > 0x100000U ? 0 : size)) {
                 best = slot;
-                minSize = save_slot_size(slot);
+                minSize = size > 0x100000U ? 0 : size;
             }
         }
         off += 0x4000;
     }
 
-    i = 0;
     off = 0x2000;
     for (i = 0; i < 6; i++) {
         found = *arg0 + off;
