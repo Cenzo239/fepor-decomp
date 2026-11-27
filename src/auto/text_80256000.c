@@ -2393,8 +2393,7 @@ return 0;
 }
 
 #pragma push
-#pragma optimization_level 3
-#pragma opt_lifetimes off
+#pragma optimization_level 4
 s32 fn_802590E0(void) {
 extern s32 *gAudioGroupState;
 void Audio_Lock(void); void Audio_Unlock(void);
