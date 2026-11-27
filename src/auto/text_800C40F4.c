@@ -880,7 +880,7 @@ void fn_802001F8(void *,u32);
 void fn_8005C7A4(s32);
 void fn_8005BA08(s8);
 u32 *table;
-s32 index,selected;
+s32 index,selected,diff;
 bool same;
 u32 *heap;
 table=lbl_80320B88;
@@ -974,8 +974,8 @@ s32 fn_800C4F30(void *arg0, s32 arg1)
 #pragma opt_lifetimes off
 s32 Heap_Create(void *arg0, s32 arg1)
 {
-    extern u8 *lbl_80367868;
     extern u8 *lbl_80367860;
+    extern u8 *lbl_80367868;
     extern void *lbl_80367870;
     extern void *lbl_80320B88[];
     extern char lbl_802700D8[];
@@ -988,14 +988,14 @@ s32 Heap_Create(void *arg0, s32 arg1)
     u8 *heap;
     u8 *previous;
     void **table;
-    s32 index;
     s32 groups;
+    register s32 index;
 
     size = (arg1 + 0x1F) & ~0x1F;
 
     previous = lbl_80367868;
 
-    if (previous != 0) {
+    if (previous) {
         heap = previous + *(u32 *)(previous + 0x1C);
     } else {
         heap = lbl_80367860;
@@ -1009,7 +1009,7 @@ s32 Heap_Create(void *arg0, s32 arg1)
     *(u32 *)(heap + 0x10) = 0;
     *(u32 *)(heap + 0x1C) = size;
     *(u32 *)(heap + 0x14) = 0;
-    *(void **)(heap + 0x18) = heap + 0x20;
+    *(void **)(heap + (u32)0x18) = heap + 0x20;
     *(u32 *)heap = 0x48454150;
 
     *(u32 *)(*(u8 **)(heap + 0x18) + 0xC) = 0;
@@ -2728,10 +2728,10 @@ M2C_UNK *String_CStr(void *arg0) {
     return temp_r3;
 }
 
-s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
+s32 String_Compare(const String *arg0, u32 pos, u32 n, const char *s, u32 n2) {
     M2C_UNK abort(void);
     M2C_UNK fprintf(void *, const char *, ...);
-    s32 fn_80231944(char *, char *, u32);
+    s32 fn_80231944(const char *, const char *, u32);
     extern char __files[];
     extern char gStringErrorMsgs[];
     u32 len;
@@ -7296,6 +7296,7 @@ void *StringMap_FindOrInsert(void *arg0, String *arg1) {
     s32 cmp;
     void *node;
     u8 *result;
+    String *pairPtr;
 
     tree = arg0;
     keySize = arg1->size;
@@ -7343,19 +7344,19 @@ void *StringMap_FindOrInsert(void *arg0, String *arg1) {
     }
 
     if (best) {
-        char *nodeData;
+        char *keyData;
         *(u32 *)&st.pads[0x1C] = *(u32 *)(best + 0xC);
-        *(u32 *)&st.pads[0x18] = keySize;
-        nodeData = *(char **)(best + 0x14);
-        if ((s32)*(u32 *)&st.pads[0x1C] < 0) {
+        keyData = key->data;
+        *(u32 *)&st.pads[0x18] = key->size;
+        if ((s32)*(u32 *)(best + 0xC) < 0) {
             fprintf(errFile, lbl_802704F8 + 0x8cc);
             abort();
         }
-        *(u32 *)&st.pads[0x24] = *(u32 *)&st.pads[0x1C];
-        minPtr = StrMin((u32 *)&st.pads[0x24], (u32 *)&st.pads[0x20]);
+        *(u32 *)&st.pads[0x24] = *(u32 *)(best + 0xC);
+        minPtr = StrMin((u32 *)&st.pads[0x24], (u32 *)&st.pads[0x1C]);
         *(u32 *)&st.pads[0x20] = *minPtr;
         minPtr = StrMin((u32 *)&st.pads[0x20], (u32 *)&st.pads[0x18]);
-        cmp = fn_80231944(nodeData, key->data, *minPtr);
+        cmp = fn_80231944(*(char **)(best + 0x14), keyData, *minPtr);
         if (cmp == 0) {
             if (*(u32 *)&st.pads[0x20] < *(u32 *)&st.pads[0x18]) {
                 cmp = -1;
@@ -7366,25 +7367,29 @@ void *StringMap_FindOrInsert(void *arg0, String *arg1) {
             }
         }
         if (cmp >= 0) {
-            return best + 0xC;
+            goto found;
         }
     }
 
+    pairPtr = st.pair;
     st.pads[8] = st.pads[0xC];
     *(u32 *)&st.pads[0x38] = 0;
     *(u32 *)&st.pads[0x40] = 0;
     *(u32 *)&st.pads[0x3C] = 0;
-    st.pair[0].cap = key->cap;
-    String_InitFromRange(&st.pair[0], key->data, key->data + keySize, (void *)&st.pads[0x14], &st.pads[8]);
-    st.pair[1].cap = *(u32 *)&st.pads[0x3C];
+    pairPtr[0].cap = key->cap;
+    String_InitFromRange(pairPtr, key->data, key->data + key->size, (void *)&st.pads[0x14], &st.pads[8]);
+    pairPtr[1].cap = *(u32 *)&st.pads[0x3C];
     st.pads[0] = st.pads[4];
-    String_InitFromRange(&st.pair[1], (char *)*(u32 *)&st.pads[0x40], (char *)*(u32 *)&st.pads[0x40] + *(u32 *)&st.pads[0x38], &st.pads[0x10], &st.pads[0]);
-    node = fn_800D697C(tree, parent, asLeft, setFirst, &st.pair);
+    String_InitFromRange(pairPtr + 1, (char *)*(u32 *)&st.pads[0x40], (char *)*(u32 *)&st.pads[0x40] + *(u32 *)&st.pads[0x38], &st.pads[0x10], &st.pads[0]);
+    node = fn_800D697C(tree, parent, asLeft, setFirst, pairPtr);
     result = (u8 *)node + 0xC;
     if (st.pair[1].data) Heap_Free(st.pair[1].data);
     if (st.pair[0].data) Heap_Free(st.pair[0].data);
     if (*(u32 *)&st.pads[0x40]) Heap_Free((void *)*(u32 *)&st.pads[0x40]);
     return result;
+
+found:
+    return best + 0xC;
 }
 #pragma global_optimizer on
 void *fn_800D5C88(void *arg0, s16 arg1) {
@@ -7438,7 +7443,10 @@ void String_Substr(u32 *arg0, u32 *arg1, u32 arg2, u32 arg3) {
     fn_800D6898(arg0, arg1, arg2, *n, &alloc);
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 3
+#pragma opt_propagation off
 extern "C" void fn_800D5DB0(void *arg0, void *arg1, u32 arg2, void *arg3) {
     void *Heap_Alloc(u32);
     void Heap_Free(void *);
@@ -7449,144 +7457,204 @@ extern "C" void fn_800D5DB0(void *arg0, void *arg1, u32 arg2, void *arg3) {
     extern char lbl_802704F8[];
 
     typedef struct { char b[0x58]; } Elem;
-    typedef struct { u32 words[5]; u8 flag; u32 tail[16]; } Rec;
+    typedef struct { char b[8]; } Pair;
+    typedef struct {
+        u32 words[5];
+        u8 flag;
+        u32 mid[6];
+        Pair pairs[4];
+        u32 endWords[2];
+    } Rec;
     typedef struct { u32 cap; u32 size; Elem *data; } Vec;
 
     Vec tmp;
     Elem *allocp;
+    u32 newCap;
     Vec *v;
     Elem *end;
     Elem *dst;
-    Elem *posp;
-    Elem *srcp;
+    Elem *val;
     Elem *p;
     Elem *q;
     u32 room;
-    u32 newCap;
+    u32 newSize;
     u32 n;
 
     v = (Vec *)arg0;
-    posp = (Elem *)arg1;
+    val = (Elem *)arg3;
     n = arg2;
     if (n != 0) {
         if (n > 0x02E8BA2Eu || v->size > 0x02E8BA2Eu - n) {
             fprintf(__files + 0xA0, lbl_802704F8 + 0x97C);
             abort();
         }
-        if (v->size + n <= v->cap) {
+        newSize = v->size + n;
+        if (newSize <= v->cap) {
+            Elem *srcp = val;
             end = v->data + v->size;
-            room = (u32)(end - posp);
-            srcp = (Elem *)arg3;
+            room = (u32)(end - (Elem *)arg1);
             if (n > room) {
                 dst = end;
                 while (n > room) {
-                    if (dst != 0) { *dst = *srcp; }
-                    dst += 1; n -= 1; v->size += 1;
+                    if (dst != 0) {
+                        *dst = *val;
+                    }
+                    dst += 1;
+                    n -= 1;
+                    v->size += 1;
                 }
-                p = posp;
+                p = (Elem *)arg1;
                 while (p < end) {
-                    if (dst != 0) { *dst = *p; }
-                    p += 1; dst += 1; v->size += 1;
+                    if (dst != 0) {
+                        *dst = *p;
+                    }
+                    p += 1;
+                    dst += 1;
+                    v->size += 1;
                 }
             } else {
+                u32 nBytes = n * 0x58;
                 q = end;
-                p = end - n;
+                p = (Elem *)((u8 *)end - nBytes);
                 while (p < end) {
-                    if (q != 0) { *q = *p; }
-                    p += 1; q += 1; v->size += 1;
+                    if (q != 0) {
+                        *q = *p;
+                    }
+                    p += 1;
+                    q += 1;
+                    v->size += 1;
                 }
                 {
                     u32 shiftBytes = (room - n) * 0x58;
-                    Elem *from = (Elem *)((u8 *)posp + shiftBytes);
-                    if ((u8 *)end - shiftBytes <= (u8 *)srcp && (u8 *)srcp < (u8 *)end) {
-                        srcp = (Elem *)((u8 *)srcp + n * 0x58);
+                    Rec *a;
+                    Rec *b;
+                    if ((u8 *)end - shiftBytes <= (u8 *)val && (u8 *)val < (u8 *)end) {
+                        srcp = (Elem *)((u8 *)srcp + nBytes);
                     }
-                    if (from > posp) {
-                        Rec *a = (Rec *)from;
-                        Rec *b = (Rec *)end;
-                        u32 ctr = ((u8 *)from + 0x57 - (u8 *)posp) / 0x58;
-                        do {
-                            a -= 1; b -= 1;
-                            b->words[0] = a->words[0]; b->words[1] = a->words[1];
-                            b->words[2] = a->words[2]; b->words[3] = a->words[3];
-                            b->words[4] = a->words[4]; b->flag = a->flag;
-                            b->tail[0] = a->tail[0]; b->tail[1] = a->tail[1];
-                            b->tail[2] = a->tail[2]; b->tail[3] = a->tail[3];
-                            b->tail[4] = a->tail[4]; b->tail[5] = a->tail[5];
-                            b->tail[6] = a->tail[6]; b->tail[7] = a->tail[7];
-                            b->tail[8] = a->tail[8]; b->tail[9] = a->tail[9];
-                            b->tail[10] = a->tail[10]; b->tail[11] = a->tail[11];
-                            b->tail[12] = a->tail[12]; b->tail[13] = a->tail[13];
-                            b->tail[14] = a->tail[14]; b->tail[15] = a->tail[15];
-                            ctr -= 1;
-                        } while (ctr != 0);
+                    a = (Rec *)((u8 *)arg1 + shiftBytes);
+                    b = (Rec *)end;
+                    while (a > (Rec *)arg1) {
+                        a -= 1;
+                        b -= 1;
+                        b->words[0] = a->words[0];
+                        b->words[1] = a->words[1];
+                        b->words[2] = a->words[2];
+                        b->words[3] = a->words[3];
+                        b->words[4] = a->words[4];
+                        b->flag = a->flag;
+                        b->mid[0] = a->mid[0];
+                        b->mid[1] = a->mid[1];
+                        b->mid[2] = a->mid[2];
+                        b->mid[3] = a->mid[3];
+                        b->mid[4] = a->mid[4];
+                        b->mid[5] = a->mid[5];
+                        b->pairs[0] = a->pairs[0];
+                        b->pairs[1] = a->pairs[1];
+                        b->pairs[2] = a->pairs[2];
+                        b->pairs[3] = a->pairs[3];
+                        b->endWords[0] = a->endWords[0];
+                        b->endWords[1] = a->endWords[1];
                     }
                 }
             }
             {
-                Rec *out = (Rec *)posp;
+                Rec *out = (Rec *)arg1;
                 Rec *in = (Rec *)srcp;
                 u32 left = n;
-                if (left != 0) {
-                    do {
-                        out->words[0] = in->words[0]; out->words[1] = in->words[1];
-                        out->words[2] = in->words[2]; out->words[3] = in->words[3];
-                        out->words[4] = in->words[4]; out->flag = in->flag;
-                        out->tail[0] = in->tail[0]; out->tail[1] = in->tail[1];
-                        out->tail[2] = in->tail[2]; out->tail[3] = in->tail[3];
-                        out->tail[4] = in->tail[4]; out->tail[5] = in->tail[5];
-                        out->tail[6] = in->tail[6]; out->tail[7] = in->tail[7];
-                        out->tail[8] = in->tail[8]; out->tail[9] = in->tail[9];
-                        out->tail[10] = in->tail[10]; out->tail[11] = in->tail[11];
-                        out->tail[12] = in->tail[12]; out->tail[13] = in->tail[13];
-                        out->tail[14] = in->tail[14]; out->tail[15] = in->tail[15];
-                        out += 1; in += 1; left -= 1;
-                    } while (left != 0);
+                while (left != 0) {
+                    out->words[0] = in->words[0];
+                    out->words[1] = in->words[1];
+                    out->words[2] = in->words[2];
+                    out->words[3] = in->words[3];
+                    out->words[4] = in->words[4];
+                    out->flag = in->flag;
+                    out->mid[0] = in->mid[0];
+                    out->mid[1] = in->mid[1];
+                    out->mid[2] = in->mid[2];
+                    out->mid[3] = in->mid[3];
+                    out->mid[4] = in->mid[4];
+                    out->mid[5] = in->mid[5];
+                    out->pairs[0] = in->pairs[0];
+                    out->pairs[1] = in->pairs[1];
+                    out->pairs[2] = in->pairs[2];
+                    out->pairs[3] = in->pairs[3];
+                    out->endWords[0] = in->endWords[0];
+                    out->endWords[1] = in->endWords[1];
+                    out += 1;
+                    left -= 1;
                 }
             }
         } else {
-            tmp.cap = 0; tmp.size = 0; tmp.data = 0;
-            newCap = v->cap;
-            if (newCap == 0) newCap = 1;
-            while (v->size + n > newCap) {
-                if (newCap < 0x01745D17u) newCap *= 2;
-                else newCap = 0x02E8BA2Eu;
+            u32 cap;
+            tmp.cap = 0;
+            tmp.size = 0;
+            tmp.data = 0;
+            cap = v->cap;
+            newCap = cap != 0 ? cap : 1;
+            while (newSize > newCap) {
+                if (newCap < 0x01745D17u) {
+                    newCap *= 2;
+                } else {
+                    newCap = 0x02E8BA2Eu;
+                }
             }
             allocp = (Elem *)Heap_Alloc(newCap * 0x58);
             if (allocp == 0) {
                 fprintf(__files + 0xA0, lbl_802704F8 + 0x999);
                 abort();
             }
-            tmp.data = allocp; tmp.cap = newCap;
+            tmp.data = allocp;
+            tmp.cap = newCap;
             {
                 Elem *w = allocp;
                 Elem *r = v->data;
                 end = v->data + v->size;
-                while (r < posp) {
-                    if (w != 0) { *w = *r; }
-                    r += 1; w += 1; tmp.size += 1;
+                while (r < (Elem *)arg1) {
+                    if (w != 0) {
+                        *w = *r;
+                    }
+                    r += 1;
+                    w += 1;
+                    tmp.size += 1;
                 }
                 while (n != 0) {
-                    if (w != 0) { *w = *srcp; }
-                    w += 1; n -= 1; tmp.size += 1;
+                    if (w != 0) {
+                        *w = *val;
+                    }
+                    w += 1;
+                    n -= 1;
+                    tmp.size += 1;
                 }
                 while (r < end) {
-                    if (w != 0) { *w = *r; }
-                    r += 1; w += 1; tmp.size += 1;
+                    if (w != 0) {
+                        *w = *r;
+                    }
+                    r += 1;
+                    w += 1;
+                    tmp.size += 1;
                 }
             }
             if (&tmp != v) {
-                u32 t0 = tmp.cap; u32 ts; Elem *td;
-                tmp.cap = v->cap; v->cap = t0;
-                td = tmp.data; tmp.data = v->data; v->data = td;
-                ts = tmp.size; tmp.size = v->size; v->size = ts;
+                u32 t0 = tmp.cap;
+                u32 ts;
+                Elem *td;
+                tmp.cap = v->cap;
+                v->cap = t0;
+                td = tmp.data;
+                tmp.data = v->data;
+                v->data = td;
+                ts = tmp.size;
+                tmp.size = v->size;
+                v->size = ts;
             }
             fn_800D6940(&tmp);
-            if (tmp.data != 0) Heap_Free(tmp.data);
+            if (tmp.data != 0) {
+                Heap_Free(tmp.data);
+            }
         }
     }
 }
-#pragma cplusplus reset
+#pragma pop
 void *fn_800D6314(void *arg0, s16 arg1) {
     void Heap_Free(void *);
     void fn_800D6940(void *);
@@ -15070,7 +15138,7 @@ void fn_800E320C(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s
     s32 x2;
     s32 y2;
     s32 cols;
-    s32 u0;
+    register s32 u0;
     s32 frameMax;
 
     w = M2C_FIELD(arg0, s32 *, 0x54);
