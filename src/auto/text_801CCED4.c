@@ -2231,25 +2231,24 @@ void *fn_801CF6F4(void *arg0, s16 arg1) {
     return arg0;
 }
 
+#pragma optimization_level 4
 void *ScriptObj_FindByName(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u16 gScriptObjSlots[];
-    u8 *p;
-    s32 i;
+    u8 *p = (u8 *)&gScriptObjSlots[0];
+    s32 i = 0;
 
-    p = (u8 *)gScriptObjSlots;
-    i = 0;
     do {
         if ((*(u32 *)(p + 8) & 1) != 0 &&
             Str_Cmp(*(void **)(*(void **)(p + 0x24)), arg0) == 0) {
-            return (u8 *)gScriptObjSlots + i * 0x15C;
+            return (u8 *)&gScriptObjSlots[i * 0xAE];
         }
         i += 1;
         p += 0x15C;
     } while (i < 2);
     return NULL;
 }
-
+#pragma optimization_level reset
 void ScriptObj_Start(void *name, void *parent) {
     s32 Str_Cmp(void *, void *);
     void fn_801CFAB8(void *, u8, void *);
@@ -9916,14 +9915,16 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
     s32 self;
     u8 hdrOk;
     u8 *found;
+    u8 *src;
     s32 diff;
 
     minSize = (u32)-1;
-    off = 0x2000;
     best = NULL;
     self = arg1;
+    i = 0;
+    off = 0x2000;
 
-    for (i = 0; i < 6; i++) {
+    for (; i < 6; i++) {
         slot = *arg0 + off;
         if (*(u32 *)(slot + 0x40) != 0x4645384AU) {
             hdrOk = 0;
@@ -9942,8 +9943,9 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
         off += 0x4000;
     }
 
+    i = 0;
     off = 0x2000;
-    for (i = 0; i < 6; i++) {
+    for (; i < 6; i++) {
         found = *arg0 + off;
         if (*(u32 *)(found + 0x40) != 0x4645384AU) {
             hdrOk = 0;
@@ -9961,14 +9963,15 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
     found = NULL;
 
 found_slot:
-    if (found == NULL) {
-        found = *arg0 + 0x2000;
-        if (found == best) {
-            found = *arg0 + 0x6000;
+    src = found;
+    if (src == NULL) {
+        src = *arg0 + 0x2000;
+        if (src == best) {
+            src = *arg0 + 0x6000;
         }
     }
 
-    fn_800062CC(best, found, *(s32 *)(found + 0x4C));
+    fn_800062CC(best, src, *(s32 *)(src + 0x4C));
     fn_801E3CA8(best);
     diff = (s32)best - (s32)gSaveDataBase;
     Card_RequestWrite(best, *(s32 *)(best + 0x4C), diff, diff, self);
@@ -10088,6 +10091,10 @@ s32 off;
 u8 *slot;
 s32 i;
 u8 valid;
+u8 *cand;
+u8 *found;
+s32 j;
+s32 off2;
 i=0; off=0x1a000;
 for(;i<2;i++) {
 base=*save;
@@ -10095,7 +10102,46 @@ slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
 else valid=1;
-if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
+if(valid) {
+for(j=0,off2=0x2000;j<4;j+=2) {
+cand=base+off2;
+if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid) {
+if(slot[0x63]==cand[0x62]) {
+found=cand;
+goto done;
+}
+}
+off2+=0x4000;
+cand=base+off2;
+if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid) {
+if(slot[0x63]==cand[0x62]) {
+found=cand;
+goto done;
+}
+}
+off2+=0x4000;
+cand=base+off2;
+if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
+else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if(valid) {
+if(slot[0x63]==cand[0x62]) {
+found=cand;
+goto done;
+}
+}
+off2+=0x4000;
+}
+found=0;
+done:
+if(found!=0) return slot;
+}
 off+=0x6000;
 }
 return 0;
