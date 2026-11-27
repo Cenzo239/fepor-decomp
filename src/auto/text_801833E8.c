@@ -5550,6 +5550,18 @@ void fn_8018EBC0(void *arg0, s32 arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_lifetimes off
+
+static inline s32 Convoy_CountMatchingEC8C(void *target, u8 *entry) {
+    s32 count = 0;
+    s32 i;
+    if (!target) return count;
+    for (i = 0; i < 200; i++, entry += 8) {
+        void *item = *(void **)entry;
+        if (item && !(entry[5] & 0x3F) && target == item) count++;
+    }
+    return count;
+}
+
 void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
