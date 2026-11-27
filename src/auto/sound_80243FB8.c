@@ -1023,7 +1023,7 @@ void fn_80245290(u32 arg0, s32 arg1, s32 arg2) {
 #pragma dont_inline on
 #pragma opt_common_subs off
 #pragma push
-#pragma optimization_level 4
+#pragma scheduling off
 void fn_8024534C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
 {
   void fn_8024A780(s32, s32, s32, s32, s32);
