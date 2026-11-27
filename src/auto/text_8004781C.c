@@ -2,18 +2,6 @@
 #include "common.h"
 extern u8 gBattleMap[];
 
-static inline void Model_CopyColorBytes(u8 *dst, u8 *src) {
-    u8 c0, c1, c2, c3;
-    c0 = src[0];
-    c1 = src[1];
-    dst[0] = c0;
-    c2 = src[2];
-    dst[1] = c1;
-    c3 = src[3];
-    dst[2] = c2;
-    dst[3] = c3;
-}
-
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
 static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, const s16 *upper)
