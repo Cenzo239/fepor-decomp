@@ -15825,7 +15825,7 @@ s32 fn_8017BC94(void *arg0) {
     i = 0;
     do {
         p = fn_80105C5C((void *)(base + 0x1BC), (u8)i);
-        if (p != NULL) {
+        if (p) {
             if (*(u8 *)((u8 *)p + 0x19) != 0) {
                 if (*(u8 *)((u8 *)p + 0x19) != 0) {
                     base2 = *(void **)((u8 *)self + 0x4C);
