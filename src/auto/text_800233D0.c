@@ -1288,6 +1288,8 @@ extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     f32 f31;
     f32 f30;
     u8 *p;
+    u8 cur;
+    u8 prev;
 
     pad = *(u32 **)&gPadInput;
     trig = pad[3];
