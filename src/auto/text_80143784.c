@@ -981,8 +981,6 @@ extern "C" void fn_80143B24(void *arg0) {
     }
 }
 #pragma cplusplus reset
-#pragma push
-#pragma optimization_level 2
 extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -1021,7 +1019,6 @@ extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     in.y = (s16)(((s16)(b - a) << 5) + c);
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
-#pragma pop
 extern "C" s16 fn_80143C58(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
