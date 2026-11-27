@@ -857,6 +857,8 @@ void fn_801A4714(void *arg0)
     fn_801A8010(obj);
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_801A47B0(void *arg0, s32 arg1, s32 arg2) {
     void fn_801A96FC(void *);
     void fn_801A601C(void *, void *, void *, s32);
@@ -887,7 +889,7 @@ void fn_801A47B0(void *arg0, s32 arg1, s32 arg2) {
     BattleAnim_Queue(obj + 0x8A0, 0x25, 0);
     fn_801A8010(obj);
 }
-
+#pragma pop
 void fn_801A48A4(s32 arg0) {
     void BattleAnim_Queue(s32, s32, s8);
     void fn_800351FC(s32, u8, s32, s32);
@@ -950,18 +952,22 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 }
 
 #pragma opt_common_subs off
-void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
+#pragma push
+#pragma optimization_level 4
+void Battle_ApplyHpDelta(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
     void Unit_SetHp(void *, s32);
     void BattleAnim_Queue(void *, s32, s32);
-    u8 orig;
+    s32 orig;
     s32 delta;
+    s32 cur;
 
     orig = obj[0x1A8];
-    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), (s8)a1);
+    delta = fn_800AA76C((s8)orig, (s8)Unit_GetMaxHp(obj), a1);
+    cur = obj[0x1A8];
     delta = (s8)delta;
-    Unit_SetHp(obj, delta + (s8)obj[0x1A8]);
+    Unit_SetHp(obj, delta + (s8)cur);
     BattleAnim_Queue(obj + 0x8A0, 0x20, 0);
     BattleAnim_Queue(obj + 0x8A0, 0x9, delta);
     BattleAnim_Queue(obj + 0x8A0, 0x50, 0);
@@ -969,6 +975,7 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
         BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
     }
 }
+#pragma pop
 #pragma opt_common_subs reset
 void fn_801A4B40(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
@@ -2547,10 +2554,6 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     p = lbl_8027B630;
     q = lbl_8027B620;
     self = arg0;
-    a = ((u8 *)arg2)[0x19E];
-    b = ((u8 *)arg2)[0x19F];
-    c = ((u8 *)arg1)[0x19E];
-    d = ((u8 *)arg1)[0x19F];
 
     sp8[0] = p[0];
     w1 = p[1];
@@ -2560,10 +2563,14 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
     w3 = p[3];
     sp8[1] = w1;
     v2 = q[2];
+    a = ((u8 *)arg2)[0x19E];
+    b = ((u8 *)arg2)[0x19F];
     v3 = q[3];
     sp18[1] = v1;
     sp8[2] = w2;
     sp8[3] = w3;
+    c = ((u8 *)arg1)[0x19E];
+    d = ((u8 *)arg1)[0x19F];
     sp8[0] = (u32)arg2;
     ((u8 *)sp8)[4] = a;
     ((u8 *)sp8)[5] = b;
