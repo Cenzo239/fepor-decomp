@@ -3927,24 +3927,21 @@ s32 fn_8025C99C(void *arg0, s32 arg1)
 }
 
 #pragma use_lmw_stmw reset
-#pragma push
-#pragma optimization_level 2
 void fn_8025C9E0(void *arg0, u8 arg1)
 {
     void fn_8025CA80(void);
-    extern u8 gSoundStudios[];
+    typedef struct { u8 pad[0x48]; void *node; u8 pad2[0xBC - 0x4C]; } SoundStudio;
+    extern SoundStudio gSoundStudios[];
     u8 *base;
     void *node;
-    u8 zero;
 
     if (((u8 *)arg0)[0xF0] != 0) {
         fn_8025CA80();
         *(u32 *)((u8 *)arg0 + 0x24) |= 0x20;
     }
 
-    zero = 0;
-    ((u8 *)arg0)[0xF1] = zero;
-    base = gSoundStudios + arg1 * 0xBC;
+    ((u8 *)arg0)[0xF1] = 0;
+    base = (u8 *)&gSoundStudios[arg1];
     node = *(void **)(base += 0x48);
     *(void **)((u8 *)arg0 + 0xC) = node;
     if (node != 0) {
