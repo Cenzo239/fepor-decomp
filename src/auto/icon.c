@@ -1,10 +1,6 @@
 /* Functions from 0x800AD24C to 0x800C3F18, found by decomp-toolkit. */
 #include "common.h"
 
-static inline char *IconTextAt(void *base, s32 offset) {
-    return (char *)base + offset;
-}
-
 typedef struct {
     u8 flag : 1;
     u8 unk : 7;
