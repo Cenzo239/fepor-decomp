@@ -12,8 +12,6 @@ struct ItemABA {
 
 #pragma use_lmw_stmw on
 
-typedef struct Pair16 { s16 x, y; } Pair16;
-
 typedef struct {
     u8 flag : 1;
     u8 unk : 7;
