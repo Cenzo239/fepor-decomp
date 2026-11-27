@@ -62,7 +62,6 @@ static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
 
 return count;
 }
-static inline s16 *Ai_NeighborTable(s16 *table) { return table; }
 static inline void *Ai_ActionTileUnit(u8 id) {
     extern u8 gUnits[];
     if (id) return gUnits + (id - 1) * 0x280;
@@ -2006,14 +2005,15 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  Block value, temp, fallback;
  String str;
  u8 alloc;
+ s32 index;
  s32 result;
  u8 *self;
  u8 *entry;
  s32 offset;
- s32 j,k;
- s32 index;
- u8 *list;
  s32 listOffset;
+ s32 k;
+ s32 j;
+ u8 *list;
  u8 equal;
  self=arg0; result=1;
  if (*(s8 *)(self+0x28)==0) {
