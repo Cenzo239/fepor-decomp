@@ -5992,6 +5992,8 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
     return self;
 }
 #pragma cplusplus reset
+#pragma push
+#pragma opt_lifetimes off
 
 void fn_8013B254(void *arg0)
 {
@@ -6013,7 +6015,9 @@ void fn_8013B254(void *arg0)
   void *q;
   void *p;
   zero = 0;
-  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
+  new_var = *((s16 *) (((s8 *) arg0) + 0x64));
+  new_var += 8;
+  *((s16 *) (((s8 *) arg0) + 0x64)) = new_var;
   new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
