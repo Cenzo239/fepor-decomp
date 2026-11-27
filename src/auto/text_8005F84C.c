@@ -8513,12 +8513,22 @@ s32 fn_8006F014(void) {
     return lbl_80366DE8;
 }
 
+#pragma push
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
+static u8 lbl_80311CA8[0x10];
+static u8 menuPad1[0x28];
+static u8 menuPad2[0x14];
+static s32 menuItems[8];
+static s32 *menuEntries[5];
+static u8 menuWork[0x28];
+#pragma pop
+
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *fn_800C0658(void);
     void Ui_CreateMenu(void *, void *, s32);
-    extern u8 lbl_80311CA8[];
     struct MenuDef {
         u8 pad[0x4c];
         s32 args[8];
