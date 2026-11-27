@@ -807,68 +807,57 @@ void fn_8007D7E8(void *arg0) {
 }
 
 void fn_8007D7F8(void *arg0) {
-    f32 Math_Ease(s32, s16, f32, f32, f32, f32);
+    f32 Math_Ease(s32, f32, f32, f32, f32);
     void Process_ClearFunc(void *);
 
-    extern f32 lbl_80369418;
-    extern f32 lbl_80369450;
-    extern f32 lbl_80369458;
-    extern f32 lbl_80369468;
-    extern f32 lbl_8036946C;
-    extern f32 lbl_80369478;
-    extern f32 lbl_8036947C;
+    extern const f32 lbl_80369418;
+    extern const f32 lbl_80369450;
+    extern const f32 lbl_80369458;
+    extern const f32 lbl_80369468;
+    extern const f32 lbl_8036946C;
+    extern const f32 lbl_80369478;
+    extern const f32 lbl_8036947C;
 
-    u8 *self;
     u8 *data;
-    s16 timer;
-    s8 alpha;
 
-    self = (u8 *)arg0;
-    data = *(u8 **)(self + 0x30);
+    data = *(u8 **)((u8 *)arg0 + 0x30);
 
     *(s16 *)(data + 6) = *(s16 *)(data + 6) - 1;
 
     if (*(s32 *)(data + 0x20) == 1) {
-        timer = *(s16 *)(data + 6);
 
         *(f32 *)(data + 0x14) = Math_Ease(
             4,
-            timer,
             lbl_80369478,
             lbl_80369468,
-            (f32)(7 - timer),
+            (f32)(7 - *(s16 *)(data + 6)),
             lbl_80369450
         );
     } else {
-        timer = *(s16 *)(data + 6);
 
         *(f32 *)(data + 0x14) = Math_Ease(
             4,
-            timer,
             lbl_8036947C,
             lbl_80369468,
-            (f32)(7 - timer),
+            (f32)(7 - *(s16 *)(data + 6)),
             lbl_80369450
         );
     }
 
     *(f32 *)(data + 0x18) = lbl_80369458;
 
-    timer = *(s16 *)(data + 6);
 
-    alpha = (s8)Math_Ease(
+    data[0xA] = (s32)Math_Ease(
         4,
-        timer,
         lbl_80369418,
         lbl_8036946C,
-        (f32)(7 - timer),
+        (f32)(7 - *(s16 *)(data + 6)),
         lbl_80369450
     );
 
-    *(u8 *)(data + 0xA) = alpha;
 
     if (*(s16 *)(data + 6) <= 0) {
-        Process_ClearFunc(self);
+        Process_ClearFunc(arg0);
     }
 }
 
