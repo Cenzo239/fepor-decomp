@@ -1265,14 +1265,16 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     }
 }
 #pragma cplusplus off
+#pragma push
+#pragma optimization_level 2
 void *NameEntry_InsertChar(void *a, u8 *b) {
     u8 *self;
     u8 c;
     u8 *p;
     u8 is_double;
     u8 d;
-    u8 t0;
     u8 t1;
+    u8 t0;
     s32 n;
 
     self = a;
@@ -1295,7 +1297,7 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
 
     if (is_double != 0) {
         t0 = b[0];
-        t1 = b[1];
+        t1 = b[1] & 0xFFFFFFFF;
         p[0] = t0;
         p[1] = t1;
     } else {
@@ -1304,6 +1306,7 @@ void *NameEntry_InsertChar(void *a, u8 *b) {
 
     return self + *(s16 *)(self + 0x70) * 4 + 0x3c;
 }
+#pragma pop
 
 #pragma opt_unroll off
 void *fn_801CDB74(void *arg0) {
@@ -2235,13 +2238,14 @@ void *fn_801CF6F4(void *arg0, s16 arg1) {
 void *ScriptObj_FindByName(void *arg0) {
     s32 Str_Cmp(void *, void *);
     extern u16 gScriptObjSlots[];
-    u8 *p = (u8 *)&gScriptObjSlots[0];
+    u8 *p;
     s32 i = 0;
 
+    p = (u8 *)gScriptObjSlots;
     do {
         if ((*(u32 *)(p + 8) & 1) != 0 &&
             Str_Cmp(*(void **)(*(void **)(p + 0x24)), arg0) == 0) {
-            return (u8 *)&gScriptObjSlots[i * 0xAE];
+            return (u8 *)gScriptObjSlots + i * 0x15C;
         }
         i += 1;
         p += 0x15C;
