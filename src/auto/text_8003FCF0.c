@@ -437,7 +437,6 @@ void fn_8003FED8(u8 *arg0) {
     }
     obj[0x1F] = 0;
 }
-#pragma pop
 #pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
