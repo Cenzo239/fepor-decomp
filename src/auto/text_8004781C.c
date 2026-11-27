@@ -1401,6 +1401,7 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
 
 #pragma push
 #pragma opt_strength_reduction off
+#pragma opt_register_coloring off
 void fn_80049594(void *self)
 {
   f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
@@ -2461,103 +2462,113 @@ s32 GMaterial_SetupAtlasTev(void *obj, s32 atlas) {
 #pragma optimization_level 3
 void fn_8004B588(u8 *arg0)
 {
-    f32 fn_80059F64(f32, f32, f32, f32);
-    f32 fn_8005A028(s32, f32, f32, f32, f32);
-    void fn_8006ECCC(s32, void *, s32);
-    void fn_80222C50(void *, s32);
-    void fn_80202300(void *, s32, f32);
-    void fn_802026E4(void *, void *, void *, void *);
-    void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
-    void fn_80202024(void *, void *, void *);
-    void fn_80202540(void *, f32, f32, f32);
-    void fn_80224E50(void *, s32, s32);
-    void fn_802201A8(s32, s32, s32, s32, s32, s32);
-    void fn_80051564(void *, s32, f32, f32);
-    extern u8 lbl_8026AA98[];
-    extern s32 lbl_803672B0;
-    extern u32 lbl_80368FB4;
-    extern f32 lbl_80368FBC;
-    extern f32 lbl_80368FC4;
-    extern f32 lbl_80368FC8;
-    extern f32 lbl_80368FCC;
-    extern f32 lbl_80368FD0;
-    extern f32 lbl_80368FD4;
-    extern f32 lbl_80368FD8;
-    extern f32 lbl_80368FDC;
-    extern f64 lbl_80368FE0;
-    extern f64 lbl_80368FE8;
-    u8 sp12C[0x30];
-    u8 spFC[0x30];
-    u8 spCC[0x30];
-    u8 sp9C[0x30];
-    u8 sp6C[0x30];
-    u8 sp4C[0x20];
-    Vec sp40;
-    Vec sp34;
-    Vec sp28;
-    Vec sp1C;
-    Vec sp10;
-    u32 spC;
-    u32 sp8;
-    f32 scale;
-    s32 alpha;
-    u8 *tbl;
-    f32 angle;
-    f32 x;
-    f32 y;
-    u8 param;
-
-    tbl = lbl_8026AA98;
-    scale = lbl_80368FC4;
-    alpha = 0xFF;
-    switch (arg0[0]) {
+  f32 fn_80059F64(f32, f32, f32, f32);
+  f32 fn_8005A028(s32, f32, f32, f32, f32);
+  void fn_8006ECCC(s32, void *, s32);
+  void fn_80222C50(void *, s32);
+  void fn_80202300(void *, s32, f32);
+  void fn_802026E4(void *, void *, void *, void *);
+  void fn_8020293C(void *, f32, f32, f32, f32, f32, f32, f32, f32);
+  void fn_80202024(void *, void *, void *);
+  void fn_80202540(void *, f32, f32, f32);
+  void fn_80224E50(void *, s32, s32);
+  void fn_802201A8(s32, s32, s32, s32, s32, s32);
+  void fn_80051564(void *, s32, f32, f32);
+  extern u8 lbl_8026AA98[];
+  extern s32 lbl_803672B0;
+  extern u32 lbl_80368FB4;
+  extern f32 lbl_80368FBC;
+  extern f32 lbl_80368FC4;
+  extern f32 lbl_80368FC8;
+  extern f32 lbl_80368FCC;
+  extern f32 lbl_80368FD0;
+  extern f32 lbl_80368FD4;
+  extern f32 lbl_80368FD8;
+  extern f32 lbl_80368FDC;
+  extern f64 lbl_80368FE0;
+  extern f64 lbl_80368FE8;
+  u8 sp12C[0x30];
+  u8 spFC[0x30];
+  u8 spCC[0x30];
+  u8 sp9C[0x30];
+  u8 sp6C[0x30];
+  u8 sp4C[0x20];
+  Vec sp40;
+  Vec sp34;
+  f32 *new_var;
+  Vec sp28;
+  volatile int new_var2;
+  Vec sp1C;
+  Vec sp10;
+  u32 spC;
+  u32 sp8;
+  f32 scale;
+  s32 alpha;
+  u8 *tbl;
+  f32 angle;
+  f32 x;
+  f32 y;
+  u8 param;
+  tbl = lbl_8026AA98;
+  scale = lbl_80368FC4;
+  alpha = 0xFF;
+  switch (arg0[0])
+  {
     case 0:
-        param = arg0[1];
-        alpha = 0xC0;
-        if (param > 0x78) {
-            alpha = (s32)fn_80059F64(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32)(s32)(param - 0x78));
-        }
-        fn_8006ECCC(lbl_803672B0, sp4C, 3);
-        break;
+      param = arg0[1];
+      alpha = 0xC0;
+      if (param > 0x78)
+    {
+      alpha = (s32) fn_80059F64(lbl_80368FC8, lbl_80368FCC, lbl_80368FD0, (f32) ((s32) (param - 0x78)));
+    }
+      fn_8006ECCC(lbl_803672B0, sp4C, 3);
+      break;
+
     case 1:
-        param = arg0[1];
-        alpha = (s32)fn_8005A028(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32)param);
-        scale = fn_8005A028(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32)arg0[1]);
-        fn_8006ECCC(lbl_803672B0, sp4C, 4);
-        break;
-    }
-    fn_80222C50(sp4C, 0);
-    angle = (f32)*(s16 *)(arg0 + 2);
-    sp34 = *(Vec *)(tbl + 0x1C);
-    sp40 = *(Vec *)(tbl + 0x28);
-    sp34.x = *(f32 *)(arg0 + 4);
-    sp34.y = *(f32 *)(arg0 + 8);
-    sp40.y = *(f32 *)(arg0 + 8);
-    spC = lbl_80368FB4;
-    sp40.x = *(f32 *)(arg0 + 4);
-    ((u8 *)&spC)[3] = (u8)alpha;
-    sp10 = sp34;
-    sp1C = sp40;
-    sp28 = *(Vec *)(tbl + 0x34);
-    if (lbl_80368FCC != angle) {
-        fn_80202300(spCC, 0x5A, lbl_80368FD8 * angle);
-        fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
-        fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-        fn_80202024(sp6C, sp9C, sp12C);
-        fn_80202540(spFC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
-        fn_80202024(spCC, spFC, spCC);
-        fn_80202540(spFC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
-        fn_80202024(spFC, spCC, spCC);
-        fn_80202024(spCC, sp12C, sp12C);
-    } else {
-        fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
-        fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
-        fn_80202024(sp6C, sp9C, sp12C);
-    }
-    fn_80224E50(sp12C, 0x1E, 0);
-    fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
-    sp8 = spC;
-    fn_80051564(&sp8, 0, *(f32 *)(arg0 + 4), *(f32 *)(arg0 + 8));
+      param = arg0[1];
+      alpha = (s32) fn_8005A028(2, lbl_80368FD4, lbl_80368FCC, lbl_80368FD0, (f32) param);
+      scale = fn_8005A028(2, lbl_80368FBC, lbl_80368FC4, lbl_80368FD0, (f32) arg0[1]);
+      fn_8006ECCC(lbl_803672B0, sp4C, 4);
+      break;
+
+  }
+
+  fn_80222C50(sp4C, 0);
+  angle = (0, (f32) (*((s16 *) (arg0 + 2))));
+  sp34 = *((Vec *) (tbl + 0x1C));
+  sp40 = *((Vec *) (tbl + 0x28));
+  sp34.x = *((f32 *) (arg0 + 4));
+  sp34.y = *((f32 *) (arg0 + 8));
+  sp40.y = *((f32 *) (arg0 + 8));
+  new_var = &(*((f32 *) (arg0 + 4)));
+  spC = lbl_80368FB4;
+  sp40.x = *new_var;
+  ((u8 *) (&spC))[3] = (u8) alpha;
+  sp10 = sp34;
+  sp1C = sp40;
+  sp28 = *((Vec *) (tbl + 0x34));
+  if (new_var2 = lbl_80368FCC != angle)
+  {
+    fn_80202300(spCC, 0x5A, lbl_80368FD8 * angle);
+    fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
+    fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+    fn_80202024(sp6C, sp9C, sp12C);
+    fn_80202540(spFC, lbl_80368FDC, lbl_80368FDC, lbl_80368FCC);
+    fn_80202024(spCC, spFC, spCC);
+    fn_80202540(spFC, lbl_80368FC4, lbl_80368FC4, lbl_80368FCC);
+    fn_80202024(spFC, spCC, spCC);
+    fn_80202024(spCC, sp12C, sp12C);
+  }
+  else
+  {
+    fn_802026E4(sp9C, &sp1C, &sp28, &sp10);
+    fn_8020293C(sp6C, -scale, scale, -scale, scale, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4, lbl_80368FC4);
+    fn_80202024(sp6C, sp9C, sp12C);
+  }
+  fn_80224E50(sp12C, 0x1E, 0);
+  fn_802201A8(0, 0, 0, 0x1E, 0, 0x7D);
+  sp8 = spC;
+  fn_80051564(&sp8, 0, *((f32 *) (arg0 + 4)), *((f32 *) (arg0 + 8)));
 }
 #pragma pop
 void fn_8004B8F8(int arg0, int arg1, float arg2, float arg3)
@@ -6094,7 +6105,6 @@ void fn_8004781C(void *arg0)
 
     u8 *map;
     u8 *base;
-    u8 *node;
     struct MapEntry temp;
     u32 flags;
     u32 firstPriority;
@@ -6105,6 +6115,7 @@ void fn_8004781C(void *arg0)
     s32 i;
     s32 j;
     s32 count;
+    u8 *node;
 
     map = (u8 *)arg0;
 
@@ -6203,21 +6214,21 @@ inner_loop:
         first->tail = second->tail;
 
         swapBase = *(u8 **)(map + 0x14);
-        first = (struct MapEntry *)(swapBase + nextOffset);
+        second = (struct MapEntry *)(swapBase + nextOffset);
 
-        first->bytes[0] = temp.bytes[0];
-        first->bytes[1] = temp.bytes[1];
-        first->bytes[2] = temp.bytes[2];
-        first->bytes[3] = temp.bytes[3];
-        first->bytes[4] = temp.bytes[4];
-        first->bytes[5] = temp.bytes[5];
-        first->bytes[6] = temp.bytes[6];
-        first->bytes[7] = temp.bytes[7];
+        second->bytes[0] = temp.bytes[0];
+        second->bytes[1] = temp.bytes[1];
+        second->bytes[2] = temp.bytes[2];
+        second->bytes[3] = temp.bytes[3];
+        second->bytes[4] = temp.bytes[4];
+        second->bytes[5] = temp.bytes[5];
+        second->bytes[6] = temp.bytes[6];
+        second->bytes[7] = temp.bytes[7];
 
-        first->x = temp.x;
-        first->y = temp.y;
-        first->object = temp.object;
-        first->tail = temp.tail;
+        second->x = temp.x;
+        second->y = temp.y;
+        second->object = temp.object;
+        second->tail = temp.tail;
     }
 
     offset += 0xB4;
