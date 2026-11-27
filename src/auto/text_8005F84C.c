@@ -2648,50 +2648,53 @@ f32 fn_80064164(void **arg0, s32 arg1, f32 frame) {
     u8 *base, *track;
     u8 interpolate;
     if (arg0 == 0) base = 0;
-    else { void *p = *arg0; if (p) base = M2C_FIELD(p,u8 **,0x14); else base = 0; }
+    else { void *p = *arg0; if (p) base = M2C_FIELD(p, u8 **, 0x14); else base = 0; }
     if (!base) return lbl_803691E4;
-    offset = ((u16 *)M2C_FIELD(base,void **,4))[arg1];
+    offset = ((u16 *)M2C_FIELD(base, void **, 4))[arg1];
     if (offset == 0xFFFF) track = 0; else track = base + offset;
     if (!track) return lbl_803691E4;
     count = *(u16 *)track;
     t0 = -1;
-    mode = *(u16 *)(track+2);
+    mode = *(u16 *)(track + 2);
     t1 = t0;
-    keys = (u16 (*)[2])(track+4);
+    keys = (u16 (*)[2])(track + 4);
     value = 0;
-    if ((u32)count == 0) goto done;
-    {
-        if ((s32)count == 0) mid = -1;
+    if ((u16)count != 0) {
+        if ((s32)count == 0) mid = t0;
         else {
-            lo = value; hi = count-1; time = (s32)frame;
+            lo = value;
+            hi = count - 1;
+            time = (s32)frame;
             while (lo <= hi) {
-                mid = lo + ((hi-lo)>>1);
-                if (keys[mid][0] < time) lo = mid+1;
-                else if (keys[mid][0] > time) hi = mid-1;
+                mid = lo + ((hi - lo) >> 1);
+                if (keys[mid][0] < time) lo = mid + 1;
+                else if (keys[mid][0] > time) hi = mid - 1;
                 else goto found;
             }
             if (hi < 0) mid = -1;
-            else { mid = count-1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo-1; } }
+            else { mid = count - 1; if (lo <= mid) { if (keys[lo][0] <= time) mid = lo; else mid = lo - 1; } }
         }
 found:
         if (mid < 0) { v0 = (s16)keys[0][1]; interpolate = 0; }
-        else if (mid < count-1) {
+        else if (mid < count - 1) {
             s32 next = mid + 1;
-            u16 a = keys[mid][0];
-            u16 b = keys[next][0];
-            u16 c = keys[mid][1];
-            u16 d = keys[next][1];
-            t0 = a; t1 = b; v0 = c; value = d;
-            interpolate = 1;
+            t0 = keys[mid][0];
+            v0 = keys[mid][1];
+            t1 = keys[next][0];
+            value = keys[next][1];
+            goto interpolate_pair;
         } else { v0 = keys[mid][1]; interpolate = 0; }
+        goto interpolate_ready;
+interpolate_pair:
+        interpolate = 1;
+interpolate_ready:
         if (!interpolate) value = v0;
-        else switch(mode) {
-        case 0: value = (s16)((f32)v0 + ((f32)(value-v0)*(frame-(f32)t0))/(f32)(t1-t0)); break;
+        else switch (mode) {
+        case 0: value = (s16)((f32)v0 + ((f32)(value - v0) * (frame - (f32)t0)) / (f32)(t1 - t0)); break;
         case 1: value = v0; break;
         default: value = 0; break;
         }
     }
-done:
     return lbl_8036920C * (f32)value;
 }
 
@@ -4065,13 +4068,15 @@ fn_80224304(buf,0x280,cam+0x24);fn_802244B4(1,0x140,buf);
 }
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_80066F64(void)
 {
     typedef struct { f32 x, y, z; } Vec3;
     extern Vec3 lbl_8026B744;
     extern Vec3 lbl_8026B750;
-    extern f32 lbl_80369224;
-    extern f32 lbl_80369228;
+    extern const f32 lbl_80369224;
+    extern const f32 lbl_80369228;
     extern s32 lbl_8036C444;
     extern s32 lbl_8036C448;
     extern s32 lbl_80366DDC;
@@ -4079,14 +4084,10 @@ void fn_80066F64(void)
     u32 col1;
     Vec3 b;
     Vec3 a;
-    f32 f20;
-    f32 f24;
     u8 *p;
     s32 i;
 
     p = (u8 *)lbl_80366DDC;
-    f20 = lbl_80369224;
-    f24 = lbl_80369228;
     for (i = 8; i != 0; i--) {
         a = lbl_8026B744;
         *(f32 *)(p + 0x14) = a.x;
@@ -4096,7 +4097,7 @@ void fn_80066F64(void)
         *(f32 *)(p + 0x08) = b.x;
         *(f32 *)(p + 0x0C) = b.y;
         *(f32 *)(p + 0x10) = b.z;
-        *(f32 *)(p + 0x20) = f20;
+        *(f32 *)(p + 0x20) = lbl_80369224;
         col1 = lbl_8036C444;
         p[0] = ((u8 *)&col1)[0];
         p[1] = ((u8 *)&col1)[1];
@@ -4107,12 +4108,12 @@ void fn_80066F64(void)
         p[5] = ((u8 *)&col2)[1];
         p[6] = ((u8 *)&col2)[2];
         p[7] = ((u8 *)&col2)[3];
-        *(f32 *)(p + 0x24) = f24;
-        *(f32 *)(p + 0x28) = f24;
+        *(f32 *)(p + 0x24) = lbl_80369228;
+        *(f32 *)(p + 0x28) = lbl_80369228;
         p += 0x2C;
     }
 }
-
+#pragma pop
 #pragma optimization_level 3
 void fn_80067058(void) {
     void fn_802029C4(void *, void *, f32 *);
