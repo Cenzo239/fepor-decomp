@@ -10379,8 +10379,6 @@ s32 fn_80196268(void *arg0) {
     return 1;
 }
 
-#pragma push
-#pragma optimization_level 4
 s32 fn_80196388(s32 arg0) {
     void **UiCtx_GetItemSlot(void *);
     void fn_80037040(s32, u8, u8);
