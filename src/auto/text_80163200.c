@@ -1058,10 +1058,8 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     void *info;
     s32 sp8;
     Obj *self;
-    s32 idx;
 
     self = (Obj *)arg0;
-    idx = arg1;
     self->v2();
     fn_8016070C(0, 0, (s16)(self->unkE - self->unkA), (s16)(self->unk10 - self->unkC), 0xb3, 0x10);
 
@@ -1080,7 +1078,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     fn_80007124(text);
     fn_80007884();
 
-    self->v3(idx);
+    self->v3(arg1);
 
     h = (s16)(self->unk18 - self->unk14);
     rect = &self->unk68;
@@ -1105,7 +1103,7 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     half = (s16)((row_h - 0x18) >> 1);
     goto loop_test;
 loop_body:
-    y = (s16)(accum + self->unk66 + half);
+    y = (s16)(half + (accum + self->unk66));
     if ((slot >= 4) && (slot <= 7)) {
         y += self->v9();
     }
@@ -16605,7 +16603,7 @@ void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
     *ret = *fn_8013F748(r, &spC, sp8);
 }
 #pragma push
-#pragma opt_lifetimes off
+#pragma global_optimizer off
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
@@ -18567,10 +18565,10 @@ extern "C" void fn_80180AC8(void *arg0) {
     void Ui_AddChild(void *, void *);
     void fn_80142060(void *);
     void *Ui_ListGetSelected(void *);
-    void List_EraseRange(void *, void *, void *, void *);
     void *fn_80037004(void *, u8);
-    u8 Unit_CountSupportPartners(void *);
+    void List_EraseRange(void *, void *, void *, void *);
     void List_Insert(void *, void *, void *, void *);
+    u8 Unit_CountSupportPartners(void *);
     void fn_80181DF0(void *, void *);
     extern u8 lbl_802955A8[];
     extern u8 gUnitLists[];
@@ -18591,7 +18589,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     };
     typedef u8 (Node::*Pred)(void);
     Node *node;
-    s32 pm2;
+    u32 pm2;
     s32 pm1;
     void *obj;
     s32 pm0;
@@ -18605,12 +18603,12 @@ extern "C" void fn_80180AC8(void *arg0) {
     void *ret;
     void *link;
     u8 i;
-    s32 sp8;
+    unsigned sp8;
     void *spC;
     void *sp10;
-    void *sp14;
+    register void *sp14;
     void *sp18;
-    s32 sp1C;
+    unsigned sp1C;
     void *sp20;
     void *sp24;
     void *sp28;
@@ -18626,7 +18624,7 @@ extern "C" void fn_80180AC8(void *arg0) {
     pm0 = *(s32 *)((u8 *)base + 0xF8);
     pm1 = *(s32 *)((u8 *)base + 0xFC);
     pm2 = *(s32 *)((u8 *)base + 0x100);
-    ((s32 *)&pred)[0] = pm0;
+    ((s32 *)&pred)[0] = (unsigned)pm0;
     ((s32 *)&pred)[1] = pm1;
     ((s32 *)&pred)[2] = pm2;
     ((s32 *)&predDup)[0] = pm0;
@@ -18692,8 +18690,8 @@ extern "C" void fn_80180AC8(void *arg0) {
         *(s16 *)((u8 *)panel + 0x14) = 0;
         *(s16 *)((u8 *)panel + 0x16) = 0xD8;
         *(s16 *)((u8 *)panel + 0x18) = 0x10A;
-        *(s16 *)((u8 *)panel + 0x1A) = 0;
         *(s16 *)((u8 *)panel + 0x1C) = 0;
+        *(s16 *)((u8 *)panel + 0x1A) = 0;
         *(u8 *)((u8 *)panel + 0x1E) = 0xFF;
         *(u8 *)((u8 *)panel + 0x1F) = 0xFF;
         *(u8 *)((u8 *)panel + 0x20) = 0xFF;
@@ -18708,8 +18706,8 @@ extern "C" void fn_80180AC8(void *arg0) {
         *(void **)panel = lbl_80292208;
         fn_80142060((u8 *)r12 + 0x3C);
         *(void **)panel = (u8 *)base + 0x110;
-        *(u32 *)((u8 *)panel + 0x48) = 0;
         *(u8 *)((u8 *)panel + 0x4C) = 1;
+        *(u32 *)((u8 *)panel + 0x48) = 0;
         *(s16 *)((u8 *)panel + 0x4E) = 0;
         *(s16 *)((u8 *)panel + 0x50) = -1;
         *(s16 *)((u8 *)panel + 0x52) = -1;
