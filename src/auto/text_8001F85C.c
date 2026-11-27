@@ -2049,7 +2049,9 @@ void Map_RefreshUnitMap(void *arg0)
 }
 #pragma pop
 extern u16 jumptable_80284514[12];
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer on
 void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
 {
     void fn_800062B0(u32 *, u32, u32);
@@ -2057,41 +2059,23 @@ void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
 
     u8 *map = (u8 *)arg0;
     u32 value;
-    u32 t;
-    u32 mid;
     u32 *buffer;
 
     switch (arg1) {
     case 0:
-        t = (arg2 & 0xFF) << 8;
-        mid = (arg2 & 0xFF) << 16;
-        mid = mid + t;
-        value = mid + (arg2 & 0xFF);
-        value = (arg2 << 24) + value;
+        value = (arg2 & 0xFF) + (((arg2 << 24) + ((arg2 & 0xFF) << 16)) + ((arg2 & 0xFF) << 8));
         fn_800062B0((u32 *)(map + 0xD), value, 0x1000);
         break;
     case 1:
-        t = (arg2 & 0xFF) << 8;
-        mid = (arg2 & 0xFF) << 16;
-        mid = mid + t;
-        value = mid + (arg2 & 0xFF);
-        value = (arg2 << 24) + value;
+        value = (arg2 & 0xFF) + (((arg2 << 24) + ((arg2 & 0xFF) << 16)) + ((arg2 & 0xFF) << 8));
         fn_800062B0((u32 *)(map + 0x100D), value, 0x1000);
         break;
     case 2:
-        t = (arg2 & 0xFF) << 8;
-        mid = (arg2 & 0xFF) << 16;
-        mid = mid + t;
-        value = mid + (arg2 & 0xFF);
-        value = (arg2 << 24) + value;
+        value = (arg2 & 0xFF) + (((arg2 << 24) + ((arg2 & 0xFF) << 16)) + ((arg2 & 0xFF) << 8));
         fn_800062B0((u32 *)(map + 0x200D), value, 0x1000);
         break;
     case 3:
-        t = (arg2 & 0xFF) << 8;
-        mid = (arg2 & 0xFF) << 16;
-        mid = mid + t;
-        value = mid + (arg2 & 0xFF);
-        value = (arg2 << 24) + value;
+        value = (arg2 & 0xFF) + (((arg2 << 24) + ((arg2 & 0xFF) << 16)) + ((arg2 & 0xFF) << 8));
         fn_800062B0((u32 *)(map + 0x300D), value, 0x1000);
         break;
     case 4:
@@ -2137,7 +2121,7 @@ void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
         break;
     }
 }
-#pragma global_optimizer reset
+#pragma pop
 s32 fn_80022FB0(u32 arg0) {
     u32 lo;
     u32 hi;
