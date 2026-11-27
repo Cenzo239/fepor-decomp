@@ -284,16 +284,14 @@ s32 Unit_AddWpnExp(void *arg0, void *arg1) {
     u8 Status_Test(void *, s32);
     s8 fn_8001CBA0(void *);
     u32 fn_8001CFA8(u8);
-    s32 final;
     u32 result;
-    s32 other;
     u8 *self;
     u32 idx;
     u8 kept;
+    s32 final;
 
     self = arg0;
-    other = (s32)arg1;
-    idx = *((u8 *)other + 0x12);
+    idx = *((u8 *)arg1 + 0x12);
     result = self[idx + 0x20C];
 
     if (idx != 7) {
@@ -359,7 +357,7 @@ done1:
         return 0;
     }
     {
-        s32 t = (s32)kept + *((u8 *)other + 0x17);
+        s32 t = (s32)kept + *((u8 *)arg1 + 0x17);
         if (t > 0xFB) {
             t = 0xFB;
         }
@@ -685,23 +683,18 @@ u8 fn_8009326C(void *arg0, void *arg1) {
 }
 
 #pragma optimization_level 2
-s32 fn_8009339C(void *arg0,void *arg1) {
-u8 fn_800940B0(void*,void*);
-u8 Status_Test(void*,s32);
-u8 allowed=1;
-u64 flags;
-flags=*(u64*)((u8*)arg1+0x38);
-if((flags&1)==0) return 0;
-if(flags&0x200) {
-if(Status_Test((u8*)arg0+0x1BC,9)!=0) allowed=1;
-else allowed=0;
-} else if((((u8*)arg0)[0x1A5]>>4&7)!=0) {
-if(flags&2) allowed=0;
-else if(flags&4) allowed=0;
-else if(flags&0x40) allowed=1;
-}
-if(allowed==0) return 0;
-return fn_800940B0(arg0,arg1)!=0;
+s32 fn_8009339C(void *arg0, void *arg1)
+{
+    u8 fn_800940B0(void *, void *);
+    u8 Status_Test(void *, s32);
+    u64 flags = *(u64 *)((u8 *)arg1 + 0x38);
+    u8 allowed = 1;
+    u8 tmp;
+    if (!(flags & 1)) return 0;
+    allowed = Unit_CheckItemState(arg0, flags);
+    if (!allowed) return 0;
+    tmp = fn_800940B0(arg0, arg1);
+    return tmp != 0;
 }
 #pragma optimization_level reset
 u8 fn_800934CC(void *arg0, void *arg1) {
@@ -721,13 +714,15 @@ u8 fn_80093708(void *arg0, void *arg1) {
     struct { unsigned ok : 8; unsigned result : 8; } t;
     u64 flags;
     u64 flags2;
+    u32 mask;
     u8 tmp;
 
     t.result = 0;
+    mask = 5;
     flags = *(u64 *)((u8 *)arg1 + 0x38);
     flags2 = flags;
 
-    if (flags & 5) {
+    if (flags & mask) {
         t.ok = 1;
         if (flags & 1) {
             if (!(flags2 & 1)) {
@@ -739,14 +734,13 @@ u8 fn_80093708(void *arg0, void *arg1) {
                     } else {
                         t.ok = 0;
                     }
-                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) != 0) {
-                    if (flags & 2) {
-                        t.ok = t.result;
-                    } else if (flags & 4) {
-                        t.ok = t.result;
-                    } else if (flags & 0x40) {
-                        t.ok = 1;
-                    }
+                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
+                } else if (flags & 2) {
+                    t.ok = t.result;
+                } else if (flags & 4) {
+                    t.ok = t.result;
+                } else if (flags & 0x40) {
+                    t.ok = 1;
                 }
                 if (t.ok == 0) {
                     t.result = 0;
@@ -767,14 +761,13 @@ u8 fn_80093708(void *arg0, void *arg1) {
                         } else {
                             t.ok = 0;
                         }
-                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) != 0) {
-                        if (flags & 2) {
-                            t.ok = t.result;
-                        } else if (flags & 4) {
-                            t.ok = t.result;
-                        } else if (flags & 0x40) {
-                            t.ok = 1;
-                        }
+                    } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
+                    } else if (flags & 2) {
+                        t.ok = t.result;
+                    } else if (flags & 4) {
+                        t.ok = t.result;
+                    } else if (flags & 0x40) {
+                        t.ok = 1;
                     }
                     if (t.ok == 0) {
                         t.result = 0;
@@ -792,7 +785,8 @@ u8 fn_80093708(void *arg0, void *arg1) {
         if (flags & 8) {
             if (!(flags2 & 8)) {
                 return t.result;
-            } else if (!(flags & ((u64)0x100 << 32))) {
+            } else if (flags & ((u64)0x100 << 32)) {
+            } else {
                 t.result = 1;
             }
         } else {
