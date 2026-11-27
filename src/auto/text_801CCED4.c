@@ -1,9 +1,5 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
-static inline void NameEntry_StorePair(u8 *dst, u8 first, u8 second) {
-    dst[0] = first;
-    dst[1] = second;
-}
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
@@ -1276,8 +1272,6 @@ void *NameEntry_InsertChar(void *a, u8 *b)
   u8 *p;
   u8 is_double;
   u8 d;
-  u8 t1;
-  u8 t0;
   s32 n;
   self = a;
   c = b[0];
@@ -1304,10 +1298,7 @@ void *NameEntry_InsertChar(void *a, u8 *b)
   }
   if (is_double != 0)
   {
-    t1 = b[1] & 0xFFFFFFFF;
-    t0 = b[0];
-    p[0] = t0;
-    p[1] = t1;
+    NameEntry_StorePair(p, b[0], b[1]);
   }
   else
   {
