@@ -5551,10 +5551,13 @@ void fn_8018EBC0(void *arg0, s32 arg1) {
 #pragma optimization_level 4
 #pragma opt_lifetimes off
 
-static inline s32 Convoy_CountMatchingEC8C(void *target, u8 *entry) {
+static inline s32 Convoy_CountMatchingEC8C(void *target) {
     s32 count = 0;
     s32 i;
+    extern u8 gConvoy[];
+    u8 *entry;
     if (!target) return count;
+    entry = gConvoy;
     for (i = 0; i < 200; i++, entry += 8) {
         void *item = *(void **)entry;
         if (item && !(entry[5] & 0x3F) && target == item) count++;
