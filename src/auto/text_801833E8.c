@@ -17728,13 +17728,3 @@ s32 fn_80199028(void *arg0) {
 extern f32 lbl_8036ADF0;
 extern f32 lbl_8036ADF4;
 extern u8 lbl_80279C40[];
-static inline s32 Convoy_CountMatchingEC8C(void *target, u8 *entry) {
-    s32 count = 0;
-    s32 i;
-    if (!target) return count;
-    for (i = 0; i < 200; i++, entry += 8) {
-        void *item = *(void **)entry;
-        if (item && !(entry[5] & 0x3F) && target == item) count++;
-    }
-    return count;
-}
