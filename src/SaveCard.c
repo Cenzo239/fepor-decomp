@@ -1702,8 +1702,7 @@ got_dst:
     Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
 }
 #pragma push
-#pragma optimization_level 1
-#pragma opt_common_subs off
+#pragma optimization_level 2
 void fn_801E047C(u8 **arg0, s32 arg1)
 {
   void fn_80006298(void *, s32, s32);
