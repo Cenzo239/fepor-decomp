@@ -1,11 +1,6 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
 
-static inline u8 *Sound_StudioAt(u32 index) {
-    extern u8 gSoundStudios[];
-    return gSoundStudios + index * 0xBC;
-}
-
 static inline void Sound_InitDelayAt(u8 *record, s32 offset, s32 samples) {
     void *fn_802637A4(s32);
     void *memset(void *, s32, u32);
@@ -3936,20 +3931,16 @@ void fn_8025C9E0(void *arg0, u8 arg1)
 {
     void fn_8025CA80(void);
     extern u8 gSoundStudios[];
-    u32 index;
     u8 *base;
     void *node;
-    u32 zero;
 
-    zero = 0;
     if (((u8 *)arg0)[0xF0] != 0) {
         fn_8025CA80();
         *(u32 *)((u8 *)arg0 + 0x24) |= 0x20;
     }
 
-    ((u8 *)arg0)[0xF1] = zero;
-    index = arg1 * 0xBC;
-    base = gSoundStudios + index;
+    ((u8 *)arg0)[0xF1] = 0;
+    base = gSoundStudios + arg1 * 0xBC;
     node = *(void **)(base += 0x48);
     *(void **)((u8 *)arg0 + 0xC) = node;
     if (node != 0) {
@@ -3957,7 +3948,7 @@ void fn_8025C9E0(void *arg0, u8 arg1)
     }
     *(void **)((u8 *)arg0 + 0x10) = 0;
     *(void **)base = arg0;
-    ((u8 *)arg0)[0xF2] = zero;
+    ((u8 *)arg0)[0xF2] = 0;
     ((u8 *)arg0)[0xF0] = 1;
     ((u8 *)arg0)[0xF3] = arg1;
 }
