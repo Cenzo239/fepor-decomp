@@ -16626,7 +16626,6 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     }
     return var_r30;
 }
-#pragma pop
 
 /* Gold cost for qty after base calc, status 0x4B markup (*10/7), and 0xB half-price. */
 s16 Unit_GetGoldCost(s32 unit, s16 qty) {
