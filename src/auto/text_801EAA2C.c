@@ -1730,8 +1730,8 @@ static inline void AramCache_EvictByFlag(u8 *node, s32 i) {
     void *AramCache_InsertFree(void *, void *);
     extern void *gAramUsedList;
     extern void *gAramFreeList;
-    void *temp;
     void *next;
+    void *temp;
     void *prev;
 
     for (; i < 0x100; i++, node += 0x6C) {
@@ -1756,7 +1756,6 @@ static inline void AramCache_EvictByFlag(u8 *node, s32 i) {
 #pragma use_lmw_stmw on
 s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     void *fn_801ED12C(s32);
-    void *AramCache_InsertFree(void *, void *);
     s32 fn_8000D598(s32);
     s32 fn_8005E55C(void);
     void DCFlushRange(s32, s32);
@@ -1767,17 +1766,10 @@ s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     extern void fn_801ED800;
     extern u8 lbl_8027F1D0[];
     extern u8 gAramSlotPool[];
-    extern void *gAramUsedList;
-    extern void *gAramFreeList;
     extern s32 gAramHeapSize;
     extern s32 gAramRequestCount;
-    s32 flag;
-    u8 *node;
-    s32 i;
-    void *temp;
-    void *next;
-    void *prev;
     void *cell;
+    s32 flag;
     void *name;
 
     if (gAramHeapSize < size) {
@@ -1789,23 +1781,7 @@ s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     flag = 0;
     name = fn_80234200(path, 0x2F);
     if (name != 0 && Str_Cmp(name, lbl_8027F1D0 + 0x35) == 0) {
-        for (i = 0, node = gAramSlotPool; i < 0x100; i++, node += 0x6C) {
-            if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
-                next = *(void **)(node + 0x60);
-                temp = gAramUsedList;
-                if (next != 0) {
-                    *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
-                }
-                prev = *(void **)(node + 0x5C);
-                if (prev != 0) {
-                    *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
-                } else {
-                    temp = *(void **)(node + 0x60);
-                }
-                gAramUsedList = temp;
-                gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
-            }
-        }
+        AramCache_EvictByFlag(gAramSlotPool, 0);
         flag = 2;
         size = 0x180000;
     }
