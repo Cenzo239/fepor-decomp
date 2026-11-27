@@ -3530,15 +3530,10 @@ s32 fn_8011F184(TalkUi *self, u8 **text) {
             if (TalkUi_GetCurrentSlot(self)) {
                 *text -= 2;
             } else {
-                u8 *out;
-                for (out = lbl_8032FE24; (s32)**text != '|'; out++) {
-                    *out = *(*text)++;
-                }
-                *out = 0;
-                ++*text;
+                TalkUi_CopyToken(lbl_8032FE24, text);
                 fn_8011FB58(self, fn_80049DA4((u8 *)TalkUi_str + 0x6f, lbl_8032FE24, 0));
+                return 2;
             }
-            return 2;
         case 'D':
             slot = TalkUi_FindSlot(self);
             if (!(gUiInputFlags & 3)) {
