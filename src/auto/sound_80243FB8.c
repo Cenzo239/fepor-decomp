@@ -1112,11 +1112,12 @@ void fn_8024534C(s32 arg0, s32 arg1, s32 arg2, s32 arg3)
     }
   }
 
-}
-#pragma opt_common_subs reset
-#pragma dont_inline reset
+ }
+#pragma pop
+ #pragma opt_common_subs reset
+ #pragma dont_inline reset
 
-#pragma push
+ #pragma push
 #pragma optimization_level 4
 #pragma opt_register_coloring off
 void fn_80245518(void *arg0, s32 *arg1, u8 arg2) {
