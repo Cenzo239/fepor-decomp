@@ -1413,7 +1413,6 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     *(s32 *)(card + 0xD8) = arg1;
     return __CARDEraseSector(arg0, *(s32 *)(card + 0x0C) * ((u32)(dir - *(u8 **)(card + 0x80)) >> 13), (void *)fn_80219734);
 }
-#pragma pop
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;
 
