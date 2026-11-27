@@ -4473,7 +4473,7 @@ void fn_800CC10C(s32 arg0, void *arg1) {
 }
 #pragma cplusplus on
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 extern "C" void fn_800CC3D8(void *arg0, s32 arg1) {
     struct Host {
@@ -4732,9 +4732,9 @@ char sp78[32];
 String sp6C,sp60,sp54,sp48,sp3C,sp30,sp24,sp18;
 u32 sp14,sp10,spC,sp8;
 void *f; char *buffer; s8 made1, made2;
-buffer = arg1;
 made1 = 0;
 made2 = 0;
+buffer = arg1;
 f=fn_800C42D8(0x60);
 if(f) { fn_800C9ABC(&sp54,lbl_802704F8+0x1D6,&sp14); made1=1; fn_800C9ABC(&sp48,buffer,&sp10); made2=1; f=fn_800C91EC(f,&sp48,&sp54); }
 if((s8)made2)fn_800C9A60(&sp48,-1);
@@ -4759,7 +4759,6 @@ fn_800CA18C((void *)(self+0x1D4),M2C_FIELD(self,u8 **,0x1DC)+M2C_FIELD(self,s32 
 }
 fn_800C9120(f,1);fn_800C9A60(&sp60,-1);fn_800C9A60(&sp6C,-1);
 }
-
 #pragma push
 #pragma cplusplus on
 #pragma global_optimizer on
@@ -17212,7 +17211,6 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     } st;
 
     void *pSrc;
-    void *pVec;
     u32 room;
     void *newData;
     void *end;
@@ -17221,7 +17219,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *pPos;
     void *dst;
     void *shift;
-    u32 len, length;
+    u32 len;
     u8 tag;
     u32 copyCap;
     u32 cap;
@@ -17237,6 +17235,7 @@ void fn_800E6554(void *vec, void *pos, u32 count, void *src)
     void *srcC;
     u32 one;
     u32 remaining;
+    void *pVec;
 
     pVec = vec;
     pPos = pos;
@@ -17404,13 +17403,13 @@ copyCap = *(u32 *)((u8 *)cur + 0x10);
             }
             *(u32 *)&st.pad[0x4C] = *(u32 *)pSrc;
             plen = *(u32 *)&st.pad[0x4C] < *(u32 *)&st.pad[0x48] ? (u32 *)&st.pad[0x4C] : (u32 *)&st.pad[0x48];
-            length = *plen;
+            len = *plen;
             if (dst == pSrc) {
                 fn_800C94F8(dst, 0, 0, 0, 0);
-                String_Resize(dst, length, 1);
+                String_Resize(dst, len, 1);
             } else {
-                String_Resize(dst, length, 0);
-                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), length);
+                String_Resize(dst, len, 0);
+                memcpy(*(void **)((u8 *)dst + 8), *(void **)((u8 *)pSrc + 8), len);
             }
             *(u32 *)&st.pad[0x40] = (u32)-1;
             if (CheckPos_800E6554(*(u32 *)((u8 *)pSrc + 0xC), 0)) {
@@ -17419,13 +17418,13 @@ copyCap = *(u32 *)((u8 *)cur + 0x10);
             }
             *(u32 *)&st.pad[0x44] = *(u32 *)((u8 *)pSrc + 0xC);
             plen = *(u32 *)&st.pad[0x44] < *(u32 *)&st.pad[0x40] ? (u32 *)&st.pad[0x44] : (u32 *)&st.pad[0x40];
-            length = *plen;
+            len = *plen;
             if ((u8 *)dst + 0xC == (u8 *)srcC) {
                 fn_800C94F8((u8 *)dst + 0xC, 0, 0, 0, 0);
-                String_Resize((u8 *)dst + 0xC, length, 1);
+                String_Resize((u8 *)dst + 0xC, len, 1);
             } else {
-                String_Resize((u8 *)dst + 0xC, length, 0);
-                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), length);
+                String_Resize((u8 *)dst + 0xC, len, 0);
+                memcpy(*(void **)((u8 *)dst + 0x14), *(void **)((u8 *)pSrc + 0x14), len);
             }
             remaining -= 1;
             *(u32 *)((u8 *)dst + 0x18) = *(u32 *)((u8 *)pSrc + 0x18);
@@ -32151,39 +32150,40 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
 s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     void fn_800FE398(void *, s32, s32);
     u8 Map_IsAiTerrainBlocked(s8, s8);
-    u8 Allegiance_Compare(void *, void *);
+    u8 Allegiance_Compare(s32, s32);
     u8 Ai_UnitIsHostileToActive(void *);
     void fn_8002F728(void *);
     void fn_8002C618(void *, s8, s8);
-    extern u8 gBattleMap[];
     extern u8 gUnits[];
+    extern u8 gBattleMap[];
     extern s16 lbl_802732A0[];
     extern u8 lbl_80284E20[16];
     extern u8 lbl_8028EA88[16];
     extern s32 gTargetList[502];
 
+    void *self;
+    u32 mode;
+    s16 *nei;
+    s32 count;
+    s32 ci;
+    u8 *base;
+    u8 *map;
+    u32 flag1;
+    u32 flag2;
+    s16 best;
+    register s32 y;
+    s32 x;
+    u8 *costcell;
+    s32 nx, ny;
+    u8 oob;
+    u8 id;
+    register void *unit;
     s16 sp20;
+    s16 bestY;
     void *sp18[2];
     void *sp10[2];
     s16 *outX;
     s16 *outY;
-    void *self;
-    u32 flag1;
-    u32 flag2;
-    s32 mode;
-    s16 best;
-    s16 bestY;
-    s32 y;
-    s32 x;
-    s32 ci;
-    u32 id;
-    void *unit;
-    s16 *nei;
-    s32 nx, ny;
-    s32 count;
-    u8 oob;
-    u8 *base;
-    u8 *map;
 
     outX = arg3;
     outY = arg4;
@@ -32195,27 +32195,24 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
     flag2 = arg1 & 2;
     best = 0x7FFF;
     map = gBattleMap;
-    for (y = map[9], y = (s8)y; y <= (s8)map[0xB] - 1; y++) {
+    for (y = ((AiActionMap *)map)->yMin; y <= ((AiActionMap *)map)->yMax - 1; y++) {
         ci = (s8)y << 6;
-        for (x = map[8], x = (s8)x; x <= (s8)map[0xA] - 1; x++) {
-            if (*(s16 *)(map + ((s8)x + ci) * 2 + 0x818E) < 0) {
+        for (x = ((AiActionMap *)map)->xMin; x <= ((AiActionMap *)map)->xMax - 1; x++) {
+            costcell = map + ((s8)x + ci) * 2;
+            if (*(s16 *)(costcell + 0x818E) < 0) {
                 continue;
             }
-            if ((s8)map[ci + (s8)x + 0xE18E] != 0) {
+            if ((s8)map[ci + (s8)x + (unsigned short)0xE18E] != 0) {
                 continue;
             }
             if (Map_IsAiTerrainBlocked((s8)x, (s8)y) != 0) {
                 continue;
             }
-            if (flag1 != 0) {
+            if (flag1) {
                 id = base[ci + (s8)x + 0xD];
-                if (id != 0) {
-                    if (id != 0) {
-                        unit = gUnits + (id - 1) * 0x280;
-                    } else {
-                        unit = NULL;
-                    }
-                    if (Allegiance_Compare(*(void **)((u8 *)self + 0x190), *(void **)((u8 *)unit + 0x190)) == 1) {
+                if (id) {
+                    unit = Ai_ActionTileUnit(id);
+                    if (Allegiance_Compare(*(s32 *)((u8 *)self + 0x190), *(s32 *)((u8 *)unit + 0x190)) == 1) {
                         continue;
                     }
                 }
@@ -32224,7 +32221,7 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                 nei = lbl_802732A0;
                 count = 0;
                 while (*nei != 0x7FFF) {
-                    nx = (s16)x + nei[0];
+                    register nx = (s16)x + nei[0];
                     ny = (s16)y + nei[1];
                     oob = 0;
                     if (nx < (s8)map[8] || (s8)map[0xA] - 1 < nx || ny < (s8)map[9] || (s8)map[0xB] - 1 < ny) {
@@ -32233,19 +32230,15 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
                     if (oob == 0) {
                         id = *(gBattleMap + (s8)nx + ((s8)ny << 6) + 0xD);
                         if (id != 0) {
-                            if (id != 0) {
-                                unit = gUnits + (id - 1) * 0x280;
-                            } else {
-                                unit = NULL;
-                            }
+                            unit = Ai_ActionTileUnit(id);
                             if (Ai_UnitIsHostileToActive(unit) != 0) {
-                                count += 1;
+                                count++;
                             }
                         }
                     }
                     nei += 2;
                 }
-                if (count != 0) {
+                if (count) {
                     continue;
                 }
             }
@@ -32264,8 +32257,8 @@ s32 fn_80102ACC(void *arg0, s32 arg1, s32 arg2, s16 *arg3, s16 *arg4) {
         }
     }
     if (best != 0x7FFF) {
-        sp10[0] = &lbl_80284E20;
         sp10[0] = &lbl_8028EA88;
+        sp10[0] = &lbl_80284E20;
         fn_8002F728(&gTargetList);
         sp10[1] = (void *)mode;
         fn_8002C618(sp10, (s8)sp20, (s8)bestY);
