@@ -1,6 +1,5 @@
 /* Functions from 0x8022CD68 to 0x80267A7C, found by decomp-toolkit. */
 #include "common.h"
-static inline u8 *SoundSlots_Base(void) { extern u8 gSoundSlots[]; return gSoundSlots; }
 static inline s32 Sound_FindSlotIn(u32 id, u8 *slot) {
  s32 i;
  for(i=0;i<64;i++,slot+=0x68) {
@@ -1791,27 +1790,27 @@ void fn_8024C5C8(void) {
 
 #pragma optimization_level 3
 void fn_8024C5CC(u32 arg0) {
-    extern u8 gSoundSlots[][0x68];
+    extern u8 gSoundSlots[];
     extern void fn_80256DD8(u32);
-    u8 (*slot)[0x68];
+    u8 *slot;
     s32 i;
     u32 id;
 
     slot = gSoundSlots;
     for (i = 0x40; i != 0; i--) {
-        if ((*slot)[0xC] == 1 || (*slot)[0xC] == 2) {
-            id = *(u32 *)(*slot + 0x4C);
+        if (slot[0xC] == 1 || slot[0xC] == 2) {
+            id = *(u32 *)(slot + 0x4C);
             if (id == arg0) {
-                if ((*slot)[0xC] == 2) {
+                if (slot[0xC] == 2) {
                     fn_80256DD8(id);
                 }
-                (*slot)[0xC] = 3;
-                (*(void (**)(s32, s32, s32, s32, s32))(*slot + 0x10))(
-                    0, 0, 0, 0, *(s32 *)(*slot + 0x50));
+                slot[0xC] = 3;
+                (*(void (**)(s32, s32, s32, s32, s32))(slot + 0x10))(
+                    0, 0, 0, 0, *(s32 *)(slot + 0x50));
                 return;
             }
         }
-        slot++;
+        slot += 0x68;
     }
 }
 #pragma optimization_level reset
