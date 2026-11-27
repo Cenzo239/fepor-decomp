@@ -259,441 +259,305 @@ void fn_800333DC(u8 *arg0, s32 arg1) {
     *(u16 *)(p + 0x22) = v;
 }
 
-void fn_80033418(s16 *script)
-{
-  void DebugPrint(void *, ...);
-  int new_var8;
-  int new_var5;
-  u8 *new_var3;
-  u8 *new_var2;
-  extern u8 lbl_80269750[];
-  extern u8 gUnits[];
-  volatile unsigned int i;
-  s8 param;
-  u8 cmd;
-  u8 *base;
-  u8 *new_var4;
-  u8 *new_var9;
-  u8 *new_var;
-  u8 **new_var6;
-  u8 *new_var10;
-  u8 *unit;
-  u8 *new_var7;
-  *script = 0;
-  DebugPrint(lbl_80269750 + 0x1d);
-  i = 0;
-  while ((cmd = *((((u8 *) script) + ((*script) * 4)) + 4)) != 0)
-  {
-    base = ((u8 *) script) + ((*script) * 4);
-    switch (base[4])
-    {
-      case 3:
-        DebugPrint(lbl_80269750 + 0x2b, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 4:
-        DebugPrint(lbl_80269750 + 0x51, (s8) (*((s16 *) (base + 6))));
-        new_var4 = lbl_80269750;
-
-      case 5:
-        DebugPrint(new_var4 + 0x73, (s8) (*((s16 *) (base + 6))));
-        break;
-        break;
-
-      case 6:
-        DebugPrint(new_var4 + 0x97, (s8) (*((s16 *) (base + 6))));
-        break;
-        new_var3 = new_var4;
-
-      case 7:
-        DebugPrint(new_var3 + 0xbb, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 8:
-        DebugPrint(new_var3 + 0xdf, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 9:
-        param = (s8) (*((s16 *) (base + 6)));
-        if (param == 0)
-      {
-        DebugPrint(new_var3 + 0x103);
-      }
-        param = (s8) (*((s16 *) ((((u8 *) script) + ((*script) * 4)) + 6)));
-        if (param > 0)
-      {
-        DebugPrint(new_var3 + 0x129, param);
-      }
-        param = (s8) (*((s16 *) ((((u8 *) script) + ((*script) * 4)) + 6)));
-        if (param < 0)
-      {
-        DebugPrint(new_var4 + 0x147, -param);
-      }
-        break;
-
-      case 0xA:
-        DebugPrint(new_var3 + 0x169);
-        break;
-
-      case 0xB:
-        DebugPrint(lbl_80269750 + 0x18d);
-        break;
-
-      case 0x1B:
-        DebugPrint(new_var4 + 0x1a7);
-        break;
-
-      case 0x1C:
-        DebugPrint((new_var10 = lbl_80269750) + 0x1c3);
-        break;
-
-      case 0xF:
-        DebugPrint(new_var10 + 0x1e3, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x10:
-        DebugPrint(new_var3 + 0x209, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x11:
-        DebugPrint(new_var4 + 0x22b, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x12:
-        DebugPrint(new_var3 + 0x24f, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x13:
-        DebugPrint(new_var10 + 0x273, (s8) (*((s16 *) (base + 6))));
-        break;
-        new_var9 = new_var10;
-
-      case 0x14:
-        DebugPrint(new_var9 + 0x297, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x15:
-        param = (s8) (*((s16 *) (base + 6)));
-        if (param == 0)
-      {
-        DebugPrint(new_var3 + 0x2bb);
-      }
-        param = (s8) (*((s16 *) ((((u8 *) script) + ((*script) * 4)) + 6)));
-        if (param > 0)
-      {
-        DebugPrint(new_var9 + 0x2e1, param);
-      }
-        param = (s8) (*((s16 *) ((((u8 *) script) + ((*script) * 4)) + 6)));
-        if (param < 0)
-      {
-        DebugPrint(new_var3 + 0x2ff, -param);
-      }
-        break;
-
-      case 0x16:
-        DebugPrint(new_var4 + 0x321);
-        break;
-
-      case 0x17:
-        DebugPrint(new_var4 + 0x345);
-        break;
-
-      case 0x1D:
-        DebugPrint(new_var3 + 0x35f);
-        break;
-
-      case 0x1E:
-        DebugPrint(new_var3 + 0x387);
-        break;
-
-      case 0x1F:
-        DebugPrint(new_var3 + 0x3af);
-        break;
-        new_var2 = new_var4;
-
-      case 0x20:
-        DebugPrint(new_var4 + 0x3e1);
-        break;
-
-      case 0x21:
-        DebugPrint(new_var3 + 0x3f9);
-        break;
-
-      case 0x22:
-        DebugPrint(new_var4 + 0x421);
-        break;
-
-      case 0xC:
-        DebugPrint(new_var2 + 0x431);
-        break;
-
-      case 0x18:
-        DebugPrint(new_var4 + 0x44b);
-        break;
-
-      case 0x23:
-        DebugPrint(new_var9 + 0x465);
-        break;
-
-      case 0x24:
-        DebugPrint(new_var2 + 0x47d);
-        break;
-
-      case 0x25:
-        DebugPrint(new_var9 + 0x495);
-        break;
-
-      case 0x26:
-        DebugPrint(new_var3 + 0x4ad);
-        break;
-
-      case 0x27:
-        DebugPrint(new_var9 + 0x4c3);
-
-      case 0x28:
-        DebugPrint(new_var2 + 0x4d9);
-        break;
-
-      case 0x29:
-        DebugPrint(new_var4 + 0x4f3);
-        break;
-
-      case 0x2A:
-        DebugPrint(new_var4 + 0x50d);
-        break;
-
-      case 0x2B:
-        DebugPrint(new_var2 + 0x523);
-        break;
-        break;
-
-      case 0x2C:
-        DebugPrint(new_var2 + 0x539);
-        break;
-
-      case 0x2D:
-        do
-      {
-        DebugPrint(new_var2 + 0x55f);
-        break;
-      }
-      while (0);
-
-      case 0x2E:
-        DebugPrint(new_var3 + 0x575);
-        break;
-
-      case 0x2F:
-        DebugPrint(new_var4 + 0x58f);
-        break;
-
-      case 0x30:
-        DebugPrint(new_var2 + 0x5a7);
-        break;
-
-      case 0x31:
-        DebugPrint((*(new_var6 = &new_var3)) + 0x5bd);
-        break;
-
-      case 0x32:
-        DebugPrint(new_var4 + 0x5d5);
-        break;
-        new_var = new_var2;
-
-      case 0x33:
-        DebugPrint(new_var + 0x5f1);
-        break;
-
-      case 0x34:
-        DebugPrint(new_var + 0x607);
-        break;
-
-      case 0x35:
-        DebugPrint(new_var9 + 0x61d);
-        break;
-
-      case 0x36:
-        DebugPrint(new_var2 + 0x633);
-        break;
-
-      case 0x37:
-        DebugPrint(new_var2 + 0x64b);
-        break;
-
-      case 0x38:
-        DebugPrint(new_var4 + 0x663);
-        break;
-
-      case 0x39:
-        DebugPrint(new_var + 0x679);
-        break;
-
-      case 0x3A:
-        DebugPrint(new_var + 0x69b);
-        break;
-
-      case 0x3B:
-        DebugPrint(new_var2 + 0x6c1);
-        break;
-
-      case 0x3C:
-        DebugPrint(new_var + 0x6db);
-        break;
-
-      case 0x3D:
-        DebugPrint(new_var2 + 0x6ef);
-        break;
-
-      case 0x3E:
-        DebugPrint(new_var2 + 0x709, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x3F:
-        DebugPrint(new_var + 0x729, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x40:
-        DebugPrint(new_var + 0x745, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x41:
-        DebugPrint(new_var4 + 0x75d);
-        break;
-
-      case 0x42:
-        DebugPrint((*new_var6) + 0x777);
-        break;
-
-      case 0x43:
-        DebugPrint(new_var + 0x791, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x44:
-        DebugPrint(new_var + 0x7a2, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x45:
-        DebugPrint(new_var + 0x7b1);
-        break;
-
-      case 0x46:
-        DebugPrint(new_var + 0x7c0, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x47:
-        DebugPrint(new_var2 + 0x7d0, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x48:
-        new_var8 = 0x7e0;
-        DebugPrint(new_var + new_var8, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x49:
-        DebugPrint(new_var4 + 0x7f0);
-        break;
-        new_var7 = new_var + 0x800;
-
-      case 0x4A:
-        DebugPrint(new_var7);
-        break;
-
-      case 0x4B:
-        DebugPrint(new_var2 + 0x810, (s8) (*((s16 *) (6 + base))));
-        break;
-
-      case 0x4C:
-        DebugPrint(new_var2 + 0x820, (s8) (*((s16 *) (base + 6))));
-        break;
-
-      case 0x4D:
-        DebugPrint(new_var2 + 0x830);
-        break;
-
-      case 0x4E:
-        DebugPrint(new_var + 0x840);
-        break;
-
-      case 0x4F:
-        DebugPrint(new_var + 0x850);
-        break;
-
-      case 0x50:
-        DebugPrint((*new_var6) + 0x860);
-        if (new_var && new_var)
-      {
-      }
-        break;
-
-      case 0x51:
-        DebugPrint(new_var4 + 0x870);
-        break;
-
-      case 0x52:
-        DebugPrint(new_var + 0x880);
-        break;
-        new_var5 = 1;
-
-      case 0x53:
-        DebugPrint(new_var2 + 0x890);
-        break;
-
-      case 0x54:
-        DebugPrint(new_var + 0x8a0);
-        break;
-
-      case 0x55:
-        DebugPrint(new_var2 + 0x8b0);
-        break;
-
-      case 0x56:
-        DebugPrint(new_var9 + 0x8c0);
-        break;
-
-      case 0x57:
-        DebugPrint((*new_var6) + 0x8d0);
-        break;
-
-      case 0x19:
-        param = (s8) (*((s16 *) (base + 6)));
-        if (((u8) param) != 0)
-      {
-        unit = gUnits + ((((u8) param) - 1) * 0x280);
-      }
-      else
-      {
-        unit = 0;
-      }
-        DebugPrint(new_var + 0x8e0, unit);
-        break;
-
-      case 0x1A:
-        i = 0;
-        do
-      {
-        unit = gUnits + (i * 0x280);
-        if (*((u32 *) (unit + 0x188)))
-        {
-          DebugPrint(new_var + 0x900, i, unit);
+#pragma push
+#pragma opt_loop_invariants off
+void fn_80033418(s16 *script) {
+    void DebugPrint(void *, ...);
+    void *Msg_ResolveName(void *);
+    extern u8 lbl_80269750[];
+    extern u8 gUnits[];
+    s32 i;
+    s16 val;
+    u8 *base;
+    u8 *unit;
+
+    *script = 0;
+    DebugPrint(lbl_80269750 + 0x1d);
+    i = 0;
+    while (1) {
+        if (*(((u8 *)script) + ((*script) * 4) + 4) == 0) {
+            break;
         }
-        i += new_var5;
-      }
-      while (i < 0x9F);
-        break;
-
-      case 0xD:
-
-      case 0xE:
-        break;
-
+        base = ((u8 *)script) + ((*script) * 4);
+        switch (base[4]) {
+        case 3:
+            DebugPrint(lbl_80269750 + 0x2b, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 4:
+            DebugPrint(lbl_80269750 + 0x51, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 5:
+            DebugPrint(lbl_80269750 + 0x73, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 6:
+            DebugPrint(lbl_80269750 + 0x97, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 7:
+            DebugPrint(lbl_80269750 + 0xbb, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 8:
+            DebugPrint(lbl_80269750 + 0xdf, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 9:
+            val = *(s16 *)(base + 6);
+            if ((s8)val == 0) {
+                DebugPrint(lbl_80269750 + 0x103);
+            }
+            val = *(s16 *)(((u8 *)script) + ((*script) * 4) + 6);
+            if ((s8)val > 0) {
+                DebugPrint(lbl_80269750 + 0x129, (s8)val);
+            }
+            val = *(s16 *)(((u8 *)script) + ((*script) * 4) + 6);
+            if ((s8)val < 0) {
+                DebugPrint(lbl_80269750 + 0x147, -(s8)val);
+            }
+            break;
+        case 0xA:
+            DebugPrint(lbl_80269750 + 0x169);
+            break;
+        case 0xB:
+            DebugPrint(lbl_80269750 + 0x18d);
+            break;
+        case 0x1B:
+            DebugPrint(lbl_80269750 + 0x1a7);
+            break;
+        case 0x1C:
+            DebugPrint(lbl_80269750 + 0x1c3);
+            break;
+        case 0xF:
+            DebugPrint(lbl_80269750 + 0x1e3, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x10:
+            DebugPrint(lbl_80269750 + 0x209, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x11:
+            DebugPrint(lbl_80269750 + 0x22b, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x12:
+            DebugPrint(lbl_80269750 + 0x24f, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x13:
+            DebugPrint(lbl_80269750 + 0x273, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x14:
+            DebugPrint(lbl_80269750 + 0x297, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x15:
+            val = *(s16 *)(base + 6);
+            if ((s8)val == 0) {
+                DebugPrint(lbl_80269750 + 0x2bb);
+            }
+            val = *(s16 *)(((u8 *)script) + ((*script) * 4) + 6);
+            if ((s8)val > 0) {
+                DebugPrint(lbl_80269750 + 0x2e1, (s8)val);
+            }
+            val = *(s16 *)(((u8 *)script) + ((*script) * 4) + 6);
+            if ((s8)val < 0) {
+                DebugPrint(lbl_80269750 + 0x2ff, -(s8)val);
+            }
+            break;
+        case 0x16:
+            DebugPrint(lbl_80269750 + 0x321);
+            break;
+        case 0x17:
+            DebugPrint(lbl_80269750 + 0x345);
+            break;
+        case 0x1D:
+            DebugPrint(lbl_80269750 + 0x35f);
+            break;
+        case 0x1E:
+            DebugPrint(lbl_80269750 + 0x387);
+            break;
+        case 0x1F:
+            DebugPrint(lbl_80269750 + 0x3af);
+            break;
+        case 0x20:
+            DebugPrint(lbl_80269750 + 0x3e1);
+            break;
+        case 0x21:
+            DebugPrint(lbl_80269750 + 0x3f9);
+            break;
+        case 0x22:
+            DebugPrint(lbl_80269750 + 0x421);
+            break;
+        case 0xC:
+            DebugPrint(lbl_80269750 + 0x431);
+            break;
+        case 0x18:
+            DebugPrint(lbl_80269750 + 0x44b);
+            break;
+        case 0x23:
+            DebugPrint(lbl_80269750 + 0x465);
+            break;
+        case 0x24:
+            DebugPrint(lbl_80269750 + 0x47d);
+            break;
+        case 0x25:
+            DebugPrint(lbl_80269750 + 0x495);
+            break;
+        case 0x26:
+            DebugPrint(lbl_80269750 + 0x4ad);
+            break;
+        case 0x27:
+            DebugPrint(lbl_80269750 + 0x4c3);
+            break;
+        case 0x28:
+            DebugPrint(lbl_80269750 + 0x4d9);
+            break;
+        case 0x29:
+            DebugPrint(lbl_80269750 + 0x4f3);
+            break;
+        case 0x2A:
+            DebugPrint(lbl_80269750 + 0x50d);
+            break;
+        case 0x2B:
+            DebugPrint(lbl_80269750 + 0x523);
+            break;
+        case 0x2C:
+            DebugPrint(lbl_80269750 + 0x539);
+            break;
+        case 0x2D:
+            DebugPrint(lbl_80269750 + 0x55f);
+            break;
+        case 0x2E:
+            DebugPrint(lbl_80269750 + 0x575);
+            break;
+        case 0x2F:
+            DebugPrint(lbl_80269750 + 0x58f);
+            break;
+        case 0x30:
+            DebugPrint(lbl_80269750 + 0x5a7);
+            break;
+        case 0x31:
+            DebugPrint(lbl_80269750 + 0x5bd);
+            break;
+        case 0x32:
+            DebugPrint(lbl_80269750 + 0x5d5);
+            break;
+        case 0x33:
+            DebugPrint(lbl_80269750 + 0x5f1);
+            break;
+        case 0x34:
+            DebugPrint(lbl_80269750 + 0x607);
+            break;
+        case 0x35:
+            DebugPrint(lbl_80269750 + 0x61d);
+            break;
+        case 0x36:
+            DebugPrint(lbl_80269750 + 0x633);
+            break;
+        case 0x37:
+            DebugPrint(lbl_80269750 + 0x64b);
+            break;
+        case 0x38:
+            DebugPrint(lbl_80269750 + 0x663);
+            break;
+        case 0x39:
+            DebugPrint(lbl_80269750 + 0x679);
+            break;
+        case 0x3A:
+            DebugPrint(lbl_80269750 + 0x69b);
+            break;
+        case 0x3B:
+            DebugPrint(lbl_80269750 + 0x6c1);
+            break;
+        case 0x3C:
+            DebugPrint(lbl_80269750 + 0x6db);
+            break;
+        case 0x3D:
+            DebugPrint(lbl_80269750 + 0x6ef);
+            break;
+        case 0x3E:
+            DebugPrint(lbl_80269750 + 0x709, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x3F:
+            DebugPrint(lbl_80269750 + 0x729, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x40:
+            DebugPrint(lbl_80269750 + 0x745, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x41:
+            DebugPrint(lbl_80269750 + 0x75d);
+            break;
+        case 0x42:
+            DebugPrint(lbl_80269750 + 0x777);
+            break;
+        case 0x43:
+            DebugPrint(lbl_80269750 + 0x791, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x44:
+            DebugPrint(lbl_80269750 + 0x7a2, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x45:
+            DebugPrint(lbl_80269750 + 0x7b1);
+            break;
+        case 0x46:
+            DebugPrint(lbl_80269750 + 0x7c3, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x47:
+            DebugPrint(lbl_80269750 + 0x7d9, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x48:
+            DebugPrint(lbl_80269750 + 0x7e9, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x49:
+            DebugPrint(lbl_80269750 + 0x7fb, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4A:
+            DebugPrint(lbl_80269750 + 0x80b, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4B:
+            DebugPrint(lbl_80269750 + 0x81d, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4C:
+            DebugPrint(lbl_80269750 + 0x82f, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4D:
+            DebugPrint(lbl_80269750 + 0x841, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4E:
+            DebugPrint(lbl_80269750 + 0x853, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x4F:
+            DebugPrint(lbl_80269750 + 0x865, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x19:
+            val = *(s16 *)(base + 6);
+            if ((u8)(s8)val != 0) {
+                unit = gUnits + (((u8)(s8)val - 1) * 0x280);
+            } else {
+                unit = 0;
+            }
+            DebugPrint(lbl_80269750 + 0x877, Msg_ResolveName(*(void **)(unit + 0x188)));
+            break;
+        case 0x1A:
+            DebugPrint(lbl_80269750 + 0x89d, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x53:
+            DebugPrint(lbl_80269750 + 0x8cd, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x54:
+            DebugPrint(lbl_80269750 + 0x8f9, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x55:
+            DebugPrint(lbl_80269750 + 0x927, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x56:
+            DebugPrint(lbl_80269750 + 0x955, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0x57:
+            DebugPrint(lbl_80269750 + 0x983, (s8)(*(s16 *)(base + 6)));
+            break;
+        case 0xD:
+        case 0xE:
+            break;
+        }
+        i++;
+        *script = (s16)((*script) + 1);
     }
-
-    *script = (s16) ((*script) + 1);
-  }
-
+    DebugPrint(lbl_80269750 + 0x9b1, i);
 }
-
-#pragma opt_strength_reduction reset
+#pragma pop
 void fn_80033E70(void *arg0) {
     M2C_FIELD(M2C_FIELD(arg0, void **, 0x400), s16 *, 2) = (s16) (M2C_FIELD(arg0, s16 *, 0) - M2C_FIELD(arg0, s16 *, 2));
     M2C_FIELD(arg0, void **, 0x400) = NULL;
