@@ -1950,12 +1950,11 @@ void OSLoadContext(void *arg0) {
     __rfi();
 }
 
-#pragma dont_inline on
-void *fn_80205B50(void) {
-    return 0; /* OSGetStackPointer: asm (mr r3, r1) */
+asm u32 fn_80205B50() {
+    nofralloc 
+    mr r3, r1 
+    blr
 }
-#pragma dont_inline reset
-
 #pragma dont_inline on
 #pragma peephole off
 void OSClearContext(OSContext *context) {
