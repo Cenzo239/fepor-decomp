@@ -3,6 +3,19 @@
 #include "global.h"
 
 
+static inline void CopyFourBytes(u8 *dst, u8 *src) {
+    u8 a;
+    u8 b;
+    a = src[0];
+    b = src[1];
+    dst[0] = a;
+    a = src[2];
+    dst[1] = b;
+    b = src[3];
+    dst[2] = a;
+    dst[3] = b;
+}
+
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
