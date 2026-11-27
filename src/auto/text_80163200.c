@@ -13282,6 +13282,8 @@ extern "C" void Ui_DrawUnitNameCentered(void *widget, s32 flags) {
 #pragma cplusplus reset
 
 #pragma cplusplus on
+#pragma push
+#pragma opt_propagation off
 extern "C" void fn_801788A0(void *arg0) {
     struct Obj {
         virtual void v0() {}
@@ -13313,10 +13315,11 @@ extern "C" void fn_801788A0(void *arg0) {
     y = *(s16 *)((u8 *)arg0 + 0x3E);
     Text_Draw((s16)x, (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x618));
     result = fn_800C3E54(gConvoy);
-    x = (s16)x;
+    x = (s16)(x + 0);
     Text_Draw((s16)(x + 0x40), (s16)y, 1, (u8 *)gUiMsgStrings + 0x62D, result, 0xC8);
     Text_Draw((s16)(x + 0xA0), (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x63E));
 }
+#pragma pop
 extern "C" void fn_8017899C(void *arg0) {
     void fn_8015BA88(s32, s32, s16, s16, s32, s32);
     struct Obj {
@@ -13916,44 +13919,15 @@ void *fn_801795C0(void) {
 }
 
 s32 fn_801795D0(void *arg0) {
-    void *Item_GetFlagsPtr(void *);
-    u32 *Unit_GetItemSlot(void *, s32);
-    u8 fn_80093088(void *);
-    s32 Convoy_FindEmpty(void *);
-    u8 Status_Test(void *, s32);
-    extern u32 gUiContext[];
-    extern u8 gConvoy[];
-    s8 i;
-    u8 flag;
-    u32 z;
-    void *base;
-
-    flag = 1;
-    base = (void *)gUiContext[0];
-    if (Status_Test((u8 *)base + 0x1BC, 8)) {
-        i = 0;
-        z = i;
-        for (; i < 8; i++) {
-            u32 *slot = Unit_GetItemSlot(base, i);
-            if (*slot) {
-                if ((*(unsigned long long *)Item_GetFlagsPtr(slot) & 0x200ULL) == 0) {
-                    flag = z;
-                    break;
-                }
-            }
-        }
-    } else {
-        flag = fn_80093088(base);
-    }
-    if (flag) {
-        *((u8 *)arg0 + 4) = 0;
-        return 2;
-    }
-    if (Convoy_FindEmpty(gConvoy) < 0) {
-        *((u8 *)arg0 + 4) = 1;
-        return 2;
-    }
-    return 0;
+void *fn_8001CB64(void *); u32 *fn_80037BD0(void *, s32); u8 fn_80093088(void *); s32 fn_800C3D48(void *); u8 fn_80105BC0(void *, s32);
+extern u32 lbl_802EF4C8[]; extern u8 lbl_803200AC[];
+s8 i; u8 flag; void *base;
+flag=1; base=(void*)lbl_802EF4C8[0];
+if(fn_80105BC0((u8*)base+0x1BC,8)) {
+for(i=0;i<8;i++) { u32 *slot=fn_80037BD0(base,i); if(*slot) { if((*(unsigned long long*)fn_8001CB64(slot)&0x200ULL)==0) {flag=0; break;} } }
+} else flag=fn_80093088(base);
+if(flag) { *((u8*)arg0+4)=0; return 2; }
+if(fn_800C3D48(lbl_803200AC)<0) { *((u8*)arg0+4)=1; return 2; } return 0;
 }
 
 s32 fn_801796CC(void *menu, void *parent, void *item) {
