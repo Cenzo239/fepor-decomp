@@ -9911,7 +9911,6 @@ extern "C" void fn_8017312C(void *arg0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x370);
     }
 }
-#pragma scheduling on
 
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
@@ -18355,6 +18354,7 @@ extern "C" void fn_80180624(void *arg0) {
     extern u8 gUiUnitInfoStrings[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
+    extern f64 lbl_8036ACA0;
     class Pair {
     public:
         s16 x, y;
@@ -18388,7 +18388,7 @@ extern "C" void fn_80180624(void *arg0) {
         void *sp24;
         void *sp28;
         void *sp2C;
-        s16 sp30[2];
+        Pair sp30;
         s16 sp34[2];
         u32 sp38;
     } st;
@@ -18451,7 +18451,8 @@ extern "C" void fn_80180624(void *arg0) {
         btn = a & (*(s32 *)((u8 *)gPadInput + 8) ^ a);
         if ((btn & 0x100) && unit != 0) {
             if (((Obj *)obj81)->v14(unit) == 0) {
-                *(Pair *)&st.sp38 = ((Obj *)obj81)->v9();
+                st.sp30 = ((Obj *)obj81)->v9();
+                *(u32 *)&st.sp38 = *(u32 *)&st.sp30;
                 Ui_CreateMsgPopup(gUiUnitInfoStrings + 0xCB, arg0, (f32)*(s16 *)&st.sp38, (f32)*((s16 *)&st.sp38 + 1));
             } else {
                 tmp = Ui_FindChild(arg0, 0x82, 0);
