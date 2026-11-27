@@ -267,29 +267,36 @@ s32 fn_8000ACD8(void) {
 #pragma global_optimizer off
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-s32 fn_8000ACE0(void *arg0) {
-    extern u8 gProcesses[];
-    register u8 *p;
-    register u32 value;
-    register u32 zero;
-    register s32 i;
-    s32 j;
-
-    value = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 4) + 4);
-    i = 0;
-    p = gProcesses;
-    zero = i;
-    for (; i < 0x100; i++) {
-        for (j = 0; j < 8; j++) {
-            if (*(u32 *)p == value) {
-                *(u32 *)(p + 0x10) = i;
-            }
-            p += 0x70;
-        }
-        i += 7;
+s32 fn_8000ACE0(void *arg0)
+{
+  extern u8 gProcesses[];
+  register u8 *p;
+  register u32 value;
+  u8 *new_var;
+  register u32 zero;
+  register s32 i;
+  s32 j;
+  value = *((u32 *) (((u8 *) (*((void **) (((u8 *) arg0) + 4)))) + 4));
+  i = 0;
+  p = gProcesses;
+  zero = i;
+  for (; i < 0x100; i++)
+  {
+    for (j = 0; j < 8; j++)
+    {
+      if ((*((u32 *) p)) == value)
+      {
+        new_var = p + 0x10;
+        *((u32 *) new_var) = i;
+      }
+      p += 0x70;
     }
-    *(u8 **)((u8 *)arg0 + 4) = *(u8 **)((u8 *)arg0 + 4) + 8;
-    return 1;
+
+    i += 7;
+  }
+
+  *((u8 **) (((u8 *) arg0) + 4)) = (*((u8 **) (((u8 *) arg0) + 4))) + ((0, 8));
+  return 1;
 }
 #pragma opt_common_subs reset
 #pragma opt_strength_reduction reset
@@ -853,7 +860,7 @@ void *Process_FindByName(u8 *arg0) {
     return 0;
 }
 
-#pragma optimization_level 4
+#pragma optimization_level 3
 void GfxEnt_UnlinkByName(u8 *arg0) {
     void Process_Unlink(void *);
     extern u8 gProcesses[];
@@ -898,12 +905,15 @@ void GfxEnt_UnlinkByName(u8 *arg0) {
     } while (var_r30 < 0x100);
 }
 
+#pragma push
 #pragma global_optimizer off
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
 void fn_8000BE54(u32 arg0) {
  extern u8 lbl_802A66D8[]; u8 *p=lbl_802A66D8; s32 i,j;
  for(i=0;i<32;i++){for(j=0;j<8;j++){if(*(u32*)p==arg0)*(u32*)(p+0x10)=0;p+=0x70;}}
 }
-#pragma global_optimizer reset
+#pragma pop
 void Process_UnlinkByKey(u32 arg0) {
     extern u8 gProcesses[];
     void Process_Unlink(void *);
@@ -1479,18 +1489,18 @@ extern void *fn_8000A738(void *, s32);
 extern void fn_8000B5F0(void *);
 extern void fn_8000B70C(void *);
 void fn_8000CC88(void) {
-    extern u8 gProcesses[];
+    extern u8 lbl_802A66D8[];
     extern u8 lbl_80283828[];
-    extern void *gProcessFreeTop;
+    extern void *lbl_80367148;
+    u8 *base;
     u8 *p;
     u8 **q;
-    u32 zero;
-    u8 *base;
     s32 i;
     s16 neg1;
     u8 ff;
+    u32 zero;
 
-    base = gProcesses;
+    base = lbl_802A66D8;
     p = base;
     q = (u8 **)(base + 0x7000);
     neg1 = -1;
@@ -1519,7 +1529,7 @@ void fn_8000CC88(void) {
     }
     *(u32 *)(base + 0x7424) = zero;
     *(u32 *)(base + 0x7400) = zero;
-    gProcessFreeTop = base + 0x7000;
+    lbl_80367148 = base + 0x7000;
     *(u32 *)(base + 0x7428) = zero;
     *(u32 *)(base + 0x742C) = zero;
     *(u32 *)(base + 0x7430) = zero;
