@@ -4103,7 +4103,7 @@ void fn_8002F0B0(void) {
 
 #pragma push
 #pragma cplusplus on
-#pragma optimization_level 3
+#pragma optimization_level 4
 #pragma opt_common_subs off
 #pragma opt_propagation off
 extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
