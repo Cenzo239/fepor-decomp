@@ -1180,6 +1180,7 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     u8 Bin_ReadU8(u32 *);
     u32 Bin_ReadU32(u32 *);
     void Dispos_ParseEntry(u32 *, u32 *, u8);
+    s32 i;
     u8 parsed[0x68];
     u8 new_var2;
     u32 header;
@@ -1190,7 +1191,6 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     s32 sumY = 0;
     u8 new_var3[2];
     s32 count;
-    s32 i;
     header = Hash_Lookup(name);
     if (!header) {
         data = 0;
