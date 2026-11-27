@@ -1188,25 +1188,26 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     u32 data;
     s32 sumX = 0;
     s32 sumY = 0;
-    u8 new_var3[2];
+    u8 countByte;
+    u8 flags;
     s32 count;
     header = Hash_Lookup(name);
     if (!header) {
         data = 0;
     } else {
-        new_var3[0] = Bin_ReadU8(&header);
+        countByte = Bin_ReadU8(&header);
         switch (Bin_ReadU8(&header)) {
         case 2:
-            new_var3[1] = 0;
+            flags = 0;
             break;
         case 3:
             Bin_ReadU8(&header);
-            new_var3[1] = Bin_ReadU8(&header);
+            flags = Bin_ReadU8(&header);
             Bin_ReadU32(&header);
             break;
         case 4:
             Bin_ReadU8(&header);
-            new_var3[1] = Bin_ReadU8(&header);
+            flags = Bin_ReadU8(&header);
             break;
         }
         header = (header + 3) & (~3);
@@ -1215,19 +1216,17 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     cursor = data;
     if (data) {
         s32 i;
-        count = (u8)new_var3[0];
+        count = countByte;
         for (i = 0; i < 8; i++) {
             *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
             parsed[0x30 + i] = 0;
             *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
         }
-        i = 0;
-        while (i < count) {
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, new_var3[1]);
+        for (i = 0; i < count; i++) {
+            Dispos_ParseEntry(&cursor, (u32 *)parsed, flags);
             sumX += (s8)parsed[0xD];
             new_var2 = parsed[0xE];
             sumY += (s8)new_var2;
-            i++;
         }
         *outX = sumX / count;
         *outY = sumY / count;
