@@ -1858,7 +1858,6 @@ void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
         }
     }
 }
-#pragma pop
 
 #pragma global_optimizer off
 void fn_8011CC04(u8 *arg0) {
