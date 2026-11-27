@@ -1010,8 +1010,10 @@ do { *++db=*++tail; } while(--size);
 }
 }
 
-static inline void CopyBackward32Words(u8 *s, u8 *d)
+static inline void CopyBackward32Words(u8 **sp, u8 **dp)
 {
+    u8 *s = *sp;
+    u8 *d = *dp;
     u32 b;
     u32 a;
     b = *((u32 *) (s - 8));
@@ -1032,6 +1034,8 @@ static inline void CopyBackward32Words(u8 *s, u8 *d)
     b = *((u32 *) s);
     *((u32 *) (d + 4)) = a;
     *((u32 *) d) = b;
+    *sp = s;
+    *dp = d;
 }
 
 #pragma push
