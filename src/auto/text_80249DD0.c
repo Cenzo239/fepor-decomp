@@ -1412,14 +1412,15 @@ void fn_8024B8EC(s32 arg0, s32 arg1, s32 arg2) {
 
 #pragma global_optimizer off
 #pragma optimization_level 2
+#pragma opt_lifetimes off
 void fn_8024B94C(s32 arg0)
 {
     void fn_802624F8(void);
     void fn_8024C84C(void);
 
     extern u32 lbl_803689A4;
-    extern u8 gSoundData[];
-    extern s32 gSynthVoices;
+    extern u8 lbl_8034C110[];
+    extern s32 lbl_803689A8;
 
     u32 oldFlags;
 
@@ -1445,16 +1446,16 @@ void fn_8024B94C(s32 arg0)
 
     if (oldFlags != lbl_803689A4) {
         u32 i;
-        u32 table;
+        u8 *table;
         u32 offset;
-        u32 base;
+        u8 *base;
         u32 off;
         u32 *p1;
         u32 w0;
         u32 w1;
 
-        for (i = 0, table = (u32)gSoundData, offset = 0; i < *(u8 *)(table + 0x210);) {
-            base = (u32)gSynthVoices;
+        for (i = 0, table = lbl_8034C110, offset = 0; i < table[0x210];) {
+            base = (u8 *)lbl_803689A8;
             off = offset + 0x114;
             offset = offset + 0x458;
             i = i + 1;
@@ -1468,8 +1469,9 @@ void fn_8024B94C(s32 arg0)
         fn_8024C84C();
     }
 }
-
-#pragma optimization_level 3
+#pragma opt_lifetimes reset
+#pragma global_optimizer reset
+#pragma optimization_level reset
 void fn_8024BA38(u8 arg0, u32 arg1, s32 arg2, u8 arg3, u32 arg4, u32 arg5, s32 arg6, u8 arg7, u32 arg8) {
     void Audio_Lock(void);
     void Audio_Unlock(void);
@@ -4106,7 +4108,8 @@ void fn_80251E88(Voice *arg0, u32 *arg1) {
     arg0->flags |= 0x2000;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma opt_lifetimes off
 void fn_80251F24(void *arg0, u32 *arg1)
 {
     s32 fn_80250884(u16);
@@ -4161,8 +4164,8 @@ void fn_80251F24(void *arg0, u32 *arg1)
                 next = table[index + 1];
 
                 next -= current;
-next = fraction * next;
-result = next + ((u8)current << 16);
+                next = fraction * next;
+                result = next + ((u8)current << 16);
             } else {
                 result = table[index] << 16;
             }
@@ -4173,7 +4176,7 @@ result = next + ((u8)current << 16);
 
     *(u32 *)(data + 0x114) |= 0x1000;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_80252058(void *arg0, u32 *arg1) {
 void fn_8026146C(s32 *);
 void fn_8026147C(u32 *, s32);
@@ -4971,8 +4974,8 @@ void fn_80253F6C(void *arg0)
     register u32 done;
     register u8 *sd;
     register u32 *cmd;
-    register u32 insn;
     register u32 i;
+    register u32 insn;
     register u32 offset;
     u32 *pc;
     u8 *p;
