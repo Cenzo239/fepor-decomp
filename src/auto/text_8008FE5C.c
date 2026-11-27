@@ -5,8 +5,8 @@ static inline void UnitInfo_DrawIcons(u8 *unit, s32 y, void *drawer) {
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
-    s32 i;
     s32 x;
+    s32 i;
     i = 0;
     x = 0x48;
     while (i < fn_8010424C(unit + 0x1A4)) {
