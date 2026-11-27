@@ -407,7 +407,7 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
     void Prim2D_SetAlphaByte(s32);
     s32 var_r29;
     s32 temp_r31;
-    s32 var_r3;
+    s16 var_r3;
     s32 temp_r5;
     u8 var_r30;
     s16 temp_r0;
@@ -420,16 +420,14 @@ extern "C" void fn_80163728(void *arg0, void *arg1) {
     s32 temp_r4;
     s16 temp_r25;
     s16 temp_r24_2;
-    s32 temp_r25_2_val;
     s16 temp_r25_2_final;
 
     ((CursorRenderView *)arg0)->update(arg1);
 
     var_r3 = M2C_FIELD(arg0, s16 *, 0x4C);
-    if ((var_r3 = (s16)var_r3) >= 0) {
+    if (var_r3 >= 0) {
         temp_r31 = M2C_FIELD(arg0, s16 *, 0x54);
         var_r29 = temp_r31;
-        
 
         if (M2C_FIELD(arg0, s32 *, 0x60) == 2) {
             var_r3 -= 4;
@@ -2021,7 +2019,6 @@ void fn_80165E90(u8 *arg0, void *unit, f32 arg2)
     u32 off;
     s8 s;
     f32 f;
-    s16 t;
 
     f = lbl_8036A8C8;
     rom = lbl_80277888;
@@ -2063,21 +2060,11 @@ void fn_80165E90(u8 *arg0, void *unit, f32 arg2)
     dst[4] = table[off + 4];
 
     if (Status_Test(unit, 0x12) != 0) {
-        t = dst[0];
-        t <<= 1;
-        dst[0] = t;
-        t = dst[1];
-        t <<= 1;
-        dst[1] = t;
-        t = dst[2];
-        t <<= 1;
-        dst[2] = t;
-        t = dst[3];
-        t <<= 1;
-        dst[3] = t;
-        t = dst[4];
-        t <<= 1;
-        dst[4] = t;
+        dst[0] = dst[0] << 1;
+        dst[1] = dst[1] << 1;
+        dst[2] = dst[2] << 1;
+        dst[3] = dst[3] << 1;
+        dst[4] = dst[4] << 1;
     }
 
     if (Status_Test(unit, 0x13) != 0) {
@@ -3694,32 +3681,32 @@ extern "C" void *fn_8016915C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4)
     one = lbl_8036A9AC;
     self = arg0;
     self2 = self;
-    *(void **)self2 = lbl_8028FDB0;
-    *(s32 *)((u8 *)self2 + 4) = 0;
-    *(void **)self2 = lbl_80292230;
-    *(s16 *)((u8 *)self2 + 8) = -1;
-    *(s16 *)((u8 *)self2 + 0xA) = arg1;
-    *(s16 *)((u8 *)self2 + 0xC) = arg2;
-    *(s16 *)((u8 *)self2 + 0xE) = (s16)((s16)arg1 + 0x108);
-    *(s16 *)((u8 *)self2 + 0x10) = (s16)((s16)arg2 + (s16)arg3);
-    *(s16 *)((u8 *)self2 + 0x12) = 0;
-    *(s16 *)((u8 *)self2 + 0x14) = 0;
-    *(s16 *)((u8 *)self2 + 0x16) = 0x108;
-    *(s16 *)((u8 *)self2 + 0x18) = arg3;
-    *(s16 *)((u8 *)self2 + 0x1A) = 0;
-    *(s16 *)((u8 *)self2 + 0x1C) = 0;
-    *(u8 *)((u8 *)self2 + 0x1E) = 0xFF;
-    *(u8 *)((u8 *)self2 + 0x1F) = 0xFF;
-    *(u8 *)((u8 *)self2 + 0x20) = 0xFF;
-    *(u8 *)((u8 *)self2 + 0x21) = 0xFF;
-    *(s16 *)((u8 *)self2 + 0x22) = arg4;
-    *(s16 *)((u8 *)self2 + 0x24) = 0;
-    *(f32 *)((u8 *)self2 + 0x28) = one;
-    *(f32 *)((u8 *)self2 + 0x2C) = one;
-    *(f32 *)((u8 *)self2 + 0x30) = one;
-    *(s32 *)((u8 *)self2 + 0x34) = 0;
-    *(s32 *)((u8 *)self2 + 0x38) = 0;
-    *(void **)self2 = lbl_80292208;
+    *(void **)self = lbl_8028FDB0;
+    *(s32 *)((u8 *)self + 4) = 0;
+    *(void **)self = lbl_80292230;
+    *(s16 *)((u8 *)self + 8) = -1;
+    *(s16 *)((u8 *)self + 0xA) = arg1;
+    *(s16 *)((u8 *)self + 0xC) = arg2;
+    *(s16 *)((u8 *)self + 0xE) = (s16)((s16)arg1 + 0x108);
+    *(s16 *)((u8 *)self + 0x10) = (s16)((s16)arg2 + (s16)arg3);
+    *(s16 *)((u8 *)self + 0x12) = 0;
+    *(s16 *)((u8 *)self + 0x14) = 0;
+    *(s16 *)((u8 *)self + 0x16) = 0x108;
+    *(s16 *)((u8 *)self + 0x18) = arg3;
+    *(s16 *)((u8 *)self + 0x1A) = 0;
+    *(s16 *)((u8 *)self + 0x1C) = 0;
+    *(u8 *)((u8 *)self + 0x1E) = 0xFF;
+    *(u8 *)((u8 *)self + 0x1F) = 0xFF;
+    *(u8 *)((u8 *)self + 0x20) = 0xFF;
+    *(u8 *)((u8 *)self + 0x21) = 0xFF;
+    *(s16 *)((u8 *)self + 0x22) = arg4;
+    *(s16 *)((u8 *)self + 0x24) = 0;
+    *(f32 *)((u8 *)self + 0x28) = one;
+    *(f32 *)((u8 *)self + 0x2C) = one;
+    *(f32 *)((u8 *)self + 0x30) = one;
+    *(s32 *)((u8 *)self + 0x34) = 0;
+    *(s32 *)((u8 *)self + 0x38) = 0;
+    *(void **)self = lbl_80292208;
     fn_80142060((u8 *)self2 + 0x3C);
     *(void **)self = gUiPanelMidVtbl;
     *(s32 *)((u8 *)self + 0x48) = 0;
@@ -10545,14 +10532,12 @@ extern "C" void fn_801743B4(void *arg0) {
         virtual void v11() = 0;
     };
 
+    void *dst2;
+    void *unit2;
     u32 count;
+    void *walk;
     void *slot;
     void **entry;
-    void *dst1;
-    void *unit1;
-    long i;
-    void *unit2;
-    void *dst2;
     void *p;
     void *q;
     void *tmp;
@@ -10561,17 +10546,18 @@ extern "C" void fn_801743B4(void *arg0) {
     s16 next;
     s16 idx;
     void *dst3;
-    u8 add;
-    void *walk;
+    s32 add;
+    s32 i;
     u32 *bits;
     u32 player;
 
     self = arg0;
     inner = *(void **)((u8 *)self + 0x40);
     idx = *(s16 *)((u8 *)inner + 0x4E);
-    *(void **)((u8 *)inner + 0x7C) = (void *)fn_801758C4;
     *(s16 *)((u8 *)inner + 0x50) = idx;
-    *(u32 *)((u8 *)inner + 0x80) = gUiContext[0];
+    { void *cb = (void *)fn_801758C4; u32 owner = gUiContext[0];
+    *(void **)((u8 *)inner + 0x7C) = cb;
+    *(u32 *)((u8 *)inner + 0x80) = owner; }
     count = *(u32 *)((u8 *)inner + 0x70);
     idx = *(s16 *)((u8 *)inner + 0x4E);
     if ((u32)idx < count - 1) {
@@ -10614,25 +10600,16 @@ extern "C" void fn_801743B4(void *arg0) {
     *(s16 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x8A) = 2;
 
     if (fn_801EAA88() == 0) {
-        dst1 = *(void **)((u8 *)self + 0x54);
-        unit1 = *(void **)gUnitLists;
-        goto loop1_cond;
-    loop1_body:
-        for (i = 0; i < 4; i++) {
+        void *dst1 = *(void **)((u8 *)self + 0x54);
+        void *unit1 = *(void **)gUnitLists;
+        while (unit1 != NULL) {
+        for (s32 i = 0; i < 4; i++) {
             entry = Unit_GetHeldItemSlot(unit1, i);
             if (*(u32 *)entry == 0) {
                 break;
             }
-            player = gUiContext[0];
-            if (unit1 == NULL) {
-                add = 1;
-            } else if (unit1 == (void *)player) {
-                add = 0;
-            } else if ((Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) && (bits = Item_GetFlagsPtr((u32)entry), add = 0, ((*(u64 *)bits & 0x200ULL) != 0))) {
-            } else {
-                add = 1;
-            }
-            if (add != 0) {
+            add = Ui_ItemCanTransfer_801752EC(unit1, entry, (void *)gUiContext[0]);
+            if ((u8)add != 0) {
                 fn_801439F0(dst1, entry, unit1);
             }
         }
@@ -10640,50 +10617,30 @@ extern "C" void fn_801743B4(void *arg0) {
         walk = unit1;
         while (i < 4) {
             slot = (u8 *)walk + 0x1EC;
-            if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+            if (*(u32 *)slot == 0) {
                 break;
             }
-            player = gUiContext[0];
-            if (unit1 == NULL) {
-                add = 1;
-            } else if (unit1 == (void *)player) {
-                add = 0;
-            } else if ((Status_Test((u8 *)*(void **)((u8 *)unit1 + 0x18C) + 0x1C, 8) != 0) && (bits = Item_GetFlagsPtr((u32)slot), add = 0, ((*(u64 *)bits & 0x200ULL) != 0))) {
-            } else {
-                add = 1;
-            }
-            if (add != 0) {
+            add = Ui_ItemCanTransfer_801752EC(unit1, slot, (void *)gUiContext[0]);
+            if ((u8)add != 0) {
                 fn_801439F0(dst1, slot, unit1);
             }
             i += 1;
             walk = (u8 *)walk + 8;
         }
         unit1 = *(void **)((u8 *)unit1 + 0x184);
-    loop1_cond:
-        if (unit1 != NULL) {
-            goto loop1_body;
         }
     }
 
     dst2 = *(void **)((u8 *)self + 0x54);
     unit2 = *(void **)(gUnitLists + 0x3C);
-    goto loop2_cond;
-loop2_body:
-    for (i = 0; i < 4; i++) {
+    while (unit2 != NULL) {
+    for (s32 i = 0; i < 4; i++) {
         entry = Unit_GetHeldItemSlot(unit2, i);
         if (*(u32 *)entry == 0) {
             break;
         }
-        player = gUiContext[0];
-        if (unit2 == NULL) {
-            add = 1;
-        } else if (unit2 == (void *)player) {
-            add = 0;
-        } else if ((Status_Test((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) && (bits = Item_GetFlagsPtr((u32)entry), add = 0, ((*(u64 *)bits & 0x200ULL) != 0))) {
-        } else {
-            add = 1;
-        }
-        if (add != 0) {
+        add = Ui_ItemCanTransfer_801752EC(unit2, entry, (void *)gUiContext[0]);
+            if ((u8)add != 0) {
             fn_801439F0(dst2, entry, unit2);
         }
     }
@@ -10691,28 +10648,17 @@ loop2_body:
     walk = unit2;
     while (i < 4) {
         slot = (u8 *)walk + 0x1EC;
-        if (*(u32 *)((u8 *)walk + 0x1EC) == 0) {
+        if (*(u32 *)slot == 0) {
             break;
         }
-        player = gUiContext[0];
-        if (unit2 == NULL) {
-            add = 1;
-        } else if (unit2 == (void *)player) {
-            add = 0;
-        } else if ((Status_Test((u8 *)*(void **)((u8 *)unit2 + 0x18C) + 0x1C, 8) != 0) && (bits = Item_GetFlagsPtr((u32)slot), add = 0, ((*(u64 *)bits & 0x200ULL) != 0))) {
-        } else {
-            add = 1;
-        }
-        if (add != 0) {
+        add = Ui_ItemCanTransfer_801752EC(unit2, slot, (void *)gUiContext[0]);
+            if ((u8)add != 0) {
             fn_801439F0(dst2, slot, unit2);
         }
         i += 1;
         walk = (u8 *)walk + 8;
     }
     unit2 = *(void **)((u8 *)unit2 + 0x184);
-loop2_cond:
-    if (unit2 != NULL) {
-        goto loop2_body;
     }
 
     if (fn_8014D8DC(gBattleState) != 0) {
@@ -10734,8 +10680,9 @@ loop2_cond:
     {
         void *cb = (void *)fn_80175924;
         u32 ef0 = gUiContext[0];
-        *(void **)((u8 *)*(void **)((u8 *)self + 0x54) + 0x120) = cb;
-        *(u32 *)((u8 *)*(void **)((u8 *)self + 0x54) + 0x124) = ef0;
+        q = *(void **)((u8 *)self + 0x54);
+        *(void **)((u8 *)q + 0x120) = cb;
+        *(u32 *)((u8 *)q + 0x124) = ef0;
     }
     ((ObjB *)*(void **)((u8 *)self + 0x54))->v11();
     Ui_AddChild(self, *(void **)((u8 *)self + 0x54));
@@ -12150,7 +12097,7 @@ extern "C" void fn_80176BB4(s32 arg0, void *arg1) {
         r = (s16)var_r28;
         x = x + t;
         *(s16 *)((u8 *)arg1 + 0x38) = x / 2;
-        t = r + 1;
+        t = 1 + r;
         x = *(s16 *)((u8 *)arg1 + 0x3A);
         *(s16 *)((u8 *)arg1 + 0x3A) = (x + t) / 2;
     }
@@ -14454,10 +14401,10 @@ extern "C" void fn_80142060(void *);
 static inline void UiPanel_InitBase(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80292208[];
     extern const f32 gF32_1;
+    s16 x0;
     void *self;
     s16 y0;
     s16 x1;
-    s16 x0;
     s16 y1;
     s32 zero;
     void *baseVtbl;
@@ -17371,7 +17318,9 @@ void fn_8017E8C0(void *arg0) {
         Prim2D_ResetState();
     }
 }
-#pragma pop
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 farg0, f32 farg1) {
     void fn_800076AC(u8, u8, u8, u8);
     void fn_80009B8C(u8);
@@ -17380,8 +17329,8 @@ void fn_8017EE3C(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32
     extern const f32 lbl_8036AC30;
     extern f32 lbl_8036AC4C;
     f32 var_f31;
-    s32 var_r30;
     s32 var_r29;
+    s32 var_r30;
 
     if (arg3 != 0) {
         var_f31 = lbl_8036AC44;
