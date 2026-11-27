@@ -653,7 +653,7 @@ u8 fn_8009326C(void *arg0, void *arg1) {
         return (u8)z;
     }
     if (flags & 0x200) {
-        tmp = fn_80105BC0((u8 *)arg0 + 0x1BC, 9);
+        tmp = Status_Test((u8 *)arg0 + 0x1BC, 9);
         if (tmp) {
             t.ok = 1;
         } else {
