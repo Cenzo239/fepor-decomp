@@ -15712,8 +15712,6 @@ void fn_8017BA98(s32 *arg0, void *arg1) {
     *arg0 = *fn_8013F748(arg1, &spC, &sp8.x);
 }
 
-#pragma push
-#pragma optimization_level 2
 void fn_8017BB94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -15724,8 +15722,8 @@ void fn_8017BB94(void *arg0) {
     s16 count;
     u8 r;
     u8 r2;
-    s32 lim;
     s32 cur;
+    s32 lim;
     s32 total;
 
     count = 0;
@@ -15775,7 +15773,6 @@ void fn_8017BB94(void *arg0) {
         }
     }
 }
-#pragma pop
 
 #pragma use_lmw_stmw reset
 
