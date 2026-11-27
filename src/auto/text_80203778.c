@@ -19,6 +19,7 @@ int OSReport(void *msg, ...);
 extern u32 gSaveDataBase;
 extern void (*lbl_803685E8)(void);;
 extern u16 lbl_8029BBB0[20];
+volatile u16 __DSPRegsInit[] : (0xCC005000);
 void DMAErrorHandler(u8 error, void *context, ...);
 u32 OSGetTick(void);;;
 extern s32 fn_80013E50(s32);
