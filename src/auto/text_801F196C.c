@@ -1,15 +1,5 @@
 /* Functions from 0x801F196C to 0x801FC620, found by decomp-toolkit. */
 #include "common.h"
-static inline void StaffRoll_InitEntryVec(u8 *entry, f32 zero) {
-    void StaffRoll_VecReserve(void *, u32);
-    u32 *vec = (u32 *)(entry + 0x30);
-    vec[0] = 0;
-    vec[1] = 0;
-    vec[2] = 0;
-    *(f32 *)(entry + 0x3C) = zero;
-    *(u32 *)(entry + 0x4C) = 0;
-    StaffRoll_VecReserve(vec, 0x28);
-}
 
 
 typedef struct {
