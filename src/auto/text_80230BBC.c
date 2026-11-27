@@ -1011,7 +1011,6 @@ do { *++db=*++tail; } while(--size);
 }
 
 #pragma push
-#pragma optimization_level 2
 void fn_80231C20(u8 *dst, u8 *src, u32 n)
 {
   u32 blocks;
