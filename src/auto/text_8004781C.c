@@ -1401,7 +1401,6 @@ void fn_80049520(s32 arg0, u32 arg1, s32 arg2, f32 farg0) {
 
 #pragma push
 #pragma opt_strength_reduction off
-#pragma opt_register_coloring off
 void fn_80049594(void *self)
 {
   f32 Math_EaseOutPow(s32, f32, f32, f32, f32);
