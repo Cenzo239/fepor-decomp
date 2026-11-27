@@ -981,6 +981,8 @@ extern "C" void fn_80143B24(void *arg0) {
     }
 }
 #pragma cplusplus reset
+#pragma push
+#pragma optimization_level 2
 extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -1019,6 +1021,7 @@ extern "C" void fn_80143BC8(s32 *arg0, void *arg1) {
     in.y = (s16)(((s16)(b - a) << 5) + c);
     *arg0 = *(s32 *)fn_8013F748(arg1, &out, &in);
 }
+#pragma pop
 extern "C" s16 fn_80143C58(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
@@ -3489,6 +3492,7 @@ found:
 }
 
 #pragma cplusplus on
+#pragma opt_strength_reduction off
 extern "C" void fn_801478D0(s32 arg0) {
     struct Obj {
         u8 pad[8];
@@ -3530,8 +3534,7 @@ extern "C" void fn_801478D0(s32 arg0) {
         entry += 0x30;
     } while (i < 0xA);
 }
-
-#pragma use_lmw_stmw on
+#pragma opt_strength_reduction reset
 #pragma cplusplus on
 extern "C" void fn_801479C4(void *arg0, s16 arg1) {
     void *Hash_Lookup(void *);
@@ -3851,6 +3854,7 @@ void fn_80147FA8(s16 arg0) {
 
 #pragma peephole on
 #pragma cplusplus on
+#pragma opt_lifetimes off
 extern "C" void fn_801480D8(s16 arg0) {
     struct Obj {
         u8 pad[8];
@@ -3894,7 +3898,7 @@ extern "C" void fn_801480D8(s16 arg0) {
         p += 0x30;
     } while (i < 4);
 }
-
+#pragma opt_lifetimes reset
 extern "C" void fn_801481CC(void *arg0, s16 arg1) {
     void *Hash_Lookup(void *);
     struct Entry {
@@ -4686,25 +4690,51 @@ extern "C" void fn_801490C8(void *arg0) {
     }
 }
 
-#pragma cplusplus reset
+#pragma optimization_level 2
 #pragma opt_common_subs off
 s32 fn_8014953C(u8 *self, s32 delay) {
+    struct Obj {
+        u8 pad0[8];
+        virtual s32 v0() = 0;
+        virtual s32 v1() = 0;
+        virtual s32 v2() = 0;
+        virtual s32 v3() = 0;
+        virtual s32 v4() = 0;
+        virtual s32 v5() = 0;
+        virtual s32 v6() = 0;
+        virtual s32 v7() = 0;
+        virtual s32 v8() = 0;
+        virtual s32 v9() = 0;
+        virtual s32 v10() = 0;
+        virtual s32 v11() = 0;
+        virtual s32 v12() = 0;
+        virtual s32 v13() = 0;
+        virtual s32 v14() = 0;
+        virtual s32 v15() = 0;
+        virtual s32 v16() = 0;
+        virtual s32 v17() = 0;
+        virtual s32 v18() = 0;
+        virtual u16 v19() = 0;
+        virtual s32 v20() = 0;
+        virtual s32 v21() = 0;
+        virtual s32 v22() = 0;
+    };
     void *Camera_Get(void);
     void fn_802029C4(void *, void *, void *);
-    void fn_802031A8(void *, void *, void *);
     f32 Vec_Length(void *);
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern u8 lbl_80366E90, lbl_80367AF6;
-    extern f64 lbl_8036A780;
-    extern f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
+    extern const f64 lbl_8036A780;
+    extern const f32 gBgmVolTimerZero, lbl_8036A790, lbl_8036A794, lbl_8036A7A4, lbl_8036A7A8, lbl_8036A7AC, lbl_8036A7B0;
     f32 delta[3], a[3], b[3];
-    f32 scale, den, x, y, len, lo, sx, sy;
+    f32 lo, sx, sy, scale, den, x, y, len;
     u8 *cam;
+    Obj *obj = (Obj *)self;
     cam = (u8 *)Camera_Get();
     scale = (f32)lbl_80366E90;
     if (scale <= gBgmVolTimerZero)
         scale = lbl_8036A790;
-    self[0x10] = (u8)(lbl_80367AF6 + (*(s32(**)(void *))(*(u8 **)(self + 8) + 0x60))(self));
+    self[0x10] = (u8)(lbl_80367AF6 + obj->v22());
     fn_802029C4(cam + 0xA4, self + 0x1C, a);
     fn_802029C4(cam + 0xA4, cam + 0xE0, b);
     fn_802031A8(a, b, delta);
@@ -4730,13 +4760,15 @@ s32 fn_8014953C(u8 *self, s32 delay) {
         self[0xF] = (s32)sy;
     }
     fn_802031A8(self + 0x1C, cam + 0xD4, delta);
-    scale *= (u16)(*(u16(**)(void *))(*(u8 **)(self + 8) + 0x5C))(self);
+    scale *= (u16)obj->v21();
     len = Vec_Length(delta);
     if (len > scale)
         len = scale;
     return (s32)Math_Ease(0, lbl_8036A794, gBgmVolTimerZero, len, scale);
 }
 #pragma opt_common_subs reset
+#pragma optimization_level reset
+#pragma cplusplus reset
 
 #pragma cplusplus reset
 s8 fn_80149734(void) {
