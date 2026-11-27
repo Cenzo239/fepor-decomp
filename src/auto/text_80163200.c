@@ -13283,7 +13283,7 @@ extern "C" void Ui_DrawUnitNameCentered(void *widget, s32 flags) {
 
 #pragma cplusplus on
 #pragma push
-#pragma opt_propagation off
+#pragma optimization_level 2
 extern "C" void fn_801788A0(void *arg0) {
     struct Obj {
         virtual void v0() {}
