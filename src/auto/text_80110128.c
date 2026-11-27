@@ -47,4 +47,3 @@ volatile unsigned int fn_80110128(void)
   gMapObjEventList[2] = 0;
   gMapObjEventList[3] = 0;
 }
-#pragma pop
