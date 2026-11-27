@@ -3853,7 +3853,9 @@ void *fn_801179DC(void *arg0, s16 arg1) {
     return arg0;
 }
 
-#pragma global_optimizer off
+#pragma push
+#pragma global_optimizer on
+#pragma opt_common_subs off
 void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
 {
     String sp24;
@@ -3862,95 +3864,80 @@ void *fn_80117A94(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s8 arg5)
     s32 sp10;
     s32 spC;
     s32 sp8;
-    s32 a3;
-    s32 a4;
-    s8 a5;
+    u8 *self = (u8 *)arg0;
 
     String_Init(&sp24, (char *)gActorXmlStrs + 0x573, &sp14);
     String_Init(&sp18, (char *)gActorXmlStrs + 0x579, &sp10);
-    a3 = arg3;
-    a4 = arg4;
-    a5 = arg5;
-    fn_800E6418(arg0, arg1, &sp24, arg2, a3, &sp18);
+    fn_800E6418(arg0, arg1, &sp24, arg2, arg3, &sp18);
     String_Destroy(&sp18, -1);
     String_Destroy(&sp24, -1);
 
-    {
-        u8 *self = (u8 *)arg0;
-        f32 fv1B0;
-        f32 fv128;
-        f32 fv124;
+    *(void **)(self + 0x40) = lbl_8028F6C8;
 
-        *(void **)(self + 0x40) = lbl_8028F6C8;
+    *(u32 *)(self + 0x154) = 0;
+    *(u32 *)(self + 0x158) = 0;
+    *(u32 *)(self + 0x15C) = 0;
+    *(u32 *)(self + 0x158) = 0;
+    *(u32 *)(self + 0x160) = 0;
+    *(u32 *)(self + 0x164) = 0;
+    *(u32 *)(self + 0x168) = 0;
+    *(u32 *)(self + 0x164) = 0;
+    *(u32 *)(self + 0x16C) = 0;
+    *(u32 *)(self + 0x170) = 0;
+    *(u32 *)(self + 0x174) = 0;
+    *(u32 *)(self + 0x170) = 0;
+    *(u32 *)(self + 0x178) = 0;
+    *(u32 *)(self + 0x17C) = 0;
+    *(u32 *)(self + 0x180) = 0;
+    *(u32 *)(self + 0x17C) = 0;
 
-        *(u32 *)(self + 0x154) = 0;
-        *(u32 *)(self + 0x158) = 0;
-        *(u32 *)(self + 0x15C) = 0;
-        *(u32 *)(self + 0x158) = 0;
-        *(u32 *)(self + 0x160) = 0;
-        *(u32 *)(self + 0x164) = 0;
-        *(u32 *)(self + 0x168) = 0;
-        *(u32 *)(self + 0x164) = 0;
-        *(u32 *)(self + 0x16C) = 0;
-        *(u32 *)(self + 0x170) = 0;
-        *(u32 *)(self + 0x174) = 0;
-        *(u32 *)(self + 0x170) = 0;
-        *(u32 *)(self + 0x178) = 0;
-        *(u32 *)(self + 0x17C) = 0;
-        *(u32 *)(self + 0x180) = 0;
-        *(u32 *)(self + 0x17C) = 0;
+    fn_800D6878(self + 0x1BC, &sp8, &spC);
 
-        fn_800D6878(self + 0x1BC, &sp8, &spC);
+    *(s32 *)(self + 0x118) = 0;
+    *(s32 *)(self + 0x11C) = 0;
+    *(s32 *)(self + 0x120) = 0;
+    *(f32 *)(self + 0x124) = 0.4f;
+    *(f32 *)(self + 0x128) = 10.0f;
+    *(s32 *)(self + 0x12C) = 0;
+    *(s32 *)(self + 0x130) = 0;
+    *(s32 *)(self + 0x134) = 0;
+    *(s32 *)(self + 0x138) = 0;
+    *(s32 *)(self + 0x13C) = 0;
+    *(s32 *)(self + 0x140) = 0;
+    *(s32 *)(self + 0x14C) = -1;
+    *(s32 *)(self + 0x148) = 0;
+    self[0x184] = 0;
+    self[0x194] = 0;
+    self[0x195] = 0;
+    *(s32 *)(self + 0x198) = 1;
+    *(s32 *)(self + 0x19C) = 0;
+    self[0x1A0] = 0;
+    self[0x1A1] = 0;
+    self[0x1A2] = arg5;
+    self[0x1A3] = arg5;
+    self[0x1A4] = 0;
+    self[0x1A5] = 0;
+    self[0x1A6] = 0;
+    self[0x1A7] = 0;
+    self[0x1A8] = 0;
+    *(s32 *)(self + 0x1AC) = arg4;
+    *(f32 *)(self + 0x1B0) = 6.0f;
+    self[0x1B4] = 0;
+    self[0x1B5] = 0;
+    self[0x1B6] = 0;
+    *(s32 *)(self + 0x1B8) = 1;
 
-        *(s32 *)(self + 0x118) = 0;
-        fv124 = lbl_8036A1DC;
-        *(s32 *)(self + 0x11C) = 0;
-        fv128 = fActorDefaultRadius;
-        *(s32 *)(self + 0x120) = 0;
-        fv1B0 = lbl_8036A1C8;
-        *(f32 *)(self + 0x124) = fv124;
-        *(f32 *)(self + 0x128) = fv128;
-        *(s32 *)(self + 0x12C) = 0;
-        *(s32 *)(self + 0x130) = 0;
-        *(s32 *)(self + 0x134) = 0;
-        *(s32 *)(self + 0x138) = 0;
-        *(s32 *)(self + 0x13C) = 0;
-        *(s32 *)(self + 0x140) = 0;
-        *(s32 *)(self + 0x14C) = -1;
-        *(s32 *)(self + 0x148) = 0;
-        self[0x184] = 0;
-        self[0x194] = 0;
-        self[0x195] = 0;
-        *(s32 *)(self + 0x198) = 1;
-        *(s32 *)(self + 0x19C) = 0;
-        self[0x1A0] = 0;
-        self[0x1A1] = 0;
-        self[0x1A2] = a5;
-        self[0x1A3] = a5;
-        self[0x1A4] = 0;
-        self[0x1A5] = 0;
-        self[0x1A6] = 0;
-        self[0x1A7] = 0;
-        self[0x1A8] = 0;
-        *(s32 *)(self + 0x1AC) = a4;
-        *(f32 *)(self + 0x1B0) = fv1B0;
-        self[0x1B4] = 0;
-        self[0x1B5] = 0;
-        self[0x1B6] = 0;
-        *(s32 *)(self + 0x1B8) = 1;
+    String_AssignCStr(self + 0x154, (char *)gActorXmlStrs + 0x581, strlen((char *)gActorXmlStrs + 0x581));
+    String_AssignCStr(self + 0x160, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
+    String_AssignCStr(self + 0x16C, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
 
-        String_AssignCStr(self + 0x154, (char *)gActorXmlStrs + 0x581, strlen((char *)gActorXmlStrs + 0x581));
-        String_AssignCStr(self + 0x160, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
-        String_AssignCStr(self + 0x16C, (char *)gActorXmlStrs + 0x1C, strlen((char *)gActorXmlStrs + 0x1C));
-
-        self[0x1D7] = 1;
-        self[0x1D6] = 1;
-        self[0x1D5] = 1;
-        self[0x1D4] = 1;
-        return self;
-    }
+    self[0x1D7] = 1;
+    self[0x1D6] = 1;
+    self[0x1D5] = 1;
+    self[0x1D4] = 1;
+    return self;
 }
-#pragma global_optimizer reset
+#pragma pop
 
 s32 fn_80117CC0(void *arg0, s32 arg1) {
     return M2C_FIELD(arg0, s32 *, 8) + arg1;
