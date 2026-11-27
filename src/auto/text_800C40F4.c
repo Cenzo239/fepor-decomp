@@ -16305,7 +16305,7 @@ void fn_800E4F0C(void *arg0) {
 void fn_800E4F30(void *arg0)
 {
     void fn_80060F70(void *, s32, f32 *);
-    void fn_800DBB74(f32 *, void *);
+    void Camera_GetLookAt(f32 *, void *);
     f32 out[3];
     f32 pos[3];
     register f32 z;
@@ -16330,7 +16330,7 @@ void fn_800E4F30(void *arg0)
         *(f32 *)((u8 *)arg0 + 0x48) = x;
         *(f32 *)((u8 *)arg0 + 0x4C) = y;
         *(f32 *)((u8 *)arg0 + 0x50) = z;
-        fn_800DBB74(out, *(void **)((u8 *)arg0 + 0xEC));
+        Camera_GetLookAt(out, *(void **)((u8 *)arg0 + 0xEC));
         py = out[1];
         pz = out[2];
         x = out[0];
