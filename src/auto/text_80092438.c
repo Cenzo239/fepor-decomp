@@ -641,6 +641,8 @@ s32 fn_80093218(void *arg0, void *arg1) {
  return (flags & 0x10000000000ULL) == 0;
 }
 
+#pragma push
+#pragma opt_lifetimes off
 u8 fn_8009326C(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 tmp;
