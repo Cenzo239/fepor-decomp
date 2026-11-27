@@ -1159,7 +1159,9 @@ void fn_8008BA50(s32 unused, s32 arg1) {
     GXSetScissor(arg1 - 0x40, 0, 0x87, 0x1E0);
 }
 
+#pragma push
 #pragma optimization_level 3
+#pragma global_optimizer off
 void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
@@ -1174,8 +1176,8 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     struct { u8 buf[0x20]; u16 w; u16 h; } sp;
     void *text;
     u8 *texture = sp.buf;
-    s32 atlas = gUiAtlas;
     u16 tile = 0x18;
+    s32 atlas = gUiAtlas;
     if (arg3) tile = 0x17;
     Ui_LoadAtlasTex(atlas, texture, tile);
     sp.w = GXGetTexObjWidth(sp.buf);
