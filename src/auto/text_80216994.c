@@ -1394,8 +1394,7 @@ fail:
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
 s32 fn_80205110(void *, s32);
 void fn_80219734(s32, s32);
-#pragma push
-#pragma global_optimizer off
+#pragma optimization_level 3
 s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     u8 *card;
     u8 *dir;
