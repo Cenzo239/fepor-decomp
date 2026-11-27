@@ -26545,6 +26545,8 @@ void fn_800F904C(void *arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
 s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) {
     u8 fn_8001D500(void **);
     u8 Item_GetRangeForUnit(void *, void *);
@@ -26566,7 +26568,6 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     s32 best;
     s32 slot;
     void **itemp;
-    void *self;
     s32 x1;
     s32 y;
     s32 x;
@@ -26586,23 +26587,22 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
     s16 cx, cy;
 
     tbl = gBattleMap;
-    self = arg0;
-    Map_BuildUnitMoveRange(self, 5, -1);
+    Map_BuildUnitMoveRange(arg0, 5, -1);
     best = 0x80000000;
     for (slot = 0; (s8)slot < 4; slot++) {
-        itemp = Unit_GetHeldItemSlot(self, (s8)slot);
+        itemp = Unit_GetHeldItemSlot(arg0, (s8)slot);
         if (*itemp == NULL) {
             break;
         }
-        if (fn_8009339C(self) == 0) {
+        if (fn_8009339C(arg0) == 0) {
             continue;
         }
         Map_FillLayer(tbl, 6, -1);
-        dd = GetItemDD54(*itemp, self);
+        dd = GetItemDD54(*itemp, arg0);
         fn_800FDDBC(arg1, arg2, (u8)GetItemUnk1D(*itemp), (u8)dd, 6);
-        px = *(s8 *)((u8 *)self + 0x19E);
-        py = *(s8 *)((u8 *)self + 0x19F);
-        range = Unit_GetMov(self);
+        px = *(s8 *)((u8 *)arg0 + 0x19E);
+        py = *(s8 *)((u8 *)arg0 + 0x19F);
+        range = Unit_GetMov(arg0);
         x0 = px - range;
         if (x0 < (s8)gBattleMap[8]) {
             x0 = (s8)gBattleMap[8];
@@ -26636,12 +26636,12 @@ s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) 
                     continue;
                 }
                 owner = tbl[row + (s8)x + 0xD];
-                if (owner != 0 && owner == *(u8 *)((u8 *)self + 0x198)) {
+                if (owner != 0 && owner == *(u8 *)((u8 *)arg0 + 0x198)) {
                     continue;
                 }
                 cx = x;
-                score = fn_800F7994(self, cx, cy);
-                score += fn_800F7838(self, cx, cy);
+                score = fn_800F7994(arg0, cx, cy);
+                score += fn_800F7838(arg0, cx, cy);
                 score -= *(s16 *)((u8 *)gBattleMap + ((s8)cx + ((s8)cy << 6)) * 2 + 0x610E);
                 score -= (fn_800FCF48((s8)cx, (s8)(s16)y) >> 4) & 0xFFF;
                 if (score < 0) {
