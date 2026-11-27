@@ -1926,18 +1926,45 @@ blr
 #pragma pop
 
 #pragma dont_inline on
-void OSSaveFPUContext(register void *ctx) {
-    void __OSSaveFPUContext(void *, void *, void *);
-    __OSSaveFPUContext(ctx, ctx, ctx);
+#pragma push
+asm void OSSaveFPUContext(register OSContext *fpucontext) {
+    nofralloc
+    addi    r5, fpucontext, 0
+    b       __OSSaveFPUContext
 }
-void OSSetCurrentContext(struct OSContext *arg0) {
-    *(s32 *)0x800000D4 = (s32)arg0;
-    *(s32 *)0x800000C0 = (s32)arg0 & 0x3FFFFFFF;
-    if ((s32) *(s32 *)0x800000D8 == (s32)arg0) {
-        M2C_FIELD((s32)arg0, s32 *, 0x19C) = (s32) (M2C_FIELD((s32)arg0, s32 *, 0x19C) | 0x2000);
-        return;
-    }
-    M2C_FIELD((s32)arg0, s32 *, 0x19C) = (s32) (M2C_FIELD((s32)arg0, s32 *, 0x19C) & 0xFFFFDFFF);
+#pragma pop
+asm void OSSetCurrentContext(register OSContext *context){
+    nofralloc
+
+    addis   r4, r0, 0x8000
+
+    stw     context, 0x00D4(r4)
+
+    clrlwi  r5, context, 2
+    stw     r5, 0x00C0(r4)
+
+    lwz     r5, 0x00D8(r4)
+    cmpw    r5, context
+    bne     _disableFPU
+
+    lwz     r6, context->srr1
+    ori     r6, r6, 0x2000
+    stw     r6, context->srr1
+    mfmsr   r6
+    ori     r6, r6, 2
+    mtmsr   r6
+    blr
+
+_disableFPU:
+    lwz     r6, context->srr1
+    rlwinm  r6, r6, 0, 19, 17
+    stw     r6, context->srr1
+    mfmsr   r6
+    rlwinm  r6, r6, 0, 19, 17
+    ori     r6, r6, 2
+    mtmsr   r6
+    isync
+    blr
 }
 
 #pragma dont_inline reset
@@ -1947,40 +1974,111 @@ s32 fn_802059EC(void) {
     return *(s32 *)0x800000D4;
 }
 
-void fn_802059F8(void) {
-    *(u32 *)0x8036C764 = 0;
-    *(u32 *)0x8036C768 = 0;
-    *(u32 *)0x8036C76C = 0;
+asm u32 fn_802059F8(register OSContext *context) {
+    nofralloc
+    stmw    r13, context->gpr[13]
+    mfspr   r0, GQR1
+    stw     r0, context->gqr[1]
+    mfspr   r0, GQR2
+    stw     r0, context->gqr[2]
+    mfspr   r0, GQR3
+    stw     r0, context->gqr[3]
+    mfspr   r0, GQR4
+    stw     r0, context->gqr[4]
+    mfspr   r0, GQR5
+    stw     r0, context->gqr[5]
+    mfspr   r0, GQR6
+    stw     r0, context->gqr[6]
+    mfspr   r0, GQR7
+    stw     r0, context->gqr[7]
+    mfcr    r0
+    stw     r0, context->cr
+    mflr    r0
+    stw     r0, context->lr
+    stw     r0, context->srr0
+    mfmsr   r0
+    stw     r0, context->srr1
+    mfctr   r0
+    stw     r0, context->ctr
+    mfxer   r0
+    stw     r0, context->xer
+    stw     r1, context->gpr[1]
+    stw     r2, context->gpr[2]
+    li      r0, 0x1
+    stw     r0, context->gpr[3]
+    li      r3, 0
+    blr
 }
 
-void OSLoadContext(void *arg0) {
-    OSContext *context = (OSContext *)arg0;
-    u32 srr0;
-    u16 state;
-    u32 msr;
+asm void OSLoadContext(register OSContext *context) {
+    nofralloc
 
-    srr0 = context->srr0;
-    if (srr0 > (u32)OSDisableInterrupts && srr0 < (u32)OSDisableInterrupts + 0xC) {
-        context->srr0 = (u32)OSDisableInterrupts;
-    }
-    state = context->state;
-    if (state & 2) {
-        context->state = state & ~2;
-    }
-    __mtspr(913, context->gqr[1]);
-    __mtspr(914, context->gqr[2]);
-    __mtspr(915, context->gqr[3]);
-    __mtspr(916, context->gqr[4]);
-    __mtspr(917, context->gqr[5]);
-    __mtspr(918, context->gqr[6]);
-    __mtspr(919, context->gqr[7]);
-    msr = __mfmsr();
-    msr &= ~0x8000;
-    msr &= ~2;
-    __mtmsr(msr);
-    __mtspr(26, context->srr0);
-    __mtspr(27, context->srr1);
-    __rfi();
+    lis      r4,OSDisableInterrupts@ha
+    lwz      r6,context->srr0
+    addi     r5,r4,OSDisableInterrupts@l
+    cmplw    r6,r5
+    ble      _notInRAS
+    lis      r4,(OSDisableInterrupts+0xC)@ha
+    addi     r0,r4,(OSDisableInterrupts+0xC)@l
+    cmplw    r6,r0
+    bge      _notInRAS
+    stw      r5,context->srr0
+
+_notInRAS:
+
+    lwz     r0, context->gpr[0]
+    lwz     r1, context->gpr[1]
+    lwz     r2, context->gpr[2]
+
+    lhz     r4, context->state
+    rlwinm. r5, r4, 0, 30, 30
+    beq     notexc
+    rlwinm  r4, r4, 0, 31, 29
+    sth     r4, context->state
+    lmw     r5, context->gpr[5]
+    b       misc
+notexc:
+    lmw    r13, context->gpr[13]
+    misc:
+
+    lwz     r4, context->gqr[1]
+    mtspr   GQR1, r4
+    lwz     r4, context->gqr[2]
+    mtspr   GQR2, r4
+    lwz     r4, context->gqr[3]
+    mtspr   GQR3, r4
+    lwz     r4, context->gqr[4]
+    mtspr   GQR4, r4
+    lwz     r4, context->gqr[5]
+    mtspr   GQR5, r4
+    lwz     r4, context->gqr[6]
+    mtspr   GQR6, r4
+    lwz     r4, context->gqr[7]
+    mtspr   GQR7, r4
+
+    lwz     r4, context->cr
+    mtcr    r4
+    lwz     r4, context->lr
+    mtlr    r4
+    lwz     r4, context->ctr
+    mtctr   r4
+    lwz     r4, context->xer
+    mtxer   r4
+
+    mfmsr   r4
+    rlwinm  r4, r4, 0, 17, 15
+    rlwinm  r4, r4, 0, 31, 29
+    mtmsr   r4
+
+    lwz     r4, context->srr0
+    mtsrr0  r4
+    lwz     r4, context->srr1
+    mtsrr1  r4
+
+    lwz     r4, context->gpr[4]
+    lwz     r3, context->gpr[3]
+
+    rfi
 }
 
 asm u32 fn_80205B50() {
@@ -2119,10 +2217,50 @@ void OSDumpContext(OSContext *context) {
     }
 }
 #pragma pop
+#pragma push
+static asm void OSSwitchFPUContext(register u8 exception, register OSContext *context) {
+    nofralloc
+    mfmsr   r5
+    ori     r5, r5, 0x2000
+    mtmsr   r5
+    isync
+    lwz     r5, 0x19C(context)
+    ori     r5, r5, 0x2000
+    mtsrr1  r5
+    addis   r3, r0, 0x8000
+    lwz     r5, 0x00D8(r3) 
+    stw     context, 0x00D8(r3)
+    cmpw    r5, r4
+    beq     _restoreAndExit
+    cmpwi   r5, 0x0
+    beq     _loadNewFPUContext
+    bl      __OSSaveFPUContext
+_loadNewFPUContext:
+    bl      __OSLoadFPUContext
+_restoreAndExit:
+    lwz     r3, 0x80(context)
+    mtcr    r3
+    lwz     r3, 0x84(context)
+    mtlr    r3
+    lwz     r3, 0x198(context)
+    mtsrr0  r3
+    lwz     r3, 0x88(context)
+    mtctr   r3
+    lwz     r3, 0x8C(context)
+    mtxer   r3
+    lhz     r3, context->state
+    rlwinm  r3, r3, 0, 31, 29
+    sth     r3, context->state
+    lwz     r5, 20(context)
+    lwz     r3, 12(context)
+    lwz     r4, 16(context)
+    rfi
+}
+#pragma pop
+
 void __OSContextInit(void)
 {
     void __OSSetExceptionHandler(s32, void *);
-    extern void OSSwitchFPUContext[];
     void DBPrintf(char *, ...);
     extern char lbl_8029BF94[];
 
@@ -2272,7 +2410,7 @@ extern s64 OSGetTime(void);
 extern void OSDisableScheduler(void);
 extern void OSEnableScheduler(void);
 extern void __OSReschedule(void);
-extern void OSLoadContext(void *);
+extern void OSLoadContext(OSContext *);
 
 #pragma push
 #pragma opt_dead_code off
@@ -3675,6 +3813,5 @@ check:
 
 extern u16 StopAtNextInt_80368530;
 extern u16 lbl_80368550;
-extern void OSSwitchFPUContext(void);
 extern void **OSExceptionTable_8036847C;
 extern u16 lbl_8029BBB0[20];
