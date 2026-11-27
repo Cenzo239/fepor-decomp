@@ -3,7 +3,7 @@
 #include "common.h"
 
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 3
 void fn_801F18D4(void) {
     void fn_8022C260(void *, void (*)(void), void *, s32, s32);
     void fn_801F196C(void);
