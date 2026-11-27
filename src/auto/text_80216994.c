@@ -1024,76 +1024,79 @@ void fn_80218C34(void *arg0)
 
 #pragma push
 #pragma optimization_level 3
-void fn_80218CA4(void *arg0) {
-    s32 EXIUnlock(s32);
-    s32 fn_80216DA8(s32, u8 *);
-    s32 fn_80217ED4(s32, u32, void *, s32, s32);
-    s32 fn_80218018(void);
-    void fn_8021AE98(s32, s32);
-    s32 fn_80239488(s32);
-    extern u16 __CARDBlock[];
-
-    u8 cmd[0x40];
-    u8 status;
-    u32 address;
-    u32 scramble;
-    u32 i;
-    u32 n;
-    u32 rem;
-    u32 ctr;
-    u32 t;
-    s32 left;
-    u8 *work;
-    s32 tick;
-    s32 chan;
-    u32 cid;
-    u8 *card;
-    s32 result;
-
-    chan = 0;
-    card = (u8 *)__CARDBlock;
-    if ((u8 *)__CARDBlock + 0x30 != (u8 *)arg0) {
-        card = (u8 *)__CARDBlock + 0x110;
-        chan = 1;
-        if ((u8 *)__CARDBlock + 0x140 != (u8 *)arg0) {
-            chan = 2;
-        }
+void fn_80218CA4(void *arg0)
+{
+  s32 EXIUnlock(s32);
+  s32 fn_80216DA8(s32, u8 *);
+  s32 fn_80217ED4(s32, u32, void *, s32, s32);
+  s32 fn_80218018(void);
+  void fn_8021AE98(s32, s32);
+  s32 fn_80239488(s32);
+  extern u16 __CARDBlock[];
+  u8 cmd[0x40];
+  u8 status;
+  u32 address;
+  u32 scramble;
+  u32 i;
+  u32 n;
+  u32 rem;
+  u32 ctr;
+  u32 t;
+  s32 left;
+  u8 *work;
+  s32 new_var;
+  s32 tick;
+  s32 chan;
+  u32 cid;
+  u8 *card;
+  s32 result;
+  chan = 0;
+  card = (u8 *) __CARDBlock;
+  if ((((u8 *) __CARDBlock) + 0x30) != ((u8 *) arg0))
+  {
+    card = ((u8 *) __CARDBlock) + 0x110;
+    chan = 1;
+    if ((((u8 *) __CARDBlock) + 0x140) != ((u8 *) arg0))
+    {
+      chan = 2;
     }
-
-    work = (u8 *)((*(u32 *)(card + 0x80) + 0x2F) & ~0x1Fu);
-    cid = *(u32 *)(work + 0x20);
-    tick = fn_80218018();
-    address = (cid ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u;
-    if (fn_80217ED4(chan, address, cmd, tick, 1) < 0) {
-        EXIUnlock(chan);
-        fn_8021AE98(chan, -3);
-        return;
-    }
-
-    tick += *(s32 *)(card + 0x14);
-    n = ((tick + 4) * 8) + 1;
-    scramble = Card_AdvanceScramble(n, *(u32 *)(card + 0x2C));
-    *(u32 *)(card + 0x2C) = scramble;
-
-    tick = fn_80218018();
-    address = ((cid << 16) ^ *(u32 *)(card + 0x2C)) & 0xFFFF0000u;
-    if (fn_80217ED4(chan, address, cmd, tick, 1) < 0) {
-        EXIUnlock(chan);
-        fn_8021AE98(chan, -3);
-        return;
-    }
-
-    result = fn_80216DA8(chan, &status);
-    if (fn_80239488(chan) == 0) {
-        EXIUnlock(chan);
-        fn_8021AE98(chan, -3);
-        return;
-    }
-    if (result == 0 && !(status & 0x40)) {
-        EXIUnlock(chan);
-        result = -5;
-    }
-    fn_8021AE98(chan, result);
+  }
+  work = (u8 *) (((*((u32 *) (card + 0x80))) + 0x2F) & (~0x1Fu));
+  cid = *((u32 *) (work + 0x20));
+  tick = (0, fn_80218018());
+  address = (cid ^ (*((u32 *) (card + 0x2C)))) & 0xFFFF0000u;
+  new_var = tick;
+  if (fn_80217ED4(chan, address, cmd, new_var, 1) < 0)
+  {
+    EXIUnlock(chan);
+    fn_8021AE98(chan, -3);
+    return;
+  }
+  tick += *((s32 *) (card + 0x14));
+  n = ((tick + 4) * 8) + 1;
+  scramble = Card_AdvanceScramble(n, *((u32 *) (card + 0x2C)));
+  *((u32 *) (card + 0x2C)) = scramble;
+  tick = fn_80218018();
+  address = ((cid << 16) ^ (*((u32 *) (card + 0x2C)))) & 0xFFFF0000u;
+  if (fn_80217ED4(chan, address, cmd, tick, 1) < 0)
+  {
+    EXIUnlock(chan);
+    fn_8021AE98(chan, -3);
+    return;
+  }
+  result = fn_80216DA8(chan, &status);
+  if (fn_80239488(chan) == 0)
+  {
+    EXIUnlock(chan);
+    fn_8021AE98(chan, -3);
+    return;
+  }
+  if ((result == 0) && (!(status & 0x40)))
+  {
+    EXIUnlock(chan);
+    result = -5;
+  }
+  fn_8021AE98(chan, result);
 }
 #pragma pop
 void fn_80218FC8(s32 chan, s32 result) {
@@ -1285,7 +1288,8 @@ s32 fn_802193FC(s32 arg0, u32 arg1, void *arg2) {
     *(u16 *)(entry + 0xBE) = first;
     return fn_802195B0(arg0, data, arg2);
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 3
 s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
     u8 *card;
@@ -1303,7 +1307,7 @@ s32 fn_80219514(s32 chan, u16 block, void *callback) {
     }
     return fn_802195B0(chan,fat,callback);
 }
-#pragma optimization_level reset
+#pragma pop
 s32 fn_802195B0(s32 arg0, u16 *fat, void *arg2) {
     void fn_802198C0(void *, u32, void *, void *);
     void fn_80205110(void *, u32);
@@ -1390,19 +1394,19 @@ fail:
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3);
 s32 fn_80205110(void *, s32);
 void fn_80219734(s32, s32);
-#pragma optimization_level 3
+#pragma push
+#pragma optimization_level 4
 s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
-    u8 *dir;
     u8 *card;
+    u8 *dir;
     void *temp_r6;
-    u8 *tmp[1];
+    u32 pad[2];
 
-    tmp[0] = (u8 *)__CARDBlock + arg0 * 0x110;
-    if (*(s32 *)tmp[0] == 0) {
+    card = (u8 *)__CARDBlock + arg0 * 0x110;
+    if (*(s32 *)card == 0) {
         return -3;
     }
-    dir = *(u8 **)(tmp[0] + 0x84);
-    card = tmp[0];
+    dir = *(u8 **)(card + 0x84);
     temp_r6 = dir + 0x1FC0;
     *(u16 *)(dir + 0x1FFA) = (u16)(*(s16 *)(dir + 0x1FFA) + 1);
     fn_802198C0((u16 *)dir, 0x1FFC, (u16 *)((u8 *)temp_r6 + 0x3C), (u16 *)((u8 *)temp_r6 + 0x3E));
@@ -1410,6 +1414,7 @@ s32 __CARDUpdateDir(s32 arg0, s32 arg1) {
     *(s32 *)(card + 0xD8) = arg1;
     return __CARDEraseSector(arg0, *(s32 *)(card + 0x0C) * ((u32)(dir - *(u8 **)(card + 0x80)) >> 13), (void *)fn_80219734);
 }
+#pragma pop
 s32 fn_802198C0(u16 *arg0, s32 arg1, u16 *arg2, u16 *arg3) {
     s32 n;
 
