@@ -3315,7 +3315,9 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     void **dst;
 
     dst = (void **)arg0;
+#pragma peephole on
     *dst = arg1;
+#pragma peephole off
     *((u8 *)arg0 + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)arg0 + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)arg0 + 0x11) = Unit_GetMov(arg1);
