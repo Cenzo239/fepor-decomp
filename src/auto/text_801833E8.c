@@ -24,7 +24,7 @@ typedef struct List {
 
 static inline s32 CountUnitItemReferences(u8 *unit,u8 *target) {
 void **Unit_GetHeldItemSlot(void *,s32);
-s32 count=0; s32 i; u8 *entry; void *item;
+s32 i; u8 *entry; void *item; s32 count=0;
 if((*(u64 *)(target+0x38)&5ULL)!=0) {
 for(i=count;i<4;i++) { entry=(u8 *)Unit_GetHeldItemSlot(unit,i);item=*(void **)entry; if(!item) break;
 if(!(entry[5]&63) && target==item) count++;
@@ -2691,10 +2691,11 @@ void fn_80188368(void *arg0) {
 #pragma optimization_level 3
 void MoveAnim_BuildPathHeights(void *arg0) {
 f32 Map_SampleHeightRaw(void *,f32,f32); f32 Math_Lerp(f32,f32,f32,f32);
-extern u8 gBattleMap[]; extern const f32 gHalf,lbl_8036ACEC;
+extern u8 gBattleMap[]; extern const f32 gHalf,lbl_8036ACEC; extern f64 lbl_8036ACE0;
 u8 *self=arg0;
 PathHeightPoint *point; PathHeightPoint *anchor; u8 *dir;
 s32 x,y,count; f32 delta,offset,zero;
+(void)lbl_8036ACE0;
 if(*(u16 *)(self+0x52)&0x8000) {
 f32 *pos=*(f32 **)(self+0x30);
 { PathHeightPoint *initial=*(PathHeightPoint **)(self+0x6C); point=initial; anchor=initial; }
@@ -3032,10 +3033,12 @@ void fn_801890B4(void *anim) {
 
     u8 fadeKey[0x34];
     u8 *self;
-    s32 x, y;
+    s32 x;
+    s32 y;
     u8 *unit;
     s16 degrees;
     f32 angle;
+    u16 flags;
     s32 alpha;
     u8 blend;
     u8 slot;
@@ -3073,8 +3076,9 @@ void fn_801890B4(void *anim) {
             fn_8004FE98(unit, 0);
         }
 
-        alpha = (M2C_FIELD(self, u16 *, 0x52) & 0x10) ? 255 : 255;
-        if (M2C_FIELD(self, u16 *, 0x52) & 0x20) {
+        flags = M2C_FIELD(self, u16 *, 0x52);
+        alpha = (flags & 0x10) ? 255 : 255;
+        if (flags & 0x20) {
             alpha = 0;
         }
         blend = MoveAnim_IsBlendMode(gMapBlendMode);
@@ -4911,7 +4915,7 @@ u8 Ai_TryStealAction(void *arg0, s32 arg1) {
         if (fn_8003DC80(arg0, unit)) {
             foundSlot = -1;
             slot = 0;
-            foundDist = foundSlot;
+            foundDist = -1;
             while ((s8)slot < 8) {
                 entry = Unit_GetItemSlot(unit, slot);
                 if (*(u32 *)entry != 0) {
@@ -5687,7 +5691,12 @@ extern "C" void fn_8018F090(void *arg0) {
     fn_80152A18(0, 0, 0x10);
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
 #pragma cplusplus on
+#pragma use_lmw_stmw on
 extern "C" void fn_8018F0CC(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -5702,7 +5711,7 @@ extern "C" void fn_8018F0CC(void *arg0, s32 arg1) {
         virtual void v9() = 0;
     };
     s32 Text_MeasureHeight(s32, f32);
-    s32 fn_80104E58(s16, s16, s16);
+    s32 fn_80104E58(void);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
@@ -5712,7 +5721,7 @@ extern "C" void fn_8018F0CC(void *arg0, s32 arg1) {
     void UnitRef_Set(void *, s32);
     void fn_8001ED58(s32);
     void *UnitRef_GetName(void *);
-    void Text_Draw(s16, s16, s32, ...);
+    void Text_Draw(s16, s16, s32, void *, ...);
     void fn_8008CFB4(void *, s16, s16);
     void Item_Destroy(void *, s32);
     void *Msg_Expand(void *);
@@ -5720,30 +5729,28 @@ extern "C" void fn_8018F0CC(void *arg0, s32 arg1) {
     void Prim2D_AddPrim(s32);
     s32 *Ui_GetColor(s32);
     void Prim2D_SetColorPacked(s32 *);
-    void fn_80006B18(s32, s16, s32, s32, s32);
+    void fn_80006B18(s16, s16, s32, s32, s32);
     void Prim2D_EndPrim(void);
     extern u8 lbl_80279C40[];
     extern f32 lbl_8036ADF0;
     extern f32 lbl_8036ADF4;
     u8 sp10[8];
-    s32 x, y, w;
-    s16 a, b, d, tmp;
+    s16 y;
+    s16 x;
+    s16 w;
+    s32 t;
     s32 item;
-    void *str;
     s16 cnt;
 
     ((Obj *)arg0)->v9();
     ((Obj *)arg0)->v3((void *)arg1);
 
     x = (s16)((0x20 - Text_MeasureHeight(-1, lbl_8036ADF0)) >> 1);
-    a = *(s16 *)((u8 *)arg0 + 0x12);
-    b = *(s16 *)((u8 *)arg0 + 0x16);
-    y = *(s16 *)((u8 *)arg0 + 0x40);
-    tmp = y;
-    d = *(s16 *)((u8 *)arg0 + 0x42);
-    w = (s16)(b - a) - tmp;
-    x = x + d;
-    w = (s16)(w - (fn_80104E58(w, a, tmp) + 8));
+    t = *(s16 *)((u8 *)arg0 + 0x40);
+    y = t;
+    w = (s16)((s16)(*(s16 *)((u8 *)arg0 + 0x16) - *(s16 *)((u8 *)arg0 + 0x12)) - t);
+    x += *(s16 *)((u8 *)arg0 + 0x42);
+    w = (s16)(w - (fn_80104E58() + 8));
 
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036ADF4);
@@ -5754,37 +5761,35 @@ extern "C" void fn_8018F0CC(void *arg0, s32 arg1) {
         Item_Init(sp10);
         UnitRef_Set(sp10, item);
         fn_8001ED58(item);
-        str = UnitRef_GetName(sp10);
-        Text_Draw((s16)(y + 0x18), (s16)x, 2, str);
-        fn_8008CFB4(sp10, (s16)y, (s16)x);
+        Text_Draw((s16)((arg1 = (s16)y) + 0x18), x, 2, UnitRef_GetName(sp10));
+        fn_8008CFB4(sp10, (s16)arg1, (s16)x);
         Prim2D_Begin();
         Prim2D_SetTex(0, (u16)(*(u32 *)((u8 *)arg0 + 0x34) | 0x13));
         Prim2D_PrepareTex();
         Item_Destroy(sp10, -1);
     } else {
-        Text_Draw((s16)y, (s16)x, 0, lbl_80279C40 + 0xA9);
-        str = Msg_Expand(lbl_80279C40 + 0x53);
-        Text_Draw((s16)y, (s16)(x + 0x20), 0xF, str);
-        str = Msg_Expand(lbl_80279C40 + 0x66);
-        Text_Draw((s16)(w + 8), (s16)(x + 0x20), 0xF, str);
+        Text_Draw(y, x, 0, lbl_80279C40 + 0xA9);
     }
+    Text_Draw(y, (s16)((arg1 = (s16)x) + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0x53));
+    Text_Draw((s16)(w + 8), (s16)(arg1 + 0x20), 0xF, Msg_Expand(lbl_80279C40 + 0x66));
     cnt = fn_8018F374(arg0);
     if (cnt >= 0) {
         s32 color;
         Prim2D_AddPrim(6);
         color = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&color);
-        fn_80006B18(w, (s16)(x + 0x20), 0, 0, cnt);
+        fn_80006B18(w, (s16)(arg1 + 0x20), 0, 0, cnt);
         Prim2D_EndPrim();
     } else {
         s32 color;
         Prim2D_AddPrim(6);
         color = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&color);
-        fn_80006B18(w, (s16)(x + 0x20), 0, 0, 0);
+        fn_80006B18(w, (s16)(arg1 + 0x20), 0, 0, 0);
         Prim2D_EndPrim();
     }
 }
+#pragma pop
 #pragma cplusplus reset
 
 extern "C" void fn_8018F338(void *arg0) {
@@ -5985,6 +5990,8 @@ extern "C" void fn_8018F988(void *arg0, s32 arg1) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_lifetimes off
+#pragma opt_strength_reduction off
 extern "C" void fn_8018F9E4(void *arg0) {
     struct Obj {
         virtual void v0() = 0;
@@ -5994,8 +6001,8 @@ extern "C" void fn_8018F9E4(void *arg0) {
     };
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
-    void Text_Draw(s32, s32, s32, ...);
-    s32 fn_80104E58(void);
+    void Text_Draw(s16, s32, s32, ...);
+    u16 fn_80104E58(void);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
@@ -7473,7 +7480,6 @@ extern "C" void fn_80191CFC(void *arg0) {
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80291A3C[];
     extern u8 lbl_80292230[];
-    extern const f32 lbl_8036AE20;
 
     struct Obj {
         virtual void v0();
@@ -7496,7 +7502,6 @@ extern "C" void fn_80191CFC(void *arg0) {
     void *temp_r30;
     register s16 temp_r7;
     register void *temp_r28;
-    f32 zf;
 
     temp_r30 = M2C_FIELD(arg0, void **, 0x50);
     temp_r28 = fn_8013FF94(arg0, 2, 0);
@@ -7536,10 +7541,9 @@ extern "C" void fn_80191CFC(void *arg0) {
         M2C_FIELD(temp_r31, u8 *, 0x21) = 0xFF;
         M2C_FIELD(temp_r31, s16 *, 0x22) = 0x190;
         M2C_FIELD(temp_r31, s16 *, 0x24) = 0;
-        zf = lbl_8036AE20;
-        M2C_FIELD(temp_r31, f32 *, 0x28) = zf;
-        M2C_FIELD(temp_r31, f32 *, 0x2C) = zf;
-        M2C_FIELD(temp_r31, f32 *, 0x30) = zf;
+        M2C_FIELD(temp_r31, f32 *, 0x28) = 1.0f;
+        M2C_FIELD(temp_r31, f32 *, 0x2C) = 1.0f;
+        M2C_FIELD(temp_r31, f32 *, 0x30) = 1.0f;
         M2C_FIELD(temp_r31, s32 *, 0x34) = 0;
         M2C_FIELD(temp_r31, s32 *, 0x38) = 0;
         M2C_FIELD(temp_r31, void **, 0) = lbl_80291A3C;
@@ -8488,32 +8492,34 @@ static inline u8 Unit_FindKeyInMask(s32 key, u8 *sp8) {
     return found;
 }
 void fn_80193668(void *arg0) {
-    void *Heap_Alloc(s32);
-    void String_AssignCStr(void *, char *, u32);
-    void Ui_AddChild(void *, void *);
-    void *Ui_FindChild(void *, s32, s32);
-    void Ui_SetWidgetText(u32, s32);
-    s32 Item_GetByIid(void *);
-    void Allegiance_FillMask(s32, void *);
-    s8 Unit_FindItemSlot(void *, s32);
+    void *fn_800C42D8(s32);
+    void fn_800C96F8(void *, char *, u32);
+    void fn_801400F4(void *, void *);
+    void *fn_8013FF94(void *, s32, s32);
+    void fn_801658DC(u32, s32);
+    s32 fn_80019E04(void *);
+    void fn_80015320(s32, void *);
+    s8 fn_80091DE0(void *, s32);
     s32 fn_800C39A4(void *, s32);
     extern u8 lbl_8028FDB0[];
     extern u8 lbl_80292230[];
     extern u8 lbl_80293C84[];
     extern u8 lbl_80293C58[];
     extern u8 lbl_80279DF0[];
-    extern u8 gUnits[];
-    extern u8 gConvoy[];
+    extern u8 lbl_802B14E4[];
+    extern u8 lbl_803200AC[];
     extern f32 lbl_8036AE20;
     extern f32 lbl_8036AE30;
     u8 sp8[8];
     void *unit;
     s32 i;
-    s32 key;
+    s32 temp;
     u8 found;
     void *obj;
+    void *self;
 
-    obj = Heap_Alloc(0x5C);
+    self = arg0;
+    obj = fn_800C42D8(0x5C);
     if (obj != NULL) {
         *(void **)obj = lbl_8028FDB0;
         *(s32 *)((u8 *)obj + 4) = 0;
@@ -8558,39 +8564,41 @@ void fn_80193668(void *arg0) {
     }
     *(s16 *)((u8 *)obj + 8) = -0x1000;
     *(s32 *)((u8 *)obj + 0x48) = 1;
-    String_AssignCStr((u8 *)obj + 0x3C, (char *)((u32)lbl_80279DF0 + 0x50F), strlen((char *)((u8 *)lbl_80279DF0 + 0x50F)));
+    fn_800C96F8((u8 *)obj + 0x3C, (char *)((u32)lbl_80279DF0 + 0x50F), strlen((char *)((u8 *)lbl_80279DF0 + 0x50F)));
     *(s32 *)((u8 *)obj + 0x34) |= 0x10;
     *(s32 *)((u8 *)obj + 0x58) = 1;
-    Ui_AddChild(arg0, obj);
-    key = *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x68) + 0x50);
-    obj = Ui_FindChild(arg0, -0x1000, 0);
+    fn_801400F4(self, obj);
+    temp = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x68) + 0x50);
+    obj = fn_8013FF94(self, -0x1000, 0);
     if (obj != NULL) {
-        Ui_SetWidgetText((u32)obj, key);
+        fn_801658DC((u32)obj, temp);
     }
     found = 0;
-    *(f32 *)((u8 *)arg0 + 0x64) = lbl_8036AE20;
-    key = Item_GetByIid(lbl_80279DF0 + 0x510);
-    Allegiance_FillMask(4, sp8);
-    for (i = 1; i <= 0x9F; i++) {
+    *(f32 *)((u8 *)self + 0x64) = lbl_8036AE20;
+    temp = fn_80019E04(lbl_80279DF0 + 0x510);
+    fn_80015320(4, sp8);
+    i = 1;
+    do {
         if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
+            unit = lbl_802B14E4 + ((u8)i - 1) * 0x280;
         } else {
             unit = NULL;
         }
         if (*(u32 *)((u8 *)unit + 0x188) != 0 &&
             sp8[*(u8 *)(*(u8 **)((u8 *)unit + 0x190) + 8)] != 0 &&
-            (s8)Unit_FindItemSlot(unit, key) >= 0) {
+            (s8)fn_80091DE0(unit, temp) >= 0) {
             found = 1;
             break;
         }
-    }
+        i += 1;
+    } while (i <= 0x9F);
     if (found == 0) {
-        if (fn_800C39A4(gConvoy, key) >= 0) {
+        if (fn_800C39A4(lbl_803200AC, temp) >= 0) {
             found = 1;
         }
     }
     if (found != 0) {
-        *(f32 *)((u8 *)arg0 + 0x64) *= lbl_8036AE30;
+        *(f32 *)((u8 *)self + 0x64) *= lbl_8036AE30;
     }
 }
 #pragma pop
@@ -12126,19 +12134,20 @@ void fn_80199D18(void *arg0) {
     void *obj;
     s8 a;
     s8 b;
-    struct Pair { f32 first; f32 second; } pair;
+    f32 f18;
+    f32 f24;
 
     if (*(s16 *)((u8 *)arg0 + 0x48) >= *(s16 *)((u8 *)arg0 + 0x4A) - 4) {
         msg = Effect_Create(MapSelect_str + 0xCA, 0);
         a = *(s8 *)((u8 *)arg0 + 0x3C);
         b = *(s8 *)((u8 *)arg0 + 0x3D);
         Effect_SetPos(msg, lbl_8036AF00 + (f32)a, lbl_8036AF00 + (f32)b, *(f32 *)((u8 *)arg0 + 0x44));
-        pair.second = lbl_8036AF04;
-        pair.first = lbl_8036AF00;
+        f18 = lbl_8036AF00;
+        f24 = lbl_8036AF04;
         obj = *(void **)((u8 *)msg + 0x30);
-        *(f32 *)((u8 *)obj + 0x18) = pair.first;
+        *(f32 *)((u8 *)obj + 0x18) = f18;
         obj = *(void **)((u8 *)msg + 0x30);
-        *(f32 *)((u8 *)obj + 0x24) = pair.second;
+        *(f32 *)((u8 *)obj + 0x24) = f24;
         Process_ClearFunc(arg0);
     }
 }
