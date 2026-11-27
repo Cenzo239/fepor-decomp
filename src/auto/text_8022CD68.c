@@ -7,11 +7,6 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
-static inline s16 Fn_ClampPrecision(s16 value) {
-    if (value > 36) value = 36;
-    return value;
-}
-
 extern f32 lbl_80367068;
 extern f64 lbl_8036BE20;
 extern f64 lbl_8036BE28;
