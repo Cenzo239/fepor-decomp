@@ -14,6 +14,8 @@ struct UnitListDrawablePanel {
 };
 #pragma cplusplus reset
 
+static inline s32 Ui_IsTileAligned(s16 value) { return value % 32 == 0; }
+
 f32 lbl_8036A500 = 300.0f;
 f32 lbl_8036A50C = 1.0f;
 f32 lbl_8036A510 = 0.0f;
@@ -2472,11 +2474,11 @@ void fn_801302F4(void *arg0) {
     int ah;
     s8 unk62;
     int t;
-    s16 temp;
     s16 y;
     register s16 w;
     register s16 h;
     register s32 aw;
+    s16 temp;
 
     temp = *(s16 *)((u8 *)arg0 + 0x6A);
     if (temp % 32 == 0) {
@@ -2497,10 +2499,10 @@ void fn_801302F4(void *arg0) {
             ptr += *(s8 *)((u8 *)arg0 + 0x65) * 2;
             var4 = *(s16 *)(ptr + 0x38);
         } else {
-            var6 = (s16)(((unk62 << 5) + 0x60) - temp);
             var4 = 0x28;
             var7 = 0x1B8;
             var8 = 0x16;
+            var6 = (s16)(((unk62 << 5) + 0x60) - temp);
         }
         t = *(s16 *)((u8 *)arg0 + 0x58) + var4;
         *(s16 *)((u8 *)arg0 + 0x58) = (s16)(t / 2);
