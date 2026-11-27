@@ -3931,7 +3931,7 @@ void fn_8025C9E0(void *arg0, u8 arg1)
 {
     void fn_8025CA80(void);
     extern u8 gSoundStudios[];
-    u8 *base;
+    struct StudioEntry { u8 pad[0x48]; void *studio; u8 rest[0x70]; } *entries;
     void *node;
 
     if (((u8 *)arg0)[0xF0] != 0) {
@@ -3940,14 +3940,14 @@ void fn_8025C9E0(void *arg0, u8 arg1)
     }
 
     ((u8 *)arg0)[0xF1] = 0;
-    base = gSoundStudios + arg1 * 0xBC;
-    node = *(void **)(base += 0x48);
+    entries = (struct StudioEntry *)gSoundStudios;
+    node = entries[arg1].studio;
     *(void **)((u8 *)arg0 + 0xC) = node;
     if (node != 0) {
         *(void **)((u8 *)*(void **)((u8 *)arg0 + 0xC) + 0x10) = arg0;
     }
     *(void **)((u8 *)arg0 + 0x10) = 0;
-    *(void **)base = arg0;
+    entries[arg1].studio = arg0;
     ((u8 *)arg0)[0xF2] = 0;
     ((u8 *)arg0)[0xF0] = 1;
     ((u8 *)arg0)[0xF3] = arg1;
