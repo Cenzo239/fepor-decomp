@@ -9878,7 +9878,7 @@ extern "C" void fn_80172DA4(void *arg0) {
 }
 #pragma pop
 #pragma push
-#pragma global_optimizer off
+#pragma opt_propagation off
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, s32);
@@ -9890,7 +9890,6 @@ extern "C" void fn_8017312C(void *arg0) {
     extern u32 gUiContext[];
     void *obj;
     void *p;
-    void *a;
     u32 ret;
     s32 val;
 
@@ -9902,10 +9901,9 @@ extern "C" void fn_8017312C(void *arg0) {
         *(u8 *)((u8 *)obj + 0x4B) = 1;
     }
     val = gUiContext[0];
-    a = obj;
     *(void **)((u8 *)obj + 0x70) = (void *)fn_80173220;
     *(s32 *)((u8 *)obj + 0x74) = val;
-    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(a, 0, val);
+    *(s16 *)((u8 *)obj + 0x4C) = UnitInv_FindFilledUp(obj, 0, val);
     Ui_BringChildToFront(arg0, obj);
     ret = Ui_FindChild(arg0, -0x1000, 0);
     if (ret != 0) {
