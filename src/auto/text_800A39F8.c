@@ -658,7 +658,6 @@ s32 fn_800A46F4(s32 arg0) {
     }
     return 0;
 }
-#pragma pop
 #pragma use_lmw_stmw reset
 void fn_800A4878(s32 result) {
 extern u8 lbl_803123A0[];
