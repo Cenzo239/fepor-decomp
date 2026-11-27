@@ -8030,6 +8030,7 @@ s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     }
     return 0;
 }
+#pragma pop
 
 int fn_802634E4(void) {
     M2C_UNK fn_802137E8();
