@@ -4784,10 +4784,15 @@ static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
     s8 Unit_GetMaxHp(void *);
     s32 Abs(s32);
     extern u8 lbl_80273B40[];
-    void *chosen = best;
-    s8 valBest = Ai_GetHealAmount(unit, *(void **)best, (u8 *)lbl_80273B40 + 0x1D, &lbl_80273B40[0x2B]);
-    s8 temp = valBest;
-    s8 valCur = Ai_GetHealAmount(unit, *(void **)slot, &lbl_80273B40[0x1D], (u8 *)lbl_80273B40 + 0x2B);
+    s8 valBest;
+    void *chosen;
+    s8 temp;
+    s8 valCur;
+
+    chosen = best;
+    valBest = Ai_GetHealAmount(unit, *(void **)best, (u8 *)lbl_80273B40 + 0x1D, &lbl_80273B40[0x2B]);
+    temp = valBest;
+    valCur = Ai_GetHealAmount(unit, *(void **)slot, &lbl_80273B40[0x1D], (u8 *)lbl_80273B40 + 0x2B);
 
     if (valBest != valCur) {
         s32 missing;
@@ -4819,27 +4824,18 @@ static inline void *Ai_PickBetterHealItem(void *unit, void *best, void *slot) {
 #pragma opt_strength_reduction off
 s32 Ai_TryUseHealItem(void *arg0) {
     void *Unit_GetItemSlot(void *, s32);
-    s8 Unit_GetMaxHp(void *);
     void fn_800FB96C(s32, s8, s8, void *, s8, s8, s8, s32, s32);
     void fn_801025BC(void *, s16 *, s16 *);
-    s32 Abs(s32);
-    extern u8 lbl_80273B40[];
     extern u8 gAiState[];
     s16 sp12;
     s16 sp10;
     s32 sp8;
     s32 idx;
-    s32 a;
-    s8 temp;
-    s8 valCur;
-    void *chosen;
-    s32 missing;
-    s8 valBest;
     void *item;
-    void *slot;
     u8 *p;
     void *best;
     s32 i;
+    void *slot;
 
     best = 0;
     i = 0;
@@ -4854,35 +4850,7 @@ s32 Ai_TryUseHealItem(void *arg0) {
             if (best == 0) {
                 best = slot;
             } else {
-                chosen = best;
-                valBest = Ai_GetHealAmount(arg0, *(void **)best, (u8 *)lbl_80273B40 + 0x1D, &lbl_80273B40[0x2B]);
-                temp = valBest;
-                valCur = Ai_GetHealAmount(arg0, *(void **)slot, &lbl_80273B40[0x1D], (u8 *)lbl_80273B40 + 0x2B);
-                if (valBest != valCur) {
-                    if (valBest > valCur) {
-                        temp = valCur;
-                        valCur = valBest;
-                        chosen = slot;
-                        slot = best;
-                    }
-                    missing = (s8)(Unit_GetMaxHp(arg0) - ((u8 *)arg0)[0x1A8]);
-                    a = Abs(missing - valCur);
-                    if (Abs(missing - temp) > a) {
-                        goto take_slot;
-                    } else {
-                        goto done_pick;
-                    }
-                take_slot:
-                    chosen = slot;
-                } else if (*(u8 *)((u8 *)best + 4) < *(u8 *)((u8 *)slot + 4)) {
-                    chosen = best;
-                } else if (*(u8 *)((u8 *)best + 4) > *(u8 *)((u8 *)slot + 4)) {
-                    chosen = slot;
-                } else {
-                    chosen = best;
-                }
-            done_pick:
-                best = chosen;
+                best = Ai_PickBetterHealItem(arg0, best, slot);
             }
         }
         i += 1;
