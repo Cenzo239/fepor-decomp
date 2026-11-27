@@ -570,7 +570,6 @@ void fn_801F2DB4(s32 arg0) {
 #pragma opt_common_subs off
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-#pragma opt_allocation off
 void fn_801F2E08(void *arg0) {
     s32 Person_GetByPid(s32);
     void Process_Goto(void *, s32);
@@ -584,12 +583,12 @@ void fn_801F2E08(void *arg0) {
     extern u8 gOptionsList1[];
     extern u8 gSystemSave[];
     void *obj;
-    s32 pages;
-    s32 tmp;
-    s16 scroll;
     s32 pressed;
     s32 stick;
     s32 held;
+    s16 scroll;
+    s32 tmp;
+    s32 pages;
 
     obj = *(void **)((u8 *)arg0 + 0x30);
     held = *(s32 *)((u8 *)gPadInput + 4);
