@@ -1189,8 +1189,8 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     s32 sumX = 0;
     s32 sumY = 0;
     u8 new_var3[2];
-    s32 i;
     s32 count;
+    s32 i;
     header = Hash_Lookup(name);
     if (!header) {
         data = 0;
