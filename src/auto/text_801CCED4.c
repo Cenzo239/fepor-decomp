@@ -9882,7 +9882,6 @@ static inline u32 save_slot_size_lim(u8 *slot, u32 limit) {
 }
   
 #pragma push
-#pragma optimization_level 4
 void fn_801DFE60(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
@@ -9903,7 +9902,6 @@ void fn_801DFE60(u8 **arg0, s32 arg1) {
     minSize = (u32)-1;
     off = 0x2000;
     best = NULL;
-    i = 0;
     self = arg1;
 
     for (i = 0; i < 6; i++) {
