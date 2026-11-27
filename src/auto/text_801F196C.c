@@ -1,7 +1,6 @@
 /* Functions from 0x801F196C to 0x801FC620, found by decomp-toolkit. */
 #include "common.h"
 
-static inline void StaffRoll_VecZero(u32 *v) { v[0] = 0; v[1] = 0; v[2] = 0; }
 
 typedef struct {
     u8 pad[0xB0];
