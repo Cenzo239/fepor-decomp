@@ -1480,10 +1480,9 @@ s32 fn_80219A70(void *arg0)
 #pragma use_lmw_stmw reset
 static inline void CARD_CheckSumInline(void *ptr, s32 length, u16 *checksum, u16 *checksumInv) {
     u16 *p;
-    s32 i;
     length /= 2;
     *checksum = *checksumInv = 0;
-    for (i = 0, p = (u16 *)ptr; i < length; i++, p++) {
+    for (p = (u16 *)ptr; length > 0; length--, p++) {
         *checksum += *p;
         *checksumInv += ~*p;
     }
@@ -1494,61 +1493,41 @@ static inline void CARD_CheckSumInline(void *ptr, s32 length, u16 *checksum, u16
         *checksumInv = 0;
     }
 }
-s32 fn_80219CF4(s32 cardPtr, s32 *alternative) {
+#pragma push
+#pragma opt_lifetimes off
+s32 fn_80219CF4(s32 card, s32 *alternative) {
     void *memcpy(void *, const void *, u32);
-    struct CARDControl {
-        u8 pad0[0x80];
-        u8 *workArea;
-        u8 *currentDir;
-    };
-    struct CARDControl *card = (struct CARDControl *)cardPtr;
     u8 *block[2];
     u8 *check[2];
     s32 cBlock;
     s32 cCheck;
     s32 i;
-    s32 len;
-    s32 j;
-    u16 *p;
     u16 sum;
     u16 inv;
 
     cBlock = 0;
     cCheck = 0;
     for (i = 0; i < 2; i++) {
-        block[i] = card->workArea + ((i + 1) << 13);
+        block[i] = *(u8 **)((u8 *)card + 0x80) + ((i + 1) << 13);
         check[i] = block[i] + 0x1FC0;
-        len = 0x1FFC;
-        len /= 2;
-        inv = 0;
-        sum = 0;
-        for (j = 0, p = (u16 *)block[i]; j < len; j++, p++) {
-            sum += *p;
-            inv += ~*p;
-        }
-        if (sum == 0xFFFF) {
-            sum = 0;
-        }
-        if (inv == 0xFFFF) {
-            inv = 0;
-        }
+        CARD_CheckSumInline(block[i], 0x1FFC, &sum, &inv);
         if (sum != *(u16 *)(check[i] + 0x3C) || inv != *(u16 *)(check[i] + 0x3E)) {
-            card->currentDir = 0;
+            *(u8 **)((u8 *)card + 0x84) = 0;
             cCheck = i;
             cBlock++;
         }
     }
     if (cBlock == 0) {
-        if (card->currentDir == 0) {
+        if (*(u8 **)((u8 *)card + 0x84) == 0) {
             if (*(s16 *)(check[0] + 0x3A) - *(s16 *)(check[1] + 0x3A) < 0) {
                 cCheck = 0;
             } else {
                 cCheck = 1;
             }
-            card->currentDir = block[cCheck];
+            *(u8 **)((u8 *)card + 0x84) = block[cCheck];
             memcpy(block[cCheck], block[cCheck ^ 1], 0x2000);
         } else {
-            cCheck = (card->currentDir == block[0]) ? 0 : 1;
+            cCheck = (*(u8 **)((u8 *)card + 0x84) == block[0]) ? 0 : 1;
         }
     }
     if (alternative != 0) {
@@ -1556,10 +1535,8 @@ s32 fn_80219CF4(s32 cardPtr, s32 *alternative) {
     }
     return cBlock;
 }
-
+#pragma pop
 #pragma push
-#pragma optimization_level 4
-#pragma global_optimizer off
 s32 fn_80219F34(s32 card,s32 *alternative) {
 void *memcpy(void*,const void*,u32);
 u8 *block[2];
