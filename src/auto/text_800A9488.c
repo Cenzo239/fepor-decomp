@@ -2139,6 +2139,7 @@ void fn_800AC5DC(void *arg0) {
 #pragma opt_propagation off
 #pragma opt_common_subs off
 #pragma opt_lifetimes off
+#pragma opt_strength_reduction on
 void fn_800AC810(void *arg0)
 {
   void Ui_PlaySeCue(void *, s32);
