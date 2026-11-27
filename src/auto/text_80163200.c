@@ -9878,6 +9878,8 @@ extern "C" void fn_80172DA4(void *arg0) {
     }
 }
 #pragma pop
+#pragma scheduling off
+#pragma global_optimizer off
 extern "C" void fn_8017312C(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, s32);
@@ -9911,6 +9913,8 @@ extern "C" void fn_8017312C(void *arg0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x370);
     }
 }
+#pragma global_optimizer on
+#pragma scheduling on
 
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
