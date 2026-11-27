@@ -4457,7 +4457,7 @@ extern "C" void fn_80148D54(void *arg0) {
     s32 fn_8014953C(u8 *, s32);
     extern u8 lbl_80367AE8;
     extern u8 lbl_80367AE9;
-    extern u8 lbl_80367AEE;
+    extern u8 gBgmVol;
     extern u8 lbl_80367AEF;
     extern u8 lbl_80367AF0;
     extern u8 lbl_80367AF1;
@@ -4533,8 +4533,8 @@ extern "C" void fn_80148D54(void *arg0) {
                     self->flags &= ~8;
                 }
             }
-            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || lbl_80367AEE != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
-                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
+            if (self->cur != self->prev || lbl_80367AE8 != lbl_80367AE9 || gBgmVol != lbl_80367AEF || lbl_80367AF0 != lbl_80367AF1 || (self->flags & 2)) {
+                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 self->prev = self->cur;
@@ -4553,7 +4553,7 @@ extern "C" void fn_80148D54(void *arg0) {
                 if (self->flags & 2) {
                     rate = fn_8014953C((u8 *)self, delay);
                 }
-                level = (u8)(lbl_80367AF3 * (lbl_80367AEE * rate) / 10000);
+                level = (u8)(lbl_80367AF3 * (gBgmVol * rate) / 10000);
                 factor = lbl_80367AE8;
                 self->unk_d = (u8)(level * (factor * (self->cur * self->v19())) / 1000000);
                 ((DrawIface *)self)->Set(self->unk_d, self->unk_e, self->unk_10, (u16)self->unk_12);
