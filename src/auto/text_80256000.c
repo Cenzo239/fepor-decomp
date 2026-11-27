@@ -3926,7 +3926,6 @@ s32 fn_8025C99C(void *arg0, s32 arg1)
     return callback(arg1, *(s32 *)((u8 *)arg0 + 0x18));
 }
 
-#pragma push
 #pragma use_lmw_stmw reset
 #pragma opt_strength_reduction off
 void fn_8025C9E0(void *arg0, u8 arg1)
