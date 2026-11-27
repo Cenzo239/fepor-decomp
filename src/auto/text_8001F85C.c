@@ -1,4 +1,84 @@
 /* Functions from 0x8001EEEC to 0x80028864, found by decomp-toolkit. */
+#define STEPY(SIGN, DIR, M1, M2) { \
+    u8 y, x; \
+    s32 nextY; \
+    s32 nextIndex, index; \
+    u16 terrain, cost, oldCost; \
+    u8 *q; \
+    entry = *(u8 **)(self + 0x24ED8); \
+    y = entry[1]; \
+    x = entry[0]; \
+    nextY = y SIGN 1; \
+    index = (s8)x + ((s8)y * 64); \
+    terrain = *(u16 *)(self + 0x408E + index * 2); \
+    if ((terrain & (M1)) == 0) { \
+        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1); \
+        if ((terrain & (M2)) == 0) { \
+            cost++; \
+        } else if (self[index + 0x100D] == 0x1C) { \
+            cost += 2; \
+        } \
+        nextIndex = (s8)x + ((s8)nextY * 64); \
+        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex]; \
+        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) { \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[0] = x; \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[1] = nextY; \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[2] = (DIR); \
+            q = *(u8 **)(self + 0x24EDC); \
+            *(u16 *)(q + 4) = cost; \
+            q = *(u8 **)(self + 0x24EDC); \
+            *(u8 **)(self + 0x24EDC) = q + 6; \
+            self[0x24EE1]++; \
+            (*(s16 **)(self + 0x14190))[nextIndex] = cost; \
+            if ((u16)cost >= self[0x24EE9]) { \
+                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1; \
+            } \
+        } \
+    } \
+}
+#define STEPX(SIGN, DIR, M1, M2) { \
+    u8 y, x; \
+    s32 nextX; \
+    s32 nextIndex, index; \
+    u16 terrain, cost, oldCost; \
+    u8 *q; \
+    entry = *(u8 **)(self + 0x24ED8); \
+    y = entry[1]; \
+    x = entry[0]; \
+    nextX = x SIGN 1; \
+    index = (s8)x + ((s8)y * 64); \
+    terrain = *(u16 *)(self + 0x408E + index * 2); \
+    if ((terrain & (M1)) == 0) { \
+        cost = (u16)((*(s16 **)(self + 0x14190))[index] + 1); \
+        if ((terrain & (M2)) == 0) { \
+            cost++; \
+        } else if (self[index + 0x100D] == 0x1C) { \
+            cost += 2; \
+        } \
+        nextIndex = (s8)nextX + ((s8)y * 64); \
+        oldCost = (u16)(*(s16 **)(self + 0x14190))[nextIndex]; \
+        if ((u16)cost < oldCost && (u16)cost <= *(u16 *)(self + 0x24EE2)) { \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[0] = nextX; \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[1] = y; \
+            q = *(u8 **)(self + 0x24EDC); \
+            q[2] = (DIR); \
+            q = *(u8 **)(self + 0x24EDC); \
+            *(u16 *)(q + 4) = cost; \
+            q = *(u8 **)(self + 0x24EDC); \
+            *(u8 **)(self + 0x24EDC) = q + 6; \
+            self[0x24EE1]++; \
+            (*(s16 **)(self + 0x14190))[nextIndex] = cost; \
+            if ((u16)cost >= self[0x24EE9]) { \
+                *(u16 *)(self + 0xC18E + nextIndex * 2) = 1; \
+            } \
+        } \
+    } \
+}
 #include "common.h"
 #pragma cplusplus on
 struct MenuSelection24768 { u8 pad[0x40]; u8 index; };
@@ -419,6 +499,9 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
     return start;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
     void Map_FillLayer(void *, s32, s32);
@@ -470,11 +553,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
             switch (direction) {
             case 0x20:
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     y = entry[1];
@@ -511,11 +594,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -553,11 +636,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -595,11 +678,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -639,11 +722,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                 break;
             case 0x08:
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     y = entry[1];
@@ -680,11 +763,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -722,11 +805,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -766,11 +849,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                 break;
             case 0x04:
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     y = entry[1];
@@ -807,11 +890,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -849,11 +932,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -893,11 +976,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                 break;
             case 0x01:
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     y = entry[1];
@@ -934,11 +1017,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -976,11 +1059,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -1020,11 +1103,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                 break;
             case 0x02:
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     y = entry[1];
@@ -1061,11 +1144,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextY;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -1103,11 +1186,11 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
                     }
                 }
                 {
-                    u8 x, y;
+                    u8 y, x;
                     s32 nextX;
-                    s32 index, nextIndex;
+                    s32 nextIndex, index;
                     u16 terrain;
-                    s32 cost;
+                    u16 cost;
                     u16 oldCost;
                     u8 *q;
                     entry = *(u8 **)(self + 0x24ED8);
@@ -1153,7 +1236,7 @@ volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4
         }
     }
 }
-
+#pragma pop
 s16 fn_8002134C(u8 *map, s8 x, s8 y)
 {
   extern u8 gUnits[];
@@ -1225,6 +1308,7 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
     u8 kind;
     s8 nextCoord;
     u16 flags;
+    u16 rawFlags;
     u16 neu;
     s16 oldc;
     u16 have;
@@ -1284,11 +1368,11 @@ void Map_FloodMoveRange(void *map, u8 x, u8 y, u16 range, s32 flagA, s32 flagB)
         while ((ed8 = self->read), (kind = ed8[2]) != 0x10) {
             ny = ed8[1];
             nx = ed8[0];
-            flags = self->terrainFlags[(s8)nx + ((s8)ny << 6)];
+            rawFlags = self->terrainFlags[(s8)nx + ((s8)ny << 6)];
+            flags = rawFlags;
             if (self->flip != 0) {
-                flags = (u16)(((flags ^ 0xF0) >> 4) & 0xFFF);
+                flags = (u16)(((rawFlags ^ 0xF0) >> 4) & 0xFFF);
             }
-
 
             switch (kind) {
             case 0x20:
