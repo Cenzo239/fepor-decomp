@@ -4210,52 +4210,55 @@ void fn_8006720C(void *arg0) {
 }
 #pragma opt_propagation reset
 #pragma optimization_level reset
-#pragma global_optimizer off
-void fn_80067304(void *arg0) {
 #pragma push
-#pragma optimization_level 3
+#pragma global_optimizer on
+void fn_80067304(void *arg0) {
     typedef struct { f32 x, y, z; } Vec3;
+    typedef struct { u8 r, g, b, a; } Color;
+    typedef struct {
+        Color color0;
+        Color color;
+        Vec3 pos;
+        Vec3 dir;
+        f32 refDist;
+        f32 unk24;
+        f32 unk28;
+    } LightEntry;
     extern Vec3 lbl_8026B744;
     extern Vec3 lbl_8026B750;
     extern const f32 lbl_80369224;
     extern const f32 lbl_80369228;
-    extern s32 lbl_8036C444;
-    extern s32 lbl_8036C448;
-    Vec3 a;
-    Vec3 b;
-    f32 f20 = lbl_80369224;
-    f32 f24 = lbl_80369228;
-    u32 col1;
-    u32 col2;
+    extern Color lbl_8036C444;
+    extern Color lbl_8036C448;
+    LightEntry *light = (LightEntry *)arg0;
+    Vec3 dir;
+    Vec3 pos;
+    Color c0;
+    Color c1;
 
-    a = lbl_8026B744;
-    *(f32 *)((u8 *)arg0 + 0x14) = a.x;
-    *(f32 *)((u8 *)arg0 + 0x18) = a.y;
-    *(f32 *)((u8 *)arg0 + 0x1C) = a.z;
-
-    b = lbl_8026B750;
-    *(f32 *)((u8 *)arg0 + 0x08) = b.x;
-    *(f32 *)((u8 *)arg0 + 0x0C) = b.y;
-    *(f32 *)((u8 *)arg0 + 0x10) = b.z;
-    *(f32 *)((u8 *)arg0 + 0x20) = f20;
-
-    col1 = lbl_8036C444;
-    ((u8 *)arg0)[0] = ((u8 *)&col1)[0];
-    ((u8 *)arg0)[1] = ((u8 *)&col1)[1];
-    ((u8 *)arg0)[2] = ((u8 *)&col1)[2];
-    ((u8 *)arg0)[3] = ((u8 *)&col1)[3];
-
-    col2 = lbl_8036C448;
-    ((u8 *)arg0)[4] = ((u8 *)&col2)[0];
-    ((u8 *)arg0)[5] = ((u8 *)&col2)[1];
-    ((u8 *)arg0)[6] = ((u8 *)&col2)[2];
-    ((u8 *)arg0)[7] = ((u8 *)&col2)[3];
-
-    *(f32 *)((u8 *)arg0 + 0x24) = f24;
-    *(f32 *)((u8 *)arg0 + 0x28) = f24;
-#pragma pop
+    dir = lbl_8026B744;
+    light->dir.x = dir.x;
+    light->dir.y = dir.y;
+    light->dir.z = dir.z;
+    pos = lbl_8026B750;
+    light->pos.x = pos.x;
+    light->pos.y = pos.y;
+    light->pos.z = pos.z;
+    light->refDist = lbl_80369224;
+    c0 = lbl_8036C444;
+    light->color0.r = c0.r;
+    light->color0.g = c0.g;
+    light->color0.b = c0.b;
+    light->color0.a = c0.a;
+    c1 = lbl_8036C448;
+    light->color.r = c1.r;
+    light->color.g = c1.g;
+    light->color.b = c1.b;
+    light->color.a = c1.a;
+    light->unk24 = lbl_80369228;
+    light->unk28 = lbl_80369228;
 }
-#pragma global_optimizer reset
+#pragma pop
 void Light_CopyChannel(void *arg0, void *arg1) {
     typedef struct { s32 x; s32 y; } Pair;
     Pair t;
