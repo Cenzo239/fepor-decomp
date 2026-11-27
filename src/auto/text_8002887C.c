@@ -5,9 +5,9 @@ void fn_801481CC(void *, s32);
 void fn_8002F6E8(void *arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
 
 static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
-    s32 n;
-    s32 i;
     s32 *p;
+    s32 i;
+    s32 n;
 
     n = *arg0;
     p = arg0;
