@@ -12,6 +12,7 @@ static inline s32 Heap_FindUnusedIndexFrom(void **table, s32 i) {
     for (; i < 16; i++) if (table[i] == 0) return i;
     return -1;
 }
+static inline u32 String_Size(const u32 *str) { return str[0]; }
 typedef struct MapProjectionVec { f32 x, y, z; } MapProjectionVec;
 typedef struct AiActionMap {
         s32 width;
@@ -14217,8 +14218,7 @@ extern "C" void fn_800E1340(SortIterator first1, SortIterator last1, SortIterato
         SortIterator t1 = first1;
         s32 value = *t1.ptr;
         key = Sort_GetKey((void *)*t2.ptr);
-        s32 key1 = Sort_GetKey((void *)value);
-        if (key1 > key) {
+        if (Sort_GetKey((void *)value) > key) {
             SortIterator tmp = first2;
             s32 val = *tmp.ptr;
             first2.ptr++;
