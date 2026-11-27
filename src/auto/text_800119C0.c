@@ -3752,81 +3752,91 @@ void fn_80016628(s32 arg0) {
 #pragma optimization_level 3
 void fn_800167E4(void *arg0)
 {
-    extern u8 gUnits[];
-
-    void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
-    s32 Status_Test(void *, s32);
-    void Unit_MoveToList(void *, s32);
-    void fn_80016F78(void *);
-    void Unit_Clear(void *, s32);
-    void Unit_Write(void *, void *);
-    void Array_Destroy(void *, void *, s32, s32);
-    void Item_Destroy(void);
-
-    u8 savedIds[8];
-    u8 flags[8];
-    void *savedUnits[8];
-    u8 temp[0x280];
-
-    s32 j;
-    s32 k;
-    u8 *unit;
-    u8 *unitData;
-    s32 savedCount;
-    s32 i;
-
-    savedCount = 0;
-
-    Allegiance_SetMask(0, 1, 1, 1, 0, 0, 0, 0, flags);
-
-    for (i = 1; i <= 0x9F; i++) {
-        if ((u8)i != 0) {
-            unit = gUnits + ((u8)i - 1) * 0x280;
-        } else {
-            unit = 0;
+  extern u8 gUnits[];
+  u8 new_var2;
+  void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
+  s32 Status_Test(void *, s32);
+  void Unit_MoveToList(void *, s32);
+  void fn_80016F78(void *);
+  void Unit_Clear(void *, s32);
+  void Unit_Write(void *, void *);
+  void Array_Destroy(void *, void *, s32, s32);
+  void Item_Destroy(void);
+  u8 savedIds[8];
+  u8 flags[8];
+  void *savedUnits[8];
+  int new_var;
+  u8 temp[0x280];
+  u8 *new_var3[2];
+  s32 savedCount;
+  s32 i;
+  savedCount = 0;
+  Allegiance_SetMask(0, 1, 1, 1, 0, 0, 0, 0, flags);
+  for (i = 1; i <= 0x9F; i++)
+  {
+    if (((u8) i) != 0)
+    {
+      new_var3[1] = gUnits + ((((u8) i) - 1) * 0x280);
+    }
+    else
+    {
+      new_var3[1] = 0;
+    }
+    new_var = 0;
+    if ((*((u32 *) (new_var3[1] + 0x188))) != 0)
+    {
+      new_var3[0] = *((u8 **) (new_var3[1] + 0x190));
+      if (flags[new_var3[0][8]] != 0)
+      {
+        if (((u8) Status_Test(new_var3[1] + 0x1BC, 0x59)) != new_var)
+        {
+          savedUnits[savedCount] = new_var3[1];
+          savedIds[savedCount++] = (new_var2 = *((*((u8 **) (new_var3[1] + 0x190))) + 8));
+          Unit_MoveToList(new_var3[1], 7);
         }
+      }
+    }
+  }
 
-        if (*(u32 *)(unit + 0x188) != 0) {
-            unitData = *(u8 **)(unit + 0x190);
-            if (flags[unitData[8]] != 0) {
-                if ((u8)Status_Test(unit + 0x1BC, 0x59) != 0) {
-                    savedUnits[savedCount] = unit;
-                    savedIds[savedCount++] = *(*(u8 **)(unit + 0x190) + 8);
+  fn_80016F78(temp);
+  Unit_Clear(temp, -1);
+  for (i = 0; i < 0x9F; i++)
+  {
+    new_var3[1] = gUnits + (i * 0x280);
+    new_var3[0] = *((u8 **) (new_var3[1] + 0x190));
+    switch (new_var3[0][8])
+    {
+      case 0:
 
-                    Unit_MoveToList(unit, 7);
-                }
-            }
-        }
+      case 5:
+
+      case 6:
+
+      case 7:
+        Unit_Write(new_var3[1], arg0);
+        break;
+
+      case 1:
+
+      case 2:
+
+      case 3:
+
+      case 4:
+        Unit_Write(temp, arg0);
+        break;
+
     }
 
-    fn_80016F78(temp);
-    Unit_Clear(temp, -1);
+  }
 
-    for (j = 0; j < 0x9F; j++) {
-        unit = gUnits + j * 0x280;
-        unitData = *(u8 **)(unit + 0x190);
-        switch (unitData[8]) {
-        case 0:
-        case 5:
-        case 6:
-        case 7:
-            Unit_Write(unit, arg0);
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-            Unit_Write(temp, arg0);
-            break;
-        }
-    }
+  for (i = 0; i < savedCount; i++)
+  {
+    Unit_MoveToList(savedUnits[i], savedIds[i]);
+  }
 
-    for (k = 0; k < savedCount; k++) {
-        Unit_MoveToList(savedUnits[k], savedIds[k]);
-    }
-
-    Array_Destroy(temp + 0x1EC, Item_Destroy, 8, 4);
-    Array_Destroy(temp + 0x1CC, Item_Destroy, 8, 4);
+  Array_Destroy(temp + 0x1EC, Item_Destroy, 8, 4);
+  Array_Destroy(temp + 0x1CC, Item_Destroy, 8, 4);
 }
 #pragma optimization_level reset
 void *fn_800169A8(void *arg0, s16 arg1)
