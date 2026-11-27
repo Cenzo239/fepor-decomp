@@ -641,49 +641,46 @@ s32 fn_80093218(void *arg0, void *arg1) {
  return (flags & 0x10000000000ULL) == 0;
 }
 
-#pragma push
-#pragma opt_lifetimes off
 u8 fn_8009326C(void *arg0, void *arg1) {
     u8 fn_800940B0(void *, void *);
     u8 tmp;
     struct { unsigned ok : 8; } t;
-    u32 lo;
-    u32 hi;
-    u32 z;
+    u32 *p;
+    u32 msw;
+    u32 lsw;
     u64 flags;
 
     t.ok = 0;
-    lo = *(u32 *)((u8 *)arg1 + 0x3C);
-    hi = *(u32 *)((u8 *)arg1 + 0x38);
-    z = 0;
-    flags = ((u64)hi << 32) | lo;
+    p = (u32 *)((u8 *)arg1 + 0x38);
+    lsw = p[1];
+    msw = p[0];
+    flags = ((u64)msw << 32) | lsw;
     if (!(flags & 4)) {
-        return (u8)z;
+        return 0;
     }
     if (flags & 0x200) {
-        tmp = Status_Test((u8 *)arg0 + 0x1BC, 9);
+        tmp = fn_80105BC0((u8 *)arg0 + 0x1BC, 9);
         if (tmp) {
             t.ok = 1;
         } else {
-            t.ok = (u8)z;
+            t.ok = 0;
         }
     } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
         t.ok = 1;
     } else if (flags & 2) {
-        t.ok = (u8)z;
+        t.ok = 0;
     } else if (flags & 4) {
-        t.ok = (u8)z;
+        t.ok = 0;
     } else if (flags & 0x40) {
         t.ok = 1;
     } else {
         t.ok = 1;
     }
     if (t.ok == 0) {
-        return (u8)z;
+        return 0;
     }
     return fn_800940B0(arg0, arg1) != 0;
 }
-#pragma pop
 
 #pragma optimization_level 2
 s32 fn_8009339C(void *arg0, void *arg1)
