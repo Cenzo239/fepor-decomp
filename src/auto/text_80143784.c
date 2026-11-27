@@ -2294,29 +2294,22 @@ void fn_80145520(void) {
     void *Process_Create(void *, s32);
     extern u8 gBgmVolFadeProcs[];
     extern u8 gBgmVol;
-    extern f32 gBgmVolTimerZero;
-    extern f32 lbl_8036A77C;
-    s32 base = (s32)gBgmVolFadeProcs;
-    f32 *proc;
-    f32 a;
-    f32 b;
-    f32 c;
-    u32 vol;
+    extern const f32 gBgmVolTimerZero;
+    extern const f32 lbl_8036A77C;
+    s32 base;
+    u8 *p;
 
+    base = (s32)gBgmVolFadeProcs;
     Process_UnlinkByKey((void *)(base + 0x28));
     Process_UnlinkByKey((void *)(base + 0x3C));
     Process_UnlinkByKey((void *)(base + 0x50));
     Process_UnlinkByKey((void *)(base + 0x64));
     Process_UnlinkByKey((void *)(base + 0x78));
     Process_UnlinkByKey((void *)(base + 0x8C));
-    proc = (f32 *)Process_Create((void *)(base + 0x64), 3);
-    a = gBgmVolTimerZero;
-    b = lbl_8036A77C;
-    proc[12] = a;
-    proc[13] = b;
-    vol = gBgmVol;
-    c = (f32)vol;
-    proc[14] = c;
+    p = (u8 *)Process_Create((void *)(base + 0x64), 3);
+    *(f32 *)(p + 0x30) = gBgmVolTimerZero;
+    *(f32 *)(p + 0x34) = lbl_8036A77C;
+    *(f32 *)(p + 0x38) = (f32)gBgmVol;
 }
 
 /* Stop BGM volume fades; snap gBgmVol to 0, or start a fade-out over `frames` ticks. */
