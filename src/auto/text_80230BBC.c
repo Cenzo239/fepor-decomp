@@ -1012,10 +1012,10 @@ do { *++db=*++tail; } while(--size);
 
 static inline void CopyBackward32Words(u8 *s, u8 *d)
 {
-    u32 b;
-    u32 a;
-    a = *((u32 *) (s - 4));
-    b = *((u32 *) (s - 8));
+    s32 b;
+    s32 a;
+    a = *((s32 *) (s - 4));
+    b = *((s32 *) (s - 8));
     *((u32 *) (d - 4)) = a;
     a = *((u32 *) (s - 12));
     *((u32 *) (d - 8)) = b;
