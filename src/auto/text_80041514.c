@@ -395,8 +395,6 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma optimization_level 3
 
 #pragma optimization_level reset
-#pragma global_optimizer off
-#pragma opt_lifetimes on
 
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
@@ -470,8 +468,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     extern u8 gMapBlendMode;
 
     s64 t0;
-    s64 t1;
-    s64 ms;
     u8 sp18[0x30];
 
     char *p;
@@ -882,7 +878,5 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)fog)[2] = (&lbl_80367290)[1];
     ((u8 *)fog)[3] = (&lbl_80367290)[2];
     fn_80040B78(arg0, (u32)((char *)arg0 + 0x3C));
-    t1 = OSGetTime();
-    ms = __div2i(t1 - t0, (s64)((*(u32 *)0x800000F8 >> 2) / 1000));
-    DebugPrint(lbl_8026A660 + 0x22C, ms);
+    DebugPrint(lbl_8026A660 + 0x22C, __div2i(OSGetTime() - t0, (s64)((*(u32 *)0x800000F8 >> 2) / 1000)));
 }
