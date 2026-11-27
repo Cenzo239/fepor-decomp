@@ -32614,7 +32614,6 @@ extern u8 gAiState[];
 extern u8 gAiState[544];
 extern u16 *lbl_803678A8;
 extern u16 *gWin3;
-extern u16 *lbl_80367918;
 extern u16 TagWin_str[];
 #include "global.h"
 
