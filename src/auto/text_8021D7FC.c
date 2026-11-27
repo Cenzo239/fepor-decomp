@@ -2564,7 +2564,6 @@ void fn_80220EBC(void)
 
     *(u16 *)(__GXData + 2) = 1;
 }
-#pragma optimization_level reset
 #pragma global_optimizer reset
 void fn_80220F44(u32 arg0, u32 arg1) {
 extern u32 __GXData;
