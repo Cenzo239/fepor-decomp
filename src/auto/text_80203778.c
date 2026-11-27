@@ -154,126 +154,159 @@ void OSDumpContext(OSContext *context);
 void fn_80206E1C(u32 bootDol, u32 resetCode, char **argv);
 s32 __OSSyncSram(void);
 
+#pragma push
 #pragma dont_inline on
-s32 PPCMfmsr(void) {
-    return M2C_ERROR(/* unknown instruction: mfmsr $r3 */);
-}
-#pragma dont_inline reset
-
-#pragma dont_inline on
-void PPCMtmsr(register u32 msr) {
-    (void)msr; /* mtmsr: not expressible in C */
+asm u32 PPCMfmsr(void) {
+    nofralloc
+    mfmsr r3
+    blr
 }
 
-s32 PPCMfhid0(void) {
-    return M2C_ERROR(/* unknown instruction: mfspr $r3, HID0 */);
+asm void PPCMtmsr(register u32 msr) {
+    nofralloc
+    mtmsr msr
+    blr
 }
 
-#pragma dont_inline reset
-
-void fn_80203790(u32 arg0) {
-    (void)arg0;
+asm u32 PPCMfhid0(void) {
+    nofralloc
+    mfspr r3, HID0
+    blr
 }
 
-u32 PPCMfl2cr(void) {
-    return 0;
+asm void fn_80203790(register u32 hid0) {
+    nofralloc
+    mtspr HID0, hid0
+    blr
 }
 
-#pragma dont_inline on
-void PPCMtl2cr(u32 arg0) {
-    extern u32 __SPR_1017;
-    __SPR_1017 = arg0;
-}
-#pragma dont_inline reset
-s32 PPCMtdec(void) {
-    return M2C_ERROR(/* unknown instruction: mtdec $r3 */);
+asm u32 PPCMfl2cr(void) {
+    nofralloc
+    mfspr r3, L2CR
+    blr
 }
 
-s32 PPCSync(void) {
-    return 0;
+asm void PPCMtl2cr(register u32 l2cr) {
+    nofralloc
+    mtspr L2CR, l2cr
+    blr
 }
 
-#pragma dont_inline on
-void PPCHalt(void) {
-    M2C_SYNC();
-loop_1:
-    goto loop_1;
+__declspec(weak) asm void PPCMtdec(register u32 dec) {
+    nofralloc
+    mtdec dec
+    blr
 }
 
-void PPCMtmmcr0(u32 arg0) {
-    extern volatile u32 __SPR_952;
-    volatile u32 *spr = &__SPR_952;
-    *spr = arg0;
+asm void PPCSync(void) {
+    nofralloc
+    sc
+    blr
 }
 
-void PPCMtmmcr1(u32 arg0) {
-    extern u32 __SPR_956;
-    __SPR_956 = arg0;
+__declspec(weak) asm void PPCHalt(void) {
+    nofralloc
+    sync
+loop:
+    nop
+    li r3, 0
+    nop
+    b loop
 }
 
-void PPCMtpmc3(u32 arg0) {
-    extern u32 __SPR_957;
-    __SPR_957 = arg0;
+asm void PPCMtmmcr0(register u32 v) {
+    nofralloc
+    mtspr MMCR0, v
+    blr
 }
 
-void PPCMtpmc4(u32 arg0) {
-    extern u32 __SPR_958;
-    __SPR_958 = arg0;
+asm void PPCMtmmcr1(register u32 v) {
+    nofralloc
+    mtspr MMCR1, v
+    blr
 }
 
-#pragma intrinsic __mffs
-u32 PPCMffpscr(void)
-{
-    f64 pad;
-    f64 value;
-    u32 result;
-
-    pad = value;
-    value = __mffs();
-    result = ((u32 *)&value)[1];
-    value = pad;
-    return result;
-}
-void PPCMtfpscr(u32 arg0)
-{
-    f64 pad;
-    f64 value;
-
-    pad = value;
-    ((u32 *)&value)[0] = 0;
-    ((u32 *)&value)[1] = arg0;
-    __mtfsf(255, value);
-    value = pad;
-}
-s32 PPCMfhid2(void) {
-    return M2C_ERROR(/* unknown instruction: mfspr $r3, HID2 */);
+asm void PPCMtpmc1(register u32 v) {
+    nofralloc
+    mtspr PMC1, v
+    blr
 }
 
-void PPCMthid2(u32 arg0) {
-    extern u32 __SPR_920;
-    __SPR_920 = arg0;
+asm void PPCMtpmc2(register u32 v) {
+    nofralloc
+    mtspr PMC2, v
+    blr
 }
 
-s32 fn_80203854(void) {
-    return 0;
+asm void PPCMtpmc3(register u32 v) {
+    nofralloc
+    mtspr PMC3, v
+    blr
 }
 
-#pragma dont_inline reset
-
-void PPCMtwpar(u32 wpar) {
-    extern u32 __SPR_921;
-    __SPR_921 = wpar;
+asm void PPCMtpmc4(register u32 v) {
+    nofralloc
+    mtspr PMC4, v
+    blr
 }
 
-#pragma dont_inline on
+u32 PPCMffpscr(void) {
+    union { f64 f; struct { u32 pad; u32 fpscr; } u; } m;
+
+    asm {
+        mffs fp31
+        stfd fp31, m.f;
+    }
+    return m.u.fpscr;
+}
+
+void PPCMtfpscr(register u32 fpscr) {
+    union { f64 f; struct { u32 pad; u32 fpscr; } u; } m;
+
+    asm {
+        li    r4, 0
+        stw   r4, m.u.pad;
+        stw   fpscr, m.u.fpscr
+        lfd   fp31, m.f
+        mtfsf 0xff, fp31
+    }
+}
+
+asm u32 PPCMfhid2(void) {
+    nofralloc
+    mfspr r3, 920
+    blr
+}
+
+asm void PPCMthid2(register u32 v) {
+    nofralloc
+    mtspr 920, v
+    blr
+}
+
+asm u32 fn_80203854(void) {
+    nofralloc
+    sync
+    mfspr r3, WPAR
+    blr
+}
+
+asm void PPCMtwpar(register u32 wpar) {
+    nofralloc
+    mtspr WPAR, wpar
+    blr
+}
+
 void PPCDisableSpeculation(void) {
     fn_80203790(PPCMfhid0() | 0x200);
 }
 
-void PPCSetFpNonIEEEMode(void) {
-    M2C_ERROR(/* unknown instruction: mtfsb1 cr7gt */);
+asm void PPCSetFpNonIEEEMode(void) {
+    nofralloc
+    mtfsb1 29
+    blr
 }
-#pragma dont_inline reset
+#pragma pop
 
 void DBInit(void) {
     extern u8 __DBExceptionDestination[];
