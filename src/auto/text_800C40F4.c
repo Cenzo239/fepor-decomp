@@ -14056,13 +14056,15 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
 #pragma opt_propagation off
 extern "C" s32 *fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
+ s32 value;
+ s32 key;
  if (begin == end) { return Sort_CopyBackwardIter(first,last,out); }
  if(first.ptr == last.ptr) { return Sort_CopyBackwardPtr(begin,end,out); }
  --end; --last.ptr;
  for (;;) {
  SortIterator tmp(last);
- s32 value=*end;
- s32 key=Sort_GetKey((void*)*tmp.ptr);
+ value=*end;
+ key=Sort_GetKey((void*)*tmp.ptr);
  if(Sort_GetKey((void*)value)>key) {
  *--out=*end;
  if(begin==end) {
@@ -26368,16 +26370,19 @@ void fn_800F8994(void *arg0) {
  extern u8 gAiState[],gBattleMap[]; extern u8 *gAiCmd; extern s32 gAiCmdIsAlt;
  void Ai_UnitIsHostileToActive(void *);void Ai_UnitNameInCmdList(void *);void Ai_UnitHostileNotInCmdList(void *);
  u8 Ai_FindLowestCostUnitTile(void (*)(void *),void *,s16 *,s16 *);
- void Ai_SetUnitMoveTo(void *,s32,s32,s32,s32,s32,s32,s32);
- void fn_80101960(void *,s32,s32,s32,s32,s32,s32,s32);
+ void Ai_SetUnitMoveTo(void *,s16,s16,s32,u16,s32,s32,s32);
+ void fn_80101960(void *,s16,s16,s32,u16,s32,s32,s32);
  void **Unit_GetHeldItemSlot(void *,s32); u8 fn_8009339C(void *,void *); s8 Unit_GetMov(void *);
  void fn_8001F9C4(void *,s8,s8,s8,s16);
  s16 x2,y2,y1,x1;
  u8 *unit=arg0;
- s32 i;  void (*filter)(void *); u32 flags; s32 flag;
+ void **slot;
+ s16 min;
+ s32 i;
+ void (*filter)(void *); u32 flags; s32 flag;
  flags=*(u32 *)(unit+0x254);
  if(!(flags&0x2000)) {
- s16 min; void **slot; u8 *cmd=gAiCmd;
+ u8 *cmd=gAiCmd;
  if(!(gAiState[1]&2) && !(flags&0x03000000)) {
  filter=*(u32 *)(cmd+0x14)==0?Ai_UnitIsHostileToActive:(*(s32 *)(cmd+0x10)!=0?Ai_UnitHostileNotInCmdList:Ai_UnitNameInCmdList);
  if(Ai_FindLowestCostUnitTile(filter,unit,&x1,&y1)==1) {
@@ -26386,7 +26391,7 @@ void fn_800F8994(void *arg0) {
  }
  if(!gAiCmdIsAlt) unit[0x250]++; else unit[0x251]++;
  } else {
- s16 min; void **slot; u8 *cmd=gAiCmd;
+ u8 *cmd=gAiCmd;
  if(!(gAiState[1]&2) && !(flags&0x03000000)) {
  filter=*(u32 *)(cmd+0x14)==0?Ai_UnitIsHostileToActive:(*(s32 *)(cmd+0x10)!=0?Ai_UnitHostileNotInCmdList:Ai_UnitNameInCmdList);
  if(Ai_FindLowestCostUnitTile(filter,unit,&x2,&y2)==1) {
@@ -30579,7 +30584,7 @@ void fn_800FFC00(s32 arg0, s32 arg1) {
 #pragma optimization_level 4
 #pragma global_optimizer off
 s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
-    s32 Unit_GetMov(void *);
+    s8 Unit_GetMov(void *);
     void *Unit_GetActiveItemPtr(void *);
     u8 Item_GetRangeForUnit(void *, void *);
     void **Unit_GetHeldItemSlot(void *, s32);
@@ -30592,8 +30597,7 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     u8 *map;
     s32 rowOff;
     u8 *row;
-    register s8 movement;
-    s32 range;
+    register s32 range;
     s32 count;
     s32 x_lo, x_hi, y_hi, y, x;
     void *u = unit;
@@ -30607,8 +30611,8 @@ s32 fn_800FFC58(u8 (*arg0)(void *), void *unit, u8 arg2, float farg0) {
     u8 v;
     s32 i;
 
-    movement = Unit_GetMov(u);
-    range = (s32)((float)movement * farg0);
+    range = Unit_GetMov(u);
+    range = (s32)((float)range * farg0);
     if ((u8)flg != 0) {
         slot = (void **)Unit_GetActiveItemPtr(u);
         if ((slot != 0) && (*slot != 0)) {
