@@ -1033,8 +1033,8 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     u32 *fn_80037BD0(s32, s32);
     void *fn_8003A064(void *);
     void *fn_8007BA4C(void *, s32);
-    void fn_8007B4D8(s32, s32, s32, void *, s32, s32);
-    void fn_8007B990(void *);
+    void fn_8007B4D8(s16, s16, s32, void *);
+    void Face_ClearSlot(void *);
     void fn_80009B98(void);
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A8A0;
@@ -1053,11 +1053,9 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     s16 w;
     s16 h;
     void *obj;
-    s16 mid;
     s16 dw;
     s16 dh;
     void *info;
-    long thresh;
     s32 sp8;
     Obj *self;
     s32 idx;
@@ -1123,22 +1121,22 @@ loop_test:
     }
 
     if (self->unk4A != 0) {
+        s16 left, width;
         fn_8000A258();
         fn_80009C0C(lbl_8036A8A4);
         fn_8000A248();
         obj = fn_8007BA4C(fn_8003A064(*(void **)&self->unk58), 0x100);
-        thresh = 0x130;
-        mid = (s16)(self->unkA + ((s16)(self->unkE - self->unkA) >> 1));
-        *(u16 *)((u8 *)obj + 0x46) = (u16)(*(u16 *)((u8 *)obj + 0x46) & ~1);
-        *(u16 *)((u8 *)obj + 0x46) =
-            (u16)(*(u16 *)((u8 *)obj + 0x46) | (thresh > mid));
+        left = self->unkA;
+        width = self->unkE - left;
+        *(u16 *)((u8 *)obj + 0x46) &= 0xFFFE;
+        *(u16 *)((u8 *)obj + 0x46) |= (s16)(left + (width >> 1)) < 304;
         dw = (s16)(self->unk16 - self->unk12);
         dh = (s16)(self->unk18 - self->unk14);
         info = *(void **)((u8 *)obj + 0x34);
         fn_8007B4D8((s16)(dw >> 1),
                     (s16)(dh + *(s16 *)((u8 *)info + 0x1E)),
-                    0xFF, obj, self->unk14, dw);
-        fn_8007B990(obj);
+                    0xFF, obj);
+        Face_ClearSlot(obj);
     }
 
     fn_8000A258();
@@ -16606,10 +16604,11 @@ void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
     sp8[0] = (s16)(r->xe - r->xa) >> 2;
     *ret = *fn_8013F748(r, &spC, sp8);
 }
+#pragma scheduling off
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
-    extern f32 lbl_8036ABD8;
+    extern const f32 lbl_8036ABD8;
     s32 temp_r31;
     s16 var_r30;
 
@@ -16630,6 +16629,7 @@ s16 fn_8017D52C(void *arg0, s16 arg1) {
     }
     return var_r30;
 }
+#pragma scheduling on
 
 /* Gold cost for qty after base calc, status 0x4B markup (*10/7), and 0xB half-price. */
 s16 Unit_GetGoldCost(s32 unit, s16 qty) {
