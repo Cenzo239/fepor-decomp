@@ -1598,6 +1598,7 @@ void fn_801B0C70(void *arg0) {
     extern u8 gUiContext[];
     void *obj48;
     struct Pair { void *ptr; s32 name; } v;
+    struct Pair2 { s32 name; void *ptr; } u;
     s32 flag;
 
     obj48 = *(void **)((u8 *)arg0 + 0x48);
@@ -1615,9 +1616,9 @@ void fn_801B0C70(void *arg0) {
         break;
     }
     default: {
-        v.ptr = *(void * volatile *)((u8 *)obj48 + 0x60);
-        v.name = UnitRef_GetName((u8 *)obj48 + 0x60);
-        if (Str_Cmp(fn_8001ED58(v.ptr), v.name) == 0) {
+        u.ptr = *(void **)((u8 *)obj48 + 0x60);
+        u.name = UnitRef_GetName((u8 *)obj48 + 0x60);
+        if (Str_Cmp(fn_8001ED58(u.ptr), u.name) == 0) {
             fn_8001BCF4((u8 *)obj48 + 0x60);
         }
         if (*(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x40) + 0x3E) == 4) {
@@ -2267,12 +2268,9 @@ void fn_801B1ED4(void *arg0) {
     M2C_UNK Ui_AddChild(void *, void *);
     M2C_UNK Ui_SlideWidgetChildMode1(void *, s16 *, M2C_UNK, s16);
     M2C_UNK Forge_BindWeaponActor(void *, M2C_UNK *);
-    extern M2C_UNK lbl_8028FDB0;
-    extern M2C_UNK lbl_80292230;
-    extern M2C_UNK lbl_80296228;
-    extern M2C_UNK lbl_8029625C;
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80296228[], lbl_8029625C[];
     extern M2C_UNK gUnitRef;
-    extern f32 lbl_8036B0A8;
+    extern const f32 lbl_8036B0A8;
     s16 spE;
     s16 spC;
     s16 spA;
@@ -2289,9 +2287,9 @@ void fn_801B1ED4(void *arg0) {
     if ((void *) M2C_FIELD(arg0, void **, 0x4C) == NULL) {
         temp_r3 = Heap_Alloc(0x50);
         if (temp_r3 != NULL) {
-            M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_8028FDB0;
+            M2C_FIELD(temp_r3, void **, 0) = lbl_8028FDB0;
             M2C_FIELD(temp_r3, s32 *, 4) = 0;
-            M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_80292230;
+            M2C_FIELD(temp_r3, void **, 0) = lbl_80292230;
             M2C_FIELD(temp_r3, s16 *, 8) = -1;
             M2C_FIELD(temp_r3, s16 *, 0xA) = 0x260;
             M2C_FIELD(temp_r3, s16 *, 0xC) = 0x74;
@@ -2309,12 +2307,12 @@ void fn_801B1ED4(void *arg0) {
             M2C_FIELD(temp_r3, s8 *, 0x21) = 0xFF;
             M2C_FIELD(temp_r3, s16 *, 0x22) = 0xBE;
             M2C_FIELD(temp_r3, s16 *, 0x24) = 0;
-            M2C_FIELD(temp_r3, f32 *, 0x28) = (f32) lbl_8036B0A8;
-            M2C_FIELD(temp_r3, f32 *, 0x2C) = (f32) lbl_8036B0A8;
-            M2C_FIELD(temp_r3, f32 *, 0x30) = (f32) lbl_8036B0A8;
+            M2C_FIELD(temp_r3, f32 *, 0x28) = lbl_8036B0A8;
+            M2C_FIELD(temp_r3, f32 *, 0x2C) = lbl_8036B0A8;
+            M2C_FIELD(temp_r3, f32 *, 0x30) = lbl_8036B0A8;
             M2C_FIELD(temp_r3, s32 *, 0x34) = 0;
             M2C_FIELD(temp_r3, s32 *, 0x38) = 0;
-            M2C_FIELD(temp_r3, M2C_UNK **, 0) = &lbl_8029625C;
+            M2C_FIELD(temp_r3, void **, 0) = lbl_8029625C;
             M2C_FIELD(temp_r3, s32 *, 0x3C) = 0;
             M2C_FIELD(temp_r3, s32 *, 0x40) = 0;
             M2C_FIELD(temp_r3, s8 *, 0x44) = 0;
@@ -2322,7 +2320,7 @@ void fn_801B1ED4(void *arg0) {
             M2C_FIELD(temp_r3, s8 *, 0x48) = 0;
             M2C_FIELD(temp_r3, s16 *, 0x4A) = 0x14;
             M2C_FIELD(temp_r3, s16 *, 0x4C) = 0;
-            M2C_FIELD(M2C_FIELD(temp_r3, M2C_UNK **, 0), M2C_UNK (**)(M2C_UNK, M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x28)(0x20, &lbl_8029625C, 0xBE, 0xFF, 0x108, 0x368, 0x74);
+            M2C_FIELD(M2C_FIELD(temp_r3, void **, 0), M2C_UNK (**)(M2C_UNK, M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x28)(0x20, (M2C_UNK *)lbl_8029625C, 0xBE, 0xFF, 0x108, 0x368, 0x74);
         }
         M2C_FIELD(arg0, void **, 0x4C) = temp_r3;
         temp_r4 = M2C_FIELD(arg0, void **, 0x4C);
@@ -2333,12 +2331,12 @@ void fn_801B1ED4(void *arg0) {
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s16 *, 0x24) = 8;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s8 *, 0x48) = 1;
         M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), s8 *, 0x44) = 0;
-        M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &gUnitRef;
+        M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), void **, 0x3C) = &gUnitRef;
     }
     if (Ui_FindChild(arg0, 4, 0) == 0U) {
         Ui_AddChild(arg0, M2C_FIELD(arg0, void **, 0x4C));
     }
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), M2C_UNK **, 0x3C) = &gUnitRef;
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x4C), void **, 0x3C) = &gUnitRef;
     temp_r4_2 = M2C_FIELD(arg0, void **, 0x4C);
     if ((s16) M2C_FIELD(temp_r4_2, s16 *, 0xA) != 0x138) {
         temp_r7 = M2C_FIELD(temp_r4_2, s16 *, 0xC);
@@ -2350,9 +2348,9 @@ void fn_801B1ED4(void *arg0) {
         if ((void *) M2C_FIELD(arg0, void **, 0x50) == NULL) {
             temp_r3_2 = Heap_Alloc(0x58);
             if (temp_r3_2 != NULL) {
-                M2C_FIELD(temp_r3_2, M2C_UNK **, 0) = &lbl_8028FDB0;
+                M2C_FIELD(temp_r3_2, void **, 0) = lbl_8028FDB0;
                 M2C_FIELD(temp_r3_2, s32 *, 4) = 0;
-                M2C_FIELD(temp_r3_2, M2C_UNK **, 0) = &lbl_80292230;
+                M2C_FIELD(temp_r3_2, void **, 0) = lbl_80292230;
                 M2C_FIELD(temp_r3_2, s16 *, 8) = -1;
                 M2C_FIELD(temp_r3_2, s16 *, 0xA) = 0x260;
                 M2C_FIELD(temp_r3_2, s16 *, 0xC) = 0xA8;
@@ -2370,17 +2368,17 @@ void fn_801B1ED4(void *arg0) {
                 M2C_FIELD(temp_r3_2, s8 *, 0x21) = 0xFF;
                 M2C_FIELD(temp_r3_2, s16 *, 0x22) = 0x1F4;
                 M2C_FIELD(temp_r3_2, s16 *, 0x24) = 0;
-                M2C_FIELD(temp_r3_2, f32 *, 0x28) = (f32) lbl_8036B0A8;
-                M2C_FIELD(temp_r3_2, f32 *, 0x2C) = (f32) lbl_8036B0A8;
-                M2C_FIELD(temp_r3_2, f32 *, 0x30) = (f32) lbl_8036B0A8;
+                M2C_FIELD(temp_r3_2, f32 *, 0x28) = lbl_8036B0A8;
+                M2C_FIELD(temp_r3_2, f32 *, 0x2C) = lbl_8036B0A8;
+                M2C_FIELD(temp_r3_2, f32 *, 0x30) = lbl_8036B0A8;
                 M2C_FIELD(temp_r3_2, s32 *, 0x34) = 0;
                 M2C_FIELD(temp_r3_2, s32 *, 0x38) = 0;
-                M2C_FIELD(temp_r3_2, M2C_UNK **, 0) = &lbl_80296228;
+                M2C_FIELD(temp_r3_2, void **, 0) = lbl_80296228;
                 M2C_FIELD(temp_r3_2, s32 *, 0x3C) = 0;
                 M2C_FIELD(temp_r3_2, s32 *, 0x40) = 0;
                 M2C_FIELD(temp_r3_2, s8 *, 0x44) = 1;
                 M2C_FIELD(temp_r3_2, s32 *, 0x54) = 0;
-                M2C_FIELD(M2C_FIELD(temp_r3_2, M2C_UNK **, 0), M2C_UNK (**)(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x28)(&lbl_80296228, 0x1F4, 0xFF, 0x78, 0x108, 0x120, 0x368);
+                M2C_FIELD(M2C_FIELD(temp_r3_2, void **, 0), M2C_UNK (**)(M2C_UNK *, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK, M2C_UNK), 0x28)((M2C_UNK *)lbl_80296228, 0x1F4, 0xFF, 0x78, 0x108, 0x120, 0x368);
             }
             M2C_FIELD(arg0, void **, 0x50) = temp_r3_2;
             temp_r4_3 = M2C_FIELD(arg0, void **, 0x50);
@@ -2404,6 +2402,7 @@ void fn_801B1ED4(void *arg0) {
     }
     TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x6C), s32 *, 0x10));
 }
+#pragma global_optimizer on
 
 #pragma cplusplus on
 extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
