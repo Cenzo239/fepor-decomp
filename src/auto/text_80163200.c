@@ -13302,8 +13302,8 @@ extern "C" void fn_801788A0(void *arg0) {
     extern f32 gF32_Neg1;
     extern u8 gConvoy[];
 
-    s32 x;
-    s32 y;
+    s16 x;
+    s16 y;
     s32 result;
 
     ((Obj *)arg0)->v3();
@@ -13313,11 +13313,11 @@ extern "C" void fn_801788A0(void *arg0) {
     Prim2D_PrepareTex();
     x = *(s16 *)((u8 *)arg0 + 0x3C);
     y = *(s16 *)((u8 *)arg0 + 0x3E);
-    Text_Draw((s16)x, (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x618));
+    Text_Draw(x, y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x618));
     result = fn_800C3E54(gConvoy);
     x = (s16)(x + 0);
-    Text_Draw((s16)(x + 0x40), (s16)y, 1, (u8 *)gUiMsgStrings + 0x62D, result, 0xC8);
-    Text_Draw((s16)(x + 0xA0), (s16)y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x63E));
+    Text_Draw((s16)(x + 0x40), y, 1, (u8 *)gUiMsgStrings + 0x62D, result, 0xC8);
+    Text_Draw((s16)(x + 0xA0), y, 0xF, Msg_Expand((u8 *)gUiMsgStrings + 0x63E));
 }
 #pragma pop
 extern "C" void fn_8017899C(void *arg0) {
