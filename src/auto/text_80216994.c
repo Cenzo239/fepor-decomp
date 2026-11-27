@@ -1290,10 +1290,11 @@ s32 fn_802193FC(s32 arg0, u32 arg1, void *arg2) {
 }
 #pragma push
 #pragma optimization_level 3
+#pragma opt_lifetimes off
 s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
-    u8 *card;
     u16 *fat;
+    u8 *card;
     card = (u8 *)__CARDBlock + chan * 0x110;
     if (*(s32 *)card == 0) return -3;
     fat = *(u16 **)(card + 0x88);
