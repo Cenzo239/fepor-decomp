@@ -1160,11 +1160,6 @@ void fn_8008BA50(s32 unused, s32 arg1) {
 }
 
 #pragma optimization_level 3
-static inline void Fn8008BA80_LoadAtlas(u8 *texture, u16 tile) {
-    s32 Ui_LoadAtlasTex(s32, void *, s32);
-    extern s32 gUiAtlas;
-    Ui_LoadAtlasTex(gUiAtlas, texture, tile);
-}
 void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     void Prim2D_SetRect(f32, f32, f32, f32);
     s32 Ui_LoadAtlasTex(s32, void *, s32);
