@@ -10007,9 +10007,7 @@ static inline u8 *Save_FindWritableHeaderIn(u8 **arg0) {
 
 u8 *base,*dst; s32 i,off; u8 hdrOk,chkOk; void *buf; u32 sum;
 
-    i = 0;
-    off = 0x20000 - 0x6000;
-loop2:
+    for (i = 0, off = 0x20000 - 0x6000; i < 2; i++) {
     dst = *arg0 + off;
     if (*(u32 *)(dst + 0x40) != 0x4645384AU) {
         hdrOk = 0;
@@ -10039,10 +10037,7 @@ loop2:
     if (chkOk == 0) {
         return dst;
     }
-    i += 1;
     off += 0x6000;
-    if (i < 2) {
-        goto loop2;
     }
     base = *arg0;
     dst = base + 0x1A000;
@@ -10117,7 +10112,7 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
 
-s32 self; u8 *src; u8 **save; u8 *dst;
+s32 self; u8 **save; u8 *src; u8 *dst;
 self=arg1;save=arg0;
 src=Save_FindLinkedHeader(save);
 dst=Save_FindWritableHeaderIn(save);
