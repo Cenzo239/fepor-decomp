@@ -8521,6 +8521,7 @@ static u8 menuPad1[0x28];
 static u8 menuPad2[0x14];
 static s32 menuItems[8];
 static s32 *menuEntries[5];
+static u8 menuPad3[0x14];
 static u8 menuWork[0x28];
 #pragma pop
 
@@ -8529,23 +8530,25 @@ static u8 menuWork[0x28];
 void fn_8006F020(void *arg0, void *arg1, void *arg2, void *arg3) {
     void *fn_800C0658(void);
     void Ui_CreateMenu(void *, void *, s32);
-    struct MenuDef {
-        u8 pad[0x4c];
-        s32 args[8];
-        void *table[5];
-    };
-    struct MenuDef *d = (struct MenuDef *)lbl_80311CA8;
-
-    d->table[0] = d->args;
-    d->args[1] = (s32)arg0;
-    d->table[1] = &d->args[2];
-    d->args[3] = (s32)arg1;
-    d->table[2] = &d->args[4];
-    d->args[5] = (s32)arg2;
-    d->table[3] = &d->args[6];
-    d->args[7] = (s32)arg3;
-    d->table[4] = 0;
-    Ui_CreateMenu((u8 *)d + 0x94, fn_800C0658(), 0);
+    s32 *table;
+    s32 **list;
+    /* MWCC lays out the BSS pool in first-reference order. */
+    (void)lbl_80311CA8;
+    (void)menuPad1;
+    (void)menuPad2;
+    table = menuItems;
+    list = menuEntries;
+    list[0] = table;
+    table = list[0];
+    table[1] = (s32)arg0;
+    list[1] = table + 2;
+    table[3] = (s32)arg1;
+    list[2] = table + 4;
+    table[5] = (s32)arg2;
+    list[3] = table + 6;
+    table[7] = (s32)arg3;
+    list[4] = 0;
+    Ui_CreateMenu(menuWork, fn_800C0658(), 0);
 }
 #pragma opt_common_subs off
 void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2) {
