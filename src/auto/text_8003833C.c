@@ -1638,6 +1638,7 @@ s8 fn_8003AF28(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
+#pragma peephole off
 s8 Unit_GetMagAtk(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
@@ -1662,19 +1663,11 @@ s8 Unit_GetMagAtk(void *arg0) {
     s32 sum;
     s32 lim;
 
-    a = *(void **)((u8 *)arg0 + 0x18C);
-    b = *(void **)((u8 *)arg0 + 0x188);
-    sum = *(u8 *)((u8 *)a + 0x46);
-    sum += *(u8 *)((u8 *)arg0 + 0x1AD);
+    a = (void *)*(u32 *)((u8 *)arg0 + 0x18C);
+    var_r31 = (*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1F) + *(u8 *)((u8 *)a + 0x46)) + *(u8 *)((u8 *)arg0 + 0x1AD);
     lim = *(s8 *)((u8 *)a + 0x4E);
-    sum = *(u8 *)((u8 *)b + 0x1F) + sum;
-    var_r31 = (s8)sum;
-    if (var_r31 > lim) {
-        var_r31 = lim;
-    }
-    if (0 > var_r31) {
-        var_r31 = 0;
-    }
+    if (var_r31 > (s8)lim) var_r31 = (s8)lim;
+    if (var_r31 < 0) var_r31 = 0;
 
     var_r30 = 0;
     if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
@@ -1696,7 +1689,7 @@ s8 Unit_GetMagAtk(void *arg0) {
         temp = temp + (s32)arg0;
     }
     if (temp != 0) {
-        var_r30 = (s8)*(u8 *)((u8 *)*(void **)temp + 0x21);
+        var_r30 = *(s8 *)((u8 *)*(void **)temp + 0x21);
     }
 
     if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
