@@ -1081,7 +1081,7 @@ void fn_800AA80C(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma opt_strength_reduction on
 void fn_800AA89C(void *arg0) {
     u8 Item_GetMaxRange(void *);
@@ -1478,14 +1478,14 @@ void fn_800AB2A4(void *arg0) {
         w1 = ef[1];
         rp = lbl_80312ACC;
         w0 = ef[0];
-        s = ret;
-        s->unk30 = w0;
+        ((Obj *)ret)->unk30 = w0;
         b = rp;
-        s->unk34 = w1;
-        s->unk3A = -1;
-        s->unk38 = -1;
-        s->unk43 = r;
-        s->unk41 = r;
+        ((Obj *)ret)->unk34 = w1;
+        ((Obj *)ret)->unk3A = -1;
+        ((Obj *)ret)->unk38 = -1;
+        ((Obj *)ret)->unk43 = r;
+        ((Obj *)ret)->unk41 = r;
+        s = (Obj *)ret;
     }
     do {
         c = 0;
@@ -2134,6 +2134,11 @@ void fn_800AC5DC(void *arg0) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation on
+#pragma opt_common_subs on
+#pragma opt_lifetimes on
 void fn_800AC810(void *arg0)
 {
   void Ui_PlaySeCue(void *, s32);
