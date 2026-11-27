@@ -844,9 +844,12 @@ void Prim2D_EndPrim(void) {
 static inline void *Prim2D_FindNode(void) {
     extern void *gPrim2D;
     s32 fn_80006264(void *, void *, s32);
-    void *prev = 0;
-    void *self = gPrim2D;
-    void *node = *(void **)((u8 *)self + 0xC);
+    void *self;
+    void *node;
+    void *prev;
+    prev = 0;
+    self = gPrim2D;
+    node = *(void **)((u8 *)self + 0xC);
     while (node != 0) {
         if (*(u32 *)((u8 *)node + 8) == *(u32 *)((u8 *)self + 0x18)) {
             if (fn_80006264((u8 *)node + 0x10, (u8 *)self + 0x20, 0x70) == 0) {
