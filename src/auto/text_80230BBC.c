@@ -8,22 +8,30 @@ const char stringBase0_80282C60[] =
 typedef struct FileWriteState { u8 pad[4]; u8 reservedMode : 2; u8 mode : 3; u8 buffering : 2; u8 reservedFlag : 1; u8 pad5[3]; u8 state : 3; u8 reserved : 5; } FileWriteState;
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
-static inline u32 BlockCopy32(u32 *d, u32 *s) {
+static inline void BlockCopy32(u8 **sp, u8 **dp) {
+    u8 *s = *sp;
+    u8 *d = *dp;
     u32 a, b;
-    a = s[-1];
-    b = s[-2];
-    d[-1] = a;
-    a = s[-3];
-    d[-2] = b;
-    b = s[-4];
-    d[-3] = a;
-    a = s[-5];
-    d[-4] = b;
-    b = s[-6];
-    d[-5] = a;
-    a = s[-7];
-    d[-6] = b;
-    return a;
+    a = *(u32 *)(s - 4);
+    b = *(u32 *)(s - 8);
+    *(u32 *)(d - 4) = a;
+    a = *(u32 *)(s - 12);
+    *(u32 *)(d - 8) = b;
+    b = *(u32 *)(s - 16);
+    *(u32 *)(d - 12) = a;
+    a = *(u32 *)(s - 20);
+    *(u32 *)(d - 16) = b;
+    b = *(u32 *)(s - 24);
+    *(u32 *)(d - 20) = a;
+    a = *(u32 *)(s - 28);
+    *(u32 *)(d - 24) = b;
+    s -= 32;
+    d -= 32;
+    b = *(u32 *)s;
+    *(u32 *)(d + 4) = a;
+    *(u32 *)d = b;
+    *sp = s;
+    *dp = d;
 }
 
 static inline int msl_fflush(void *file) {
