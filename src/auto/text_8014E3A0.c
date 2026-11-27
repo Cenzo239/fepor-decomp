@@ -3185,7 +3185,6 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
-#pragma opt_lifetimes off
 void fn_80154370(s16 arg0, s16 arg1) {
 #pragma use_lmw_stmw on
     void Ui_DrawWindowFrame(void);
