@@ -870,235 +870,37 @@ fn_8005BA08((s8)selected);
 }
 }
 #pragma cplusplus reset
-void fn_800C4B8C(void) {
-    extern u32 lbl_80320B88[];
-    extern u32 *lbl_80367868;
-    extern u32 lbl_80367870;
-    extern char lbl_802700D8[];
-    void DebugPrint(const char *, ...);
-    void fn_802001F8(void *, u32, s32);
-    void fn_8005C7A4(s32);
-    void fn_8005BA08(s8);
-
-    u32 *table;
-    u32 *entry;
-    u32 *heap;
-    u32 key;
-    s32 idx;
-    s32 idx70;
-    s32 groups;
-    s32 diff;
-    u8 same;
-
-    table = lbl_80320B88;
-    key = (u32)lbl_80367868;
-    entry = table;
-    idx = 0;
-    for (groups = 2; groups != 0; groups--) {
-        if (*entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        idx += 1;
-        if (*++entry != key) {
-        } else {
-            goto found1;
-        }
-        entry += 1;
-        idx += 1;
-    }
-    idx = -1;
-found1:
-    DebugPrint(lbl_802700D8 + 0xEE, (char *)lbl_80367868 + 4);
-
-    key = lbl_80367870;
-    entry = table;
-    idx70 = 0;
-    for (groups = 2; groups != 0; groups--) {
-        if (*entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        idx70 += 1;
-        if (*++entry != key) {
-        } else {
-            goto found2;
-        }
-        entry += 1;
-        idx70 += 1;
-    }
-    idx70 = -1;
-found2:
-    diff = idx70 - idx;
-    heap = (u32 *)lbl_80320B88[idx];
-    lbl_80367868 = *(u32 **)((u8 *)lbl_80367868 + 0x10);
-    same = (diff == 0);
-    fn_802001F8(heap, heap[7], diff);
-
-    entry = table;
-    idx70 = 0;
-    for (groups = 2; groups != 0; groups--) {
-        if (*entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        idx70 += 1;
-        if (*++entry != (u32)heap) {
-        } else {
-            goto found3;
-        }
-        entry += 1;
-        idx70 += 1;
-    }
-    idx70 = -1;
-found3:
-    fn_8005C7A4(idx70);
-    lbl_80320B88[idx] = 0;
-
-    if (lbl_80367868 != NULL) {
-        entry = table;
-        idx70 = 0;
-        for (groups = 2; groups != 0; groups--) {
-            if (*entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            idx70 += 1;
-            if (*++entry != (u32)lbl_80367868) {
-            } else {
-                goto found4;
-            }
-            entry += 1;
-            idx70 += 1;
-        }
-        idx70 = -1;
-found4:
-        if (same) {
-            lbl_80367870 = lbl_80320B88[idx70];
-            fn_8005BA08((s8)idx70);
-        }
-    }
+#pragma cplusplus on
+extern "C" void fn_800C4B8C(void) {
+extern u32 lbl_80320B88[],lbl_80367870;
+extern u32 *lbl_80367868;
+extern char lbl_802700D8[];
+void DebugPrint(const char *,...);
+void fn_802001F8(void *,u32);
+void fn_8005C7A4(s32);
+void fn_8005BA08(s8);
+u32 *table;
+s32 index,selected,diff;
+bool same;
+u32 *heap;
+table=lbl_80320B88;
+index=Heap_FindInTable(table,(u32)lbl_80367868);
+DebugPrint(lbl_802700D8+0xEE,(char *)lbl_80367868+4);
+same=(index==Heap_FindInTable(table,lbl_80367870));
+lbl_80367868=*(u32 **)((u8 *)lbl_80367868+0x10);
+heap=(u32 *)lbl_80320B88[index];
+fn_802001F8(heap,heap[7]);
+fn_8005C7A4(Heap_FindInTable(table,(u32)heap));
+lbl_80320B88[index]=0;
+if(lbl_80367868){
+selected=Heap_FindInTable(table,(u32)lbl_80367868);
+if(same){
+lbl_80367870=lbl_80320B88[selected];
+fn_8005BA08((s8)selected);
 }
+}
+}
+#pragma cplusplus reset
 #pragma use_lmw_stmw reset
 
 #pragma push
@@ -2894,6 +2696,8 @@ s32 String_Compare(String *arg0, u32 pos, u32 n, char *s, u32 n2) {
     return cmp;
 }
 
+#pragma push
+#pragma optimization_level 4
 String *fn_800C94F8(String *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
 {
     extern char __files[];
@@ -2915,11 +2719,12 @@ String *fn_800C94F8(String *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
     u32 ch;
     u32 ins;
     u32 pos;
-    char *newData;
+    String *str;
     u32 rem;
     u32 n;
 
     pos = arg1;
+    str = arg0;
     ins = arg3;
     ch = arg4;
     n = arg2;
@@ -2929,53 +2734,52 @@ String *fn_800C94F8(String *arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4)
         abort();
     }
 
-    rem = arg0->size - pos;
+    rem = str->size - pos;
     count = *StrMin(&n, &rem);
 
-    if (ins <= (u32)-2) {
-        if (arg0->size - count > (u32)-2 - ins) {
+    if (ins > (u32)-2 || str->size - count > (u32)-2 - ins) {
             fprintf(__files + 0xA0, gStringErrorMsgs + 0x60);
             abort();
-        }
     }
 
-    newSize = arg0->size - count + ins;
+    newSize = str->size - count + ins;
 
-    if (newSize > arg0->cap) {
+    if (newSize > str->cap) {
+        char *newData;
         newCapacity = (newSize + 3) - (newSize & 3);
         newData = (char *)Heap_Alloc(newCapacity + 1);
         if (newData == 0) {
             fprintf(__files + 0xA0, gStringErrorMsgs + 0x7C);
             abort();
         }
-        if (arg0->data != 0) {
-            memcpy(newData, arg0->data, pos);
+        if (str->data != 0) {
+            memcpy(newData, str->data, pos);
         }
         if (ins != 0) {
             memset(newData + pos, (u8)ch, ins);
         }
-        if (arg0->data != 0) {
-            memcpy(newData + pos + ins, arg0->data + pos + count, arg0->size - (pos + count));
+        if (str->data != 0) {
+            memcpy(newData + pos + ins, str->data + pos + count, str->size - (pos + count));
         }
         newData[newSize] = lbl_80366E40;
-        if (arg0->data != 0) {
-            Heap_Free(arg0->data);
+        if (str->data != 0) {
+            Heap_Free(str->data);
         }
-        arg0->data = newData;
-        arg0->cap = newCapacity;
-        arg0->size = newSize;
-    } else if (arg0->data != 0) {
-        memmove(arg0->data + pos + ins, arg0->data + pos + count, arg0->size - (pos + count));
+        str->data = newData;
+        str->cap = newCapacity;
+        str->size = newSize;
+    } else if (str->data != 0) {
+        memmove(str->data + pos + ins, str->data + pos + count, str->size - (pos + count));
         if (ins != 0) {
-            memset(arg0->data + pos, (u8)ch, ins);
+            memset(str->data + pos, (u8)ch, ins);
         }
-        arg0->data[newSize] = lbl_80366E41;
-        arg0->size = newSize;
+        str->data[newSize] = lbl_80366E41;
+        str->size = newSize;
     }
 
-    return arg0;
+    return str;
 }
-
+#pragma pop
 #pragma auto_inline off
 String *String_AssignCStr(String *arg0, const char *arg1, u32 arg2) {
     void String_Resize(String *, u32, s32);
@@ -9123,7 +8927,9 @@ Xml_Destroy(f, 1); String_Destroy(&sp50, -1); String_Destroy(&sp5C, -1);
 }
 #pragma pop
 
-void fn_800D8928(void *arg0,void *arg1) {
+#pragma push
+#pragma opt_propagation off
+void fn_800D8928(u8 *arg0,void *arg1) {
 void *Heap_Alloc(u32);
 void String_Init(void *,void *,void *);
 void *Xml_ParseFile(void *,void *,void *);
@@ -9147,11 +8953,10 @@ char value[32];
 String name,text,root,temp,copy;
 u32 alloc;
 u32 path;
-s8 made;
 void *xml;
-u8 *self;
 void *t;
-self=arg0;path=(u32)arg1;made=0;
+s8 made;
+path=(u32)arg1;made=0;
 xml=Heap_Alloc(0x60);
 if(xml) {
 String_Init(&root,lbl_802711B0+0xfa,&alloc);
@@ -9171,7 +8976,7 @@ String_AssignCStr(&text,(char*)path,strlen((char*)path));
 String_Copy(&copy,&name);
 fn_801086CC(lbl_803679C8,&copy);
 String_Destroy(&copy,-1);
-fn_800CA18C(self+0x40,*(u8**)(self+0x48)+*(s32*)(self+0x44)*12,1,&text);
+fn_800CA18C(arg0+0x40,*(u8**)(arg0+0x48)+*(s32*)(arg0+0x44)*12,1,&text);
 } while(Xml_AdvanceChild(xml));
 t=fn_800DC3B8(*(void**)(lbl_803679C8+0x424));
 fn_8011CA3C(*(void**)(lbl_803678C0+0x43c),t,lbl_803678C0);
@@ -9182,9 +8987,7 @@ fn_8011CA3C(*(void**)(lbl_803678C0+0x444),t,lbl_803678C0);
 Xml_Destroy(xml,1);
 String_Destroy(&text,-1);String_Destroy(&name,-1);
 }
-
-#pragma push
-#pragma optimization_level 4
+#pragma pop
 void fn_800D8B14(s32 self, char *arg1) {
 void *Heap_Alloc(u32); void String_Init(void *,void *,void *); void *Xml_ParseFile(void *,void *,void *);
 void fn_800C8F70(void *, s32); void fn_800D6FA4(void *, void *);
@@ -26937,7 +26740,7 @@ void fn_800F9950(void *arg0) {
 }
 #pragma global_optimizer on
 void fn_800F9A54(void *arg0) {
-    extern u8 gAiState[544];
+    extern u8 gAiState[];
     extern void *gAiCmd;
     extern s32 gAiCmdIsAlt;
 
@@ -26947,7 +26750,8 @@ void fn_800F9A54(void *arg0) {
     u8 Ai_FindLowestCostUnitTile(void (*)(void *), void *, s16 *, s16 *);
     void Ai_SetUnitMoveTo(void *, s16, s16, s32, u16, s32, s32, s32);
 
-    void *work = gAiCmd;
+    u8 *work = gAiCmd;
+    s32 flag;
     s16 x;
     s16 y;
 
@@ -26959,8 +26763,9 @@ void fn_800F9A54(void *arg0) {
                        ? Ai_UnitHostileNotInCmdList
                        : Ai_UnitNameInCmdList),
             arg0, &x, &y) == 1) {
+        flag = *(s32 *)((u8 *)work + 0xC) != 0;
         Ai_SetUnitMoveTo(arg0, x, y, 1, *(u16 *)(gAiState + 4), 1,
-                         *(s32 *)((u8 *)work + 0xC) != 0, -1);
+                         flag, -1);
     }
     if (gAiCmdIsAlt == 0) {
         M2C_FIELD(arg0, u8 *, 0x250) = (u8)(M2C_FIELD(arg0, u8 *, 0x250) + 1);
@@ -31207,14 +31012,13 @@ void fn_80100D18(void *arg0, void **arg1, s32 arg2) {
     u8 Map_IsAiTerrainBlocked(s8,s8);
     u8 *map;
     s32 row;
-    u8 *rowp;
+    register u8 *rowp;
     MapCostCell *cost;
     u8 *tile;
     s32 uy;
     s32 minRange, maxRange;
     u8 *base;
-    s32 minX,maxX,maxY,y,x,ux,sx;
-    register s32 mov;
+    s32 minX,maxX,maxY,y,x,ux,mov,sx;
     void *item=*arg1;
     base=gBattleMap;
     minRange=(s8)(u8)(item ? *((u8 *)item+0x1D) : 0);
