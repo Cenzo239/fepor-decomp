@@ -1011,7 +1011,7 @@ do { *++db=*++tail; } while(--size);
 }
 
 #pragma push
-#pragma push
+#pragma scheduling off
 void fn_80231C20(u8 *dst, u8 *src, u32 n)
 {
   u32 blocks;
