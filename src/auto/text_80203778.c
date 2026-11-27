@@ -3372,6 +3372,16 @@ return arg0;
 }
 #pragma pop
 #pragma push
+asm BOOL OSDisableInterrupts(void) {
+nofralloc
+mfmsr r3
+rlwinm r4, r3, 0, 17, 15
+mtmsr r4
+rlwinm r3, r3, 17, 31, 31
+blr
+}
+#pragma pop
+#pragma push
 asm BOOL OSEnableInterrupts(void) {
 nofralloc
 mfmsr r3
@@ -3885,10 +3895,17 @@ rfi
 }
 #pragma pop
 
-u32 RealMode(u32 addr)
-{
-    return addr & 0x3FFFFFFF;
+#pragma push
+static asm void RealMode(register u32 addr) {
+    nofralloc
+    clrlwi addr, addr, 2
+    mtsrr0 addr
+    mfmsr addr
+    rlwinm addr, addr, 0, 28, 25
+    mtsrr1 addr
+    rfi
 }
+#pragma pop
 
 #pragma push
 #pragma inline_depth(0)
