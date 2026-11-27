@@ -1182,8 +1182,8 @@ static inline void Dispos_GetAvgPos_inline(void *name, s8 *outX, s8 *outY) {
     void Dispos_ParseEntry(u32 *, u32 *, u8);
     u8 parsed[0x68];
     u8 new_var2;
-    u32 cursor;
     u32 header;
+    u32 cursor;
     u8 new_var;
     u32 data;
     s32 sumX = 0;
@@ -1237,26 +1237,12 @@ void fn_801069A0(u8 *arg0) {
     u8 fn_80107874(void *, void *);
     void Process_Goto(void *, s32);
     u8 fn_801A2300(void);
-    u32 Hash_Lookup(void *);
-    u8 Bin_ReadU8(u32 *);
-    u32 Bin_ReadU32(u32 *);
-    void Dispos_ParseEntry(u32 *, u32 *, u8);
     void BattleState_SetCamPos(void *, f32, f32);
     extern u8 gDisposStrings[];
     extern u8 gBattleState[];
 
-    u8 parsed[0x68];
-    u8 new_var2;
-    u32 cursor;
-    u32 header;
-    u8 new_var;
-    u32 data;
     s8 outX;
     s8 outY;
-    s32 i;
-    u8 new_var3[2];
-    s32 sumX;
-    s32 sumY;
 
     *(void **)(arg0 + 0x68) = fn_800C45B8(-0x6A40, gDisposStrings + 0x46, 0);
     arg0[0x63] = fn_80107874(arg0 + 0x30, *(void **)(arg0 + 0x68));
@@ -1269,47 +1255,7 @@ void fn_801069A0(u8 *arg0) {
     if (fn_801A2300() == 0) {
         return;
     }
-    sumX = 0;
-    sumY = sumX;
-    header = Hash_Lookup(arg0 + 0x30);
-    if (!header) {
-        data = 0;
-    } else {
-        new_var3[0] = Bin_ReadU8(&header);
-        switch (Bin_ReadU8(&header)) {
-        case 2:
-            new_var3[1] = 0;
-            break;
-        case 3:
-            Bin_ReadU8(&header);
-            new_var3[1] = Bin_ReadU8(&header);
-            Bin_ReadU32(&header);
-            break;
-        case 4:
-            Bin_ReadU8(&header);
-            new_var3[1] = Bin_ReadU8(&header);
-            break;
-        }
-        header = (header + 3) & (~3);
-        data = header;
-    }
-    cursor = data;
-    if (data) {
-        for (i = 0; i < 8; i++) {
-            *((u32 *)((parsed + 0x10) + (i * 4))) = 0;
-            parsed[0x30 + i] = 0;
-            *((u32 *)((parsed + 0x48) + (i * 4))) = 0;
-        }
-        for (i = 0; i < (u8)new_var3[0]; i++) {
-            Dispos_ParseEntry(&cursor, (u32 *)parsed, new_var3[1]);
-            sumX += (s8)parsed[0xD];
-            new_var2 = parsed[0xE];
-            sumY += (s8)new_var2;
-        }
-        new_var = (u8)new_var3[0];
-        outX = sumX / new_var;
-        outY = sumY / (u8)new_var3[0];
-    }
+    Dispos_GetAvgPos_inline(arg0 + 0x30, &outX, &outY);
     BattleState_SetCamPos(gBattleState, (f32)outX, (f32)outY);
 }
 
