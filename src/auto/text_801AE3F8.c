@@ -2261,7 +2261,7 @@ void fn_801B1E54(void *arg0) {
     }
 }
 
-#pragma global_optimizer off
+#pragma optimization_level 3
 void fn_801B1ED4(void *arg0) {
     void *Heap_Alloc(M2C_UNK);
     M2C_UNK TalkUi_ShowMsg(s32);
