@@ -1081,4 +1081,4 @@ void fn_80231C20(u8 *dst, u8 *src, u32 n)
   }
 }
 
-#pragma pop
+#pragma optimization_level 3
