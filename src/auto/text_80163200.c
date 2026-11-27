@@ -16042,7 +16042,7 @@ void fn_8017C170(void *arg0) {
 }
 
 #pragma global_optimizer off
-#pragma optimization_level 3
+#pragma optimization_level 2
 s32 fn_8017C22C(void *arg0) {
 u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
 void *self; s32 i; void *unit; void *parent; void *item; u8 check;
