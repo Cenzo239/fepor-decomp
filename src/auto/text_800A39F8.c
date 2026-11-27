@@ -657,6 +657,8 @@ s32 fn_800A46F4(s32 arg0) {
     return 0;
 }
 #pragma use_lmw_stmw reset
+#pragma push
+#pragma optimization_level 2
 void fn_800A4878(s32 result) {
 extern u8 lbl_803123A0[];
 s32 fn_8020CB38(void *,void *,s32,s32,void (*)(s32),s32);
@@ -909,8 +911,8 @@ loop_body:
     default:
         return 0;
     }
-    arg0 += 1;
     types += 1;
+    arg0 += 1;
 loop_cond:
     if ((u32)arg0 < *(u32 *)p6c) {
         goto loop_body;
@@ -1500,8 +1502,8 @@ void fn_800A6114(void *arg0)
     self = arg0;
     if (lbl_803682A4 & 0x40) {
         temp_r3 = fn_8006E658();
-        var_r9 = (u8 *)&spC;
         var_r7 = 0;
+        var_r9 = (u8 *)&spC;
         temp_r0 = (s32)((f32)(s8)lbl_80330708[0xA1] * lbl_80369A90);
         temp_r8 = (s8)lbl_80330708[0xA1] - (u16)temp_r0;
         count = temp_r8 % 4;
