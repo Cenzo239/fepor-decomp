@@ -5727,7 +5727,7 @@ u8 fn_802601B0(u8 arg0, u8 arg1) {
 #pragma global_optimizer off
 u16 fn_802601EC(void *arg0, void *arg1, u8 arg2, u8 arg3) {
     s16 fn_802537F8(void *, s32, u8);
-    u16 Sound_GetChanParam(u8, u8, u8);
+    u16 fn_8025FC64(u8, u8, u8);
     extern s32 lbl_803689B8;
     extern s32 lbl_803689BC;
 
@@ -5781,7 +5781,7 @@ u16 fn_802601EC(void *arg0, void *arg1, u8 arg2, u8 arg3) {
                 }
                 break;
             default:
-                val = (u16)Sound_GetChanParam(op, a2, a3) - 0x2000;
+                val = (u16)fn_8025FC64(op, a2, a3) - 0x2000;
                 break;
             }
 
@@ -5895,7 +5895,7 @@ apply_signed:
                 goto unsigned_mul;
             default:
                 r5 = a3;
-                r5 = (u16)Sound_GetChanParam(op, a2, (u8)r5);
+                r5 = (u16)fn_8025FC64(op, a2, (u8)r5);
                 break;
             }
 
@@ -6195,6 +6195,17 @@ s32 fn_80260A34(void *arg0)
     );
 }
 
+static inline u32 Sound_TakeChannelFlagA(u32 index, u32 channel, u32 set)
+{
+    extern u16 lbl_8035D118[256];
+    extern u32 lbl_802A1E00[];
+    u32 *row = (u32 *)((u8 *)lbl_8035D118 + ((set & 0xFF) << 6));
+    u32 mask = lbl_802A1E00[index & 0xFF];
+    u32 result = (mask & row[channel & 0xFF]) != 0;
+    if (result) row[channel & 0xFF] &= ~mask;
+    return result;
+}
+
 s32 fn_80260A7C(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
 {
     extern u16 lbl_8035D118[256];
@@ -6255,6 +6266,8 @@ s32 fn_80260B30(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
  { u8 *base = lbl_8034CBB4; arg0 = (arg0&255)*0x90; return *(u16 *)(base + arg0 + (arg1&255)*0x24 + 0x20); }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void fn_80260BE4(u8 *arg0)
 {
     extern u8 lbl_8034D034[];
@@ -6262,10 +6275,8 @@ void fn_80260BE4(u8 *arg0)
     extern s32 lbl_80368ACC;
     extern s32 lbl_80368AC8;
 
-    s32 i;
-    u8 *a;
-    u8 *b;
-    u8 *q;
+    u32 i;
+    u32 j;
 
     if (arg0 != 0) {
         arg0[0x224] = 7;
@@ -6327,53 +6338,21 @@ void fn_80260BE4(u8 *arg0)
         arg0[0x1D9] = 0;
         arg0[0xA8] = 0;
     } else {
-    for (a = lbl_8034D034, b = lbl_8034CBB4, i = 0; i < 2; i++) {
-        a[0x22] = 0; b[0x22] = 0;
-        a[0x46] = 0; b[0x46] = 0;
-        a[0x6A] = 0; b[0x6A] = 0;
-        a[0x8E] = 0; b[0x8E] = 0;
-        a[0xB2] = 0; b[0xB2] = 0;
-        a[0xD6] = 0; b[0xD6] = 0;
-        a[0xFA] = 0; b[0xFA] = 0;
-        a[0x11E] = 0; b[0x11E] = 0;
-        a[0x142] = 0; b[0x142] = 0;
-        a[0x166] = 0; b[0x166] = 0;
-        a[0x18A] = 0; b[0x18A] = 0;
-        a[0x1AE] = 0; b[0x1AE] = 0;
-        a[0x1D2] = 0; b[0x1D2] = 0;
-        a[0x1F6] = 0; b[0x1F6] = 0;
-        a[0x21A] = 0; b[0x21A] = 0;
-        a[0x23E] = 0; b[0x23E] = 0;
-        a += 0x240;
-        b += 0x240;
-    }
-
-    for (q = (u8 *)lbl_8035D118, i = 0; i < 8; i++) {
-        u32 *p = (u32 *)q;
-        p[0] = 0xFF;
-        p[1] = 0xFF;
-        p[2] = 0xFF;
-        p[3] = 0xFF;
-        p[4] = 0xFF;
-        p[5] = 0xFF;
-        p[6] = 0xFF;
-        p[7] = 0xFF;
-        p[8] = 0xFF;
-        p[9] = 0xFF;
-        p[10] = 0xFF;
-        p[11] = 0xFF;
-        p[12] = 0xFF;
-        p[13] = 0xFF;
-        p[14] = 0xFF;
-        p[15] = 0xFF;
-        q += 0x40;
-    }
-
+        for (i = 0; i < 32; i++) {
+            ((u8 (*)[0x24])lbl_8034D034)[i][0x22] = 0;
+            ((u8 (*)[0x24])lbl_8034CBB4)[i][0x22] = 0;
+        }
+        for (i = 0; i < 8; i++) {
+            u32 *row = ((u32 (*)[16])lbl_8035D118)[i];
+            for (j = 0; j < 16; j++) {
+                row[j] = 0xFF;
+            }
+        }
     }
     lbl_80368ACC = 0x50;
     lbl_80368AC8 = 0x3E80;
 }
-
+#pragma pop
 s32 fn_80260EA8(s32 arg0) {
     switch ((u8)arg0) {
     case 0x80:
@@ -7140,9 +7119,10 @@ void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2, s32 arg6,
         arg5 = lbl_8036C35C;
     }
 
+    index = *(u8 *)(entry + 0xF3);
     flags = *(u32 *)(entry + 0xF4);
 
-    table = gSoundStudios + *(u8 *)(entry + 0xF3) * 0xBC;
+    table = gSoundStudios + index * 0xBC;
 
     sign = flags >> 31;
     option = (*(u32 *)(table + 0x54) == 1);
