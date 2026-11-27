@@ -505,12 +505,10 @@ void fn_80017BFC(void) {
     fn_8001840C();
 }
 
-static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0) {
+static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0, Vec3_800193D8 def) {
     f32 Math_Hermite(f32, f32, f32, f32, f32);
-    extern s32 lbl_80268318[];
     extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
-    Vec3_800193D8 def = *(Vec3_800193D8 *)lbl_80268318;
     Vec3_800193D8 a = def;
     Vec3_800193D8 out = def;
     s32 i;
