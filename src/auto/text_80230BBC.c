@@ -8,6 +8,24 @@ const char stringBase0_80282C60[] =
 typedef struct FileWriteState { u8 pad[4]; u8 reservedMode : 2; u8 mode : 3; u8 buffering : 2; u8 reservedFlag : 1; u8 pad5[3]; u8 state : 3; u8 reserved : 5; } FileWriteState;
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
+static inline u32 BlockCopy32(u32 *d, u32 *s) {
+    u32 a, b;
+    a = s[-1];
+    b = s[-2];
+    d[-1] = a;
+    a = s[-3];
+    d[-2] = b;
+    b = s[-4];
+    d[-3] = a;
+    a = s[-5];
+    d[-4] = b;
+    b = s[-6];
+    d[-5] = a;
+    a = s[-7];
+    d[-6] = b;
+    return a;
+}
+
 static inline int msl_fflush(void *file) {
     s32 __flush_buffer(void *, s32 *);
     s32 __flush_all();
