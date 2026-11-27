@@ -393,11 +393,13 @@ done2:
 
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+#pragma push
+#pragma optimization_level 2
 void fn_8003FED8(u8 *arg0) {
     void Hash_Remove(void *);
     u32 j;
-    u32 *p28;
     u8 *obj;
+    u32 *p28;
     u32 *p30;
     u8 *p29;
     u32 *scan;
@@ -436,6 +438,7 @@ void fn_8003FED8(u8 *arg0) {
     }
     obj[0x1F] = 0;
 }
+#pragma pop
 #pragma global_optimizer on
 #pragma use_lmw_stmw reset
 
