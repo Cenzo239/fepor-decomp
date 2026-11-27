@@ -5072,7 +5072,6 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
     u8 a,b,g,r;
     u8 redge, gedge, aedge, bedge;
     u8 *rgba;
-    u8 rbottom, gbottom, abottom, bbottom;
 
     /* Center: tile (x, y) */
     color0 = *arg0;
