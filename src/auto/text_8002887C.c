@@ -19,6 +19,21 @@ static inline void *map_find_xy(s32 *arg0, s8 arg1, s8 arg2) {
     return NULL;
 }
 
+static inline void *map_find_xy_2(s8 arg1, s8 arg2, s32 *arg0) {
+    s32 *p;
+    s32 i;
+    s32 n;
+
+    n = *arg0;
+    p = arg0;
+    for (i = 0; i < n; p = (s32 *)((char *)p + 0x14), i++) {
+        if (arg1 == *(s8 *)((char *)p + 8) && arg2 == *(s8 *)((char *)p + 9)) {
+            return (void *)((char *)arg0 + i * 0x14 + 8);
+        }
+    }
+    return NULL;
+}
+
 static inline u8 *map_first(s32 *m) {
     s32 c;
     u8 *e;
@@ -4148,7 +4163,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         ((u8 *)arg1)[0x3E] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x34);
         ((u8 *)arg1)[0x3F] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x38);
         temp_r4 = ((u8 *)arg1)[0x3E];
-        if ((s8)((u8 *)arg1)[0x3C] != (s8)temp_r4 ||
+        if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
             found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
             *(void **)((u8 *)arg1 + 0x40) = found;
@@ -4169,7 +4184,9 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         if (var_r31 == NULL) {
             goto end;
         }
-        if (var_r31 == cur) goto end;
+        if (var_r31 != cur) goto do_body;
+        goto end;
+    do_body:
         {
             s8 c0 = ((u8 *)var_r31)[0];
             s8 c1 = ((u8 *)var_r31)[1];
@@ -4183,7 +4200,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         ((u8 *)arg1)[0x3E] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x34);
         ((u8 *)arg1)[0x3F] = (u8)(s32)*(f32 *)((u8 *)arg1 + 0x38);
         temp_r4 = ((u8 *)arg1)[0x3E];
-        if ((s8)((u8 *)arg1)[0x3C] != (s8)temp_r4 ||
+        if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
             found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
             *(void **)((u8 *)arg1 + 0x40) = found;
