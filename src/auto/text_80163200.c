@@ -9661,8 +9661,7 @@ cancel:
 }
 #pragma pop
 #pragma push
-#pragma scheduling off
-#pragma global_optimizer off
+#pragma peephole off
 void fn_80172B74(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, void *);
