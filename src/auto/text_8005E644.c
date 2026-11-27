@@ -31,6 +31,10 @@ static inline void *GActor_FindNodeTableLocal(void *p) {
     return 0;
 }
 
+static inline u8 GActor_CalcAlpha(u8 ub, s32 b, s32 n, u32 color) {
+    return (u8)(((ub - (ub * b) / (n + 1)) * ((u8 *)&color)[3]) / 255);
+}
+
 typedef struct MaterialColor { u8 r, g, b, a; } MaterialColor;
 static inline u8 *GActor_FindAnimation(u8 *p) {
     while (p) {
