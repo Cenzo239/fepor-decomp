@@ -30,8 +30,6 @@ typedef struct {
 
 extern s32 gSaveDataBase;
 extern u8 lbl_8026CC58[];
-extern u8 lbl_80289998[];
-extern u8 lbl_80289950[];
 extern f32 gScreenOrigin;
 extern f32 lbl_803696A8;
 extern f32 lbl_803696AC;
@@ -120,25 +118,53 @@ void fn_80089554(void) {
     Prim2D_EndPrim();
 }
 
+void fn_8008A5AC(void *);
+void Ui_DrawColorFade(void *);
+void fn_80089A28(void *);
+void fn_800898E4(void *);
+void fn_80089680(void *);
+extern u8 lbl_8026CC5F[];
+extern u8 lbl_8026CC67[];
+extern u8 lbl_8026CC6E[];
+
+#pragma force_active on
+u32 lbl_80289950[] = {
+    0x2003, (u32)lbl_8026CC58, 0x54911001,
+    0x201A, (u32)fn_8008A5AC, 0,
+};
+static u32 colorFadeScript[] = {
+    0x2003, (u32)lbl_8026CC5F, 0x54911001,
+    0x201A, (u32)Ui_DrawColorFade, 0,
+};
+static u32 overlayScript[] = {
+    0x2003, (u32)lbl_8026CC67, 0x54911001,
+    0x201A, (u32)fn_80089A28, 0,
+};
+u32 lbl_80289998[] = {
+    0x100A, 0x200F, (u32)fn_800898E4, 0,
+};
+static u32 panelScript[] = {
+    0x2003, (u32)lbl_8026CC6E, 0x54911001,
+    0x201A, (u32)fn_80089680, 0,
+};
+#pragma force_active reset
+
 #pragma push
 #pragma opt_lifetimes off
 void fn_800895B8(void) {
-    void *fn_8000CAF0(void *, s32);
-    extern u8 lbl_80289950[];
+    void *Process_Create(void *, s32);
     extern u16 *lbl_803674E0;
     extern void *lbl_803674E4;
     extern void *lbl_803674E8;
     extern void *lbl_803674EC;
-    void *base;
     void *tmp;
 
-    base = lbl_80289950;
-    lbl_803674E0 = fn_8000CAF0(base, 7);
-    lbl_803674E4 = fn_8000CAF0((u8 *)base + 0x58, 7);
-    tmp = fn_8000CAF0((u8 *)base + 0x18, 7);
+    lbl_803674E0 = Process_Create(lbl_80289950, 7);
+    lbl_803674E4 = Process_Create(panelScript, 7);
+    tmp = Process_Create(colorFadeScript, 7);
     lbl_803674E8 = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
-    tmp = fn_8000CAF0((u8 *)base + 0x30, 7);
+    tmp = Process_Create(overlayScript, 7);
     lbl_803674EC = tmp;
     *(s16 *)((u8 *)tmp + 0x32) = 0;
 }
