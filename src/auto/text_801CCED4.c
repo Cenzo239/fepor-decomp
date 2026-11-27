@@ -4281,14 +4281,35 @@ s32 fn_801D2B04(void *arg0) {
 
 #pragma push
 #pragma optimization_level 3
-void fn_801D2B94(s32 *arg0, void *arg1) {
-    s32 *fn_8013F748(void *, M2C_UNK *, s16 *, s16, s32, s16);
-    M2C_UNK spC;
-    s16 pt[2];
-    s16 temp_r6;
-    s16 temp_r6_2;
-    s32 temp_r7;
+#pragma opt_propagation off
 #pragma cplusplus on
+struct ListPoint {
+    s16 x, y;
+
+    ListPoint(s16 x, s16 y) : x(x), y(y) {}
+};
+
+struct ListRowLayout {
+    u8 pad0[0x4E];
+    s16 row;
+    u8 pad50[4];
+    s16 firstRow;
+    s16 rowHeight;
+    u8 pad58[8];
+    ListPoint origin;
+
+    s16 index() const { return row - firstRow; }
+    s32 offset() const { return rowHeight * index(); }
+};
+
+static inline s16 ListRowY(const ListPoint &origin, s32 offset)
+{
+    offset += origin.y;
+    return offset;
+}
+
+extern "C" void fn_801D2B94(s32 *out, void *obj) {
+    s32 *fn_8013F748(void *, s32 *, const ListPoint *);
     struct Obj {
         virtual void v0() = 0;
         virtual void v1() = 0;
@@ -4302,16 +4323,14 @@ void fn_801D2B94(s32 *arg0, void *arg1) {
         virtual void v9() = 0;
         virtual void v10() = 0;
     };
-    ((Obj *)arg1)->v10();
-#pragma cplusplus reset
 
-    temp_r6 = M2C_FIELD(arg1, s16 *, 0x4E) - M2C_FIELD(arg1, s16 *, 0x54);
-    temp_r6_2 = M2C_FIELD(arg1, s16 *, 0x62);
-    temp_r7 = M2C_FIELD(arg1, s16 *, 0x56) * temp_r6;
-    pt[0] = M2C_FIELD(arg1, s16 *, 0x60);
-    pt[1] = (s16)(temp_r7 + temp_r6_2);
-    *arg0 = *fn_8013F748(arg1, &spC, pt, temp_r6_2, temp_r7, temp_r6);
+    ((Obj *)obj)->v10();
+    const ListRowLayout *layout = (const ListRowLayout *)obj;
+    s32 result;
+    ListPoint pos(layout->origin.x, ListRowY(layout->origin, layout->offset()));
+    *out = *fn_8013F748(obj, &result, &pos);
 }
+#pragma cplusplus reset
 #pragma pop
 void *fn_801D2C20(void) {
     extern u16 lbl_8027E0F8[];
