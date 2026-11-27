@@ -1,5 +1,9 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void NameEntry_StorePair(u8 *dst, u8 first, u8 second) {
+    dst[0] = first;
+    dst[1] = second;
+}
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
@@ -1265,39 +1269,51 @@ extern "C" void fn_801CD940(void *arg0, void *arg1)
     }
 }
 #pragma cplusplus off
-void *NameEntry_InsertChar(void *a, u8 *b) {
-    u8 *self;
-    u8 c;
-    u8 *p;
-    u8 is_double;
-    u8 d;
-    s32 n;
-
-    self = a;
-    c = b[0];
-    n = *(s16 *)(self + 0x70);
-    p = self + n * 4 + 0x3c;
-    *(u32 *)p = 0;
-
-    if ((c >= 0x81U && c <= 0x9FU) || (c >= 0xE0U && c <= 0xFCU)) {
-        d = b[1];
-        if ((d >= 0x40U && d <= 0x7EU) || (d >= 0x80U && d <= 0xFCU)) {
-            is_double = 1;
-        } else {
-            goto not_double;
-        }
-    } else {
+void *NameEntry_InsertChar(void *a, u8 *b)
+{
+  u8 *self;
+  u8 c;
+  u8 *p;
+  u8 is_double;
+  u8 d;
+  u8 t1;
+  u8 t0;
+  s32 n;
+  self = a;
+  c = b[0];
+  n = *((s16 *) (self + 0x70));
+  p = (self + (n * 4)) + 0x3c;
+  *((u32 *) p) = 0;
+  if (((c >= 0x81U) && (c <= 0x9FU)) || ((c >= 0xE0U) && (c <= 0xFCU)))
+  {
+    d = b[1];
+    if (((d >= 0x40U) && (d <= 0x7EU)) || ((d >= 0x80U) && (d <= 0xFCU)))
+    {
+      is_double = 1;
+    }
+    else
+    {
+      goto not_double;
+    }
+  }
+  else
+  {
     not_double:
-        is_double = 0;
-    }
+    is_double = 0;
 
-    if (is_double != 0) {
-        CopyTwoBytes(b, p);
-    } else {
-        p[0] = b[0];
-    }
-
-    return self + *(s16 *)(self + 0x70) * 4 + 0x3c;
+  }
+  if (is_double != 0)
+  {
+    t1 = b[1] & 0xFFFFFFFF;
+    t0 = b[0];
+    p[0] = t0;
+    p[1] = t1;
+  }
+  else
+  {
+    p[0] = b[0];
+  }
+  return (self + ((*((s16 *) (self + 0x70))) * 4)) + 0x3c;
 }
 
 #pragma opt_unroll off
