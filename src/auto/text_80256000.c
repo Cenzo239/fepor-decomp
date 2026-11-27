@@ -2394,6 +2394,7 @@ return 0;
 
 #pragma push
 #pragma optimization_level 3
+#pragma opt_lifetimes off
 s32 fn_802590E0(void) {
 extern s32 *gAudioGroupState;
 void Audio_Lock(void); void Audio_Unlock(void);
@@ -2401,21 +2402,20 @@ void fn_8025D9A4(void *,u16); void fn_80245014(u16);
 void fn_802572E8(void *); void fn_80257444(void *);
 void fn_8024FACC(s32); void fn_8024FF5C(u16);
 void Sound_SetResource(s32,void *,u8,u32);
-u8 *node; s32 id; u8 *base; u16 *start; u16 *p; s16 i;
+u8 *node; u8 *id; s32 base; u16 *start; u16 *p; s16 i;
 AudioGroupState *state=(AudioGroupState *)gAudioGroupState;
 s16 n=--state->count;
-AudioGroupState *slot;
-slot=(AudioGroupState *)((u8 *)state+n*12); node=slot->slots[0].node;
+node=(u8 *)state->slots[n].node;
 state=(AudioGroupState *)((u8 *)state+state->count*12);
-id=state->slots[0].id;
-base=state->slots[0].data;
+id=(u8 *)state->slots[0].id;
+base=(s32)state->slots[0].data;
 Audio_Lock();
-if(*(u16 *)(node+6)==1) {u16 *p; p=(u16 *)(base+*(u32 *)(node+28)); fn_8025D9A4((u8 *)p+4,*p);}
+if(*(u16 *)(node+6)==1) {u16 *p; p=(u16 *)((u8 *)base+*(u32 *)(node+28)); fn_8025D9A4((u8 *)p+4,*p);}
 else fn_80245014(*(u16 *)(node+4));
-fn_802572E8(base+*(u32 *)(node+8));
-fn_80257444(base+*(u32 *)(node+12));
+fn_802572E8((u8 *)base+*(u32 *)(node+8));
+fn_80257444((u8 *)base+*(u32 *)(node+12));
 Audio_Unlock();
-start=(u16 *)(base+*(u32 *)(node+12));
+start=(u16 *)((u8 *)base+*(u32 *)(node+12));
 if(*start!=0xFFFF) {
 p=start; while(*p!=0xFFFF) p++; p--;
 while(p>=start) {
@@ -2425,11 +2425,11 @@ else {Sound_SetResource(*p,0,1,1);p--;}
 } else {Sound_SetResource(*p,0,1,1);p--;}
 }
 }
-fn_8024FACC(id);
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+8)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,0,1);q+=2;}else Sound_SetResource(*q++,0,0,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+16)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,4,1);q+=2;}else Sound_SetResource(*q++,0,4,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+20)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,2,1);q+=2;}else Sound_SetResource(*q++,0,2,1); } }
-{ u32 j; u16 *q=(u16 *)(base+*(u32 *)(node+24)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,3,1);q+=2;}else Sound_SetResource(*q++,0,3,1); } }
+fn_8024FACC((s32)id);
+{ u32 j; u16 *q=(u16 *)((u8 *)base+*(u32 *)(node+8)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,0,1);q+=2;}else Sound_SetResource(*q++,0,0,1); } }
+{ u32 j; u16 *q=(u16 *)((u8 *)base+*(u32 *)(node+16)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,4,1);q+=2;}else Sound_SetResource(*q++,0,4,1); } }
+{ u32 j; u16 *q=(u16 *)((u8 *)base+*(u32 *)(node+20)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,2,1);q+=2;}else Sound_SetResource(*q++,0,2,1); } }
+{ u32 j; u16 *q=(u16 *)((u8 *)base+*(u32 *)(node+24)); while(*q!=0xFFFF) { if(*q&0x8000) { for(j=*q&0x3FFF;(u16)j<=q[1];j++) Sound_SetResource(j,0,3,1);q+=2;}else Sound_SetResource(*q++,0,3,1); } }
 if(*(u16 *)(node+6)==1) fn_8024FF5C(*(u16 *)(node+4));return 1;
 }
 #pragma pop
@@ -6627,10 +6627,7 @@ s32 fn_80261620(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if ((u32)fn_8026341C(fn_802614CC, a3, a0) == 0) {
         goto error;
     }
-    t = a3 & 1;
-    a1 = (u8)a1;
-    a2 = (u8)a2;
-    if ((u32)Sound_InitVoices(a1, a2, t) == 0) {
+    if ((u32)Sound_InitVoices((u8)a1, (u8)a2, (u32)a3 & 1) == 0) {
         goto error;
     }
     if (a3 & 8) {
