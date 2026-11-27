@@ -2403,7 +2403,7 @@ void fn_801B1ED4(void *arg0) {
     }
     TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x6C), s32 *, 0x10));
 }
-#pragma global_optimizer on
+#pragma optimization_level reset
 
 #pragma cplusplus on
 extern "C" void Ui_HandleUnitPanelCursorInput(void *arg0) {
