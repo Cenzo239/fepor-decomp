@@ -104,4 +104,5 @@ void fn_800A9384(void) {
     a[0] = pad31;
     a[1] = c9a0;
 }
+#pragma pop
 #pragma use_lmw_stmw reset
