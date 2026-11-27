@@ -616,6 +616,8 @@ void fn_800A46E0(void) {
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma opt_propagation off
 s32 fn_800A46F4(s32 arg0) {
     s32 fn_8020CC28(void *, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
