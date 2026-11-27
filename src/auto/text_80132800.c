@@ -5994,7 +5994,7 @@ extern "C" void *Ui_DtorPanelB(void *self, s16 doFree) {
 #pragma cplusplus reset
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 4
 void fn_8013B254(void *arg0)
 {
   s16 new_var;
@@ -6014,10 +6014,8 @@ void fn_8013B254(void *arg0)
   s16 new_a;
   void *q;
   void *p;
-  s16 *p64;
   zero = 0;
-  p64 = (s16 *)(((s8 *) arg0) + 0x64);
-  p64[0] += 8;
+  *((s16 *) (((s8 *) arg0) + 0x64)) = (s16) ((*((s16 *) (((s8 *) arg0) + 0x64))) + 8);
   new_var4 = *((s16 *) (((s8 *) arg0) + 0x12));
   x0 = new_var4;
   x1 = *((s16 *) (((s8 *) arg0) + 0x16));
