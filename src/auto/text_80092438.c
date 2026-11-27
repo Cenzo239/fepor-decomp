@@ -683,6 +683,7 @@ u8 fn_8009326C(void *arg0, void *arg1) {
     }
     return fn_800940B0(arg0, arg1) != 0;
 }
+#pragma pop
 
 #pragma optimization_level 2
 s32 fn_8009339C(void *arg0, void *arg1)
