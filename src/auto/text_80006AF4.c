@@ -872,6 +872,7 @@ static inline void *Prim2D_FindNode(void) {
 
 #pragma use_lmw_stmw on
 #pragma opt_loop_invariants off
+#pragma opt_lifetimes off
 void Prim2D_AddPrim(u8 arg0) {
     extern void *gPrim2D;
     extern const f32 lbl_80368B98;
@@ -882,9 +883,8 @@ void Prim2D_AddPrim(u8 arg0) {
     void OSPanic(char *, ...);
     u8 *Ui_GetColor(s32);
 
-    s32 size;
-    u32 type;
     void *node;
+    s32 size;
 
     if (*(u8 *)((u8 *)gPrim2D + 0xA8) == 2) {
         s32 tmp;
@@ -908,6 +908,7 @@ void Prim2D_AddPrim(u8 arg0) {
         *(u8 *)((u8 *)gPrim2D + 0xA8) = 3;
     }
     {
+        u32 type;
         void *entry;
         type = arg0;
         switch (type) {
