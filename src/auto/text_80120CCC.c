@@ -1107,8 +1107,6 @@ void TalkUi_KeyWait2Proc(void *arg0) {
     }
 }
 
-#pragma push
-#pragma optimization_level 3
 void fn_801225D4(void *arg0) {
     extern s32 gUiInputFlags;
     extern u16 gUiPanelFlags;
