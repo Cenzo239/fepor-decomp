@@ -4283,17 +4283,19 @@ void fn_8006720C(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80067304(void *arg0) {
+#pragma push
+#pragma optimization_level 3
     typedef struct { f32 x, y, z; } Vec3;
     extern Vec3 lbl_8026B744;
     extern Vec3 lbl_8026B750;
-    extern f32 lbl_80369224;
-    extern f32 lbl_80369228;
+    extern const f32 lbl_80369224;
+    extern const f32 lbl_80369228;
     extern s32 lbl_8036C444;
     extern s32 lbl_8036C448;
     Vec3 a;
     Vec3 b;
-    f32 f20;
-    f32 f24;
+    f32 f20 = lbl_80369224;
+    f32 f24 = lbl_80369228;
     u32 col1;
     u32 col2;
 
@@ -4301,9 +4303,6 @@ void fn_80067304(void *arg0) {
     *(f32 *)((u8 *)arg0 + 0x14) = a.x;
     *(f32 *)((u8 *)arg0 + 0x18) = a.y;
     *(f32 *)((u8 *)arg0 + 0x1C) = a.z;
-
-    f20 = lbl_80369224;
-    f24 = lbl_80369228;
 
     b = lbl_8026B750;
     *(f32 *)((u8 *)arg0 + 0x08) = b.x;
@@ -4325,6 +4324,7 @@ void fn_80067304(void *arg0) {
 
     *(f32 *)((u8 *)arg0 + 0x24) = f24;
     *(f32 *)((u8 *)arg0 + 0x28) = f24;
+#pragma pop
 }
 #pragma global_optimizer reset
 void Light_CopyChannel(void *arg0, void *arg1) {
@@ -4647,11 +4647,11 @@ void fn_80067984(void *camIn) {
     void GXSetProjection(void *, s32);
     extern void *gCamera;
     extern u8 gCameraProjMode;
-    extern f32 lbl_80369228;
-    extern f32 lbl_80369224;
-    extern f32 gScreenWidthF;
-    extern f32 gScreenHeightF;
-    extern f32 gOrthoFarZ;
+    extern const f32 lbl_80369228;
+    extern const f32 lbl_80369224;
+    extern const f32 gScreenWidthF;
+    extern const f32 gScreenHeightF;
+    extern const f32 gOrthoFarZ;
     f32 posPersp[12];
     f32 posOrtho[12];
     f32 view[16];
@@ -4746,8 +4746,8 @@ void fn_80067984(void *camIn) {
                 }
                 break;
             }
+            gCameraProjMode = 0;
         }
-        gCameraProjMode = 0;
     }
 }
 #pragma global_optimizer reset
