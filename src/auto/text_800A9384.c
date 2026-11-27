@@ -36,8 +36,6 @@ extern void *lbl_803677F4;
 extern void *lbl_803677F8;
 extern u8 lbl_80366E30;
 #pragma use_lmw_stmw on
-#pragma push
-#pragma opt_common_subs off
 void fn_800A9384(void) {
     void *cd0c;
     void *vtbl;
