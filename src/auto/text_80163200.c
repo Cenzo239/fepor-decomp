@@ -15803,7 +15803,8 @@ void fn_8017BB94(void *arg0) {
 
 #pragma use_lmw_stmw reset
 
-#pragma scheduling on
+#pragma scheduling off
+#pragma optimization_level 3
 s32 fn_8017BC94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -15853,6 +15854,7 @@ s32 fn_8017BC94(void *arg0) {
     } while (i < 0x62);
     return count;
 }
+#pragma optimization_level reset
 #pragma scheduling on
 #pragma cplusplus off
 s32 Unit_CountExtraSkills(void *arg0) {
