@@ -1,5 +1,10 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+static inline void NameEntry_CopyPair(u8 *dst, u8 *src) {
+    dst[0] = src[0];
+    dst[1] = src[1];
+}
+
 static inline void *SaveMenu_GetHeader(void *base) {
     void *fn_801E09B4(void *);
     u8 *slot = fn_801E09B4(base);
