@@ -375,55 +375,195 @@ void InquiryCallback(void *unused, void *arg1) {
         break;
     }
 }
-#pragma peephole on
-void OSInit(void){
-extern s32 AreWeInitialized_80368478,__OSInIPL,__OSIsGcam,__DVDLongFileNameFlag,__PADSpec;extern u32 *BI2DebugFlag_8036845C;extern u32 BI2DebugFlagHolder_80368460;extern u8 *BootInfo_80368458;
-extern u8 DriveInfo_80339360[],lbl_8029B928[],lbl_80366F1C[8],__ArenaLo[],__ArenaHi[],_stack_addr[];extern s64 __OSStartTime;extern char *__OSVersion;
-s32 OSGetArenaHi(void);s32 OSGetArenaLo(void);void OSSetArenaHi(s32);void OSSetArenaLo(s32);
-s64 __OSGetSystemTime(void);void __OSGetExecParams(void*);void PPCMtmmcr1(u32);void PPCMtpmc1(u32);void PPCMtpmc2(u32);void PPCMtpmc4(u32);
-void OSExceptionInit(void);void __OSInitSystemCall(void);void OSInitAlarm(void);void __OSModuleInit(void);void __OSInterruptInit(void);void *__OSSetInterruptHandler(s32,void*);void __OSResetSWInterruptHandler(void);
-void __OSContextInit(void);void __OSCacheInit(void);void EXIInit(void);void SIInit(void);void __OSInitSram(void);void __OSThreadInit(void);void __OSInitAudioSystem(void);void __OSInitMemoryProtection(void);
-void OSRegisterVersion(char*);void EnableMetroTRKInterrupts(void);u32 OSGetResetCode(void);void *memset(void*,s32,u32);void OSEnableInterrupts(void);void DVDInit(void);void DCInvalidateRange(void*,u32);void DVDInquiryAsync(void*,void*,void*);
-u8 *bi2,*strings,*drive;u32 console; s32 hi,reset;u32 size;u32 start,end,*preserve,*endp;void *arena;
-drive=DriveInfo_80339360;strings=lbl_8029B928;
-if(!AreWeInitialized_80368478){
-AreWeInitialized_80368478=1;__OSStartTime=__OSGetSystemTime();OSDisableInterrupts();__OSGetExecParams(drive+0x50);
-PPCMtmmcr0(0);PPCMtmmcr1(0);PPCMtpmc1(0);PPCMtpmc2(0);PPCMtpmc3(0);PPCMtpmc4(0);
-PPCDisableSpeculation();PPCSetFpNonIEEEMode();BI2DebugFlag_8036845C=0;BootInfo_80368458=(u8*)0x80000000;__DVDLongFileNameFlag=0;
-bi2=*(u8**)0x800000f4;if(bi2){BI2DebugFlag_8036845C=(u32*)(bi2+0xc);__PADSpec=*(u32*)(bi2+0x24);*(u8*)0x800030e8=(u8)*BI2DebugFlag_8036845C;*(u8*)0x800030e9=(u8)__PADSpec;}
-else if(*(u32*)0x80000034){BI2DebugFlagHolder_80368460=*(u8*)0x800030e8;BI2DebugFlag_8036845C=&BI2DebugFlagHolder_80368460;__PADSpec=*(u8*)0x800030e9;}
-__DVDLongFileNameFlag=1;
-arena=*(void**)(BootInfo_80368458+0x30);if(!arena)arena=__ArenaLo;OSSetArenaLo((s32)arena);
-if(!*(u32*)(BootInfo_80368458+0x30)&&BI2DebugFlag_8036845C&&*BI2DebugFlag_8036845C<2)OSSetArenaLo(((u32)_stack_addr+31)&~31);
-arena=*(void**)(BootInfo_80368458+0x34);if(!arena)arena=__ArenaHi;OSSetArenaHi((s32)arena);
-OSExceptionInit();__OSInitSystemCall();OSInitAlarm();__OSModuleInit();__OSInterruptInit();__OSSetInterruptHandler(22,__OSResetSWInterruptHandler);
-__OSContextInit();__OSCacheInit();EXIInit();SIInit();__OSInitSram();__OSThreadInit();__OSInitAudioSystem();PPCMthid2(PPCMfhid2()&~0x40000000);
-if(!__OSInIPL)__OSInitMemoryProtection();
-OSReport(strings+0x44);OSReport(strings+0x54,strings+0x6c,strings+0x78);OSReport(strings+0x84);
-if(!BootInfo_80368458||!(console=*(u32*)(BootInfo_80368458+0x2c)))console=0x10000002;
-switch(console&0xf0000000){
-case 0:OSReport(strings+0x94);break;
-case 0x10000000:case 0x20000000:
-switch(console&0x0fffffff){
-case 0x10000000:OSReport(strings+0xa0);break;case 0x10000001:OSReport(strings+0xb0);break;case 0x10000002:OSReport(strings+0xc0);break;case 0x10000003:OSReport(strings+0xd0);break;
-default:OSReport(strings+0xe0,(console&0xfffffff)-3,console,console&0xfffffff);break;
-}break;
-default:OSReport(lbl_80366F1C);break;
+#pragma push
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma peephole off
+void OSInit(void) {
+    extern s32 AreWeInitialized_80368478, __OSInIPL, __OSIsGcam, __DVDLongFileNameFlag, __PADSpec;
+    extern u32 *BI2DebugFlag_8036845C;
+    extern u32 BI2DebugFlagHolder_80368460;
+    extern u8 *BootInfo_80368458;
+    extern u8 DriveInfo_80339360[], lbl_8029B928[], lbl_80366F1C[8], __ArenaLo[], __ArenaHi[], _stack_addr[];
+    extern s64 __OSStartTime;
+    extern char *__OSVersion;
+    void *OSGetArenaHi(void);
+    void *OSGetArenaLo(void);
+    void OSSetArenaHi(void *);
+    void OSSetArenaLo(void *);
+    s64 __OSGetSystemTime(void);
+    void __OSGetExecParams(void *);
+    void PPCMtmmcr1(u32);
+    void PPCMtpmc1(u32);
+    void PPCMtpmc2(u32);
+    void PPCMtpmc4(u32);
+    void OSExceptionInit(void);
+    void __OSInitSystemCall(void);
+    void OSInitAlarm(void);
+    void __OSModuleInit(void);
+    void __OSInterruptInit(void);
+    void *__OSSetInterruptHandler(s32, void *);
+    void __OSResetSWInterruptHandler(void);
+    void __OSContextInit(void);
+    void __OSCacheInit(void);
+    void EXIInit(void);
+    void SIInit(void);
+    void __OSInitSram(void);
+    void __OSThreadInit(void);
+    void __OSInitAudioSystem(void);
+    void __OSInitMemoryProtection(void);
+    void OSRegisterVersion(char *);
+    void EnableMetroTRKInterrupts(void);
+    u32 OSGetResetCode(void);
+    void *memset(void *, s32, u32);
+    void OSEnableInterrupts(void);
+    void DVDInit(void);
+    void DCInvalidateRange(void *, u32);
+    void DVDInquiryAsync(void *, void *, void *);
+
+    u8 *bi2;
+    u32 console;
+    void *hi;
+    s32 reset;
+    u32 *preserve;
+    u32 *endp;
+    u32 end;
+    void *arena;
+    u8 *strings;
+    u8 *drive;
+
+    drive = DriveInfo_80339360;
+    strings = lbl_8029B928;
+    if (!AreWeInitialized_80368478) {
+        AreWeInitialized_80368478 = 1;
+        __OSStartTime = __OSGetSystemTime();
+        OSDisableInterrupts();
+        __OSGetExecParams(drive + 0x50);
+        PPCMtmmcr0(0);
+        PPCMtmmcr1(0);
+        PPCMtpmc1(0);
+        PPCMtpmc2(0);
+        PPCMtpmc3(0);
+        PPCMtpmc4(0);
+        PPCDisableSpeculation();
+        PPCSetFpNonIEEEMode();
+        BI2DebugFlag_8036845C = 0;
+        BootInfo_80368458 = (u8 *)0x80000000;
+        __DVDLongFileNameFlag = 0;
+        bi2 = *(u8 **)0x800000f4;
+        if (bi2) {
+            BI2DebugFlag_8036845C = (u32 *)(bi2 + 0xc);
+            __PADSpec = *(u32 *)(bi2 + 0x24);
+            *(u8 *)0x800030e8 = (u8)*BI2DebugFlag_8036845C;
+            *(u8 *)0x800030e9 = (u8)__PADSpec;
+        } else if (*(u32 *)0x80000034) {
+            BI2DebugFlagHolder_80368460 = *(u8 *)0x800030e8;
+            BI2DebugFlag_8036845C = &BI2DebugFlagHolder_80368460;
+            __PADSpec = *(u8 *)0x800030e9;
+        }
+        __DVDLongFileNameFlag = 1;
+        arena = *(void **)(BootInfo_80368458 + 0x30);
+        if (!arena) arena = __ArenaLo;
+        OSSetArenaLo(arena);
+        if (!*(u32 *)(BootInfo_80368458 + 0x30) && BI2DebugFlag_8036845C && *BI2DebugFlag_8036845C < 2) {
+            OSSetArenaLo((void *)(((u32)_stack_addr + 31) & ~31));
+        }
+        arena = *(void **)(BootInfo_80368458 + 0x34);
+        if (!arena) arena = __ArenaHi;
+        OSSetArenaHi(arena);
+        OSExceptionInit();
+        __OSInitSystemCall();
+        OSInitAlarm();
+        __OSModuleInit();
+        __OSInterruptInit();
+        __OSSetInterruptHandler(22, __OSResetSWInterruptHandler);
+        __OSContextInit();
+        __OSCacheInit();
+        EXIInit();
+        SIInit();
+        __OSInitSram();
+        __OSThreadInit();
+        __OSInitAudioSystem();
+        PPCMthid2(PPCMfhid2() & ~0x40000000);
+        if (!__OSInIPL) {
+            __OSInitMemoryProtection();
+        }
+        OSReport(strings + 0x44);
+        OSReport(strings + 0x54, strings + 0x6c, strings + 0x78);
+        OSReport(strings + 0x84);
+        if (!BootInfo_80368458 || !(console = *(u32 *)(BootInfo_80368458 + 0x2c))) {
+            console = 0x10000002;
+        }
+        switch (console & 0xf0000000) {
+        case 0:
+            OSReport(strings + 0x94);
+            break;
+        case 0x10000000:
+        case 0x20000000:
+            switch (console & 0x0fffffff) {
+            case 0x10000000:
+                OSReport(strings + 0xa0);
+                break;
+            case 0x10000001:
+                OSReport(strings + 0xb0);
+                break;
+            case 0x10000002:
+                OSReport(strings + 0xc0);
+                break;
+            case 0x10000003:
+                OSReport(strings + 0xd0);
+                break;
+            default:
+                OSReport(strings + 0xe0, (console & 0x0fffffff) - 3, console, console & 0x0fffffff);
+                break;
+            }
+            break;
+        default:
+            OSReport(lbl_80366F1C);
+            break;
+        }
+        OSReport(strings + 0xfc, *(u32 *)(BootInfo_80368458 + 0x28) >> 20);
+        hi = OSGetArenaHi();
+        OSReport(strings + 0x10c, OSGetArenaLo(), hi);
+        OSRegisterVersion(__OSVersion);
+        if (BI2DebugFlag_8036845C && *BI2DebugFlag_8036845C >= 2) {
+            EnableMetroTRKInterrupts();
+        }
+        if (OSGetResetCode() & 0x80000000) {
+            reset = 1;
+        } else {
+            reset = 0;
+        }
+        if (reset == 0) {
+            memset(OSGetArenaLo(), 0, (u32)OSGetArenaHi() - (u32)OSGetArenaLo());
+        } else if (!(preserve = (u32 *)(drive + 0x5c), *preserve)) {
+            memset(OSGetArenaLo(), 0, (u32)OSGetArenaHi() - (u32)OSGetArenaLo());
+        } else if ((u32)OSGetArenaLo() < *preserve) {
+            if ((u32)OSGetArenaHi() <= *preserve) {
+                memset(OSGetArenaLo(), 0, (u32)OSGetArenaHi() - (u32)OSGetArenaLo());
+            } else {
+                memset(OSGetArenaLo(), 0, *preserve - (u32)OSGetArenaLo());
+                hi = OSGetArenaHi();
+                endp = (u32 *)(drive + 0x60);
+                end = *endp;
+                if ((u32)hi > end) {
+                    memset((void *)end, 0, (u32)OSGetArenaHi() - end);
+                }
+            }
+        }
+        OSEnableInterrupts();
+        if (!__OSInIPL) {
+            DVDInit();
+            if (__OSIsGcam) {
+                *(u16 *)0x800030e6 = 0x9000;
+            } else {
+                DCInvalidateRange(drive, 32);
+                DVDInquiryAsync(drive + 0x20, drive, InquiryCallback);
+            }
+        }
+    }
 }
-OSReport(strings+0xfc,*(u32*)(BootInfo_80368458+0x28)>>20);hi=OSGetArenaHi();OSReport(strings+0x10c,OSGetArenaLo(),hi);OSRegisterVersion(__OSVersion);
-if(BI2DebugFlag_8036845C&&*BI2DebugFlag_8036845C>=2)EnableMetroTRKInterrupts();
-if(OSGetResetCode()&0x80000000)reset=1;else reset=0;
-if(reset==0){hi=OSGetArenaHi();size=hi-OSGetArenaLo();memset((void*)OSGetArenaLo(),0,size);}
-else if(!(preserve=(u32*)(drive+0x5c),*preserve)){hi=OSGetArenaHi();size=hi-OSGetArenaLo();memset((void*)OSGetArenaLo(),0,size);}
-else if((u32)OSGetArenaLo()<*preserve){
-if((u32)OSGetArenaHi()<=*preserve){hi=OSGetArenaHi();size=hi-OSGetArenaLo();memset((void*)OSGetArenaLo(),0,size);}
-else{size=*preserve-OSGetArenaLo();memset((void*)OSGetArenaLo(),0,size);hi=OSGetArenaHi();endp=(u32*)(drive+0x60);end=*endp;if((u32)hi>end)memset((void*)end,0,OSGetArenaHi()-end);}
-}
-OSEnableInterrupts();if(!__OSInIPL){DVDInit();if(__OSIsGcam)*(u16*)0x800030e6=0x9000;else{DCInvalidateRange(drive,32);DVDInquiryAsync(drive+0x20,drive,InquiryCallback);}}
-}
-}
-#pragma peephole reset
-#pragma global_optimizer on
+#pragma pop
 
 #pragma push
 #pragma opt_common_subs off
@@ -2068,7 +2208,8 @@ OSErrorHandler OSSetErrorHandler(u16 error, OSErrorHandler handler)
             fpscr &= ~0xF8;
             msr &= ~0x900;
         }
-        PPCMtfpscr(fpscr & (0x60060000 - 0x701));
+        fpscr &= (0x60060000 - 0x701);
+        PPCMtfpscr(fpscr);
         PPCMtmsr(msr);
     }
     OSRestoreInterrupts(enabled);
@@ -2190,10 +2331,11 @@ dump:
 
     PPCHalt();
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 4
 s32 fn_80206658(u8 *buffer, s32 argc, char **argv) {
-    u32 count;
     char *end;
+    u32 count;
     u32 *table;
     u32 i;
     memset(buffer, 0, 0x2000);
@@ -2208,16 +2350,17 @@ s32 fn_80206658(u8 *buffer, s32 argc, char **argv) {
             argv[argc] = (char *)(end - (char *)buffer);
         }
         end = (char *)buffer + ((end - (char *)buffer) & ~3);
-        table = (u32 *)end - (count + 1);
+        end -= (count + 1) * 4;
+        table = (u32 *)end;
         for (i = 0; i < (u32)(count + 1); i++)
             table[i] = (u32)argv[i];
-        table--;
-        *table = count;
-        *(u32 *)(buffer + 8) = (u8 *)table - buffer;
+        end -= 4;
+        *(u32 *)end = count;
+        *(u32 *)(buffer + 8) = (u8 *)end - buffer;
     }
     return 1;
 }
-
+#pragma pop
 void fn_802067E0(s32 arg0) {
     M2C_UNK ICFlashInvalidate();
     ICFlashInvalidate();
@@ -2314,6 +2457,11 @@ static inline s32 Boot_GetAppLoaderOffset(void) {
     return sAppLoaderOffset;
 }
 
+#pragma push
+#pragma peephole off
+#pragma opt_common_subs off
+#pragma optimization_level 4
+#pragma opt_common_subs on
 void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     BOOL OSDisableInterrupts(void);
     void OSEnableInterrupts(void);
@@ -2362,14 +2510,12 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
     CB1 spC4;
     CB0 spC0;
     u8 sp8C[0x30];
-    u8 sp5C[0x30];
     u8 sp2C[0x30];
     s32 temp_r28;
     u32 temp_r31;
     u32 temp_r30;
     u32 temp_r3;
     s32 var_r0;
-    s32 var_r27;
 
     OSDisableInterrupts();
     temp_r31 = OSAllocFromArenaLo(0x1C, 1);
@@ -2427,26 +2573,11 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         var_r0 = 0;
 
     if (var_r0 != 0) {
-        var_r27 = arg0;
-        if ((u32)(var_r27 + 0x10000) == 0xFFFFU) {
-            if (sAppLoaderOffset != 0) {
-                goto bi2_ready;
-            }
-            if (*(s32 *)0x800030F4 != 0) {
-                temp_r3 = OSAllocFromArenaLo(0x40, 0x20);
-                DVDReadAbsAsyncPrio(sp5C, temp_r3, 0x40, *(s32 *)0x800030F4, 0, 0);
-                while (DVDGetCommandBlockStatus(sp5C) != 0) {
-                    if (DVDKeepAlive() == 0)
-                        __OSHotReset(0);
-                }
-                sAppLoaderOffset = *(s32 *)0x800030F4 + *(s32 *)(temp_r3 + 0x38);
-            } else {
-                sAppLoaderOffset = 0x2440;
-            }
-        bi2_ready:
-            var_r27 = sAppLoaderOffset + *(s32 *)(temp_r30 + 0x14) + 0x20;
+        if ((u32)(arg0 + 0x10000) == 0xFFFFU) {
+            arg0 = Boot_GetAppLoaderOffset() + *(s32 *)(temp_r30 + 0x14);
+            arg0 += 0x20;
         }
-        *(s32 *)(temp_r31 + 8) = var_r27;
+        *(s32 *)(temp_r31 + 8) = arg0;
         ((SetupFn)*(void **)(temp_r30 + 0x10))(&spC0, &spC4, &spC8);
         temp_r3 = OSAllocFromArenaLo(0x1C, 1);
         memcpy((void *)temp_r3, (void *)temp_r31, 0x1C);
@@ -2455,7 +2586,7 @@ void fn_80206998(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32
         OSSetArenaLo((void *)temp_r3);
 
         while (spC4(&spCC, &spD0, &spD4) != 0) {
-            DVDReadAbsAsyncPrio(sp2C, (u32)spCC, spD0, spD4, 0, 0);
+            { s32 off = spD4; s32 len = spD0; u32 dest = (u32)spCC; DVDReadAbsAsyncPrio(sp2C, dest, len, off, 0, 0); }
             while (DVDGetCommandBlockStatus(sp2C) != 0) {
                 if (DVDKeepAlive() == 0)
                     __OSHotReset(0);
