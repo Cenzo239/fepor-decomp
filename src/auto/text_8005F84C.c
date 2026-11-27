@@ -8567,5 +8567,4 @@ void fn_8006F09C(s32 arg0, s32 arg1, s32 arg2)
   entries->e3 = 0;
   Ui_CreateMenu(base + 0x80, fn_800C0658(), 0);
 }
-#pragma pop
 #pragma opt_common_subs on
