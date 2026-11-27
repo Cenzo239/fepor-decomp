@@ -14054,7 +14054,6 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 #pragma opt_propagation off
-#pragma dont_inline on
 extern "C" s32 *fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
  if (begin == end) { return Sort_CopyBackwardIter(first,last,out); }
