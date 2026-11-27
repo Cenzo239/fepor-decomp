@@ -47,8 +47,12 @@ extern u16 lbl_80366E80;
 
 #pragma scheduling on
 
-#pragma scheduling on
-void *fn_80105124(u8 *arg0, s32 *arg1) {
+#pragma push
+#pragma cplusplus on
+extern "C" s32 fn_801053E4(s32,s32,u16 *,void *);
+extern "C" s32 fn_80105474(s32,s32,void *,void *);
+extern "C" u32 fn_80104930(u16 *,u16);
+extern "C" void *fn_80105124(u8 *arg0, s32 *arg1) {
     u16 sp8;
     u8 is_double;
     u16 code;
@@ -58,11 +62,8 @@ void *fn_80105124(u8 *arg0, s32 *arg1) {
     void *end;
     void *start;
     void *entry;
-    s32 fn_801053E4(s32,s32,u16 *,void *);
-    s32 fn_80105474(s32,s32,void *,void *);
-    u32 fn_80104930(u16 *,u16);
     extern void *lbl_803679C0;
-    ctx=lbl_803679C0;
+    ctx = (void **)lbl_803679C0;
     if (((arg0[0]>=0x81U && arg0[0]<=0x9FU)||(arg0[0]>=0xE0U && arg0[0]<=0xFCU)) &&
        ((arg0[1]>=0x40U && arg0[1]<=0x7EU)||(arg0[1]>=0x80U && arg0[1]<=0xFCU))) is_double=1;
     else is_double=0;
@@ -76,10 +77,10 @@ void *fn_80105124(u8 *arg0, s32 *arg1) {
         base=ctx[1];
         start=(u8 *)base+*(u16 *)((u8 *)base+0x22);
         end=(u8 *)start+((s32)ctx[2]<<4);
-        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,fn_80104930);
+        ctx[3]=(void *)fn_801053E4((s32)start,(s32)end,&sp8,(void *)fn_80104930);
         entry=ctx[3];
         if(end==entry || *(u16 *)entry!=sp8) {
-            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,fn_80104930);
+            ctx[3]=(void *)fn_80105474((s32)start,(s32)end,&lbl_80366E80,(void *)fn_80104930);
             entry=ctx[3];
             if(end==entry || *(u16 *)entry!=0x8199U) ctx[3]=start;
         }
@@ -87,3 +88,4 @@ void *fn_80105124(u8 *arg0, s32 *arg1) {
     *arg1=*(s8 *)((u8 *)ctx[3]+12);
     return next;
 }
+#pragma pop

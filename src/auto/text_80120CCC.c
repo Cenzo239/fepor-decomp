@@ -1527,10 +1527,11 @@ void fn_80122F04(void *arg0, void *arg1) {
     }
 }
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
 void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
-    void Effect_SetPos(void *, f32, f32, f32);
+    void fn_800536B0(void *, f32, f32, f32);
     void *fn_8005397C(void *, s32);
-    void *String_CStr(s32);
+    void *fn_800C93EC(s32);
     extern f32 lbl_8036A2D0;
     extern f32 lbl_8036A2D4;
     extern f32 lbl_8036A2D8;
@@ -1544,8 +1545,8 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     void *self;
     void *list;
     f32 t3;
-    register f32 f31;
-    register f32 f30;
+    f32 f31;
+    f32 f30;
     f32 t0;
 
     self = arg0;
@@ -1559,7 +1560,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
 
     if (M2C_FIELD(list, u32 *, 4) == 0) {
         obj = fn_8005397C(lbl_80274DB0 + 8, 4);
-        Effect_SetPos(obj,
+        fn_800536B0(obj,
                     (f32)M2C_FIELD(self, s32 *, 0x48),
                     (f32)M2C_FIELD(self, s32 *, 0x4C),
                     (f32)(M2C_FIELD(self, s32 *, 0x44) + 1));
@@ -1574,8 +1575,8 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
     off = 0;
     f31 = lbl_8036A2C4;
     while (i < M2C_FIELD(list, s32 *, 4)) {
-        obj = fn_8005397C(String_CStr(M2C_FIELD(list, s32 *, 8) + off), 4);
-        Effect_SetPos(obj,
+        obj = fn_8005397C(fn_800C93EC(M2C_FIELD(list, s32 *, 8) + off), 4);
+        fn_800536B0(obj,
                     (f32)M2C_FIELD(self, s32 *, 0x48),
                     (f32)M2C_FIELD(self, s32 *, 0x4C),
                     (f32)(M2C_FIELD(self, s32 *, 0x44) + 1));
@@ -1587,7 +1588,7 @@ void fn_80123034(void *arg0, void *arg1, s32 arg2, f32 farg0, f32 farg1) {
         M2C_FIELD(M2C_FIELD(obj, void **, 0x30), f32 *, 0x18) = f30;
     }
 }
-#pragma use_lmw_stmw reset
+#pragma opt_common_subs reset
 
 #pragma optimization_level 3
 void fn_8012323C(void *arg0) {
@@ -2808,8 +2809,6 @@ void fn_80125130(void *arg0) {
     f32 f1;
     u8 t;
     u8 *p;
-    s32 a;
-    s32 b;
 
     self = arg0;
     switch (M2C_FIELD(self, u8 *, 0x4C)) {
@@ -2829,21 +2828,20 @@ void fn_80125130(void *arg0) {
         M2C_FIELD(self, f32 *, 0x38) = f1;
         p += 0x94;
         f0 = lbl_8036A370;
-        a = 0x32;
         M2C_FIELD(self, f32 *, 0x3C) = f0;
-        b = 1;
         M2C_FIELD(self, f32 *, 0x40) = f1;
-        Fx_AllocSlot(p, a, b);
+        Fx_AllocSlot(p, 0x32, 1);
         break;
     case 7:
         M2C_FIELD(self, u8 *, 0x48) = 0x32;
+        p = lbl_80290388;
         f0 = lbl_8036A308;
         f1 = lbl_8036A374;
         M2C_FIELD(self, f32 *, 0x38) = f0;
         f0 = lbl_8036A378;
         M2C_FIELD(self, f32 *, 0x3C) = f1;
         M2C_FIELD(self, f32 *, 0x40) = f0;
-        tmp = Process_Create(lbl_80290388, self);
+        tmp = Process_Create(p, self);
         M2C_FIELD(tmp, u8 *, 0x4C) = 1;
         Fx_AllocSlot(lbl_80274F74 + 0xA6, 0x32, 1);
         break;
@@ -2876,10 +2874,13 @@ void fn_80125130(void *arg0) {
     DCFlushRange(M2C_FIELD(arr, void **, 0), bytes);
     DCFlushRange(M2C_FIELD(arr, void **, 4), (M2C_FIELD(arr, s32 *, 0x18) + 1) * 4);
 
-    off = 0;
-    M2C_FIELD(arr, s32 *, 0x14) = off;
-    i = off;
-    idx = off;
+    {
+        register s32 zero = 0;
+        off = zero;
+        M2C_FIELD(arr, s32 *, 0x14) = zero;
+        i = zero;
+        idx = zero;
+    }
     while (i < M2C_FIELD(arr, s32 *, 0x18)) {
         *(void **)((u8 *)M2C_FIELD(arr, void **, 4) + idx) =
             (u8 *)M2C_FIELD(arr, void **, 0) + off;
@@ -3283,26 +3284,12 @@ s32 fn_80125BB0(void) {
     f32 spC4[3][4];
     f32 sp94[3][4];
     f32 sp64[3][4];
+    u32 sp[15];
     f32 sp44[8];
-    u32 sp40;
-    u32 sp3C;
-    u32 sp38;
-    u32 sp34;
-    u32 sp30;
-    u32 sp2C;
-    u32 sp28;
-    u32 sp24;
-    u32 sp20;
-    u32 sp1C;
-    u32 sp18;
-    u32 sp14;
-    u32 sp10;
-    u32 spC;
-    u32 sp8;
-    f32 temp_f0;
     f32 temp_f1;
-    s32 texCoord;
+    f32 temp_f0;
     s32 tevStage;
+    s32 texCoord;
     s32 texMap;
     s32 mtxId;
     void *proc;
@@ -3321,27 +3308,27 @@ s32 fn_80125BB0(void) {
     mtxId = GMaterial_AllocMtx();
     temp_f1 = lbl_8036A3B4 + *(f32 *)((u8 *)proc + 0x4C);
     temp_f0 = lbl_8036A3B4 + *(f32 *)((u8 *)proc + 0x50);
-    sp14 = *(u32 *)(cfg + 0xC);
-    sp18 = *(u32 *)(cfg + 0x10);
-    sp8 = *(u32 *)(cfg + 0x18);
-    *(f32 *)&sp18 = temp_f0;
-    spC = *(u32 *)(cfg + 0x1C);
-    *(f32 *)&sp8 = temp_f1;
-    *(f32 *)&sp14 = temp_f1;
-    *(f32 *)&spC = temp_f0;
+    sp[3] = *(u32 *)(cfg + 0xC);
+    sp[4] = *(u32 *)(cfg + 0x10);
+    sp[0] = *(u32 *)(cfg + 0x18);
+    *(f32 *)&sp[4] = temp_f0;
+    sp[1] = *(u32 *)(cfg + 0x1C);
+    *(f32 *)&sp[0] = temp_f1;
+    *(f32 *)&sp[3] = temp_f1;
+    *(f32 *)&sp[1] = temp_f0;
     z = *(s32 *)(cfg + 0x14);
-    sp1C = z;
-    sp38 = sp14;
-    sp3C = sp18;
-    sp40 = z;
-    sp10 = *(u32 *)(cfg + 0x20);
-    sp2C = sp8;
-    sp30 = spC;
-    sp34 = *(u32 *)(cfg + 0x20);
-    sp20 = *(u32 *)(cfg + 0x24);
-    sp24 = *(u32 *)(cfg + 0x28);
-    sp28 = *(u32 *)(cfg + 0x2C);
-    fn_802026E4(sp94, &sp2C, &sp20, &sp38);
+    sp[5] = z;
+    sp[12] = sp[3];
+    sp[13] = sp[4];
+    sp[14] = z;
+    sp[2] = *(u32 *)(cfg + 0x20);
+    sp[9] = sp[0];
+    sp[10] = sp[1];
+    sp[11] = *(u32 *)(cfg + 0x20);
+    sp[6] = *(u32 *)(cfg + 0x24);
+    sp[7] = *(u32 *)(cfg + 0x28);
+    sp[8] = *(u32 *)(cfg + 0x2C);
+    fn_802026E4(sp94, &sp[9], &sp[6], &sp[12]);
     C_MTXLightOrtho(spC4, -lbl_8036A3B4, lbl_8036A3B4, -lbl_8036A3B4, lbl_8036A3B4, lbl_8036A378, lbl_8036A378, lbl_8036A378, lbl_8036A378);
     PSMTXConcat(sp94, sp64, sp94);
     PSMTXConcat(spC4, sp94, spF4);

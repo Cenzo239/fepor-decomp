@@ -381,6 +381,8 @@ void Battle_SetupTargetSelect(s32 parent) {
     }
 }
 
+#pragma push
+#pragma opt_lifetimes off
 #pragma use_lmw_stmw on
 s32 fn_800ADEB0(s32 arg0) {
     void fn_8002F728(void *);
@@ -427,6 +429,7 @@ s32 fn_800ADEB0(s32 arg0) {
     Process_CreateChild(lbl_8028CFA0, arg0);
     return 1;
 }
+#pragma pop
 #pragma use_lmw_stmw reset
 s32 fn_800AE0D4(s32 arg0) {
     void fn_8002F728(void *);

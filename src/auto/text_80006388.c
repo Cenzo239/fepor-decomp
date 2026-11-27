@@ -25,6 +25,7 @@ extern u16 jumptable_80283AE8[];
 #pragma global_optimizer on
 #pragma opt_strength_reduction on
 
+#pragma optimization_level 3
 void fn_80006388(void) {
     s32 OSDisableInterrupts(void);
     void OSDisableScheduler(void);
@@ -147,3 +148,4 @@ loop_cond:
     fn_8020ADD8(&lbl_80367138);
     goto loop_cond;
 }
+#pragma optimization_level reset

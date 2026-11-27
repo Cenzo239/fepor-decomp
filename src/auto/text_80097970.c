@@ -182,108 +182,202 @@ void fn_800979FC(void) {
  }
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_80097AB4(void) {
-extern u8 gEventSlots[],gBattle[];
-extern void *lbl_80367500,*lbl_80367504;
-extern f32 lbl_803697BC;
-void fn_800340E4(void *);
-u8 *base=gEventSlots;
-u8 *script=gBattle+0x8a0;
-u8 *second=base+20;
-u8 *other;
-s16 saved=*(s16 *)script;
-M2C_FIELD(gEventSlots,void **,0)=0;M2C_FIELD(base,f32 *,4)=lbl_803697BC;M2C_FIELD(base,f32 *,8)=lbl_803697BC;M2C_FIELD(base,f32 *,12)=lbl_803697BC;M2C_FIELD(base,f32 *,16)=lbl_803697BC;M2C_FIELD(second,void **,0)=0;M2C_FIELD(base,f32 *,24)=lbl_803697BC;M2C_FIELD(base,f32 *,28)=lbl_803697BC;M2C_FIELD(base,f32 *,32)=lbl_803697BC;M2C_FIELD(base,f32 *,36)=lbl_803697BC;M2C_FIELD(base,void **,40)=0;M2C_FIELD(base,f32 *,44)=lbl_803697BC;M2C_FIELD(base,f32 *,48)=lbl_803697BC;M2C_FIELD(base,f32 *,52)=lbl_803697BC;M2C_FIELD(base,f32 *,56)=lbl_803697BC;M2C_FIELD(gEventSlots,void **,0)=gBattle+0;{ s32 value=0; fn_800340E4(script); other=gBattle+0x2e0;
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done00;
-case 4: if(gBattle==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 16: if(other==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done00:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,4)=value;
-}
-{ s32 value=0; fn_800340E4(script); 
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done01;
-case 3: if(gBattle==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 15: if(other==M2C_FIELD(gEventSlots,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done01:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,8)=value;
-}
-M2C_FIELD(base,f32 *,16)=M2C_FIELD(base,f32 *,4); M2C_FIELD(base,f32 *,12)=lbl_803697BC;M2C_FIELD(second,void **,0)=gBattle+736;{ s32 value=0; fn_800340E4(script); 
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done10;
-case 4: if(gBattle==M2C_FIELD(second,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 16: if(other==M2C_FIELD(second,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done10:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,24)=value;
-}
-{ s32 value=0; fn_800340E4(script); 
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done11;
-case 3: if(gBattle==M2C_FIELD(second,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 15: if(other==M2C_FIELD(second,void **,0)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done11:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,28)=value;
-}
-M2C_FIELD(base,f32 *,36)=M2C_FIELD(base,f32 *,24); M2C_FIELD(base,f32 *,32)=lbl_803697BC;M2C_FIELD(base,void **,40)=gBattle+1472;{ s32 value=0; fn_800340E4(script); 
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done20;
-case 4: if(gBattle==M2C_FIELD(base,void **,40)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 16: if(other==M2C_FIELD(base,void **,40)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done20:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,44)=value;
-}
-{ s32 value=0; fn_800340E4(script); 
-for(;;) {
-s32 offset=*(s16 *)script*4;
-switch((s32)script[offset+4]) {
-case 0: case 0x54: goto done21;
-case 3: if(gBattle==M2C_FIELD(base,void **,40)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-case 15: if(other==M2C_FIELD(base,void **,40)) value=(s8)((s16 *)script)[*(s16 *)script*2+3]; break;
-}
-++*(s16 *)script;
-}
-done21:
-*(s16 *)script=saved;
-M2C_FIELD(base,f32 *,48)=value;
-}
-M2C_FIELD(base,f32 *,56)=M2C_FIELD(base,f32 *,44); M2C_FIELD(base,f32 *,52)=lbl_803697BC;{void *p=gEventSlots; u32 valid;
-if(p) {void *unit=*(void **)p; if(unit) valid=M2C_FIELD(unit,u32 *,0x280); else valid=0; if(valid) lbl_80367500=p; else lbl_80367500=0;} else lbl_80367500=0;
-p=second;
-if(p) {void *unit=*(void **)p; if(unit) valid=M2C_FIELD(unit,u32 *,0x280); else valid=0; if(valid) lbl_80367504=p; else lbl_80367504=0;} else lbl_80367504=0;
-}
-fn_800340E4(script);
-}
+    extern u8 gEventSlots[], gBattle[];
+    extern void *lbl_80367500, *lbl_80367504;
+    extern const f32 lbl_803697BC;
+    void fn_800340E4(void *);
+    u8 *base = gEventSlots;
+    u8 *script = gBattle + 0x8a0;
+    u8 *second = base + 0x14;
+    u8 *other;
+    s16 saved;
+    s32 value = 0;
+    s32 i;
 
+    for (i = 0; i < 3; i++) {
+        u8 *slot = base + i * 0x14;
+        M2C_FIELD(slot, void **, 0) = 0;
+        M2C_FIELD(slot, f32 *, 4) = lbl_803697BC;
+        M2C_FIELD(slot, f32 *, 8) = lbl_803697BC;
+        M2C_FIELD(slot, f32 *, 12) = lbl_803697BC;
+        M2C_FIELD(slot, f32 *, 16) = lbl_803697BC;
+    }
+
+    {
+        saved = *(s16 *)script;
+        M2C_FIELD(gEventSlots, void **, 0) = gBattle;
+        fn_800340E4(script);
+        other = gBattle + 0x2e0;
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done00;
+                case 4:
+                    if (gBattle == M2C_FIELD(gEventSlots, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 16:
+                    if (other == M2C_FIELD(gEventSlots, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done00:
+        *(s16 *)script = saved;
+        M2C_FIELD(gEventSlots, f32 *, 4) = value;
+    }
+    {
+        s32 value = 0;
+        fn_800340E4(script);
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done01;
+                case 3:
+                    if (gBattle == M2C_FIELD(gEventSlots, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 15:
+                    if (other == M2C_FIELD(gEventSlots, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done01:
+        *(s16 *)script = saved;
+        M2C_FIELD(gEventSlots, f32 *, 16) = M2C_FIELD(gEventSlots, f32 *, 4);
+        M2C_FIELD(gEventSlots, f32 *, 8) = value;
+        M2C_FIELD(gEventSlots, f32 *, 12) = lbl_803697BC;
+    }
+
+    {
+        s16 saved1 = *(s16 *)script;
+        s32 value = 0;
+        M2C_FIELD(second, void **, 0) = other;
+        fn_800340E4(script);
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done10;
+                case 4:
+                    if (gBattle == M2C_FIELD(second, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 16:
+                    if (other == M2C_FIELD(second, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done10:
+        *(s16 *)script = saved1;
+        M2C_FIELD(base, f32 *, 24) = value;
+        value = 0;
+        fn_800340E4(script);
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done11;
+                case 3:
+                    if (gBattle == M2C_FIELD(second, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 15:
+                    if (other == M2C_FIELD(second, void **, 0))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done11:
+        *(s16 *)script = saved1;
+        M2C_FIELD(base, f32 *, 36) = M2C_FIELD(base, f32 *, 24);
+        M2C_FIELD(base, f32 *, 28) = value;
+        M2C_FIELD(base, f32 *, 32) = lbl_803697BC;
+    }
+
+    {
+        s16 saved2 = *(s16 *)script;
+        s32 value = 0;
+        M2C_FIELD(base, void **, 40) = gBattle + 0x5c0;
+        fn_800340E4(script);
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done20;
+                case 4:
+                    if (gBattle == M2C_FIELD(base, void **, 40))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 16:
+                    if (other == M2C_FIELD(base, void **, 40))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done20:
+        *(s16 *)script = saved2;
+        M2C_FIELD(base, f32 *, 44) = value;
+        value = 0;
+        fn_800340E4(script);
+        for (;;) {
+            s32 offset = *(s16 *)script * 4;
+            switch ((s32)script[offset + 4]) {
+                case 0:
+                case 0x54:
+                    goto done21;
+                case 3:
+                    if (gBattle == M2C_FIELD(base, void **, 40))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+                case 15:
+                    if (other == M2C_FIELD(base, void **, 40))
+                        value = (s8)((s16 *)script)[*(s16 *)script * 2 + 3];
+                    break;
+            }
+            ++*(s16 *)script;
+        }
+    done21:
+        *(s16 *)script = saved2;
+        M2C_FIELD(base, f32 *, 56) = M2C_FIELD(base, f32 *, 44);
+        M2C_FIELD(base, f32 *, 48) = value;
+        M2C_FIELD(base, f32 *, 52) = lbl_803697BC;
+    }
+
+    {
+        void *p = gEventSlots;
+        if (p && (*(void **)p ? M2C_FIELD(*(void **)p, u32 *, 0x280) : 0)) {
+            lbl_80367500 = p;
+        } else {
+            lbl_80367500 = 0;
+        }
+        p = second;
+        if (p && (*(void **)p ? M2C_FIELD(*(void **)p, u32 *, 0x280) : 0)) {
+            lbl_80367504 = p;
+        } else {
+            lbl_80367504 = 0;
+        }
+    }
+    fn_800340E4(script);
+}
+#pragma pop
 s32 fn_80098094(void) {
     extern s32 lbl_80367500;
     return lbl_80367500;

@@ -1076,25 +1076,27 @@ static inline u32 MapObj_GetInheritFlag(u32 flags) {
     return (flags >> 28) & 1;
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_80053F68(void *arg0) {
-    f32 Math_Lerp(f32, f32, f32, f32);
-    void Model_SetColor(void *, u8, u8, u8);
-    void Model_SetAlpha(void *, u8);
+    f32 fn_80059F64(f32, f32, f32, f32);
+    void fn_8005F7E0(void *, u8, u8, u8);
+    void fn_8005F7B0(void *, u8);
     void fn_8005E644(void *);
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8006CAD4(void *);
-    void Process_ClearFunc(void *);
-    void MapObj_UpdateMatrix(void *);
+    void fn_8000C188(void *);
+    void fn_80053260(void *);
     void fn_800548E8(void *);
-    void Prim2D_SetTransform(f32, f32, f32, f32);
-    void Prim2D_SetTex(s32, s32);
-    void Prim2D_SetColorByte(u8);
-    void Prim2D_PrepareTex(void);
-    void Prim2D_Begin(void);
-    void Prim2D_AddPrim(s32);
+    void fn_80009D74(f32, f32, f32, f32);
+    void fn_8000A174(s32, s32);
+    void fn_80009B8C(u8);
+    void fn_8000A248(void);
+    void fn_8000A258(void);
+    void fn_80007898(s32);
     void fn_80007340(void *, void *);
-    void Prim2D_EndPrim(void);
+    void fn_80007884(void);
     u8 fn_800AA188(void);
     extern f32 lbl_80369084;
     extern f32 lbl_8036908C;
@@ -1118,7 +1120,6 @@ void fn_80053F68(void *arg0) {
     void *dst;
     void *src;
     u32 flags;
-    u32 fl;
     u8 b;
 
     inner = *(void **)((u8 *)arg0 + 0x30);
@@ -1137,34 +1138,37 @@ void fn_80053F68(void *arg0) {
 
     if (ok) {
         inner = *(void **)((u8 *)arg0 + 0x30);
-        if ((((fl = *(u32 *)((u8 *)inner + 8)) >> 28) & 1) &&
-            (other = *(void **)((u8 *)arg0 + 0x18)) != 0) {
-            *(u32 *)((u8 *)inner + 8) = fl | 0x10000000;
-            *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x30) =
-                *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x30);
-            *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x34) =
-                *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x34);
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            src = *(void **)((u8 *)other + 0x30);
-            tmp.x = *(f32 *)((u8 *)src + 0xC);
-            tmp.y = *(f32 *)((u8 *)src + 0x10);
-            tmp.z = *(f32 *)((u8 *)src + 0x14);
-            tmp2 = tmp;
-            *(f32 *)((u8 *)dst + 0xC) = tmp2.x;
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            *(f32 *)((u8 *)dst + 0x10) = tmp2.y;
-            dst = *(void **)((u8 *)arg0 + 0x30);
-            *(f32 *)((u8 *)dst + 0x14) = tmp2.z;
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x18) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x18);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x20) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x20);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x24);
-            *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x28) =
-                *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x28);
-            ((u8 *)*(void **)((u8 *)arg0 + 0x30))[3] =
-                ((u8 *)*(void **)((u8 *)other + 0x30))[3];
+        flags = *(u32 *)((u8 *)inner + 8);
+        if ((flags >> 28) & 1) {
+            other = *(void **)((u8 *)arg0 + 0x18);
+            if (other != 0) {
+                *(u32 *)((u8 *)inner + 8) = flags | 0x10000000;
+                *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x30) =
+                    *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x30);
+                *(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x34) =
+                    *(s32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x34);
+                dst = *(void **)((u8 *)arg0 + 0x30);
+                src = *(void **)((u8 *)other + 0x30);
+                tmp.x = *(f32 *)((u8 *)src + 0xC);
+                tmp.y = *(f32 *)((u8 *)src + 0x10);
+                tmp.z = *(f32 *)((u8 *)src + 0x14);
+                tmp2 = tmp;
+                *(f32 *)((u8 *)dst + 0xC) = tmp2.x;
+                dst = *(void **)((u8 *)arg0 + 0x30);
+                *(f32 *)((u8 *)dst + 0x10) = tmp2.y;
+                dst = *(void **)((u8 *)arg0 + 0x30);
+                *(f32 *)((u8 *)dst + 0x14) = tmp2.z;
+                *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x18) =
+                    *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x18);
+                *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x20) =
+                    *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x20);
+                *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x24) =
+                    *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x24);
+                *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x28) =
+                    *(f32 *)((u8 *)*(void **)((u8 *)other + 0x30) + 0x28);
+                ((u8 *)*(void **)((u8 *)arg0 + 0x30))[3] =
+                    ((u8 *)*(void **)((u8 *)other + 0x30))[3];
+            }
         }
 
         dst = *(void **)((u8 *)arg0 + 0x30);
@@ -1173,16 +1177,16 @@ void fn_80053F68(void *arg0) {
         if (cnt > 0) {
             *(s8 *)((u8 *)dst + 3) = (s8)(cnt - 1);
             dst = *(void **)((u8 *)arg0 + 0x30);
-            alpha = (s32)Math_Lerp(lbl_80369084, lbl_803690C4, lbl_803690C8,
+            alpha = (s32)fn_80059F64(lbl_80369084, lbl_803690C4, lbl_803690C8,
                                      (f32)*(s8 *)((u8 *)dst + 3));
             if (alpha == 0) {
-                Process_ClearFunc(arg0);
+                fn_8000C188(arg0);
             }
         }
 
         color = *(u32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x38);
-        Model_SetColor(gfx, ((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2]);
-        Model_SetAlpha(gfx, (u8)((((u8 *)&color)[3] * alpha) / 255));
+        fn_8005F7E0(gfx, ((u8 *)&color)[0], ((u8 *)&color)[1], ((u8 *)&color)[2]);
+        fn_8005F7B0(gfx, (u8)((((u8 *)&color)[3] * alpha) / 255));
         fn_8005E644(gfx);
 
         inner = *(void **)((u8 *)arg0 + 0x30);
@@ -1200,7 +1204,7 @@ void fn_80053F68(void *arg0) {
 
         cb = *(u8 (**)(void *))((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x40);
         if (cb == 0 || cb(arg0) != 1) {
-            MapObj_UpdateMatrix(arg0);
+            fn_80053260(arg0);
         }
 
         fn_800609DC(gfx);
@@ -1210,16 +1214,16 @@ void fn_80053F68(void *arg0) {
             (*(u8 *)((u8 *)*(void **)((u8 *)inner + 0x2C) + 4) & 3) == 0) {
             fn_8006CAD4(gfx);
         } else {
-            Prim2D_Begin();
+            fn_8000A258();
             inner = *(void **)((u8 *)arg0 + 0x30);
-            Prim2D_SetTransform(lbl_80369084, lbl_80369084,
+            fn_80009D74(lbl_80369084, lbl_80369084,
                         (f32)(s32)*(f32 *)((u8 *)inner + 0x1C), lbl_8036908C);
-            Prim2D_SetTex(0, 0x410);
-            Prim2D_SetColorByte(0xFF);
-            Prim2D_PrepareTex();
-            Prim2D_AddPrim(0xB);
+            fn_8000A174(0, 0x410);
+            fn_80009B8C(0xFF);
+            fn_8000A248();
+            fn_80007898(0xB);
             fn_80007340(&fn_80054314, gfx);
-            Prim2D_EndPrim();
+            fn_80007884();
         }
 
         fn_800548E8(arg0);
@@ -1231,7 +1235,7 @@ void fn_80053F68(void *arg0) {
                 if ((s8)b >= 0) {
                     ((u8 *)p)[4] = b - 1;
                 } else {
-                    Process_ClearFunc(arg0);
+                    fn_8000C188(arg0);
                 }
             }
         }

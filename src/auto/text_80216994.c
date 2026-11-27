@@ -1249,35 +1249,43 @@ fail:
         callback(chan, result);
     }
 }
-#pragma optimization_level 4
-s32 fn_802193FC(s32 arg0,u32 arg1,void *arg2) {
-s32 fn_802195B0(s32,void *,void *);
-u8 *entry; u16 *data;
-u16 current,first,previous,attempts;
-if(*(s32 *)(entry=(u8 *)__CARDBlock+arg0*0x110)==0)return -3;
-if((data=*(u16 **)(entry+0x88))[3]<arg1)return -9;
-data[3]-=arg1;
-current=data[4];
-first=0xFFFF;
-attempts=0;
-while(arg1!=0){
-u16 limit=*(u16 *)(entry+0x10);
-if(limit-5 < ++attempts)return -6;
-current++;
-if(current<5 || current>=limit)current=5;
-if(data[current]==0){
-if(first==0xFFFF)first=current;
-else data[previous]=current;
-data[current]=0xFFFF;
-previous=current;
-arg1--;
-}
-}
-data[4]=current;
-*(u16 *)(entry+0xBE)=first;
-return fn_802195B0(arg0,data,arg2);
-}
+#pragma push
 #pragma optimization_level 3
+s32 fn_802193FC(s32 arg0, u32 arg1, void *arg2) {
+    s32 fn_802195B0(s32, void *, void *);
+    u8 *entry;
+    u16 *data;
+    u16 current, first, previous, attempts;
+    if (*(s32 *)(entry = (u8 *)__CARDBlock + arg0 * 0x110) == 0)
+        return -3;
+    if ((data = *(u16 **)(entry + 0x88))[3] < arg1)
+        return -9;
+    data[3] -= arg1;
+    current = data[4];
+    first = 0xFFFF;
+    attempts = 0;
+    while (arg1 != 0) {
+        u16 limit = *(u16 *)(entry + 0x10);
+        if (limit - 5 < ++attempts)
+            return -6;
+        current++;
+        if (current < 5 || current >= limit)
+            current = 5;
+        if (data[current] == 0) {
+            if (first == 0xFFFF)
+                first = current;
+            else
+                data[previous] = current;
+            data[current] = 0xFFFF;
+            previous = current;
+            arg1--;
+        }
+    }
+    data[4] = current;
+    *(u16 *)(entry + 0xBE) = first;
+    return fn_802195B0(arg0, data, arg2);
+}
+#pragma pop
 s32 fn_80219514(s32 chan, u16 block, void *callback) {
     s32 fn_802195B0(s32, void *, void *);
     u8 *card;

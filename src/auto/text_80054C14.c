@@ -328,7 +328,11 @@ void fn_80054C14(void *arg0) {
             b=&pos2;
         }
         if(a && b) *(f32 *)(*(u8 **)(proc+0x30)+0x24)=Math_Angle2D(a->x,a->y,b->x,b->y);
-        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) { } else a=b;
+        if ((*(u32 *)(*(u8 **)(proc+0x30)+8)&0x20000000) && a) {
+            a = a;
+        } else {
+            a = b;
+        }
         if(a) {
             Camera_SetPosition(proc,a->x,a->y,lbl_8036909C+a->z);
         }

@@ -2834,9 +2834,9 @@ s32 fn_801E91E8(void *arg0, u8 *arg1) {
 }
 #pragma push
 #pragma optimization_level 2
+#pragma scheduling on
 #pragma opt_propagation off
 #pragma opt_common_subs off
-#pragma opt_lifetimes off
 s32 fn_801E9410(void *arg0) {
 typedef struct {void *node;} It;
 It aeCopy, ae, aCopy, a, beCopy, be, bCopy, b, ceCopy, ce, cCopy, c;
@@ -3385,120 +3385,112 @@ void fn_801E9E30(s32 *arg0, u8 *arg1) {
     }
 }
 
-void fn_801EA018(s32 *arg0, u8 *arg1) {
-    void fn_800C428C(void *);
-    void fn_801EA618(s32 *, s32 *, u8 *);
-    s32 sp14;
-    u8 sp10;
-    u8 spC;
-    u8 sp8;
-    void *temp_r3;
-    void *var_r29;
-    void *var_r7;
-    void *temp_r6;
-    void *temp_r8;
-    void *temp_r9;
-    void *temp_r5;
-    void *node8;
-    void *tmp;
-    s32 temp_r0;
-    u32 half;
-    u32 var_r3;
-    u32 n;
-    u8 var_r0;
-    void *sp1C;
-    void *sp18;
+void fn_801EA018(void *arg0, const u8 *arg1) {
+    typedef struct Node {
+        struct Node *prev;
+        struct Node *next;
+        u8 *data;
+    } Node;
 
-    temp_r0 = arg0[0];
-    switch (temp_r0) {
-    case 2: {
-        temp_r6 = (void *)arg0[2];
-        temp_r8 = *(void **)((u8 *)temp_r6 + 4);
-        temp_r5 = *(void **)((u8 *)temp_r6 + 8);
-        node8 = *(void **)((u8 *)temp_r8 + 8);
-        if ((s8)*(u8 *)((u8 *)node8 + 1) == (s8)*(u8 *)((u8 *)temp_r5 + 1)) {
-            var_r0 = (s8)*(u8 *)((u8 *)node8 + 3) < (s8)*(u8 *)((u8 *)temp_r5 + 3);
-        } else {
-            var_r0 = (s8)*(u8 *)((u8 *)node8 + 1) < (s8)*(u8 *)((u8 *)temp_r5 + 1);
-        }
-        if (var_r0 != 0) {
-            tmp = *(void **)temp_r6;
-            *(void **)temp_r6 = *(void **)((u8 *)temp_r6 + 4);
-            *(void **)((u8 *)temp_r6 + 4) = tmp;
-            tmp = *(void **)temp_r8;
-            *(void **)temp_r8 = *(void **)((u8 *)temp_r8 + 4);
-            *(void **)((u8 *)temp_r8 + 4) = tmp;
-            tmp = (void *)arg0[1];
-            arg0[1] = arg0[2];
-            arg0[2] = (s32)tmp;
-        }
-        break;
-    }
+    typedef struct Sentinel {
+        struct Node *prev;
+        struct Node *next;
+    } Sentinel;
+
+    typedef struct List {
+        s32 count;
+        Sentinel sentinel;
+    } List;
+
+    typedef struct Cmp {
+        u8 v;
+        u8 pad[3];
+    } Cmp;
+
+    void Heap_Free(void *);
+    void fn_801EA618(void *, void *, u8 *);
+
+    List other;
+    Cmp cmp0;
+    Cmp cmp1;
+    Cmp cmp2;
+    Node *first;
+    Node *second;
+    Node *node;
+    u32 half;
+    Node *last;
+    Node *cur;
+    Node *temp;
+    u32 n;
+
+    switch (((List *)arg0)->count) {
     case 0:
     case 1:
         break;
-    default: {
-        half = (u32)temp_r0 >> 1;
-        var_r7 = (void *)arg0[2];
-        var_r3 = half;
-        if (half != 0) {
-            n = half >> 3;
-            if (n != 0) {
-                do {
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    n -= 1;
-                } while (n != 0);
-                var_r3 &= 7;
-            }
-            if (var_r3 != 0) {
-                do {
-                    var_r7 = *(void **)((u8 *)var_r7 + 4);
-                    var_r3 -= 1;
-                } while (var_r3 != 0);
-            }
+    case 2: {
+        u8 *a;
+        u8 *b;
+        u8 lt;
+
+        first = ((List *)arg0)->sentinel.next;
+        second = first->next;
+        a = first->data;
+        b = second->data;
+        if ((s8)b[1] == (s8)a[1]) {
+            lt = (s8)b[3] < (s8)a[3];
+        } else {
+            lt = (s8)b[1] < (s8)a[1];
         }
-        sp14 = 0;
-        sp1C = &sp18;
-        sp18 = &sp18;
-        temp_r9 = (void *)arg0[1];
-        tmp = *(void **)var_r7;
-        *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)temp_r9 + 4);
-        tmp = *(void **)var_r7;
-        **(void ***)((u8 *)temp_r9 + 4) = tmp;
-        *(void **)((u8 *)sp18 + 4) = var_r7;
-        *(void **)var_r7 = sp18;
-        sp18 = temp_r9;
-        *(void **)((u8 *)temp_r9 + 4) = &sp18;
-        sp14 = arg0[0] - (s32)half;
-        arg0[0] = (s32)half;
-        sp10 = *arg1;
-        fn_801EA018(arg0, &sp10);
-        spC = *arg1;
-        fn_801EA018(&sp14, &spC);
-        sp8 = *arg1;
-        fn_801EA618(arg0, &sp14, &sp8);
-        var_r29 = sp1C;
-        if (var_r29 != &sp18) {
-            tmp = *(void **)var_r29;
-            *(void **)((u8 *)tmp + 4) = *(void **)((u8 *)sp18 + 4);
-            tmp = *(void **)var_r29;
-            **(void ***)((u8 *)sp18 + 4) = tmp;
-            while (var_r29 != &sp18) {
-                temp_r3 = var_r29;
-                var_r29 = *(void **)((u8 *)var_r29 + 4);
-                fn_800C428C(temp_r3);
-                sp14 -= 1;
-            }
+        if (lt) {
+            temp = first->prev;
+            first->prev = first->next;
+            first->next = temp;
+            temp = second->prev;
+            second->prev = second->next;
+            second->next = temp;
+            temp = ((List *)arg0)->sentinel.prev;
+            ((List *)arg0)->sentinel.prev = ((List *)arg0)->sentinel.next;
+            ((List *)arg0)->sentinel.next = temp;
         }
         break;
     }
+    default:
+        half = (u32)((List *)arg0)->count >> 1;
+        node = ((List *)arg0)->sentinel.next;
+        for (n = half; n != 0; --n) {
+            node = node->next;
+        }
+        other.count = 0;
+        other.sentinel.next = (Node *)&other.sentinel;
+        other.sentinel.prev = (Node *)&other.sentinel;
+        last = ((List *)arg0)->sentinel.prev;
+        node->prev->next = last->next;
+        last->next->prev = node->prev;
+        other.sentinel.prev->next = node;
+        node->prev = other.sentinel.prev;
+        other.sentinel.prev = last;
+        last->next = (Node *)&other.sentinel;
+        other.count = ((List *)arg0)->count - half;
+        ((List *)arg0)->count = half;
+        cmp0.v = *arg1;
+        fn_801EA018(arg0, &cmp0.v);
+        cmp1.v = *arg1;
+        fn_801EA018(&other, &cmp1.v);
+        cmp2.v = *arg1;
+        fn_801EA618(arg0, &other, &cmp2.v);
+        first = other.sentinel.next;
+        if (first != (Node *)&other.sentinel) {
+            last = other.sentinel.prev;
+            first->prev->next = last->next;
+            last->next->prev = first->prev;
+            while (first != (Node *)&other.sentinel) {
+                cur = first;
+                first = first->next;
+                Heap_Free(cur);
+                other.count--;
+            }
+        }
+        break;
     }
 }
 

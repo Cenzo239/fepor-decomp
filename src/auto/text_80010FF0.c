@@ -275,7 +275,9 @@ s32 fn_800113BC(void) {
     return 0;
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z) {
     f64 fn_802387C8(f64, f64);
     void fn_80220DEC(s32, s32, s32);
@@ -384,7 +386,8 @@ extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z)
     *(volatile f32 *)(wg - 0x8000) = f28;
     *(volatile f32 *)(wg - 0x8000) = f3;
 }
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 
 #pragma cplusplus on
 extern "C" void fn_800116F0(void *arg0) {

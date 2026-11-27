@@ -1090,8 +1090,11 @@ extern "C" void fn_8013D85C(void *self, void *host, void *slot) {
 
     labelWidth = Text_MeasureWidth(((Obj *)*(void **)((u8 *)slot + 0x34))->getLabel(slot), -1, lbl_8036A6C0);
     hostW = ((Host *)*(void **)((u8 *)host + 0x3c))->getInnerW();
-    xPad = hostW - (labelWidth + iconPad);
-    drawX = (f32)(*(s16 *)((u8 *)slot + 0x30) + (xPad >> 1));
+    {
+        s32 totalW = labelWidth + iconPad;
+        xPad = hostW - totalW;
+    }
+    drawX = (f32)((xPad >> 1) + *(s16 *)((u8 *)slot + 0x30));
     drawY = (f32)*(s16 *)((u8 *)slot + 0x32);
     Prim2D_AddPrim(6);
     Prim2D_SetPos(drawX + (f32)iconPad, drawY + (f32)yOff);
@@ -1177,13 +1180,13 @@ extern "C" void fn_8013DAD8(void *self, void *host, void *slot) {
     };
 
     s32 packedColor;
-    s32 iconPad;
     s32 hostH;
     s32 yOff;
     s32 iconYOff;
     s32 iconId;
     f32 drawX;
     f32 drawY;
+    s32 iconPad;
     void *p3c;
 
     ((Obj *)self)->draw();
@@ -3821,39 +3824,39 @@ extern "C" void Ui_ClearPanelChildrenB(void *self) {
 }
 #pragma cplusplus reset
 
+#pragma push
+#pragma optimization_level 3
 void fn_8014127C(void *arg0) {
-extern f32 lbl_8036A730,lbl_8036A740;
 f32 Math_Ease(s32,f32,f32,f32,f32);
 #pragma cplusplus on
 struct Point { s16 x,y;
-Point operator-(const Point &p) const { struct Point q=*this; q.y-=p.y; q.x-=p.x; return q; }
+Point operator-(const Point &p) const { struct Point q=*this; q.x-=p.x; q.y-=p.y; return q; }
 Point &operator*=(f32 t) { x=x*t; y=y*t; return *this; }
 Point &operator+=(const Point &p) { x+=p.x; y+=p.y; return *this; }
 };
 struct Target { u8 pad[10]; s16 x,y,right,bottom; u8 pad12[18]; s16 duration; u8 pad26[6]; f32 alpha;
-void move(Point *p) { s16 width=right-x; s16 height; right=p->x+width; x=p->x; height=bottom-y; bottom=p->y+height; y=p->y; }
+void move(Point *p) { s16 width=right-x; s16 px=p->x; s16 py=p->y; s16 height; right=px+width; x=px; height=bottom-y; bottom=py+height; y=py; }
 };
 struct Link { void *prev,*next; Target *value; };
 struct State { u8 pad[0x28]; s16 time; u8 pad2a[10]; u32 count; Link *first; u8 pad3c[4]; Point start,end; s32 mode;
-f32 opacity() { s32 d=get()->duration+1; s32 t=time+1; f32 duration=d, elapsed=t; f32 a; switch(mode) {case 0:a=lbl_8036A730;break;case 1:a=(lbl_8036A730/duration)*(duration-elapsed);break;case 2: { f32 inverse=lbl_8036A730/duration; a=inverse*elapsed; break; }} return a; }
+f32 opacity() { s32 d=get()->duration+1; s32 t=time+1; f32 duration=d, elapsed=t; f32 a; switch(mode) {case 0:a=1.0f;break;case 1:a=(1.0f/duration)*(duration-elapsed);break;case 2: { f32 inverse=1.0f/duration; a=inverse*elapsed; break; }} return a; }
 Target *get() { return count?first->value:0; }};
 State *self=(State *)arg0;
 s32 durationInt=self->get()->duration+1;
 s32 timeInt=self->time+1;
 f32 duration=durationInt;
 f32 time=timeInt;
-f32 inverse=lbl_8036A730/duration;
+f32 inverse=1.0f/duration;
 f32 progress=inverse*(duration-time);
 f32 alpha=self->opacity();
-f32 t=Math_Ease(5,lbl_8036A740,lbl_8036A730,progress,lbl_8036A730);
+f32 t=Math_Ease(5,0.0f,1.0f,progress,1.0f);
 Point p=self->end-self->start;
 p*=t; p+=self->start;
 self->get()->move(&p);
 self->get()->alpha=alpha;
 #pragma cplusplus reset
 }
-
-#pragma optimization_level 3
+#pragma pop
 void *fn_801414F8(void *arg0, void *arg1, s16 *arg2, u8 arg3, s32 arg4) {
     void *Process_CreateChild(void *, void *);
     void *Process_Create(void *, void *);
@@ -4270,7 +4273,7 @@ void fn_80142078(void *arg0) {
     extern f64 lbl_8036A750;
     register s16 temp_r31;
     register void *var_r30;
-    register s32 var_r29;
+    register void *var_r29;
     s16 temp_r28;
     f32 temp_f1;
     s16 temp_r4_2;
@@ -4296,7 +4299,7 @@ void fn_80142078(void *arg0) {
     temp_r0 = *(s32 *)((u8 *)arg0 + 0x48);
     var_r6 = NULL;
     temp_r31 = *(s16 *)((u8 *)var_r3 + 0x24);
-    var_r29 = (s32)var_r6;
+    var_r29 = var_r6;
     switch (temp_r0) {
     case 0:
         if (temp_r4 != 0U) {
@@ -4308,7 +4311,7 @@ void fn_80142078(void *arg0) {
         if (temp_r4 != 0U) {
             var_r6 = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x38) + 8);
         }
-        var_r6 = (void *)-(s16)(*(s16 *)((u8 *)var_r6 + 0x16) - *(s16 *)((u8 *)var_r6 + 0x12));
+        var_r6 = (void *)(-(s16)(*(s16 *)((u8 *)var_r6 + 0x16) - *(s16 *)((u8 *)var_r6 + 0x12)));
         break;
     case 2:
         if (temp_r4 != 0U) {
@@ -4316,7 +4319,7 @@ void fn_80142078(void *arg0) {
         } else {
             var_r4 = var_r6;
         }
-        var_r29 = (s16)(*(s16 *)((u8 *)var_r4 + 0x18) - *(s16 *)((u8 *)var_r4 + 0x14));
+        var_r29 = (void *)(s16)(*(s16 *)((u8 *)var_r4 + 0x18) - *(s16 *)((u8 *)var_r4 + 0x14));
         break;
     case 3:
         if (temp_r4 != 0U) {
@@ -4324,7 +4327,7 @@ void fn_80142078(void *arg0) {
         } else {
             var_r4 = var_r6;
         }
-        var_r29 = -(s16)(*(s16 *)((u8 *)var_r4 + 0x18) - *(s16 *)((u8 *)var_r4 + 0x14));
+        var_r29 = (void *)(-(s16)(*(s16 *)((u8 *)var_r4 + 0x18) - *(s16 *)((u8 *)var_r4 + 0x14)));
         break;
     }
     temp_r4_2 = *(s16 *)((u8 *)arg0 + 0x40);
@@ -4334,7 +4337,7 @@ void fn_80142078(void *arg0) {
     }
     *(s16 *)((u8 *)arg0 + 0x40) = (s16)(temp_r4_2 + 1);
     temp_r28 = (s16)Math_Ease(5, (f32)(s16)(s32)var_r6, lbl_8036A75C, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
-    temp_f1 = Math_Ease(5, (f32)var_r29, lbl_8036A75C, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
+    temp_f1 = Math_Ease(5, (f32)(s32)var_r29, lbl_8036A75C, (f32)*(s16 *)((u8 *)arg0 + 0x40), (f32)temp_r31);
     *(s16 *)((u8 *)var_r30 + 0x8C) = temp_r28;
     *(s16 *)((u8 *)var_r30 + 0x8E) = (s16)temp_f1;
 }
@@ -4425,7 +4428,7 @@ void fn_8014246C(void *arg0) {
     f32 Math_Ease(s32, f32, f32, f32, f32);
     extern f32 lbl_8036A75C;
     extern f64 lbl_8036A750;
-    register s16 temp_r31;
+    register s32 temp_r31;
     register void *var_r30;
     register s32 var_r29;
     s16 temp_r28;
@@ -4655,6 +4658,7 @@ extern "C" void fn_801429E0(void *arg0)
   s32 index;
   u8 *page;
   s32 repeat;
+  u32 *pad;
   u32 visible;
   s32 edge;
   s32 held;
@@ -4675,9 +4679,10 @@ extern "C" void fn_801429E0(void *arg0)
   if (!blocked)
   {
     old = *((s16 *) (page + 0x64));
-    held = gPadInput[1];
-    edge = gPadInput[2] ^ held;
-    repeat = gPadInput[3];
+    pad = gPadInput;
+    held = pad[1];
+    edge = pad[2] ^ held;
+    repeat = pad[3];
     edge = held & edge;
     if (((s16) (*((f32 *) (self + 0x84)))) == 0)
     {

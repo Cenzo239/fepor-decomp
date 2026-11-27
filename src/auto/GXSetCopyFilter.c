@@ -145,12 +145,13 @@ s32 __cvt_fp2unsigned(f32);
 
 #pragma use_lmw_stmw on
 
-void fn_80221824(u8 aa, const u8 sample_pattern[12][2], u8 vf, const u8 vfilter[7]) {
-    u32 reg1, reg2, reg3, reg4;
-    u32 reg53, reg54;
+void fn_80221824(u32 aa, const u8 sample_pattern[12][2], u8 vf, const u8 vfilter[7]) {
     u32 i, j;
+    u32 reg53, reg54;
+    u32 reg4, reg3, reg2, reg1;
+    u32 k, l;
 
-    if (aa) {
+    if ((u8)aa) {
         reg1 = 0;
         reg1 = __rlwimi(reg1, sample_pattern[0][0], 0, 28, 31);
         reg1 = __rlwimi(reg1, sample_pattern[0][1], 4, 24, 27);

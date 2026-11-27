@@ -2632,12 +2632,16 @@ void fn_80108C80(s32 arg0, s32 arg1) {
     obj[0x30 / 4] = arg0;
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma common_subs off
 void fn_80108CB8(void *arg0) {
 void Process_ClearFunc(void *);
-extern u32 *gPadInput;
+extern void *gPadInput;
 extern f32 lbl_8036A110;
 extern f32 lbl_8036A114;
-extern const f32 lbl_8036A118;
+extern f32 lbl_8036A118;
 extern f32 lbl_8036A11C;
 s32 held;
 f32 fb;
@@ -2646,27 +2650,27 @@ f32 divisor;
 f32 one;
 f32 v64;
 f32 v1b;
-held=(s32)gPadInput[1];
-if(held&((s32)gPadInput[2]^held)&0x200){
+held=*(s32*)((u8*)gPadInput+4);
+if(held&(*(s32*)((u8*)gPadInput+8)^held)&0x200){
 Process_ClearFunc(arg0);
 }
-fb=(f32)(s8)*((u8*)gPadInput[0]+2);
+fb=(f32)(s8)*(u8*)(*(u8**)gPadInput+2);
 scale=lbl_8036A110;
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)-(fb*scale);
 divisor=lbl_8036A114;
 one=lbl_8036A118;
-fb=(f32)(s8)*((u8*)gPadInput[0]+3);
+fb=(f32)(s8)*(u8*)(*(u8**)gPadInput+3);
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x44)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x44)+(fb*scale);
-fb=(f32)*((u8*)gPadInput[0]+6);
+fb=(f32)*(u8*)(*(u8**)gPadInput+6);
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)-(fb/divisor);
-fb=(f32)*((u8*)gPadInput[0]+7);
+fb=(f32)*(u8*)(*(u8**)gPadInput+7);
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)+(fb/divisor);
 if(*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)<one){
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=one;
 }
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x58)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54);
-held=(s32)gPadInput[1];
-if(held&((s32)gPadInput[2]^held)&0x1000){
+held=*(s32*)((u8*)gPadInput+4);
+if(held&(*(s32*)((u8*)gPadInput+8)^held)&0x1000){
 v64=lbl_8036A11C;
 v1b=one;
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x40)=v64;
@@ -2674,16 +2678,17 @@ v1b=one;
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x54)=v1b;
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x58)=v1b;
 }
-if((s32)gPadInput[3]&1){
+if(*(s32*)((u8*)gPadInput+0xC)&1){
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)+(f32)(*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4)-1);
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=(f32)((s32)*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)%*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4));
 }
-if((s32)gPadInput[3]&2){
+if(*(s32*)((u8*)gPadInput+0xC)&2){
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)+one;
 *(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)=(f32)((s32)*(f32*)((u8*)*(void**)((u8*)arg0+0x34)+0x3C)%*(u8*)(*(u8**)((u8*)*(void**)((u8*)arg0+0x34)+0x30)+4));
 }
 }
-
+#pragma pop
+#pragma cplusplus reset
 void fn_80108F38(void) {
     M2C_UNK fn_800AA208();
     fn_800AA208();
@@ -6002,7 +6007,7 @@ s16 currentY;
     }
     return (u32)((-1 - bestScore) | (bestScore + 1)) >> 31;
 }
-#pragma pop
+#pragma optimization_level 3
 s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 Allegiance_Compare(s32, s32);
     void fn_8001F9C4(u8 *, s8, s8, s8, s32);
@@ -6011,18 +6016,19 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     u8 Map_IsAiTerrainBlocked(s8, s8);
     extern u8 gBattleMap[151280];
     extern u16 gUnits[];
-    register int var_r26;
+    unsigned int temp_r30;
+    u8 *row;
     int var_r28;
-    register u8 temp_r3;
+    u8 temp_r3;
     int temp_r0;
     s32 var_r27;
-    register unsigned int temp_r30;
-    register s32 var_r25;
+    int var_r26;
+    s32 var_r25;
     u8 *var_r21;
     s32 var_r24;
     s32 var_r23;
     int var_r7;
-    register u8 *temp_r21;
+    u8 *temp_r21;
 
     var_r28 = 0;
     Map_SelectRangeBuffer(gBattleMap, 6);
@@ -6054,10 +6060,11 @@ s32 fn_8010E804(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     for (; var_r24 <= (int)var_r25; ++var_r24) {
     var_r23 = var_r27;
     temp_r30 = (s8)var_r24 << 6;
+    row = gBattleMap + temp_r30;
     goto loop_inner_cmp;
 loop_inner:
     if (*(s16 *)(gBattleMap + (((s8)var_r23 + temp_r30) * 2) + 0x818E) >= 0) {
-        temp_r21 = gBattleMap + temp_r30 + (s8)var_r23;
+        temp_r21 = row + (s8)var_r23;
         if (((s8)temp_r21[0xE18E] == 0) && (Map_IsAiTerrainBlocked((s8)var_r23, (s8)var_r24) == 0)) {
             temp_r3 = temp_r21[0xD];
             if (temp_r3) {
@@ -6081,9 +6088,7 @@ loop_inner_cmp:
     }
     return var_r28;
 }
-
-#pragma use_lmw_stmw on
-#pragma opt_strength_reduction off
+#pragma optimization_level reset
 s32 fn_8010EA20(void *arg0, s32 arg1, u8 (*arg2)(void *)) {
     u8 fn_8001DD54(void *, void *);
     void fn_80022DAC(void *, s32, s32);

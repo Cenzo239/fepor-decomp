@@ -194,9 +194,7 @@ s32 fn_8020A0C8(void *arg0)
 }
 
 #pragma optimization_level 3
-void *fn_8020A104(void *arg0,s32 arg1) {
-void *thread=arg0;
-s32 priority=arg1;
+void *fn_8020A104(void *thread,s32 priority) {
 void fn_8020A060();
 void *next,*prev,*tail,*node,*queue;
 switch((s32)M2C_FIELD(thread,u16*,0x2c8)){

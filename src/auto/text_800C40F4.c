@@ -11442,9 +11442,8 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
             if ((u32)M2C_FIELD(arg0, s32 *, 0x110) >= (u32)M2C_FIELD(arg0, s32 *, 0xB0)) {
                 M2C_FIELD(arg0, s32 *, 0x110) = M2C_FIELD(arg0, s32 *, 0xB0) - 1;
             }
-            arg1 = M2C_FIELD(arg0, s32 *, 0x108);
-            if (M2C_FIELD(arg0, s32 *, 0x110) >= arg1 + M2C_FIELD(arg0, s32 *, 0x10C)) {
-                M2C_FIELD(arg0, s32 *, 0x108) = arg1 + 1;
+            if (M2C_FIELD(arg0, s32 *, 0x110) >= M2C_FIELD(arg0, s32 *, 0x108) + M2C_FIELD(arg0, s32 *, 0x10C)) {
+                M2C_FIELD(arg0, s32 *, 0x108) = M2C_FIELD(arg0, s32 *, 0x108) + 1;
             }
             M2C_FIELD(arg0, s32 *, 0x104) =
                 ((M2C_FIELD(arg0, s32 *, 0x64) - 0x20) * M2C_FIELD(arg0, s32 *, 0x108))
@@ -11478,9 +11477,8 @@ void fn_800DCE54(void *arg0, s32 arg1, s32 arg2, u32 flags) {
             if ((u32)M2C_FIELD(arg0, s32 *, 0x110) >= (u32)M2C_FIELD(arg0, s32 *, 0xB0)) {
                 M2C_FIELD(arg0, s32 *, 0x110) = M2C_FIELD(arg0, s32 *, 0xB0) - 1;
             }
-            arg1 = M2C_FIELD(arg0, s32 *, 0x108);
-            if (M2C_FIELD(arg0, s32 *, 0x110) >= arg1 + M2C_FIELD(arg0, s32 *, 0x10C)) {
-                M2C_FIELD(arg0, s32 *, 0x108) = arg1 + 0xA;
+            if (M2C_FIELD(arg0, s32 *, 0x110) >= M2C_FIELD(arg0, s32 *, 0x108) + M2C_FIELD(arg0, s32 *, 0x10C)) {
+                M2C_FIELD(arg0, s32 *, 0x108) = M2C_FIELD(arg0, s32 *, 0x108) + 0xA;
             }
             M2C_FIELD(arg0, s32 *, 0x104) =
                 ((M2C_FIELD(arg0, s32 *, 0x64) - 0x20) * M2C_FIELD(arg0, s32 *, 0x108))
@@ -12455,9 +12453,9 @@ void *arg1;
     s32 setFirst;
     void *key;
     void *tree;
-    u32 keySize;
+    u32 keySize = *(u32 *)arg1;
     s32 asLeft;
-    char *errFile;
+    char *errFile = __files + 0xA0;
     u8 *best;
     u8 *parent;
     u8 *cur;
@@ -12467,14 +12465,12 @@ void *arg1;
     u8 *result;
 
     tree = arg0;
-    keySize = *(u32 *)arg1;
     key = arg1;
     parent = (u8 *)tree + 4;
     best = NULL;
     asLeft = 1;
     setFirst = 1;
     cur = *(u8 **)((u8 *)arg0 + 4);
-    errFile = __files + 0xA0;
 
     while (cur) {
         char *nodeData;
@@ -12515,7 +12511,7 @@ void *arg1;
         char *nodeData;
         st.sp18 = *(u32 *)(best + 0xC);
         st.sp14 = *(u32 *)key;
-        nodeData = *(char **)(best + 0x14);
+        nodeData = *(char **)((u8 *)key + 8);
         if ((s32)*(u32 *)(best + 0xC) < 0) {
             fprintf(errFile, lbl_80271860 + 0x46);
             abort();
@@ -12524,7 +12520,7 @@ void *arg1;
         minPtr = StrMin(&st.sp20, &st.sp18);
         st.sp1C = *minPtr;
         minPtr = StrMin(&st.sp1C, &st.sp14);
-        cmp = fn_80231944(nodeData, *(char **)((u8 *)key + 8), *minPtr);
+        cmp = fn_80231944(*(char **)(best + 0x14), nodeData, *minPtr);
         if (cmp == 0) {
             if (st.sp1C < st.sp14) {
                 cmp = -1;
@@ -12534,13 +12530,11 @@ void *arg1;
                 cmp = 1;
             }
         }
-        if (cmp >= 0) {
-            return (s32)(best + 0xC);
-        }
+        if (!(cmp < 0)) goto found;
     }
 
-    st.tag = st.pad1[3];
     st.str.cap = *(u32 *)((u8 *)key + 4);
+    st.tag = st.pad1[3];
     String_InitFromRange(&st.str, *(char **)((u8 *)key + 8), *(char **)((u8 *)key + 8) + keySize, &st.tag2, &st.tag);
     st.sp40 = 0;
     node = fn_800DEF6C(tree, parent, asLeft, setFirst, &st.str);
@@ -12549,6 +12543,8 @@ void *arg1;
         Heap_Free(st.str.data);
     }
     return (s32)result;
+found:
+    return (s32)(best + 0xC);
 }
 #pragma global_optimizer reset
 void *fn_800DE99C(void *arg0, s16 arg1) {
@@ -18439,13 +18435,14 @@ struct Obj {
 String temp;
 u32 scratch;
 void *layer;
+s8 made;
 u8 *key;
 u32 length;
 String *name;
 s32 owner;
-s8 made;
 name = arg2;
 owner = arg1;
+made = 0;
 ObjList_Init(arg0);
 *(void **)((u8 *)arg0 + 0x10) = lbl_8028E200;
 *(u32 *)((u8 *)arg0 + 0x14) = 0;
@@ -18459,7 +18456,6 @@ ObjList_Init(arg0);
 *(u32 *)((u8 *)arg0 + 0x20) = 0;
 *(s32 *)((u8 *)arg0 + 0x24) = owner;
 *(u32 *)((u8 *)arg0 + 0x44) = 0;
-made = 0;
 String_AssignCStr((u8 *)arg0 + 0x30, gUiClassNames + 0xb3, strlen(gUiClassNames + 0xb3));
 *((u8 *)arg0 + 0x3c) = 1;
 *((u8 *)arg0 + 0x3d) = 1;

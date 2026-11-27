@@ -376,6 +376,10 @@ extern f64 lbl_8036C148;
 
 #pragma use_lmw_stmw on
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
 u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     s32 fn_80243E84(void *);
     void fn_80243F14(void *, u8 *);
@@ -383,11 +387,12 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
     s64 __shr2i(s64, int);
 
     u8 sp[0x1C];
-    s16 *dstL;
     s16 *dstR;
+    s16 *dstL;
     s16 yn1;
     s16 yn2;
     s32 stride;
+    s32 byteStride;
     u32 i;
     u8 *hdr;
     u8 *base;
@@ -414,7 +419,7 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
         fn_80243F14(sp + 0xC, base);
         yn1 = *(s16 *)((u8 *)src + 0x48);
         yn2 = *(s16 *)((u8 *)src + 0x4A);
-        stride *= 2;
+        byteStride = stride * 2;
         for (i = 0; i < *(u32 *)((u8 *)src + 4); i++) {
             s32 ni = fn_80243E84(sp + 0xC);
             u8 *coef = (u8 *)src + (sp[0x14] << 2);
@@ -432,14 +437,14 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             yn2 = yn1;
             yn1 = samp;
             *dstL = samp;
-            dstR = (s16 *)((u8 *)dstR + stride);
-            dstL = (s16 *)((u8 *)dstL + stride);
+            dstR = (s16 *)((u8 *)dstR + byteStride);
+            dstL = (s16 *)((u8 *)dstL + byteStride);
         }
     } else {
         fn_80243F14(sp + 0xC, base);
         yn1 = *(s16 *)((u8 *)src + 0x48);
         yn2 = *(s16 *)((u8 *)src + 0x4A);
-        stride *= 2;
+        byteStride = stride * 2;
         for (i = 0; i < *(u32 *)((u8 *)src + 4); i++) {
             s32 ni = fn_80243E84(sp + 0xC);
             u8 *coef = (u8 *)src + (sp[0x14] << 2);
@@ -456,7 +461,7 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             *dstR = samp;
             yn2 = yn1;
             yn1 = samp;
-            dstR = (s16 *)((u8 *)dstR + stride);
+            dstR = (s16 *)((u8 *)dstR + byteStride);
         }
         fn_80243F14(sp + 0xC, hdr);
         yn1 = *(s16 *)((u8 *)src + 0x4C);
@@ -477,12 +482,12 @@ u32 fn_80243AD4(s16 *out, void *src, s32 stereo) {
             *dstL = samp;
             yn2 = yn1;
             yn1 = samp;
-            dstL = (s16 *)((u8 *)dstL + stride);
+            dstL = (s16 *)((u8 *)dstL + byteStride);
         }
     }
     return *(u32 *)((u8 *)src + 4);
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma optimization_level 3
 s32 fn_80243E84(void *arg0) {

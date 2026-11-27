@@ -372,6 +372,8 @@ extern f64 lbl_8036C148;
 
 #pragma use_lmw_stmw on
 
+#pragma push
+#pragma opt_strength_reduction off
 void fn_8023D350(void)
 {
     extern u8 *lbl_80368950;
@@ -382,26 +384,24 @@ void fn_8023D350(void)
     extern u8 *lbl_803688C0;
     extern u8 *lbl_803688E0;
 
-    u32 j;
+    u32 cur;
+    u32 low;
+    u32 aligned;
+    u32 *pBit;
+    u32 bitpos;
     u32 i;
     u32 off;
     u32 ctr;
     u32 idx;
     u32 slot;
     u8 *base;
-    u32 cur;
-    u32 *pBit;
-    u32 bitpos;
-    u32 low;
-    u32 aligned;
     u8 *p;
     u8 *q;
     u8 *table;
     s32 code;
-    u8 b682, b688, b68e, b687, b68d, b681;
-    u32 s682, s688, s68e, s687, s68d, s681;
+    u8 b681, b682, b687, b688, b68d, b68e;
     u32 m681, m687, m68d, m682, m688, m68e;
-    u32 p681, p687, p68d, p682, p688, p68e;
+    u32 j;
 
     base = lbl_80368950;
     cur = *(u32 *)(base + 0x69c);
@@ -459,42 +459,28 @@ void fn_8023D350(void)
     } while (i < 4);
 
     base = lbl_80368950;
-    b682 = base[0x682];
-    b688 = base[0x688];
-    b68e = base[0x68e];
-    b687 = base[0x687];
-    b68d = base[0x68d];
     b681 = base[0x681];
+    b682 = base[0x682];
+    b687 = base[0x687];
+    b688 = base[0x688];
+    b68d = base[0x68d];
+    b68e = base[0x68e];
 
-    s682 = (b682 << 1) + 1;
-    s688 = (b688 << 1) + 1;
-    s68e = (b68e << 1) + 1;
-    s687 = b687 << 1;
-    s68d = b68d << 1;
-    s681 = b681 << 1;
+    m681 = (b681 << 1) * 0xe0;
+    m687 = (b687 << 1) * 0xe0;
+    m68d = (b68d << 1) * 0xe0;
+    m682 = ((b682 << 1) + 1) * 0xe0;
+    m688 = ((b688 << 1) + 1) * 0xe0;
+    m68e = ((b68e << 1) + 1) * 0xe0;
 
-    m681 = s681 * 0xe0;
-    m687 = s687 * 0xe0;
-    m68d = s68d * 0xe0;
-    m682 = s682 * 0xe0;
-    m688 = s688 * 0xe0;
-    m68e = s68e * 0xe0;
-
-    p681 = m681 + 0x300;
-    p687 = m687 + 0x300;
-    p68d = m68d + 0x300;
-    p682 = m682 + 0x300;
-    p688 = m688 + 0x300;
-    p68e = m68e + 0x300;
-
-    lbl_80368840 = base + p681;
-    lbl_80368860 = base + p687;
-    lbl_80368880 = base + p68d;
-    lbl_803688A0 = base + p682;
-    lbl_803688C0 = base + p688;
-    lbl_803688E0 = base + p68e;
+    lbl_80368840 = base + m681 + 0x300;
+    lbl_80368860 = base + m687 + 0x300;
+    lbl_80368880 = base + m68d + 0x300;
+    lbl_803688A0 = base + m682 + 0x300;
+    lbl_803688C0 = base + m688 + 0x300;
+    lbl_803688E0 = base + m68e + 0x300;
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 void fn_8023D59C(s32 arg0, s32 arg1, s32 arg2)
 {

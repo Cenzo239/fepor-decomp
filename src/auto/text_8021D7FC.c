@@ -1732,13 +1732,15 @@ void fn_80220198(void) {
     *(s8 *)0xCC008000 = 0x48;
 }
 
+#pragma push
+#pragma optimization_level 3
 void fn_802201A8(s32 stage, s32 color, s32 map, s32 arg3, s32 arg4, s32 arg5) {
     void fn_80225180(s32);
     extern u8 *__GXData;
-    u32 c;
     u32 reg = 0;
     u32 a;
     u32 b;
+    u32 c;
     u32 t;
 
     b = 0;
@@ -1768,68 +1770,55 @@ void fn_802201A8(s32 stage, s32 color, s32 map, s32 arg3, s32 arg4, s32 arg5) {
     case 20: break;
     }
 
-    if (color == 1) {
-        goto L_color1;
-    } else if (color >= 1) {
-        goto L_colorgt1;
-    } else if (color >= 0) {
-        goto L_color0;
-    } else {
-        goto L_color_done;
+    switch (color) {
+    case 1:
+        reg = __rlwimi(reg, 0, 1, 30, 30);
+        t = reg;
+        t = __rlwimi(t, b, 2, 29, 29);
+        reg = t;
+        reg = __rlwimi(reg, 0, 4, 25, 27);
+        reg = __rlwimi(reg, a, 7, 20, 24);
+        break;
+    case 0:
+        reg = __rlwimi(reg, 1, 1, 30, 30);
+        reg = __rlwimi(reg, b, 2, 29, 29);
+        reg = __rlwimi(reg, 0, 4, 25, 27);
+        reg = __rlwimi(reg, a, 7, 20, 24);
+        break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        reg = __rlwimi(reg, 0, 1, 30, 30);
+        reg = __rlwimi(reg, b, 2, 29, 29);
+        reg = __rlwimi(reg, 1, 4, 25, 27);
+        reg = __rlwimi(reg, a, 7, 20, 24);
+        reg = __rlwimi(reg, map - 0xC, 12, 17, 19);
+        reg = __rlwimi(reg, color - 2, 15, 14, 16);
+        break;
+    case 10:
+        reg = __rlwimi(reg, 0, 1, 30, 30);
+        reg = __rlwimi(reg, b, 2, 29, 29);
+        if (map == 0x13) {
+            reg = __rlwimi(reg, 2, 4, 25, 27);
+        } else {
+            reg = __rlwimi(reg, 3, 4, 25, 27);
+        }
+        reg = __rlwimi(reg, 2, 7, 20, 24);
+        break;
     }
 
-L_colorgt1:
-    if (color == 10) {
-        goto L_color10;
-    } else if (color >= 10) {
-        goto L_color_done;
-    } else {
-        goto L_color2_9;
-    }
-
-L_color1:
-    reg = __rlwimi(reg, 0, 1, 30, 30);
-    t = reg;
-    t = __rlwimi(t, b, 2, 29, 29);
-    reg = t;
-    reg = __rlwimi(reg, 0, 4, 25, 27);
-    reg = __rlwimi(reg, a, 7, 20, 24);
-    goto L_color_done;
-
-L_color0:
-    reg = __rlwimi(reg, 1, 1, 30, 30);
-    reg = __rlwimi(reg, b, 2, 29, 29);
-    reg = __rlwimi(reg, 0, 4, 25, 27);
-    reg = __rlwimi(reg, a, 7, 20, 24);
-    goto L_color_done;
-
-L_color2_9:
-    reg = __rlwimi(reg, 0, 1, 30, 30);
-    reg = __rlwimi(reg, b, 2, 29, 29);
-    reg = __rlwimi(reg, 1, 4, 25, 27);
-    reg = __rlwimi(reg, a, 7, 20, 24);
-    reg = __rlwimi(reg, map - 0xC, 12, 17, 19);
-    reg = __rlwimi(reg, color - 2, 15, 14, 16);
-    goto L_color_done;
-
-L_color10:
-    reg = __rlwimi(reg, 0, 1, 30, 30);
-    reg = __rlwimi(reg, b, 2, 29, 29);
-    if (map == 0x13) {
-        reg = __rlwimi(reg, 2, 4, 25, 27);
-    } else {
-        reg = __rlwimi(reg, 3, 4, 25, 27);
-    }
-    reg = __rlwimi(reg, 2, 7, 20, 24);
-
-L_color_done:
     *(volatile u8 *)0xCC008000 = 0x10;
     *(volatile u32 *)0xCC008000 = (u32)(stage + 0x1040);
+    *(volatile u32 *)0xCC008000 = reg;
     c = 0;
     c = __rlwimi(c, arg5 - 0x40, 0, 26, 31);
-    *(volatile u32 *)0xCC008000 = reg;
-    *(volatile u8 *)0xCC008000 = 0x10;
     c = __rlwimi(c, arg4, 8, 23, 23);
+    *(volatile u8 *)0xCC008000 = 0x10;
     *(volatile u32 *)0xCC008000 = (u32)(stage + 0x1050);
     *(volatile u32 *)0xCC008000 = c;
 
@@ -1861,7 +1850,7 @@ L_color_done:
     }
     fn_80225180(stage + 1);
 }
-
+#pragma pop
 void GXSetNumChans(u32 arg0) {
  extern unsigned short *__GXData;
  u8 count;

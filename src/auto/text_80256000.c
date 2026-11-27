@@ -2173,6 +2173,7 @@ void fn_80258888(void) {
     u32 i;
     u32 pos;
     u8 *e;
+    u8 *slot;
     u32 adj;
     s32 thresh;
     u8 state;
@@ -2189,7 +2190,8 @@ void fn_80258888(void) {
     do {
         if (walk[0xB08] != 0xFF && fn_80261B00(i) != 0) {
             e = gSoundStreamCtrl + walk[0xB08] * 0x2C + 8;
-            pos = fn_80262154(i, e - 8);
+            slot = e - 8;
+            pos = fn_80262154(i, slot);
             if (e[2] == 5) {
                 adj = (pos / 14) * 14;
             } else {

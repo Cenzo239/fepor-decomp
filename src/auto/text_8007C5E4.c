@@ -1372,7 +1372,12 @@ void UnitInfo_DrawNamePlate(void *panel)
     Prim2D_PrepareTex();
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_loop_invariants off
 void fn_8007EAD8(void *arg0) {
     typedef struct { u8 r, g, b, a; } Color;
     void fn_800875B4(s32, s32, f32, f32, f32, f32);
@@ -1427,14 +1432,14 @@ void fn_8007EAD8(void *arg0) {
     extern f32 lbl_80369518;
     extern f32 lbl_8036951C;
 
-    u32 c4, c3, c2, c1, c0;
+    u32 c4, c2, c3, c1, c0;
     void *unit;
     f32 x, y;
     f32 bx, by, tx;
     f32 sh, sw, th, tw;
     f32 barX, barX2, barBaseY, barY, barW, step;
-    f32 f23v, f26v, f24v, f28v, f27v;
-    f32 f22b, f29v, f31v, t23, posX, posY;
+    f32 f26v, f24v, f28v, f27v;
+    f32 f29v, f31v, t23, posX, posY;
     f32 scaleA;
     f64 magic_u;
     f64 magic_s;
@@ -1461,7 +1466,7 @@ void fn_8007EAD8(void *arg0) {
     a = lbl_803674D4;
     x = *(f32 *)((u8 *)arg0 + 0x14);
     y = lbl_803694DC + *(f32 *)((u8 *)arg0 + 0x18);
-    lbl_803674D4 = (a + 1) & ~((s32)~((a - 0x1E) | (0x1E - a)) >> 31);
+    lbl_803674D4 = a == 30 ? 0 : a + 1;
     fn_800875B4(0xB3, 0, x, y, lbl_803694C4, lbl_803694E0);
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036942C);
@@ -1528,14 +1533,12 @@ void fn_8007EAD8(void *arg0) {
 
     f29v = lbl_803694F4;
     k = 0;
-    f22b = f29v + barBaseY;
+    x = f29v + barBaseY;
     t = k;
     table = gBattleState + 0x3C0;
     do {
-        n = fn_801660A8(table);
-        f23v = fn_80037904(unit, k + (n - 0x14));
-        n = fn_801660A8(table);
-        f26v = fn_80037904(unit, (n + k) - 0x13);
+        y = fn_80037904(unit, k + (fn_801660A8(table) - 0x14));
+        f26v = fn_80037904(unit, (fn_801660A8(table) + k) - 0x13);
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036942C);
         Prim2D_PrepareTex();
@@ -1543,16 +1546,16 @@ void fn_8007EAD8(void *arg0) {
         i = 0;
         j = 0;
         do {
-            f28v = Math_Ease(0, f23v, f26v, (f32)j, lbl_80369500);
-            f27v = Math_Ease(0, f23v, f26v, (f32)(j + 3), lbl_80369500);
+            f28v = Math_Ease(0, y, f26v, (f32)j, lbl_80369500);
+            f27v = Math_Ease(0, y, f26v, (f32)(j + 3), lbl_80369500);
             c2 = *(u32 *)Ui_GetColor(1);
             Prim2D_Begin();
             Prim2D_SetTex(0, 0x12);
             Prim2D_PrepareTex();
             Prim2D_AddPrim(4);
             {
-                f32 y0 = f22b - f29v * f28v;
-                f32 y1 = f22b - f29v * f27v;
+                f32 y0 = x - f29v * f28v;
+                f32 y1 = x - f29v * f27v;
                 f32 x0 = (f32)j + f24v;
                 f32 x1 = (f32)(j + 3) + f24v;
                 Prim2D_SetRect(x0, y0, x1 - x0, y1 - y0);
@@ -1568,10 +1571,10 @@ void fn_8007EAD8(void *arg0) {
         Prim2D_PrepareTex();
         if (k == 0x14) {
             tex = *fn_8006EDD8(gUiAtlas, 0x28);
-            tw0 = tex[0];
             th0 = tex[1];
-            f31v = Math_Ease(0, f23v, f26v, lbl_80369418, lbl_80369500);
-            t23 = f22b - lbl_803694F4 * f31v;
+            tw0 = tex[0];
+            f31v = Math_Ease(0, y, f26v, lbl_80369418, lbl_80369500);
+            t23 = x - lbl_803694F4 * f31v;
             posY = t23 - (f32)(s32)((tw0 >> 1) & 0x7FFF);
             posX = f24v - (f32)(s32)((th0 >> 1) & 0x7FFF);
             tex = *fn_8006EDD8(gUiAtlas, 0x28);
@@ -1627,6 +1630,7 @@ void fn_8007EAD8(void *arg0) {
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
 }
+#pragma pop
 extern u16 *lbl_803674E0;
 
 #pragma inline

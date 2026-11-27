@@ -883,15 +883,13 @@ void Prim2D_AddPrim(u8 arg0) {
     void OSPanic(char *, ...);
     u8 *Ui_GetColor(s32);
 
-    void *node;
     s32 size;
 
     if (*(u8 *)((u8 *)gPrim2D + 0xA8) == 2) {
         s32 tmp;
         tmp = fn_80006AF4((u8 *)gPrim2D + 0x20);
         *(s32 *)((u8 *)gPrim2D + 0x18) = tmp;
-        node = Prim2D_FindNode();
-        if (node == 0) {
+        if (Prim2D_FindNode() == 0) {
             void *ctx;
             void *entry;
             ctx = gPrim2D;
@@ -951,17 +949,18 @@ void Prim2D_AddPrim(u8 arg0) {
         case 7:
         case 10:
             {
+                void *e;
                 u8 *p;
-                node = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
-                *(f32 *)((u8 *)node + 0x1C) = gFloat1;
-                *(f32 *)((u8 *)node + 0x20) = lbl_80368B98;
-                *(s16 *)((u8 *)node + 0x24) = 0;
-                *(s16 *)((u8 *)node + 0x26) = 0;
+                e = *(void **)((u8 *)*(void **)((u8 *)gPrim2D + 0xC) + 4);
+                *(f32 *)((u8 *)e + 0x1C) = gFloat1;
+                *(f32 *)((u8 *)e + 0x20) = lbl_80368B98;
+                *(s16 *)((u8 *)e + 0x24) = 0;
+                *(s16 *)((u8 *)e + 0x26) = 0;
                 p = Ui_GetColor(1);
-                *(u8 *)((u8 *)node + 0x18) = p[0];
-                *(u8 *)((u8 *)node + 0x19) = p[1];
-                *(u8 *)((u8 *)node + 0x1A) = p[2];
-                *(u8 *)((u8 *)node + 0x1B) = p[3];
+                *(u8 *)((u8 *)e + 0x18) = p[0];
+                *(u8 *)((u8 *)e + 0x19) = p[1];
+                *(u8 *)((u8 *)e + 0x1A) = p[2];
+                *(u8 *)((u8 *)e + 0x1B) = p[3];
             }
             break;
         }

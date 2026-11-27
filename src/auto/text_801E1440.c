@@ -1580,50 +1580,33 @@ off+=0x4000;
 return NULL;
 }
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 4
 #pragma opt_strength_reduction off
-u8 *fn_801E2458(u8 **arg0)
-{
-  s32 off = 0x2000;
-  u32 minSize = -1;
-  u8 *new_var;
-  u8 *best = NULL;
-  s32 i = 0;
-  u8 *slot;
-  u8 *new_var2;
-  int new_var3;
-  u8 valid;
-  for (; i < 6; i++)
-  {
-    new_var2 = (*arg0) + off;
-    new_var = new_var2;
-    ;
-    if ((*((u32 *) (new_var + 0x40))) != 0x4645384AU)
-    {
-      valid = 0;
-    }
-    else
-      if ((*((u32 *) (new_var + 0x44))) != 0x20050201U)
-    {
-      valid = 0;
-    }
-    else
-    {
-      ;
-    }
-    new_var3 = !1;
-    if (new_var3 && (minSize > save_slot_size(new_var)))
-    {
-      best = slot;
-      minSize = save_slot_size(slot);
-    }
-    off += 0x4000;
-  }
-
-  return best;
+u8 *fn_801E2458(u8 **arg0) {
+u8 *slot;
+s32 off;
+u32 minSize;
+u8 *best;
+s32 i;
+u8 valid;
+minSize = -1;
+best = 0;
+i = 0;
+off = 0x2000;
+for (; i < 6; off += 0x4000, i++) {
+slot = *arg0 + off;
+if (*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
+else if (*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
+else valid=1;
+if (!valid && minSize > save_slot_size(slot)) {
+best=slot;
+minSize=save_slot_size(slot);
 }
-#pragma opt_strength_reduction reset
-#pragma use_lmw_stmw reset
+}
+return best;
+}
+#pragma pop
 s32 Save_GetLargeSlot(s32 *arg0, s32 arg1) {
     return ((arg1 * 0x6000) + 0x20000 + *arg0) - 0x6000;
 }
@@ -1656,7 +1639,7 @@ void fn_801E25EC(void) {
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 #pragma opt_loop_invariants off
 void fn_801E2620(void **arg0, u8 arg1) {
     u8 fn_800EB520(void *);
@@ -1680,9 +1663,9 @@ void fn_801E2620(void **arg0, u8 arg1) {
     u8 hist[6];
     u8 *slots[2];
     u64 seed;
-    s32 i;
-    s32 off;
     u8 *blk;
+    s32 off;
+    s32 i;
     u8 *sys;
     u8 ok;
     u8 ok2;
@@ -1767,20 +1750,8 @@ void fn_801E2620(void **arg0, u8 arg1) {
     hist[3] = 0;
     hist[4] = 0;
     hist[5] = 0;
-    if ((s8)best_idx[0] >= 0) {
-        hist[(s8)best_idx[0]] = (u8)(hist[(s8)best_idx[0]] + 1);
-    }
-    if ((s8)best_idx[1] >= 0) {
-        hist[(s8)best_idx[1]] = (u8)(hist[(s8)best_idx[1]] + 1);
-    }
-    if ((s8)best_idx[2] >= 0) {
-        hist[(s8)best_idx[2]] = (u8)(hist[(s8)best_idx[2]] + 1);
-    }
-    if ((s8)best_idx[3] >= 0) {
-        hist[(s8)best_idx[3]] = (u8)(hist[(s8)best_idx[3]] + 1);
-    }
-    if ((s8)best_idx[4] >= 0) {
-        hist[(s8)best_idx[4]] = (u8)(hist[(s8)best_idx[4]] + 1);
+    for (i = 0; i < 5; i++) {
+        if (best_idx[i] >= 0) hist[best_idx[i]]++;
     }
 
     Save_ClearUnusedSlots(arg0, hist);

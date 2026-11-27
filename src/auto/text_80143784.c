@@ -1339,6 +1339,7 @@ extern "C" void Ui_DrawMenuSlots(void *arg0) {
 
 #pragma cplusplus on
 #pragma use_lmw_stmw on
+#pragma optimization_level 2
 extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4, s32 arg5, s32 arg6) {
     void Prim2D_Begin(void);
     void fn_8000A03C(void *, void *, s32, u16);
@@ -1407,6 +1408,7 @@ extern "C" void fn_8014433C(void *arg0, s16 arg1, s16 arg2, s16 arg3, s32 *arg4,
     Prim2D_SetColorPacked(&sp8);
     Prim2D_EndPrim();
 }
+#pragma optimization_level reset
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
 
@@ -2922,6 +2924,9 @@ extern "C" s8 Fx_FindSlotByName(void *arg0) {
     return -1;
 }
 
+#pragma push
+#pragma opt_lifetimes off
+#pragma opt_propagation off
 extern "C" void fn_80146D44(void) {
     void fn_801490C8(void *);
     void fn_80148D54(void *);
@@ -2935,37 +2940,21 @@ extern "C" void fn_80146D44(void) {
     extern u8 lbl_80367AED, lbl_80367AEF;
     extern u8 lbl_80367AF0, lbl_80367AF1, lbl_80367AF2, lbl_80367AF3, lbl_80367AF4, lbl_80367AF5;
     extern s32 lbl_80367AF8, gUiInputFlags;
-    s32 i;
-    s32 t;
     u8 *p;
+    s32 i;
     u8 *base;
 
     base = gFxChannels;
-    p = (u8 *)((u32)base + 0);
-    i = 0;
-    do {
+    p = base + 0;
+    for (i = 0; i < 4; i++, p += 0x30) {
         fn_801490C8(p);
-        i++;
-        p += 0x30;
-    } while (i < 4);
-
-    i = 0;
-    p = (u8 *)((u32)base + 0xC0);
-    do {
+    }
+    for (i = 0, p = base + 0xC0; i < 0xA; i++, p += 0x30) {
         fn_80148D54(p);
-        i++;
-        p += 0x30;
-    } while (i < 0xA);
-
-    i = 0;
-    p = (u8 *)((u32)base + 0x2A0);
-    do {
+    }
+    for (i = 0, p = base + 0x2A0; i < 0x1C; i++, p += 0x30) {
         fn_80148A28(p);
-        i++;
-        p += 0x30;
-    } while (i < 0x1C);
-
-    (void)base;
+    }
 
     lbl_80367AE9 = lbl_80367AE8;
     lbl_80367AEB = lbl_80367AEA;
@@ -2973,31 +2962,27 @@ extern "C" void fn_80146D44(void) {
     lbl_80367AEF = gBgmVol;
 
     if (lbl_80367AF0 > lbl_80367AF2) {
-        t = lbl_80367AF0 - 1;
         lbl_80367AF1 = lbl_80367AF0;
-        lbl_80367AF0 = t;
-        if ((u8)t < lbl_80367AF2)
+        lbl_80367AF0--;
+        if (lbl_80367AF0 < lbl_80367AF2)
             lbl_80367AF0 = lbl_80367AF2;
     }
     if (lbl_80367AF0 < lbl_80367AF2) {
-        t = lbl_80367AF0 + 1;
         lbl_80367AF1 = lbl_80367AF0;
-        lbl_80367AF0 = t;
-        if ((u8)t > lbl_80367AF2)
+        lbl_80367AF0++;
+        if (lbl_80367AF0 > lbl_80367AF2)
             lbl_80367AF0 = lbl_80367AF2;
     }
     if (lbl_80367AF3 > lbl_80367AF5) {
-        t = lbl_80367AF3 - 1;
         lbl_80367AF4 = lbl_80367AF3;
-        lbl_80367AF3 = t;
-        if ((u8)t < lbl_80367AF5)
+        lbl_80367AF3--;
+        if (lbl_80367AF3 < lbl_80367AF5)
             lbl_80367AF0 = lbl_80367AF5;
     }
     if (lbl_80367AF3 < lbl_80367AF5) {
-        t = lbl_80367AF3 + 1;
         lbl_80367AF4 = lbl_80367AF3;
-        lbl_80367AF3 = t;
-        if ((u8)t > lbl_80367AF5)
+        lbl_80367AF3++;
+        if (lbl_80367AF3 > lbl_80367AF5)
             lbl_80367AF0 = lbl_80367AF5;
     }
 
@@ -3015,8 +3000,9 @@ extern "C" void fn_80146D44(void) {
     }
     fn_800B4080();
 }
-
+#pragma pop
 #pragma cplusplus reset
+#pragma use_lmw_stmw reset
 
 #pragma cplusplus reset
 #pragma use_lmw_stmw reset

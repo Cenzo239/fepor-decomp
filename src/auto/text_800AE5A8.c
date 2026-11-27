@@ -1625,25 +1625,24 @@ s32 fn_800B34B0(u8 *arg0) {
     u32 OSGetResetCode();
     void DCFlushRange(void *, u32);
     void fn_80258D74(u8 *(*)(s32, u32), s32);
-    u8 Sound_PushGroup(s32, u16, s32, s32, s32);
-    u8 *Sound_CopyLoadChunk(s32, u32);
-    extern u8 gSoundSys[];
-    extern void *gSoundLoadBuf;
+    u8 fn_80258D94(s32, u16, s32, s32, s32);
+    u8 *fn_800B3F8C(s32, u32);
+    extern u8 lbl_80317338[];
+    extern void *lbl_80367814;
     extern s32 lbl_8036780C;
-    extern u8 Sound_str[];
-    s32 i;
+    extern u8 lbl_8026EB70[];
     u8 *base;
     s32 handle;
     u32 buffer;
     s32 size;
     u32 value;
-    u32 *counter_ptr;
+    s32 i;
 
-    base = gSoundSys;
+    base = lbl_80317338;
     if (*(u32 *)(base + 0xE0) >= 8) {
         return 0;
     }
-    gSoundLoadBuf = NULL;
+    lbl_80367814 = NULL;
     handle = fn_800B4A84(base + 0x142, 2, 0);
     if (handle == 0) {
         buffer = 0;
@@ -1653,7 +1652,7 @@ s32 fn_800B34B0(u8 *arg0) {
             buffer = 0;
         } else {
             size = (value + 0x1F) & 0xFFFFFFE0;
-            buffer = fn_800C4638(size, Sound_str + 0x2E, 0);
+            buffer = fn_800C4638(size, lbl_8026EB70 + 0x2E, 0);
             if (buffer == 0) {
                 buffer = 0;
             } else {
@@ -1671,40 +1670,40 @@ s32 fn_800B34B0(u8 *arg0) {
         }
     }
 stored:
-    gSoundLoadBuf = (void *)buffer;
+    lbl_80367814 = (void *)buffer;
     if (buffer == 0) {
         return 0;
     }
     {
-        u8 *p = gSoundSys;
+        u8 *p = lbl_80317338;
         if (*(u32 *)(p + 0x444) == 0) {
             *(u32 *)(p + 0x444) = *(u32 *)(p + 0x448);
-            fn_80258D74(Sound_CopyLoadChunk, 0x20000);
+            fn_80258D74(fn_800B3F8C, 0x20000);
         }
     }
     {
-        u8 *ptr = gSoundSys;
-        counter_ptr = (u32 *)(ptr + 0xC0);
+        u8 *ptr = lbl_80317338;
+        u32 *counter = (u32 *)(ptr + 0xC0);
         *(u32 *)(ptr + 0xC0) = 0;
         if (arg0 != NULL) {
             while (*arg0 != 0xFF) {
-                Sound_PushGroup(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
-                *counter_ptr += 1;
+                fn_80258D94(*(s32 *)(ptr + 0x20), *arg0, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0));
+                *counter += 1;
                 arg0++;
             }
         } else {
             for (i = 0; i < 6; i++) {
-                if (Sound_PushGroup(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
-                    *counter_ptr += 1;
+                if (fn_80258D94(*(s32 *)(ptr + 0x20), i, 0, *(s32 *)(ptr + 0x40), *(s32 *)(ptr + 0x0)) == 1) {
+                    *counter += 1;
                     *(u32 *)(ptr + 0xE8) += 1;
                 }
             }
         }
+        if (lbl_80367814 != NULL) {
+            fn_800C4588((s32)lbl_80367814);
+        }
+        *(u32 *)((u8 *)counter + *(u32 *)(base + 0xE0) * 4) = 0;
     }
-    if (gSoundLoadBuf != NULL) {
-        fn_800C4588((s32)gSoundLoadBuf);
-    }
-    *(u32 *)((u8 *)counter_ptr + *(u32 *)(base + 0xE0) * 4) = 0;
     return 1;
 }
 
@@ -1932,68 +1931,47 @@ void fn_800B47C0(s32 arg0) {
 }
 
 void fn_800B47F0(void) {
-    typedef struct { u8 pad[1104]; } BigGlobal;
-    extern BigGlobal lbl_80312BD0;
-    s32 temp_r27_2;
-    s32 temp_r4;
-    u8 temp_r27;
-    void *temp_r30;
-    void *temp_r5;
-    void *temp_r5_2;
+    extern u8 lbl_80312BD0[];
+    void fn_80258D74(void *, s32);
+    void fn_800B33FC(void);
+    void fn_800B2DE4(void);
+    void Sound_PushGroup(s32, u8, s32, s32, s32);
+    void OS_YieldThread(void);
 
-    temp_r30 = &lbl_80312BD0 + 0x4768;
-loop_1:
-    if ((s32) M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E48) != 0) {
-        temp_r27 = M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E48) - 1;
-        if ((u32) M2C_FIELD(temp_r30, u32 *, 0x444) == 0U) {
-            M2C_FIELD(temp_r30, u32 *, 0x444) = (u32) M2C_FIELD(temp_r30, u32 *, 0x448);
-            fn_80258D74(&fn_800B33FC, 0x20000);
+    u8 *base = lbl_80312BD0;
+    u8 *snd = base + 0x4768;
+    s32 *q1 = (s32 *)(base + 0x6E48);
+    s32 *q2 = (s32 *)(base + 0x6E98);
+    u32 i;
+    s32 val;
+
+    for (;;) {
+        if (q1[0] != 0) {
+            u8 id = q1[0] - 1;
+            if (*(u32 *)(snd + 0x444) == 0) {
+                *(u32 *)(snd + 0x444) = *(u32 *)(snd + 0x448);
+                fn_80258D74(fn_800B33FC, 0x20000);
+            }
+            Sound_PushGroup(*(s32 *)(snd + 0x24), id, 0, *(s32 *)(snd + 0x44), *(s32 *)(snd + 4));
+            *(s32 *)(snd + 0xC4) += 1;
         }
-        Sound_PushGroup(M2C_FIELD(temp_r30, s32 *, 0x24), temp_r27, 0, M2C_FIELD(temp_r30, s32 *, 0x44), M2C_FIELD(temp_r30, s32 *, 4));
-        M2C_FIELD(temp_r30, s32 *, 0xC4) = (s32) (M2C_FIELD(temp_r30, s32 *, 0xC4) + 1);
+        val = q2[0];
+        for (i = 0; i < 15; i++) {
+            q1[i] = q1[i + 1];
+        }
+        q1[i] = 0;
+
+        if (val != 0) {
+            fn_80258D74(fn_800B2DE4, 0x20000);
+            Sound_PushGroup(*(s32 *)(snd + 0x28), (u8)(val - 1), 0, *(s32 *)(snd + 0x48), *(s32 *)(snd + 8));
+        }
+        for (i = 0; i < 15; i++) {
+            q2[i] = q2[i + 1];
+        }
+        q2[i] = 0;
+
+        OS_YieldThread();
     }
-    temp_r5 = &lbl_80312BD0 + 0x6E48;
-    temp_r27_2 = M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E98);
-    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E48) = (s32) M2C_FIELD(temp_r5, s32 *, 4);
-    M2C_FIELD(temp_r5, s32 *, 4) = (s32) M2C_FIELD(temp_r5, s32 *, 8);
-    M2C_FIELD(temp_r5, s32 *, 8) = (s32) M2C_FIELD(temp_r5, s32 *, 0xC);
-    M2C_FIELD(temp_r5, s32 *, 0xC) = (s32) M2C_FIELD(temp_r5, s32 *, 0x10);
-    M2C_FIELD(temp_r5, s32 *, 0x10) = (s32) M2C_FIELD(temp_r5, s32 *, 0x14);
-    M2C_FIELD(temp_r5, s32 *, 0x14) = (s32) M2C_FIELD(temp_r5, s32 *, 0x18);
-    M2C_FIELD(temp_r5, s32 *, 0x18) = (s32) M2C_FIELD(temp_r5, s32 *, 0x1C);
-    M2C_FIELD(temp_r5, s32 *, 0x1C) = (s32) M2C_FIELD(temp_r5, s32 *, 0x20);
-    M2C_FIELD(temp_r5, s32 *, 0x20) = (s32) M2C_FIELD(temp_r5, s32 *, 0x24);
-    M2C_FIELD(temp_r5, s32 *, 0x24) = (s32) M2C_FIELD(temp_r5, s32 *, 0x28);
-    M2C_FIELD(temp_r5, s32 *, 0x28) = (s32) M2C_FIELD(temp_r5, s32 *, 0x2C);
-    M2C_FIELD(temp_r5, s32 *, 0x2C) = (s32) M2C_FIELD(temp_r5, s32 *, 0x30);
-    M2C_FIELD(temp_r5, s32 *, 0x30) = (s32) M2C_FIELD(temp_r5, s32 *, 0x34);
-    M2C_FIELD(temp_r5, s32 *, 0x34) = (s32) M2C_FIELD(temp_r5, s32 *, 0x38);
-    M2C_FIELD(temp_r5, s32 *, 0x38) = (s32) M2C_FIELD(temp_r5, s32 *, 0x3C);
-    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E48) = 0;
-    if (temp_r27_2 != 0) {
-        fn_80258D74(&fn_800B2DE4, 0x20000);
-        Sound_PushGroup(M2C_FIELD(temp_r30, s32 *, 0x28), (u8) (temp_r27_2 - 1), 0, M2C_FIELD(temp_r30, s32 *, 0x48), M2C_FIELD(temp_r30, s32 *, 8));
-    }
-    temp_r5_2 = &lbl_80312BD0 + 0x6E98;
-    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E98) = (s32) M2C_FIELD(temp_r5_2, s32 *, 4);
-    M2C_FIELD(temp_r5_2, s32 *, 4) = (s32) M2C_FIELD(temp_r5_2, s32 *, 8);
-    M2C_FIELD(temp_r5_2, s32 *, 8) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0xC);
-    M2C_FIELD(temp_r5_2, s32 *, 0xC) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x10);
-    M2C_FIELD(temp_r5_2, s32 *, 0x10) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x14);
-    M2C_FIELD(temp_r5_2, s32 *, 0x14) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x18);
-    M2C_FIELD(temp_r5_2, s32 *, 0x18) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x1C);
-    M2C_FIELD(temp_r5_2, s32 *, 0x1C) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x20);
-    M2C_FIELD(temp_r5_2, s32 *, 0x20) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x24);
-    M2C_FIELD(temp_r5_2, s32 *, 0x24) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x28);
-    M2C_FIELD(temp_r5_2, s32 *, 0x28) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x2C);
-    M2C_FIELD(temp_r5_2, s32 *, 0x2C) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x30);
-    M2C_FIELD(temp_r5_2, s32 *, 0x30) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x34);
-    M2C_FIELD(temp_r5_2, s32 *, 0x34) = (s32) M2C_FIELD(temp_r5_2, s32 *, 0x38);
-    temp_r4 = M2C_FIELD(temp_r5_2, s32 *, 0x3C);
-    M2C_FIELD(temp_r5_2, s32 *, 0x38) = temp_r4;
-    M2C_FIELD(&lbl_80312BD0, s32 *, 0x6E98) = 0;
-    OS_YieldThread(0, temp_r4, temp_r5_2);
-    goto loop_1;
 }
 
 s32 fn_800B49C8(void *arg0) {
@@ -9566,7 +9544,10 @@ void fn_800C1984(void) {
     fn_80046360(Map_Get(), 0, Map_SetupBlendTev, 0, 0, 0x8000);
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma peephole off
+#pragma opt_common_subs off
 void fn_800C19E8(u8 *src) {
     extern u8 *gMapBlendBufs[];
     extern s32 gMapBlendBufIndex;
@@ -9618,7 +9599,7 @@ void fn_800C19E8(u8 *src) {
     }
     DCFlushRange(gMapBlendBufs[gMapBlendBufIndex], 0x2000);
 }
-#pragma peephole on
+#pragma pop
 void fn_800C1BDC(void) {
     void *fn_800C45B8(s32, void *, s32);
     void fn_800C19E8(u8 *);
@@ -9813,8 +9794,8 @@ char *fn_800C2048(s8 arg0, s8 arg1) {
                         value = *p++;
                         break;
                     case 29:
-                        value = (s16) (((p[0] & 0xFF) << 8) + p[1]);
                         p += 2;
+                        value = (s16) (((p[-2] & 0xFF) << 8) + p[-1]);
                         break;
                     case 30:
                         value = p[0] << 24;

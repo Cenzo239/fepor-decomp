@@ -6717,6 +6717,8 @@ void fn_80050E14(void) {
 #pragma peephole on
 void fn_80050E80(void)
 {
+#pragma push
+#pragma global_optimizer off
     void fn_800162B8(void);
     void fn_800616A0(void *);
     void fn_800C4588(void *);
@@ -6771,6 +6773,7 @@ void fn_80050E80(void)
     b = (void *)gUnitShadowMat;
     lbl_803672CC = 0;
     fn_8006D8E8(b);
+#pragma pop
 }
 
 #pragma push

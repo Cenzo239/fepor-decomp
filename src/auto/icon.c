@@ -608,91 +608,111 @@ char *fn_800C2E3C(void *arg0, s32 index) {
 }
 
 #pragma opt_common_subs off
-s32 fn_800C2EF8(u8 *slots, s32 index, u8 *str) {
-    s32 fn_80010710(u8 *);
-    void *memset(void *, s32, u32);
-    u8 *src;
-    u8 *dst;
-    u32 count;
-    u8 is_sjis;
-    u8 flag;
-    s32 off;
-    u8 *end;
-    u8 *p;
-    u32 b0;
-    u32 b1;
+s32 fn_800C2EF8(u8 *slots, s32 index, u8 *str)
+{
+  s32 fn_80010710(u8 *);
+  void *memset(void *, s32, u32);
+  u8 *src;
+  u8 *dst;
+  u8 *new_var2;
+  u32 count;
+  u8 is_sjis;
+  u8 flag;
+  s32 off;
+  u8 *end;
+  int new_var;
+  u8 *p;
+  u32 b0;
+  u32 b1;
+  new_var2 = (slots + ((index - 1) * 0x18)) + 1;
+  src = str;
+  dst = new_var2;
+  new_var = 0xF;
+  memset(dst, 0, new_var);
+  count = 0;
+  goto check;
+  body:
+  src += fn_80010710(src);
 
-    src = str;
-    dst = slots + ((index - 1) * 0x18) + 1;
-    memset(dst, 0, 0xF);
-    count = 0;
-    goto check;
-body:
-    src += fn_80010710(src);
-    if ((s8)*src == 0) {
-        goto done;
-    }
-    b0 = *(volatile u8 *)src & 0xFF;
-    if (!((b0 >= 0x81U && b0 <= 0x9FU) || (b0 >= 0xE0U && b0 <= 0xFCU))) {
-        goto not_sjis;
-    }
+  if (((s8) (*src)) == 0)
+  {
+    goto done;
+  }
+  b1 = *((volatile u8 *) src);
+  b0 = b1 & 0xFF;
+  if (!(((b0 >= 0x81U) && (b0 <= 0x9FU)) || ((b0 >= 0xE0U) && (b0 <= 0xFCU))))
+  {
+    goto not_sjis;
+  }
+  b1 = src[1];
+  if (!(((b1 >= 0x40U) && (b1 <= 0x7EU)) || ((b1 >= 0x80U) && (b1 <= 0xFCU))))
+  {
+    goto not_sjis;
+  }
+  is_sjis = 1;
+  goto after_sjis;
+  not_sjis:
+  is_sjis = 0;
+
+  after_sjis:
+  if (is_sjis != 0)
+  {
+    b0 = src[0];
     b1 = src[1];
-    if (!((b1 >= 0x40U && b1 <= 0x7EU) || (b1 >= 0x80U && b1 <= 0xFCU))) {
-        goto not_sjis;
+    src += 2;
+    dst[0] = (u8) b0;
+    dst[1] = (u8) b1;
+    dst += 2;
+  }
+  else
+  {
+    register u32 tmp = src[0];
+    src += 1;
+    dst[0] = (u8) tmp;
+    dst += 1;
+  }
+
+  ++count;
+  check:
+  if (((s8) (*src)) == 0)
+  {
+    goto done;
+  }
+
+  if (count < 0xEU)
+  {
+    goto body;
+  }
+  done:
+  off = index * 0x18;
+
+  end = slots + off;
+  flag = 0;
+  if (((((((((((s8) end[-0x17]) == 0) && (((s8) end[-0x8]) == 0)) && (((s8) end[-0x7]) == 0)) && (((s8) end[-0x6]) == 0)) && (((s8) end[-0x5]) == 0)) && (end[-0x4] == 0x80)) && (end[-0x3] == 0x80)) && (end[-0x2] == 0x80)) && (end[-0x1] == 0xFF))
+  {
+    flag = 1;
+  }
+  if (flag != 0)
+  {
+    p = slots + off;
+    {
+      u8 z = 0;
+      u8 a = 0x80;
+      u8 b = 0xFF;
+      p[-0x18] = z;
+      end[-0x17] = z;
+      p[-0x5] = z;
+      p[-0x6] = z;
+      p[-0x7] = z;
+      p[-0x8] = z;
+      p[-0x2] = a;
+      p[-0x3] = a;
+      p[-0x4] = a;
+      p[-0x1] = b;
     }
-    is_sjis = 1;
-    goto after_sjis;
-not_sjis:
-    is_sjis = 0;
-after_sjis:
-    if (is_sjis != 0) {
-        struct { u8 a; u8 b; } pair;
-        pair.a = src[0];
-        pair.b = src[1];
-        src += 2;
-        dst[0] = pair.a;
-        dst[1] = pair.b;
-        dst += 2;
-    } else {
-        register u32 tmp = src[0];
-        src += 1;
-        dst[0] = (u8)tmp;
-        dst += 1;
-    }
-    ++count;
-check:
-    if ((s8)*src == 0) {
-        goto done;
-    }
-    if (count < 0xEU) {
-        goto body;
-    }
-done:
-    off = index * 0x18;
-    end = slots + off;
-    flag = 0;
-    if (((s8)end[-0x17] == 0) && ((s8)end[-0x8] == 0) && ((s8)end[-0x7] == 0) &&
-        ((s8)end[-0x6] == 0) && ((s8)end[-0x5] == 0) &&
-        (end[-0x4] == 0x80) && (end[-0x3] == 0x80) &&
-        (end[-0x2] == 0x80) && (end[-0x1] == 0xFF)) {
-        flag = 1;
-    }
-    if (flag != 0) {
-        p = slots + off;
-        flag = 0;
-        p[-0x18] = flag;
-        end[-0x17] = flag;
-        p[-0x5] = flag;
-        p[-0x6] = flag;
-        p[-0x7] = flag;
-        p[-0x8] = flag;
-        p[-0x2] = 0x80;
-        p[-0x3] = 0x80;
-        p[-0x4] = 0x80;
-        p[-0x1] = 0xFF;
-        return flag;
-    }
-    return index;
+    return 0;
+  }
+  return index;
 }
 #pragma opt_common_subs reset
 s32 Icon_GetSlot(s32 arg0, s32 arg1) {

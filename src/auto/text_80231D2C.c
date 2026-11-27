@@ -1699,559 +1699,731 @@ return value;
 f64 fn_8022D5E0(void *);
 f64 fn_802345B0(s32 arg0, s32 (*arg1)(void *, s32, s32), void *arg2, s32 *arg3, s32 *arg4)
 {
-    extern u8 lbl_80282C88[];
-    extern u8 *lbl_8029EBA8[];
-    extern u8 lbl_8029E8A8[];
-    extern u8 lbl_8029EAA8[];
-    extern u8 lbl_80282CB4[];
-    extern f32 lbl_8036706C[];
-    extern f32 lbl_80367068[];
-    extern f64 lbl_80367080[];
-    extern f64 lbl_80367088[];
-    extern f64 lbl_80367090[];
-    extern s32 lbl_8036BE08;
-    extern u8 lbl_8036BE0C;
-    extern f64 lbl_8036BE10;
-    extern f64 lbl_8036BE18;
-    f64 fn_8022D5E0(void *);
-
-    typedef union {
-        f64 d;
-        u32 w[2];
-        u16 h[4];
-        s16 sh[4];
-        u8 b[8];
-        unsigned long long bits;
-    } DoubleBits;
-
-    s32 sp60 = 0;
-    s32 sp5C = 0;
-    s32 sp58 = 0;
-    u8 buf[0x2C];
-    DoubleBits value;
-    u8 infbuf[12];
-    u8 nanbuf[8];
-    s32 state = 1;
-    s32 hexphase = 0;
-    s32 skipped = 0;
-    s32 expv = 0;
-    s32 trail = 0;
-    s32 neg = 0;
-    s32 pos = 1;
-    s32 ch;
-    s32 cls;
-    s32 n;
-    s32 i;
-    s32 mask;
-    s32 hexCount = 2;
-    s32 wholeHexDigits = 0;
-    s32 hexSuffix = 0;
-    s16 hexexp = 0;
-    u8 decimal;
-    u8 *p;
-    f32 f;
-
+  extern u8 lbl_80282C88[];
+  extern u8 *lbl_8029EBA8[];
+  extern u8 lbl_8029E8A8[];
+  extern u8 lbl_8029EAA8[];
+  extern u8 lbl_80282CB4[];
+  extern f32 lbl_8036706C[];
+  extern f32 lbl_80367068[];
+  extern f64 lbl_80367080[];
+  extern f64 lbl_80367088[];
+  extern f64 lbl_80367090[];
+  extern s32 lbl_8036BE08;
+  int new_var;
+  extern u8 lbl_8036BE0C;
+  extern f64 lbl_8036BE10;
+  void *new_var2;
+  extern f64 lbl_8036BE18;
+  f64 fn_8022D5E0(void *);
+  typedef union 
+  {
+    f64 d;
+    u32 w[2];
+    u16 h[4];
+    s16 sh[4];
+    u8 b[8];
+    unsigned long long bits;
+  } DoubleBits;
+  s32 sp60 = 0;
+  s32 sp5C = 0;
+  s32 sp58 = 0;
+  u8 buf[0x2C];
+  DoubleBits value;
+  u8 infbuf[12];
+  u8 nanbuf[8];
+  s32 state = 1;
+  s32 hexphase = 0;
+  s32 skipped = 0;
+  s32 expv = 0;
+  s32 trail = 0;
+  s32 neg = 0;
+  s32 pos = 1;
+  s32 ch;
+  s32 cls;
+  s32 n;
+  s32 i;
+  s32 mask;
+  s32 hexCount = 2;
+  s32 wholeHexDigits = 0;
+  s32 hexSuffix = 0;
+  s16 hexexp = 0;
+  u8 decimal;
+  u8 *p;
+  f32 f;
+  {
+    const u32 *srcWords = (const u32 *) lbl_80282C88;
+    u32 *dstWords = (u32 *) buf;
+    u32 w0 = srcWords[0];
+    u32 w8 = srcWords[8];
+    u32 w1;
+    u32 w2 = srcWords[2];
+    u32 w3 = srcWords[3];
+    u32 w4 = srcWords[4];
+    u32 w5 = srcWords[5];
+    u32 w6 = srcWords[6];
+    u32 w7 = srcWords[7];
+    u32 w9 = srcWords[9];
+    u16 last = *((const u16 *) (lbl_80282C88 + 0x28));
+    dstWords[0] = w0;
+    dstWords[1] = srcWords[1];
+    dstWords[3] = w3;
+    dstWords[4] = w4;
+    dstWords[2] = w2;
+    dstWords[5] = w5;
+    dstWords[6] = w6;
+    dstWords[7] = w7;
+    dstWords[8] = w8;
+    dstWords[9] = w9;
+    *((u16 *) (buf + 0x28)) = last;
+  }
+  decimal = *lbl_8029EBA8[0];
+  *arg4 = 0;
+  ch = arg1(arg2, 0, 0);
+  goto parse_check;
+  parse_next:
+  switch (state)
+  {
+    case 1:
+      if (lbl_8029E8A8[(u8) ch] & 6)
     {
-        const u32 *srcWords = (const u32 *)lbl_80282C88;
-        u32 *dstWords = (u32 *)buf;
-        u32 w0 = srcWords[0];
-        u32 w1 = srcWords[1];
-        u32 w2 = srcWords[2];
-        u32 w3 = srcWords[3];
-        u32 w4 = srcWords[4];
-        u32 w5 = srcWords[5];
-        u32 w6 = srcWords[6];
-        u32 w7 = srcWords[7];
-        u32 w8 = srcWords[8];
-        u32 w9 = srcWords[9];
-        u16 last = *(const u16 *)(lbl_80282C88 + 0x28);
-
-        dstWords[0] = w0;
-        dstWords[1] = w1;
-        dstWords[3] = w3;
-        dstWords[4] = w4;
-        dstWords[2] = w2;
-        dstWords[5] = w5;
-        dstWords[6] = w6;
-        dstWords[7] = w7;
-        dstWords[8] = w8;
-        dstWords[9] = w9;
-        *(u16 *)(buf + 0x28) = last;
+      ch = arg1(arg2, 0, 0);
+      skipped++;
     }
-    decimal = *lbl_8029EBA8[0];
-    *arg4 = 0;
-    ch = arg1(arg2, 0, 0);
+    else
+    {
+      cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+      switch (cls)
+      {
+        case 0x2D:
+          neg = 1;
+          pos++;
+          ch = arg1(arg2, 0, 0);
+          sp5C = 1;
+          break;
 
-    goto parse_check;
-parse_next:
-    switch (state) {
-        case 1:
-            if (lbl_8029E8A8[(u8)ch] & 6) {
-                ch = arg1(arg2, 0, 0);
-                skipped++;
-            } else {
-                cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                switch (cls) {
-                case 0x2D:
-                    neg = 1;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                    sp5C = 1;
-                    break;
-                case 0x2B:
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                    sp5C = 1;
-                    break;
-                case 0x49:
-                    pos++;
-                    state = 0x4000;
-                    ch = arg1(arg2, 0, 0);
-                    break;
-                case 0x4E:
-                    pos++;
-                    state = 0x2000;
-                    ch = arg1(arg2, 0, 0);
-                    break;
-                default:
-                    state = 2;
-                    break;
-                }
-            }
-            break;
+        case 0x2B:
+          pos++;
+          ch = arg1(arg2, 0, 0);
+          sp5C = 1;
+          break;
 
-        case 0x4000:
-            p = &infbuf[1];
-            n = 1;
-            *(s32 *)infbuf = *(s32 *)lbl_80282CB4;
-            *(s32 *)(infbuf + 4) = *(s32 *)(lbl_80282CB4 + 4);
-            infbuf[8] = lbl_80282CB4[8];
-            goto inf_check;
-inf_advance:
-            p++;
-            n++;
-            pos++;
-            ch = arg1(arg2, 0, 0);
-inf_check:
-            if (n < 8) {
-                cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                if ((s8)*p == cls)
-                    goto inf_advance;
-            }
-            if (n == 3 || n == 8) {
-                f = neg ? -lbl_8036706C[0] : lbl_8036706C[0];
-                value.d = f;
-                *arg3 = skipped + n + sp5C;
-                return value.d;
-            }
-            state = 0x1000;
-            break;
+        case 0x49:
+          pos++;
+          state = 0x4000;
+          ch = arg1(arg2, 0, 0);
+          break;
 
-        case 0x2000:
-            p = &nanbuf[1];
-            n = 1;
-            *(s32 *)nanbuf = lbl_8036BE08;
-            nanbuf[4] = lbl_8036BE0C;
-            i = 0;
-            goto nan_check;
-nan_advance:
-            p++;
-            n++;
-            pos++;
-            ch = arg1(arg2, 0, 0);
-nan_check:
-            if (n < 4) {
-                cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                if ((s8)*p == cls)
-                    goto nan_advance;
-            }
-            if (n == 3 || n == 4) {
-                if (n == 4) {
-                    while (i < 0x20 &&
-                           ((lbl_8029E8A8[(u8)ch] & 0x10) ||
-                            (lbl_8029E8A8[(u8)ch] & 0xC0))) {
-                        i++;
-                        pos++;
-                        ch = arg1(arg2, 0, 0);
-                    }
-                    if (ch != 0x29) {
-                        state = 0x1000;
-                        break;
-                    }
-                    i++;
-                }
-                f = neg ? -lbl_80367068[0] : lbl_80367068[0];
-                value.d = f;
-                *arg3 = skipped + n + i + sp5C;
-                return value.d;
-            }
-            state = 0x1000;
-            break;
-
-        case 2:
-            if (ch == (s32)decimal) {
-                state = 0x10;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                state = 0x1000;
-            } else if (ch == 0x30) {
-                pos++;
-                ch = arg1(arg2, 0, 0);
-                cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                if (cls == 0x58) {
-                    hexphase = 1;
-                    state = 0x8000;
-                } else {
-                    state = 4;
-                }
-            } else {
-                state = 8;
-            }
-            break;
-
-        case 4:
-            if (ch == 0x30) {
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else {
-                state = 8;
-            }
-            break;
-
-        case 8:
-            if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                if (ch == (s32)decimal) {
-                    state = 0x20;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                } else {
-                    state = 0x40;
-                }
-            } else {
-                if (buf[4] < 0x14) {
-                    u8 length = buf[4];
-                    buf[4] = length + 1;
-                    buf[5 + length] = (u8)ch;
-                } else {
-                    trail++;
-                }
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            }
-            break;
-
-        case 0x10:
-            if (!(lbl_8029E8A8[(u8)ch] & 0x10))
-                state = 0x1000;
-            else
-                state = 0x20;
-            break;
-
-        case 0x20:
-            if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                state = 0x40;
-            } else {
-                if (buf[4] < 0x14) {
-                    if (ch != 0x30 || buf[4] != 0) {
-                        u8 length = buf[4];
-                        buf[4] = length + 1;
-                        buf[5 + length] = (u8)ch;
-                    }
-                    trail--;
-                }
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            }
-            break;
-
-        case 0x40:
-            cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-            if (cls == 0x45) {
-                state = 0x80;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else {
-                state = 0x800;
-            }
-            break;
-
-        case 0x80:
-            if (ch == 0x2B) {
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else if (ch == 0x2D) {
-                pos++;
-                ch = arg1(arg2, 0, 0);
-                sp60 = 1;
-            }
-            state = 0x100;
-            break;
-
-        case 0x100:
-            if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                state = 0x1000;
-            } else if (ch == 0x30) {
-                state = 0x200;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else {
-                state = 0x400;
-            }
-            break;
-
-        case 0x200:
-            if (ch == 0x30) {
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            } else {
-                state = 0x400;
-            }
-            break;
-
-        case 0x400:
-            if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                state = 0x800;
-            } else {
-                expv = (ch + expv * 10) - 0x30;
-                if (expv > 0x7FFF)
-                    *arg4 = 1;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-            }
-            break;
-
-        case 0x8000:
-            switch (hexphase) {
-            case 1:
-                value.b[0] = 0;
-                value.b[1] = 0;
-                value.b[2] = 0;
-                value.b[3] = 0;
-                value.b[4] = 0;
-                value.b[5] = 0;
-                value.b[6] = 0;
-                value.b[7] = 0;
-                hexCount = 2;
-                hexphase = 2;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-                break;
-
-            case 2:
-                if (ch == 0x30) {
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                } else {
-                    hexphase = 4;
-                }
-                break;
-
-            case 4:
-                if (!(lbl_8029E8A8[(u8)ch] & 0x20)) {
-                    if (ch == (s32)decimal) {
-                        hexphase = 8;
-                        pos++;
-                        ch = arg1(arg2, 0, 0);
-                    } else {
-                        hexphase = 0x10;
-                    }
-                } else {
-                    if (hexCount < 0x11) {
-                        s32 digit;
-                        s32 index = hexCount / 2;
-                        u8 old = value.b[index];
-                        cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                        digit = cls >= 0x41 ? cls - 0x37 : cls - 0x30;
-                        if (hexCount % 2)
-                            value.b[index] = (u8)(old | digit);
-                        else
-                            value.b[index] = (u8)(old | ((u8)digit << 4));
-                        hexCount++;
-                        wholeHexDigits++;
-                    }
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                }
-                break;
-
-            case 8:
-                if (!(lbl_8029E8A8[(u8)ch] & 0x20)) {
-                    hexphase = 0x10;
-                } else {
-                    if (hexCount < 0x11) {
-                        s32 digit;
-                        s32 index = hexCount / 2;
-                        u8 old = value.b[index];
-                        cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                        digit = cls >= 0x41 ? cls - 0x37 : cls - 0x30;
-                        if (hexCount % 2)
-                            value.b[index] = (u8)(old | digit);
-                        else
-                            value.b[index] = (u8)(old | ((u8)digit << 4));
-                        hexCount++;
-                    }
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                }
-                break;
-
-            case 0x10:
-                cls = (ch == -1) ? -1 : (s32)lbl_8029EAA8[(u8)ch];
-                if (cls == 0x50) {
-                    hexphase = 0x20;
-                    hexSuffix++;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                } else {
-                    state = 0x800;
-                }
-                break;
-
-            case 0x20:
-                hexSuffix++;
-                if (ch == 0x2D) {
-                    sp58 = 1;
-                } else if (ch != 0x2B) {
-                    arg1(arg2, ch, 1);
-                    hexSuffix--;
-                }
-                hexphase = 0x40;
-                pos++;
-                ch = arg1(arg2, 0, 0);
-                break;
-
-            case 0x40:
-                if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                    state = 0x1000;
-                } else if (ch == 0x30) {
-                    hexphase = 0x80;
-                    hexSuffix++;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                } else {
-                    hexphase = 0x100;
-                }
-                break;
-
-            case 0x80:
-                if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                    state = 0x800;
-                } else if (ch == 0x30) {
-                    hexSuffix++;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                } else {
-                    hexphase = 0x100;
-                }
-                break;
-
-            case 0x100:
-                if (!(lbl_8029E8A8[(u8)ch] & 0x10)) {
-                    state = 0x800;
-                } else {
-                    hexexp = (s16)((hexexp * 10 + ch) - 0x30);
-                    if (expv > 0x7FFF)
-                        *arg4 = 1;
-                    hexSuffix++;
-                    pos++;
-                    ch = arg1(arg2, 0, 0);
-                }
-                break;
-
-            default:
-                break;
-            }
-            break;
+        case 0x4E:
+          pos++;
+          state = 0x2000;
+          ch = arg1(arg2, 0, 0);
+          break;
 
         default:
-            state = 0x1000;
-            break;
-    }
-parse_check:
-    if (pos <= arg0 && ch != -1 && !(state & 0x1800))
-        goto parse_next;
+          state = 2;
+          break;
 
-    mask = state & 0xE2C;
-    if (mask == 0)
-        *arg3 = 0;
+      }
+
+    }
+      do
+    {
+      break;
+    }
+    while (0);
+
+    case 0x4000:
+      p = &infbuf[1];
+      n = 1;
+      *((s32 *) infbuf) = *((s32 *) lbl_80282CB4);
+      *((s32 *) (infbuf + 4)) = *((s32 *) (lbl_80282CB4 + 4));
+      infbuf[8] = lbl_80282CB4[8];
+      goto inf_check;
+      inf_advance:
+    p++;
+
+      n++;
+      pos++;
+      ch = arg1(arg2, 0, 0);
+      inf_check:
+    if (n < 8)
+    {
+      cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+      if (((s8) (*p)) == cls)
+      {
+        goto inf_advance;
+      }
+    }
+
+      if ((n == 3) || (n == 8))
+    {
+      f = (neg) ? (-lbl_8036706C[0]) : (lbl_8036706C[0]);
+      value.d = f;
+      *arg3 = (skipped + n) + sp5C;
+      return value.d;
+    }
+      state = 0x1000;
+      break;
+
+    case 0x2000:
+      p = &nanbuf[1];
+      n = 1;
+      *((s32 *) nanbuf) = lbl_8036BE08;
+      nanbuf[4] = lbl_8036BE0C;
+      i = 0;
+      goto nan_check;
+      nan_advance:
+    p++;
+
+      new_var = 0xC0;
+      n++;
+      pos++;
+      ch = arg1(arg2, 0, 0);
+      nan_check:
+    if (n < 4)
+    {
+      cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+      if (((s8) (*p)) == cls)
+      {
+        goto nan_advance;
+      }
+    }
+
+      if ((n == 3) || (n == 4))
+    {
+      if (n == 4)
+      {
+        while ((i < 0x20) && ((lbl_8029E8A8[(u8) ch] & 0x10) || (lbl_8029E8A8[(u8) ch] & new_var)))
+        {
+          i++;
+          pos++;
+          ch = arg1(arg2, 0, 0);
+        }
+
+        if (ch != 0x29)
+        {
+          state = 0x1000;
+          break;
+        }
+        i++;
+      }
+      f = (neg) ? (-lbl_80367068[0]) : (lbl_80367068[0]);
+      value.d = f;
+      *arg3 = ((skipped + n) + i) + sp5C;
+      return value.d;
+    }
+      state = 0x1000;
+      break;
+      new_var2 = arg2;
+
+    case 2:
+      if (ch == ((s32) decimal))
+    {
+      state = 0x10;
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
     else
-        *arg3 = (pos + skipped) - 1;
+      if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+    {
+      state = 0x1000;
+    }
+    else
+      if (ch == 0x30)
+    {
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+      cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+      if (cls == 0x58)
+      {
+        hexphase = 1;
+        state = 0x8000;
+      }
+      else
+      {
+        state = 4;
+      }
+    }
+    else
+    {
+      state = 8;
+    }
+      break;
 
-    arg1(arg2, ch, 1);
+    case 4:
+      if (ch == 0x30)
+    {
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+    else
+    {
+      state = 8;
+    }
+      break;
 
-    if (hexphase == 0) {
-        if (sp60)
-            expv = -expv;
+    case 8:
+      if (!(lbl_8029E8A8[(u8) ((unsigned long) ch)] & 0x10))
+    {
+      if (ch == ((s32) decimal))
+      {
+        state = 0x20;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+      else
+      {
+        state = 0x40;
+      }
+    }
+    else
+    {
+      if (buf[4] < 0x14)
+      {
+        u8 length = buf[4];
+        buf[4] = length + 1;
+        buf[5 + length] = (u8) ch;
+      }
+      else
+      {
+        trail++;
+      }
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+      break;
+
+    case 0x10:
+      if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+    {
+      state = 0x1000;
+    }
+    else
+    {
+      state = 0x20;
+    }
+      break;
+
+    case 0x20:
+      if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+    {
+      state = 0x40;
+    }
+    else
+    {
+      if (buf[4] < 0x14)
+      {
+        if ((ch != 0x30) || (buf[4] != 0))
         {
-            s32 nd = buf[4];
-            u8 *q = buf + 5 + nd;
-            for (;;) {
-                if (nd-- == 0)
-                    break;
-                if (*--q != 0x30)
-                    break;
-                trail++;
-            }
-            buf[4] = (u8)(nd + 1);
+          u8 length = buf[4];
+          buf[4] = length + 1;
+          buf[5 + length] = (u8) ch;
         }
-        if (buf[4] == 0) {
-            s32 nd = buf[4];
-            buf[4] = (u8)(nd + 1);
-            buf[5 + nd] = 0x30;
-        }
-        expv += trail;
-        if (expv < -0x8000 || expv > 0x7FFF)
-            *arg4 = 1;
+        trail--;
+      }
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+      break;
 
-        if (*arg4 != 0) {
-            if (sp60)
-                return lbl_8036BE10;
-            if (neg)
-                return -lbl_80367080[0];
-            return lbl_80367080[0];
-        }
+    case 0x40:
+      cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+      if (cls == 0x45)
+    {
+      state = 0x80;
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+    else
+    {
+      state = 0x800;
+    }
+      break;
 
-        *(s16 *)(buf + 2) = (s16)expv;
-        value.d = fn_8022D5E0(buf);
-        if (lbl_8036BE10 != value.d && value.d < lbl_80367088[0]) {
-            *arg4 = 1;
-        } else if (value.d > lbl_80367090[0]) {
-            *arg4 = 1;
-            value.d = lbl_80367080[0];
+    case 0x80:
+      if (ch == 0x2B)
+    {
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+    else
+      if (ch == 0x2D)
+    {
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+      sp60 = 1;
+    }
+      state = 0x100;
+      break;
+
+    case 0x100:
+      if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+    {
+      state = 0x1000;
+    }
+    else
+      if (ch == 0x30)
+    {
+      state = 0x200;
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+    else
+    {
+      state = 0x400;
+    }
+      break;
+
+    case 0x200:
+      if (ch == 0x30)
+    {
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+    else
+    {
+      state = 0x400;
+    }
+      break;
+
+    case 0x400:
+      if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+    {
+      state = 0x800;
+    }
+    else
+    {
+      expv = (ch + (expv * 10)) - 0x30;
+      if (expv > 0x7FFF)
+      {
+        *arg4 = 1;
+      }
+      pos++;
+      ch = arg1(new_var2, 0, 0);
+    }
+      break;
+
+    case 0x8000:
+      switch (hexphase)
+    {
+      case 1:
+        value.b[0] = 0;
+        value.b[1] = 0;
+        value.b[2] = 0;
+        value.b[3] = 0;
+        value.b[4] = 0;
+        value.b[5] = 0;
+        value.b[6] = 0;
+        value.b[7] = 0;
+        hexCount = 2;
+        hexphase = 2;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+        break;
+
+      case 2:
+        if (ch == 0x30)
+      {
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+      else
+      {
+        hexphase = 4;
+      }
+        break;
+
+      case 4:
+        if (!(lbl_8029E8A8[(u8) ch] & 0x20))
+      {
+        if (ch == ((s32) decimal))
+        {
+          hexphase = 8;
+          pos++;
+          ch = arg1(new_var2, 0, 0);
         }
-        if (neg && mask != 0)
-            value.d = -value.d;
-        return value.d;
+        else
+        {
+          hexphase = 0x10;
+        }
+      }
+      else
+      {
+        if (hexCount < 0x11)
+        {
+          s32 digit;
+          s32 index = hexCount / 2;
+          u8 old = value.b[index];
+          cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+          digit = (cls >= 0x41) ? (cls - 0x37) : (cls - 0x30);
+          if (hexCount % 2)
+          {
+            value.b[index] = (u8) (old | digit);
+          }
+          else
+          {
+            value.b[index] = (u8) (old | (((u8) digit) << 4));
+          }
+          hexCount++;
+          wholeHexDigits++;
+        }
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+        break;
+
+      case 8:
+        if (!(lbl_8029E8A8[(u8) ch] & 0x20))
+      {
+        hexphase = 0x10;
+      }
+      else
+      {
+        if (hexCount < 0x11)
+        {
+          s32 digit;
+          s32 index = hexCount / 2;
+          u8 old = value.b[index];
+          cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+          digit = (cls >= 0x41) ? (cls - 0x37) : (cls - 0x30);
+          if (hexCount % 2)
+          {
+            value.b[index] = (u8) (old | digit);
+          }
+          else
+          {
+            value.b[index] = (u8) (old | (digit << 4));
+          }
+          hexCount++;
+        }
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+        break;
+
+      case 0x10:
+        cls = (ch == (-1)) ? (-1) : ((s32) lbl_8029EAA8[(u8) ch]);
+        if (cls == 0x50)
+      {
+        hexphase = 0x20;
+        hexSuffix++;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+      else
+      {
+        state = 0x800;
+      }
+        break;
+
+      case 0x20:
+        hexSuffix++;
+        if (ch == 0x2D)
+      {
+        sp58 = 1;
+      }
+      else
+        if (ch != 0x2B)
+      {
+        arg1(new_var2, ch, 1);
+        hexSuffix--;
+      }
+        hexphase = 0x40;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+        break;
+
+      case 0x40:
+        if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+      {
+        state = 0x1000;
+      }
+      else
+        if (ch == 0x30)
+      {
+        hexphase = 0x80;
+        hexSuffix++;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+      else
+      {
+        hexphase = 0x100;
+      }
+        break;
+
+      case 0x80:
+        if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+      {
+        state = 0x800;
+      }
+      else
+        if (ch == 0x30)
+      {
+        hexSuffix++;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+      else
+      {
+        hexphase = 0x100;
+      }
+        break;
+
+      case 0x100:
+        if (!(lbl_8029E8A8[(u8) ch] & 0x10))
+      {
+        state = 0x800;
+      }
+      else
+      {
+        hexexp = (s16) (((hexexp * 10) + ch) - 0x30);
+        if (expv > 0x7FFF)
+        {
+          *arg4 = 1;
+        }
+        hexSuffix++;
+        pos++;
+        ch = arg1(new_var2, 0, 0);
+      }
+        break;
+
+      default:
+        break;
+
     }
 
-    if (value.d != lbl_8036BE18) {
-        if (sp58)
-            hexexp = (s16)-hexexp;
-        hexexp++;
-        value.bits >>= 1;
+      break;
+
+    default:
+      state = 0x1000;
+      break;
+
+  }
+
+
+  parse_check:
+  if (((pos <= arg0) && (ch != (-1))) && (!(state & 0x1800)))
+  {
+    goto parse_next;
+  }
+
+  mask = state & 0xE2C;
+  if (mask == 0)
+  {
+    *arg3 = 0;
+  }
+  else
+  {
+    *arg3 = (pos + skipped) - 1;
+  }
+  arg1(new_var2, ch, 1);
+  if (hexphase == 0)
+  {
+    if (sp60)
+    {
+      expv = -expv;
+    }
+    {
+      s32 nd = buf[4];
+      u8 *q = (buf + 5) + nd;
+      for (;;)
+      {
+        if ((nd--) == 0)
         {
-            s16 head = value.sh[0];
-            if ((head & 0xF0) == 0x10) {
-                head &= 0xF;
-                hexexp = (s16)(hexexp + (wholeHexDigits - 1) * 4);
-                value.h[0] = (u16)(head | ((u32)(hexexp + 0x3FF) << 4));
-                *arg3 = skipped + sp5C + hexCount + 1 + hexSuffix;
-                if (lbl_8036BE10 != value.d && value.d < lbl_80367088[0]) {
-                    *arg4 = 1;
-                    value.d = lbl_8036BE10;
-                } else if (value.d > lbl_80367090[0]) {
-                    *arg4 = 1;
-                    value.d = lbl_80367080[0];
-                }
-            }
+          break;
         }
-        if (neg)
-            value.sh[0] |= (s16)0x8000;
-    } else {
-        value.d = lbl_8036BE10;
+        if ((*(--q)) != 0x30)
+        {
+          break;
+        }
+        trail++;
+        state = 0x40;
+      }
+
+      buf[4] = (u8) (nd + 1);
+    }
+    if (buf[4] == 0)
+    {
+      s32 nd = buf[4];
+      buf[4] = (u8) (nd + 1);
+      buf[5 + nd] = 0x30;
+    }
+    expv += trail;
+    if ((expv < (-0x8000)) || (expv > 0x7FFF))
+    {
+      *arg4 = 1;
+    }
+    if ((*arg4) != 0)
+    {
+      if (sp60)
+      {
+        return lbl_8036BE10;
+      }
+      if (neg)
+      {
+        return -lbl_80367080[0];
+      }
+      return lbl_80367080[0];
+    }
+    *((s16 *) (buf + 2)) = (s16) expv;
+    value.d = fn_8022D5E0(buf);
+    if ((lbl_8036BE10 != value.d) && (value.d < lbl_80367088[0]))
+    {
+      *arg4 = 1;
+    }
+    else
+      if (value.d > lbl_80367090[0])
+    {
+      *arg4 = 1;
+      value.d = lbl_80367080[0];
+    }
+    if (neg && (mask != 0))
+    {
+      value.d = -value.d;
     }
     return value.d;
+  }
+  if (value.d != lbl_8036BE18)
+  {
+    if (sp58)
+    {
+      hexexp = (s16) (-hexexp);
+    }
+    hexexp++;
+    value.bits >>= 1;
+    {
+      s16 head = value.sh[0];
+      if ((head & 0xF0) == 0x10)
+      {
+        head &= 0xF;
+        hexexp = (s16) (hexexp + ((wholeHexDigits - 1) * 4));
+        value.h[0] = (u16) (head | (((u32) (hexexp + 0x3FF)) << 4));
+        *arg3 = (((skipped + sp5C) + hexCount) + 1) + hexSuffix;
+        if ((lbl_8036BE10 != value.d) && (value.d < lbl_80367088[0]))
+        {
+          *arg4 = 1;
+          value.d = lbl_8036BE10;
+        }
+        else
+          if (value.d > lbl_80367090[0])
+        {
+          *arg4 = 1;
+          value.d = lbl_80367080[0];
+        }
+      }
+    }
+    if (neg)
+    {
+      value.sh[0] |= (s16) 0x8000;
+    }
+  }
+  else
+  {
+    value.d = lbl_8036BE10;
+  }
+  return value.d;
 }
 
 s32 atoi(char *str) {

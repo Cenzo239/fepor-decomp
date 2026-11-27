@@ -690,6 +690,7 @@ void fn_80056B0C(void *arg0) {
 
 #pragma push
 #pragma cplusplus on
+#pragma opt_lifetimes off
 #pragma use_lmw_stmw on
 extern "C" void fn_80057020(void *arg0) {
     void Prim2D_EmitQuad(void);
@@ -708,11 +709,11 @@ extern "C" void fn_80057020(void *arg0) {
     extern f32 lbl_8036914C;
     typedef u8 (*VFn)(void *);
     s32 temp_r25;
-    s32 var_r27;
-    s32 var_r28;
-    s32 temp_r29;
-    s32 temp_r30;
     s32 var_r31;
+    s32 temp_r30;
+    s32 temp_r29;
+    s32 var_r28;
+    s32 var_r27;
     s32 temp_r4;
     void *temp_r3;
 
@@ -1347,6 +1348,8 @@ void GActor_SetNodeLinkParam(void *arg0, u8 *arg1) {
     *(u16 *)((u8 *)arg0 + 0x54) = (u16)(*(u16 *)((u8 *)arg0 + 0x54) | 1);
 }
 #pragma use_lmw_stmw on
+#pragma push
+#pragma opt_lifetimes off
 void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
 {
     char *strcpy(char *, const char *);
@@ -1464,6 +1467,7 @@ void GActor_InitNodeLink(void *arg0, s32 arg1, s32 arg2, s32 arg3)
     fn_800581A4(*(void **)(proc + 0x30));
     fn_80067708(2, 3, fn_80058D84, *(void **)(proc + 0x30));
 }
+#pragma pop
 void fn_80058C6C(void *arg0) {
     s32 GActor_FindNode(s32, s32);
     void fn_80060F70(s32, s32, void *);

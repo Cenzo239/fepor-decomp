@@ -346,6 +346,9 @@ void fn_8012835C(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
 void fn_801283D4(void *arg0) {
     u32 OSGetTick(void);
     f64 sin(f64);
@@ -354,7 +357,7 @@ void fn_801283D4(void *arg0) {
     extern f64 lbl_8036A3D8, lbl_8036A3E0, lbl_8036A3E8;
     u8 *self = arg0;
     u8 *dest;
-    f32 dy, dx, length, wave, x, y, amplitude;
+    f32 dy, dx, length, x, y, wave, amplitude;
     f32 outx, outy;
     f64 estimate;
     union { f32 f; u32 u; } bits;
@@ -393,7 +396,7 @@ void fn_801283D4(void *arg0) {
     *(f32 *)(dest + 0x40) = outx;
     *(f32 *)(dest + 0x44) = outy;
 }
-
+#pragma pop
 void fn_801285C4(void *arg0) {
     f32 fn_801099A0(s32, M2C_UNK);
     s32 temp_r31;
@@ -415,6 +418,7 @@ void fn_80128618(void *arg0) {
     *(f32 *)((u8 *)p + 0x44) = a;
 }
 
+#pragma opt_lifetimes off
 void fn_80128630(void *arg0) {
     f64 fn_80238638(f32);
     u32 OSGetTick(void);
@@ -440,7 +444,7 @@ void fn_80128630(void *arg0) {
     *(f32 *)((u8 *)obj + 0x40) = x;
     *(f32 *)((u8 *)obj + 0x44) = y + scale;
 }
-
+#pragma opt_lifetimes reset
 void fn_801286F8(void *arg0, s32 arg1) {
     M2C_FIELD(arg0, u8 *, 9) = (u8) (M2C_FIELD(arg0, u8 *, 9) & ~arg1);
 }
@@ -478,6 +482,7 @@ s32 fn_801287B8(void) {
 #pragma push
 #pragma use_lmw_stmw on
 #pragma opt_propagation off
+#pragma opt_lifetimes off
 u8 fn_801287C0(void *arg0)
 {
     u8 Status_Test(void *, s32);
@@ -1329,8 +1334,9 @@ void fn_8012A4CC(void *arg0) {
     *(void **)((u8 *)arg0 + 0x30) = NULL;
 }
 
+#pragma global_optimizer on
+#pragma opt_propagation off
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
 void fn_8012A530(void *arg0) {
     void fn_8000C188(void *);
     f32 fn_8001F53C(void *, s8, s8, s32);
@@ -1361,13 +1367,13 @@ void fn_8012A530(void *arg0) {
     extern f32 lbl_8036A440;
     extern f32 lbl_8036A444;
     extern f32 lbl_8036A448;
-    extern f32 lbl_8036A44C;
-    extern f32 lbl_8036A450;
-    extern f32 lbl_8036A454;
-    extern f32 lbl_8036A458;
-    extern f32 lbl_8036A45C;
-    extern f32 lbl_8036A460;
-    extern f32 lbl_8036A464;
+    extern const f32 lbl_8036A44C;
+    extern const f32 lbl_8036A450;
+    extern const f32 lbl_8036A454;
+    extern const f32 lbl_8036A458;
+    extern const f32 lbl_8036A45C;
+    extern const f32 lbl_8036A460;
+    extern const f32 lbl_8036A464;
     extern u8 lbl_80330708[0x578];
 
     u8 spD4[0x30];
@@ -1380,13 +1386,13 @@ void fn_8012A530(void *arg0) {
     s32 oldY;
     s32 newX;
     s32 newY;
-    register int ib;
+    int ib;
     void *sub;
-    void *cam;
+    void *child;
     f32 z;
     f32 unk38;
     void *unit;
-    void *child;
+    void *cam;
     f32 scale;
     int ia;
     void *self;
@@ -1409,30 +1415,26 @@ void fn_8012A530(void *arg0) {
     {
         f32 c;
         sub = *(void **)((u8 *)self + 0x30);
-        scale = lbl_8036A450 * *(f32 *)((u8 *)sub + 0x2C);
-        vx = *(f32 *)&vec[0];
+        scale = (lbl_8036A450 * *(f32 *)((u8 *)sub + 0x2C)) / lbl_8036A454;
+        vx = *(f32 *)&vec[0] * scale;
+        vz = *(f32 *)&vec[2] * scale;
         x = *(f32 *)((u8 *)sub + 0x10);
-        vz = *(f32 *)&vec[2];
         y = *(f32 *)((u8 *)sub + 0x14);
-        scale = scale / lbl_8036A454;
-        vx = vx * scale;
         c = lbl_8036A410;
         oldX = (s32)(c + x);
         oldY = (s32)(c + y);
         *(f32 *)((u8 *)sub + 0x10) = x + vx;
-        vz = vz * scale;
         sub = *(void **)((u8 *)self + 0x30);
         *(f32 *)((u8 *)sub + 0x14) = *(f32 *)((u8 *)sub + 0x14) + vz;
 
         sub = *(void **)((u8 *)self + 0x30);
         {
-            long tx = (s32)(c + *(f32 *)((u8 *)sub + 0x10));
-            unsigned long ty = (s32)(c + *(f32 *)((u8 *)sub + 0x14));
-            register id = *((u8 *)sub + 0xA);
+            s32 tx = (s32)(c + *(f32 *)((u8 *)sub + 0x10));
+            s32 ty = (s32)(c + *(f32 *)((u8 *)sub + 0x14));
             newX = tx;
             newY = ty;
             *(f32 *)((u8 *)*(void **)((u8 *)self + 0x30) + 0x30) =
-                lbl_8036A458 * fn_8001F53C(lbl_802CA518, (s8)tx, (s8)ty, id);
+                lbl_8036A458 * fn_8001F53C(lbl_802CA518, (s8)tx, (s8)ty, *((u8 *)sub + 0xA));
         }
     }
 
@@ -1463,13 +1465,13 @@ void fn_8012A530(void *arg0) {
         fn_8000C188(self);
     }
 
-    if (oldX != newX || oldY != (unsigned short)newY) {
+    if (oldX != newX || oldY != newY) {
         sub = *(void **)((u8 *)self + 0x30);
         cb = *(void (**)(s32, s32, void *))((u8 *)sub + 0x34);
         if (cb) {
             cb(newX, newY, self);
         } else {
-            id = *(u8 *)(lbl_802CA518 + ((s8)newY << 6) + (s8)newX + 0xD);
+            id = *(u8 *)((lbl_802CA518 + (s8)newX) + ((s8)newY << 6) + 0xD);
             if (id) {
                 unit = (u8 *)lbl_802B14E4 + (id - 1) * 0x280;
             } else {
@@ -1539,8 +1541,7 @@ void fn_8012A530(void *arg0) {
         *(f32 *)((u8 *)sub + 0x10),
         *(f32 *)((u8 *)sub + 0x14));
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma opt_propagation on
 
 s32 fn_8012AA68(void *arg0) {
     void Process_Goto(void *, s32);
@@ -1838,6 +1839,7 @@ void fn_8012B458(void *arg0) {
     }
 }
 
+#pragma optimization_level 3
 void fn_8012B488(s32 arg0) {
     void *Process_CreateChild(void *, s32);
     void *FileCache_Load(void *);
@@ -1849,7 +1851,7 @@ void fn_8012B488(s32 arg0) {
     void *self;
     s32 i;
     void *src;
-    s32 off;
+    register s32 off;
     void *arr;
 
     self = Process_CreateChild(lbl_80290C44, arg0);
@@ -1857,8 +1859,8 @@ void fn_8012B488(s32 arg0) {
     *(s32 *)((u8 *)self + 0x38) = fn_8003F47C();
     arr = Heap_AllocRaw(*(s32 *)((u8 *)self + 0x38) << 2);
     i = 0;
-    off = i;
     *(void **)((u8 *)self + 0x3C) = arr;
+    off = i;
     while (i < *(s32 *)((u8 *)self + 0x38)) {
         s32 v = fn_8003F224(src, i);
         i += 1;
@@ -1872,9 +1874,7 @@ void fn_8012B488(s32 arg0) {
     *(s32 *)((u8 *)self + 0x48) = 0;
     *(s32 *)((u8 *)self + 0x44) = 0;
 }
-
-#pragma push
-#pragma opt_common_subs off
+#pragma optimization_level reset
 void fn_8012B554(void *arg0) {
     s32 Rand_Range(s32);
     void fn_8007ADC8(s32);
@@ -1985,8 +1985,12 @@ void fn_8012B554(void *arg0) {
         }
     }
 }
-#pragma pop
-void fn_8012B7DC(void *arg0) {
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs on
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+void fn_8012B7DC(void *self) {
     void fn_80007124(void *);
     void fn_80007698(u8);
     void fn_800076AC(s32, s32, s32, u8);
@@ -2013,25 +2017,26 @@ void fn_8012B7DC(void *arg0) {
     extern s32 lbl_80367240;
     extern s32 lbl_80367A88;
     extern s32 lbl_80367A9C;
-    extern f32 lbl_8036A480;
-    extern f32 lbl_8036A484;
-    extern f32 lbl_8036A488;
-    extern f32 lbl_8036A48C;
-    extern f32 lbl_8036A490;
-    extern f32 lbl_8036A494;
-    extern f32 lbl_8036A498;
-    extern f32 lbl_8036A49C;
-    extern f32 lbl_8036A4A0;
-    extern f32 lbl_8036A4A4;
-    extern f32 lbl_8036A4A8;
-    extern f32 lbl_8036A4AC;
-    extern f32 lbl_8036A4B0;
-    extern f32 lbl_8036A4B4;
-    extern f32 lbl_8036A4B8;
-    extern f32 lbl_8036A4BC;
-    extern f32 lbl_8036A4C0;
-    extern f32 lbl_8036A4C4;
+    extern const f32 lbl_8036A480;
+    extern const f32 lbl_8036A484;
+    extern const f32 lbl_8036A488;
+    extern const f32 lbl_8036A48C;
+    extern const f32 lbl_8036A490;
+    extern const f32 lbl_8036A494;
+    extern const f32 lbl_8036A498;
+    extern const f32 lbl_8036A49C;
+    extern const f32 lbl_8036A4A0;
+    extern const f32 lbl_8036A4A4;
+    extern const f32 lbl_8036A4A8;
+    extern const f32 lbl_8036A4AC;
+    extern const f32 lbl_8036A4B0;
+    extern const f32 lbl_8036A4B4;
+    extern const f32 lbl_8036A4B8;
+    extern const f32 lbl_8036A4BC;
+    extern const f32 lbl_8036A4C0;
+    extern const f32 lbl_8036A4C4;
 
+    void *arg0 = self;
     char buf[0x40];
     void **list;
     u8 *p;
@@ -2056,43 +2061,39 @@ void fn_8012B7DC(void *arg0) {
     scale = lbl_8036A480;
     pad = (void *)lbl_80367240;
     if (*(s32 *)((u8 *)pad + 4) & 0x10) {
-        f32 f488 = lbl_8036A488;
-        f32 f48C = lbl_8036A48C;
-        f32 f490 = lbl_8036A490;
-        f32 f494 = lbl_8036A494;
+        scale = lbl_8036A484;
+    }
+    {
         f64 conv_s;
         f64 conv_u;
-        scale = lbl_8036A484;
         stick = *(u8 **)pad;
         cam = (void *)lbl_80367A88;
-        t = *(f32 *)((u8 *)cam + 0x40);
-        *(f32 *)((u8 *)cam + 0x40) = t - (scale * (f32)(s8)stick[2] * f488);
+        t = scale * (f32)*(s8 *)(stick + 2);
+        *(f32 *)((u8 *)cam + 0x40) -= t * lbl_8036A488;
         pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
-        t = *(f32 *)((u8 *)cam + 0x44);
-        *(f32 *)((u8 *)cam + 0x44) = t + (scale * (f32)(s8)stick[3] * f488);
+        t = scale * (f32)*(s8 *)(stick + 3);
+        *(f32 *)((u8 *)cam + 0x44) += t * lbl_8036A488;
         pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
-        t = *(f32 *)((u8 *)cam + 0x54);
-        *(f32 *)((u8 *)cam + 0x54) = t - ((scale * (f32)stick[6]) / f48C);
+        *(f32 *)((u8 *)cam + 0x54) -= (scale * (f32)stick[6]) / lbl_8036A48C;
         pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
-        t = *(f32 *)((u8 *)cam + 0x54);
-        *(f32 *)((u8 *)cam + 0x54) = t + ((scale * (f32)stick[7]) / f48C);
+        *(f32 *)((u8 *)cam + 0x54) += (scale * (f32)stick[7]) / lbl_8036A48C;
         cam = (void *)lbl_80367A88;
-        if (*(f32 *)((u8 *)cam + 0x54) < f490) {
-            *(f32 *)((u8 *)cam + 0x54) = f490;
+        if (*(f32 *)((u8 *)cam + 0x54) < lbl_8036A490) {
+            *(f32 *)((u8 *)cam + 0x54) = lbl_8036A490;
         }
         cam = (void *)lbl_80367A88;
         *(f32 *)((u8 *)cam + 0x58) = *(f32 *)((u8 *)cam + 0x54);
         pad = (void *)lbl_80367240;
         cam = (void *)lbl_80367A88;
         stick = *(u8 **)pad;
-        t = *(f32 *)((u8 *)cam + 0x5C);
-        *(f32 *)((u8 *)cam + 0x5C) = t + (scale * (f32)(s8)stick[4] * f494);
+        t = scale * (f32)*(s8 *)(stick + 4);
+        *(f32 *)((u8 *)cam + 0x5C) += t * lbl_8036A494;
         (void)conv_s;
         (void)conv_u;
     }
@@ -2333,7 +2334,7 @@ void fn_8012B7DC(void *arg0) {
         fn_80007884();
     }
 }
-
+#pragma pop
 void fn_8012C21C(void *arg0) {
     u8 fn_80109B48(void *);
     void fn_80109B30(void *, u8);

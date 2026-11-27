@@ -930,7 +930,8 @@ void fn_8020D5E4(u32 arg0) {
         fn_8020DD7C();
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 2
 void fn_8020D724(void) {
     /* stateCheckID */
     extern u16 BB2_80339F40[];
@@ -947,9 +948,7 @@ void fn_8020D724(void) {
     void DVDLowStopMotor(void (*)(u32));
     void DCInvalidateRange(void *, u32);
 
-    
-
-    u8 *base=(u8*)BB2_80339F40;
+    u8 *base = (u8 *)BB2_80339F40;
     switch (CurrCommand_803685B4) {
     case 3:
         if (fn_8020F9E8(
@@ -967,7 +966,7 @@ void fn_8020D724(void) {
         } else {
             DVDLowStopMotor(fn_8020D90C);
         }
-    break;
+        break;
     default:
         if (fn_80231944((base + 0x20), IDShouldBe_8036859C, 0x20) != 0) {
             DVDLowStopMotor(fn_8020D90C);
@@ -977,7 +976,7 @@ void fn_8020D724(void) {
         }
     }
 }
-#pragma global_optimizer on
+#pragma pop
 void fn_8020D804(void) {
       /* DVD Disc ID Check */
       void fn_8020C1A4(u8, s32, void *);

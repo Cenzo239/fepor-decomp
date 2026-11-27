@@ -304,21 +304,21 @@ void fn_8005EBCC(s32 arg0, s32 arg1) {
 #pragma global_optimizer off
 void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     void *fn_800C4638(s32, void *, s32);
-    void Game_Assert(void *, s32, void *);
+    void fn_8006DA64(void *, s32, void *);
     void fn_800618E4(void *);
-    void GActor_Finalize(void *);
-    void *GActor_GetNodeTable(void *);
-    void PSMTXCopy(void *, void *);
+    void fn_8006140C(void *);
+    void *fn_80060690(void *);
+    void fn_80201FF0(void *, void *);
     void fn_8006D378(void *);
     void fn_801505A8(void *, void *);
-    void *GActor_Create(void);
+    void *fn_80061870(void);
     void fn_8005F12C(void *, void *);
     s32 fn_8005F230(void *);
     void *fn_8005F410(void *);
     s32 fn_8005F378(void *);
     s32 fn_8005F3B8(void *);
-    void Model_SetAlpha(void *, u8);
-    void Model_SetColor(void *, u8, u8, u8);
+    void fn_8005F7B0(void *, u8);
+    void fn_8005F7E0(void *, u8, u8, u8);
     extern char lbl_8026B590[];
 
     u8 spC[4];
@@ -341,7 +341,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     node = fn_800C4638(0xA0, lbl_8026B590 + 0x27, 0);
     if (node == 0) {
-        Game_Assert(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
+        fn_8006DA64(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
     }
     fn_800618E4(node);
     *(u32 *)node |= 4;
@@ -349,7 +349,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     *(void **)((u8 *)node + 4) = self;
     *(u32 *)((u8 *)node + 0x90) = *(u32 *)((u8 *)self + 0x90);
     *(void **)((u8 *)self + 0x8C) = node;
-    GActor_Finalize(node);
+    fn_8006140C(node);
     ((u8 *)node)[0x87] = ((u8 *)self)[0x87];
 
     if (self != 0 && node != 0) {
@@ -357,11 +357,13 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
         goto anim_check;
     anim_load:
         anim = *(void **)((u8 *)p + 0x40);
-        if (anim == 0) goto anim_parent;
+        if (anim != 0) {
+
+        } else {
+            p = *(void **)((u8 *)p + 4);
+            goto anim_check;
+        }
         goto anim_found;
-    anim_parent:
-        p = *(void **)((u8 *)p + 4);
-        goto anim_check;
     anim_check:
         if (p != 0) {
             goto anim_load;
@@ -372,7 +374,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
         off = i;
         goto copy60_test;
     copy60_body:
-        PSMTXCopy((u8 *)*(void **)((u8 *)self + 0x60) + off, (u8 *)*(void **)((u8 *)node + 0x60) + off);
+        fn_80201FF0((u8 *)*(void **)((u8 *)self + 0x60) + off, (u8 *)*(void **)((u8 *)node + 0x60) + off);
         off += 0x30;
         i += 1;
     copy60_test:
@@ -384,7 +386,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             off = i;
             goto copy64_test;
         copy64_body:
-            PSMTXCopy((u8 *)*(void **)((u8 *)self + 0x64) + off, (u8 *)*(void **)((u8 *)node + 0x64) + off);
+            fn_80201FF0((u8 *)*(void **)((u8 *)self + 0x64) + off, (u8 *)*(void **)((u8 *)node + 0x64) + off);
             off += 0x30;
             i += 1;
         copy64_test:
@@ -393,7 +395,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             }
         }
         fn_8006D378(node);
-        PSMTXCopy((u8 *)self + 0x10, (u8 *)node + 0x10);
+        fn_80201FF0((u8 *)self + 0x10, (u8 *)node + 0x10);
         if (*(u32 *)((u8 *)self + 0x54) != 0) {
             fn_801505A8(self, node);
         }
@@ -407,7 +409,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     count = (s32)fn_800C4638(0xA0, lbl_8026B590 + 0x27, 0);
     if ((void *)count == 0) {
-        Game_Assert(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
+        fn_8006DA64(lbl_8026B590 + 0x28, 0x46, lbl_8026B590 + 0x31);
     }
     fn_800618E4((void *)count);
     *(u32 *)count |= 4;
@@ -415,16 +417,16 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
     *(void **)((u8 *)count + 4) = node;
     *(u32 *)((u8 *)count + 0x90) = *(u32 *)((u8 *)node + 0x90);
     *(void **)((u8 *)node + 0x8C) = (void *)count;
-    GActor_Finalize((void *)count);
+    fn_8006140C((void *)count);
     ((u8 *)count)[0x87] = ((u8 *)node)[0x87];
 
     if (node != 0 && (void *)count != 0) {
         off = 0;
-        i = (s32)GActor_GetNodeTable(node);
+        i = (s32)fn_80060690(node);
         anim = (void *)off;
         goto copy60b_test;
     copy60b_body:
-        PSMTXCopy((u8 *)*(void **)((u8 *)node + 0x60) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x60) + (s32)anim);
+        fn_80201FF0((u8 *)*(void **)((u8 *)node + 0x60) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x60) + (s32)anim);
         anim = (void *)((s32)anim + 0x30);
         off += 1;
     copy60b_test:
@@ -436,7 +438,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             anim = (void *)off;
             goto copy64b_test;
         copy64b_body:
-            PSMTXCopy((u8 *)*(void **)((u8 *)node + 0x64) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x64) + (s32)anim);
+            fn_80201FF0((u8 *)*(void **)((u8 *)node + 0x64) + (s32)anim, (u8 *)*(void **)((u8 *)count + 0x64) + (s32)anim);
             anim = (void *)((s32)anim + 0x30);
             off += 1;
         copy64b_test:
@@ -445,7 +447,7 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             }
         }
         fn_8006D378((void *)count);
-        PSMTXCopy((u8 *)node + 0x10, (u8 *)count + 0x10);
+        fn_80201FF0((u8 *)node + 0x10, (u8 *)count + 0x10);
         if (*(u32 *)((u8 *)node + 0x54) != 0) {
             fn_801505A8(node, (void *)count);
         }
@@ -454,12 +456,12 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
 
     i = (s32)self - 1;
     if (i - 1 >= 0) {
-        off = (s32)GActor_Create();
+        off = (s32)fn_80061870();
         *(u32 *)off |= *(u32 *)count | flags;
         *(void **)((u8 *)off + 4) = (void *)count;
         *(u32 *)((u8 *)off + 0x90) = *(u32 *)((u8 *)count + 0x90);
         *(void **)((u8 *)count + 0x8C) = (void *)off;
-        GActor_Finalize((void *)off);
+        fn_8006140C((void *)off);
         ((u8 *)off)[0x87] = ((u8 *)count)[0x87];
         fn_8005F12C((void *)count, (void *)off);
         fn_8005EC18((void *)off, i - 1, flags);
@@ -477,8 +479,8 @@ void fn_8005EC18(void *arg0, s32 arg1, s32 arg2) {
             t = ((u8 *)self)[0xB];
             alpha = (u8)(((t - (t * i) / (flags + 1)) * sp8[3]) / 255);
             sp8[3] = alpha;
-            Model_SetAlpha((void *)count, alpha);
-            Model_SetColor((void *)count, sp8[0], sp8[1], sp8[2]);
+            fn_8005F7B0((void *)count, alpha);
+            fn_8005F7E0((void *)count, sp8[0], sp8[1], sp8[2]);
         }
     }
 

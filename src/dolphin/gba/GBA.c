@@ -1020,6 +1020,12 @@ void fn_80265CB4(s32 arg0, s32 arg1)
     *(u32 *)(entry + 0x20) = result;
 }
 
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_strength_reduction off
+#pragma global_optimizer off
+#pragma opt_lifetimes off
 void fn_80265E90(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];
@@ -1048,7 +1054,7 @@ void fn_80265E90(s32 arg0, s32 arg1)
     s32 j;
     u8 *cfg;
     void (*callback)(s32, s32);
-    u8 dummy[16];
+
 
     config = lbl_802A4DE8;
     entry = lbl_803669A0 + (arg0 << 8);
@@ -1064,15 +1070,13 @@ void fn_80265E90(s32 arg0, s32 arg1)
     } else {
         status = *(u8 *)(*(u8 **)(queue + 0x10));
 
-        if ((status & config[0x14]) != 0) {
-            if (((status & config[0x2A]) >> config[0x21]) !=
-                ((*(s32 *)(queue + 0x34) & config[0x21]) >> config[0x1F])) {
+        if ((status & config[0x14]) == 0 || (((status & config[0x2A]) >> config[0x21]) !=
+                ((*(s32 *)(queue + 0x34) & config[0x21]) >> config[0x1F]))) {
                 result = 3;
                 goto done;
             }
 
             *(s32 *)(queue + 0x34) = *(s32 *)(queue + 0x34) - (config[0x19] - config[0x17]);
-        }
     }
 
     position = *(s32 *)(queue + 0x34);
@@ -1084,11 +1088,10 @@ void fn_80265E90(s32 arg0, s32 arg1)
 
     if (position < count) {
         cfg = config + 0x1D;
-        state = *cfg;
-        accumulator = state;
+        accumulator = config[0x1D];
         *(u32 *)(queue + 0x20) = *cfg;
 
-        while (state < config[0x21]) {
+        while ((state = *(s32 *)(queue + 0x20)) < config[0x21]) {
             if (*(s32 *)(queue + 0x0C) != 0) {
                 u8 *input;
 
@@ -1096,10 +1099,9 @@ void fn_80265E90(s32 arg0, s32 arg1)
                 *(u32 *)(queue + 0x08) += 1;
 
                 shift = state * config[0x25];
-                value = *input;
-
+                value = *input << shift;
                 *(u32 *)(queue + 0x0C) -= 1;
-                accumulator |= value << shift;
+                accumulator |= value;
             }
 
             *(u32 *)(queue + 0x20) = *(u32 *)(queue + 0x20) + 1;
@@ -1145,24 +1147,23 @@ void fn_80265E90(s32 arg0, s32 arg1)
                 ((u32 *)(queue + 0x3C))[*(u32 *)(queue + 0x20)] = accumulator;
             }
         }
+    } else {
+        accumulator = *(u32 *)(queue + 0x38) | (position << 16);
     }
-
-    accumulator = *(u32 *)(queue + 0x38) | (position << 16);
     position = *(s32 *)(queue + 0x34);
 
     if (position > config[0x2B]) {
         mask = config[0x15] |
                (config[0x18] << config[0x25]) |
-               (*(volatile u8 *)(config + 0x18) << config[0x2C]) |
+               (config[0x18] << config[0x2C]) |
                (config[0x17] << config[0x2A]);
 
         value = *(u32 *)(queue + 0x58) * mask;
         value -= config[0x1B] - config[0x1A];
         *(u32 *)(queue + 0x58) = value;
 
-        temp = position + (config[0x0B] << 20);
-
-        accumulator ^= value;
+        accumulator ^= *(u32 *)(queue + 0x58);
+        temp = *(s32 *)(queue + 0x34) + (config[0x0B] << 20);
         accumulator ^= (u32)(-temp);
 
         value = (*(config + 0x0B) << 24) |
@@ -1190,12 +1191,19 @@ void fn_80265E90(s32 arg0, s32 arg1)
         ((u32 *)(queue + 0x3C))[3 - j] = accumulator;
 
         state = *(s32 *)(queue + 0x20);
+        j = 1 - state;
         value = ((u32 *)(queue + 0x3C))[2 - j];
         temp = ((u32 *)(queue + 0x3C))[4 - state];
         ((u32 *)(queue + 0x3C))[5 - state] = value * temp;
 
         state = *(s32 *)(queue + 0x20);
-        value = ((u32 *)(queue + 0x3C))[state - 1];
+        j = 1 - state;
+        value = ((u32 *)(queue + 0x3C))[j];
+        temp = ((u32 *)(queue + 0x3C))[state];
+        ((u32 *)(queue + 0x3C))[5-j] = value * temp;
+
+        state = *(s32 *)(queue + 0x20);
+        value = ((u32 *)(queue + 0x3C))[-(1-state)];
         temp = ((u32 *)(queue + 0x3C))[4 - state];
         ((u32 *)(queue + 0x3C))[7 - state] = value * temp;
     }
@@ -1234,7 +1242,7 @@ done:
 
     *(u32 *)(entry + 0x20) = result;
 }
-
+#pragma pop
 void fn_80266328(s32 arg0, s32 arg1)
 {
     extern u8 lbl_803669A0[];

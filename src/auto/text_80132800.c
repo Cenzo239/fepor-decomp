@@ -5034,19 +5034,18 @@ extern "C" void fn_80139D60(void *arg0, void *arg1) {
     void fn_8015547C(s16, s16, s32, s32, u8, s32);
     extern f32 lbl_8036A66C;
     extern f32 lbl_8036A668;
-    void *self = arg0;
     void *other = arg1;
-    bool flag;
-    bool sel;
+    void *self = arg0;
+    u8 flag;
+    u8 sel;
     void *p;
     f32 f;
 
     ((Obj *)self)->v2();
-    s32 left=*(s16*)((u8*)self+0xA);
-    s32 right=*(s16*)((u8*)self+0xE);
-    s32 top=*(s16*)((u8*)self+0xC);
-    s32 bottom=*(s16*)((u8*)self+0x10);
-    fn_8015547C(0,0,(s16)(right-left),(s16)(bottom-top),0xFF,0x10);
+    fn_8015547C(0, 0,
+                (s16)(*(s16 *)((u8 *)self + 0xE) - *(s16 *)((u8 *)self + 0xA)),
+                (s16)(*(s16 *)((u8 *)self + 0x10) - *(s16 *)((u8 *)self + 0xC)),
+                0xFF, 0x10);
 
     sel = 0;
     flag = sel;

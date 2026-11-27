@@ -1360,25 +1360,25 @@ void fn_801857F0(void *arg0) {
 
 #pragma global_optimizer off
 void fn_80185830(void *arg0) {
-    void GfxEnt_ForEachKey(void *, void *, void *);
-    void Process_Goto(void *, s32);
-    void *Process_CreateEx(void *, s32);
-    void *Process_Create(void *, s32);
+    void fn_8000A388(void *, void *, void *);
+    void fn_8000C070(void *, s32);
+    void *fn_8000CA64(void *, s32);
+    void *fn_8000CAF0(void *, s32);
     u8 fn_8004C0F0(void *);
     void fn_8004FE90(void *, u8);
     void fn_8004FE98(void *, s32);
     u8 fn_800504FC(void *, s32);
     void fn_800506E0(void *, s32);
     void *fn_800508C4(void *);
-    void Process_AttachFunc(void *, void *);
-    f32 Math_Lerp(f32, f32, f32, f32);
+    void fn_80059208(void *, void *);
+    f32 fn_80059F64(f32, f32, f32, f32);
     void fn_8005FC74(void *, void *, s32);
     void fn_8005FEE8(void *, f32);
     s32 fn_80060440(void *);
     void *fn_800639B4(void);
-    void MuFade_UnlinkSame(void *, void *);
+    void fn_80185078(void *, void *);
     void fn_80185AF4(void *);
-    extern u8 E_MuBlend_script[];
+    extern u8 lbl_80295A00[];
     extern f32 lbl_8036ACEC;
     extern f32 lbl_8036ACF0;
     extern f32 lbl_8036ACF4;
@@ -1394,42 +1394,40 @@ void fn_80185830(void *arg0) {
     void *tmp;
     u8 lvl;
     s32 z;
-    s32 z0;
 
     self = arg0;
-    base = E_MuBlend_script;
-    z = 0x40;
+    base = lbl_80295A00;
+    z = 0;
     *(s32 *)((u8 *)arg0 + 0x34) = 1;
     if (*(u8 *)((u8 *)arg0 + 0x3C) != 0) {
         if (fn_800504FC(*(void **)((u8 *)self + 0x30), 0xA) != 0) {
             r29 = (s32)*(void **)((u8 *)self + 0x30);
             r28 = self;
             *(s32 *)(sp78 + 0x30) = r29;
-            GfxEnt_ForEachKey(base + z, MuFade_UnlinkSame, sp78);
+            fn_8000A388(base + 0x40, fn_80185078, sp78);
             if ((u32)self == 0U) {
                 r28 = (void *)3;
             }
-            *(s32 *)((u8 *)Process_Create(base + z, (s32)r28) + 0x30) = r29;
+            *(s32 *)((u8 *)fn_8000CAF0(base + 0x40, (s32)r28) + 0x30) = r29;
             r29 = 0x10;
             r28 = *(void **)((u8 *)self + 0x30);
             if (fn_8004C0F0(r28) != 0) {
-                z0 = z - 0x40;
                 *(void **)(sp40 + 0x30) = r28;
-                GfxEnt_ForEachKey(base + z0, MuFade_UnlinkSame, sp40);
+                fn_8000A388(base + z, fn_80185078, sp40);
                 *(void **)(sp8 + 0x30) = r28;
-                GfxEnt_ForEachKey(base + 0x20, MuFade_UnlinkSame, sp8);
+                fn_8000A388(base + 0x20, fn_80185078, sp8);
                 lvl = *(u8 *)((u8 *)fn_800508C4(r28) + 9);
                 if ((s32)lvl > 0x14) {
                     if ((s32)lvl > 0x28) {
                         r29 <<= 1;
                     } else {
-                        r29 = (s32)((f32)r29 + Math_Lerp(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
+                        r29 = (s32)((f32)r29 + fn_80059F64(lbl_8036ACEC, lbl_8036ACF4, lbl_8036ACF0, (f32)((s32)lvl - 0x14)));
                     }
                 }
                 if ((r29 == 0) || (fn_80060440((u8 *)r28 + 0x1C) >= 4)) {
                     fn_8004FE98(r28, 0xA);
                 } else {
-                    tmp = Process_CreateEx(base + z0, 0);
+                    tmp = fn_8000CA64(base + z, 0);
                     *(void **)((u8 *)tmp + 0x30) = r28;
                     *(s32 *)((u8 *)tmp + 0x34) = (s32)r28 + 0x1C;
                     *(s32 *)((u8 *)tmp + 0x38) = 0xA;
@@ -1441,12 +1439,12 @@ void fn_80185830(void *arg0) {
                     fn_8004FE90(*(void **)((u8 *)tmp + 0x30), (u8)*(s32 *)((u8 *)tmp + 0x38));
                 }
             }
-            Process_AttachFunc(fn_80185AF4, self);
+            fn_80059208(fn_80185AF4, self);
         } else {
-            Process_Goto(self, 0);
+            fn_8000C070(self, 0);
         }
     } else {
-        Process_Goto(arg0, 1);
+        fn_8000C070(arg0, 1);
     }
     (void)gap;
 }
@@ -2483,40 +2481,36 @@ void fn_80187BD4(void *arg0) {
 
 #pragma global_optimizer reset
 void fn_80187D70(void *arg0) {
-    void fn_8000A388(void *, void *, void *);
-    void *fn_8000CA64(void *, void *);
-    f32 fn_8004BE18(void *);
+    void GfxEnt_ForEachKey(void *, void *, void *);
+    void *Process_CreateEx(void *, void *);
+    f32 Unit_GetAngleTo(void *);
     f32 fn_8004BDA8(void *, f32, f32);
     void fn_8004FC70(void *, s32);
-    void fn_800558D8(void *);
-    s32 fn_80230BCC(s32);
-    void fn_80185078(void *, void *);
-    extern u16 lbl_80295A78[36];
-    extern u8 lbl_80278E24[];
+    void GActor_RequestRes(void *);
+    s32 Abs(s32);
+    void MuFade_UnlinkSame(void *, void *);
+    extern u16 E_MuFade_script[36];
+    extern u8 MoveAnim_str[];
     extern f32 lbl_8036ACEC;
-    extern f32 lbl_8036ACD8;
+    extern f32 gHalf;
 
     u8 sp[0x70];
     void *unit;
     void *node;
     f32 f;
     void *msg;
-    register void *temp_r4;
-    s32 a;
-    s32 b;
-    s32 sum;
+    void *check;
 
     *(f32 *)((u8 *)arg0 + 0x3C) = lbl_8036ACEC;
     fn_8004FC70(*(void **)((u8 *)arg0 + 0x30), 6);
-    temp_r4 = *(void **)((u8 *)arg0 + 0x34);
-    if (temp_r4 != NULL) {
+    if ((check = *(void **)((u8 *)arg0 + 0x34)) != NULL) {
         unit = *(void **)((u8 *)arg0 + 0x30);
-        if (temp_r4 != NULL) {
-            f = fn_8004BE18(unit);
+        if (check != NULL) {
+            f = Unit_GetAngleTo(unit);
             *(void **)(sp + 0x68) = unit;
-            fn_8000A388(&lbl_80295A78, fn_80185078, sp + 0x38);
+            GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp + 0x38);
             if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-                node = fn_8000CA64(&lbl_80295A78, arg0);
+                node = Process_CreateEx(&E_MuFade_script, arg0);
                 *(void **)((u8 *)node + 0x30) = unit;
                 *(f32 *)((u8 *)node + 0x34) = f;
                 *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -2527,11 +2521,11 @@ void fn_80187D70(void *arg0) {
         fn_8004FC70(*(void **)((u8 *)arg0 + 0x34), 9);
     } else {
         unit = *(void **)((u8 *)arg0 + 0x30);
-        f = fn_8004BDA8(unit, lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), lbl_8036ACD8 + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
+        f = fn_8004BDA8(unit, gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3A), gHalf + (f32)(s8)*(u8 *)((u8 *)arg0 + 0x3B));
         *(void **)(sp + 0x30) = unit;
-        fn_8000A388(&lbl_80295A78, fn_80185078, sp);
+        GfxEnt_ForEachKey(&E_MuFade_script, MuFade_UnlinkSame, sp);
         if (f != ((f32)*(s16 *)((u8 *)unit + 0x15C) / 50.0f)) {
-            node = fn_8000CA64(&lbl_80295A78, arg0);
+            node = Process_CreateEx(&E_MuFade_script, arg0);
             *(void **)((u8 *)node + 0x30) = unit;
             *(f32 *)((u8 *)node + 0x34) = f;
             *(s32 *)((u8 *)node + 0x38) = 0x10;
@@ -2539,15 +2533,13 @@ void fn_80187D70(void *arg0) {
         *(u8 *)((u8 *)arg0 + 0x38) = *(u8 *)((u8 *)arg0 + 0x3A);
         *(u8 *)((u8 *)arg0 + 0x39) = *(u8 *)((u8 *)arg0 + 0x3B);
     }
-    a = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
-    b = fn_80230BCC((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39));
-    sum = a + b;
-    if (sum >= 2) {
-        msg = lbl_80278E24 + 0x360;
-    } else {
-        msg = lbl_80278E24 + 0x371;
+    unit = (void *)Abs((s8)*(u8 *)((u8 *)arg0 + 0x3A) - (s8)*(u8 *)((u8 *)arg0 + 0x38));
+    unit = (void *)((s32)unit + Abs((s8)*(u8 *)((u8 *)arg0 + 0x3B) - (s8)*(u8 *)((u8 *)arg0 + 0x39)));
+    msg = MoveAnim_str + 0x371;
+    if ((s32)unit >= 2) {
+        msg = MoveAnim_str + 0x360;
     }
-    fn_800558D8(msg);
+    GActor_RequestRes(msg);
 }
 
 #pragma opt_strength_reduction on
@@ -3923,7 +3915,8 @@ void fn_8018B010(void *arg0) {
     *(f32 *)((u8 *)p + 0xC) = z;
 }
 
-void fn_8018B060(u8 *arg0) {
+#pragma opt_lifetimes off
+void fn_8018B060(void *arg0) {
     void Process_ClearFunc(void);
     void Unit_SetModelAlpha(void *, s32);
     f32 Math_Lerp(f32, f32, f32, f32);
@@ -3944,14 +3937,14 @@ void fn_8018B060(u8 *arg0) {
     f32 half;
     void *obj;
 
-    self = arg0;
-    temp = *(s32 *)(arg0 + 0x50);
-    *(s32 *)(arg0 + 0x50) = temp + 1;
-    temp = *(s32 *)(arg0 + 0x50);
-    if ((s32)temp >= *(s32 *)(arg0 + 0x54)) {
-        *(s32 *)((u8 *)self + 0x50) = *(s32 *)(arg0 + 0x54);
+    temp = *(s32 *)((u8 *)arg0 + 0x50);
+    *(s32 *)((u8 *)arg0 + 0x50) = temp + 1;
+    temp = *(s32 *)((u8 *)arg0 + 0x50);
+    if (temp >= *(s32 *)((u8 *)arg0 + 0x54)) {
+        *(s32 *)((u8 *)arg0 + 0x50) = *(s32 *)((u8 *)arg0 + 0x54);
         Process_ClearFunc();
     }
+    self = arg0;
     t = (s32)Math_EaseInPow(2, lbl_8036ACEC, lbl_8036AD00,
                          (f32)*(s32 *)((u8 *)self + 0x54),
                          (f32)*(s32 *)((u8 *)self + 0x50));
@@ -3963,10 +3956,10 @@ void fn_8018B060(u8 *arg0) {
                       (f32)*(s32 *)((u8 *)self + 0x54), (f32)*(s32 *)((u8 *)self + 0x50));
     half = gHalf * (f32)*(s32 *)((u8 *)self + 0x54);
     temp = *(s32 *)((u8 *)self + 0x50);
-    if ((f32)(s32)temp < half) {
-        f30 += Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)(s32)temp);
+    if ((f32)temp < half) {
+        f30 += Math_EaseOutPow(2, lbl_8036ACEC, lbl_8036AD3C, half, (f32)temp);
     } else {
-        f30 += Math_EaseInPow(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)(s32)temp - half);
+        f30 += Math_EaseInPow(2, lbl_8036AD3C, lbl_8036ACEC, half, (f32)temp - half);
     }
     Unit_SetModelAlpha(*(void **)((u8 *)self + 0x30), t);
     obj = *(void **)((u8 *)self + 0x30);
@@ -3974,7 +3967,7 @@ void fn_8018B060(u8 *arg0) {
     *(f32 *)((u8 *)obj + 8) = f29;
     *(f32 *)((u8 *)obj + 0xC) = f30;
 }
-
+#pragma opt_lifetimes on
 void fn_8018B2C4(void *arg0) {
     M2C_UNK Unit_SetModelAlpha(s32, M2C_UNK);
     M2C_FIELD(arg0, s32 *, 0x50) = 0;
@@ -5858,6 +5851,8 @@ loop2_test:
 }
 #pragma pop
 
+#pragma optimization_level 3
+#pragma opt_lifetimes off
 extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
     struct Obj {
         virtual void v0() = 0;
@@ -5943,7 +5938,8 @@ extern "C" void fn_8018F6E8(void *arg0, s32 arg1) {
         Prim2D_EndPrim();
     }
 }
-
+#pragma opt_lifetimes on
+#pragma optimization_level reset
 extern "C" void fn_8018F94C(void *arg0) {
     void fn_80154004(s32, s32, s32);
     struct Obj {

@@ -2626,7 +2626,8 @@ void Battle_SetupPair(s32 arg0, void *arg1, void *arg2) {
         fn_801A94B0(self + 0x2E0);
     }
 }
-#pragma pop
+#pragma push
+#pragma opt_common_subs off
 void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
     void *Item_GetFlagsPtr(void *);
     void Item_Clear(void);
@@ -2715,7 +2716,7 @@ void Battle_SetupFromParams(s32 arg0, void *arg1, void *arg2) {
         fn_801A94B0(var_r29 + 0x2E0);
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 void fn_801A7CDC(void *arg0)
 {
     BattleUnit_Reset(arg0);

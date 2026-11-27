@@ -4437,8 +4437,8 @@ void fn_8025339C(void *voice, u32 *step) {
     u32 tableIndex;
 u32 word;
     u32 word0;
-    s64 flags;
-    s64 mask;
+    u64 flags;
+    u64 mask;
     u8 slot;
 u8 controller;
     u32 key;
@@ -4447,15 +4447,15 @@ u8 controller;
     u32 param;
     void *dest;
     word = step[1];
-    mask = *(s64 *)((u8 *)lbl_8029F3D0 + __rlwinm(word,11,21,28));
-    flags = *(s64 *)((u8 *)voice + 0x114);
+    mask = *(u64 *)((u8 *)lbl_8029F3D0 + __rlwinm(word,11,21,28));
+    flags = *(u64 *)((u8 *)voice + 0x114);
     slot = 0;
     key=word>>24;
     dest = lbl_8034D034 + *(u8 *)((u8 *)voice + 0x11F) * 0x90 + key * 0x24;
     tableIndex = __rlwinm(word,10,22,29);
     key = *(u32 *)((u8 *)lbl_8029F3F0 + tableIndex);
     if ((flags & mask) == 0) {
-        *(s64 *)((u8 *)voice + 0x114) = flags | mask;
+        *(u64 *)((u8 *)voice + 0x114) = flags | mask;
     } else {
         slot = (u8)word;
     }
@@ -4892,11 +4892,10 @@ void fn_80253E90(u8 *self, u32 *arg1) {
   self[0x106] = midByte;
 }
 
+#pragma push
+#pragma auto_inline off
 void fn_80253F6C(void *arg0)
 {
-#ifdef __MWERKS__
-#pragma auto_inline off
-#endif
     void *fn_8025FF28(u8, u8);
     u8 fn_802601B0(u8, u8);
     void fn_80260174(u8, u8, u8);
@@ -5560,11 +5559,8 @@ void fn_80253F6C(void *arg0)
     next_command:
         ;
     } while (done == 0);
-#ifdef __MWERKS__
-#pragma auto_inline reset
-#endif
 }
-
+#pragma pop
 void fn_80254F00(u32 arg0) {
  void Sound_DeactivateSynthVoice(void *);
  void fn_80253F6C(void *);

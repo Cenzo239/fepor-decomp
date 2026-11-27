@@ -151,7 +151,7 @@ typedef struct OSCalendarTime {
 
 #pragma peephole off
 #pragma use_lmw_stmw on
-void fn_8020B294(s64 ticks, OSCalendarTime *td) {
+void fn_8020B294(u64 ticks, OSCalendarTime *td) {
     s64 __mod2i(s64, s64);
     s64 __div2i(s64, s64);
     void fn_8020B0F8(s32, void *);
@@ -160,23 +160,23 @@ void fn_8020B294(s64 ticks, OSCalendarTime *td) {
     s32 hours;
     s64 tmp;
     s64 d;
-    u32 *hw;
-    s32 daySec;
+    u32 daySec;
+    u32 usecDiv;
 
-    hw = (u32 *)0x80000000;
-    d = __mod2i(ticks, (s64)(hw[0x3E] >> 2));
+    d = __mod2i((s64)ticks, (s64)(*(u32 *)0x800000F8 >> 2));
     if (d < 0) {
-        d += (s64)(hw[0x3E] >> 2);
+        d += (s64)(*(u32 *)0x800000F8 >> 2);
     }
-    tmp = __div2i(d * 8, (s64)(__mulhwu(0x431BDE83, hw[0x3E] >> 2) >> 15));
+    usecDiv = __mulhwu(0x431BDE83, *(u32 *)0x800000F8 >> 2) >> 15;
+    tmp = __div2i(d * 8, (s64)usecDiv);
     td->usec = (s32)__mod2i(tmp, 1000);
-    tmp = __div2i(d, (s64)(__mulhwu(0x10624DD3, hw[0x3E] >> 2) >> 6));
+    tmp = __div2i(d, (s64)(__mulhwu(0x10624DD3, *(u32 *)0x800000F8 >> 2) >> 6));
     td->msec = (s32)__mod2i(tmp, 1000);
-    ticks -= d;
+    ticks -= (u64)d;
     daySec = 0x15180;
-    tmp = __div2i(ticks, (s64)(hw[0x3E] >> 2));
+    tmp = __div2i((s64)ticks, (s64)(*(u32 *)0x800000F8 >> 2));
     days = (s32)(__div2i(tmp, (s64)daySec) + 0xB2575);
-    secs = (s32)__mod2i(__div2i(ticks, (s64)(hw[0x3E] >> 2)), (s64)daySec);
+    secs = (s32)__mod2i(__div2i((s64)ticks, (s64)(*(u32 *)0x800000F8 >> 2)), (s64)daySec);
     if (secs < 0) {
         days -= 1;
         secs += 0x15180;

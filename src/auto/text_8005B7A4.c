@@ -929,16 +929,6 @@ s8 arg0;
         entry += 0x7C;
     } while (index < 0x400);
 }
-#pragma push
-#pragma optimization_level 3
-#pragma global_optimizer off
-#pragma opt_common_subs off
-#pragma push
-#pragma optimization_level 3
-#pragma global_optimizer off
-#pragma opt_common_subs off
-#pragma peephole on
-#pragma opt_propagation on
 void fn_8005CBC8(void)
 {
     extern char lbl_8026B330[];

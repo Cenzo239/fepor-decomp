@@ -976,24 +976,24 @@ void fn_8018212C(s32 *arg0, s32 *arg1, void **arg2) {
 
     void *sp8;
     void **node;
-    void *sentinel1;
-    void **node2;
-    void *sentinel2;
-    void **walk;
-    void *id1;
-    void *unit2;
-    void *id2;
-    void *link;
-    unsigned int count;
-    void *unit1;
     u8 take;
     int s2;
+    void *sentinel1;
+    void *link;
+    void *id1;
+    void *unit2;
+    void *unit1;
+    u8 t;
+    void **node2;
+    void *sentinel2;
     s32 s1;
     s8 ss2;
     s8 ss1;
     u8 c0;
     u8 c1;
-    u8 t;
+    void **walk;
+    unsigned int count;
+    void *id2;
 
     if (arg0 == arg1) {
         return;
@@ -1391,8 +1391,8 @@ s32 fn_80182CE4(void *arg0) {
         s32 x8;
         u8 bC[4];
     } Param;
-    extern Param lbl_80278B98;
-    extern Param lbl_80278BA8;
+    extern const Param lbl_80278B98;
+    extern const Param lbl_80278BA8;
     Param sp18;
     Param sp8;
     s32 i;
@@ -1409,21 +1409,21 @@ s32 fn_80182CE4(void *arg0) {
 
     bestScore = 0;
     bestSlot = -1;
-    i = bestScore;
     sp18 = lbl_80278B98;
     sp18.p = uiUnit;
     sp18.b4[0] = ((u8 *)uiUnit)[0x19E];
     sp18.b4[1] = ((u8 *)uiUnit)[0x19F];
 
-    for (; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         slot = Unit_GetHeldItemSlot(uiUnit, i);
-        if (*slot != NULL) {
-            if ((u8)fn_8009339C(uiUnit, *slot) != 0) {
-                if ((u8)bestScore < (u8)fn_8001D500(slot)) {
-                    score = fn_8001D500(slot);
-                    bestSlot = (s8)i;
-                    bestScore = score;
-                }
+        if (*slot == NULL) {
+            break;
+        }
+        if ((u8)fn_8009339C(uiUnit, *slot) != 0) {
+            if ((u8)bestScore < (u8)fn_8001D500(slot)) {
+                score = fn_8001D500(slot);
+                bestSlot = (s8)i;
+                bestScore = score;
             }
         }
     }

@@ -1823,6 +1823,9 @@ void CardLink_ApplyBonus(void *proc) {
     Process_UnlinkByKey(&gCardLinkProc);
 }
 
+#pragma push
+#pragma optimization_level 2
+#pragma opt_common_subs on
 void fn_801F5830(u8 *self) {
 void *Process_Find(void *);
 s32 Msg_Expand(void *);
@@ -1831,14 +1834,14 @@ void Prim2D_SetTransform(f32,f32,f32,f32);
 void Prim2D_SetRect(f32,f32,f32,f32);
 void Prim2D_AddZ(f32);
 extern f32 lbl_8036B8E0,lbl_8036B8E4,lbl_8036B8E8,lbl_8036B8EC,lbl_8036B8F0,lbl_8036B8F4,lbl_8036B8F8;
-extern f64 lbl_8036B900;
-u32 progress;
+u8 progress;
 u8 *p;
 s32 state;
 progress = ((u8 *)Process_Find(&gCardLinkProc))[0x4A];
 if (!(*(s16 *)*(void **)(self+0x50)&1))
  MsgBox_Init(*(void **)(self+0x50),Msg_Expand((u8 *)gCardLinkStr+0x104),0,0,0);
-if (progress & 0xFF) {
+if (progress) {
+ f32 w;
  Prim2D_Begin();
  Prim2D_SetTransform(lbl_8036B8E0,lbl_8036B8E4,lbl_8036B8E8,lbl_8036B8EC);
  Prim2D_SetTex(0,0x10); Prim2D_PrepareTex(); Prim2D_AddPrim(1);
@@ -1846,7 +1849,8 @@ if (progress & 0xFF) {
  Prim2D_SetColor(100,100,100,255); Prim2D_EndPrim();
  Prim2D_Begin(); Prim2D_AddZ(lbl_8036B8F8);
  Prim2D_PrepareTex(); Prim2D_AddPrim(1);
- Prim2D_SetRect(lbl_8036B8E8,lbl_8036B8E8,(f32)((progress & 0xFF)*3),lbl_8036B8F4);
+ w = (f32)((s32)progress*3);
+ Prim2D_SetRect(lbl_8036B8E8,lbl_8036B8E8,w,lbl_8036B8F4);
  Prim2D_SetColor(0,255,0,255); Prim2D_EndPrim();
 } else {
  self[0x54]++;
@@ -1864,7 +1868,7 @@ if (progress & 0xFF) {
  Process_ClearFunc(self);
  }
 }
-
+#pragma pop
 /* While waiting on a card-link scan: end when status is 2, or cancel on B. */
 void CardLink_UpdateScanWait(void *proc) {
     void *Process_Find(void *);
@@ -4022,10 +4026,9 @@ void fn_801F99C4(void *arg0) {
     void Sound_FadeFromZero(void *, s32);
     void sprintf(void *, void *, ...);
     extern u8 StaffRoll_str[];
-    extern f32 lbl_8036BA18;
-    extern f64 lbl_8036BA10;
-    extern f32 lbl_8036BA88;
-    extern f32 lbl_8036BA8C;
+    extern const f32 lbl_8036BA18;
+    extern const f32 lbl_8036BA88;
+    extern const f32 lbl_8036BA8C;
 
     char sp8[0x20];
     void **var_r4;
@@ -4039,22 +4042,20 @@ void fn_801F99C4(void *arg0) {
     s32 temp_r4;
     f32 f2;
 
-    (void)lbl_8036BA10;
     temp_r29 = arg0;
     var_r4 = (void **)((u8 *)temp_r29 + 0x34);
-    var_r30 = *(s8 *)((u8 *)arg0 + 0x54);
+    var_r30 = *(s8 *)((u8 *)temp_r29 + 0x54);
     var_r3 = -var_r30;
     temp_r31 = (u8 *)temp_r29 + ((var_r30 & 1) << 3);
     if (var_r3 >= 0) {
-        if (var_r3) {
-            for (; var_r3 != 0; var_r3--) {
-                var_r4 = (void **)var_r4[1];
-            }
+        while (var_r3 > 0) {
+            var_r4 = (void **)var_r4[1];
+            var_r3--;
         }
     } else {
-        var_r3 = -var_r3;
-        for (; var_r3 != 0; var_r3--) {
+        while (var_r3 < 0) {
             var_r4 = (void **)*var_r4;
+            var_r3++;
         }
     }
     temp_r28 = StaffRoll_str + 0x259;
@@ -4270,8 +4271,8 @@ loop_check:
     if (packet.kind != 0xFF) {
         fn_801FAA9C(&obj->unk30, obj->unk38 + (obj->unk34 << 3), 1, &packet);
     }
-    f = lbl_8036BA04 + obj->unk3C;
     lim = lbl_8036BA00;
+    f = lbl_8036BA04 + obj->unk3C;
     count = obj->unk34;
     obj->unk40 = f + (f32)(u32)(count << 6);
     obj->unk48 = (s32)((obj->unk40 / lim) * (f32)obj->unk48);

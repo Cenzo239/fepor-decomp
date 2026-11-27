@@ -393,8 +393,8 @@ void fn_8020BA50(void *addr, u32 length, u32 offset, void *callback) {
     fn_8020BD68(offsetToSeek, callback);
 }
 
-#pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma push
+#pragma opt_propagation off
 BOOL fn_8020BAD0(void *addr, u32 length, u32 offset, void *callback) {
     extern volatile u32 WorkAroundType_80368554;
     extern s32 NextCommandNumber_80368574;
@@ -408,9 +408,9 @@ BOOL fn_8020BAD0(void *addr, u32 length, u32 offset, void *callback) {
     u32 current;
     u32 end;
     s64 delay;
-    s64 elapsed;
-    u32 ticks5;
     u32 bus;
+    u32 ticks5;
+    s64 elapsed;
     s32 nearby;
     s32 padding;
     s32 cached;
@@ -460,7 +460,7 @@ BOOL fn_8020BAD0(void *addr, u32 length, u32 offset, void *callback) {
             } else {
                 nearby = 0;
             }
-            if (nearby == 0) {
+            if (!nearby) {
                 CommandList_80339E70[0].command = -1;
                 NextCommandNumber_80368574 = 0;
                 fn_8020B940(addr, length, offset, callback);
@@ -474,7 +474,7 @@ BOOL fn_8020BAD0(void *addr, u32 length, u32 offset, void *callback) {
                 requested = lastOff >> 15;
                 if (previous == requested || (previous + 1) == requested) {
                     elapsed = __OSGetSystemTime() - lbl_80368560;
-                    bus = *(u32 *)0x800000F8 / 4;
+                    bus = *(u32 *)0x800000F8 >> 2;
                     ticks5 = (bus / 1000) * 5;
                     if (elapsed > (s64)ticks5) {
                         CommandList_80339E70[0].command = -1;
@@ -500,8 +500,7 @@ BOOL fn_8020BAD0(void *addr, u32 length, u32 offset, void *callback) {
     }
     return TRUE;
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 BOOL fn_8020BD68(u32 offset, void *callback) {
     extern void *Callback_80368538;
 

@@ -196,10 +196,10 @@ outer_test:
 #pragma opt_strength_reduction off
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
-    void Map_FillLayer(void *, s32, s32);
-    void Map_SetupUnitMoveLimit(void *);
-    extern u8 gUnitLists[];
-    extern u8 gMapBlendMode;
+    void fn_80022DAC(void *, s32, s32);
+    void fn_800AACDC(void *);
+    extern u8 lbl_802CA264[];
+    extern u8 lbl_80367289;
 
     register u16 packed;
     void *next;
@@ -244,13 +244,13 @@ void fn_8001F140(void *arg0) {
     u32 zero;
 
     OSGetTick();
-    Map_FillLayer(arg0, 9, 0);
-    node = *(void **)(gUnitLists + 0xC);
+    fn_80022DAC(arg0, 9, 0);
+    node = *(void **)(lbl_802CA264 + 0xC);
     while (node != NULL) {
         flags = *(s32 *)((u8 *)node + 0x1A0);
         next = *(void **)((u8 *)node + 0x184);
         if ((flags & (int)0x800) != 0 && (flags & (u32)0x010000DC) == 0) {
-            Map_SetupUnitMoveLimit(node);
+            fn_800AACDC(node);
             row = (s8)(*(s32 *)((u8 *)arg0 + 4) - 1);
             row_off = row << 6;
             row_base = (u8 *)arg0 + row_off;
@@ -352,9 +352,9 @@ void fn_8001F140(void *arg0) {
 
     one = 1;
     var_r4 = one;
-    temp = (u8)(gMapBlendMode - 1);
+    temp = (u8)(lbl_80367289 - 1);
     u = (u32)(one - temp) >> 1;
-    t = one | ~temp;
+    t = ~temp | one;
     if (((u32)(t - u) >> 31) == 0) {
         var_r4 = 0;
     }

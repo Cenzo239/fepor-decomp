@@ -1065,74 +1065,85 @@ s32 fn_80039408(void *arg0) {
 }
 #pragma dont_inline off
 #pragma global_optimizer off
-s8 fn_800398B0(void *arg0,u8 arg1) {
- s8 Unit_GetCarryWtLimit(void *);s8 Unit_GetMagAtk(void *);s8 fn_8003AF28(void *);s8 fn_8003AEB0(void *);s8 fn_8003AA40(void *);s8 fn_8003A778(void *);
- u8 Status_Test(void *,s32);
- s8 hp,bonus,value;u8 cap,flag;s32 sum,index,raw;void *ptr,*other,*base,*person;
- switch(arg1){
- case 0:{
+s8 fn_800398B0(void *arg0, u8 arg1) {
+    s8 Unit_GetCarryWtLimit(void *);
+    s8 Unit_GetMagAtk(void *);
+    s8 fn_8003AF28(void *);
+    s8 fn_8003AEB0(void *);
+    s8 fn_8003AA40(void *);
+    s8 fn_8003A778(void *);
+    u8 Status_Test(void *, s32);
+    s8 hp, bonus, value;
+    u8 cap, flag;
+    s32 sum, raw;
+    void *ptr, *base, *person;
 
- base=M2C_FIELD(arg0,void **,0x18C);person=M2C_FIELD(arg0,void **,0x188);
- cap=M2C_FIELD(base,u8 *,0x4C);
- raw=M2C_FIELD(arg0,u8 *,0x1AB)+M2C_FIELD(base,u8 *,0x44);
- hp=M2C_FIELD(person,u8 *,0x1D)+raw;
- if(hp>(s8)cap)hp=(s8)cap;
- if(hp<0)hp=0;
- bonus=0;
-ptr=Unit_GetActiveItemPtr(arg0);
-if(ptr)bonus=M2C_FIELD(*(void **)ptr,u8 *,31);
-other=fn_80037C20(arg0);
-if(other)bonus=(s8)(bonus+M2C_FIELD(*(void **)other,u8 *,31));
-
- return (s8)(hp+bonus);}
- case 1:return Unit_GetCarryWtLimit(arg0);
- case 2:return Unit_GetMagAtk(arg0);
- case 3:return fn_8003AF28(arg0);
- case 4:return fn_8003AEB0(arg0);
- case 5:{
-
- value=M2C_FIELD(M2C_FIELD(arg0,void **,0x188),u8 *,0x22)+M2C_FIELD(arg0,u8 *,0x1B0);
- if(value>40)value=40;if(value<0)value=0;
- bonus=0;
-ptr=Unit_GetActiveItemPtr(arg0);
-if(ptr)bonus=M2C_FIELD(*(void **)ptr,s8 *,36);
-other=fn_80037C20(arg0);
-if(other)bonus=(s8)(bonus+M2C_FIELD(*(void **)other,u8 *,36));
-
- value+=bonus;if(value<0)value=0;return value;}
- case 6:return fn_8003AA40(arg0);
- case 7:return fn_8003A778(arg0);
- case 8:{
-
- sum=M2C_FIELD(M2C_FIELD(arg0,void **,0x188),s8 *,0x1B)+M2C_FIELD(M2C_FIELD(arg0,void **,0x18C),u8 *,0x3C);
- sum+=M2C_FIELD(arg0,s8 *,0x1A9);
- bonus=0;
-ptr=Unit_GetActiveItemPtr(arg0);
-if(ptr)bonus=M2C_FIELD(*(void **)ptr,s8 *,40);
-other=fn_80037C20(arg0);
-if(other)bonus=(s8)(bonus+M2C_FIELD(*(void **)other,u8 *,40));
-
- sum+=(s8)bonus;
- if(sum>99)sum=99;if(sum<0)sum=0;
- return (s8)sum;}
- case 9:{
-
- if((M2C_FIELD(arg0,u8 *,0x1A4)>>2)&7)return 0;
- sum=M2C_FIELD(M2C_FIELD(arg0,void **,0x18C),u8 *,0x3E);
- sum+=M2C_FIELD(arg0,s8 *,0x1AA);
- flag=Status_Test((u8 *)arg0+0x1BC,14);
- bonus=0;
- sum+=2&((-(s32)flag|(s32)flag)>>31);
-ptr=Unit_GetActiveItemPtr(arg0);
-if(ptr)bonus=M2C_FIELD(*(void **)ptr,s8 *,39);
-other=fn_80037C20(arg0);
-if(other)bonus=(s8)(bonus+M2C_FIELD(*(void **)other,u8 *,39));
-
- sum+=(s8)bonus;
- if(sum>20)sum=20;if(sum<0)sum=0;
- return (s8)sum;}
- default:return -1;
- }
+    switch (arg1) {
+    case 0: {
+        base = M2C_FIELD(arg0, void **, 0x18C);
+        person = M2C_FIELD(arg0, void **, 0x188);
+        cap = M2C_FIELD(base, u8 *, 0x4C);
+        raw = M2C_FIELD(arg0, u8 *, 0x1AB) + M2C_FIELD(base, u8 *, 0x44);
+        hp = M2C_FIELD(person, u8 *, 0x1D) + raw;
+        if (hp > (s8)cap) hp = (s8)cap;
+        if (hp < 0) hp = 0;
+        bonus = 0;
+        ptr = Unit_GetActiveItemPtr_Inline(arg0);
+        if (ptr) bonus = M2C_FIELD(*(void **)ptr, u8 *, 31);
+        ptr = Unit_GetActiveEquipPtr_Inline(arg0);
+        if (ptr) bonus = (s8)(bonus + M2C_FIELD(*(void **)ptr, u8 *, 31));
+        return (s8)(hp + bonus);
+    }
+    case 1: return Unit_GetCarryWtLimit(arg0);
+    case 2: return Unit_GetMagAtk(arg0);
+    case 3: return fn_8003AF28(arg0);
+    case 4: return fn_8003AEB0(arg0);
+    case 5: {
+        value = M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), u8 *, 0x22) + M2C_FIELD(arg0, u8 *, 0x1B0);
+        if (value > 40) value = 40;
+        if (value < 0) value = 0;
+        bonus = 0;
+        ptr = Unit_GetActiveItemPtr_Inline(arg0);
+        if (ptr) bonus = M2C_FIELD(*(void **)ptr, s8 *, 36);
+        ptr = Unit_GetActiveEquipPtr_Inline(arg0);
+        if (ptr) bonus = (s8)(bonus + M2C_FIELD(*(void **)ptr, u8 *, 36));
+        value += bonus;
+        if (value < 0) value = 0;
+        return value;
+    }
+    case 6: return fn_8003AA40(arg0);
+    case 7: return fn_8003A778(arg0);
+    case 8: {
+        sum = M2C_FIELD(M2C_FIELD(arg0, void **, 0x188), s8 *, 0x1B) + M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3C);
+        sum += M2C_FIELD(arg0, s8 *, 0x1A9);
+        bonus = 0;
+        ptr = Unit_GetActiveItemPtr_Inline(arg0);
+        if (ptr) bonus = M2C_FIELD(*(void **)ptr, s8 *, 40);
+        ptr = Unit_GetActiveEquipPtr_Inline(arg0);
+        if (ptr) bonus = (s8)(bonus + M2C_FIELD(*(void **)ptr, u8 *, 40));
+        sum += (s8)bonus;
+        if (sum > 99) sum = 99;
+        if (sum < 0) sum = 0;
+        return (s8)sum;
+    }
+    case 9: {
+        if ((M2C_FIELD(arg0, u8 *, 0x1A4) >> 2) & 7) return 0;
+        sum = M2C_FIELD(M2C_FIELD(arg0, void **, 0x18C), u8 *, 0x3E);
+        sum += M2C_FIELD(arg0, s8 *, 0x1AA);
+        flag = Status_Test((u8 *)arg0 + 0x1BC, 14);
+        bonus = 0;
+        sum += 2 & ((-(s32)flag | (s32)flag) >> 31);
+        ptr = Unit_GetActiveItemPtr_Inline(arg0);
+        if (ptr) bonus = M2C_FIELD(*(void **)ptr, s8 *, 39);
+        ptr = Unit_GetActiveEquipPtr_Inline(arg0);
+        if (ptr) bonus = (s8)(bonus + M2C_FIELD(*(void **)ptr, u8 *, 39));
+        sum += (s8)bonus;
+        if (sum > 20) sum = 20;
+        if (sum < 0) sum = 0;
+        return (s8)sum;
+    }
+    default: return -1;
+    }
 }
 #pragma global_optimizer reset
 #pragma dont_inline reset
@@ -1196,131 +1207,143 @@ s8 fn_8003A1E0(void *arg0)
 #pragma global_optimizer reset
 s8 Unit_GetMov(void *arg0) {
     u8 Status_Test(void *, s32);
+    struct Slot {
+        s8 *item;
+        u8 pad;
+        u8 flags;
+        u8 pad2[2];
+    };
+    struct Unit {
+        u8 pad[0x18C];
+        u8 *job;
+        u8 pad1[0x1A4 - 0x190];
+        u8 flags1A4;
+        u8 pad2[0x1AA - 0x1A5];
+        s8 movBonus;
+        u8 pad3[0x1BC - 0x1AB];
+        u8 status[0x10];
+        struct Slot weapons[4];
+        struct Slot acc[4];
+    };
+    struct Unit *u = (struct Unit *)arg0;
     s32 sum;
-    s32 index;
-    s32 ptr;
-    s8 bonus;
-    u8 flag_ret;
-    void *base;
-    s32 mask;
-    s32 addend;
+    s32 i;
+    s8 result;
+    s8 temp;
+    struct Slot *slot;
 
-    if (((*(u8 *)((u8 *)arg0 + 0x1A4) >> 2) & 7) != 0) {
+    if (((u->flags1A4 >> 2) & 7) != 0) {
         return 0;
     }
-    base = *(void **)((u8 *)arg0 + 0x18C);
-    sum = *(u8 *)((u8 *)base + 0x3E);
-    sum = sum + (s8)*(u8 *)((u8 *)arg0 + 0x1AA);
-    flag_ret = Status_Test((u8 *)arg0 + 0x1BC, 0xE);
-    mask = (-(s32)flag_ret | (s32)flag_ret) >> 31;
-    addend = 1;
-    addend = addend + 1;
-    bonus = 0;
-    sum += addend & mask;
-    if ((((*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1CC) != 0)) {
-        index = bonus;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1D4) != 0)) {
-        index = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1DC) != 0)) {
-        index = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1E4) != 0)) {
-        index = 3;
+    sum = u->job[0x3E];
+    sum += u->movBonus;
+    sum += Status_Test(u->status, 0xE) ? 2 : 0;
+
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        if (((u->weapons[i].flags >> 7) & 1) && u->weapons[i].item != 0) {
+            temp = i;
+            goto found1;
+        }
+    }
+    temp = -1;
+found1:
+    if (temp < 0) {
+        slot = 0;
     } else {
-        index = -1;
+        slot = &u->weapons[temp];
     }
-    if ((s8)index < 0) {
-        ptr = 0;
+    if (slot != 0) {
+        result += slot->item[0x27];
+    }
+    for (i = 0; i < 4; i++) {
+        if (((u->acc[i].flags >> 7) & 1) && u->acc[i].item != 0) {
+            temp = i;
+            goto found2;
+        }
+    }
+    temp = -1;
+found2:
+    if (temp < 0) {
+        slot = 0;
     } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1CC;
-        ptr = ptr + (s32)arg0;
+        slot = &u->acc[temp];
     }
-    if ((u32)ptr != 0) {
-        bonus = (s8)*(u8 *)((u8 *)*(void **)ptr + 0x27);
+    if (slot != 0) {
+        result += slot->item[0x27];
     }
-    if ((((*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1EC) != 0)) {
-        index = 0;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1F4) != 0)) {
-        index = 1;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x1FC) != 0)) {
-        index = 2;
-    } else if ((((*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) != 0) && (*(u32 *)((u8 *)arg0 + 0x204) != 0)) {
-        index = 3;
-    } else {
-        index = -1;
-    }
-    if ((s8)index < 0) {
-        ptr = 0;
-    } else {
-        ptr = (s8)index * 8;
-        ptr = ptr + 0x1EC;
-        ptr = ptr + (s32)arg0;
-    }
-    if ((u32)ptr != 0) {
-        bonus += (s8)*(u8 *)((u8 *)*(void **)ptr + 0x27);
-    }
-    sum = sum + bonus;
+
+    sum += result;
     if (sum > 0x14) {
         sum = 0x14;
     }
     if (sum < 0) {
         sum = 0;
     }
-    return (s8)sum;
+    return sum;
 }
 #pragma opt_strength_reduction reset
 s8 Unit_GetCon(void *arg0) {
-    s8 bonus;
-    s8 index;
+    struct Slot {
+        s8 *item;
+        u8 pad;
+        u8 flags;
+        u8 pad2[2];
+    };
+    struct Unit {
+        u8 pad0[0x188];
+        s8 *p188;
+        u8 *p18C;
+        u8 pad1[0x19];
+        s8 f1A9;
+        u8 pad2[0x22];
+        struct Slot weapons[4];
+        struct Slot acc[4];
+    };
+    struct Unit *u = (struct Unit *)arg0;
+    s8 result;
     s32 sum;
-    void *slot;
+    s8 temp;
+    s32 i;
+    struct Slot *slot;
 
-    sum = (s8)*(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x188) + 0x1B);
-    sum += *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x18C) + 0x3C);
-    sum += (s8)*(u8 *)((u8 *)arg0 + 0x1A9);
-    bonus = 0;
-
-    if ((((u8)*(u8 *)((u8 *)arg0 + 0x1D1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1CC) != 0) {
-        index = bonus;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x1D9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1D4) != 0) {
-        index = 1;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x1E1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1DC) != 0) {
-        index = 2;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x1E9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1E4) != 0) {
-        index = 3;
-    } else {
-        index = -1;
+    sum = u->p188[0x1B];
+    sum += u->p18C[0x3C];
+    sum += u->f1A9;
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        if (((u->weapons[i].flags >> 7) & 1) && u->weapons[i].item != 0) {
+            temp = i;
+            goto found1;
+        }
     }
-    if (index < 0) {
+    temp = -1;
+found1:
+    if (temp < 0) {
         slot = 0;
     } else {
-        slot = (u8 *)arg0 + (index * 8) + 0x1CC;
+        slot = &u->weapons[temp];
     }
     if (slot != 0) {
-        bonus = (s8)*(u8 *)(*(u8 **)slot + 0x28);
+        result += slot->item[0x28];
     }
-
-    if ((((u8)*(u8 *)((u8 *)arg0 + 0x1F1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1EC) != 0) {
-        index = 0;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x1F9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1F4) != 0) {
-        index = 1;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x201) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1FC) != 0) {
-        index = 2;
-    } else if ((((u8)*(u8 *)((u8 *)arg0 + 0x209) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x204) != 0) {
-        index = 3;
-    } else {
-        index = -1;
+    for (i = 0; i < 4; i++) {
+        if (((u->acc[i].flags >> 7) & 1) && u->acc[i].item != 0) {
+            temp = i;
+            goto found2;
+        }
     }
-    if (index < 0) {
+    temp = -1;
+found2:
+    if (temp < 0) {
         slot = 0;
     } else {
-        slot = (u8 *)arg0 + (index * 8) + 0x1EC;
+        slot = &u->acc[temp];
     }
     if (slot != 0) {
-        bonus += *(u8 *)(*(u8 **)slot + 0x28);
+        result += slot->item[0x28];
     }
-
-    sum = sum + bonus;
+    sum += result;
     if (sum > 0x63) {
         sum = 0x63;
     }
@@ -1766,22 +1789,15 @@ s8 Unit_GetMaxHp(void *arg0) {
     bonus = 0;
     if ((((u8)*((u8 *)arg0 + 0x1D1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1CC) != 0) {
         index = bonus;
-        goto got1;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x1D9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1D4) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x1D9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1D4) != 0) {
         index = 1;
-        goto got1;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x1E1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1DC) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x1E1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1DC) != 0) {
         index = 2;
-        goto got1;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x1E9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1E4) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x1E9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1E4) != 0) {
         index = 3;
-        goto got1;
+    } else {
+        index = -1;
     }
-    index = -1;
-got1:
     if (index < 0) {
         slot = 0;
     } else {
@@ -1793,22 +1809,15 @@ got1:
 
     if ((((u8)*((u8 *)arg0 + 0x1F1) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1EC) != 0) {
         index = 0;
-        goto got2;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x1F9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1F4) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x1F9) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1F4) != 0) {
         index = 1;
-        goto got2;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x201) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1FC) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x201) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x1FC) != 0) {
         index = 2;
-        goto got2;
-    }
-    if ((((u8)*((u8 *)arg0 + 0x209) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x204) != 0) {
+    } else if ((((u8)*((u8 *)arg0 + 0x209) >> 7) & 1) && *(u32 *)((u8 *)arg0 + 0x204) != 0) {
         index = 3;
-        goto got2;
+    } else {
+        index = -1;
     }
-    index = -1;
-got2:
     if (index < 0) {
         slot = 0;
     } else {

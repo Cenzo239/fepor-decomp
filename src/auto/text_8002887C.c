@@ -2070,7 +2070,7 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
         s32 val;
     } obj;
     s8 y;
-    register s32 x;
+    s32 x;
 
     obj.vtbl = lbl_80284E20;
     obj.vtbl = lbl_80284CF0;
@@ -2153,6 +2153,8 @@ extern "C" void fn_8002BAFC(void *arg0, s32 arg1) {
     }
 }
 
+#pragma push
+#pragma opt_propagation off
 extern "C" void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
 {
     extern u8 gMapObjEventList[];
@@ -2171,27 +2173,23 @@ extern "C" void MapObj_BuildAttackTargetList(void *arg0, void *arg1)
     void Map_FillAttackRange(void *, s32, s32, s32, s32);
     void Map_ClipRangeByFacing(void *, s32, s32, s32);
 
+    u8 *map;
+    s32 colIndex;
+    s32 rowIndex;
+    s32 bufferOffset;
+    u8 *cell;
+    s32 rowOffset;
+    u8 *row;
+    u8 *mapHi;
     u8 *source;
     u8 *unit;
-    u8 *base;
-    u8 *table;
-    s32 rowIndex;
-    s32 count;
     u8 *entry;
-    unsigned long result;
-    s32 columnOffset;
-    u8 *data;
-    u8 *cell;
-    register s32 columnIndex;
-    u32 rowOffset;
-    int threshold;
-    u8 *row;
+    s32 threshold;
     void *localObject[2];
 #pragma cplusplus on
-struct Visitor { virtual void apply(void *)=0; };
-u8 minRange,py,px;
-u8 id;
-    register void *vtable;
+    struct Visitor { virtual void apply(void *) = 0; };
+    u8 minRange, py, px;
+    u8 id;
 
     source = (u8 *)arg1;
 
@@ -2219,15 +2217,16 @@ u8 id;
 
     unit = (u8 *)Item_Get(source[4]);
 
-    py=source[1]; minRange=unit[0x1D]; px=source[0];
-result = Item_GetMaxRange(unit);
+    py = source[1];
+    minRange = unit[0x1D];
+    px = source[0];
 
     Map_FillAttackRange(
         gBattleMap,
         px,
         py,
         minRange,
-        result
+        Item_GetMaxRange(unit)
     );
 
     Map_ClipRangeByFacing(
@@ -2237,39 +2236,36 @@ result = Item_GetMaxRange(unit);
         source[3]
     );
 
-    base = gBattleMap;
+    map = gBattleMap;
     threshold = (s8)unit[0x1D];
-
     rowIndex = 0;
-    rowOffset = 0;
-    row = base;
+    rowOffset = rowIndex;
+    row = map;
+    mapHi = map + 0x14190;
 
-    table = base + 0x10000;
-
-    while ((s8)rowIndex < *(s32 *)(base + 4)) {
-        count = rowOffset;
-        register columnIndex = 0;
-        
+    while ((s8)rowIndex < *(s32 *)(map + 4)) {
+        bufferOffset = rowOffset;
         cell = row;
+        colIndex = 0;
 
-        while ((s8)columnIndex < *(s32 *)base) {
-            columnOffset=count*2;
-            if (*(s16 *)(*(u8 **)(table+0x4190) + (s32)columnOffset) >= threshold) {
+        while ((s8)colIndex < *(s32 *)map) {
+            if (*(s16 *)(*(u8 **)mapHi + bufferOffset * 2) >= threshold) {
                 id = cell[0xD];
 
                 if (id) {
                     if (id) {
-entry = gUnits + (id - 1) * 0x280;
-} else { entry = 0; }
+                        entry = gUnits + (id - 1) * 0x280;
+                    } else {
+                        entry = 0;
+                    }
 
                     ((Visitor *)localObject)->apply(entry);
                 }
             }
 
-            count += 1;
-            
+            bufferOffset++;
             cell++;
-            columnIndex += 1;
+            colIndex++;
         }
 
         rowOffset += 0x40;
@@ -2278,7 +2274,7 @@ entry = gUnits + (id - 1) * 0x280;
     }
 #pragma cplusplus reset
 }
-
+#pragma pop
 extern "C" void fn_8002BEFC(void *arg0, void *arg1) {
 #pragma cplusplus on
 #pragma opt_propagation off

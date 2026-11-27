@@ -924,6 +924,7 @@ void UiWin_SetupPrim2D(void *unused, void *win) {
 }
 #pragma cplusplus reset
 
+#pragma optimization_level 2
 void fn_8006F7F0(void *arg0)
 {
     void Ui_DrawMsgPanelAlt(s32, s32);
@@ -946,7 +947,7 @@ void fn_8006F7F0(void *arg0)
     extern f32 lbl_803692FC;
     extern f32 lbl_80369300;
     char *buf;
-    void *p;
+    char *p;
     void *self;
     char *line;
     f32 posX;
@@ -1001,9 +1002,9 @@ void fn_8006F7F0(void *arg0)
     Prim2D_AddZ(lbl_80369300);
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();
-    for (p = buf; (c = *(char *)p) != 0; p = (void *)((char *)p + 1)) {
+    for (p = buf; (c = *p) != 0; p++) {
         if ((s8)c == 0xA) {
-            *(char *)p = 0;
+            *p = 0;
             Prim2D_AddPrim(6);
             Prim2D_SetPos(posX, posY);
             Prim2D_SetColor(0, 0, 0, 0xFF);
@@ -1012,7 +1013,7 @@ void fn_8006F7F0(void *arg0)
             lineIndex++;
             posX = (f32)*(s16 *)((u8 *)self + 0x10 + (s16)lineIndex * 2);
             posY += (f32)(Text_MeasureHeight(-1, lbl_803692E0) + 2);
-            line = (char *)p + 1;
+            line = p + 1;
         }
     }
     Prim2D_AddPrim(6);
@@ -1026,7 +1027,8 @@ void fn_8006F7F0(void *arg0)
     Prim2D_PrepareTex();
 #pragma cplusplus reset
 }
-
+#pragma optimization_level reset
+#pragma push
 void fn_8006F9F4(void *arg0, void *arg1) {
     void *GfxEnt_Get(u8);
     s32 Text_MeasureWidth(void *, s32, f32);
@@ -1065,15 +1067,16 @@ void fn_8006F9F4(void *arg0, void *arg1) {
     u8 *group;
     u8 *self;
     s16 y;
-    s8 c;
-    s32 j;
-    s32 t26;
-    s32 i;
-    s16 lineW;
+    s32 c;
     s16 step;
-    s16 lineIdx;
+    s32 i;
+    s32 t26;
+    s32 j;
+    s16 lineW;
+    s32 lineIdx;
     u8 *text;
     s16 w;
+    u8 ch;
 
     i = 0;
     self = (u8 *)arg0;
@@ -1081,9 +1084,8 @@ void fn_8006F9F4(void *arg0, void *arg1) {
     *(s16 *)((u8 *)arg0 + 8) = i;
     goto check1;
 loop1:
-    t26 = (s32)GfxEnt_Get(group[i + 0x40]);
     w = (s16)Text_MeasureWidth(
-        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4((void *)t26),
+        (*(TextObj **)((u8 *)GfxEnt_Get(group[i + 0x40]) + 0x34))->v4(GfxEnt_Get(group[i + 0x40])),
         -1, lbl_803692E0);
     if (w >= *(s16 *)(self + 8)) {
         *(s16 *)(self + 8) = w;
@@ -1096,13 +1098,16 @@ check1:
     }
     w = ((Obj *)arg0)->v18();
     c = (s8)t26;
-    step = (s16)((s32)w / ((s32)c + 1));
+    step = (s16)((s32)w / (c + 1));
     t26 = step;
     y = ((Obj *)arg0)->v17();
     j = 0;
     goto check2;
 loop2:
-    *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x30) = (s16)t26;
+    {
+        u8 *ent = (u8 *)GfxEnt_Get(group[j + 0x40]);
+        *(s16 *)(ent + 0x30) = t26;
+    }
     *(s16 *)((u8 *)GfxEnt_Get(group[j + 0x40]) + 0x32) = y;
     t26 = t26 + step;
     j += 1;
@@ -1113,30 +1118,23 @@ check2:
     lineW = 0;
     lineIdx = 0;
     text = (u8 *)((Obj *)arg0)->v0();
-    goto check3;
-loop3:
-    switch ((s8)*text) {
-    case 10: {
-        s16 v = ((Obj *)arg0)->v18();
-        s16 centered = (s16)(((s32)v - (s32)lineW) >> 1);
-        lineW = 0;
-        *(s16 *)(self + ((s32)lineIdx << 1) + 0x10) = centered;
-        lineIdx = (s16)(lineIdx + 1);
-        text += 1;
-        break;
+    while ((s8)(ch = *text) != 0) {
+        switch ((s8)ch) {
+        case 10: {
+            s16 v = ((Obj *)arg0)->v18();
+            s16 centered = (s16)(((s32)v - (s32)lineW) >> 1);
+            lineW = 0;
+            *(s16 *)(self + ((s32)(s16)lineIdx << 1) + 0x10) = centered;
+            lineIdx += 1;
+            text += 1;
+            break;
+        }
+        default:
+            lineW += fn_80010428(&text, -1, lbl_803692E0);
+            break;
+        }
     }
-    default:
-        lineW = (s16)(lineW + fn_80010428(&text, -1, lbl_803692E0));
-        break;
-    }
-check3:
-    if ((s8)*text != 0) {
-        goto loop3;
-    }
-    {
-        s16 v = ((Obj *)arg0)->v18();
-        *(s16 *)(self + ((s32)lineIdx << 1) + 0x10) =
-            (s16)(((s32)v - (s32)lineW) >> 1);
-    }
+    ((s16 *)(self + 0x10))[(s16)lineIdx] = (((Obj *)arg0)->v18() - lineW) >> 1;
 #pragma cplusplus reset
 }
+#pragma pop

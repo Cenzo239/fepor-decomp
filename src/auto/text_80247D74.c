@@ -908,9 +908,9 @@ s32 fn_802488C8(u16 id, u8 volume, u8 arg2, s32 arg3, u8 key, s32 arg5, u8 pan, 
   }
 }
 #pragma push
-#pragma cplusplus on
 #pragma optimization_level 3
-extern "C" void fn_80248D28(s32 arg0)
+#pragma opt_loop_invariants off
+void fn_80248D28(s32 arg0)
 {
     extern s32 gSynthVoices;
     extern s32 lbl_803689B8;
@@ -935,6 +935,7 @@ extern "C" void fn_80248D28(s32 arg0)
     s32 pitch;
     u8 *voice;
     s32 t;
+s32 bend;
     s32 t2;
     u16 w;
     u32 modulation;
@@ -1038,14 +1039,14 @@ extern "C" void fn_80248D28(s32 arg0)
         pitch = (*(u16 *)(voice + 0x12E) << 16) + (((s8)voice[0x130] << 16) / 100);
         if ((*(u64 *)(voice + 0x114) & 0x10030ULL) != 0) {
  if(voice[0x121]==0xFF) goto pitchDone;
- t=fn_80260764(voice);
- *(u16*)(voice+0x1DC)=t;
- t=(u16)t;
- } else t=*(u16*)(voice+0x1DC);
- if(t!=0x2000) {
- t-=0x2000;
- if(t<0)pitch+=voice[0x1DA]*t*8;
- else pitch+=voice[0x1DB]*t*8;
+ bend=fn_80260764(voice);
+ *(u16*)(voice+0x1DC)=bend;
+ bend=(u16)bend;
+ } else bend=*(u16*)(voice+0x1DC);
+ if(bend!=0x2000) {
+ bend-=0x2000;
+ if(bend<0)pitch+=voice[0x1DA]*bend*8;
+ else pitch+=voice[0x1DB]*bend*8;
  }
 pitchDone:
 
@@ -1090,36 +1091,16 @@ pitchDone:
             }
         }
 
-        finalPitch = pitch;
-        if ((*(u64 *)(voice + 0x114) & 0x400ULL) != 0) {
-            t2 = (u32)(*(s32 *)(voice + 0x138) - *(s32 *)(voice + 0x140)) >> 8;
-            if (t2 > 0) {
-                i = *(u32 *)(voice + 0x13C);
-                *(u32 *)(voice + 0x13C) =
-                    i + ((delta * ((s32)(pitch - i) >> 8)) / t2);
-                if ((i < (u32)pitch && *(u32 *)(voice + 0x13C) < (u32)pitch) ||
-                    (i > (u32)pitch && *(u32 *)(voice + 0x13C) > (u32)pitch)) {
-                    finalPitch = *(s32 *)(voice + 0x13C);
-                    *(s32 *)(voice + 0x140) += delta;
-                } else {
-                    *(s32 *)(voice + 0x140) = *(s32 *)(voice + 0x138);
-                }
-            }
-        }
-
-        if ((*(u64 *)(voice + 0x114) & 0x20000000000ULL) != 0) {
-            finalPitch += (*(s16 *)(voice + 0x210) * (*(s32 *)(voice + 0x1F0) >> 16)) >> 7;
-        }
-
-        pitch = fn_8025785C((u8)((u32)finalPitch >> 16), *(s32 *)(voice + 0x124)) << 16;
-        finalPitch = (u16)finalPitch;
+        finalPitch=Synth_CalculatePortamento(pitch,voice,delta);
+        i = fn_8025785C((u8)((u32)finalPitch >> 16), *(s32 *)(voice + 0x124)) << 16;
+        finalPitch &= 0xFFFF;
         if (finalPitch != 0) {
-            t2 = (u32)pitch >> 16;
-            pitch += finalPitch * (fn_80257820((u16)t2) - t2);
+            delta = (u32)i >> 16;
+            i += finalPitch * (fn_80257820((u16)delta) - delta);
         }
-        pitch = *(s32 *)(voice + 0x1A8) + pitch;
-        pitch = *(s32 *)(voice + 0x1A4) + pitch;
-        w = (u16)((((u32)pitch >> 16) * fn_802607AC(voice)) >> 13);
+        i += *(s32 *)(voice + 0x1A8);
+        i += *(s32 *)(voice + 0x1A4);
+        w = (u16)((((u32)i >> 16) * fn_802607AC(voice)) >> 13);
         *(u16 *)(voice + 0x212) = w;
         fn_80261BC8(arg0, w);
         fn_80249C1C(voice, 0, 0xF00);
@@ -1130,8 +1111,12 @@ pitchDone:
         *(u32 *)(voice + 0x220) = 0x7FFF;
     }
 }
-#pragma pop
-#pragma cplusplus off
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_propagation off
+#pragma opt_loop_invariants off
+#pragma fp_contract off
 void fn_8024946C(s32 arg0)
 {
     u32 Sound_IsHwVoiceActive(s32);
@@ -1185,14 +1170,15 @@ void fn_8024946C(s32 arg0)
     s32 step;
     s32 target;
     s32 result;
-    s32 dirty;
+    u32 dirty;
     s32 index;
     s32 group;
-    u16 phaseA;
     u16 phaseB;
+    u16 phaseA;
     u16 resultA;
     u16 resultB;
     f32 volume;
+    f32 baseVolume;
     f32 pitch;
     f32 gain;
     f32 outputA;
@@ -1203,10 +1189,7 @@ void fn_8024946C(s32 arg0)
 
     voice = (u8 *)gSynthVoices + arg0 * 0x458;
 
-    if (Sound_IsHwVoiceActive(arg0) != 0) {
-        goto finish;
-    }
-    if (*(u32 *)(voice + 0x34) == 0) {
+    if (Sound_IsHwVoiceActive(arg0) == 0 && *(u32 *)(voice + 0x34) == 0) {
         goto finish;
     }
 
@@ -1218,20 +1201,15 @@ void fn_8024946C(s32 arg0)
     flags64 = *(u64 *)(voice + 0x114);
     dirty = 0;
     if ((flags64 & 0x8000ULL) != 0) {
-        step = *(s32 *)(voice + 0x198);
-        value = *(u32 *)(voice + 0x1A0);
-        value += step * (delta >> 8);
-        *(u32 *)(voice + 0x1A0) = value;
-
-        target = *(s32 *)(voice + 0x19C);
-        if (step < 0) {
-            if (target >= (s32)value) {
-                *(s32 *)(voice + 0x1A0) = target;
+        *(u32 *)(voice + 0x1A0) += *(s32 *)(voice + 0x198) * (delta >> 8);
+        if (*(s32 *)(voice + 0x198) < 0) {
+            if (*(s32 *)(voice + 0x19C) >= *(s32 *)(voice + 0x1A0)) {
+                *(s32 *)(voice + 0x1A0) = *(s32 *)(voice + 0x19C);
                 *(u64 *)(voice + 0x114) &= ~0x8000ULL;
             }
         } else {
-            if (target <= (s32)value) {
-                *(s32 *)(voice + 0x1A0) = target;
+            if (*(s32 *)(voice + 0x19C) <= *(s32 *)(voice + 0x1A0)) {
+                *(s32 *)(voice + 0x1A0) = *(s32 *)(voice + 0x19C);
                 *(u64 *)(voice + 0x114) &= ~0x8000ULL;
             }
         }
@@ -1242,13 +1220,13 @@ void fn_8024946C(s32 arg0)
     }
     *(u64 *)(voice + 0x114) &= ~((u64)0x1000 << 32);
 
-    index = (s32)voice[0x11E];
     group = (voice[0x11D] != 0) + 0x15;
-    volume = lbl_8034C324[index * 12];
-    volume = lbl_8034C324[index * 12 + 5] * volume;
-    volume = volume * lbl_8034C324[group * 12];
+    index = (s32)voice[0x11E];
+    baseVolume = ((f32 (*)[12])lbl_8034C324)[index][5] * ((f32 (*)[12])lbl_8034C324)[index][0] * ((f32 (*)[12])lbl_8034C324)[group][0];
     if (voice[0x120] != 0xFF) {
-        volume = lbl_8036C1D0 * (volume * (f32)lbl_8034C924[voice[0x120]]);
+        volume = lbl_8036C1D0 * (baseVolume * (f32)lbl_8034C924[voice[0x120]]);
+    } else {
+        volume = baseVolume;
     }
     if (volume != *(f32 *)(voice + 0x160)) {
         *(f32 *)(voice + 0x160) = volume;
@@ -1260,23 +1238,23 @@ void fn_8024946C(s32 arg0)
     phaseA = *(u16 *)(voice + 0x170);
     phaseB = *(u16 *)(voice + 0x172);
     if ((phaseA | phaseB) != 0) {
-        u32 parameter = fn_802607F4(voice);
+        u16 parameter = fn_802607F4(voice);
         s32 angle = (s16)fn_802609A4(voice);
-        s32 shift = 0x2000 - ((0x4000 - angle) >> 1);
+        s32 shift = 0x2000 - ((0x2000 - (angle - 0x2000)) >> 1);
 
         adjustment = lbl_8036C1D8 * (f32)shift;
         wanted = lbl_8036C1DC *
-            ((f32)phaseA * (lbl_8036C1E0 -
-            lbl_8036C1E4 * ((f32)parameter * (f32)(0x1000 - phaseB))));
+            ((f32)*(u16 *)(voice + 0x170) * (lbl_8036C1E0 -
+            lbl_8036C1E4 * ((f32)parameter * (f32)(0x1000 - *(u16 *)(voice + 0x172)))));
         current = *(f32 *)(voice + 0x16C);
         if (current < wanted) {
-            current += lbl_8036C1E8;
+            current = *(f32 *)(voice + 0x16C) + lbl_8036C1E8;
             *(f32 *)(voice + 0x16C) = current;
             if (current > wanted) {
                 *(f32 *)(voice + 0x16C) = wanted;
             }
         } else if (current > wanted) {
-            current -= lbl_8036C1E8;
+            current = *(f32 *)(voice + 0x16C) - lbl_8036C1E8;
             *(f32 *)(voice + 0x16C) = current;
             if (current < wanted) {
                 *(f32 *)(voice + 0x16C) = wanted;
@@ -1289,20 +1267,20 @@ void fn_8024946C(s32 arg0)
 
     globalFlags = (u32)lbl_803689A4;
     if ((globalFlags & 1) == 0) {
-        flags = *(u32 *)(voice + 0x114);
-        if ((flags & 0x2000) != 0 || (*(u32 *)(voice + 0x220) & 6) != 0) {
+        flags64 = *(u64 *)(voice + 0x114);
+        if ((flags64 & ((u64)0x2000 << 32)) != 0 || (*(u32 *)(voice + 0x220) & 6) != 0) {
             *(u64 *)(voice + 0x114) &= ~((u64)0x2000 << 32);
 
             result = (s32)((u16)fn_802606D4(voice)) - 0x2000;
-            result = *(s32 *)(voice + 0x174) + (s32)((u32)result << 9);
+            result = (s32)((u32)result << 9) + *(s32 *)(voice + 0x174);
             if (result < 0) {
                 result = 0;
-            } else if (result > 0x7F0000) {
-                result = 0x7F0000;
+            } else {
+                result = result > 0x7F0000 ? 0x7F0000 : result;
             }
             *(u32 *)(voice + 0x164) = (u32)result;
 
-            if ((globalFlags & 2) != 0) {
+            if (((u32)lbl_803689A4 & 2) != 0) {
                 value = *(u32 *)(voice + 0x178) + ((u32)(u16)fn_8026071C(voice) << 9);
                 *(u32 *)(voice + 0x168) = value;
                 if (value > 0x7F0000U) {
@@ -1323,31 +1301,25 @@ void fn_8024946C(s32 arg0)
         *(u64 *)(voice + 0x114) = flags64 & ~((u64)0x2000 << 32);
     }
 
-    if (dirty != 0) {
-        if ((*(u32 *)(voice + 0x220) & 0xF01) != 0) {
-            value = fn_8026068C(voice);
-            gain = lbl_8036C1EC * ((pitch * volume) * (f32)value);
+    if (dirty != 0 || (*(u32 *)(voice + 0x220) & 0xF01) != 0) {
+        {
+            gain = lbl_8036C1EC * ((pitch * volume) * (f32)(u32)fn_8026068C(voice));
 
-            value = fn_802608CC(voice);
             outputA = lbl_8036C1D0 *
                 ((f32)voice[0x194] *
-                 (lbl_8036C1EC * (gain * (f32)value)));
+                 (lbl_8036C1EC * (gain * (f32)(u32)fn_802608CC(voice))));
 
-            value = fn_80260884(voice);
-            outputB = (lbl_8036C1EC * (pitch * (f32)value)) +
-                      outputA + lbl_8036C1D0 * (f32)voice[0x195];
+            outputB = lbl_8036C1D0 * (f32)voice[0x195] + ((lbl_8036C1EC * (pitch * (f32)(u32)fn_80260884(voice))) + outputA);
 
-            value = fn_8026095C(voice);
-            outputA = lbl_8036C1EC * (gain * (f32)value);
+            outputA = lbl_8036C1EC * (gain * (f32)(u32)fn_8026095C(voice));
 
-            value = fn_80260914(voice);
-            outputA += lbl_8036C1EC * (pitch * (f32)value);
+            current = lbl_8036C1EC * (pitch * (f32)(u32)fn_80260914(voice)) + outputA;
 
             *(s16 *)(voice + 0x454) = (s16)(lbl_8036C1F0 * gain);
             fn_80261E6C(arg0, voice[0x196],
                          *(u32 *)(voice + 0x164),
                          *(u32 *)(voice + 0x168),
-                         gain, outputB, outputA);
+                         gain, outputB, current);
         }
     }
 
@@ -1374,8 +1346,8 @@ void fn_8024946C(s32 arg0)
         if (result < 0) {
             *(u32 *)(voice + 0x110) = 0;
         }
-        packed = (*(u32 *)(voice + 0x110) >> 15) |
-                 ((u32)voice[0x10C] << 24);
+        packed = (u32)voice[0x10C] << 24;
+        packed |= *(u32 *)(voice + 0x110) >> 15;
         fn_8026171C(arg0, packed);
     }
 
@@ -1387,19 +1359,20 @@ finish:
         *(u32 *)(voice + 0x220) = 0x7FFF;
     }
 }
-
+#pragma push
+#pragma opt_lifetimes off
 void fn_80249C1C(SoundBucketNode *arg0, s32 kind, u32 time) {
+typedef struct { SoundBucketNode *a, *b, *c; } SoundBucket;
 extern u8 lbl_80368979;
-extern u8 lbl_8034C964[];
-SoundBucketNode *prev;
+extern SoundBucket lbl_8034C964[];
 SoundBucketNode *next;
 SoundBucketNode **head;
 SoundBucketNode *node;
 u32 index;
-SoundBucketNode **bucket;
+SoundBucket *bucket;
 u32 oldIndex;
 index=((time>>8)+lbl_80368979)&31;
-bucket=(SoundBucketNode **)(lbl_8034C964+index*12);
+bucket=&lbl_8034C964[index];
 switch(kind) {
 case 0:
 oldIndex=arg0->index; node=arg0;
@@ -1407,18 +1380,18 @@ if(oldIndex!=255) {
 if(oldIndex==index)return;
 SoundBucket_Unlink(arg0,0);
 }
-head=bucket; break;
+head=&bucket->a; break;
 case 1:
 node=arg0+1; oldIndex=node->index;
 if(oldIndex!=255) {
 if(oldIndex==index)return;
 SoundBucket_Unlink(node,8);
 }
-head=bucket+2;break;
+head=&bucket->c;break;
 case 2:
 node=arg0+2;
 if(node->index!=255)return;
-head=bucket+1;break;
+head=&bucket->b;break;
 default:break;
 }
 node->index=index;
@@ -1428,8 +1401,7 @@ if(next)(*head)->prev=node;
 node->prev=0;
 *head=node;
 }
-
-#pragma scheduling on
+#pragma pop
 void fn_80249D6C(void *arg0) {
     void fn_80249C1C(void *, s32, s32);
     extern s32 lbl_803689BC;

@@ -432,7 +432,6 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     void **fn_8006EDD8(void *, s32);
     s32 *Ui_GetColor(u8);
     extern void *gUiAtlas;
-    extern f64 lbl_80369440;
     extern f32 lbl_80369418;
     extern f32 lbl_8036942C;
     extern f32 lbl_80369430;
@@ -453,9 +452,9 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     s32 sp30, sp2C, sp28, sp24, sp20, sp1C, sp18, sp14, sp10, spC, sp8;
     void *mgr;
     u16 *tex;
-    f32 tw, th, sw, sh, scale;
     f32 x1, y1, xR, yB, xR2, yB2, xL2, edge, yT2;
     f32 xa, ya, xb, yMid;
+    f32 tw, th, sw, sh;
 
     sp30 = *Ui_GetColor((u8)(arg1 + 0x24));
     mgr = gUiAtlas;
@@ -479,9 +478,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0xC);
-    scale = lbl_80369430;
-    sw = (f32)tex[0] * scale;
-    sh = (f32)tex[1] * scale;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     sp1C = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xC);
@@ -499,9 +497,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0xD);
-    scale = lbl_80369430;
-    sw = (f32)tex[0] * scale;
-    sh = (f32)tex[1] * scale;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     sp18 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xD);
@@ -521,9 +518,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0xE);
-    scale = lbl_80369430;
-    sw = (f32)tex[0] * scale;
-    sh = (f32)tex[1] * scale;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     sp14 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xE);
@@ -543,9 +539,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0xF);
-    scale = lbl_80369430;
-    sw = (f32)tex[0] * scale;
-    sh = (f32)tex[1] * scale;
+    sw = (f32)tex[0] * lbl_80369430;
+    sh = (f32)tex[1] * lbl_80369430;
     sp10 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 0xF);
@@ -635,9 +630,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
 
     if (h >= lbl_80369598) {
         tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0x13);
-        scale = lbl_80369430;
-        sw = (f32)tex[0] * scale;
-        sh = (f32)tex[1] * scale;
+        sw = (f32)tex[0] * lbl_80369430;
+        sh = (f32)tex[1] * lbl_80369430;
         spC = *Ui_GetColor(1);
         mgr = gUiAtlas;
         tex = (u16 *)*fn_8006EDD8(mgr, 0x13);
@@ -656,9 +650,8 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
         Prim2D_EndPrim();
 
         tex = (u16 *)*fn_8006EDD8(gUiAtlas, 0x14);
-        scale = lbl_80369430;
-        sw = (f32)tex[0] * scale;
-        sh = (f32)tex[1] * scale;
+        sw = (f32)tex[0] * lbl_80369430;
+        sh = (f32)tex[1] * lbl_80369430;
         sp8 = *Ui_GetColor(1);
         mgr = gUiAtlas;
         tex = (u16 *)*fn_8006EDD8(mgr, 0x14);
@@ -680,7 +673,6 @@ void fn_80086020(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_Begin();
     Prim2D_AddZ(lbl_80369430);
     Prim2D_PrepareTex();
-    (void)lbl_80369440;
 }
 
 void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
@@ -729,6 +721,7 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     f32 xR2, yB2;
     f32 xL2, yT2;
     f32 tmp;
+    f32 scale;
 
     sp28 = *Ui_GetColor((u8)(arg1 + 0x24));
     mgr = gUiAtlas;
@@ -752,8 +745,9 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_PrepareTex();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 6);
-    sw = lbl_80369430 * (f32)tex[0];
-    sh = lbl_80369430 * (f32)tex[1];
+    scale = lbl_80369430;
+    sw = (f32)tex[0] * scale;
+    sh = (f32)tex[1] * scale;
     sp14 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 6);
@@ -771,8 +765,9 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 7);
-    sw = lbl_80369430 * (f32)tex[0];
-    sh = lbl_80369430 * (f32)tex[1];
+    scale = lbl_80369430;
+    sw = (f32)tex[0] * scale;
+    sh = (f32)tex[1] * scale;
     sp10 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 7);
@@ -792,8 +787,9 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 8);
-    sw = lbl_80369430 * (f32)tex[0];
-    sh = lbl_80369430 * (f32)tex[1];
+    scale = lbl_80369430;
+    sw = (f32)tex[0] * scale;
+    sh = (f32)tex[1] * scale;
     spC = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 8);
@@ -813,8 +809,9 @@ void fn_80086C14(s32 arg0, s32 arg1, f32 x, f32 y, f32 w, f32 h) {
     Prim2D_EndPrim();
 
     tex = (u16 *)*fn_8006EDD8(gUiAtlas, 9);
-    sw = lbl_80369430 * (f32)tex[0];
-    sh = lbl_80369430 * (f32)tex[1];
+    scale = lbl_80369430;
+    sw = (f32)tex[0] * scale;
+    sh = (f32)tex[1] * scale;
     sp8 = *Ui_GetColor(1);
     mgr = gUiAtlas;
     tex = (u16 *)*fn_8006EDD8(mgr, 9);

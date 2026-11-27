@@ -1610,18 +1610,18 @@ extern f32 lbl_80368D60;
 extern f64 lbl_80368D68;
 extern f64 lbl_80368D70;
 double fabs(double);
-#pragma scheduling on
+#pragma push
+#pragma opt_propagation off
 s32 fn_8001C284(void *arg0, u8 arg1, s8 arg2, s8 arg3, s8 arg4, s8 arg5) {
-extern f32 lbl_80368D5C; extern f32 lbl_80368D60;
-f32 total = lbl_80368D5C;
+f32 total = 0.0f;
 if ((arg5 | (arg4 | (arg2 | arg3))) == 0) return 0;
 if (arg2) { f32 next, square, base; base=(f32)*(u8*)((u8*)arg0+0x19); square=base*base; next=base+(f32)(arg2); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
 if (arg3) { f32 next, square, base; base=(f32)*(u8*)((u8*)arg0+0x1A); square=base*base; next=base+(f32)(arg3*5); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
 if (arg4) { f32 next, square, base; base=(f32)(*(u8*)((u8*)arg0+0x1C)+10); square=base*base; next=base+(f32)(arg4*3); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
 if (arg5) { f32 next, square, base; base=(f32)(23-*(u8*)((u8*)arg0+0x1B)); square=base*base; next=base+(f32)(arg5); total+=(f32)arg1*((f32)__fabs(next*next-square)*((f32)*(u16*)((u8*)arg0+0x10)/square)); }
-return (s32)(total*lbl_80368D60);
+return (s32)(total*2.5f);
 }
-#pragma scheduling reset
+#pragma pop
 void *Item_Copy(void *dstItem, void *srcItem) {
     /* Copy item fields and share/clone the icon slot referenced by the 6-bit index. */
     s32 Icon_GetSlot(void *, s32);
@@ -2077,13 +2077,15 @@ void fn_8001D044(s32 arg0, s32 arg1) {
     Stream_Write(arg1, 8, arg0);
 }
 
+#pragma push
+#pragma opt_lifetimes off
 void *fn_8001D070(u8 *p, u8 mode) {
     extern u8 gDataStr[];
     void *Res_GetByName(void *);
     char *Msg_Expand(void *);
+    s32 kind;
     u8 *item;
     char *name;
-    s32 kind;
 
     item = *(u8 **)p;
     if (!item) {
@@ -2151,7 +2153,7 @@ void *fn_8001D070(u8 *p, u8 mode) {
     }
     return gDataStr + 0x3B;
 }
-
+#pragma pop
 u16 UnitRef_GetValue(void* arg0) {
     void** temp_r4 = (void**)arg0;
     u16 var_r5 = 0;

@@ -342,7 +342,12 @@ void fn_8012CA40(s32 arg0) {
     Process_CreateChild(lbl_80290E88, arg0);
 }
 
+#pragma cplusplus on
 void fn_8012CA6C(void *arg0) {
+    struct Tab {
+        u8 pad[0x38];
+        s16 arr[1];
+    };
     extern u8 gBattleState[];
     extern u8 gUiSelectMenuStrings[];
     void fn_80057860(void *, s16);
@@ -354,27 +359,27 @@ void fn_8012CA6C(void *arg0) {
     u8 *entry;
     u32 selected;
     register s32 count = object[0x61];
+    s32 index;
     s32 delta;
-    u8 index;
     selected = *(u32 *)(gBattleState + 0xAC);
     entry = *(u8 **)(object + 0x3C);
     for (; i < count; i++, entry += 0x24) {
         if (*(u32 *)entry == selected) { object[0x62] = i; break; }
     }
-    index = object[0x62];
-    delta = (s8)index - *(s16 *)(object + 0x6A) / 32;
+    delta = (s8)object[0x62] - *(s16 *)(object + 0x6A) / 32;
+    index = (s8)object[0x62];
     if (delta < 1 || delta >= 8) {
-        if (!index) *(s16 *)(object + 0x6A) = 0;
+        if (index == 0) *(s16 *)(object + 0x6A) = 0;
         else {
             register count = object[0x61];
-            if ((s8)index == count - 1) *(s16 *)(object + 0x6A) = (count - 9) << 5;
-            else if (delta <= 0) *(s16 *)(object + 0x6A) = ((s8)index - 1) << 5;
-            else *(s16 *)(object + 0x6A) = ((s8)index - 7) << 5;
+            if (index == count - 1) *(s16 *)(object + 0x6A) = (count - 9) << 5;
+            else if (delta <= 0) *(s16 *)(object + 0x6A) = (index - 1) << 5;
+            else *(s16 *)(object + 0x6A) = (index - 7) << 5;
         }
     }
     fn_80057860(*(void **)(object + 0x4C), *(s16 *)(object + 0x6A));
     if ((s8)object[0x62] < 0) {
-        *(s16 *)(object + 0x58) = ((s16 *)((*(u8 ***)(object + 0x38))[object[0x63]] + (s8)object[0x65] * 2))[0x1C];
+        *(s16 *)(object + 0x58) = (*(struct Tab ***)(object + 0x38))[object[0x63]]->arr[(s8)object[0x65]];
         *(s16 *)(object + 0x5A) = 0x42;
         *(s16 *)(object + 0x5C) = 0;
         *(s16 *)(object + 0x5E) = 0;
@@ -387,7 +392,7 @@ void fn_8012CA6C(void *arg0) {
     Sound_Create(gUiSelectMenuStrings + 0xBA, object);
     *(void **)(object + 0x34) = Process_AttachFunc(fn_8012F360, object);
 }
-
+#pragma cplusplus reset
 void fn_8012CC0C(void *arg0)
 {
     extern u8 gUiSelectMenuStrings[];
@@ -1843,6 +1848,7 @@ void Ui_DrawUnitListFill(void *panel, void *tex, f32 x, f32 y) {
 }
 
 #pragma cplusplus on
+#pragma opt_lifetimes off
 extern "C" void fn_8012F360(void *arg0) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
@@ -1879,10 +1885,10 @@ extern "C" void fn_8012F360(void *arg0) {
     s32 sp14;
     s32 sp10;
     s32 spC;
+    s32 var_r29;
     s32 var_r28;
     s32 var_r31;
     void *var_r30;
-    s32 var_r29;
     s32 sp8;
 
     Ui_DrawUnitListModels(arg0);
@@ -1912,9 +1918,11 @@ extern "C" void fn_8012F360(void *arg0) {
     var_r29 = 0x38E38E39;
     for (; var_r28 < *((u8 *)var_r30 + 0x6D); var_r31 += 4, var_r28 += 1) {
         s16 val = *(s16 *)((u8 *)var_r30 + 0x68);
-        s32 quot = val / 288;
-        s32 adj = quot;
+        s32 adj;
+        s32 quot;
         u8 in_range;
+        quot = val / 288;
+        adj = quot;
         if ((val % 288) != 0) {
             adj = quot + 1;
         }
@@ -1930,6 +1938,7 @@ extern "C" void fn_8012F360(void *arg0) {
     fn_801302F4(var_r30);
     *((u8 *)var_r30 + 0x6E) += 1;
 }
+#pragma opt_lifetimes reset
 #pragma cplusplus reset
 
 void fn_8012F5A8(s32 unused0, s32 unused1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *arg5) {
@@ -2544,99 +2553,59 @@ void fn_801302F4(void *arg0) {
     fn_80057020(*(void **)((u8 *)arg0 + 0x4C));
     fn_80056B0C(*(void **)((u8 *)arg0 + 0x50));
 }
-#pragma pop
 #pragma cplusplus on
+#pragma push
+#pragma opt_lifetimes off
 extern "C" void fn_801305F8(void *arg0) {
     struct Obj {
         u8 pad[0x4C];
         virtual void v0() = 0;
         virtual s32 v1(void *, s32) = 0;
     };
-    s32 var_r30;
-    s32 temp_r29;
-    s32 var_r28;
-    s32 var_r27;
-    s32 factor;
-    s32 result1;
-    s32 other;
-    s32 w14;
-    s32 w18;
-    s32 t18;
-    u8 digit;
-    void **table;
-    Obj *item;
-    Obj *item2;
-    u8 tmp[0x24];
-
-    var_r28 = 0;
-    while (var_r28 < *((u8 *)arg0 + 0x61)) {
-        var_r27 = 0;
-        var_r30 = 0;
-        while (var_r27 < (*((u8 *)arg0 + 0x61) - 1 - var_r28)) {
-            temp_r29 = (var_r27 + 1) * 0x24;
-            digit = *((u8 *)arg0 + 0x66);
-            table = *(void ***)((u8 *)arg0 + 0x38);
-            item = (Obj *)table[digit / 10];
-            result1 = item->v1((u8 *)*(void **)((u8 *)arg0 + 0x3C) + temp_r29, digit % 10);
-            digit = *((u8 *)arg0 + 0x66);
-            factor = (s8)*((u8 *)arg0 + 0x67);
-            t18 = result1 * factor;
-            table = *(void ***)((u8 *)arg0 + 0x38);
-            item2 = (Obj *)table[digit / 10];
-            other = ((s8)*((u8 *)arg0 + 0x67)) * item2->v1((u8 *)*(void **)((u8 *)arg0 + 0x3C) + var_r30, digit % 10);
-            if (other < t18) {
-                u8 *pa = (u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + var_r30);
-                u8 *pb = (u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + temp_r29);
-                *(s32 *)&tmp[0] = *(s32 *)&pa[0];
-                *(s32 *)&tmp[4] = *(s32 *)&pa[4];
-                *(s32 *)&tmp[8] = *(s32 *)&pa[8];
-                *(s32 *)&tmp[0xC] = *(s32 *)&pa[0xC];
-                *(s32 *)&tmp[0x10] = *(s32 *)&pa[0x10];
-                *(s32 *)&tmp[0x14] = *(s32 *)&pa[0x14];
-                *(s32 *)&tmp[0x18] = *(s32 *)&pa[0x18];
-                *(s32 *)&tmp[0x1C] = *(s32 *)&pa[0x1C];
-                *(s32 *)&tmp[0x20] = *(s32 *)&pa[0x20];
-                *(s32 *)&pa[0] = *(s32 *)&pb[0];
-                *(s32 *)&pa[4] = *(s32 *)&pb[4];
-                *(s32 *)&pa[8] = *(s32 *)&pb[8];
-                *(s32 *)&pa[0xC] = *(s32 *)&pb[0xC];
-                *(s32 *)&pa[0x10] = *(s32 *)&pb[0x10];
-                w18 = *(s32 *)&pb[0x18];
-                w14 = *(s32 *)&pb[0x14];
-                *(s32 *)&pa[0x14] = w14;
-                *(s32 *)&pa[0x18] = w18;
-                pa[0x1C] = pb[0x1C];
-                pa[0x1D] = pb[0x1D];
-                pa[0x1E] = pb[0x1E];
-                pa[0x1F] = pb[0x1F];
-                pa[0x20] = pb[0x20];
-                pa[0x21] = pb[0x21];
-                pa[0x22] = pb[0x22];
-                pa[0x23] = pb[0x23];
-                pb = (u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x3C) + temp_r29);
-                *(s32 *)&pb[0] = *(s32 *)&tmp[0];
-                *(s32 *)&pb[4] = *(s32 *)&tmp[4];
-                *(s32 *)&pb[8] = *(s32 *)&tmp[8];
-                *(s32 *)&pb[0xC] = *(s32 *)&tmp[0xC];
-                *(s32 *)&pb[0x10] = *(s32 *)&tmp[0x10];
-                *(s32 *)&pb[0x14] = *(s32 *)&tmp[0x14];
-                *(s32 *)&pb[0x18] = *(s32 *)&tmp[0x18];
-                pb[0x1C] = tmp[0x1C];
-                pb[0x1D] = tmp[0x1D];
-                pb[0x1E] = tmp[0x1E];
-                pb[0x1F] = tmp[0x1F];
-                pb[0x20] = tmp[0x20];
-                pb[0x21] = tmp[0x21];
-                pb[0x22] = tmp[0x22];
-                pb[0x23] = tmp[0x23];
-            }
-            var_r30 += 0x24;
-            var_r27 += 1;
+    struct Pair {
+        s32 a, b;
+    };
+    struct Entry {
+        s32 w0, w1, w2;
+        Pair p1;
+        Pair p2;
+        u8 b0, b1, b2, b3, b4, b5, b6, b7;
+        Entry &operator=(const Entry &rhs) {
+            w0 = rhs.w0; w1 = rhs.w1; w2 = rhs.w2;
+            p1 = rhs.p1;
+            p2 = rhs.p2;
+            b0 = rhs.b0; b1 = rhs.b1; b2 = rhs.b2; b3 = rhs.b3;
+            b4 = rhs.b4; b5 = rhs.b5; b6 = rhs.b6; b7 = rhs.b7;
+            return *this;
         }
-        var_r28 += 1;
+    };
+    struct Self {
+        u8 pad0[0x38];
+        Obj **table;
+        Entry *entries;
+        u8 pad40[0x21];
+        u8 count;
+        u8 pad62[4];
+        u8 unk66;
+        s8 unk67;
+    };
+    Self *self = (Self *)arg0;
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < self->count; i++) {
+        for (j = 0; j < self->count - 1 - i; j++) {
+            s32 a = self->unk67 * self->table[self->unk66 / 10]->v1(&self->entries[j + 1], self->unk66 % 10);
+            s32 b = self->unk67 * self->table[self->unk66 / 10]->v1(&self->entries[j], self->unk66 % 10);
+            if (b < a) {
+                Entry tmp = self->entries[j];
+                self->entries[j] = self->entries[j + 1];
+                self->entries[j + 1] = tmp;
+            }
+        }
     }
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 #pragma cplusplus reset
 
 s32 fn_80130858(void) {
@@ -2676,7 +2645,7 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     extern f32 lbl_8036A500;
     extern f32 lbl_8036A50C;
     extern u8 gItemIconDrawer[];
-    s32 base;
+    u8 *base;
     s32 off;
     s32 unit;
     s32 i;
@@ -2687,14 +2656,14 @@ void fn_80130950(void *unused, void *arg1, f32 farg0, f32 farg1) {
     Prim2D_SetCallback(Ui_ScissorUnitListRightRows, 0);
     fn_80009B8C(0xFF);
     fn_8000A248();
-    unit = (s32)*(void **)arg1;
     off = 0x102;
-    base = (s32)gItemIconDrawer;
+    unit = (s32)*(void **)arg1;
+    base = gItemIconDrawer;
     i = 0;
     do {
         temp = fn_80105C5C((void *)(unit + 0x1BC), (u8)i);
         if (temp != NULL && *(u8 *)((u8 *)temp + 0x19) != 0) {
-            Ui_DrawIcon((void *)base, off, 0, *(u8 *)((u8 *)temp + 0x19));
+            Ui_DrawIcon(base, off, 0, *(u8 *)((u8 *)temp + 0x19));
             off += 0x20;
         }
         i += 1;
@@ -2828,6 +2797,8 @@ void fn_80130CDC(s32 unused, s32 kind, s32 *a, s32 *b, s32 *c, s32 *d) {
     }
 }
 
+#pragma push
+#pragma opt_pointer off
 void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
     void Prim2D_Begin(void);
     void Prim2D_SetTransform(f32, f32, f32, f32);
@@ -2849,9 +2820,8 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
     void **vtable;
     s16 offset;
 
+    vtable = *(void ***)((u8 *)arg0 + 0x4C);
     self = (u8 *)arg0;
-    vtable = *(void ***)(self + 0x4C);
-
     drawable = ((void *(*)(void *, void *, s32))vtable[2])(
         self,
         arg1,
@@ -2888,7 +2858,7 @@ void fn_80130D34(void *arg0, void *arg1, u8 arg2, s32 arg3, f32 x, f32 y) {
         );
     }
 }
-
+#pragma pop
 char *fn_80130E4C(char *buf, void **pUnit, u32 kind) {
     s32 Unit_GetWpnExp(void *, s32);
     s32 WpnRank_GetLetter(s32);

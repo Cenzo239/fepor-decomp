@@ -483,7 +483,11 @@ s32 fn_8014B328(void) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma global_optimizer off
 #pragma opt_common_subs off
+#pragma use_lmw_stmw off
 void fn_8014B388(u8 *color, u8 *str, f32 x, f32 y, f32 z) {
     void fn_80222644(void *, void *, s32, s32, s32, s32, s32, s32);
     void GXInitTexObjLOD(void *, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -528,7 +532,6 @@ void fn_8014B388(u8 *color, u8 *str, f32 x, f32 y, f32 z) {
     GXSetNumChans(1);
     GXSetNumTexGens(0, 0);
     GXSetTevOrder(0, 0, 0, 4);
-#pragma scheduling off
     one = lbl_8036A7DC;
     step = lbl_8036A7E0;
     y3 = y - one;
@@ -536,7 +539,6 @@ void fn_8014B388(u8 *color, u8 *str, f32 x, f32 y, f32 z) {
     y2 = step + y;
     y3 = step + y3;
     y4 = step + y1;
-#pragma scheduling reset
     goto check;
 loop:
     if ((s8)ch_u > 0x20 && (s8)ch_u < 0x80) {
@@ -756,6 +758,7 @@ check:
         goto loop;
     }
 }
+#pragma pop
 void fn_8014BB58(s32 arg0, s32 arg1, s32 *arg2, s32 arg3) {
     M2C_UNK Prim2D_SetText(s32);
     M2C_UNK Prim2D_SetColorPacked(s32 *);

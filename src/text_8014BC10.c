@@ -94,8 +94,8 @@ u8 fn_8014BC10(void *arg0) {
     void Allegiance_FillMask(s32, void *);
     extern u8 gUnitLists[];
     extern u8 gUnits[];
-    s32 score;
-    void *self;
+    register s32 score asm("r31");
+    register u32 self asm("r30");
     s32 n;
     void *tbl;
     void *p;
@@ -109,8 +109,8 @@ u8 fn_8014BC10(void *arg0) {
     u8 id;
 
     score = 0;
-    self = arg0;
-    id = *(u8 *)((u8 *)self + 0x10);
+    self = (u32)arg0;
+    id = *(u8 *)(self + 0x10);
     if (id < 0x5A) {
         return 0x2D;
     }
@@ -118,7 +118,7 @@ u8 fn_8014BC10(void *arg0) {
         g1 = 0x2D;
     } else {
         tbl = fn_80019F04(id);
-        val = *(s16 *)((u8 *)self + 0x12);
+        val = *(s16 *)(self + 0x12);
         g1 = 0x45;
         if (val <= *(u8 *)((u8 *)tbl + 0x57)) {
             g1 = 0x44;
@@ -133,9 +133,8 @@ u8 fn_8014BC10(void *arg0) {
             }
         }
     }
-    score = (u8)g1;
-    score = 0x45 - score;
-    id = *(u8 *)((u8 *)self + 0x10);
+    score = 0x45 - (u8)g1;
+    id = *(u8 *)(self + 0x10);
     if (id < 0x5A) {
         g2 = 0x2D;
     } else {
@@ -164,7 +163,7 @@ u8 fn_8014BC10(void *arg0) {
         }
     }
     score += 0x45 - (u8)g2;
-    id = *(u8 *)((u8 *)self + 0x10);
+    id = *(u8 *)(self + 0x10);
     if (id < 0x5A) {
         g3 = 0x2D;
     } else {
@@ -186,7 +185,7 @@ u8 fn_8014BC10(void *arg0) {
                 n += *(u16 *)((u8 *)unit + 0x22C);
             }
         }
-        tbl = fn_80019F04(*(u8 *)((u8 *)self + 0x10));
+        tbl = fn_80019F04(*(u8 *)(self + 0x10));
         g3 = 0x45;
         if (n >= *(u8 *)((u8 *)tbl + 0x5F)) {
             g3 = 0x44;

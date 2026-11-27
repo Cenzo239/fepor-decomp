@@ -158,7 +158,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
-    UnitInfo_DrawHp(0x2C,b,t,p);
+    fn_8001003C(0x10, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0xFA, p, (s8)b, (s8)t);
     t = fn_8003A1E0(self);
     p = Msg_Expand(gBattleHelpStrings + 0x126);
     fn_8001003C(0x86, 0x2C, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);
@@ -175,7 +175,7 @@ void UnitInfo_DrawPair(u8 *arg0) {
     b = self[0x1A8];
     t = Unit_GetMaxHp(self);
     p = Msg_Expand(gBattleHelpStrings + 0x111);
-    UnitInfo_DrawHp(0x90,b,t,p);
+    fn_8001003C(0x10, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0xFA, p, (s8)b, (s8)t);
     t = fn_8003A1E0(self);
     p = Msg_Expand(gBattleHelpStrings + 0x126);
     fn_8001003C(0x86, 0x90, 1, 1, 0, lbl_80369754, gZeroF, gBattleHelpStrings + 0x117, p, (s8)t);

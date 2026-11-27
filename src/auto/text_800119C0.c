@@ -120,6 +120,7 @@ break;
 #pragma push
 #pragma optimization_level 4
 #pragma opt_common_subs off
+#pragma opt_strength_reduction off
 void fn_80011D20(void) {
     extern void *lbl_80367180;
     extern void *lbl_803671A4;
@@ -145,11 +146,7 @@ void fn_80011D20(void) {
     s32 sp;
     s32 tidx;
 
-    code = (*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
-    index = (s8)*code;
-
-    code = (*(u8 **)((u8 *)lbl_80367180 + 0xC))++;
-    index = (index << 8) + *code;
+    index = Script_ReadSignedShort();
 
     inner = *(void **)((u8 *)lbl_80367180 + 8);
     resource = *(void **)((u8 *)inner + 8);
@@ -163,10 +160,7 @@ void fn_80011D20(void) {
         ctx = lbl_80367180;
         zero = 0;
         *(s32 *)((u8 *)ctx + 0x18) = *(s32 *)((u8 *)ctx + 0x18) - (count << 2);
-        ctx = lbl_80367180;
-        stack = *(s32 **)((u8 *)ctx + 0x18);
-        *(s32 **)((u8 *)ctx + 0x18) = stack + 1;
-        *stack = zero;
+        Script_PushWord(0);
         fn_800142B0(0);
         return;
     }
@@ -189,8 +183,9 @@ void fn_80011D20(void) {
     i = i << 2;
     tidx = *(u16 *)((u8 *)inner + 0x20);
     base = sp - i;
+    size = base + (size << 2);
     table = lbl_80367198;
-    *(s32 *)((u8 *)ctx + 0x18) = base + (size << 2);
+    *(s32 *)((u8 *)ctx + 0x18) = size;
     table = (u8 *)table + (tidx << 2);
 
     i = (s8)*(u8 *)((u8 *)script + 0xD);
@@ -202,26 +197,10 @@ void fn_80011D20(void) {
     }
 
     lbl_80367180 = ctx;
-    stack = *(s32 **)((u8 *)ctx + 0x18);
-    val = *(s32 *)((u8 *)ctx + 0xC);
-    *(s32 **)((u8 *)ctx + 0x18) = stack + 1;
-    *stack = val;
-
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    val = *(s32 *)((u8 *)ctx + 0x8);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
-
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    val = *(s32 *)((u8 *)ctx + 0x10);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
-
-    stack = *(s32 **)((u8 *)lbl_80367180 + 0x18);
-    val = *(s32 *)((u8 *)ctx + 0x14);
-    *(s32 **)((u8 *)lbl_80367180 + 0x18) = stack + 1;
-    *stack = val;
-
+    Script_PushWord(*(s32 *)((u8 *)ctx + 0xC));
+    Script_PushWord(*(s32 *)((u8 *)ctx + 8));
+    Script_PushWord(*(s32 *)((u8 *)ctx + 0x10));
+    Script_PushWord(*(s32 *)((u8 *)ctx + 0x14));
     *(s32 *)((u8 *)ctx + 0xC) = *(s32 *)((u8 *)script + 4);
     *(void **)((u8 *)ctx + 0x8) = script;
     *(void **)((u8 *)ctx + 0x10) = table;

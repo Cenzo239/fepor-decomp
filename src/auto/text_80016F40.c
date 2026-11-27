@@ -1210,8 +1210,8 @@ void fn_80018B18(void) {
 #pragma opt_common_subs off
 #pragma opt_instruction_scheduling off
 extern "C" void fn_80018B24(void) {
-    f32 fn_80059F64(f32, f32, f32, f32);
-    void *fn_80040844(void);
+    f32 Math_Lerp(f32, f32, f32, f32);
+    void *Map_Get(void);
     void fn_80202300(void *, s32, f32);
     void fn_80202024(void *, void *, void *);
     void fn_802029C4(void *, void *, void *);
@@ -1245,6 +1245,7 @@ extern "C" void fn_80018B24(void) {
     f32 a;
     f32 t;
     f32 b;
+    f32 lo2;
 
     ((Cam *)lbl_803671C4)->v3();
     r31 = (void *)lbl_803671C4;
@@ -1255,7 +1256,7 @@ extern "C" void fn_80018B24(void) {
     } else {
         f29 = lbl_80368CA4 * (f32)lbl_802CA518[1];
         f30 = lbl_80368CA4 * (f32)lbl_802CA518[0];
-        f31 = fn_80059F64(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
+        f31 = Math_Lerp(lbl_80368C88, lbl_80368CB4, lbl_80368CB8,
                           *(f32 *)((u8 *)r31 + 0x18) - lbl_80368CBC);
         if (f31 < lbl_80368C88) {
             f31 = lbl_80368C88;
@@ -1264,9 +1265,10 @@ extern "C" void fn_80018B24(void) {
             f31 = lbl_80368CB4;
         }
         a = *(f32 *)((u8 *)r31 + 0x40);
-        *(f32 *)((u8 *)r31 + 0x64) = -fn_80059F64(lbl_80368C88, f31, f30, a - f30);
+        lo2 = lbl_80368C88;
+        *(f32 *)((u8 *)r31 + 0x64) = -Math_Lerp(lo2, f31, f30, a - f30);
         a = *(f32 *)((u8 *)r31 + 0x44);
-        *(f32 *)((u8 *)r31 + 0x68) = -fn_80059F64(lbl_80368C88, f31, f29, a - f29);
+        *(f32 *)((u8 *)r31 + 0x68) = -Math_Lerp(lbl_80368C88, f31, f29, a - f29);
     }
     t = *(f32 *)((u8 *)r31 + 0x18);
     child = *(void **)r31;
@@ -1288,7 +1290,7 @@ extern "C" void fn_80018B24(void) {
     child = *(void **)r31;
     *(f32 *)((u8 *)child + 0xE4) = t + (b + a);
     {
-        void *cam = fn_80040844();
+        void *cam = Map_Get();
         register f32 z;
         f32 c0;
         register f32 c4;

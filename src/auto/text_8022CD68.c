@@ -442,13 +442,11 @@ void fn_8022CDD0(void *);
 #pragma push
 #pragma optimization_level 3
 #pragma dont_inline on
-#pragma opt_propagation off
 void fn_8022D234(void **arg0, void *arg1) {
     u32 sizeWord;
     u32 heapRaw;
     u32 size;
     u32 *nextHeader;
-    u32 *block;
     u32 *heap;
     s32 off;
     u32 *listHead;
@@ -465,6 +463,7 @@ void fn_8022D234(void **arg0, void *arg1) {
     u32 flagWord;
     s32 shouldReturn;
     void **link;
+    u32 *block;
 
     block = (u32 *)((u8 *)arg1 - 8);
     sizeWord = *(u32 *)((u8 *)arg1 - 8);
@@ -1230,38 +1229,44 @@ finish:
     return result;
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x) {
     void fn_8022E804(void *, f64);
     RuntimeDecimal *d = arg1;
-    s32 requested = *(s16 *)((u8 *)format + 2);
+    s16 requested = *(s16 *)((u8 *)format + 2);
     s32 precision;
     s32 i;
     fn_8022E804(d, x);
     if (d->digits[0] <= 9) {
-        if ((s16)requested > 36) requested = 36;
-        precision = (s16)requested;
+        if (requested > 36) requested = 36;
+        precision = requested;
         if (precision > 0 && precision < d->length) {
             s32 round;
             u8 *p;
-            if (d->digits[precision] > 5) round = 1;
-            else if (d->digits[precision] < 5) round = -1;
+            u8 *q = (u8 *)d + precision;
+            if (q[5] > 5) round = 1;
+            else if (q[5] < 5) round = -1;
             else {
-                u8 *end = d->digits + d->length;
-                p = d->digits + precision + 1;
+                u8 *end;
+                p = q + 6;
+                end = d->digits + d->length;
                 while (p < end) {
                     if (*p != 0) { round = 1; goto rounded; }
                     ++p;
                 }
-                if (d->digits[precision-1] & 1) round = 1;
+                if (q[4] & 1) round = 1;
                 else round = -1;
             }
 rounded:
             d->length = precision;
             if (round >= 0) {
-                p = d->digits + (precision - 1);
+                u8 *first = d->digits;
+                s32 k = precision - 1;
+                p = first + k;
                 for (;;) {
                     if (*p < 9) { ++*p; break; }
-                    if (p == d->digits) {
+                    if (p == first) {
                         *p = 1;
                         ++d->exponent;
                         break;
@@ -1272,8 +1277,7 @@ rounded:
         }
         while (d->length < precision) d->digits[d->length++] = 0;
         d->exponent -= d->length - 1;
-        for (i=0; i<d->length; i++) d->digits[i] += '0';
+        for (i = 0; i < d->length; i++) d->digits[i] += '0';
     }
 }
-
-#pragma use_lmw_stmw on
+#pragma pop

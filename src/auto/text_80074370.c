@@ -2177,9 +2177,6 @@ extern "C" s32 fn_800776A0(void *arg0, void *arg1, void *arg2) {
     s32 fn_8009226C(void *, u8 *);
     void fn_80166AE8(s32, s32, s32, void *);
     extern u8 gUiContext[];
-    s32 a;
-    s32 str;
-    s32 b;
     s16 y;
     s16 x;
     s32 idx;
@@ -2196,10 +2193,7 @@ extern "C" s32 fn_800776A0(void *arg0, void *arg1, void *arg2) {
         self = *(void **)((u8 *)proc + 0x3C);
         y = *(s16 *)((u8 *)arg2 + 0x32);
         x = *(s16 *)((u8 *)arg2 + 0x30);
-        str = ((Menu *)arg0)->getStr();
-        a = ((Obj *)self)->v22();
-        b = ((Obj *)self)->v21();
-        fn_80166AE8(b + x, a + y, str, proc);
+        fn_80166AE8(((Obj *)self)->v21() + x, ((Obj *)self)->v22() + y, ((Menu *)arg0)->getStr(), proc);
         return 0;
     }
     gUiContext[8] = ((Menu *)self)->getCmd();
@@ -3458,7 +3452,7 @@ void fn_8007982C(s32 arg0) {
     p = gFaceSlots;
     for (i = 0; i < 8; i++, p++) {
         if (*p == 0) {
-            n = i + n;
+            n = i;
             goto found;
         }
     }
@@ -3946,12 +3940,11 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     void *info;
     void **pp;
     void *entry;
-    register void *state;
+    void *state;
     int w;
     int h;
     register u8 tint;
     u8 pad;
-    f32 stackpad[4];
 
     mode = arg2;
     obj = *(void **)((u8 *)arg0 + 0x30);
@@ -3959,12 +3952,8 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     if ((*(u16 *)((u8 *)info + 0x18) & 2) == 0) {
         mode -= 6;
     }
-    if ((u32)(mode - 7) > 1U) {
-        if (mode == 9) {
-            if (*(u16 *)((u8 *)info + 0xC) == *(u16 *)((u8 *)info + 0x10)) {
-                return;
-            }
-        }
+    if ((u32)(mode - 7) <= 1U || mode == 9) {
+        if (*(u16 *)((u8 *)info + 0xC) == *(u16 *)((u8 *)info + 0x10)) return;
     }
     if (arg2 == 7) {
         x = *(u16 *)((u8 *)info + 0xC);
@@ -3999,7 +3988,7 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     state = *(void **)((u8 *)arg0 + 0x30);
     obj = state;
     tint = *(u8 *)((u8 *)*(void **)((u8 *)obj + 0x34) + 0x1D);
-    Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_80366E00 + ((f32)(u32)tint / lbl_803693EC), *(f32 *)((u8 *)obj + 0x4C));
+    Prim2D_SetTransform(lbl_803693D4, lbl_803693D4, lbl_80366E00 + ((f32)tint / lbl_803693EC), *(f32 *)((u8 *)obj + 0x4C));
     obj = *(void **)((u8 *)arg0 + 0x30);
     fn_80009EB0(*(void **)((u8 *)obj + 0x30), mode, *(u8 *)((u8 *)obj + 0x40), 0x11);
     Prim2D_PrepareTex();
@@ -4017,11 +4006,13 @@ void Face_DrawEyes(void *arg0, s32 arg1, s32 arg2) {
     pad = *(u8 *)((u8 *)obj + 0x42);
     Prim2D_SetColor(tint, tint, tint, pad);
     Prim2D_EndPrim();
-    (void)stackpad[0];
 }
 
+#pragma push
+#pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
+#pragma opt_common_subs off
 void fn_8007A8D8(void *arg0) {
     s32 Rand_Range(s32);
     void **fn_8006EDD8(void *, s32);
@@ -4039,20 +4030,19 @@ void fn_8007A8D8(void *arg0) {
     extern f64 lbl_803693F0;
     extern f32 lbl_803693EC;
     extern f32 lbl_80366E00;
-    double stackpad[2];
     s32 w2;
     s32 h2;
     s16 x;
     s16 y;
-    s32 base;
-    s32 mode;
     u8 *obj;
+    s32 mode;
+    s32 base;
     void *info;
     void **pp;
     void *entry;
     s32 w;
     s32 h;
-    u8 tint;
+    u32 tint;
     f32 alpha;
     u8 pad;
     u16 flags;
@@ -4137,10 +4127,8 @@ void fn_8007A8D8(void *arg0) {
     pad = *(u8 *)(obj + 0x42);
     Prim2D_SetColor(tint, tint, tint, pad);
     Prim2D_EndPrim();
-    (void)stackpad[0];
 }
-#pragma global_optimizer reset
-#pragma use_lmw_stmw reset
+#pragma pop
 
 #pragma global_optimizer reset
 #pragma use_lmw_stmw reset
@@ -4312,6 +4300,8 @@ void fn_8007B128(void *arg0) {
     M2C_FIELD(arg0, s32 *, 0x3C) = (s32) (temp_r3 + 1);
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma use_lmw_stmw on
 #pragma global_optimizer off
 void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
@@ -4321,10 +4311,10 @@ void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
     void Prim2D_PrepareTex(void);
     void Prim2D_AddPrim(s32);
     void Prim2D_SetQuadMin(f32, f32, f32, f32);
-    void Prim2D_SetQuadMax(f32, f32, f32, f32, f32);
+    void Prim2D_SetQuadMax(f32, f32, f32, f32);
     void Prim2D_SetColor(u8, u8, u8, u8);
     void Prim2D_EndPrim(void);
-    extern f32 lbl_803693D4;
+    extern const f32 lbl_803693D4;
     u8 tint;
     s16 x;
     s16 y;
@@ -4387,19 +4377,21 @@ void fn_8007B1C4(void *arg0, s32 arg1, s32 arg2, u32 arg3, s32 arg4) {
         Prim2D_PrepareTex();
         Prim2D_AddPrim(1);
         if ((*(u16 *)((u8 *)obj + 0x46) & 1) != 0) {
-            scale = *(f32 *)((u8 *)obj + 0x4C);
             Prim2D_SetQuadMin((f32)x, (f32)y, (f32)w2, lbl_803693D4);
-            Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, lbl_803693D4, (f32)h2, scale);
-        } else {
             scale = *(f32 *)((u8 *)obj + 0x4C);
+            Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, lbl_803693D4, (f32)h2);
+        } else {
             Prim2D_SetQuadMin((f32)x, (f32)y, lbl_803693D4, lbl_803693D4);
-            Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, (f32)w2, (f32)h2, scale);
+            scale = *(f32 *)((u8 *)obj + 0x4C);
+            Prim2D_SetQuadMax((f32)w2 * scale + (f32)x, (f32)h2 * scale + (f32)y, (f32)w2, (f32)h2);
         }
         Prim2D_SetColor(tint, tint, tint, pad);
         Prim2D_EndPrim();
     }
 }
-
+#pragma pop
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
 void fn_8007B4D8(s32 arg0, s32 arg1, u32 a2, void *a3) {
 #pragma opt_common_subs off
 #pragma dont_inline off

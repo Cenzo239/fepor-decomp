@@ -1811,20 +1811,20 @@ void fn_800ABA3C(void) {
 }
 void fn_800ABE74(void *arg0) {
     void fn_800AC0C0(void);
-    void Process_Goto(void *, s32);
-    void Process_ClearFunc(void *);
-    s32 Msg_Expand(void *);
-    u64 *Item_GetFlagsPtr(void *);
-    void Ui_PlaySeCue(void *, s32);
+    void fn_8000C070(void *, s32);
+    void fn_8000C188(void *);
+    s32 fn_8000E0E4(void *);
+    u64 *fn_8001CB64(void *);
+    void fn_801475FC(void *, s32);
     void fn_80166AE8(s16, s32, s32, void *, void *);
-    u8 Ui_IsUnitInfoPopupOpen(void *);
-    void Ui_HideUnitInfoPopup(void *);
-    void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
-    extern void *gPadInput;
-    extern u8 gUnitInfoPopup[];
+    u8 fn_80166D8C(void *);
+    void fn_801673D0(void *);
+    void fn_8016746C(void *, void *, void *, f32, f32);
+    extern void *lbl_80367240;
+    extern u8 lbl_80330D68[];
     extern u8 lbl_80312ACC[];
     extern u8 lbl_8026E858[];
-    extern u32 gUnitInfoPopupFlag;
+    extern u32 lbl_80368DC4;
     u32 var_r31;
     void *var_r30;
     s32 var_r29;
@@ -1834,46 +1834,46 @@ void fn_800ABE74(void *arg0) {
 
     var_r30 = arg0;
     fn_800AC0C0();
-    a = ((u32 *)gPadInput)[1];
-    var_r31 = a & (((u32 *)gPadInput)[2] ^ a);
-    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
+    a = ((u32 *)lbl_80367240)[1];
+    var_r31 = a & (((u32 *)lbl_80367240)[2] ^ a);
+    if (fn_80166D8C(lbl_80330D68) != 0) {
         if (var_r31 & 0xA00) {
-            Ui_HideUnitInfoPopup(gUnitInfoPopup);
+            fn_801673D0(lbl_80330D68);
         }
     } else if (var_r31 & 0x100) {
         register var_r31 = 0;
         entry = lbl_80312ACC + (((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7)
                               + (((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4);
         if (*(u32 *)(entry + 4) != 0) {
-            if (*Item_GetFlagsPtr(entry + 4) & 0x200) {
+            if (*fn_8001CB64(entry + 4) & 0x200) {
                 var_r31 = 1;
             }
         }
         if ((u8)var_r31 != 0) {
             var_r31 = ((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4;
             var_r29 = ((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7;
-            str = Msg_Expand(lbl_8026E858 + 0xE7);
+            str = fn_8000E0E4(lbl_8026E858 + 0xE7);
             entry = lbl_80312ACC + var_r29;
             fn_80166AE8(*(s16 *)((u8 *)entry + var_r31),
                         *(s16 *)((u8 *)entry + var_r31 + 2) + 0x28,
                         str, var_r30, entry);
         } else {
-            Process_ClearFunc(var_r30);
-            Ui_PlaySeCue(lbl_8026E858 + 0xEF, 0x64);
+            fn_8000C188(var_r30);
+            fn_801475FC(lbl_8026E858 + 0xEF, 0x64);
         }
     } else if (var_r31 & 0x200) {
         *(u8 *)((u8 *)var_r30 + 0x3C) = *(u8 *)((u8 *)var_r30 + 0x3E);
         *(u8 *)((u8 *)var_r30 + 0x3D) = *(u8 *)((u8 *)var_r30 + 0x3F);
-        Process_Goto(var_r30, 0);
-        Ui_PlaySeCue(lbl_8026E858 + 0xFF, 0x64);
+        fn_8000C070(var_r30, 0);
+        fn_801475FC(lbl_8026E858 + 0xFF, 0x64);
     } else if (var_r31 & 0x800) {
         entry = lbl_80312ACC + (((s8)*(u8 *)((u8 *)var_r30 + 0x3C)) << 7)
                               + (((s8)*(u8 *)((u8 *)var_r30 + 0x3D)) << 4);
         if (*(u32 *)(entry + 4) != 0) {
-            Ui_OpenUnitInfoPopup(gUnitInfoPopup, var_r30, entry + 4,
+            fn_8016746C(lbl_80330D68, var_r30, entry + 4,
                         (f32)*(s16 *)entry,
                         (f32)(*(s16 *)(entry + 2) + 0x28));
-            *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
+            *(u32 *)lbl_80330D68 |= lbl_80368DC4;
         }
     }
 }

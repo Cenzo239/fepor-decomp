@@ -287,6 +287,8 @@ void fn_80211F78(s32 arg0, s32 arg1) {
 }
 
 void PADOriginCallback(s32 chan, u32 error) {
+#pragma push
+#pragma optimization_level 2
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
     void fn_80209C10(s32 chan, u16 id);
@@ -305,7 +307,7 @@ void PADOriginCallback(s32 chan, u32 error) {
     e = error;
     c = chan;
     bitConst = 0x80000000;
-    chanBit = bitConst >> chan;
+    chanBit = bitConst >> c;
     if (!(EnabledBits & chanBit)) {
         return;
     }
@@ -323,6 +325,7 @@ void PADOriginCallback(s32 chan, u32 error) {
         fn_80209C10(c, 0);
         OSRestoreInterrupts(e);
     }
+#pragma pop
 }
 
 void fn_80212108(s32 chan, u32 type) {
@@ -1118,33 +1121,33 @@ s32 fn_80213904(void) {
 }
 
 #pragma optimization_level 3
+extern volatile u32 __AIRegs_abs[4] : 0xCC006C00;
+#pragma push
+#pragma opt_propagation off
 void fn_80213914(u32 arg0) {
     u32 fn_802139F4(void);
-    u32 fn_80213B08(void);
-    u32 fn_80213B34(void);
+    u8 fn_80213B08(void);
+    u8 fn_80213B34(void);
     u32 fn_80213ADC(void);
-    void fn_80213AEC(u32);
-    void fn_80213B18(u32);
+    void fn_80213AEC(u8);
+    void fn_80213B18(u8);
     u32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(u32);
     void fn_80213E30(void);
 
-    volatile u32 *reg;
-    u32 old0;
-    u32 old1;
+    u8 old0;
+    u8 old1;
     u32 old2;
     u32 old3;
     u32 interrupts;
 
     if (arg0 != fn_802139F4()) {
-        reg = (volatile u32 *)0xCC006C00;
-
-        *reg = *reg & ~0x40;
+        __AIRegs_abs[0] = __AIRegs_abs[0] & ~0x40;
 
         if (arg0 == 0) {
             old0 = fn_80213B08();
             old1 = fn_80213B34();
-            old2 = *reg & 1;
+            old2 = __AIRegs_abs[0] & 1;
             old3 = fn_80213ADC();
 
             fn_80213AEC(0);
@@ -1154,10 +1157,10 @@ void fn_80213914(u32 arg0) {
 
             fn_80213E30();
 
-            *reg = (*reg & ~0x20) | 0x20;
-            *reg = (*reg & ~2) | (old3 << 1);
-            *reg = (*reg & ~1) | old2;
-            *reg = *reg | 0x40;
+            __AIRegs_abs[0] = (__AIRegs_abs[0] & ~0x20) | 0x20;
+            __AIRegs_abs[0] = (__AIRegs_abs[0] & ~2) | (old3 << 1);
+            __AIRegs_abs[0] = (__AIRegs_abs[0] & ~1) | old2;
+            __AIRegs_abs[0] = __AIRegs_abs[0] | 0x40;
 
             OSRestoreInterrupts(interrupts);
 
@@ -1166,7 +1169,7 @@ void fn_80213914(u32 arg0) {
         }
     }
 }
-#pragma optimization_level reset
+#pragma pop
 s32 fn_802139F4(void) {
     return (((u32) *(u32 *)0xCC006C00 >> 6U) & 1) ^ 1;
 }

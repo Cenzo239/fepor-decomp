@@ -195,10 +195,10 @@ void fn_8009A934(void *arg0) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
-void fn_8009A970(void *arg0) {
+void fn_8009A970(u8 *arg0) {
 void Prim2D_EmitQuad(void);
 void Prim2D_SetRectUv(f32,f32,f32,f32,f32,f32);
 void Prim2D_EndPrim(void);
@@ -248,30 +248,30 @@ extern const f32 lbl_80369844;
     int var_r31;
     s32 temp_r0;
     u8 *battle;
-    temp_r5 = *(u8 *)((u8 *)arg0 + 0x3D);
-    if ((temp_r5 != 0) && ((texture = *(u32 *)((u8 *)arg0 + 0x38)) != 0U) && ((u32) (((u8) gBattleState[0x9C] >> 2U) & 1) != 1)) {
+    temp_r5 = *(u8 *)(arg0 + 0x3D);
+    if ((temp_r5 != 0) && ((texture = *(u32 *)(arg0 + 0x38)) != 0U) && ((u32) (((u8) gBattleState[0x9C] >> 2U) & 1) != 1)) {
         temp_r0 = (temp_r5 * 2) & 0x1FE;
         var_r31 = temp_r0;
         if (temp_r0 > 0xFF) {
             var_r31 = 0xFF;
         }
-        fn_8009B028(arg0, texture, var_r31, lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x30), lbl_803697F8 + *(f32 *)((u8 *)arg0 + 0x34));
-        temp_r25 = (s32) (fn_8009ADC0(*(u32 *)((u8 *)arg0 + 0x38), var_r31, lbl_803697FC + *(f32 *)((u8 *)arg0 + 0x30), lbl_80369800 + *(f32 *)((u8 *)arg0 + 0x34)) + 7) / 8;
-        temp_f31 = *(f32 *)((u8 *)arg0 + 0x30);
-        temp_f29 = lbl_80369804 + *(f32 *)((u8 *)arg0 + 0x34);
-        temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
+        fn_8009B028(arg0, texture, var_r31, lbl_803697F8 + *(f32 *)(arg0 + 0x30), lbl_803697F8 + *(f32 *)(arg0 + 0x34));
+        temp_r25 = (s32) (fn_8009ADC0(*(u32 *)(arg0 + 0x38), var_r31, lbl_803697FC + *(f32 *)(arg0 + 0x30), lbl_80369800 + *(f32 *)(arg0 + 0x34)) + 7) / 8;
+        temp_f31 = *(f32 *)(arg0 + 0x30);
+        temp_f29 = lbl_80369804 + *(f32 *)(arg0 + 0x34);
+        temp_r26 = *(u32 *)(arg0 + 0x38);
         Ui_DrawTiledBattleRow(temp_r25,temp_r26,var_r31,temp_f31,temp_f29);
         battle = gBattleState;
         if (*(s16 *)(battle + 0x12) != 0) {
-            temp_f29 = *(f32 *)((u8 *)arg0 + 0x30);
-            temp_f31 = lbl_80369820 + *(f32 *)((u8 *)arg0 + 0x34);
-            temp_r26 = *(u32 *)((u8 *)arg0 + 0x38);
+            temp_f29 = *(f32 *)(arg0 + 0x30);
+            temp_f31 = lbl_80369820 + *(f32 *)(arg0 + 0x34);
+            temp_r26 = *(u32 *)(arg0 + 0x38);
             Ui_DrawTiledBattleRow(14,temp_r26,var_r31,temp_f29,temp_f31);
-            temp_f2 = *(f32 *)((u8 *)arg0 + 0x34);
+            temp_f2 = *(f32 *)(arg0 + 0x34);
             temp_f30 = lbl_80369828 + temp_f2;
             var_r26 = *(s16 *)(battle + 0x12);
-            temp_f29 = lbl_803697FC + *(f32 *)((u8 *)arg0 + 0x30);
-            temp_r25_2 = *(u32 *)((u8 *)arg0 + 0x38);
+            temp_f29 = lbl_803697FC + *(f32 *)(arg0 + 0x30);
+            temp_r25_2 = *(u32 *)(arg0 + 0x38);
             Prim2D_Begin();
             Prim2D_SetTransform(temp_f29, temp_f30, lbl_80369808, lbl_8036980C);
             Prim2D_BindTexture(temp_r25_2, 3, 0x11);
@@ -374,7 +374,11 @@ s32 fn_8009ADC0(s32 arg0, s32 arg1, f32 farg0, f32 farg1) {
     return var_r30;
 }
 
-void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
+#pragma push
+#pragma optimization_level 4
+#pragma use_lmw_stmw on
+#pragma opt_propagation off
+void fn_8009B028(void *self, u32 tex, s32 arg2, f32 farg0, f32 farg1) {
     void Prim2D_EmitQuad(void);
     void Prim2D_SetColor(s32, s32, s32, s32);
     void Prim2D_SetRectUv(f32, f32, f32, f32, f32, f32);
@@ -412,29 +416,26 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
     extern f32 lbl_80369874;
     extern f32 lbl_80369878;
 
-    void *unit;
     void *str;
-    u32 tex;
-    void *self;
-    s32 x;
     s32 y;
+    s32 x;
+    u8 *unit;
     s32 kind;
     void *obj;
     void *walk;
     s32 i;
-    u8 *p;
+    const u8 *p;
     s32 w;
+    s32 half;
     u8 alpha;
 
-    self = arg0;
-    tex = arg1;
     str = NULL;
     Prim2D_Begin();
     Prim2D_SetColorByte((u8)arg2);
     Prim2D_PrepareTex();
 
-    y = (s8)(s32)*(f32 *)(gBattleState + 0x528);
     x = (s8)(s32)*(f32 *)(gBattleState + 0x524);
+    y = (s8)(s32)*(f32 *)(gBattleState + 0x528);
     kind = *(u8 *)(gBattleMap + x + (y << 6) + 0x100D);
     if (kind < 0) {
         goto after_cases;
@@ -465,7 +466,7 @@ void fn_8009B028(void *arg0, u32 arg1, s32 arg2, f32 farg0, f32 farg1) {
 case_common:
     str = fn_8005B73C(unit);
     obj = MapObjEvent_Find(gMapObjEventList, (s8)x, (s8)y, 4);
-    if (obj != NULL && *(u8 *)((u8 *)obj + 4) != 0) {
+    if (obj && *(u8 *)((u8 *)obj + 4) != 0) {
         Ui_DrawTerrainInfoDecor(tex, 2, farg0, farg1);
         Prim2D_Begin();
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
@@ -479,7 +480,7 @@ case_common:
 case_2b:
     obj = fn_8010F9BC(gMapObjEventList, (s8)x, (s8)y, 7);
     Ui_DrawTerrainInfoDecor(tex, 1, farg0, farg1);
-    if (obj != NULL) {
+    if (obj) {
         alpha = *(u8 *)((u8 *)obj + 5);
         Prim2D_Begin();
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
@@ -499,8 +500,8 @@ case_2b:
         walk = self;
         for (i = 0; i < 4; i++) {
             if (*(u16 *)((u8 *)walk + 0x42) == *(u8 *)((u8 *)obj + 4)) {
-                walk = (u8 *)self + (i << 2);
-                str = ((void **)walk)[0x13];
+                u8 *base = (u8 *)self + (i << 2);
+                str = *(void **)(base+0x4C);
                 break;
             }
             walk = (u8 *)walk + 2;
@@ -511,29 +512,31 @@ case_2b:
     goto after_cases;
 
 block_22:
+    {
+    s32 red, green, blue;
     p = *(u8 **)((u8 *)unit + 8);
-    kind = (s8)p[0];
-    y = (s8)p[1];
-    x = (s8)p[2];
+    red = p[0]; green = p[1]; blue = p[2];
+    red=(s8)red;green=(s8)green;blue=(s8)blue;
     Ui_DrawTerrainInfoDecor(tex, 0, farg0, farg1);
     Prim2D_Begin();
     Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
     Prim2D_BindTexture(tex, 4, 0x11);
     Prim2D_PrepareTex();
-    fn_8005926C(0x28, 0x1A, 0, 0, 0xB, 0x1A, 9, kind);
-    fn_8005926C(0x50, 0x1A, 0, 0, 0xB, 0x1A, 9, y);
-    fn_8005926C(0x80, 0x1A, 0, 0, 0xB, 0x1A, 9, x);
+    fn_8005926C(0x28, 0x1A, 0, 0, 0xB, 0x1A, 9, red);
+    fn_8005926C(0x50, 0x1A, 0, 0, 0xB, 0x1A, 9, green);
+    fn_8005926C(0x80, 0x1A, 0, 0, 0xB, 0x1A, 9, blue);
     str = fn_8005B73C(unit);
 
+}
 after_cases:
-    if (str != NULL) {
+    if (str) {
         Prim2D_Begin();
         Prim2D_SetTransform(farg0, farg1, lbl_80369808, lbl_8036980C);
         Prim2D_SetTex(0, 0x13);
         Prim2D_PrepareTex();
         w = 0x90 - Text_MeasureWidth(str, -1, lbl_8036980C);
-        w = ((s32)((u32)w >> 31) + w) >> 1;
-        Text_Draw((s16)w, -1, 1, str);
+        half = ((s32)((u32)w >> 31) + w) >> 1;
+        Text_Draw((s16)half, -1, 1, str);
     }
 
     Prim2D_Begin();
@@ -555,4 +558,4 @@ after_cases:
     Prim2D_EndPrim();
     Prim2D_ResetState();
 }
-
+#pragma pop

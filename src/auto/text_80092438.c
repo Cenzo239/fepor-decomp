@@ -1509,7 +1509,6 @@ void *fn_80095070(void *arg0, s32 arg1) {
 #pragma opt_common_subs off
 void *fn_800951D0(void *arg0, s32 arg1) {
     Unk80037BD0 *Unit_GetHeldItemSlot(void *, s32);
-    u8 fn_800940B0(void *, void *);
     void *fn_8009542C(void *, s32);
     u8 Status_Test(void *, s32);
     void *obj;
@@ -1526,25 +1525,21 @@ void *fn_800951D0(void *arg0, s32 arg1) {
         i++;
     } while (i < 4);
     if (arg1 >= 0) {
-        u8 ok;
         slot = Unit_GetHeldItemSlot(arg0, arg1);
-        obj = (void *)slot->unk0;
-        if (!(*(u64 *)((u8 *)obj + 0x38) & 1)) {
-            ok = 0;
-        } else if (!fn_800940B0(arg0, obj)) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (!ok) {
+        if (!Unit_CanEquipWeapon(arg0, (void *)slot->unk0)) {
             return NULL;
         }
     } else {
         i = 0;
         do {
+            u64 flags;
             slot = Unit_GetHeldItemSlot(arg0, i);
             obj = (void *)slot->unk0;
-            if (obj != NULL && Unit_CheckItemMask(arg0, obj, *(u64 *)((u8 *)obj + 0x38), 1)) {
+            if (obj == NULL) {
+                break;
+            }
+            flags = *(u64 *)((u8 *)obj + 0x38);
+            if (Unit_CheckItemMask(arg0, obj, flags, 1)) {
                 goto equip;
             }
             i++;

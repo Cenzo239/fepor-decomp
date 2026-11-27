@@ -285,6 +285,8 @@ static inline s32 fn_8020FD50_cntlzd(u64 bit) {
     return 32 + __cntlzw(lo);
 }
 
+#pragma push
+#pragma opt_common_subs off
 void fn_8020FD50(s32 unused, OSContext *arg1) {
     void fn_80211B30(s32, s32);
     u32 fn_802116D4(void);
@@ -305,8 +307,8 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     s32 regMask;
     s32 didFlush;
     s32 bit;
-    u8 *regsBase;
     OSContext *ctxArg;
+    u8 *regsBase;
     u8 *timing;
 
     ctxArg = arg1;
@@ -356,9 +358,9 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     if (lbl_80368608 != 0) {
         if ((u32)lbl_80368638 != 1 || fn_802116D4() != 0) {
             regsBase = (u8 *)0xCC002000;
-            while (*(u64 *)&lbl_80368640 != 0) {
-                bit = fn_8020FD50_cntlzd(*(u64 *)&lbl_80368640);
-                *(volatile u16 *)(regsBase + (bit << 1)) = *(u16 *)((u8 *)(timing + (bit << 1)) + 0x78);
+            while (*(volatile u64 *)&lbl_80368640 != 0) {
+                bit = fn_8020FD50_cntlzd(*(volatile u64 *)&lbl_80368640);
+                *(volatile u16 *)(regsBase + (bit << 1)) = *(u16 *)((timing + (bit << 1)) + 0x78);
                 *(u64 *)&lbl_80368640 &= ~((u64)1 << (63 - bit));
             }
             lbl_80368638 = (void *)0;
@@ -382,7 +384,7 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     OSClearContext(&ctx);
     OSSetCurrentContext(ctxArg);
 }
-#pragma use_lmw_stmw reset
+#pragma pop
 
 s32 fn_8020FFC4(s32 arg0) {
     extern s32 lbl_80368614;

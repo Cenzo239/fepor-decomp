@@ -2697,6 +2697,8 @@ extern "C" void fn_802016EC(void *arg0) {
     sp8 = lbl_8036BBD0;
     fn_80200A7C(0, 0, self->v18(), self->v19(), &sp8);
 }
+#pragma push
+#pragma opt_strength_reduction off
 extern "C" void fn_80201778(void *arg0) {
     void Prim2D_SetAlphaByte(s32);
     void Prim2D_AddZ(f32);
@@ -2734,14 +2736,14 @@ extern "C" void fn_80201778(void *arg0) {
     typedef struct { u32 size; u32 cap; char *data; } String;
     struct Icons { u8 pad[0xB6]; u8 icon; };
 
+    struct Icons *icons;
     String sp8;
     f64 xf;
     f32 var_f30;
     s8 *var_r29;
     u8 var_r28;
     u32 obj;
-    u8 *endPtr;
-    struct Icons *icons;
+    s8 *endPtr;
 
     obj = (u32)arg0;
     ((Obj *)obj)->v39();
@@ -2768,8 +2770,8 @@ extern "C" void fn_80201778(void *arg0) {
                     var_r28 = 1;
                     break;
                 default:
-                    endPtr = (u8 *)fn_80104970(var_r29);
-                    while ((s8 *)endPtr != var_r29) {
+                    endPtr = fn_80104970(var_r29);
+                    while (var_r29 != endPtr) {
                         fn_800C9874(&sp8, 1, (s8)*var_r29);
                         var_r29++;
                     }
@@ -2794,9 +2796,7 @@ extern "C" void fn_80201778(void *arg0) {
     Prim2D_SetAlphaByte(0x80);
     Prim2D_PrepareTex();
 }
-
-#pragma dont_inline on
-#pragma global_optimizer off
+#pragma pop
 extern "C" void fn_8020197C(void *arg0, void *arg1) {
     u32 OSGetTick(void);
     void Prim2D_SetColorPacked(s32 *);

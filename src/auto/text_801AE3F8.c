@@ -500,9 +500,10 @@ void fn_801AEDA0(void *arg0) {
     }
 }
 
-#pragma use_lmw_stmw on
 #pragma cplusplus on
-#pragma optimization_level 3
+#pragma push
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
 extern "C" void fn_801AEE58(void *arg0) {
     struct Ref {
         virtual void v0(s32) = 0;
@@ -588,9 +589,8 @@ extern "C" void fn_801AEE58(void *arg0) {
     }
     Process_Goto(self, 0x26);
 }
-#pragma optimization_level reset
-#pragma cplusplus reset
-#pragma use_lmw_stmw reset
+#pragma pop
+#pragma cplusplus off
 void Ui_HandleUnitPanelListMode(void *panel) {
     extern u8 gUiContext[];
     extern u8 gBattleState[];
@@ -783,6 +783,18 @@ extern "C" void fn_801AF48C(void *arg0) {
     extern u8 lbl_80292230[];
     extern const f32 lbl_8036B0A8;
 
+    struct Widget {
+        virtual void f0();
+        virtual void f1();
+        virtual void f2();
+        virtual void f3();
+        virtual void f4();
+        virtual void f5();
+        virtual void f6();
+        virtual void f7();
+        virtual void update();
+    };
+
     s16 sp10[2];
     s16 spC[2];
     s16 sp8[2];
@@ -792,65 +804,65 @@ extern "C" void fn_801AF48C(void *arg0) {
     s16 y;
     f32 zf;
 
-    list = M2C_FIELD(arg0, void **, 0x54);
+    list = *(void **)((u8 *)arg0 + 0x54);
     child = Ui_FindChild(arg0, 4, 0);
-    y = M2C_FIELD(list, s16 *, 0xC);
+    y = *(s16 *)((u8 *)list + 0xC);
     sp10[0] = 0x260;
     sp10[1] = y;
     Ui_SlideWidgetChild(arg0, list, sp10, 0);
     spC[0] = 0x138;
     spC[1] = 0x74;
     Ui_SlideWidgetChildMode1(arg0, child, spC, 0);
-    M2C_FIELD(child, s16 *, 0xE) = M2C_FIELD(child, s16 *, 0xA) + 0x108;
-    M2C_FIELD(child, s16 *, 0x4A) = 0x14;
-    M2C_FIELD(child, s16 *, 0x4C) = 0;
-    ((SetupMenuObj *)child)->v8();
-    M2C_FIELD(child, u8 *, 0x48) = 1;
-    M2C_FIELD(child, u8 *, 0x44) = 2;
+    *(s16 *)((u8 *)child + 0xE) = *(s16 *)((u8 *)child + 0xA) + 0x108;
+    *(s16 *)((u8 *)child + 0x4A) = 0x14;
+    *(s16 *)((u8 *)child + 0x4C) = 0;
+    ((Widget *)child)->update();
+    *(u8 *)((u8 *)child + 0x48) = 1;
+    *(u8 *)((u8 *)child + 0x44) = 2;
     obj = Heap_Alloc(0x54);
     if (obj != NULL) {
         *(void **)obj = lbl_8028FDB0;
-        M2C_FIELD(obj, s32 *, 4) = 0;
+        *(s32 *)((u8 *)obj + 4) = 0;
         *(void **)obj = lbl_80292230;
-        M2C_FIELD(obj, s16 *, 8) = -1;
-        M2C_FIELD(obj, s16 *, 0xA) = 0x260;
-        M2C_FIELD(obj, s16 *, 0xC) = 0xA7;
-        M2C_FIELD(obj, s16 *, 0xE) = 0x368;
-        M2C_FIELD(obj, s16 *, 0x10) = 0xFC;
-        M2C_FIELD(obj, s16 *, 0x12) = 0;
-        M2C_FIELD(obj, s16 *, 0x14) = 0;
-        M2C_FIELD(obj, s16 *, 0x16) = 0x108;
-        M2C_FIELD(obj, s16 *, 0x18) = 0x55;
-        M2C_FIELD(obj, s16 *, 0x1A) = 0;
-        M2C_FIELD(obj, s16 *, 0x1C) = 0;
+        *(s16 *)((u8 *)obj + 8) = -1;
+        *(s16 *)((u8 *)obj + 0xA) = 0x260;
+        *(s16 *)((u8 *)obj + 0xC) = 0xA7;
+        *(s16 *)((u8 *)obj + 0xE) = 0x368;
+        *(s16 *)((u8 *)obj + 0x10) = 0xFC;
+        *(s16 *)((u8 *)obj + 0x12) = 0;
+        *(s16 *)((u8 *)obj + 0x14) = 0;
+        *(s16 *)((u8 *)obj + 0x16) = 0x108;
+        *(s16 *)((u8 *)obj + 0x18) = 0x55;
+        *(s16 *)((u8 *)obj + 0x1A) = 0;
+        *(s16 *)((u8 *)obj + 0x1C) = 0;
         ((u8 *)obj)[0x1E] = 0xFF;
         ((u8 *)obj)[0x1F] = 0xFF;
         ((u8 *)obj)[0x20] = 0xFF;
         ((u8 *)obj)[0x21] = 0xFF;
-        M2C_FIELD(obj, s16 *, 0x22) = 0x190;
-        M2C_FIELD(obj, s16 *, 0x24) = 0;
+        *(s16 *)((u8 *)obj + 0x22) = 0x190;
+        *(s16 *)((u8 *)obj + 0x24) = 0;
         zf = lbl_8036B0A8;
-        M2C_FIELD(obj, f32 *, 0x28) = zf;
-        M2C_FIELD(obj, f32 *, 0x2C) = zf;
-        M2C_FIELD(obj, f32 *, 0x30) = zf;
-        M2C_FIELD(obj, s32 *, 0x34) = 0;
-        M2C_FIELD(obj, s32 *, 0x38) = 0;
+        *(f32 *)((u8 *)obj + 0x28) = zf;
+        *(f32 *)((u8 *)obj + 0x2C) = zf;
+        *(f32 *)((u8 *)obj + 0x30) = zf;
+        *(s32 *)((u8 *)obj + 0x34) = 0;
+        *(s32 *)((u8 *)obj + 0x38) = 0;
         *(void **)obj = lbl_80291A3C;
-        M2C_FIELD(obj, s32 *, 0x3C) = 0;
-        M2C_FIELD(obj, s32 *, 0x40) = 0x1003A;
-        M2C_FIELD(obj, s32 *, 0x4C) = 0;
-        M2C_FIELD(obj, s32 *, 0x50) = 0;
-        ((SetupMenuObj *)obj)->v8();
-        M2C_FIELD(obj, s16 *, 8) = 9;
-        M2C_FIELD(obj, s16 *, 0x24) = 8;
-        M2C_FIELD(obj, u32 *, 0x34) |= 0x10U;
+        *(s32 *)((u8 *)obj + 0x3C) = 0;
+        *(s32 *)((u8 *)obj + 0x40) = 0x1003A;
+        *(s32 *)((u8 *)obj + 0x4C) = 0;
+        *(s32 *)((u8 *)obj + 0x50) = 0;
+        ((Widget *)obj)->update();
+        *(s16 *)((u8 *)obj + 8) = 9;
+        *(s16 *)((u8 *)obj + 0x24) = 8;
+        *(u32 *)((u8 *)obj + 0x34) |= 0x10U;
         Ui_SetPortraitUnit(obj, Ui_ListGetSelected(list));
         Ui_AddChild(arg0, obj);
-        y = M2C_FIELD(obj, s16 *, 0xC);
+        y = *(s16 *)((u8 *)obj + 0xC);
         sp8[0] = 0x138;
         sp8[1] = y;
         Ui_SlideWidgetChildMode1(arg0, obj, sp8, 0);
-        TalkUi_ShowMsg(M2C_FIELD(M2C_FIELD(arg0, void **, 0x6C), s32 *, 0x30));
+        TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)arg0 + 0x6C) + 0x30));
     }
 }
 #pragma global_optimizer on
@@ -1205,44 +1217,42 @@ extern "C" void Ui_LayoutUnitPanelList(void *arg0) {
     }
 }
 
-#pragma cplusplus on
-extern "C" void fn_801AFF9C(void *arg0) {
 #pragma push
 #pragma optimization_level 3
-
-void *Ui_FindChild(void *,s32,s32);
-void Ui_AddChild(void *,void *);
-void Ui_SlideWidgetChildMode1(void *,void *,s16 *,s32);
+extern "C" void fn_801AFF9C(void *arg0) {
+void *fn_8013FF94(void *,s32,s32);
+void fn_801400F4(void *,void *);
+void fn_8014027C(void *,void *,s16 *,s32);
 void fn_801402A0(void *,void *,s16 *,s32);
-void *Heap_Alloc(s32);
+void *fn_800C42D8(s32);
 void *fn_80193B60(void *,s16 *,s16 *,s32);
 void fn_8013B064(void *,void *);
 void fn_8013AD70(void *,void *);
-u64 *Item_GetFlagsPtr(void *);
+u64 *fn_8001CB64(void *);
 void *fn_80193950(void *,s16,s16,s32);
 void *fn_801938F8(void *,s16,s16,s32);
-void Ui_BringChildToFront(void *,void *);
-s32 Ui_ListGetSelected(void *);
+void fn_8013FF00(void *,void *);
+s32 fn_8013AC54(void *);
 u8 fn_8014D8DC(void *);
-void TalkUi_ShowMsg(void *);
-void Ui_SetWidgetText(void *,void *);
-extern u8 gUnitLists[],gUiContext[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],gBattleState[];
+void fn_8011D79C(void *);
+void fn_801658DC(void *,void *);
+extern u8 lbl_802CA264[],lbl_802EF4C8[],lbl_8028FDB0[],lbl_80292230[],lbl_80296150[],lbl_80330708[];
 extern const f32 lbl_8036B0A8;
 s16 sp20[2],sp1c[2],sp18[2],sp14[2],sp10[2],spc[2],sp8[2];
-void *list; void *item; void *panel; void *p; void *q; void *walk; void *res; void *self;
+void *list; void *item; void *panel; void *self; void *p; void *q; void *walk; void *res;
 s16 x,y,w,h;
 self=arg0;
 item=(u8 *)(*(void * *)((u8 *)self + 0x48))+0x60;
-panel=Ui_FindChild(self,4,0);
+panel=fn_8013FF94(self,4,0);
 if (!panel) {
  panel=*(void * *)((u8 *)self + 0x4c);
- Ui_AddChild(self,panel);
+ fn_801400F4(self,panel);
  x=*(s16 *)((u8 *)panel + 0xa); w=(s16)(*(s16 *)((u8 *)panel + 0xe)-x);
  *(s16 *)((u8 *)panel + 0xe)=x+w;
  y=*(s16 *)((u8 *)panel + 0xc); h=(s16)(*(s16 *)((u8 *)panel + 0x10)-y);
  *(s16 *)((u8 *)panel + 0x10)=h+0x30; *(s16 *)((u8 *)panel + 0xc)=0x30;
  sp20[0]=0x14c; sp20[1]=0x30;
- Ui_SlideWidgetChildMode1(self,panel,sp20,0);
+ fn_8014027C(self,panel,sp20,0);
 } else {sp1c[0]=0x14c;sp1c[1]=0x30;fn_801402A0(self,panel,sp1c,0);}
 *(s16 *)((u8 *)panel + 0xe)=*(s16 *)((u8 *)panel + 0xa)+0xe8;
 *(s16 *)((u8 *)panel + 0x4a)=8; *(s16 *)((u8 *)panel + 0x4c)=0;
@@ -1251,7 +1261,7 @@ if (!panel) {
 q=*(void * *)((u8 *)self + 0x54);
 list=q;
 if (!q) {
- p=Heap_Alloc(0xd8);
+ p=fn_800C42D8(0xd8);
  if(p) {sp18[0]=0x128;sp18[1]=0x9a;sp14[0]=0x260;sp14[1]=0x6c;p=fn_80193B60(p,sp14,sp18,0x1f4);}
  *(void * *)((u8 *)self + 0x54)=p;
  q=*(void * *)((u8 *)self + 0x54); if(q) *(s32 *)((u8 *)q + 0x4)+=1;
@@ -1259,68 +1269,65 @@ if (!q) {
  *(s16 *)((u8 *)list + 0x8)=8;*(s16 *)((u8 *)list + 0x24)=8;*(s16 *)((u8 *)list + 0x5a)=0x1a;*(s16 *)((u8 *)list + 0x64)=2;
  ((SetupMenuObj *)list)->v12(4);
  *(s16 *)((u8 *)list + 0x58)=2;
- for(walk=*(void **)gUnitLists;walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
- for(walk=*(void **)(gUnitLists+0x3c);walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
- q=*(void **)gUiContext;if(q) fn_8013AD70(list,q);
+ for(walk=*(void **)lbl_802CA264;walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
+ for(walk=*(void **)(lbl_802CA264+0x3c);walk;walk=*(void * *)((u8 *)walk + 0x184)) fn_8013B064(list,walk);
+ q=*(void **)lbl_802EF4C8;if(q) fn_8013AD70(list,q);
 }
-*(u8 *)((u8 *)list + 0x4c)=0;Ui_AddChild(self,list);
-if(*(s16 *)((u8 *)list + 0xa)!=0x118){y=*(s16 *)((u8 *)list + 0xc);sp10[0]=0x118;sp10[1]=y;Ui_SlideWidgetChildMode1(self,list,sp10,0);}
-if((*Item_GetFlagsPtr(item)&5ULL)!=0) {
- p=Heap_Alloc(0x78);if(p)p=fn_80193950(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;
-} else {p=Heap_Alloc(0x78);if(p)p=fn_801938F8(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;}
+*(u8 *)((u8 *)list + 0x4c)=0;fn_801400F4(self,list);
+if(*(s16 *)((u8 *)list + 0xa)!=0x118){y=*(s16 *)((u8 *)list + 0xc);sp10[0]=0x118;sp10[1]=y;fn_8014027C(self,list,sp10,0);}
+if((*fn_8001CB64(item)&5ULL)!=0) {
+ p=fn_800C42D8(0x78);if(p)p=fn_80193950(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;
+} else {p=fn_800C42D8(0x78);if(p)p=fn_801938F8(p,0x260,0x108,0x1f4);*(void * *)((u8 *)self + 0x60)=p;}
 q=*(void * *)((u8 *)self + 0x60);if(q)*(s32 *)((u8 *)q + 0x4)+=1;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x8)=0xa;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x24)=8;
 *(u8 *)((u8 *)(*(void * *)((u8 *)self + 0x60)) + 0x48)=0;
-panel=Heap_Alloc(0x48);
+panel=fn_800C42D8(0x48);
 if(panel) {
-q=panel;
-*(void * *)((u8 *)q + 0x0)=lbl_8028FDB0;
-*(s32 *)((u8 *)q + 0x4)=0;
-*(void * *)((u8 *)q + 0x0)=lbl_80292230;
-*(s16 *)((u8 *)q + 0x8)=-1;
-*(s16 *)((u8 *)q + 0xa)=608;
-*(s16 *)((u8 *)q + 0xc)=264;
-*(s16 *)((u8 *)q + 0xe)=880;
-*(s16 *)((u8 *)q + 0x10)=392;
-*(s16 *)((u8 *)q + 0x12)=0;
-*(s16 *)((u8 *)q + 0x14)=0;
-*(s16 *)((u8 *)q + 0x16)=272;
-*(s16 *)((u8 *)q + 0x18)=128;
-*(s16 *)((u8 *)q + 0x1a)=0;
-*(s16 *)((u8 *)q + 0x1c)=0;
-*(u8 *)((u8 *)q + 0x1e)=0xff;
-*(u8 *)((u8 *)q + 0x1f)=0xff;
-*(u8 *)((u8 *)q + 0x20)=0xff;
-*(u8 *)((u8 *)q + 0x21)=0xff;
-*(s16 *)((u8 *)q + 0x22)=0x1f4;*(s16 *)((u8 *)q + 0x24)=0;
-*(f32 *)((u8 *)q + 0x28)=lbl_8036B0A8;
-*(f32 *)((u8 *)q + 0x2c)=lbl_8036B0A8;
-*(f32 *)((u8 *)q + 0x30)=lbl_8036B0A8;
-*(s32 *)((u8 *)q + 0x34)=0;*(s32 *)((u8 *)q + 0x38)=0;*(void * *)((u8 *)q + 0x0)=lbl_80296150;
-*(s32 *)((u8 *)q + 0x3c)=0;*(s32 *)((u8 *)q + 0x40)=0;
-((SetupMenuObj *)q)->v8();
+*(void * *)((u8 *)panel + 0x0)=lbl_8028FDB0;
+*(s32 *)((u8 *)panel + 0x4)=0;
+*(void * *)((u8 *)panel + 0x0)=lbl_80292230;
+*(s16 *)((u8 *)panel + 0x8)=-1;
+*(s16 *)((u8 *)panel + 0xa)=608;
+*(s16 *)((u8 *)panel + 0xc)=264;
+*(s16 *)((u8 *)panel + 0xe)=880;
+*(s16 *)((u8 *)panel + 0x10)=392;
+*(s16 *)((u8 *)panel + 0x12)=0;
+*(s16 *)((u8 *)panel + 0x14)=0;
+*(s16 *)((u8 *)panel + 0x16)=272;
+*(s16 *)((u8 *)panel + 0x18)=128;
+*(s16 *)((u8 *)panel + 0x1a)=0;
+*(s16 *)((u8 *)panel + 0x1c)=0;
+*(u8 *)((u8 *)panel + 0x1e)=0xff;
+*(u8 *)((u8 *)panel + 0x1f)=0xff;
+*(u8 *)((u8 *)panel + 0x20)=0xff;
+*(u8 *)((u8 *)panel + 0x21)=0xff;
+*(s16 *)((u8 *)panel + 0x22)=0x1f4;*(s16 *)((u8 *)panel + 0x24)=0;
+*(f32 *)((u8 *)panel + 0x28)=lbl_8036B0A8;
+*(f32 *)((u8 *)panel + 0x2c)=lbl_8036B0A8;
+*(f32 *)((u8 *)panel + 0x30)=lbl_8036B0A8;
+*(s32 *)((u8 *)panel + 0x34)=0;*(s32 *)((u8 *)panel + 0x38)=0;*(void * *)((u8 *)panel + 0x0)=lbl_80296150;
+*(s32 *)((u8 *)panel + 0x3c)=0;*(s32 *)((u8 *)panel + 0x40)=0;
+((SetupMenuObj *)panel)->v8();
 }
 *(void * *)((u8 *)self + 0x64)=panel;q=*(void * *)((u8 *)self + 0x64);if(q)*(s32 *)((u8 *)q + 0x4)+=1;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x8)=0xb;
 *(s16 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x24)=8;
 *(u32 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x40)=*(u32 *)item;
 *(s32 *)((u8 *)(*(void * *)((u8 *)self + 0x64)) + 0x3c)=1;
-Ui_BringChildToFront(self,list);
+fn_8013FF00(self,list);
 if(*(s16 *)((u8 *)list + 0x4e)!=0x7fff){
-Ui_AddChild(self,*(void * *)((u8 *)self + 0x60));
-((SetupMenuObj *)(*(void * *)((u8 *)self + 0x60)))->v11(Ui_ListGetSelected(list));
-q=*(void * *)((u8 *)self + 0x60);if(*(s16 *)((u8 *)q + 0xa)!=0x138){y=*(s16 *)((u8 *)q + 0xc);spc[0]=0x138;spc[1]=y;Ui_SlideWidgetChildMode1(self,q,spc,0);}
-} else if(fn_8014D8DC(gBattleState)){
-Ui_AddChild(self,*(void * *)((u8 *)self + 0x64));
-q=*(void * *)((u8 *)self + 0x64);if(*(s16 *)((u8 *)q + 0xa)!=0x134){y=*(s16 *)((u8 *)q + 0xc);sp8[0]=0x134;sp8[1]=y;Ui_SlideWidgetChildMode1(self,q,sp8,0);}
+fn_801400F4(self,*(void * *)((u8 *)self + 0x60));
+((SetupMenuObj *)(*(void * *)((u8 *)self + 0x60)))->v11(fn_8013AC54(list));
+q=*(void * *)((u8 *)self + 0x60);if(*(s16 *)((u8 *)q + 0xa)!=0x138){y=*(s16 *)((u8 *)q + 0xc);spc[0]=0x138;spc[1]=y;fn_8014027C(self,q,spc,0);}
+} else if(fn_8014D8DC(lbl_80330708)){
+fn_801400F4(self,*(void * *)((u8 *)self + 0x64));
+q=*(void * *)((u8 *)self + 0x64);if(*(s16 *)((u8 *)q + 0xa)!=0x134){y=*(s16 *)((u8 *)q + 0xc);sp8[0]=0x134;sp8[1]=y;fn_8014027C(self,q,sp8,0);}
 }
-TalkUi_ShowMsg(*(void * *)((u8 *)(*(void * *)((u8 *)self + 0x6c)) + 0x2c));
-q=*(void * *)((u8 *)self + 0x6c);list=*(void * *)((u8 *)q + 0x70);res=Ui_FindChild(self,-0x1000,0);if(res)Ui_SetWidgetText(res,list);
-
+fn_8011D79C(*(void * *)((u8 *)(*(void * *)((u8 *)self + 0x6c)) + 0x2c));
+q=*(void * *)((u8 *)self + 0x6c);list=*(void * *)((u8 *)q + 0x70);res=fn_8013FF94(self,-0x1000,0);if(res)fn_801658DC(res,list);
+}
 #pragma pop
-}
-#pragma cplusplus reset
 
 #pragma use_lmw_stmw reset
 #pragma cplusplus reset
@@ -1513,12 +1520,16 @@ extern "C" void fn_801B0978(void *arg0) {
     Helper::SetText(arg0, M2C_FIELD(M2C_FIELD(arg0, void **, 0x6c), s32 *, 0x7c));
 }
 
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_801B0AEC(void *arg0) {
 #pragma cplusplus on
     void *Heap_Alloc(s32);
     void *Ui_FindChild(void *, s32, s32);
     void Ui_SetWidgetText(void *, s32);
-    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_8029759C[];
+    extern u8 lbl_8028FDB0[], lbl_80292230[];
+    extern const u8 lbl_8029759C[];
     extern const f32 lbl_8036B0A8;
     u8 *obj;
     s32 caption;
@@ -1553,7 +1564,7 @@ extern "C" void fn_801B0AEC(void *arg0) {
         *(f32 *)(obj + 0x30) = zf;
         *(s32 *)(obj + 0x34) = 0;
         *(s32 *)(obj + 0x38) = 0;
-        *(void **)obj = lbl_8029759C;
+        *(const void **)obj = lbl_8029759C;
         obj[0x3C] = 1;
         *(s16 *)(obj + 0x3E) = 2;
         *(s16 *)(obj + 0x40) = -1;
@@ -1572,8 +1583,8 @@ extern "C" void fn_801B0AEC(void *arg0) {
     if (child) Ui_SetWidgetText(child, caption);
 #pragma cplusplus reset
 }
-
-#pragma cplusplus reset
+#pragma pop
+#pragma cplusplus off
 #pragma opt_common_subs off
 void fn_801B0C70(void *arg0) {
     void fn_8011D650(void);
@@ -1763,6 +1774,8 @@ void fn_801B1194(s32 arg0) {
 
 extern s32 gActorXmlStrs[];
 extern u16* lbl_80296128;
+#pragma push
+#pragma optimization_level 4
 void fn_801B1218(void *self) {
     void Ui_SetWidgetText(void *, s32);
     void TalkUi_ShowMsg(s32);
@@ -1783,7 +1796,6 @@ void fn_801B1218(void *self) {
     void *child;
     void *obj;
     void *slide;
-    void *weapon;
     s16 pos[2];
     s16 pos2[2];
     s16 pos3[2];
@@ -1791,7 +1803,8 @@ void fn_801B1218(void *self) {
 
     obj = *(void **)((u8 *)self + 0x48);
     switch (gUiContext[8]) {
-    case 0x81:
+    case 0x81: {
+        void *weapon;
         TalkUi_ShowMsg(*(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x1C));
         text = *(s32 *)((u8 *)*(void **)((u8 *)self + 0x6C) + 0x84);
         child = Ui_FindChild(self, -0x1000, 0);
@@ -1828,12 +1841,13 @@ void fn_801B1218(void *self) {
         Forge_BindWeaponActor(slide, weapon);
         *(void **)((u8 *)*(void **)((u8 *)self + 0x4C) + 0x3C) = weapon;
         break;
+    }
     case 0x80:
         Process_Goto(self, 0xB);
         break;
     }
 }
-
+#pragma pop
 void fn_801B1400(void *arg0) {
     void Ui_CreateMenu(void *, void *, s32);
     void *fn_8013BC10(s32, s32);
@@ -1869,7 +1883,9 @@ void fn_801B1480(void *arg0) {
     TalkUi_ShowMsg(*(s32 *)(*(u8 **)((u8 *)arg0 + 0x6C) + 0x18));
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 extern "C" void fn_801B14DC(void *arg0) {
     void Process_Goto(void *, s32);
     void Process_ClearFunc(void *);
@@ -1925,8 +1941,8 @@ extern "C" void fn_801B14DC(void *arg0) {
     void *self;
     Child *child;
     void *obj;
-    s16 saved;
-    s16 a;
+    s32 saved;
+    s32 a;
     s32 score;
     u16 addend;
     register int btn;
@@ -1944,7 +1960,7 @@ extern "C" void fn_801B14DC(void *arg0) {
     *(u8 *)((u8 *)obj + 0x3C) = 1;
     Ui_UpdatePanelWidgets(arg0);
     a = saved;
-    if ((s16)(u16)a != *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E)) {
+    if ((s16)a != *(s16 *)((u8 *)*(void **)((u8 *)arg0 + 0x48) + 0x3E)) {
         if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
             *(Pair *)&pos1 = ((Obj *)*(void **)((u8 *)arg0 + 0x48))->v9();
             Ui_ShowUnitInfoText(gUnitInfoPopup, ((Obj *)*(void **)((u8 *)arg0 + 0x48))->v8(), (f32)*(s16 *)&pos1, (f32)*((s16 *)&pos1 + 1));
@@ -2071,7 +2087,7 @@ extern "C" void fn_801B14DC(void *arg0) {
         }
     }
 }
-
+#pragma pop
 #pragma cplusplus off
 void Ui_ShowConfirmChild(void *panel) {
     u32 Ui_FindChild();
@@ -2701,7 +2717,6 @@ void fn_801B2A80(void *arg0) {
     void Ui_SetWidgetText(void *, s32);
     void Ui_SlideWidgetChildMode1(void *, void *, s16 *, s32);
     extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_802961C4[];
-    extern const f32 lbl_8036B0A8;
 #pragma cplusplus on
     s16 firstPos[2];
     s16 secondPos[2];
@@ -2722,8 +2737,8 @@ void fn_801B2A80(void *arg0) {
     }
     obj = (u8 *)Heap_Alloc(0x44);
     if (obj) {
-        *(u32 *)obj = (u32)lbl_8028FDB0;
-        *(u32 *)obj = (u32)lbl_80292230;
+        *(void **)obj = lbl_8028FDB0;
+        *(void **)obj = lbl_80292230;
         *(s32 *)(obj + 4) = 0;
         *(s16 *)(obj + 8) = -1;
         *(s16 *)(obj + 0xA) = 0x260;
@@ -2732,7 +2747,7 @@ void fn_801B2A80(void *arg0) {
         *(s16 *)(obj + 0x10) = 0x18F;
         *(s16 *)(obj + 0x12) = 0;
         *(s16 *)(obj + 0x14) = 0;
-        *(s16 *)(obj + 0x16) = 0xE9;
+        *(s16 *)(obj + 0x16) = 0x108;
         *(s16 *)(obj + 0x18) = 0x47;
         *(s16 *)(obj + 0x1A) = 0;
         *(s16 *)(obj + 0x1C) = 0;
@@ -2742,12 +2757,12 @@ void fn_801B2A80(void *arg0) {
         obj[0x21] = 0xFF;
         *(s16 *)(obj + 0x22) = 0x226;
         *(s16 *)(obj + 0x24) = 0;
-        *(f32 *)(obj + 0x28) = lbl_8036B0A8;
-        *(f32 *)(obj + 0x2C) = lbl_8036B0A8;
-        *(f32 *)(obj + 0x30) = lbl_8036B0A8;
+        *(f32 *)(obj + 0x28) = 0.0f;
+        *(f32 *)(obj + 0x2C) = 0.0f;
+        *(f32 *)(obj + 0x30) = 0.0f;
         *(s32 *)(obj + 0x34) = 0;
         *(s32 *)(obj + 0x38) = 0;
-        *(u32 *)obj = (u32)lbl_802961C4;
+        *(void **)obj = lbl_802961C4;
         *(s32 *)(obj + 0x3C) = -1;
         ((SetupMenuObj *)obj)->v8();
     }

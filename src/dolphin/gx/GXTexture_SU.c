@@ -198,6 +198,7 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d)
   extern f64 lbl_8036BD68;
   extern f32 lbl_8036BD70;
   extern f64 lbl_8036BD78;
+  f64 one;
   extern f32 lbl_8036BD80;
   extern f64 lbl_8036BD88;
   union 
@@ -213,7 +214,6 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d)
   f32 half;
   f32 two;
   f32 z;
-  f64 one;
   f64 halfd;
   s32 exp;
   int new_var;
@@ -229,7 +229,7 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d)
   s32 shifted;
   ef = 0;
   flag = (arg0 >> 3) & 1;
-  ptr = arg1;
+  ;
   f0r = ef;
   slot_r28 = arg0 & 7;
   slot_r26 = 0;
@@ -237,7 +237,7 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d)
   slot_r25 = 0;
   if (flag)
   {
-    if (((d == c) || (b == a)) != 0U)
+    if ((d == c) || (b == a))
     {
       sp24 = lbl_8036BD58;
       sp20 = lbl_8036BD58;
@@ -306,23 +306,24 @@ void fn_802240F0(u32 arg0, u32 *arg1, f32 a, f32 b, f32 c, f32 d)
   }
   {
     u32 w24 = *((u32 *) (&sp24));
-    u32 t = *ptr;
     u32 reg;
     u32 w20;
+    u32 t = *arg1;
     acc0 = __rlwimi(acc0, w24, 20, 21, 31);
     reg = acc0;
     GXWGFifo.u8 = 0x61;
-    reg = __rlwimi(reg, w24, 20, 13, 20);
+    reg = __rlwimi(reg & 0xFFFFu, w24, 20, 13, 20);
     w20 = *((u32 *) (&sp20));
     reg = __rlwimi(reg, w24, 20, 12, 12);
     reg = __rlwimi(reg, 0xEE, 24, 0, 7);
     GXWGFifo.u32 = reg;
+    acc0 = __rlwimi(acc0, w24, 20, 21, 31);
     slot_r25 = __rlwimi(slot_r25, w20, 20, 21, 31);
     reg = slot_r25;
     GXWGFifo.u8 = 0x61;
     reg = __rlwimi(reg, w20, 20, 13, 20);
     reg = __rlwimi(reg, w20, 20, 12, 12);
-    GXWGFifo.u32 = (u32) ef;
+    GXWGFifo.u32 = ef;
     reg = __rlwimi(reg, flag, 20, 11, 11);
     GXWGFifo.u8 = 0x61;
     reg = __rlwimi(reg, slot_r28, 21, 8, 10);

@@ -517,7 +517,6 @@ void fn_80040028(void *arg0, void *arg1)
 }
 
 void fn_8004022C(void) {
-    void Map_PrepareEntryRange(void *, s32, s32);
     void fn_80060060(void *);
     void fn_800609DC(void *);
     void fn_8006785C(s32, void *, void *);
@@ -526,12 +525,9 @@ void fn_8004022C(void) {
     void PSMTXRotRad(void *, s32, f32);
     void PSMTXTrans(void *, f32, f32, f32);
     void PSMTXScale(void *, f32, f32, f32);
-    void fn_800449C8(void);
     void fn_80048518(void);
     extern void *gMap;
     extern s32 gGameFlags;
-    extern u8 sMapUpdateInited;
-    extern s32 sMapUpdateCounter;
     extern f64 lbl_80368EF8;
     extern f32 lbl_80368EE4;
     extern f32 lbl_80368EE8;
@@ -547,11 +543,8 @@ void fn_8004022C(void) {
     s32 i;
     u8 *sub;
     u8 *obj;
-    u8 *p0;
     u8 flags;
     f32 f29v, f28v, f31v, f30v;
-    f32 t30;
-    s16 t6;
     s32 a, b;
     f32 scale;
     f32 temp_f0;
@@ -574,9 +567,8 @@ void fn_8004022C(void) {
                     if ((mask & 0x80) != 0) {
                         f28v = (f32)(s8)ent[0] + lbl_80368EE4;
                         f29v = -(*(f32 *)(ent + 0xC) + *(f32 *)(*(u8 **)((u8 *)gMap + 0x30) + 0x48));
-                        t30 = (f32)(s8)ent[1];
+                        f30v = (f32)(s8)ent[1] + lbl_80368EE4;
                         f31v = *(f32 *)(ent + 8) + lbl_80368EE4;
-                        f30v = t30 + lbl_80368EE4;
                         if (*(u8 *)(obj + 0x68) == 1) {
                             a = *(s16 *)obj;
                             b = *(s16 *)(obj + 2);

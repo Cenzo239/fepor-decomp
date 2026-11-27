@@ -238,8 +238,9 @@ loop:
 store_node:
     idx = lbl_80367B04;
     { s32 value=*(s32 *)node;
-    lbl_80367B04 = idx + 1;
-    *(idx + (s32 *)lbl_80367B00) = value; }
+      s32 *dst=(s32 *)lbl_80367B00;
+      lbl_80367B04 = idx + 1;
+      dst[idx] = value; }
 skip_store:
     if (node[4] == 0) {
         node = NULL;

@@ -201,6 +201,11 @@ extern "C" void Prim2D_Begin(void);
 extern "C" s32 fn_80222CDC(void *);
 extern "C" u32 fn_80222CE8(void *);
 extern "C" void *memcpy(void *, const void *, u32);
+#pragma push
+#pragma cplusplus on
+#pragma optimization_level 4
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
 extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) {
     struct Obj {
         u8 pad[0x44];
@@ -221,21 +226,24 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         virtual s32 v14() = 0;
         virtual s32 v15() = 0;
     };
+    s32 src;
     s32 nbytes;
     u8 *color;
     s32 a3;
     s32 a2;
     s32 a1;
     s32 count;
+    u8 *pixels;
     u32 off;
-    s32 src;
     u8 *srcPtr;
     u16 pix;
     u16 r, g, b;
     s32 w;
     s32 cols;
     s32 h;
-    f32 fx, fy, fw;
+    s32 offset;
+    f32 fw, fx, fy;
+    f32 width;
 
     a3 = arg3;
     a1 = arg1;
@@ -254,7 +262,8 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
                 count = (u16)count;
                 memcpy(*(void **)((u8 *)arg0 + 0x3C), srcPtr, nbytes);
                 for (off = 0; count > 0; off += 2) {
-                    pix = *(u16 *)(*(u8 **)((u8 *)arg0 + 0x3C) + off);
+                    pixels = *(u8 **)((u8 *)arg0 + 0x3C);
+                    pix = *(u16 *)(pixels + off);
                     if (pix & 0x8000) {
                         r = (pix & 0x7C00) >> 10;
                         g = (pix & 0x3E0) >> 5;
@@ -271,7 +280,7 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
                         if (b > 0x1F) {
                             b = 0x1F;
                         }
-                        *(u16 *)(*(u8 **)((u8 *)arg0 + 0x3C) + off) = (u16)(0x8000 | (r << 10) | (g << 5) | b);
+                        *(u16 *)(pixels + off) = (u16)(0x8000 | (r << 10) | (g << 5) | b);
                     }
                     count--;
                 }
@@ -284,18 +293,21 @@ extern "C" void fn_8005A79C(void *arg0, s32 arg1, s32 arg2, s32 arg3, u8 *arg4) 
         Prim2D_PrepareTex();
         w = ((Obj *)arg0)->v14();
         cols = ((Obj *)arg0)->v12();
-        fx = (f32)(((a3 - 1) % cols) * w);
+        fx = (f32)(w * ((a3 - 1) % cols));
         h = ((Obj *)arg0)->v15();
         cols = ((Obj *)arg0)->v12();
-        fy = (f32)(((a3 - 1) / cols) * h);
+        offset = (a3 - 1) / cols;
+        fy = (f32)(offset * h);
         Prim2D_AddPrim(1);
         fw = (f32)((Obj *)arg0)->v15();
         w = ((Obj *)arg0)->v14();
-        Prim2D_SetRectUv((f32)a1, (f32)a2, fx, fy, (f32)w, fw);
+        width = (f32)w;
+        Prim2D_SetRectUv((f32)a1, (f32)a2, fx, fy, width, fw);
         Prim2D_EndPrim();
     }
 }
-
+#pragma cplusplus reset
+#pragma pop
 extern "C" void fn_8005AABC(void *arg0,s32 arg1,s32 arg2,s32 arg3,u8 arg4) {
 extern s32 lbl_80369180;
 extern f32 lbl_80369188,lbl_80369198,lbl_8036919C;

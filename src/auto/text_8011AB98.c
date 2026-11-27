@@ -582,6 +582,7 @@ void fn_8011AE6C(void *arg0) {
 #pragma global_optimizer off
 void fn_8011B204(void *arg0) {
     void Process_ClearFunc(void *);
+    extern f64 lbl_8036A1F0;
     extern f32 lbl_8036A1E8;
     extern f32 lbl_8036A230;
     f32 c1;
@@ -2920,6 +2921,8 @@ s32 fn_8011E12C(void *arg0) {
 }
 #pragma pop
 
+#pragma push
+#pragma opt_strength_reduction off
 u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 {
     extern u16 gUiPanelFlags;
@@ -2995,6 +2998,7 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     };
 
     struct Obj *self;
+    u8 **textRef;
     u8 *text;
     struct Item *item;
     u8 *buffer;
@@ -3016,8 +3020,9 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     s32 bit;
 
     self = (struct Obj *)arg0;
+    textRef = (u8 **)arg1;
 
-    text = *((u8 **)arg1);
+    text = *textRef;
     ch = *text;
 
     if ((s8)ch == 0) {
@@ -3028,8 +3033,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
     if ((s8)ch == 0xA) {
         fn_801220B8(lbl_8032BDE8);
         fn_801229F8(self->unk44);
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         return 1;
     }
 
@@ -3092,14 +3097,14 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
         }
 
-        count = fn_80010710(*((u8 **)arg1));
+        count = fn_80010710(*textRef);
         i = 0;
         while (i < count) {
-            text = *((u8 **)arg1);
+            text = *textRef;
             fn_80122114(lbl_8032BDE8, *text);
             object = self->unk44;
-            text = *((u8 **)arg1);
-            *((u8 **)arg1) = text + 1;
+            text = *textRef;
+            *textRef = text + 1;
             fn_80122A2C(object, *text);
             i++;
         }
@@ -3110,16 +3115,16 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 3;
     }
 
-    text = *((u8 **)arg1);
-    *((u8 **)arg1) = text + 1;
-    text = *((u8 **)arg1);
-    *((u8 **)arg1) = text + 1;
+    text = *textRef;
+    *textRef = text + 1;
+    text = *textRef;
+    *textRef = text + 1;
     command = (s8)*text;
 
     switch (command) {
     case 'K':
         self->unk60 = 0;
-        text = *((u8 **)arg1);
+        text = *textRef;
         TalkUi_SpawnKeyWait2(self->unk44, self, (s8)text[1] == 'P');
         return 2;
 
@@ -3133,13 +3138,13 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 'c':
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         index = (u8)(*text - '0');
-        *((u8 **)arg1) -= 3;
+        *textRef -= 3;
         TalkUi_LayoutSlot(self, index);
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 3;
+        text = *textRef;
+        *textRef = text + 3;
         oldSlot = self->unk5E;
         if ((s8)oldSlot != index) {
             self->unk65 = oldSlot;
@@ -3147,22 +3152,22 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             fn_80120F94();
         }
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
+        while ((s8)**textRef != '|') { *buffer++ = *(*textRef)++; }
         *buffer = 0;
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         object = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x6F), (s32)lbl_8032FE24, 0);
         fn_8011FB58(self, (s32)object);
         return 2;
 
     case 'd':
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         index = (u8)(*text - '0');
-        *((u8 **)arg1) -= 3;
+        *textRef -= 3;
         TalkUi_LayoutSlot(self, index);
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 3;
+        text = *textRef;
+        *textRef = text + 3;
         oldSlot = self->unk5E;
         if ((s8)oldSlot == index) {
             result = 0;
@@ -3202,8 +3207,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 's':
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         index = (u8)(*text - '0');
         if ((s8)self->unk5E != index) {
             self->unk65 = self->unk5E;
@@ -3212,26 +3217,26 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         }
         object = self->pad34[index];
         if (object != 0 && *(u8 *)((u8 *)object + 0x68) != 0) {
-            *((u8 **)arg1) -= 3;
+            *textRef -= 3;
             TalkUi_LayoutSlot(self, index);
-            *((u8 **)arg1) += 3;
+            *textRef += 3;
             goto clear_box;
         }
         return 1;
 
     case 'W':
-        text = *((u8 **)arg1);
+        text = *textRef;
         ch = *text;
         switch ((s8)ch) {
         case 'D':
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             if (!(gUiInputFlags & 3)) {
                 fn_80122238(self->unk44, self);
             }
             fn_80120F94();
             return 2;
         case '-':
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
                     sound = Sound_FindByName((void *)lbl_80367A5C);
@@ -3256,7 +3261,7 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
             return 2;
         case '+':
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             if (!(gUiInputFlags & 3)) {
                 if (lbl_80367A5C != 0) {
                     sound = Sound_FindByName((void *)lbl_80367A5C);
@@ -3281,8 +3286,8 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
             }
             return 2;
         default:
-            text = *((u8 **)arg1);
-            *((u8 **)arg1) = text + 1;
+            text = *textRef;
+            *textRef = text + 1;
             index = (u8)(*text - '0');
             result = TalkUi_LayoutSlot(self, index);
             return (u8)result ? 2 : 1;
@@ -3290,9 +3295,9 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'w':
         self->unk60 = 0;
-        text = *((u8 **)arg1);
+        text = *textRef;
         object = self->unk44;
-        *((u8 **)arg1) = text + 1;
+        *textRef = text + 1;
         index = (s8)*text - '0';
         fn_80122170(object, self, 1 << index);
         bit = gUiPanelFlags & 0x200;
@@ -3302,14 +3307,14 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 2;
 
     case 'F':
-        return fn_8011F184(self, ((u8 **)arg1));
+        return fn_8011F184(self, textRef);
 
     case 'R':
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
+        while ((s8)**textRef != '|') { *buffer++ = *(*textRef)++; }
         *buffer = 0;
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         sound = fn_80049DA4((s32)((u8 *)TalkUi_str + 0x74), (s32)lbl_8032FE24, 0);
         Sound_Create(sound, self);
         if (self->unk63 != 0 && !(gUiInputFlags & 3)) {
@@ -3328,10 +3333,10 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'B':
         buffer = lbl_8032FE24;
-        for (buffer = lbl_8032FE24; (s8)**((u8 **)arg1) != '|'; ++buffer) { *buffer = *(*((u8 **)arg1))++; }
+        while ((s8)**textRef != '|') { *buffer++ = *(*textRef)++; }
         *buffer = 0;
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         soundName = lbl_8032FE24;
         if (Str_Cmp(soundName, (u8 *)TalkUi_str + 0x79) == 0) {
             soundName = (u8 *)TalkUi_str + 0x82;
@@ -3348,16 +3353,16 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'U':
         if (self->unk18 == 0) {
-            text = *((u8 **)arg1);
-            *((u8 **)arg1) = text + 1;
+            text = *textRef;
+            *textRef = text + 1;
             return 1;
         }
-        text = *((u8 **)arg1);
+        text = *textRef;
         switch ((s8)*text) {
         case 'b':
             gUiPanelFlags |= 0x100;
         case 'B':
-            ++*((u8 **)arg1);
+            ++*textRef;
             Process_DetachChild(self);
             return 1;
         default:
@@ -3366,37 +3371,37 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 
     case 'H':
         self->unk60 = 0;
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text - 2;
+        text = *textRef;
+        *textRef = text - 2;
         gUiPanelFlags |= 0x30;
         return 2;
 
     case 'D':
-        text = *((u8 **)arg1);
+        text = *textRef;
         if ((s8)*text == 'C') {
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
         goto invalid_command;
 
     case 'S':
-        text = *((u8 **)arg1);
+        text = *textRef;
         ch = *text;
         if ((s8)ch == 'D') {
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             gUiPanelFlags |= 8;
             return 1;
         }
         if ((s8)ch == 'E') {
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             gUiPanelFlags &= ~8;
             return 1;
         }
     case 'N':
-        text = *((u8 **)arg1);
+        text = *textRef;
         if ((s8)*text == 'D') {
-            *((u8 **)arg1) = text + 1;
+            *textRef = text + 1;
             gUiPanelFlags ^= 0x40;
             return 1;
         }
@@ -3405,40 +3410,40 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
         return 1;
 
     case 'M':
-        text = *((u8 **)arg1);
+        text = *textRef;
         switch ((s8)*text) {
         case 'C':
             self->unk62 = 0;
-            ++*((u8 **)arg1);
+            ++*textRef;
             break;
         case 'D':
             self->unk62 = 1;
-            ++*((u8 **)arg1);
+            ++*textRef;
             break;
         }
         return 1;
 
     case 'O':
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         self->unk66 = (u8)(*text - '0');
         return 1;
 
     case '=':
-        text = *((u8 **)arg1);
-        *((u8 **)arg1) = text + 1;
+        text = *textRef;
+        *textRef = text + 1;
         self->unk68 = ((s8)*text - '0') * 1000;
-        text = *((u8 **)arg1);
+        text = *textRef;
         speed = self->unk68;
-        *((u8 **)arg1) = text + 1;
+        *textRef = text + 1;
         self->unk68 = speed + ((s8)*text - '0') * 100;
-        text = *((u8 **)arg1);
+        text = *textRef;
         speed = self->unk68;
-        *((u8 **)arg1) = text + 1;
+        *textRef = text + 1;
         self->unk68 = speed + ((s8)*text - '0') * 10;
-        text = *((u8 **)arg1);
+        text = *textRef;
         speed = self->unk68;
-        *((u8 **)arg1) = text + 1;
+        *textRef = text + 1;
         self->unk68 = speed + ((s8)*text - '0');
         if (self->unk68 == 9999) {
             self->unk68 = 0x10B;
@@ -3455,7 +3460,7 @@ u8 fn_8011E4B8(void *arg0, void *arg1, u16 arg2)
 invalid_command:
     return 3;
 }
-
+#pragma pop
 typedef struct TalkUi {
     u8 pad0[0x48];
     void *slots[4];

@@ -153,6 +153,10 @@ static inline u8 UiBattle_MinRange(void *battle) {
     void *item = *(void **)((u8 *)battle + 0x28C);
     return item ? *((u8 *)item + 0x1D) : 0;
 }
+#pragma push
+#pragma optimization_level 4
+#pragma opt_common_subs off
+#pragma opt_loop_invariants off
 void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     typedef struct { u8 r, g, b, a; } Color;
     void Prim2D_EmitQuad(void);
@@ -350,16 +354,8 @@ void fn_80082298(void *arg0, s32 arg1, f32 farg0, f32 farg1) {
     }
 
 }
-    if (*(void **)((u8 *)arg0 + 0x28C) != 0) {
-        a = (u8)Item_GetMaxRange(*(void **)((u8 *)arg0 + 0x28C));
-    } else {
-        a = 0;
-    }
-    if (*(void **)((u8 *)arg0 + 0x28C) != 0) {
-        b = *((u8 *)*(void **)((u8 *)arg0 + 0x28C) + 0x1D);
-    } else {
-        b = 0;
-    }
+    a = UiBattle_MaxRange(arg0);
+    b = UiBattle_MinRange(arg0);
     Prim2D_Begin();
     Prim2D_SetTex(0, 0x13);
     Prim2D_PrepareTex();

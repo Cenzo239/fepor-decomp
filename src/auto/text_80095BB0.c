@@ -312,10 +312,13 @@ done:
 switch(kind) {case 1: case 2: case 3: GActor_RequestRes(fn_80055204(unit,0));break;}
 }
 
+#pragma push
 #pragma cplusplus on
+#pragma optimization_level 4
 #pragma global_optimizer off
 #pragma use_lmw_stmw on
-extern "C" void fn_80096418(s32 arg0) {
+#pragma opt_strength_reduction off
+void fn_80096418(s32 arg0) {
 void *Item_GetFlagsPtr(void *);
 void fn_8004FC70(s32,s32);
 void *fn_80055204(void *,s32);
@@ -325,18 +328,18 @@ s32 fn_80096EEC(s32 *,u32);
 void fn_800973F0(void *,s32);
 extern u8 gBattle[],gEventCmdStrings[];
 extern void **lbl_80367500,**lbl_80367504;
-EventResourceRequest ents[20];s32 buf[20];s32 flaga,flagb;
+s32 ents[40],buf[20];s32 flaga,flagb;
 u8 *battle;
 void **g0;
 s32 arg_save;
-EventResourceRequest *ep;
+u8 *ep;
 s32 i;
 s32 count;
 s32 *p;
 s32 n;
 s32 cur;
 s16 saved;
-register s16 *idx;
+s16 *idx;
 s32 cursor,offset,c,kind;
 u8 ok;
 u32 flags;
@@ -358,23 +361,23 @@ default:offset=cursor*4+4;fn_800973F0(&flaga,((u8*)idx)[offset]);break;
 scan1done:
 *idx=saved;n=fn_80096EEC(buf,flaga);
 p=buf;for(i=0;i<n;p++,i++)GActor_RequestRes((void*)Event_GetCmdFlagRes(*p));
-saved=*idx;ep=ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
+saved=*idx;ep=(u8*)ents;*idx=arg0;count=0;*idx=(s16)arg0+1;
 for(;;){
 cur=*idx;offset=cur*4+4;c=((u8*)idx)[offset];
 switch(c){
 case 0:case 0x20:case 0x21:case 0x22:case 0x24:goto scan2done;
 case 0x56:
-ep->flags=Event_ScanCommandFlagsInline(idx,cur);break;
+*(u32*)(ep+4)=Event_ScanCommandFlagsInline(idx,cur);break;
 case 0x50:case 0x51:case 0x52:
-ep->code=c;ep->active=1;count++;ep++;break;
+*(s16*)ep=c;*(s16*)(ep+2)=1;count++;ep+=8;break;
 default:break;
 }
 (*idx)++;
 }
 scan2done:
-*idx=saved;ep=ents;battle=gBattle;
-for(i=0;i<count;ep++,i++){
-unit=*lbl_80367500;flags=ep->flags;cur=ep->code;
+*idx=saved;ep=(u8*)ents;battle=gBattle;
+for(i=0;i<count;ep+=8,i++){
+unit=*lbl_80367500;flags=*(u32*)(ep+4);cur=*(s16*)ep;
 if(!unit)item=0;
 else {item=(u8*)unit+0x28C;if(!*(u32*)item)item=0;}
 if(item){
@@ -390,7 +393,7 @@ kind=0;
 kindDone:
 str=Event_SelectCommandResource(g0,flags,cur,kind);
 if(str)GActor_RequestRes(str);
-flags=ep->flags;
+flags=*(u32*)(ep+4);
 if(flags&0x80)str=(void*)Event_GetCmdFlagRes(0x80);
 else if(flags&0x20)str=(void*)Event_GetCmdFlagRes(0x20);
 else if(flags&8)str=(void*)Event_GetCmdFlagRes(8);
@@ -398,15 +401,15 @@ else if(flags&0x10)str=(void*)Event_GetCmdFlagRes(0x10);
 else str=0;
 if(str)GActor_RequestRes(str);
 if(!(*(u32*)(battle+0xCAC)&0x100)){
-switch(ep->code){
-case 0x50:case 0x51:if(!(ep->flags&0x20000))fn_8004FC70(arg_save,9);break;
+switch(*(s16*)ep){
+case 0x50:case 0x51:if(!(*(u32*)(ep+4)&0x20000))fn_8004FC70(arg_save,9);break;
 case 0x52:fn_8004FC70(arg_save,7);break;
 }
 }
 }
 }
-#pragma cplusplus reset
-#pragma global_optimizer reset
+#pragma pop
+#pragma cplusplus off
 /* Load model/gfx (mode 8) for the units stored in event slots 0-2. */
 void Event_LoadSlotUnitGfx(void) {
     void fn_8017F9A8(void);
