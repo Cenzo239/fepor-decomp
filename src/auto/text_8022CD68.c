@@ -7,6 +7,11 @@ const char stringBase0_80282C60[] =
 #include "common.h"
 typedef struct RuntimeDecimal { u8 sign; s16 exponent; u8 length; u8 digits[36]; } RuntimeDecimal;
 
+static inline s16 Fn_ClampPrecision(s16 value) {
+    if (value > 36) value = 36;
+    return value;
+}
+
 extern f32 lbl_80367068;
 extern f64 lbl_8036BE20;
 extern f64 lbl_8036BE28;
@@ -1231,53 +1236,98 @@ finish:
 
 #pragma push
 #pragma opt_propagation off
-void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x) {
-    void fn_8022E804(void *, f64);
-    RuntimeDecimal *d = arg1;
-    s16 requested = *(s16 *)((u8 *)format + 2);
-    s32 precision;
-    s32 i;
-    fn_8022E804(d, x);
-    if (d->digits[0] <= 9) {
-        if (requested > 36) requested = 36;
-        precision = requested;
-        if (precision > 0 && precision < d->length) {
-            s32 round;
-            u8 *p;
-            u8 *q = (u8 *)d + precision;
-            if (q[5] > 5) round = 1;
-            else if (q[5] < 5) round = -1;
-            else {
-                u8 *end;
-                p = q + 6;
-                end = d->digits + d->length;
-                while (p < end) {
-                    if (*p != 0) { round = 1; goto rounded; }
-                    ++p;
-                }
-                if (q[4] & 1) round = 1;
-                else round = -1;
-            }
-rounded:
-            d->length = precision;
-            if (round >= 0) {
-                u8 *first = d->digits;
-                s32 k = precision - 1;
-                p = first + k;
-                for (;;) {
-                    if (*p < 9) { ++*p; break; }
-                    if (p == first) {
-                        *p = 1;
-                        ++d->exponent;
-                        break;
-                    }
-                    *p-- = 0;
-                }
-            }
-        }
-        while (d->length < precision) d->digits[d->length++] = 0;
-        d->exponent -= d->length - 1;
-        for (i = 0; i < d->length; i++) d->digits[i] += '0';
+void fn_8022E660(void *format, RuntimeDecimal *arg1, f64 x)
+{
+  u8 *new_var;
+  void fn_8022E804(void *, f64);
+  RuntimeDecimal *d = arg1;
+  s16 requested = *((s16 *) (((u8 *) format) + 2));
+  s32 precision;
+  s32 i;
+  fn_8022E804(d, x);
+  if (d->digits[0] <= 9)
+  {
+    if ((requested - 1) >= 36)
+    {
+      requested = 36;
     }
+    precision = requested;
+    if ((precision > 0) && (precision < d->length))
+    {
+      s32 round;
+      u8 *p;
+      u8 *q = ((u8 *) d) + precision;
+      if (q[5] > 5)
+      {
+        round = 1;
+      }
+      else
+        if (q[5] < 5)
+      {
+        round = -1;
+      }
+      else
+      {
+        u8 *end;
+        p = q + 6;
+        new_var = d->digits + d->length;
+        end = new_var;
+        while (p < end)
+        {
+          if ((*p) != 0)
+          {
+            round = 1;
+            goto rounded;
+          }
+          ++p;
+        }
+
+        if (q[4] & 1)
+        {
+          round = 1;
+        }
+        else
+        {
+          round = -1;
+        }
+      }
+      rounded:
+      d->length = precision;
+
+      if (round >= 0)
+      {
+        u8 *first = d->digits;
+        s32 k = precision - 1;
+        p = first + k;
+        for (;;)
+        {
+          if ((*p) < 9)
+          {
+            ++(*p);
+            break;
+          }
+          if (p == first)
+          {
+            *p = 1;
+            ++d->exponent;
+            break;
+          }
+          *(p--) = 0;
+        }
+
+      }
+    }
+    while (d->length < precision)
+    {
+      d->digits[d->length++] = 0;
+    }
+
+    d->exponent -= d->length - 1;
+    for (i = 0; i < d->length; i++)
+    {
+      d->digits[i] += '0';
+    }
+
+  }
 }
 #pragma pop
