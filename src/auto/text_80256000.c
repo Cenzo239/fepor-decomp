@@ -7990,6 +7990,8 @@ void fn_802633F8(void) {
     fn_8020AEC4(&lbl_80368B00);
 }
 
+#pragma push
+#pragma optimization_level 3
 s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     void *fn_802637D0(u32);
     void *memset(void *, s32, u32);
@@ -8007,8 +8009,6 @@ s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     void *buf;
     void (*cb)(void);
     s32 *out;
-    s32 one;
-    s32 zero;
 
     cb = callback;
     out = outSize;
@@ -8017,12 +8017,10 @@ s32 fn_8026341C(void (*callback)(void), s32 unused, s32 *outSize) {
     if (buf != NULL) {
         memset(buf, 0, 0xA00);
         DCFlushRange(lbl_80368B1C, 0xA00);
-        one = 1;
-        zero = 0;
-        lbl_80368B14 = zero;
-        lbl_80368B18 = one;
-        lbl_80368B20 = one;
-        lbl_80368B10 = zero;
+        lbl_80368B14 = 0;
+        lbl_80368B18 = 1;
+        lbl_80368B20 = 1;
+        lbl_80368B10 = 0;
         lbl_80368B24 = cb;
         fn_8021371C(fn_802632DC);
         fn_80213760((void *)((u32)lbl_80368B1C + 0x80000000 + (u8)lbl_80368B20 * 0x280), 0x280);
