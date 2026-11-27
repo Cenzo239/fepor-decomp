@@ -938,4 +938,5 @@ extern "C" void fn_801C9170(void *arg0) {
         Process_ClearFunc(self);
     }
 }
+#pragma cplusplus off
 #pragma pop
