@@ -1016,8 +1016,8 @@ static inline void CopyBackward32Words(u8 **sp, u8 **dp)
     u8 *d = *dp;
     u32 b;
     u32 a;
-    b = *((u32 *) (s - 8));
     a = *((u32 *) (s - 4));
+    b = *((u32 *) (s - 8));
     *((u32 *) (d - 4)) = a;
     a = *((u32 *) (s - 12));
     *((u32 *) (d - 8)) = b;
