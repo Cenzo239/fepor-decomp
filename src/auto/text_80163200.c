@@ -7761,6 +7761,8 @@ extern "C" void fn_8016FD08(void *arg0) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_propagation off
+#pragma opt_common_subs on
 extern "C" u8 fn_8016FDA4(u32 *arg0) {
     u64 *Item_GetFlagsPtr(void *);
     s32 var_r31;
