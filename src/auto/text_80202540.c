@@ -326,7 +326,6 @@ void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
   m[14] = zero;
   m[15] = one;
 }
-#pragma pop
 
 #pragma push
 typedef f32 Mtx44[4][4];
