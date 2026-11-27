@@ -12,6 +12,8 @@ struct ItemABA {
 
 #pragma use_lmw_stmw on
 
+typedef struct Pair16 { s16 x, y; } Pair16;
+
 typedef struct {
     u8 flag : 1;
     u8 unk : 7;
@@ -1307,7 +1309,9 @@ void Map_SetupUnitMoveLimit(void *unit)
     fn_800AA89C(self);
     Map_SelectRangeBuffer(gBattleMap, 5);
 }
-#pragma opt_strength_reduction reset
+#pragma push
+#pragma optimization_level 4
+#pragma opt_propagation off
 void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     void *Process_CreateChild(void *, void *);
     void *Unit_GetItemSlot(void *, s32);
@@ -1349,7 +1353,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
     Obj *self;
 
     {
-        void *ret;
+        Obj *ret;
         void **ef;
         void *w1;
         void *w0;
@@ -1362,13 +1366,13 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
         entry = base;
         w0 = ef[0];
         self = ret;
-        self->unk30 = w0;
+        ret->unk30 = w0;
         rowPtr = base;
-        self->unk34 = w1;
-        self->unk3A = -1;
-        self->unk38 = -1;
-        self->unk43 = 0;
-        self->unk41 = 0;
+        ret->unk34 = w1;
+        ret->unk3A = -1;
+        ret->unk38 = -1;
+        ret->unk43 = row;
+        ret->unk41 = row;
     }
     do {
         col = 0;
@@ -1458,7 +1462,7 @@ void fn_800AAE78(void *arg0, s8 arg1, s8 arg2, s8 arg3) {
         Process_Goto(self, 1);
     }
 }
-
+#pragma pop
 #pragma push
 #pragma optimization_level 4
 #pragma opt_propagation off
@@ -1726,114 +1730,85 @@ extern "C" void *Item_Copy(void *, void *);
 extern "C" void Item_Clear(void *);
 #pragma cplusplus off
 void fn_800ABA3C(void) {
-    void fn_8001C76C(void *);
-    void fn_8001D580(void *);
-    void fn_8001C5F8(void *, s32);
+    void Item_Init(void *);
+    void Item_Clear(void *);
+    void Item_Copy(void *, void *);
+    void Item_Destroy(void *, s32);
+    typedef struct {
+        u32 unk0;
+        u32 unk4;
+    } Item;
     extern u8 lbl_80312ACC[];
     u8 *base;
+    s32 i, n;
+    Item *q;
+    Item *qa;
+    u8 *p;
+    u8 *dst;
+    u8 *check;
     {
-        u8 a[4][8];
-        s32 off, n;
-        u8 *p;
-        u8 *q;
-        u8 *dst;
-        s32 i;
-        u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item a[4];
+        Item_Init(&a[0]); Item_Init(&a[1]); Item_Init(&a[2]); Item_Init(&a[3]);
 
-        q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
-        base=lbl_80312ACC;
-        i=0; n=i; off=i; dst=base+0;
-        for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
-            if (*(u32 *)(check+4)!=0) {
-                u8 *out = (u8 *)a+off;
-                n++; off+=8;
-                fn_8001C4FC(out,p+4);
+        q = a;
+        for (i = 0, qa = q; i < 4; i++, qa++) Item_Clear(qa);
+        base = lbl_80312ACC;
+        for (i = 0, n = 0, p = base; i < 4; i++, p += 16) {
+            if (*(u32 *)(p + 4) != 0) {
+                Item_Copy(&a[n++], p + 4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p + 4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
-
+        for (i = 0, p = base; i < n; q++, p += 16, i++) Item_Copy(p + 4, q);
+        Item_Destroy(&a[3], -1); Item_Destroy(&a[2], -1); Item_Destroy(&a[1], -1); Item_Destroy(&a[0], -1);
     }
     {
-        u8 a[4][8];
-        s32 off, n;
-        u8 *p;
-        u8 *q;
-        u8 *dst;
-        s32 i;
-        u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item a[4];
+        Item_Init(&a[0]); Item_Init(&a[1]); Item_Init(&a[2]); Item_Init(&a[3]);
 
-        q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
-        base=lbl_80312ACC;
-        i=0; n=i; off=i; dst=base+64;
-        for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
-            if (*(u32 *)(check+68)!=0) {
-                u8 *out = (u8 *)a+off;
-                n++; off+=8;
-                fn_8001C4FC(out,p+4);
+        q = a;
+        for (i = 0, qa = q; i < 4; i++, qa++) Item_Clear(qa);
+        dst = lbl_80312ACC + 64;
+        for (i = 0, n = 0, p = dst, check = base; i < 4; i++, p += 16, check += 16) {
+            if (*(u32 *)(check + 68) != 0) {
+                Item_Copy(&a[n++], p + 4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p + 4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
-
+        for (i = 0; i < n; q++, dst += 16, i++) Item_Copy(dst + 4, q);
+        Item_Destroy(&a[3], -1); Item_Destroy(&a[2], -1); Item_Destroy(&a[1], -1); Item_Destroy(&a[0], -1);
     }
     {
-        u8 a[4][8];
-        s32 off, n;
-        u8 *p;
-        u8 *q;
-        u8 *dst;
-        s32 i;
-        u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item a[4];
+        Item_Init(&a[0]); Item_Init(&a[1]); Item_Init(&a[2]); Item_Init(&a[3]);
 
-        q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
-        base=lbl_80312ACC;
-        i=0; n=i; off=i; dst=base+128;
-        for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
-            if (*(u32 *)(check+132)!=0) {
-                u8 *out = (u8 *)a+off;
-                n++; off+=8;
-                fn_8001C4FC(out,p+4);
+        q = a;
+        for (i = 0, qa = q; i < 4; i++, qa++) Item_Clear(qa);
+        dst = lbl_80312ACC + 128;
+        for (i = 0, n = 0, p = dst, check = base; i < 4; i++, p += 16, check += 16) {
+            if (*(u32 *)(check + 132) != 0) {
+                Item_Copy(&a[n++], p + 4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p + 4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
-
+        for (i = 0; i < n; q++, dst += 16, i++) Item_Copy(dst + 4, q);
+        Item_Destroy(&a[3], -1); Item_Destroy(&a[2], -1); Item_Destroy(&a[1], -1); Item_Destroy(&a[0], -1);
     }
     {
-        u8 a[4][8];
-        s32 off, n;
-        u8 *p;
-        u8 *q;
-        u8 *dst;
-        s32 i;
-        u8 *check;
-        fn_8001C76C(a[0]); fn_8001C76C(a[1]); fn_8001C76C(a[2]); fn_8001C76C(a[3]);
+        Item a[4];
+        Item_Init(&a[0]); Item_Init(&a[1]); Item_Init(&a[2]); Item_Init(&a[3]);
 
-        q = a[0];
-        for(i=0,p=q;i<4;i++,p+=8) fn_8001D580(p);
-        base=lbl_80312ACC;
-        i=0; n=i; off=i; dst=base+192;
-        for(i=0,p=dst,check=base;i<4;i++,p+=16,check+=16) {
-            if (*(u32 *)(check+196)!=0) {
-                u8 *out = (u8 *)a+off;
-                n++; off+=8;
-                fn_8001C4FC(out,p+4);
+        q = a;
+        for (i = 0, qa = q; i < 4; i++, qa++) Item_Clear(qa);
+        dst = lbl_80312ACC + 192;
+        for (i = 0, n = 0, p = dst, check = base; i < 4; i++, p += 16, check += 16) {
+            if (*(u32 *)(check + 196) != 0) {
+                Item_Copy(&a[n++], p + 4);
             }
-            fn_8001D580(p+4);
+            Item_Clear(p + 4);
         }
-        for(i=0;i<n;q+=8,dst+=16,i++) fn_8001C4FC(dst+4,q);
-        fn_8001C5F8(a[3],-1); fn_8001C5F8(a[2],-1); fn_8001C5F8(a[1],-1); fn_8001C5F8(a[0],-1);
-
+        for (i = 0; i < n; q++, dst += 16, i++) Item_Copy(dst + 4, q);
+        Item_Destroy(&a[3], -1); Item_Destroy(&a[2], -1); Item_Destroy(&a[1], -1); Item_Destroy(&a[0], -1);
     }
 }
 void fn_800ABE74(void *arg0) {
@@ -2062,31 +2037,39 @@ void fn_800AC0C0(void *arg0) {
         }
     }
 }
-#pragma pop
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
+#pragma opt_common_subs off
+#pragma opt_lifetimes off
 void fn_800AC400(u8 *arg0) {
-    u8 *new_var;
     extern u8 lbl_80312ACC[];
+    s32 zero;
     s32 j;
     s32 i;
     u8 *entry;
+    u8 *scan;
     u8 *row;
     s32 col;
     s32 row_off;
 
-    arg0[0x42] = 0;
+    zero = 0;
+    arg0[0x42] = zero;
     row = lbl_80312ACC;
-    i = i;
+    i = zero;
     arg0[0x41] = 1;
-    for (; i < 2; ++i, row += 0x80) {
+    do {
         entry = row;
         for (j = 0; j < 8; entry += 0x10, ++j) {
             if ((j < 4) && (arg0[0x44] != 0)) {
-                entry[0xC] = 0;
+                entry[0xC] = zero;
             } else {
                 entry[0xC] = ((*(u32 *)(entry + 4)) != 0);
             }
         }
-    }
+        ++i;
+        row += 0x80;
+    } while(i < 2);
 
     arg0[0x3e] = arg0[0x3c];
     arg0[0x3f] = arg0[0x3d];
@@ -2094,42 +2077,40 @@ void fn_800AC400(u8 *arg0) {
     arg0[0x40] = arg0[0x3d] & 4;
     row_off = ((s8)arg0[0x3c]) << 7;
     col = (s8)arg0[0x40];
-    new_var = lbl_80312ACC + row_off;
-    row = new_var;
-    entry = row + (col << 4);
+    scan = lbl_80312ACC + row_off;
+    entry = scan + (col << 4);
     if (entry[0x3c] != 0) {
         return;
     }
     i = col + 3;
-    row += i << 4;
+    scan += i << 4;
     for (;;) {
         if (i < 0) {
             break;
         }
-        if (row[0xc] != 0) {
+        if (scan[0xc] != 0) {
             break;
         }
-        row -= 0x10;
+        scan -= 0x10;
         --i;
     }
     j = i + 1;
     if ((j - col) < 0) {
         j = col;
     }
-    new_var = lbl_80312ACC;
-    new_var += row_off;
-    new_var += j << 4;
-    new_var[0xc] = 1;
+    *(lbl_80312ACC + (row_off + (j << 4)) + 0xc) = 1;
     arg0[0x3d] = j;
 }
-#pragma global_optimizer on
+#pragma push
+#pragma optimization_level 2
+#pragma opt_propagation off
 void fn_800AC5DC(void *arg0) {
     void fn_800AC810(void);
     u8 Ui_IsUnitInfoPopupOpen(void *);
     void Ui_HideUnitInfoPopup(void *);
     u64 *Item_GetFlagsPtr(void *);
     s32 Msg_Expand(void *);
-    void fn_80166AE8(s16, s32, s32, void *, void *);
+    void fn_80166AE8(s16, s32, s32, void *);
     void Process_Goto(void *, s32);
     void Ui_PlaySeCue(void *, s32);
     void Ui_OpenUnitInfoPopup(void *, void *, void *, f32, f32);
@@ -2140,213 +2121,259 @@ void fn_800AC5DC(void *arg0) {
     extern u8 lbl_8026E858[];
     extern u32 gUnitInfoPopupFlag;
 
-    void *self;
-    u32 pressed;
+    s32 off_c;
+    s32 temp;
+    u32 *pad;
+    u32 cur;
 
-    self = arg0;
     fn_800AC810();
-    pressed = ((u32 *)gPadInput)[1] & (((u32 *)gPadInput)[2] ^ ((u32 *)gPadInput)[1]);
+    pad = (u32 *)gPadInput;
+    cur = pad[1];
+    temp = cur & (pad[2] ^ cur);
     if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-        if (pressed & 0xA00) {
+        if (temp & 0xA00) {
             Ui_HideUnitInfoPopup(gUnitInfoPopup);
         }
-    } else if (pressed & 0x100) {
-        pressed = 0;
+    } else if (temp & 0x100) {
+        temp = 0;
         {
-            u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)self + 0x3C) << 7)
-                                      + ((s8)*(u8 *)((char *)self + 0x3D) << 4);
+            u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)arg0 + 0x3C) << 7)
+                                      + ((s8)*(u8 *)((char *)arg0 + 0x3D) << 4);
             if (*(u32 *)(entry + 4) != 0) {
                 if (*Item_GetFlagsPtr(entry + 4) & 0x200) {
-                    pressed = 1;
+                    temp = 1;
                 }
             }
         }
-        if ((u8)pressed != 0) {
-            s32 off_c;
-            s32 str;
-            u8 *entry;
-            pressed = (s8)*(u8 *)((char *)self + 0x3D) << 4;
-            off_c = (s8)*(u8 *)((char *)self + 0x3C) << 7;
-            str = Msg_Expand(lbl_8026E858 + 0xE7);
-            entry = lbl_80312ACC + off_c;
-            fn_80166AE8(*(s16 *)(entry + pressed),
-                        *(s16 *)(entry + pressed + 2) + 0x28,
-                        str, self, entry);
+        if ((u8)temp != 0) {
+            temp = (s8)*(u8 *)((char *)arg0 + 0x3D) << 4;
+            off_c = (s8)*(u8 *)((char *)arg0 + 0x3C) << 7;
+            {
+                s32 str = Msg_Expand(lbl_8026E858 + 0xE7);
+                u8 *row = lbl_80312ACC + off_c;
+                u8 *entry = row + temp;
+                fn_80166AE8(*(s16 *)(row + temp),
+                            *(s16 *)(entry + 2) + 0x28,
+                            str, arg0);
+            }
         } else {
-            Process_Goto(self, 1);
+            Process_Goto(arg0, 1);
             Ui_PlaySeCue(lbl_8026E858 + 0xEF, 0x64);
         }
-    } else if (pressed & 0x200) {
-        Process_Goto(self, 2);
+    } else if (temp & 0x200) {
+        Process_Goto(arg0, 2);
         Ui_PlaySeCue(lbl_8026E858 + 0xFF, 0x64);
-    } else if (pressed & 0x800) {
-        u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)self + 0x3C) << 7)
-                                  + ((s8)*(u8 *)((char *)self + 0x3D) << 4);
-        s16 x = *(s16 *)entry;
-        Ui_OpenUnitInfoPopup(gUnitInfoPopup, self, entry + 4, (f32)x,
+    } else if (temp & 0x800) {
+        u8 *entry = lbl_80312ACC + ((s8)*(u8 *)((char *)arg0 + 0x3C) << 7)
+                                  + ((s8)*(u8 *)((char *)arg0 + 0x3D) << 4);
+        Ui_OpenUnitInfoPopup(gUnitInfoPopup, arg0, entry + 4, (f32)*(s16 *)entry,
                     (f32)(*(s16 *)(entry + 2) + 0x28));
+        *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
     }
-    *(u32 *)gUnitInfoPopup |= gUnitInfoPopupFlag;
 }
+#pragma pop
+void fn_800AC810(void *arg0)
+{
+  void Ui_PlaySeCue(void *, s32);
+  u8 Ui_IsUnitInfoPopupOpen(void *);
+  void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
+  extern void *gPadInput;
+  extern u8 lbl_80312ACC[];
+  extern u8 lbl_8026E858[];
+  extern u8 gUnitInfoPopup[];
+  extern f64 lbl_80369C28;
+  s32 flags;
+  s32 buttons;
+  s32 pressed;
+  s32 var_r5;
+  s32 var_r6;
+  s32 var_r7;
+  s32 tmp;
+  u8 *entry;
+  s32 var_r8;
+  s16 x;
+  s16 y;
+  var_r8 = 0;
+  flags = *((s32 *) (((u8 *) gPadInput) + 0xC));
+  buttons = *((s32 *) (((u8 *) gPadInput) + 4));
+  pressed = buttons & ((*((s32 *) (((u8 *) gPadInput) + 8))) ^ buttons);
+  if (flags & 0x01000001)
+  {
+    tmp = *((u8 *) (((u8 *) arg0) + 0x3C));
+    if (tmp == 1)
+    {
+      var_r7 = (var_r6 = *((s8 *) (((u8 *) arg0) + 0x3D)));
+      var_r5 = (s32) (lbl_80312ACC + (var_r6 * 0x10));
+      loop1:
+      if ((var_r6 >= 0) && ((*((u8 *) (var_r5 + 0xC))) == 0))
+      {
+        var_r5 -= 0x10;
+        var_r6 -= 1;
+        goto loop1;
+      }
 
-#pragma opt_common_subs off
-void fn_800AC810(void *arg0) {
-    void Ui_PlaySeCue(void *, s32);
-    u8 Ui_IsUnitInfoPopupOpen(void *);
-    void Ui_ShowUnitInfoPopup(void *, void *, f32, f32);
-    extern void *gPadInput;
-    extern u8 lbl_80312ACC[];
-    extern u8 lbl_8026E858[];
-    extern u8 gUnitInfoPopup[];
-    extern f64 lbl_80369C28;
-    s32 var_r8;
-    s32 flags;
-    s32 buttons;
-    s32 pressed;
-    s32 var_r5;
-    s32 var_r6;
-    s32 var_r7;
-    s32 tmp;
-    u8 *entry;
-    s16 x;
-    s16 y;
+      var_r5 = var_r6;
+      if (var_r5 < 0)
+      {
+        var_r5 = (s32) (lbl_80312ACC + (var_r7 * 0x10));
+        loop1b:
+        if (var_r7 >= 8)
+        {
+          var_r7 = -1;
+        }
+        else
+          if ((*((u8 *) (var_r5 + 0xC))) == 0)
+        {
+          var_r5 += 0x10;
+          var_r7 += 1;
+          goto loop1b;
+        }
 
-    flags = *(s32 *)((u8 *)gPadInput + 0xC);
-    buttons = *(s32 *)((u8 *)gPadInput + 4);
-    pressed = buttons & (*(s32 *)((u8 *)gPadInput + 8) ^ buttons);
-    var_r8 = 0;
-    if (flags & 0x01000001) {
-        tmp = *(u8 *)((u8 *)arg0 + 0x3C);
-        if (tmp == 1) {
-            var_r7 = *(s8 *)((u8 *)arg0 + 0x3D);
-            var_r6 = var_r7;
-            var_r5 = (s32)(lbl_80312ACC + var_r7 * 0x10);
-        loop1:
-            if (var_r6 >= 0 && *(u8 *)(var_r5 + 0xC) == 0) {
-                var_r5 -= 0x10;
-                var_r6 -= 1;
-                goto loop1;
-            }
-            var_r5 = var_r6;
-            if (var_r5 < 0) {
-                var_r5 = (s32)(lbl_80312ACC + var_r7 * 0x10);
-            loop1b:
-                if (var_r7 >= 8) {
-                    var_r7 = -1;
-                } else if (*(u8 *)(var_r5 + 0xC) == 0) {
-                    var_r5 += 0x10;
-                    var_r7 += 1;
-                    goto loop1b;
-                }
-                var_r5 = var_r7;
-            }
-            if (var_r5 < 0) {
-                return;
-            }
-            var_r8 = 1;
-            *(u8 *)((u8 *)arg0 + 0x3C) = 0;
-            *(u8 *)((u8 *)arg0 + 0x3D) = var_r5;
-        }
+        var_r5 = var_r7;
+      }
+      if (var_r5 < 0)
+      {
+        return;
+      }
+      var_r8 = 1;
+      *((u8 *) (((u8 *) arg0) + 0x3C)) = 0;
+      *((u8 *) (((u8 *) arg0) + 0x3D)) = var_r5;
     }
-    if (flags & 0x02000002) {
-        tmp = *(s8 *)((u8 *)arg0 + 0x3C);
-        if (tmp == 0) {
-            var_r6 = *(s8 *)((u8 *)arg0 + 0x3D);
-            var_r7 = var_r6;
-            var_r5 = (s32)(lbl_80312ACC + var_r6 * 0x10);
-        loop2:
-            if (var_r7 >= 0 && *(u8 *)(var_r5 + 0x8C) == 0) {
-                var_r5 -= 0x10;
-                var_r7 -= 1;
-                goto loop2;
-            }
-            if (var_r7 < 0) {
-                var_r5 = (s32)(lbl_80312ACC + var_r6 * 0x10);
-            loop2b:
-                if (var_r6 >= 8) {
-                    var_r6 = -1;
-                } else if (*(u8 *)(var_r5 + 0x8C) == 0) {
-                    var_r5 += 0x10;
-                    var_r6 += 1;
-                    goto loop2b;
-                }
-                var_r7 = var_r6;
-            }
-            if (var_r7 < 0) {
-                return;
-            }
-            var_r8 = 1;
-            *(u8 *)((u8 *)arg0 + 0x3C) = 1;
-            *(u8 *)((u8 *)arg0 + 0x3D) = var_r7;
+  }
+  if (flags & 0x02000002)
+  {
+    tmp = *((s8 *) (((u8 *) arg0) + 0x3C));
+    if (tmp == 0)
+    {
+      var_r6 = *((s8 *) (((u8 *) arg0) + 0x3D));
+      var_r7 = var_r6;
+      var_r5 = (s32) (lbl_80312ACC + (var_r6 * 0x10));
+      loop2:
+      if ((var_r7 >= 0) && ((*((u8 *) (var_r5 + 0x8C))) == 0))
+      {
+        var_r5 -= 0x10;
+        var_r7 -= 1;
+        goto loop2;
+      }
+
+      if (var_r7 < 0)
+      {
+        var_r5 = (s32) (lbl_80312ACC + (var_r6 * 0x10));
+        loop2b:
+        if (var_r6 >= 8)
+        {
+          var_r6 = -1;
         }
+        else
+          if ((*((u8 *) (var_r5 + 0x8C))) == 0)
+        {
+          var_r5 += 0x10;
+          var_r6 += 1;
+          goto loop2b;
+        }
+
+        var_r7 = var_r6;
+      }
+      if (var_r7 < 0)
+      {
+        return;
+      }
+      var_r8 = 1;
+      *((u8 *) (((u8 *) arg0) + 0x3C)) = 1;
+      *((u8 *) (((u8 *) arg0) + 0x3D)) = var_r7;
     }
-    if (flags & 0x08000008) {
-        var_r6 = *(s8 *)((u8 *)arg0 + 0x3C);
-        var_r7 = *(s8 *)((u8 *)arg0 + 0x3D) - 1;
-        var_r5 = (s32)(lbl_80312ACC + (var_r6 << 7) + (var_r7 * 0x10));
+  }
+  if (flags & 0x08000008)
+  {
+    buttons = (*((s8 *) (((u8 *) arg0) + 0x3D))) - 1;
+    var_r6 = *((s8 *) (((u8 *) arg0) + 0x3C));
+    var_r7 = buttons;
+    var_r5 = (s32) ((lbl_80312ACC + (var_r6 << 7)) + (var_r7 * 0x10));
     loop3:
-        if (var_r7 >= 0 && *(u8 *)(var_r5 + 0xC) == 0) {
-            var_r5 -= 0x10;
-            var_r7 -= 1;
-            goto loop3;
-        }
-        if (var_r7 < 0) {
-            if (!(pressed & 0x08000008)) {
-                return;
-            }
-            var_r7 = 7;
-            var_r5 = (s32)(lbl_80312ACC + (var_r6 << 7) + 0x70);
-        loop3b:
-            if (var_r7 >= 0 && *(u8 *)(var_r5 + 0xC) == 0) {
-                var_r5 -= 0x10;
-                var_r7 -= 1;
-                goto loop3b;
-            }
-        }
-        *(u8 *)((u8 *)arg0 + 0x3D) = var_r7;
-        var_r8 = 1;
+    if ((var_r7 >= 0) && ((*((u8 *) (var_r5 + 0xC))) == 0))
+    {
+      var_r5 -= 0x10;
+      var_r7 -= 1;
+      goto loop3;
     }
-    if (flags & 0x04000004) {
-        var_r6 = *(s8 *)((u8 *)arg0 + 0x3C);
-        tmp = *(s8 *)((u8 *)arg0 + 0x3D) + 1;
-        var_r5 = (s32)(lbl_80312ACC + (var_r6 << 7) + (tmp * 0x10));
+
+    if (var_r7 < 0)
+    {
+      if (!(pressed & 0x08000008))
+      {
+        return;
+      }
+      var_r7 = 7;
+      var_r5 = (s32) ((lbl_80312ACC + (var_r6 << 7)) + 0x70);
+      loop3b:
+      if ((var_r7 >= 0) && ((*((u8 *) (var_r5 + 0xC))) == 0))
+      {
+        var_r5 -= 0x10;
+        var_r7 -= 1;
+        goto loop3b;
+      }
+
+    }
+    *((u8 *) (((u8 *) arg0) + 0x3D)) = var_r7;
+    var_r8 = 1;
+  }
+  if (flags & 0x04000004)
+  {
+    tmp = (*((s8 *) (((u8 *) arg0) + 0x3D))) + 1;
+    var_r6 = *((s8 *) (((u8 *) arg0) + 0x3C));
+    var_r5 = (s32) ((lbl_80312ACC + (var_r6 << 7)) + (tmp * 0x10));
     loop4:
-        if (tmp >= 8) {
-            tmp = -1;
-        } else if (*(u8 *)(var_r5 + 0xC) == 0) {
-            var_r5 += 0x10;
-            tmp += 1;
-            goto loop4;
-        }
-        if (tmp < 0) {
-            if (!(pressed & 0x04000004)) {
-                return;
-            }
-            tmp = 0;
-            var_r5 = (s32)(lbl_80312ACC + (var_r6 << 7));
-        loop4b:
-            if (tmp >= 8) {
-                tmp = -1;
-            } else if (*(u8 *)(var_r5 + 0xC) == 0) {
-                var_r5 += 0x10;
-                tmp += 1;
-                goto loop4b;
-            }
-        }
-        *(u8 *)((u8 *)arg0 + 0x3D) = tmp;
-        var_r8 = 1;
+    if (tmp >= 8)
+    {
+      tmp = -1;
     }
-    if ((u8)var_r8 != 0) {
-        Ui_PlaySeCue(lbl_8026E858 + 0x10F, 0x64);
-        if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0) {
-            entry = lbl_80312ACC + ((*(s8 *)((u8 *)arg0 + 0x3C)) << 7)
-                + (*(s8 *)((u8 *)arg0 + 0x3D) * 0x10);
-            x = *(s16 *)entry;
-            y = *(s16 *)(entry + 2);
-            Ui_ShowUnitInfoPopup(gUnitInfoPopup, entry + 4, (f32)x, (f32)(y + 0x28));
-        }
+    else
+      if ((*((u8 *) (var_r5 + 0xC))) == 0)
+    {
+      var_r5 += 0x10;
+      tmp += 1;
+      goto loop4;
     }
+
+    if (tmp < 0)
+    {
+      if (!(pressed & 0x04000004))
+      {
+        return;
+      }
+      tmp = 0;
+      var_r5 = (s32) (lbl_80312ACC + (var_r6 << 7));
+      loop4b:
+      if (tmp >= 8)
+      {
+        tmp = -1;
+      }
+      else
+        if ((*((u8 *) (var_r5 + 0xC))) == 0)
+      {
+        var_r5 += 0x10;
+        tmp += 1;
+        goto loop4b;
+      }
+
+    }
+    *((u8 *) (((u8 *) arg0) + 0x3D)) = tmp;
+    var_r8 = 1;
+  }
+  if (((u8) var_r8) != 0)
+  {
+    Ui_PlaySeCue(lbl_8026E858 + 0x10F, 0x64);
+    if (Ui_IsUnitInfoPopupOpen(gUnitInfoPopup) != 0)
+    {
+      entry = (lbl_80312ACC + ((*((s8 *) (((u8 *) arg0) + 0x3C))) << 7)) + ((*((s8 *) (((u8 *) arg0) + 0x3D))) * 0x10);
+      x = *((s16 *) entry);
+      y = *((s16 *) (entry + 2));
+      Ui_ShowUnitInfoPopup(gUnitInfoPopup, entry + 4, (f32) x, (f32) (y + 0x28));
+    }
+  }
 }
+#pragma pop
+#pragma optimization_level reset
 void fn_800ACBD8(void *arg0) {
 extern u8 lbl_80312ACC[];
 s32 j;
@@ -2374,7 +2401,7 @@ void fn_800ACCF8(void) {
 void fn_800ACD18(void *arg0)
 {
     void Math_Ease(s32, f32, f32, f32, f32);
-    void Prim2D_SetColorByte(s32);
+    void Prim2D_SetColorByte(u8);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTransform(f32, f32, f32, f32);
     void Prim2D_PrepareTex(void);
@@ -2407,7 +2434,6 @@ void fn_800ACD18(void *arg0)
     s32 pair1[2];
     s32 pair2[2];
     s32 *pp;
-    volatile f32 saved;
     f32 f31;
     s32 t;
     s32 sum;
@@ -2418,10 +2444,10 @@ void fn_800ACD18(void *arg0)
     s16 v38;
     s16 y28;
     s16 x27;
-    s32 v27;
     u8 *ent;
     s32 i;
     u8 *ent4;
+    s32 v27;
     u8 b0;
     u8 b1;
 
@@ -2444,9 +2470,8 @@ void fn_800ACD18(void *arg0)
     Math_Ease(5, lbl_80369C38, lbl_80369C30, f31, lbl_80369C30);
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369C3C, lbl_80369C40, lbl_80369C44, lbl_80369C30);
-    f31 *= lbl_80369C48;
-    saved = f31;
-    Prim2D_SetColorByte((s32)f31);
+    f31 = lbl_80369C48 * f31;
+    Prim2D_SetColorByte((u8)f31);
     Prim2D_PrepareTex();
 
     pp = pair1;
@@ -2475,7 +2500,7 @@ void fn_800ACD18(void *arg0)
 
     Prim2D_Begin();
     Prim2D_SetTransform(lbl_80369C50, lbl_80369C40, lbl_80369C44, lbl_80369C30);
-    Prim2D_SetColorByte((s32)saved);
+    Prim2D_SetColorByte((u8)f31);
     Prim2D_PrepareTex();
 
     pp = pair2;
