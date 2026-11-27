@@ -1,5 +1,13 @@
 /* Functions from 0x801B3258 to 0x801E4380, found by decomp-toolkit. */
 #include "common.h"
+typedef struct PadSnapshot { s32 held; s32 raw; s32 buttons; } PadSnapshot;
+static inline PadSnapshot UiCtx_ReadPad(void *pad) {
+    PadSnapshot s;
+    s.held = *(s32 *)((u8 *)pad + 4);
+    s.raw = *(s32 *)((u8 *)pad + 8);
+    s.buttons = *(s32 *)((u8 *)pad + 0xC);
+    return s;
+}
 static inline u8 *Battle_FindEligibleUnit(void) {
     extern u8 gBattle[];
     u8 *unit;
@@ -837,6 +845,8 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 
+#pragma push
+#pragma opt_common_subs off
 void fn_801C9170(void *arg0) {
     void Process_ClearFunc(void *);
     void Ui_PlaySeCue(void *, s32);
@@ -845,7 +855,7 @@ void fn_801C9170(void *arg0) {
     extern u8 gBattleState[];
     extern u8 gSystemSave[];
     extern u8 lbl_80366E9C;
-    extern void *gPadInput;
+    extern struct PadInput { s32 a; s32 held; s32 raw; s32 buttons; } *gPadInput;
     extern s8 lbl_803682B0;
     extern s8 lbl_803682B1;
     void *self;
@@ -858,7 +868,10 @@ void fn_801C9170(void *arg0) {
     void *obj;
 
     self = arg0;
-    UiMenu_LoadPadState(&b0, &held, &buttons, &trig);
+    b0 = lbl_803682B0;
+    held = gPadInput->held;
+    buttons = gPadInput->buttons;
+    trig = held & (gPadInput->raw ^ held);
 
     if ((s8)b0 > -0x14 && (buttons & 0x01000001)) {
         lbl_803682B0 = b0 - 1;
@@ -912,12 +925,12 @@ void fn_801C9170(void *arg0) {
 
     if (trig & 0x100) {
         fn_801E3560(gSystemSave, lbl_803682B0, lbl_803682B1, lbl_80366E9C);
-        b0 = lbl_80366E9C;
+        b2 = lbl_80366E9C;
         b1 = lbl_803682B1;
-        b2 = lbl_803682B0;
-        gBattleState[0xA1] = b0;
+        b0 = lbl_803682B0;
         gBattleState[0xA3] = b1;
         gBattleState[0xA2] = b2;
+        gBattleState[0xA1] = b0;
         Ui_PlaySeCue(lbl_8027D740 + 0x121, 0x64);
         Process_ClearFunc(self);
     } else if (trig & 0x200) {
