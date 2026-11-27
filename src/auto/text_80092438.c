@@ -104,6 +104,12 @@ static inline u8 Unit_CheckItemMask(void *unit, void *item, u64 flags, u64 mask)
     if (!fn_800940B0(unit, item)) return 0;
     return 1;
 }
+static inline u8 Unit_CanEquipWeapon(void *unit, void *item) {
+    u8 fn_800940B0(void *, void *);
+    if (!(*(u64 *)((u8 *)item + 0x38) & 1)) return 0;
+    if (!fn_800940B0(unit, item)) return 0;
+    return 1;
+}
 static inline u8 Unit_CheckItemFlag8(u64 flags) {
     if (!(flags & 8)) return 0;
     if (flags & ((u64)0x100 << 32)) return 0;
@@ -1499,99 +1505,57 @@ void *fn_80095070(void *arg0, s32 arg1) {
     }
 }
 
-#pragma optimization_level 2
+#pragma push
+#pragma opt_common_subs off
 void *fn_800951D0(void *arg0, s32 arg1) {
-    void **Unit_GetHeldItemSlot(void *, s32);
+    Unk80037BD0 *Unit_GetHeldItemSlot(void *, s32);
     u8 fn_800940B0(void *, void *);
     void *fn_8009542C(void *, s32);
     u8 Status_Test(void *, s32);
-    void **slot;
     void *obj;
-    u8 ok;
-    u8 result;
-    u64 flags;
-    s32 var_r29;
-    s32 var_r30;
+    Unk80037BD0 *slot;
+    s32 i;
 
     if (Status_Test((u8 *)arg0 + 0x1BC, 8) != 0) {
         return Unit_GetHeldItemSlot(arg0, 0);
     }
-    var_r30 = 0;
-    var_r29 = 0;
+    i = 0;
     do {
-        slot = Unit_GetHeldItemSlot(arg0, var_r30);
-        {
-            u8 t = *((u8 *)slot + 5);
-            var_r30 += 1;
-            *((u8 *)slot + 5) = (u8)__rlwimi(t, var_r29, 7, 24, 24);
-        }
-    } while (var_r30 < 4);
+        slot = Unit_GetHeldItemSlot(arg0, i);
+        slot->unk5_bit7 = 0;
+        i++;
+    } while (i < 4);
     if (arg1 >= 0) {
+        u8 ok;
         slot = Unit_GetHeldItemSlot(arg0, arg1);
-        obj = *slot;
-        result = 0;
-        flags = *(u64 *)((u8 *)obj + 0x38);
-        if (flags & 1) {
-            if (fn_800940B0(arg0, obj) == 0) {
-                result = 0;
-            } else {
-                result = 1;
-            }
+        obj = (void *)slot->unk0;
+        if (!(*(u64 *)((u8 *)obj + 0x38) & 1)) {
+            ok = 0;
+        } else if (!fn_800940B0(arg0, obj)) {
+            ok = 0;
+        } else {
+            ok = 1;
         }
-        if (result == 0) {
+        if (!ok) {
             return NULL;
         }
     } else {
-        var_r29 = 0;
-        for (;;) {
-            slot = Unit_GetHeldItemSlot(arg0, var_r29);
-            obj = *slot;
-            if (obj == NULL) {
-                return NULL;
+        i = 0;
+        do {
+            slot = Unit_GetHeldItemSlot(arg0, i);
+            obj = (void *)slot->unk0;
+            if (obj != NULL && Unit_CheckItemMask(arg0, obj, *(u64 *)((u8 *)obj + 0x38), 1)) {
+                goto equip;
             }
-            result = 0;
-            ok = 1;
-            flags = *(u64 *)((u8 *)obj + 0x38);
-            if (flags & 1) {
-                if (flags & 0x200) {
-                    if (Status_Test((u8 *)arg0 + 0x1BC, 9) != 0) {
-                        ok = 1;
-                    } else {
-                        ok = 0;
-                    }
-                } else if (((*(u8 *)((u8 *)arg0 + 0x1A5) >> 4) & 7) == 0) {
-                } else if (flags & 2) {
-                    ok = result;
-                } else if (flags & 4) {
-                    ok = result;
-                } else if (flags & 0x40) {
-                }
-                if (ok == 0) {
-                    result = 0;
-                } else if (fn_800940B0(arg0, obj) == 0) {
-                    result = 0;
-                } else {
-                    result = 1;
-                }
-            }
-            if (result != 0) {
-                break;
-            }
-            var_r29 += 1;
-            if (var_r29 >= 4) {
-                return NULL;
-            }
-        }
+            i++;
+        } while (i < 4);
+        return NULL;
     }
-    {
-        u8 t = *((u8 *)slot + 5);
-        s32 one = 1;
-        *((u8 *)slot + 5) = (u8)__rlwimi(t, one, 7, 24, 24);
-    }
+equip:
+    slot->unk5_bit7 = 1;
     return fn_8009542C(arg0, -1);
 }
-
-#pragma use_lmw_stmw on
+#pragma pop
 void *fn_8009542C(void *unit, s8 slot) {
     void Item_Init(void *);
     void Item_Clear(void *);
