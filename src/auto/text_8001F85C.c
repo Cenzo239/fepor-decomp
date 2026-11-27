@@ -290,182 +290,133 @@ u8 *fn_8001FC40(void *arg0, s8 arg1, s8 arg2) {
 
 extern u8 lbl_80366DB8[8];
 s32 Rand_Range(s32);
-u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3)
-{
-  u16 dist[4];
-  u8 buf[0x88];
-  u8 *start;
-  s8 *new_var7;
-  s8 *new_var2;
-  u16 *new_var;
-  u8 cand[4];
-  u8 *dst;
-  u8 *out;
-  u8 *src;
-  s8 *new_var4;
-  s32 i;
-  u8 *new_var3;
-  u16 min;
-  s8 *new_var5;
-  u8 n;
-  u8 dir;
-  s8 *new_var6;
-  start = arg1;
-  new_var4 = (s8 *) arg0;
-  new_var = (u16 *) (((u8 *) arg0) + 0x408E);
-  new_var3 = (u8 *) (((s8 *) arg0) + 0x24EEA);
-  while ((*((s16 **) (((s8 *) arg0) + 0x14190)))[arg2 + (arg3 << 6)] != 0)
-  {
-    new_var2 = ((s8 *) arg0) + 0x14190;
-    if ((*new_var3) != 0)
-    {
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 + 1)) + (arg3 << 6)] & 0x10)
-      {
-        dist[0] = 0xFFFF;
-      }
-      else
-      {
-        dist[0] = (*((s16 **) new_var2))[((s8) (arg2 + 1)) + (arg3 << 6)];
-      }
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 - 1)) + (arg3 << 6)] & 0x20)
-      {
-        dist[1] = 0xFFFF;
-      }
-      else
-      {
-        dist[1] = (*((s16 **) (new_var4 + 0x14190)))[((s8) (arg2 - 1)) + (arg3 << 6)];
-      }
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 + 1)) << 6)] & 0x80)
-      {
-        dist[3] = 0xFFFF;
-      }
-      else
-      {
-        dist[3] = (*((s16 **) new_var2))[arg2 + (((s8) (arg3 + 1)) << 6)];
-      }
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 - 1)) << 6)] & 0x40)
-      {
-        dist[2] = 0xFFFF;
-      }
-      else
-      {
-        dist[2] = (*((s16 **) new_var2))[arg2 + (((s8) (arg3 - 1)) << 6)];
-      }
-    }
-    else
-    {
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 + 1)) + (arg3 << 6)] & 0x1)
-      {
-        dist[0] = (*((s16 **) (((s8 *) arg0) + 0x14190)))[((s8) (arg2 + 1)) + (arg3 << 6)];
-      }
-      else
-      {
-        dist[0] = 0xFFFF;
-      }
-      new_var6 = (new_var7 = (s8 *) arg0);
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[((s8) (arg2 - 1)) + (arg3 << 6)] & 0x2)
-      {
-        dist[1] = (*((s16 **) (new_var7 + 0x14190)))[((s8) (arg2 - 1)) + (arg3 << 6)];
-      }
-      else
-      {
-        dist[1] = 0xFFFF;
-      }
-      if (((u16 *) (((u8 *) arg0) + 0x408E))[arg2 + (((s8) (arg3 + 1)) << 6)] & 0x8)
-      {
-        dist[3] = (*((s16 **) (new_var6 + 0x14190)))[arg2 + ((((s8) (arg3 + 1)) ^ 0) << 6)];
-      }
-      else
-      {
-        dist[3] = 0xFFFF;
-      }
-      new_var5 = new_var7;
-      if (new_var[arg2 + (((s8) (arg3 - 1)) << 6)] & 0x4)
-      {
-        dist[2] = (*((s16 **) (new_var5 + 0x14190)))[arg2 + (((s8) (arg3 - 1)) << 6)];
-      }
-      else
-      {
-        dist[2] = 0xFFFF;
-      }
-    }
-    min = 0xFFFF;
-    n = 0;
-    for (i = 0; i < 4; i++)
-    {
-      if (min > dist[i])
-      {
-        min = dist[i];
-      }
-    }
+u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
+    s32 Rand_Range(s32);
+    typedef struct {
+        u8 pad0[0x408E];
+        u16 flags[0x8000];
+        u8 pad1408E[0x102];
+        s16 *distMap;
+        u8 pad14194[0x10D56];
+        u8 mode;
+    } MapState;
 
-    for (i = 0; i < 4; i++)
-    {
-      if (min == dist[i])
-      {
-        cand[n++] = lbl_80366DB8[i];
-      }
+    u16 dist[4];
+    u8 buf[0x80];
+    u8 cand[4];
+    MapState *map = (MapState *)arg0;
+    u8 *start;
+    u8 *dst;
+    u8 *out;
+    u8 *src;
+    s32 i;
+    u16 min;
+    u8 n;
+    u8 dir;
+
+    start = arg1;
+    while (map->distMap[arg2 + (arg3 << 6)] != 0) {
+        if (map->mode != 0) {
+            if (map->flags[(s8)(arg2 + 1) + (arg3 << 6)] & 0x10) {
+                dist[0] = 0xFFFF;
+            } else {
+                dist[0] = map->distMap[(s8)(arg2 + 1) + (arg3 << 6)];
+            }
+            if (map->flags[(s8)(arg2 - 1) + (arg3 << 6)] & 0x20) {
+                dist[1] = 0xFFFF;
+            } else {
+                dist[1] = map->distMap[(s8)(arg2 - 1) + (arg3 << 6)];
+            }
+            if (map->flags[arg2 + ((s8)(arg3 + 1) << 6)] & 0x80) {
+                dist[3] = 0xFFFF;
+            } else {
+                dist[3] = map->distMap[arg2 + ((s8)(arg3 + 1) << 6)];
+            }
+            if (map->flags[arg2 + ((s8)(arg3 - 1) << 6)] & 0x40) {
+                dist[2] = 0xFFFF;
+            } else {
+                dist[2] = map->distMap[arg2 + ((s8)(arg3 - 1) << 6)];
+            }
+        } else {
+            if (map->flags[(s8)(arg2 + 1) + (arg3 << 6)] & 0x1) {
+                dist[0] = map->distMap[(s8)(arg2 + 1) + (arg3 << 6)];
+            } else {
+                dist[0] = 0xFFFF;
+            }
+            if (map->flags[(s8)(arg2 - 1) + (arg3 << 6)] & 0x2) {
+                dist[1] = map->distMap[(s8)(arg2 - 1) + (arg3 << 6)];
+            } else {
+                dist[1] = 0xFFFF;
+            }
+            if (map->flags[arg2 + ((s8)(arg3 + 1) << 6)] & 0x8) {
+                dist[3] = map->distMap[arg2 + ((s8)(arg3 + 1) << 6)];
+            } else {
+                dist[3] = 0xFFFF;
+            }
+            if (map->flags[arg2 + ((s8)(arg3 - 1) << 6)] & 0x4) {
+                dist[2] = map->distMap[arg2 + ((s8)(arg3 - 1) << 6)];
+            } else {
+                dist[2] = 0xFFFF;
+            }
+        }
+
+        min = 0xFFFF;
+        n = 0;
+        for (i = 0; i < 4; i++) {
+            if (min > dist[i]) {
+                min = dist[i];
+            }
+        }
+
+        for (i = 0; i < 4; i++) {
+            if (min == dist[i]) {
+                cand[n++] = lbl_80366DB8[i];
+            }
+        }
+
+        switch (n) {
+            case 1:
+                dir = cand[0];
+                break;
+            case 2:
+            case 3:
+            case 4:
+                dir = cand[Rand_Range(n)];
+                break;
+        }
+
+        *(arg1++) = dir;
+        switch (dir) {
+            case 1:
+                arg2++;
+                break;
+            case 2:
+                arg2--;
+                break;
+            case 8:
+                arg3++;
+                break;
+            case 4:
+                arg3--;
+                break;
+        }
     }
 
-    switch (n)
-    {
-      case 1:
-        dir = cand[0];
-        break;
-
-      case 2:
-
-      case 3:
-
-      case 4:
-        dir = cand[fn_8000CEE4(n)];
-        if (1)
-      {
-        break;
-      }
-
+    src = arg1;
+    out = start;
+    dst = buf;
+    while (src > start) {
+        *(dst++) = *(--src);
     }
 
-    *(arg1++) = dir;
-    switch (dir)
-    {
-      case 1:
-        arg2++;
-        break;
-
-      case 2:
-        arg2--;
-        break;
-
-      case 8:
-        arg3++;
-        break;
-
-      case 4:
-        arg3--;
-        break;
-
+    *dst = 0x10;
+    src = buf;
+    while (*src != 0x10) {
+        *(out++) = *(src++);
     }
 
-  }
-
-  src = arg1;
-  out = start;
-  dst = buf;
-  while (src > start)
-  {
-    *(dst++) = *(--src);
-  }
-
-  *dst = 0x10;
-  src = buf;
-  while ((*src) != 0x10)
-  {
-    *(out++) = *(src++);
-  }
-
-  *out = 0x10;
-  return start;
+    *out = 0x10;
+    return start;
 }
 
 volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
@@ -1968,6 +1919,8 @@ void fn_800227F8(void *arg0, void *arg1) {
     }
 }
 
+#pragma push
+#pragma optimization_level 3
 void Map_RefreshUnitMap(void *arg0)
 {
     void Allegiance_SetMask(s32, s32, s32, s32, s32, s32, s32, s32, void *);
@@ -1989,24 +1942,19 @@ void Map_RefreshUnitMap(void *arg0)
     s8 rad;
     s8 ux, uy;
     s32 adx;
-    s32 nadx;
     s32 ax;
     s32 ady;
     u8 *row;
     u8 *cursor;
     u8 f;
     s32 saved;
-    u8 t;
 
-#pragma optimization_level 1
     f = 1;
     self = arg0;
-    t = (u8)(gMapBlendMode - 1);
-    if (((u32)((f | ~t) - ((u32)(f - t) >> 1)) >> 31) == 0) {
+    if (!((u8)(gMapBlendMode - 1) <= 1)) {
         f = 0;
     }
     saved = (f != 0);
-#pragma optimization_level reset
     Map_FillLayer(self, 0, 0);
     Map_FillLayer(self, 2, (u8)(saved == 0));
     Map_FillLayer(self, 3, 0);
@@ -2031,17 +1979,10 @@ void Map_RefreshUnitMap(void *arg0)
             for (y = 0; y < *(s32 *)((u8 *)self + 4); y++) {
                 adx = y - uy;
                 cursor = row;
-                nadx = -adx;
                 for (x = 0; x < *(s32 *)self; x++) {
-                    ax = adx;
-                    if (adx < 0) {
-                        ax = nadx;
-                    }
-                    ady = x - ux;
-                    if (ady < 0) {
-                        ady = -ady;
-                    }
-                    if (ax + ady <= rad) {
+                    ax = (adx < 0) ? -adx : adx;
+                    ady = (x - ux < 0) ? -(x - ux) : (x - ux);
+                    if (ady + ax <= rad) {
                         cursor[0x200D] = 1;
                     }
                     cursor += 1;
@@ -2054,7 +1995,6 @@ void Map_RefreshUnitMap(void *arg0)
     if (gBattleState[0x11] != 1) {
         Allegiance_SetMask(0, 1, 0, 0, 0, 0, 0, 0, buf2);
         for (i = 0x9F; i > 0; i--) {
-            s32 idx;
             if ((u8)i != 0) {
                 unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
@@ -2063,9 +2003,8 @@ void Map_RefreshUnitMap(void *arg0)
             if (*(u32 *)(unit + 0x188) != 0
                 && buf2[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0
                 && (*(u32 *)(unit + 0x1A0) & 0x0100009C) == 0) {
-                idx = (*(s8 *)(unit + 0x19E)) + ((*(s8 *)(unit + 0x19F)) << 6);
-                if (*((u8 *)self + (idx + 0x200D)) != 0) {
-                    *((u8 *)self + (idx + 0xD)) = unit[0x198];
+                if (((u8 *)self)[*(s8 *)(unit + 0x19E) + (*(s8 *)(unit + 0x19F) << 6) + 0x200D] != 0) {
+                    ((u8 *)self)[*(s8 *)(unit + 0x19E) + (*(s8 *)(unit + 0x19F) << 6) + 0xD] = unit[0x198];
                     {
                         u32 fr = *(u32 *)(unit + 0x1A0);
                         if (fr & 0x40) {
@@ -2074,7 +2013,7 @@ void Map_RefreshUnitMap(void *arg0)
                         }
                     }
                 } else {
-                    *((u8 *)self + (idx + 0x300D)) |= 1;
+                    ((u8 *)self)[*(s8 *)(unit + 0x19E) + (*(s8 *)(unit + 0x19F) << 6) + 0x300D] |= 1;
                     {
                         u32 fr = *(u32 *)(unit + 0x1A0);
                         if (!(fr & 0x40)) {
@@ -2087,7 +2026,6 @@ void Map_RefreshUnitMap(void *arg0)
     } else {
         Allegiance_SetMask(0, 1, 0, 0, 0, 0, 0, 0, buf3);
         for (i = 0x9F; i > 0; i--) {
-            s32 idx;
             if ((u8)i != 0) {
                 unit = gUnits + ((u8)i - 1) * 0x280;
             } else {
@@ -2096,13 +2034,12 @@ void Map_RefreshUnitMap(void *arg0)
             if (*(u32 *)(unit + 0x188) != 0
                 && buf3[*(u8 *)(*(u8 **)(unit + 0x190) + 8)] != 0
                 && (*(u32 *)(unit + 0x1A0) & 4) == 0) {
-                idx = (*(s8 *)(unit + 0x19E)) + ((*(s8 *)(unit + 0x19F)) << 6);
-                if (*((u8 *)self + (idx + 0x200D)) != 0) {
+                if (((u8 *)self)[*(s8 *)(unit + 0x19E) + (*(s8 *)(unit + 0x19F) << 6) + 0x200D] != 0) {
                     *(u32 *)(unit + 0x1A0) &= ~0x40;
                 } else {
                     *(u32 *)(unit + 0x1A0) |= 0x40;
                 }
-                *((u8 *)self + ((*(s8 *)(unit + 0x19E)) + ((*(s8 *)(unit + 0x19F)) << 6) + 0xD)) =
+                ((u8 *)self)[*(s8 *)(unit + 0x19E) + (*(s8 *)(unit + 0x19F) << 6) + 0xD] =
                     unit[0x198];
             }
         }
@@ -2110,7 +2047,7 @@ void Map_RefreshUnitMap(void *arg0)
     fn_8010FAA8();
     fn_8001F140(self);
 }
-
+#pragma pop
 extern u16 jumptable_80284514[12];
 #pragma global_optimizer off
 void Map_FillLayer(void *arg0, u32 arg1, u32 arg2)
