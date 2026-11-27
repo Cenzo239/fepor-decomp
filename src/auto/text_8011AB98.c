@@ -3466,7 +3466,22 @@ typedef struct TalkUi {
     u8 prevSlot;
 } TalkUi;
 
-s32 fn_8011F184(void *arg0, u8 **arg1) {
+static inline s8 TalkUi_FindSlot(TalkUi *self) {
+    s32 want = self->curSlot;
+    if (want < 0) return -1;
+    if (self->slots[0] && M2C_FIELD(self->slots[0], s8 *, 0x43) == want) return 0;
+    if (self->slots[1] && M2C_FIELD(self->slots[1], s8 *, 0x43) == want) return 1;
+    if (self->slots[2] && M2C_FIELD(self->slots[2], s8 *, 0x43) == want) return 2;
+    if (self->slots[3] && M2C_FIELD(self->slots[3], s8 *, 0x43) == want) return 3;
+    return -1;
+}
+
+static inline void *TalkUi_GetCurrentSlot(TalkUi *self) {
+    s8 slot = TalkUi_FindSlot(self);
+    return slot < 0 ? NULL : self->slots[slot];
+}
+
+s32 fn_8011F184(TalkUi *self, u8 **text) {
     void fn_80120F94(void);
     s32 fn_80049DA4(void *, void *, s32);
     void fn_8011FB58(void *, s32);
@@ -3475,22 +3490,11 @@ s32 fn_8011F184(void *arg0, u8 **arg1) {
     void fn_8007AD08(void *, s32, s32);
     extern u8 lbl_8032FE24[];
 
-    typedef struct {
-        u8 pad0[0x48];
-        void *slots[4];
-        u8 pad58[4];
-        u16 flags;
-        s8 curSlot;
-        u8 pad5F[6];
-        u8 prevSlot;
-    } TalkUi;
-
-    TalkUi *self = (TalkUi *)arg0;
-    u8 **text = arg1;
-    s32 slot, want, c;
-    u8 previous;
+    s32 slot, c;
     void *child;
-    char *out;
+    s32 want;
+    u8 previous;
+    u8 *out;
 
     previous = self->curSlot;
     want = (s8)previous;
@@ -3552,7 +3556,7 @@ s32 fn_8011F184(void *arg0, u8 **arg1) {
             if (child) {
                 *text -= 2;
             } else {
-                out = (char *)lbl_8032FE24;
+                out = lbl_8032FE24;
                 while ((s32)**text != '|') *out++ = *(*text)++;
                 *out = 0;
                 ++*text;
