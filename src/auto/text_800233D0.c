@@ -3308,14 +3308,12 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
-#pragma push
-#pragma peephole on
-#pragma optimization_level 3
+#pragma peephole off
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *mapBase;
 
-    UiCtx_Put0((void **)arg0, arg1);
+    *(void **)arg0 = arg1;
     *((u8 *)arg0 + 0xB) = *((u8 *)arg1 + 0x19E);
     *((u8 *)arg0 + 0xC) = *((u8 *)arg1 + 0x19F);
     *((s8 *)arg0 + 0x11) = Unit_GetMov(arg1);
@@ -3333,7 +3331,7 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     *((u8 *)arg0 + 0x16) = 0;
     mapBase[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
 }
-#pragma pop
+#pragma peephole reset
 void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
     M2C_FIELD(arg0, s32 *, 0) = 0;
