@@ -5568,7 +5568,8 @@ extern "C" void fn_800CE214(void *self, void *stat) {
         (u8 *)*(void **)((u8 *)self + 0x208) + *(s32 *)((u8 *)self + 0x204) * 0x58,
         1, stat);
 }
-#pragma opt_strength_reduction off
+#pragma push
+#pragma opt_propagation off
 extern "C" void fn_800CE690(void *arg0, s32 *arg1)
 {
     extern char lbl_802704F8[];
@@ -5588,7 +5589,6 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
 
     s32 j;
     s32 count;
-    s32 secondIndex;
     s32 mode;
     s32 i;
     u8 *stat;
@@ -5610,6 +5610,8 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
     i = 0;
 
     while (i < count) {
+        s32 secondIndex;
+
         stream = *(s16 **)(self + 0x1FC);
         opcode = *(u8 *)((u8 *)stream + (*stream * 4) + 4);
 
@@ -5655,9 +5657,9 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
             }
             if (index < 0) goto next_command;
             if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
-            s32 offset = index * 0xC;
             String *entry;
             char *name;
+            s32 offset = index * 0xC;
             u32 length;
             entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
             length = strlen(lbl_802704F8 + 0x16F);
@@ -5685,9 +5687,9 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
             }
             if (index < 0) goto next_command;
             if ((u32)index >= *(u32 *)(self + 0x1C0)) goto next_command;
+            char *name;
             s32 offset = index * 0xC;
             String *entry;
-            char *name;
             u32 length;
             entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
             length = strlen(lbl_802704F8 + 0x16F);
@@ -5722,9 +5724,9 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
                 DebugPrint(lbl_802704F8 + 0x4AE);
             }
             if (index >= 0 && (u32)index < *(u32 *)(self + 0x1C0)) {
-                s32 offset = index * 0xC;
                 String *entry;
                 char *name;
+                s32 offset = index * 0xC;
                 u32 length;
                 entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
                 length = strlen(lbl_802704F8 + 0x16F);
@@ -5741,9 +5743,9 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
             }
             if (secondIndex >= 0 &&
                 (u32)secondIndex < *(u32 *)(self + 0x1C0)) {
-                s32 offset = secondIndex * 0xC;
                 String *entry;
                 char *name;
+                s32 offset = secondIndex * 0xC;
                 u32 length;
                 entry = (String *)(*(u8 **)(self + 0x1C4) + offset);
                 length = strlen(lbl_802704F8 + 0x16F);
@@ -5766,7 +5768,7 @@ extern "C" void fn_800CE690(void *arg0, s32 *arg1)
         i++;
     }
 }
-#pragma opt_strength_reduction reset
+#pragma pop
 extern "C" u8 fn_800CEB6C(void *arg0, s32 *arg1) {
     s16 *stream;
     s32 idx;
@@ -23700,6 +23702,7 @@ void fn_800F2E70(void) {
     fn_800616A0(lbl_8032AC58 + 0x288);
 }
 
+#pragma push
 #pragma global_optimizer off
 #pragma opt_common_subs off
 void fn_800F2ED8(void) {
@@ -23732,9 +23735,7 @@ void fn_800F2ED8(void) {
     *(s32 *)((u8 *)lbl_8032AC58 + 0x2cc) = fn_800639B4(lbl_80272D08 + 0x67);
     GActor_Finalize(p);
 
-#pragma global_optimizer on
-    p = (u8 *)lbl_8032AC58;
-    for (i = 0; i < 4; i++) {
+    for (p = (u8 *)lbl_8032AC58, i = 0; i < 4; i++) {
         fn_80061824(p + 8);
         *(s32 *)(p + 0x48) = fn_80065EE8(lbl_80272D08 + 0x73);
         *(s32 *)(p + 0x50) = fn_8006CE14(lbl_80272D08 + 0x7e);
@@ -23772,8 +23773,6 @@ void fn_800F2ED8(void) {
     *(s32 *)((u8 *)lbl_8032AC58 + 0x638) = -2;
     *(u8 *)((u8 *)lbl_8032AC58 + 0x65c) = 0;
 }
-#pragma push
-#pragma optimization_level 3
 u8 fn_800F30E0(s32 arg0, u8 arg1) {
     extern u8 gAiState[];
     extern u8 gBattleMap[];
@@ -26642,9 +26641,7 @@ void fn_800F94D4(void *arg0) {
     }
 }
 
-#pragma push
-#pragma optimization_level 3
-#pragma opt_strength_reduction off
+#pragma optimization_level 4
 void fn_800F9574(void *arg0) {
 extern u8 gAiState[], gBattleMap[];
 extern s32 gAiCmdIsAlt;
@@ -26682,7 +26679,7 @@ row=(s8)y<<6;
 rowp=map+row;
 for(x=minX;x<=maxX;x++){
 sx=(s8)x;
-if(*(s16 *)(map+2*(sx+row)+0x610e)<0) continue;
+if(*(s16 *)((u8 *)gBattleMap + ((s8)x + row) * 2 + 0x610E) < 0) continue;
 tile=rowp+sx;
 if(*(s8 *)(tile+0xe18e)) continue;
 if(Map_IsAiTerrainBlocked(sx,(s8)y)) continue;
@@ -26696,7 +26693,6 @@ if((s16)best!=-1) fn_800FB96C(1,(s8)bestX,(s8)bestY,0,(s8)bestX,(s8)bestY,-1,0,0
 if(gAiCmdIsAlt==0) M2C_FIELD(arg0,u8 *,0x250)++;
 else M2C_FIELD(arg0,u8 *,0x251)++;
 }
-#pragma pop
 void fn_800F977C(void *arg0) {
     struct AiStateLocal {
         u8 unk0;
