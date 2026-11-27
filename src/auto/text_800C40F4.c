@@ -3075,7 +3075,10 @@ Heap_Free(old);
 #pragma use_lmw_stmw reset
 #pragma opt_loop_invariants reset
 
-#pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 3
+#pragma opt_common_subs off
+#pragma opt_propagation off
 void fn_800CA18C(void *vec, void *pos, u32 count, void *src)
 {
     void String_InitFromRange(void *, char *, char *, void *, void *);
@@ -3374,6 +3377,7 @@ struct LocalState st;
         }
     }
 }
+#pragma pop
 void fn_800CA59C(u8 *arg0, u32 arg1, void *arg2)
 {
     extern void fn_800CA5FC(void *, void *);
@@ -13916,6 +13920,8 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
 }
 
 #pragma dont_inline on
+#pragma push
+#pragma scheduling off
 void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     s32 Sort_GetKey(void *);
     s32 count;
@@ -13937,6 +13943,7 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     }
     return arg0;
 }
+#pragma pop
 #pragma dont_inline reset
 #pragma push
 #pragma optimization_level 4
