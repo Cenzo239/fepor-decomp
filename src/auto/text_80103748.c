@@ -166,6 +166,7 @@ s32 fn_80103998(void) {
     return 0;
 }
 
+#pragma optimization_level 3
 s32 fn_801039A0(void *, void *, void *arg2) {
     s32 Process_FindByName(void *);
     void Process_Goto(s32, s32);
@@ -174,10 +175,8 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     extern u8 lbl_802734D0[];
     extern u8 gBattleMap[];
     extern u8 gUiContext[];
-    struct BattleState { u8 pad[0x534]; f32 x; f32 y; };
-    extern struct BattleState gBattleState;
+    extern u8 gBattleState[];
     s32 proc;
-    struct BattleState *base;
     u8 *map;
     u8 *ui;
     u8 *str;
@@ -189,12 +188,11 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     if (*(u8 *)((u8 *)arg2 + 0x39) == 2) {
         return 0x10;
     }
-    base = &gBattleState;
     map = gBattleMap;
     ui = gUiContext;
-    f1 = base->x;
+    f1 = *(f32 *)(gBattleState + 0x534);
     str = lbl_802734D0;
-    f0 = base->y;
+    f0 = *(f32 *)(gBattleState + 0x538);
     a = (s8)(s32)f1;
     b = (s8)(s32)f0;
     map = map + a + (b << 6);
@@ -205,7 +203,7 @@ s32 fn_801039A0(void *, void *, void *arg2) {
     fn_80168E90(proc);
     return 6;
 }
-
+#pragma optimization_level reset
 void *fn_80103A5C(void) {
     extern u16 lbl_802734D0[];
     return (u8 *)lbl_802734D0 + 0x142;
@@ -1111,6 +1109,7 @@ void *fn_801049E0(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4, s32 *a
 
 #pragma push
 #pragma use_lmw_stmw on
+#pragma optimization_level 3
 void *fn_80104BF4(u8 *arg0, void **arg1, s32 *arg2, s32 *arg3, s32 *arg4) {
     u16 sp8;
     u8 is_double;
