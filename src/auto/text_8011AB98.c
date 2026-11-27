@@ -3481,6 +3481,14 @@ static inline void *TalkUi_GetCurrentSlot(TalkUi *self) {
     return slot < 0 ? NULL : self->slots[slot];
 }
 
+static inline void TalkUi_CopyToken(u8 *dst, u8 **text) {
+    while ((s32)**text != '|') {
+        *dst++ = *(*text)++;
+    }
+    *dst = 0;
+    ++*text;
+}
+
 s32 fn_8011F184(TalkUi *self, u8 **text) {
     void fn_80120F94(void);
     s32 fn_80049DA4(void *, void *, s32);
@@ -3490,34 +3498,21 @@ s32 fn_8011F184(TalkUi *self, u8 **text) {
     void fn_8007AD08(void *, s32, s32);
     extern u8 lbl_8032FE24[];
 
-    s32 slot, c;
     void *child;
+    s8 slot;
+    s32 c;
     s32 want;
-    u8 previous;
-    u8 *out;
+    s8 previous;
 
     previous = self->curSlot;
-    want = (s8)previous;
-    if (want < 0) {
-        slot = -1;
-    } else {
-        child = self->slots[0];
-        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-        else {
-            child = self->slots[1];
-            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-            else {
-                child = self->slots[2];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                else {
-                    child = self->slots[3];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                    else slot = -1;
-                }
-            }
-        }
-    }
-    if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
+    want = previous;
+    if (want < 0) slot = -1;
+    else if (self->slots[0] && M2C_FIELD(self->slots[0], s8 *, 0x43) == want) slot = 0;
+    else if (self->slots[1] && M2C_FIELD(self->slots[1], s8 *, 0x43) == want) slot = 1;
+    else if (self->slots[2] && M2C_FIELD(self->slots[2], s8 *, 0x43) == want) slot = 2;
+    else if (self->slots[3] && M2C_FIELD(self->slots[3], s8 *, 0x43) == want) slot = 3;
+    else slot = -1;
+    child = slot < 0 ? NULL : self->slots[slot];
 
     c = (s8)**text;
     if (c >= '0' && c <= '9') {
@@ -3532,65 +3527,27 @@ s32 fn_8011F184(TalkUi *self, u8 **text) {
     c = (s8)*(*text)++;
     switch (c) {
         case 'C':
-            want = self->curSlot;
-            if (want < 0) slot = -1;
-            else {
-                child = self->slots[0];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                else {
-                    child = self->slots[1];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                    else {
-                        child = self->slots[2];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                        else {
-                            child = self->slots[3];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                            else slot = -1;
-                        }
-                    }
-                }
-            }
-            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-
-            if (child) {
+            if (TalkUi_GetCurrentSlot(self)) {
                 *text -= 2;
             } else {
-                out = lbl_8032FE24;
-                while ((s32)**text != '|') *out++ = *(*text)++;
+                u8 *out;
+                for (out = lbl_8032FE24; (s32)**text != '|'; out++) {
+                    *out = *(*text)++;
+                }
                 *out = 0;
                 ++*text;
                 fn_8011FB58(self, fn_80049DA4((u8 *)TalkUi_str + 0x6f, lbl_8032FE24, 0));
             }
             return 2;
         case 'D':
-            want = self->curSlot;
-            if (want < 0) slot = -1;
-            else {
-                child = self->slots[0];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                else {
-                    child = self->slots[1];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                    else {
-                        child = self->slots[2];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                        else {
-                            child = self->slots[3];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                            else slot = -1;
-                        }
-                    }
-                }
-            }
-
+            slot = TalkUi_FindSlot(self);
             if (!(gUiInputFlags & 3)) {
-                fn_800790D4(self->slots[(s8)slot], self);
+                fn_800790D4(self->slots[slot], self);
                 fn_80120F94();
             } else {
-                fn_8007AD6C(self->slots[(s8)slot]);
+                fn_8007AD6C(self->slots[slot]);
             }
-            self->slots[(s8)slot] = 0;
+            self->slots[slot] = 0;
             self->curSlot = -1;
             return 2;
         case 'S':
@@ -3607,151 +3564,31 @@ s32 fn_8011F184(TalkUi *self, u8 **text) {
             }
             return 1;
         case 'f':
-            want = self->curSlot;
-            if (want < 0) slot = -1;
-            else {
-                child = self->slots[0];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                else {
-                    child = self->slots[1];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                    else {
-                        child = self->slots[2];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                        else {
-                            child = self->slots[3];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                            else slot = -1;
-                        }
-                    }
-                }
-            }
-            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-            fn_8007AD08(child, 2, -1);
+            fn_8007AD08(TalkUi_GetCurrentSlot(self), 2, -1);
             return 1;
         case 's':
-            want = self->curSlot;
-            if (want < 0) slot = -1;
-            else {
-                child = self->slots[0];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                else {
-                    child = self->slots[1];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                    else {
-                        child = self->slots[2];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                        else {
-                            child = self->slots[3];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                            else slot = -1;
-                        }
-                    }
-                }
-            }
-            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-            fn_8007AD08(child, 1, -1);
+            fn_8007AD08(TalkUi_GetCurrentSlot(self), 1, -1);
             return 1;
         case 'd':
-            want = self->curSlot;
-            if (want < 0) slot = -1;
-            else {
-                child = self->slots[0];
-                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                else {
-                    child = self->slots[1];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                    else {
-                        child = self->slots[2];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                        else {
-                            child = self->slots[3];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                            else slot = -1;
-                        }
-                    }
-                }
-            }
-            if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-            fn_8007AD08(child, 1, 1);
+            fn_8007AD08(TalkUi_GetCurrentSlot(self), 1, 1);
             return 1;
         case 'c':
             if (child) {
-                want = self->curSlot;
-                if (want < 0) slot = -1;
-                else {
-                    child = self->slots[0];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                    else {
-                        child = self->slots[1];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                        else {
-                            child = self->slots[2];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                            else {
-                                child = self->slots[3];
-                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                                else slot = -1;
-                            }
-                        }
-                    }
-                }
-                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-                fn_8007AD08(child, -1, 3);
+                fn_8007AD08(TalkUi_GetCurrentSlot(self), -1, 3);
             } else {
                 self->flags |= 4;
             }
             return 1;
         case 'h':
             if (child) {
-                want = self->curSlot;
-                if (want < 0) slot = -1;
-                else {
-                    child = self->slots[0];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                    else {
-                        child = self->slots[1];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                        else {
-                            child = self->slots[2];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                            else {
-                                child = self->slots[3];
-                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                                else slot = -1;
-                            }
-                        }
-                    }
-                }
-                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-                fn_8007AD08(child, -1, 4);
+                fn_8007AD08(TalkUi_GetCurrentSlot(self), -1, 4);
             } else {
                 self->flags |= 8;
             }
             return 1;
         case 'o':
             if (child) {
-                want = self->curSlot;
-                if (want < 0) slot = -1;
-                else {
-                    child = self->slots[0];
-                    if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 0;
-                    else {
-                        child = self->slots[1];
-                        if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 1;
-                        else {
-                            child = self->slots[2];
-                            if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 2;
-                            else {
-                                child = self->slots[3];
-                                if (child && M2C_FIELD(child, s8 *, 0x43) == want) slot = 3;
-                                else slot = -1;
-                            }
-                        }
-                    }
-                }
-                if ((s8)slot < 0) child = 0; else child = self->slots[(s8)slot];
-                fn_8007AD08(child, 5, 5);
+                fn_8007AD08(TalkUi_GetCurrentSlot(self), 5, 5);
             } else {
                 self->flags |= 12;
             }
