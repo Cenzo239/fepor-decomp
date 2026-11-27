@@ -7579,9 +7579,8 @@ void *fn_80052B54(void *name, u32 priority) {
 
 static inline void Obj_GetActiveUnit(u8 *object, u8 **out) {
     if (*(u32 *)(object + 8) & 0x20000000) {
-        u8 *unit = *(u8 **)(object + 0x34);
-        if (unit != 0) {
-            *out = unit;
+        *out = *(u8 **)(object + 0x34);
+        if (*out != 0) {
             return;
         }
     }
