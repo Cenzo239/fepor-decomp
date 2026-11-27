@@ -33,8 +33,8 @@ static inline void FileCache_CopyName(u8 *arg0, char *arg1) {
     if (*arg1 == '/') {
         src++;
     }
-    *(s32 *)(arg0 + 0x2C) = 0;
     dst = arg0;
+    *(s32 *)(arg0 + 0x2C) = 0;
     for (i = 0x29; i > 0; i--) {
         c = *src;
         if ((s8)c >= 'A' && (s8)c <= 'Z') {
@@ -946,12 +946,10 @@ void fn_8005CBC8(void)
     int i;
     char buffer[16];
     char *p;
-    float size1;
-    float size2;
 
     DebugPrint(lbl_8026B330 + 0x69);
 
-    entry = gFileCache;
+    entry = gFileCache + 0;
     count = 0;
     total = 0;
     i = 0;
