@@ -426,8 +426,8 @@ void fn_80221450(u32 arg0) {
 }
 
 #pragma use_lmw_stmw on
-extern f64 lbl_8036BCD8;
-extern f32 lbl_8036BCD0;
+extern const f64 lbl_8036BCD8;
+extern const f32 lbl_8036BCD0;
 s32 __cvt_fp2unsigned(f32);
 #pragma use_lmw_stmw on
 f32 fn_802214A8(u16 efbHeight, u16 xfbHeight) {
