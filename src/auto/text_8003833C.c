@@ -1638,7 +1638,6 @@ s8 fn_8003AF28(void *arg0) {
 #pragma optimization_level 4
 #pragma opt_strength_reduction off
 #pragma opt_common_subs off
-#pragma peephole off
 s8 Unit_GetMagAtk(void *arg0) {
     void *Res_GetByName(void *);
     u64 *Item_GetFlagsPtr(void *);
