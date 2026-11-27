@@ -1726,6 +1726,34 @@ void *AramCache_Find(s32 arg0) {
     return NULL;
 }
 
+static inline void AramCache_EvictByFlag(u8 *node) {
+    void *AramCache_InsertFree(void *, void *);
+    extern void *gAramUsedList;
+    extern void *gAramFreeList;
+    s32 i;
+    void *temp;
+    void *next;
+    void *prev;
+
+    for (i = 0; i < 0x100; i++, node += 0x6C) {
+        if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
+            next = *(void **)(node + 0x60);
+            temp = gAramUsedList;
+            if (next != 0) {
+                *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
+            }
+            prev = *(void **)(node + 0x5C);
+            if (prev != 0) {
+                *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
+            } else {
+                temp = *(void **)(node + 0x60);
+            }
+            gAramUsedList = temp;
+            gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
+        }
+    }
+}
+
 #pragma use_lmw_stmw on
 s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     void *fn_801ED12C(s32);
@@ -1744,7 +1772,8 @@ s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     extern void *gAramFreeList;
     extern s32 gAramHeapSize;
     extern s32 gAramRequestCount;
-    u8 *flag;
+    s32 flag;
+    u8 *node;
     s32 i;
     void *temp;
     void *next;
@@ -1761,35 +1790,31 @@ s32 AramCache_Request(s32 path, s32 buf, s32 size, s32 a3, s32 a4) {
     flag = 0;
     name = fn_80234200(path, 0x2F);
     if (name != 0 && Str_Cmp(name, lbl_8027F1D0 + 0x35) == 0) {
-        i = 0;
-        flag = gAramSlotPool;
-        do {
-            if ((flag[0x53] & 2) && *(s32 *)(flag + 0x64) != 0) {
-                next = *(void **)(flag + 0x60);
+        for (i = 0, node = gAramSlotPool; i < 0x100; i++, node += 0x6C) {
+            if ((*(u8 *)(node + 0x53) & 2) && *(s32 *)(node + 0x64) != 0) {
+                next = *(void **)(node + 0x60);
                 temp = gAramUsedList;
                 if (next != 0) {
-                    *(void **)((u8 *)next + 0x5C) = *(void **)(flag + 0x5C);
+                    *(void **)((u8 *)next + 0x5C) = *(void **)(node + 0x5C);
                 }
-                prev = *(void **)(flag + 0x5C);
+                prev = *(void **)(node + 0x5C);
                 if (prev != 0) {
-                    *(void **)((u8 *)prev + 0x60) = *(void **)(flag + 0x60);
+                    *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
                 } else {
-                    temp = *(void **)(flag + 0x60);
+                    temp = *(void **)(node + 0x60);
                 }
                 gAramUsedList = temp;
-                gAramFreeList = AramCache_InsertFree(gAramFreeList, flag);
+                gAramFreeList = AramCache_InsertFree(gAramFreeList, node);
             }
-            i += 1;
-            flag += 0x6C;
-        } while (i < 0x100);
-        flag = (u8 *)2;
+        }
+        flag = 2;
         size = 0x180000;
     }
     cell = fn_801ED12C(size);
     if (cell == 0) {
         return 0;
     }
-    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | (s32)flag;
+    *(u8 *)((u8 *)cell + 0x53) = *(u8 *)((u8 *)cell + 0x53) | flag;
     {
         s32 id = gAramRequestCount;
         gAramRequestCount = id + 1;
