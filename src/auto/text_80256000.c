@@ -1134,19 +1134,17 @@ void fn_80256974(void) {
     } SoundBuf;
     extern SoundBuf lbl_80359710;
     u32 i;
-    u32 n;
 
-    n = gSoundData[0x210];
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < gSoundData[0x210]; i++) {
         lbl_80359710.nodes[i].prev = (u8)(i - 1);
         lbl_80359710.nodes[i].next = (u8)(i + 1);
         lbl_80359710.nodes[i].one = 1;
     }
     lbl_80359710.nodes[0].prev = 0xFF;
     lbl_80368A51 = 0;
-    lbl_80359710.nodes[n - 1].next = 0xFF;
-    lbl_80368A50 = (u8)(n - 1);
-    for (i = 0; i < n; i++) lbl_80359710.zeros[i].val = 0;
+    lbl_80359710.nodes[gSoundData[0x210] - 1].next = 0xFF;
+    lbl_80368A50 = gSoundData[0x210] - 1;
+    for (i = 0; i < gSoundData[0x210]; i++) lbl_80359710.zeros[i].val = 0;
     for (i = 0; i < 256; i++) lbl_80359710.p1[i] = 0xFF;
     lbl_80368A4F = 0;
     lbl_80368A4C = 0xFFFF;
@@ -7106,6 +7104,7 @@ entry=gSoundVoices+offset; *(u16 *)(entry+0xD2)=ten;
 #pragma global_optimizer on
 #pragma push
 #pragma opt_common_subs off
+#pragma global_optimizer off
 void fn_80261E6C(s32 arg0, s32 arg1, s32 arg2, s32 arg6,
                  f32 arg3, f32 arg4, f32 arg5)
 {
