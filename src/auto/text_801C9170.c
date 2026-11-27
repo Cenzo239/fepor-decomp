@@ -833,7 +833,7 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma pop
 
 #pragma push
-#pragma optimization_level 1
+#pragma optimization_level 3
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 
