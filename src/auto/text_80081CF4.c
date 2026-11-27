@@ -46,7 +46,8 @@ extern f32 lbl_803697E4;
 #pragma use_lmw_stmw on
 #pragma push
 #pragma optimization_level 3
-void fn_80081CF4(void *arg0) {
+void fn_80081CF4(void *arg0)
+{
   extern f32 lbl_8036948C;
   void **new_var;
   extern f32 lbl_80369494;
@@ -70,6 +71,7 @@ void fn_80081CF4(void *arg0) {
   f32 row1;
   f32 y;
   f32 xpos;
+  u32 item;
   y = *((f32 *) (((u8 *) arg0) + 0x18));
   new_var = (void **) (((u8 *) arg0) + 0x58);
   xpos = lbl_8036948C + (*((f32 *) (((u8 *) arg0) + 0x14)));
@@ -86,7 +88,8 @@ void fn_80081CF4(void *arg0) {
   do
   {
     slot = Unit_GetItemSlot(unit, i);
-    if (*(u32 *)slot != 0)
+    item = *((u32 *) slot);
+    if (item != 0)
     {
       if (i < 4)
       {
@@ -106,7 +109,6 @@ void fn_80081CF4(void *arg0) {
   Prim2D_AddZ(lbl_80369430);
       Prim2D_PrepareTex();
 }
-#pragma pop
 
 void fn_80081E68(s32 arg0, u16 *arg1, f32 farg0, f32 farg1) {
     extern char gUiStrings[];
