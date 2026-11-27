@@ -200,6 +200,7 @@ typedef struct MenuGridLayout {
     s16 yOffset;
 } MenuGridLayout;
 static inline s16 MenuGridColumn(s32 index, s32 columns) { return index % columns; }
+static inline s32 MenuGridQuotient(s16 index, s16 columns) { return index / columns; }
 
 static inline s16 MenuGridColumnWidth(const void *self, s32 columns) {
     s16 width = *(s16 *)((u8 *)self + 0x16) - *(s16 *)((u8 *)self + 0x12);
@@ -3333,33 +3334,20 @@ s32 fn_80136F24(void) {
     return 6;
 }
 
+#pragma opt_strength_reduction off
 void List_EraseRange(ListIter *ret, List *list, ListIter *start, ListIter *end)
 {
-  ListNode *first;
-  ListNode *last;
-  ListNode *a;
-  ListNode *node;
+  ListNode *first; ListNode *last; ListNode *a; ListNode *node;
   first = start->node;
-  if (first == last)
-  {
-    ret->node = last;
-    return;
+  if (first == last) { ret->node = last; return; }
+  a = last->prev; first->prev->next = a->next;
+  last = end->node; a->next->prev = first->prev;
+  while (start->node != end->node) {
+    node = start->node; start->node = node->next; Heap_Free(node); list->size--;
   }
-  a = last->prev;
-  first->prev->next = a->next;
-  last = end->node;
-  a->next->prev = first->prev;
-  while (start->node != end->node)
-  {
-    node = start->node;
-    start->node = node->next;
-    Heap_Free(node);
-    list->size--;
-  }
-
   ret->node = end->node;
 }
-
+#pragma opt_strength_reduction on
 #pragma cplusplus on
 extern "C" void fn_80136FDC(void *arg0) {
     struct Obj {
