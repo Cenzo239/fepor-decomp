@@ -15803,7 +15803,7 @@ void fn_8017BB94(void *arg0) {
 
 #pragma use_lmw_stmw reset
 
-#pragma scheduling off
+#pragma scheduling on
 s32 fn_8017BC94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -18352,9 +18352,12 @@ extern "C" void fn_80180624(void *arg0) {
     extern u8 gUiUnitInfoStrings[];
     extern u32 gUiInputFlags;
     extern void *gPadInput;
-    struct PairBig {
-        s16 x;
-        s16 y;
+    class Pair {
+    public:
+        s16 x, y;
+        Pair() {}
+        Pair(const Pair &o) { *(u32 *)this = *(u32 *)&o; }
+        Pair &operator=(const Pair &o) { *(u32 *)this = *(u32 *)&o; return *this; }
     };
     struct Obj {
         virtual void v0() = 0;
@@ -18366,32 +18369,34 @@ extern "C" void fn_80180624(void *arg0) {
         virtual void v6() = 0;
         virtual void v7() = 0;
         virtual void v8() = 0;
-        virtual PairBig v9() = 0;
+        virtual Pair v9() = 0;
         virtual void v10() = 0;
         virtual void v11() = 0;
         virtual void v12() = 0;
         virtual void v13() = 0;
         virtual u8 v14(void *) = 0;
     };
-    s32 sp8;
-    void *spC;
-    void *spArgs[3];
-    s32 sp1C;
-    s32 sp20;
-    void *sp24;
-    void *sp28;
-    void *sp2C;
-    s16 sp30[2];
-    s16 sp34[2];
-    s16 sp38[2];
+    struct {
+        s32 sp8;
+        void *spC;
+        void *sp10, *sp14, *sp18;
+        s32 sp1C;
+        s32 sp20;
+        void *sp24;
+        void *sp28;
+        void *sp2C;
+        s16 sp30[2];
+        s16 sp34[2];
+        u32 sp38;
+    } st;
     void *obj81;
     void *obj82;
     void *unit;
-    void *listHd;
     s32 i;
+    void *listHd;
     u8 idx;
-    register u32 flags;
     register u8 gate;
+    register u32 flags;
     s32 a;
     s32 btn;
     s16 t0, t1;
@@ -18406,28 +18411,28 @@ extern "C" void fn_80180624(void *arg0) {
         if (*(void **)((u8 *)obj82 + 0x48) != unit) {
             *(void **)((u8 *)obj82 + 0x48) = unit;
             listHd = (u8 *)obj82 + 0x60;
-            sp24 = listHd;
-            sp20 = *(s32 *)((u8 *)obj82 + 0x64);
-            List_EraseRange(&sp1C, (void *)((u32)obj82 + 0x5Cu), &sp20, &sp24);
+            st.sp24 = listHd;
+            st.sp20 = *(s32 *)((u8 *)obj82 + 0x64);
+            List_EraseRange(&st.sp1C, (void *)((u32)obj82 + 0x5Cu), &st.sp20, &st.sp24);
             i = 0;
             goto loop_test;
         loop:
             idx = i;
             if (fn_80037004(unit, idx) != 0) {
-                sp28 = fn_80037004(unit, idx);
-                spC = listHd;
-                List_Insert(&sp8, (void *)((s32)obj82 + 0x5C), &spC, &sp28);
+                st.sp28 = fn_80037004(unit, idx);
+                st.spC = listHd;
+                List_Insert(&st.sp8, (void *)((s32)obj82 + 0x5C), &st.spC, &st.sp28);
             }
             i += 1;
         loop_test:
             if ((u8)i < Unit_CountSupportPartners(unit)) {
                 goto loop;
             }
-            sp2C = unit;
-            spArgs[2] = unit;
-            spArgs[1] = unit;
-            spArgs[0] = unit;
-            fn_80181DF0((void *)((u8 *)obj82 + 92), spArgs);
+            st.sp2C = unit;
+            st.sp18 = unit;
+            st.sp14 = unit;
+            st.sp10 = unit;
+            fn_80181DF0((void *)((u8 *)obj82 + 92), &st.sp10);
         }
         *(s16 *)((u8 *)obj82 + 0x4E) = 0;
         *(s16 *)((u8 *)obj82 + 0x50) = -1;
@@ -18443,17 +18448,16 @@ extern "C" void fn_80180624(void *arg0) {
         btn = a & (*(s32 *)((u8 *)gPadInput + 8) ^ a);
         if ((btn & 0x100) && unit != 0) {
             if (((Obj *)obj81)->v14(unit) == 0) {
-                *(PairBig *)sp30 = ((Obj *)obj81)->v9();
-                *(u32 *)sp38 = *(u32 *)sp30;
-                Ui_CreateMsgPopup(gUiUnitInfoStrings + 0xCB, arg0, (f32)sp38[0], (f32)sp38[1]);
+                *(Pair *)&st.sp38 = ((Obj *)obj81)->v9();
+                Ui_CreateMsgPopup(gUiUnitInfoStrings + 0xCB, arg0, (f32)*(s16 *)&st.sp38, (f32)*((s16 *)&st.sp38 + 1));
             } else {
                 tmp = Ui_FindChild(arg0, 0x82, 0);
-                *(s32 *)&sp34[0] = *(s32 *)((u8 *)obj81 + 0x52);
+                *(s32 *)&st.sp34[0] = *(s32 *)((u8 *)obj81 + 0x52);
                 t0 = *(s16 *)((u8 *)tmp + 0xA);
-                t1 = sp34[0] + (*(s16 *)((u8 *)obj81 + 0xA) - t0);
+                t1 = st.sp34[0] + (*(s16 *)((u8 *)obj81 + 0xA) - t0);
                 *(s16 *)((u8 *)tmp + 0x50) = t1;
-                *(s16 *)((u8 *)tmp + 0x52) = sp34[1];
-                sp34[0] = t1;
+                *(s16 *)((u8 *)tmp + 0x52) = st.sp34[1];
+                st.sp34[0] = t1;
                 Process_ClearFunc(arg0);
                 Ui_PlaySeCue(gUiUnitInfoStrings + 0x84, 0x64);
             }
