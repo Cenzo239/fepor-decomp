@@ -13920,6 +13920,8 @@ s32 *fn_800E060C(s32 *arg0, s32 *arg1, s32 *arg2) {
 }
 
 #pragma dont_inline on
+#pragma push
+#pragma opt_lifetimes off
 void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     s32 Sort_GetKey(void *);
     s32 count;
@@ -13941,6 +13943,7 @@ void *fn_800E069C(void *arg0, void *arg1, s32 *arg2) {
     }
     return arg0;
 }
+#pragma pop
 #pragma dont_inline reset
 #pragma push
 #pragma optimization_level 4
