@@ -23567,7 +23567,7 @@ void fn_800F1494(u8 *arg0, s8 arg1, s8 arg2) {
 }
 #pragma pop
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 void fn_800F18A4(s32 arg0, s32 arg1) {
     void fn_80060060(void *);
     f32 fn_80023068(void *, f32, f32);
