@@ -3,7 +3,7 @@
 #include "common.h"
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 volatile unsigned int fn_80110128(void)
 {
   extern s32 lbl_8032BD5C[];
