@@ -17960,8 +17960,6 @@ fn_8008A290(1,0);
 }
 
 #pragma use_lmw_stmw on
-#pragma push
-#pragma optimization_level 2
 void fn_8017FD84(void *arg0) {
     void fn_8013FEF0(void);
     void fn_8016A5AC(void *);
@@ -17979,7 +17977,7 @@ void fn_8017FD84(void *arg0) {
     void *other;
     register void *obj82;
     void *node;
-    s16 index;
+    s32 index;
     void *self;
 
     self = arg0;
@@ -17990,24 +17988,23 @@ void fn_8017FD84(void *arg0) {
     unit = fn_8013AC54(obj81);
     index = *(s16 *)((u8 *)obj82 + 0x4E);
     node = *(void **)((u8 *)obj82 + 0x64);
-    if (index >= 0) {
-        while (index > 0) {
+    if ((s16)index >= 0) {
+        while ((s16)index > 0) {
             node = *(void **)((u8 *)node + 4);
             index--;
         }
     } else {
-        while (index < 0) {
+        while ((s16)index < 0) {
             node = *(void **)node;
             index++;
         }
     }
     other = fn_80016B7C(*(void **)((u8 *)node + 8));
     fn_8014876C(lbl_8032FF08, 0x46, 0xFA);
-    obj82 = *(void **)((u8 *)other + 0x188);
-    obj81 = *(void **)((u8 *)unit + 0x188);
-    fn_800BE3CC(obj81, obj82, fn_80036EAC(unit, (s8)fn_80036DE0(unit, other)), self);
+    obj81 = *(void **)((u8 *)other + 0x188);
+    obj82 = *(void **)((u8 *)unit + 0x188);
+    fn_800BE3CC(obj82, obj81, fn_80036EAC(unit, (s8)fn_80036DE0(unit, other)), self);
 }
-#pragma pop
 #pragma use_lmw_stmw reset
 
 void fn_8017FE84(void *arg0) {
