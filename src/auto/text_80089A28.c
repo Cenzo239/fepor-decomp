@@ -1176,8 +1176,8 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     struct { u8 buf[0x20]; u16 w; u16 h; } sp;
     void *text;
     u8 *texture = sp.buf;
-    u16 tile = 0x18;
     s32 atlas = gUiAtlas;
+    u16 tile = 0x18;
     if (arg3) tile = 0x17;
     Ui_LoadAtlasTex(atlas, texture, tile);
     sp.w = GXGetTexObjWidth(sp.buf);
@@ -1200,7 +1200,7 @@ void fn_8008BA80(void *arg0, s32 arg1, s32 arg2, u8 arg3) {
     Prim2D_AddZ(lbl_80369704);
     Prim2D_PrepareTex();
 }
-#pragma pop
+#pragma optimization_level reset
 void fn_8008BBF8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, s32 arg5) {
     M2C_UNK fn_8007D004(s32, u8, f32, f32, f32, f32);
     s32 var_r5;
