@@ -437,7 +437,6 @@ extern f32 lbl_80369CD0;
 
 #pragma opt_strength_reduction reset
 
-#pragma optimization_level 3
 void fn_800C32A4(u8 *p) {
     s32 n;
     u8 z;
