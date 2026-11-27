@@ -869,6 +869,7 @@ s32 fn_80218018(void) {
 
 #pragma push
 #pragma optimization_level 4
+#pragma opt_loop_invariants off
 s32 fn_802180DC(s32 chan, void *out) {
     u32 OSGetTick(void);
     void DCFlushRange(void *, u32);
@@ -887,7 +888,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     u8 *work;
     void *buf;
     u32 aligned;
-    u32 aligned2;
+    void *aligned2;
     u32 seed;
     u32 scramble;
     s32 tick;
@@ -904,11 +905,13 @@ s32 fn_802180DC(s32 chan, void *out) {
     work = card + 0x30;
     buf = *(void **)(card + 0x80);
     aligned = ((u32)buf + 0x2F) & ~0x1Fu;
-    aligned2 = aligned + 0x20;
+    aligned2 = (void *)(aligned + 0x20);
 
     lbl_80366FE8 = OSGetTick();
     lbl_80366FE8 = lbl_80366FE8 * 0x41C64E6D + 0x3039;
-    seed = (0x7FEC8000u | ((lbl_80366FE8 >> 16) & 0x7FFF)) & 0xFFFFF000u;
+    seed = 0x7FEC8000u;
+    seed |= (lbl_80366FE8 >> 16) & 0x7FFF;
+    seed &= 0xFFFFF000u;
 
     tick = fn_80218018();
     if (fn_80217ED4(chan, seed, spA4, tick, 0) < 0) {
@@ -965,7 +968,7 @@ s32 fn_802180DC(s32 chan, void *out) {
     *(u32 *)(aligned + 4) = w4;
     *(u32 *)buf = aligned;
     *(u32 *)((u8 *)buf + 4) = 8;
-    *(u32 *)((u8 *)buf + 0xC) = aligned2;
+    *(u32 *)((u8 *)buf + 0xC) = (u32)aligned2;
     *(u32 *)((u8 *)buf + 8) = 0;
     DCFlushRange((void *)aligned, 8);
     DCInvalidateRange((void *)aligned2, 4);
@@ -1475,109 +1478,81 @@ s32 fn_80219A70(void *arg0)
     return 0;
 }
 #pragma use_lmw_stmw reset
-s32 fn_80219CF4(s32 card, s32 *alternative) {
+static inline void CARD_CheckSumInline(void *ptr, s32 length, u16 *checksum, u16 *checksumInv) {
+    u16 *p;
+    s32 i;
+    length /= 2;
+    *checksum = *checksumInv = 0;
+    for (i = 0, p = (u16 *)ptr; i < length; i++, p++) {
+        *checksum += *p;
+        *checksumInv += ~*p;
+    }
+    if (*checksum == 0xFFFF) {
+        *checksum = 0;
+    }
+    if (*checksumInv == 0xFFFF) {
+        *checksumInv = 0;
+    }
+}
+s32 fn_80219CF4(s32 cardPtr, s32 *alternative) {
     void *memcpy(void *, const void *, u32);
+    struct CARDControl {
+        u8 pad0[0x80];
+        u8 *workArea;
+        u8 *currentDir;
+    };
+    struct CARDControl *card = (struct CARDControl *)cardPtr;
     u8 *block[2];
     u8 *check[2];
     s32 cBlock;
     s32 cCheck;
-    s32 *alt;
     s32 i;
-    u8 **bp;
-    u8 **cp;
-    s32 n;
+    s32 len;
+    s32 j;
     u16 *p;
-    u32 sum;
-    u32 inv;
-    u16 temp;
+    u16 sum;
+    u16 inv;
 
-    bp = &block[0];
-    cp = &check[0];
     cBlock = 0;
     cCheck = 0;
-    alt = alternative;
-    i = 0;
-    do {
-        *bp = *(u8 **)((u8 *)card + 0x80) + ((i + 1) << 13);
-        n = 0x1FFC;
-        n = n / 2;
+    for (i = 0; i < 2; i++) {
+        block[i] = card->workArea + ((i + 1) << 13);
+        check[i] = block[i] + 0x1FC0;
+        len = 0x1FFC;
+        len /= 2;
         inv = 0;
-        *cp = *bp + 0x1FC0;
         sum = 0;
-        p = (u16 *)*bp;
-        if (n > 0) {
-            s32 n8 = (u32)n >> 3;
-            if (n8 != 0) {
-                do {
-                    sum += p[0];
-                    temp = p[0];
-                    inv += ~temp;
-                    sum += p[1];
-                    temp = p[1];
-                    inv += ~temp;
-                    sum += p[2];
-                    temp = p[2];
-                    inv += ~temp;
-                    sum += p[3];
-                    temp = p[3];
-                    inv += ~temp;
-                    sum += p[4];
-                    temp = p[4];
-                    inv += ~temp;
-                    sum += p[5];
-                    temp = p[5];
-                    inv += ~temp;
-                    sum += p[6];
-                    temp = p[6];
-                    inv += ~temp;
-                    sum += p[7];
-                    temp = p[7];
-                    p += 8;
-                    inv += ~temp;
-                } while (--n8);
-            }
-            n &= 7;
-            if (n != 0) {
-                do {
-                    sum += *p;
-                    temp = *p;
-                    p += 1;
-                    inv += ~temp;
-                } while (--n);
-            }
+        for (j = 0, p = (u16 *)block[i]; j < len; j++, p++) {
+            sum += *p;
+            inv += ~*p;
         }
-        if ((u16)sum == 0xFFFF) {
+        if (sum == 0xFFFF) {
             sum = 0;
         }
-        if ((u16)inv == 0xFFFF) {
+        if (inv == 0xFFFF) {
             inv = 0;
         }
-        if ((u16)sum != *(u16 *)(*cp + 0x3C) || (u16)inv != *(u16 *)(*cp + 0x3E)) {
-            *(u8 **)((u8 *)card + 0x84) = 0;
+        if (sum != *(u16 *)(check[i] + 0x3C) || inv != *(u16 *)(check[i] + 0x3E)) {
+            card->currentDir = 0;
             cCheck = i;
-            cBlock += 1;
+            cBlock++;
         }
-        i += 1;
-        bp += 1;
-        cp += 1;
-    } while (i < 2);
+    }
     if (cBlock == 0) {
-        if (*(u8 **)((u8 *)card + 0x84) == 0) {
+        if (card->currentDir == 0) {
             if (*(s16 *)(check[0] + 0x3A) - *(s16 *)(check[1] + 0x3A) < 0) {
                 cCheck = 0;
             } else {
                 cCheck = 1;
             }
-            *(u8 **)((u8 *)card + 0x84) = block[cCheck];
+            card->currentDir = block[cCheck];
             memcpy(block[cCheck], block[cCheck ^ 1], 0x2000);
-        } else if (*(u8 **)((u8 *)card + 0x84) == block[0]) {
-            cCheck = 0;
         } else {
-            cCheck = 1;
+            cCheck = (card->currentDir == block[0]) ? 0 : 1;
         }
     }
-    if (alt != 0) {
-        *alt = cCheck;
+    if (alternative != 0) {
+        *alternative = cCheck;
     }
     return cBlock;
 }
