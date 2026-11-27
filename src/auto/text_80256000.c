@@ -6208,43 +6208,10 @@ static inline u32 Sound_TakeChannelFlagA(u32 index, u32 channel, u32 set)
 
 s32 fn_80260A7C(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
 {
-    extern u16 lbl_8035D118[256];
-    extern u32 lbl_802A1E00[];
-    extern u8 lbl_8034D034[];
-    s32 fn_802601EC(void *, void *, u32, u32);
-    u8 *row;
-    u32 *entry;
-    u32 mask;
-    u32 value;
-    u32 index;
-    u32 result;
-
-    index = arg1 & 0xFF;
-    row = (u8 *)lbl_8035D118 + ((arg3 & 0xFF) << 6);
-    mask = lbl_802A1E00[arg1 & 0xFF];
-    entry = (u32 *)(row + ((arg2 & 0xFF) << 2));
-    value = *entry;
-    result = (mask & value) != 0;
-
-    if (result != 0) {
-        *entry = ~mask & value;
-    }
-
-    if (result != 0) {
-        return fn_802601EC(
-            0,
-            lbl_8034D034 + (arg0 & 0xFF) * 0x90 + index * 0x24,
-            arg2,
-            arg3
-        );
-    }
-
-    return *(u16 *)(
-        lbl_8034D034
-        + (arg0 & 0xFF) * 0x90
-        + index * 0x24
-        + 0x20
-    );
+ s32 fn_802601EC(void *, void *, u32, u32);
+ if(Sound_TakeChannelFlagA(arg1,arg2,arg3))
+  return fn_802601EC(0, lbl_8034D034 + (arg0&255)*0x90 + (arg1&255)*0x24,arg2,arg3);
+ { u8 *base = lbl_8034D034; arg0 = (arg0&255)*0x90; return *(u16 *)(base + arg0 + (arg1&255)*0x24 + 0x20); }
 }
 
 static inline u32 Sound_TakeChannelFlag(u32 index, u32 channel, u32 set)
