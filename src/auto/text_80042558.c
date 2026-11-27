@@ -2362,14 +2362,18 @@ static inline u8 MapObj_Contains(u8 *entry, s32 x, s32 y) {
 static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 arg3, u32 arg4) {
     typedef struct { u8 pad[0xB4]; } MapObjEntry;
     s32 i;
+    u8 *entry;
+    MapObjEntry *base;
     for (i = n; i >= 0; i--) {
-        MapObjEntry *base = *(MapObjEntry **)((u8 *)arg0 + 0x14);
-        u8 *entry = (u8 *)&base[i];
-        u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-        if (!(flags & arg4)) {
-            if (arg3 == 0 || (arg3 & flags) == arg3) {
-                if (MapObj_Contains(entry, x, y)) {
-                    return &base[i];
+        base = *(MapObjEntry **)((u8 *)arg0 + 0x14);
+        entry = (u8 *)&base[i];
+        {
+            u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
+            if (!(flags & arg4)) {
+                if (arg3 == 0 || (arg3 & flags) == arg3) {
+                    if (MapObj_Contains(entry, x, y)) {
+                        return &base[i];
+                    }
                 }
             }
         }
@@ -2377,54 +2381,18 @@ static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 ar
     return 0;
 }
 
-void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
-{
+#pragma push
+#pragma opt_common_subs off
+void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4) {
     void *found;
-    u8 *base;
-    u8 *entry;
-    u32 flags;
-    s32 count;
     s32 n;
-    s32 i;
     s32 direction;
     s32 dx;
     s32 dy;
-    s32 x;
-    s32 y;
-    u8 dir;
-    u8 valid;
-    s32 offset;
+    s32 dir;
 
-    count = *(s16 *)((u8 *)arg0 + 6);
-    n = count - 1;
-    i = n;
-    offset = i * 0xB4;
-    found = 0;
-
-    for (; i >= 0; i--, offset -= 0xB4) {
-        base = *(u8 **)((u8 *)arg0 + 0x14);
-        entry = base + offset;
-        flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-
-        if (!(flags & arg4)) {
-            if (arg3 == 0 || (arg3 & flags) == arg3) {
-                if (arg1 >= *(s8 *)(entry + 4) &&
-                    arg1 <= *(s8 *)(entry + 6) &&
-                    arg2 >= *(s8 *)(entry + 5) &&
-                    arg2 <= *(s8 *)(entry + 7)) {
-                    valid = 1;
-                } else {
-                    valid = 0;
-                }
-
-                if (valid != 0) {
-                    found = base + i * 0xB4;
-                    break;
-                }
-            }
-        }
-    }
-
+    n = *(s16 *)((u8 *)arg0 + 6) - 1;
+    found = Map_FindObjAt_Inline(arg0, n, arg1, arg2, arg3, arg4);
     if (found != 0) {
         return found;
     }
@@ -2437,6 +2405,7 @@ void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
         case 3: dir = 8; break;
         default: dir = 0x10; break;
         }
+        dir = (u8)dir;
         switch (dir) {
         case 1: dx = -1; break;
         case 2: dx = 1; break;
@@ -2448,37 +2417,7 @@ void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
         default: dy = 0; break;
         }
 
-        x = arg1 + dx;
-        y = arg2 + dy;
-
-        i = n;
-        offset = i * 0xB4;
-        found = 0;
-
-        for (; i >= 0; i--, offset -= 0xB4) {
-            base = *(u8 **)((u8 *)arg0 + 0x14);
-            entry = base + offset;
-            flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
-
-            if (!(flags & arg4)) {
-                if (arg3 == 0 || (arg3 & flags) == arg3) {
-                    if (x >= *(s8 *)(entry + 4) &&
-                        x <= *(s8 *)(entry + 6) &&
-                        y >= *(s8 *)(entry + 5) &&
-                        y <= *(s8 *)(entry + 7)) {
-                        valid = 1;
-                    } else {
-                        valid = 0;
-                    }
-
-                    if (valid != 0) {
-                        found = base + i * 0xB4;
-                        break;
-                    }
-                }
-            }
-        }
-
+        found = Map_FindObjAt_Inline(arg0, n, arg1 + dx, arg2 + dy, arg3, arg4);
         if (found != 0) {
             return found;
         }
@@ -2486,7 +2425,7 @@ void *Map_FindObjNear(void *arg0, s32 arg1, s32 arg2, u32 arg3, u32 arg4)
 
     return 0;
 }
-
+#pragma pop
 s32 Map_FindObjAtXY(void *arg0, s32 arg1, s32 arg2)
 {
   s32 i;
