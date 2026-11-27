@@ -437,6 +437,8 @@ done2:
     }
 }
 #pragma pop
+#pragma push
+#pragma opt_common_subs off
 u8 Unit_GetWpnExp(void *arg0, s32 arg1) {
     u8 Status_Test(void *, s32);
     void *self;
