@@ -398,8 +398,6 @@ static inline u8 MapObj_IsIdle(u8 *obj)
 #pragma global_optimizer off
 #pragma opt_lifetimes on
 
-#pragma push
-#pragma opt_loop_transforms off
 void Map_LoadTerrain(void *arg0, char *arg1)
 {
     s64 OSGetTime(void);
@@ -492,6 +490,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     void *light;
     void *fog;
     char *buf;
+    char *strBase;
     char *b0;
     char *b1;
     char *b2;
@@ -501,7 +500,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     char *b6;
     char *b7;
     char *b8;
-    char *strBase;
     s8 defLight;
 
     fn_80041254(arg0);
@@ -538,7 +536,7 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         M2C_FIELD(arg0, f32 *, 0x6C) = lbl_80368F1C;
         PSMTXCopy(sp18, (u8 *)arg0 + 0x70);
 
-                strcpy(lbl_802EFE20, arg1);
+        strcpy(lbl_802EFE20, arg1);
         strcat(lbl_802EFE20, lbl_8026A660 + 0x122);
         dst = (char *)lbl_802EFE20;
         if (FileCache_Probe(dst) != 0x8000) {
@@ -604,9 +602,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         cursor = Hash_Lookup(lbl_8026A660 + 0x186);
         M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
         buf = (char *)lbl_802EFE20;
+        strBase = (char *)lbl_8026A660;
         b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
         b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-        strBase = (char *)lbl_8026A660;
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -756,9 +754,9 @@ void Map_LoadTerrain(void *arg0, char *arg1)
         cursor = Hash_Lookup(lbl_8026A660 + 0x1EE);
         M2C_FIELD(arg0, void **, 0x10) = Heap_AllocRaw(M2C_FIELD(arg0, s16 *, 4) * 0xC0);
         buf = (char *)lbl_802EFE20;
+        strBase = (char *)lbl_8026A660;
         b0 = buf; b1 = buf; b2 = buf; b3 = buf; b4 = buf;
         b5 = buf; b6 = buf; b7 = buf; b8 = buf;
-        strBase = (char *)lbl_8026A660;
         entry = M2C_FIELD(arg0, void **, 0x10);
         for (i = 0; i < M2C_FIELD(arg0, s16 *, 4); i++, entry = (u8 *)entry + 0xC0) {
             M2C_FIELD(entry, f32 *, 0xA4) = fn_8001B84C(&cursor);
@@ -885,7 +883,6 @@ void Map_LoadTerrain(void *arg0, char *arg1)
     ((u8 *)fog)[3] = (&lbl_80367290)[2];
     fn_80040B78(arg0, (u32)((char *)arg0 + 0x3C));
     t1 = OSGetTime();
-    ms = __div2i(t1 - (s64)t0, (s64)((*(u32 *)0x800000F8 >> 2) / 1000));
+    ms = __div2i(t1 - t0, (s64)((*(u32 *)0x800000F8 >> 2) / 1000));
     DebugPrint(lbl_8026A660 + 0x22C, ms);
 }
-#pragma pop
