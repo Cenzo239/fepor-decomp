@@ -3330,7 +3330,6 @@ void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     *((u8 *)arg0 + 0x16) = 0;
     map[(s8)*((u8 *)arg0 + 0xB) + ((s8)*((u8 *)arg0 + 0xC) << 6) + 0xD] = 0;
 }
-#pragma peephole reset
 void UiCtx_Reset(void *arg0) {
     /* Initialize a struct to 0 with some special values. */
     M2C_FIELD(arg0, s32 *, 0) = 0;
