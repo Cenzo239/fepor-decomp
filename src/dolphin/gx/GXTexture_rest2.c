@@ -253,7 +253,6 @@ void fn_802248D8(u32 base, u32 size) {
     GXSetCPUFifo(save);
     fn_80220554();
 }
-#pragma pop
 #pragma push
 #pragma optimization_level 3
 s32 fn_802249A4(void) {
