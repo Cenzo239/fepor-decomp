@@ -2360,14 +2360,14 @@ s32 fn_800C8A9C(u8 *self,u8 *base) {
  struct {s32 capacity,size;String *data;} lines;
  String line,check;
  void *entry;
- s32 index;
+ u8 *cursor;
+ u8 *p;
  char *messages;
  s32 total;
- s32 offset;
- u8 *cursor;
  s32 next;
+ s32 offset;
  s32 count;
- u8 *p;
+ s32 index;
  index=0;cursor=base;
  line.cap=0;
  lines.capacity=0;lines.size=0;lines.data=0;
@@ -11210,13 +11210,12 @@ end:
 }
 
 void fn_800DC7C4(void *arg0, s32 arg1, s32 arg2) {
+    u8 hit = 0;
     void (*temp_r12)(void *);
     s32 temp_r0;
     s32 temp_r4;
     s32 temp_r5;
-    u8 hit;
 
-    hit = 0;
     M2C_FIELD(arg0, s32 *, 0x80) = M2C_FIELD(arg0, s32 *, 0x104);
     temp_r4 = arg1 - M2C_FIELD(arg0, s32 *, 0x48);
     temp_r5 = arg2 - M2C_FIELD(arg0, s32 *, 0x4C);
@@ -26358,14 +26357,14 @@ void fn_800FB96C(u8,s8,s8,s32,s8,s8,s32,s32,s32);
 extern u8 gAiState[],gUiContext[],gBattleMap[];
 extern u8 *gAiCmd;
 extern s32 gAiCmdIsAlt;
-u8 *cmd,*map,*ctx,*ai,*ptr;
+u8 *cmd,*ptr,*ai,*ctx,*map;
 s16 *path;
 s16 mov;
 s32 x,y;
 s32 bx,by;
-s16 px,py;
 u8 flag;
-s32 dx,dy;
+s16 px,py;
+s32 dy,dx;
 u16 idx;
 s32 cmdVal;
 u8 *entry;
@@ -26393,7 +26392,7 @@ if(dx+dy<=*(s32*)(cmd+4)) {
 idx=*(u16*)((u8*)unit+0x25a);idx++;
 if(*(s16*)((u8*)path+(idx<<2))<0)idx=0;
 *(u16*)((u8*)unit+0x25a)=idx;
-mov-=Map_ReadAiRange_800F9574(map+((x+(y<<6))*2));
+mov-=*(s16 *)((u8 *)gBattleMap + ((s8)x + ((s8)y << 6)) * 2 + 0x610E);
 if(mov>0)goto loop;
 }}}
 if(flag)fn_800FB96C(gUiContext[8],x,y,0,x,y,-1,0,0);
@@ -30646,7 +30645,6 @@ s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
     s32 count;
     s32 j;
     u8 *map;
-    s16 *outX = arg2, *outY = arg3;
     s32 dx;
     fn_800FE074(arg0, 6, ((s32 *)gBattleMap)[0] * ((s32 *)gBattleMap)[1]);
     event=gMapObjEventList;
@@ -30680,7 +30678,7 @@ s32 fn_800FFEFC(void *arg0, s32 flags, s16 *arg2, s16 *arg3) {
         }
         if (*cost < best) { best=*cost; bestX=x; bestY=y; }
     }
-    if(best!=0x7FFF) { *outX=bestX; *outY=bestY; }
+    if(best!=0x7FFF) { *arg2=bestX; *arg3=bestY; }
     return best!=0x7FFF;
 }
 #pragma pop
@@ -31805,7 +31803,6 @@ s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
  s8 Unit_GetMov(void *);
  u8 Map_IsAiTerrainBlocked(s8,s8);
  u32 fn_800FCF48(s8,s8);
- u8 *map;
  s32 row;
  u8 *rowp,*unitrow;
  s32 offset;
@@ -31813,7 +31810,7 @@ s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
  u8 *base;
  u16 best;
  s16 bestX,bestY;
- s32 minX,maxX,maxY,y,x,mov,minY;
+ s32 minX,maxX,maxY,y,x,mov,minY,sx;
  MapCostCell *cost;
  u32 value;
  u8 id;
@@ -31835,11 +31832,10 @@ s32 Ai_FindBestMovePos(void *arg0, s16 *arg1, s16 *arg2, s32 arg3) {
     maxY=uy+mov;
     if(maxY>(s8)gBattleMap[11]-1) maxY=(s8)gBattleMap[11]-1;
 
- map=gBattleMap;
  for(y=minY;y<=maxY;y++) {
- row=(s8)y<<6;rowp=map+row;unitrow=base+row;
+ row=(s8)y<<6;rowp=(u8 *)gBattleMap+row;unitrow=base+row;
  for(x=minX;x<=maxX;x++) {
- s32 sx=(s8)x;offset=2*(sx+row);cost=(MapCostCell *)(map+offset);
+ sx=(s8)x;offset=2*(sx+row);cost=(MapCostCell *)((u8 *)gBattleMap+offset);
  if(cost->cost<0)continue;
  if(*(s8 *)(rowp+sx+0xE18E))continue;
  if(Map_IsAiTerrainBlocked(sx,(s8)y))continue;
