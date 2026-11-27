@@ -3308,6 +3308,8 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
     M2C_FIELD(arg0, s8 *, 0x12) = 0;
 }
 
+#pragma push
+#pragma optimization_level 3
 #pragma peephole on
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
