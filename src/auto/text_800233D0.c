@@ -3309,16 +3309,12 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma push
-#pragma peephole on
-static inline void UiCtx_BindArg0(void **p, void *v) { *p = v; }
-#pragma pop
-#pragma push
 #pragma peephole off
 void UiCtx_BeginMoveSelect(void *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *map;
 
-    UiCtx_Put0((void **)arg0, arg1);
+    UiCtx_BindArg0((void **)arg0, arg1);
     M2C_FIELD(arg0, u8 *, 0xB) = (u8) M2C_FIELD(arg1, u8 *, 0x19E);
     M2C_FIELD(arg0, u8 *, 0xC) = (u8) M2C_FIELD(arg1, u8 *, 0x19F);
     M2C_FIELD(arg0, s8 *, 0x11) = Unit_GetMov(arg1);
