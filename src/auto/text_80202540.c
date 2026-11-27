@@ -616,74 +616,175 @@ void fn_8020310C(f32 *m, f32 *v, f32 *out) {
     out[2] = (x * m[8] + y * m[9]) * w;
 }
 
-void fn_80203184(void) {
-    M2C_ERROR(/* unknown instruction: ps_add $f6, $f2, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_add $f7, $f3, $f5 */);
+asm void fn_80203184(const register f32 *a, const register f32 *b, register f32 *ab) {
+    psq_l f2, 0(a), 0, 0
+    psq_l f4, 0(b), 0, 0
+    ps_add f6, f2, f4
+    psq_st f6, 0(ab), 0, 0
+    psq_l f3, 8(a), 1, 0
+    psq_l f5, 8(b), 1, 0
+    ps_add f7, f3, f5
+    psq_st f7, 8(ab), 1, 0
 }
 
-void fn_802031A8(float *arg0, float *arg1, float *arg2) {
-    arg2[0] = arg0[0] - arg1[0];
-    arg2[1] = arg0[1] - arg1[1];
+asm void fn_802031A8(const register f32 *a, const register f32 *b, register f32 *ab) {
+    psq_l f2, 0(a), 0, 0
+    psq_l f4, 0(b), 0, 0
+    ps_sub f6, f2, f4
+    psq_st f6, 0(ab), 0, 0
+    psq_l f3, 8(a), 1, 0
+    psq_l f5, 8(b), 1, 0
+    ps_sub f7, f3, f5
+    psq_st f7, 8(ab), 1, 0
 }
 
-void fn_802031CC(void *arg0, void *arg1) {
-    f64* a = (f64*)arg0;
-    f64* b = (f64*)arg1;
-    f64 c;
-    c = a[0] * 0.5; 
-    b[0] = c;
-    c = a[1] * 0.5;
-    b[1] = c;
+void fn_802031CC(const register f32 *src, register f32 *dst, register f32 scale) {
+    register f32 vxy, vz, rxy, rz;
+
+    asm {
+        psq_l vxy, 0x0(src), 0, 0
+        psq_l vz, 0x8(src), 1, 0
+        ps_muls0 rxy, vxy, scale
+        psq_st rxy, 0x0(dst), 0, 0
+        ps_muls0 rz, vz, scale
+        psq_st rz, 0x8(dst), 1, 0
+    }
 }
 
-void fn_802031E8(f32 *src, f32 *dst) {
-extern f32 lbl_8036BC70, lbl_8036BC74;
-f32 x=src[0], y=src[1], z=src[2];
-f32 mag=x*x+y*y+z*z;
-f32 est=__frsqrte(mag);
-f32 scale=(est*lbl_8036BC70)*(lbl_8036BC74-est*est*mag);
-dst[0]=x*scale; dst[1]=y*scale; dst[2]=z*scale;
-}
-
-f32 Vec_Length(void *arg0) {
+void fn_802031E8(const register f32 *src, register f32 *unit) {
     extern f32 lbl_8036BC70;
     extern f32 lbl_8036BC74;
-    f32 temp_f0;
-    f32 var_f1;
+    register f32 c_half = lbl_8036BC70;
+    register f32 c_three = lbl_8036BC74;
+    register f32 v1_xy;
+    register f32 v1_z;
+    register f32 xx_zz;
+    register f32 xx_yy;
+    register f32 sqsum;
+    register f32 rsqrt;
+    register f32 nwork0;
+    register f32 nwork1;
 
-    M2C_ERROR(/* unknown instruction: ps_mul $f0, $f0, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f1, $f1, $f1, $f0 */);
-    var_f1 = M2C_ERROR(/* unknown instruction: ps_sum0 $f1, $f1, $f0, $f0 */);
-    if (var_f1 != (lbl_8036BC70 - lbl_8036BC70)) {
-        temp_f0 = __frsqrte(var_f1);
-        var_f1 *= -((temp_f0 * temp_f0 * var_f1) - lbl_8036BC74) * (temp_f0 * lbl_8036BC70);
+    asm {
+        psq_l v1_xy, 0x0(src), 0, 0
+        ps_mul xx_yy, v1_xy, v1_xy
+        psq_l v1_z, 0x8(src), 1, 0
+        ps_madd xx_zz, v1_z, v1_z, xx_yy
+        ps_sum0 sqsum, xx_zz, v1_z, xx_yy
+        frsqrte rsqrt, sqsum
+        fmuls nwork0, rsqrt, rsqrt
+        fmuls nwork1, rsqrt, c_half
+        fnmsubs nwork0, nwork0, sqsum, c_three
+        fmuls rsqrt, nwork0, nwork1
+        ps_muls0 v1_xy, v1_xy, rsqrt
+        psq_st v1_xy, 0x0(unit), 0, 0
+        ps_muls0 v1_z, v1_z, rsqrt
+        psq_st v1_z, 0x8(unit), 1, 0
     }
-    return var_f1;
 }
 
-f32 fn_80203270(const f32 *a, const f32 *b) { return a[0]*b[0] + (a[1]*b[1] + a[2]*b[2]); }
-
-void fn_80203290(const f32 *a, const f32 *b, f32 *out) {
-f32 x=a[1]*b[2]-a[2]*b[1];
-f32 y=a[2]*b[0]-a[0]*b[2];
-f32 z=a[0]*b[1]-a[1]*b[0];
-out[0]=x; out[1]=y; out[2]=z;
-}
-
-f32 PSVECDistance(void) {
+f32 Vec_Length(const register f32 *v) {
     extern f32 lbl_8036BC70;
     extern f32 lbl_8036BC74;
-    f32 temp_f0;
-    f32 var_f1;
+    register f32 vxy, vzz;
+    register f32 sqmag, rmag;
+    register f32 nwork0, nwork1;
+    register f32 c_three, c_half, c_zero;
 
-    M2C_ERROR(/* unknown instruction: ps_sub $f2, $f0, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f2, $f2, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_sub $f0, $f0, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f1, $f0, $f0, $f2 */);
-    var_f1 = M2C_ERROR(/* unknown instruction: ps_sum0 $f1, $f1, $f2, $f2 */);
-    if ((lbl_8036BC70 - lbl_8036BC70) != var_f1) {
-        temp_f0 = __frsqrte(var_f1);
-        var_f1 *= -((temp_f0 * temp_f0 * var_f1) - lbl_8036BC74) * (temp_f0 * lbl_8036BC70);
+    c_half = lbl_8036BC70;
+
+    asm {
+        psq_l vxy, 0x0(v), 0, 0
+        ps_mul vxy, vxy, vxy
+        lfs vzz, 0x8(v)
+        fsubs c_zero, c_half, c_half
+        ps_madd sqmag, vzz, vzz, vxy
+        ps_sum0 sqmag, sqmag, vxy, vxy
+        fcmpu cr0, sqmag, c_zero
+        beq L_000005F0
+        frsqrte rmag, sqmag
     }
-    return var_f1;
+
+    c_three = lbl_8036BC74;
+
+    asm {
+        fmuls nwork0, rmag, rmag
+        fmuls nwork1, rmag, c_half
+        fnmsubs nwork0, nwork0, sqmag, c_three
+        fmuls rmag, nwork0, nwork1
+        fmuls sqmag, sqmag, rmag
+    L_000005F0:
+    }
+
+    return sqmag;
+}
+
+asm f32 fn_80203270(const register f32 *a, const register f32 *b) {
+    psq_l f2, 4(a), 0, 0
+    psq_l f3, 4(b), 0, 0
+    ps_mul f2, f2, f3
+    psq_l f5, 0(a), 0, 0
+    psq_l f4, 0(b), 0, 0
+    ps_madd f3, f5, f4, f2
+    ps_sum0 f1, f3, f2, f2
+}
+
+asm void fn_80203290(const register f32 *a, const register f32 *b, register f32 *axb) {
+    psq_l f1, 0(b), 0, 0
+    lfs f2, 8(a)
+    psq_l f0, 0(a), 0, 0
+    ps_merge10 f6, f1, f1
+    lfs f3, 8(b)
+    ps_mul f4, f1, f2
+    ps_muls0 f7, f1, f0
+    ps_msub f5, f0, f3, f4
+    ps_msub f8, f0, f6, f7
+    ps_merge11 f9, f5, f5
+    ps_merge01 f10, f5, f8
+    psq_st f9, 0(axb), 1, 0
+    ps_neg f10, f10
+    psq_st f10, 4(axb), 0, 0
+}
+
+f32 PSVECDistance(const register f32 *a, const register f32 *b) {
+    extern f32 lbl_8036BC70;
+    extern f32 lbl_8036BC74;
+    register f32 v0yz, v1yz, v0xy, v1xy, dyz, dxy;
+    register f32 sqdist, rdist;
+    register f32 nwork0, nwork1;
+    register f32 c_half, c_three, c_zero;
+
+    asm {
+        psq_l v0yz, 0x4(a), 0, 0
+        psq_l v1yz, 0x4(b), 0, 0
+        ps_sub dyz, v0yz, v1yz
+        psq_l v0xy, 0x0(a), 0, 0
+        psq_l v1xy, 0x0(b), 0, 0
+        ps_mul dyz, dyz, dyz
+        ps_sub dxy, v0xy, v1xy
+    }
+
+    c_half = lbl_8036BC70;
+
+    asm {
+        ps_madd sqdist, dxy, dxy, dyz
+        fsubs c_zero, c_half, c_half
+        ps_sum0 sqdist, sqdist, dyz, dyz
+        fcmpu cr0, c_zero, sqdist
+        beq L_00000CBC
+    }
+
+    c_three = lbl_8036BC74;
+
+    asm {
+        frsqrte rdist, sqdist
+        fmuls nwork0, rdist, rdist
+        fmuls nwork1, rdist, c_half
+        fnmsubs nwork0, nwork0, sqdist, c_three
+        fmuls rdist, nwork0, nwork1
+        fmuls sqdist, sqdist, rdist
+    L_00000CBC:
+    }
+
+    return sqdist;
 }
