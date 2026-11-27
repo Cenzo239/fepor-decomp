@@ -4190,6 +4190,8 @@ void fn_8018B920(void *arg0) {
 }
 #pragma global_optimizer reset
 #pragma scheduling reset
+#pragma push
+#pragma optimization_level 2
 void fn_8018B934(void *arg0) {
     f32 fn_8005A028(s32, f32, f32, f32, f32);
     void fn_8000C188(void *);
@@ -4214,6 +4216,7 @@ void fn_8018B934(void *arg0) {
         fn_8000C188(arg0);
     }
 }
+#pragma pop
 #pragma fp_contract reset
 void fn_8018BA34(void *arg0) {
     extern const f32 lbl_8036ACE8;
