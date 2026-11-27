@@ -1222,10 +1222,6 @@ void fn_80256DD8(int arg0) {
     u8 *n2;
     u8 *tbl;
     s32 off;
-    u8 prev;
-    u8 next;
-    u16 p2;
-    u16 n2v;
     s32 id;
     u8 *freeNode;
     u8 id8;
@@ -1246,37 +1242,31 @@ void fn_80256DD8(int arg0) {
         node += ((u8)id << 2);
         if (*(u16 *)(node + 2) == 1) {
             if (node[0] != 0xFF) {
-                prev = node[0];
                 tbl = base + 0x800;
-                tbl += (prev << 2);
+                tbl += (node[0] << 2);
                 tbl[1] = node[1];
             } else {
-                next = node[1];
                 tbl = base + 0x900;
                 tbl += voice[0x10C];
-                *tbl = next;
+                *tbl = node[1];
             }
             if (node[1] != 0xFF) {
-                next = node[1];
-                prev = node[0];
                 tbl = base + 0x800;
-                tbl += next << 2;
-                *tbl = prev;
+                tbl += (node[1] << 2);
+                *tbl = node[0];
             } else if (node[0] == 0xFF) {
                 n2 = base + 0xA00;
                 n2 += (voice[0x10C] << 2);
                 if (*(u16 *)(n2 + 2) != 0xFFFF) {
-                    p2 = *(u16 *)(n2 + 2);
                     tbl = base + 0xA00;
-                    tbl += p2 << 2;
+                    tbl += (*(u16 *)(n2 + 2) << 2);
                     *(u16 *)tbl = *(u16 *)n2;
                 } else {
                     lbl_80368A4C = *(u16 *)n2;
                 }
                 if (*(u16 *)n2 != 0xFFFF) {
-                    n2v = *(u16 *)n2;
                     tbl = base + 0xA00;
-                    tbl += n2v << 2;
+                    tbl += (*(u16 *)n2 << 2);
                     *(u16 *)(tbl + 2) = *(u16 *)(n2 + 2);
                 }
             }
@@ -2774,123 +2764,33 @@ void fn_80259E40(void *arg0, void *arg1) {
         M2C_FIELD(arg0, s32 *, 36) = Sound_ClampMix(M2C_FIELD(arg0, s32 *, 36));
     }
 }
-#pragma pop
-void fn_8025A14C(void **arr, s32 lo, s32 hi) {
-    void **arr_save;
-    s32 hi_save;
-    s32 hi2;
-    s32 store4;
-    void **store_ptr;
-    s32 right_lo;
-    s32 store;
-    s32 mid;
-    s32 j;
-    s32 left_hi;
-    void **p;
-    void **q;
+#pragma push
+#pragma optimization_level 4
+void fn_8025A14C(void **arr, s32 lo, s32 hi)
+{
+    s32 i, j;
     void *tmp;
-    void *pivot;
-    void *t;
-
-    arr_save = arr;
-    hi_save = hi;
-    hi2 = hi;
-    if (lo >= hi_save) {
-        return;
-    }
-
-    mid = lo + hi_save;
-    mid = (s32)((u32)mid + ((u32)mid >> 31)) >> 1;
-    p = &arr_save[lo];
-    tmp = *p;
-    *p = arr_save[mid];
-    arr_save[mid] = tmp;
-
-    store = lo;
-    q = p;
-    j = lo + 1;
-    for (; j <= hi_save; j++) {
-        t = arr_save[j];
-        pivot = *p;
-        if (*(u32 *)((u8 *)t + 0x1C) < *(u32 *)((u8 *)pivot + 0x1C)) {
-            tmp = q[1];
-            store += 1;
-            q += 1;
-            *q = t;
-            arr_save[j] = tmp;
-        }
-    }
-
-    left_hi = store - 1;
-    store4 = store << 2;
-    tmp = *p;
-    *p = arr_save[store];
-    arr_save[store] = tmp;
-
-    if (lo < left_hi) {
-        mid = store + lo;
-        mid = mid - 1;
-        mid = (s32)((u32)mid + ((u32)mid >> 31)) >> 1;
-        tmp = *p;
-        *p = arr_save[mid];
-        arr_save[mid] = tmp;
-
-        right_lo = lo;
-        q = p;
-        j = lo + 1;
-        for (; j <= left_hi; j++) {
-            t = arr_save[j];
-            pivot = *p;
-            if (*(u32 *)((u8 *)t + 0x1C) < *(u32 *)((u8 *)pivot + 0x1C)) {
-                tmp = q[1];
-                right_lo += 1;
-                q += 1;
-                *q = t;
-                arr_save[j] = tmp;
+    if (lo < hi) {
+        tmp = arr[lo];
+        arr[lo] = arr[(lo + hi) / 2];
+        arr[(lo + hi) / 2] = tmp;
+        i = lo;
+        for (j = lo + 1; j <= hi; j++) {
+            if (*(u32 *)((u8 *)arr[j] + 0x1c) < *(u32 *)((u8 *)arr[lo] + 0x1c)) {
+                i++;
+                tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
             }
         }
-
-        tmp = *p;
-        *p = arr_save[right_lo];
-        arr_save[right_lo] = tmp;
-
-        fn_8025A14C(arr_save, lo, right_lo - 1);
-        fn_8025A14C(arr_save, right_lo + 1, store - 1);
-    }
-
-    right_lo = store + 1;
-    if (right_lo < hi2) {
-        p = (void **)((u8 *)arr_save + store4);
-        mid = store + hi2;
-        mid = mid + 1;
-        mid = (s32)((u32)mid + ((u32)mid >> 31)) >> 1;
-        tmp = p[1];
-        p[1] = arr_save[mid];
-        arr_save[mid] = tmp;
-
-        q = &arr_save[right_lo];
-        j = store + 2;
-        for (; j <= hi2; j++) {
-            t = arr_save[j];
-            pivot = p[1];
-            if (*(u32 *)((u8 *)t + 0x1C) < *(u32 *)((u8 *)pivot + 0x1C)) {
-                tmp = q[1];
-                right_lo += 1;
-                q += 1;
-                *q = t;
-                arr_save[j] = tmp;
-            }
-        }
-
-        tmp = p[1];
-        p[1] = arr_save[right_lo];
-        arr_save[right_lo] = tmp;
-
-        fn_8025A14C(arr_save, store + 1, right_lo - 1);
-        fn_8025A14C(arr_save, right_lo + 1, hi2);
+        tmp = arr[lo];
+        arr[lo] = arr[i];
+        arr[i] = tmp;
+        fn_8025A14C(arr, lo, i - 1);
+        fn_8025A14C(arr, i + 1, hi);
     }
 }
-
+#pragma pop
 #pragma use_lmw_stmw on
 void fn_8025A3A4(void *arg0, u32 arg1)
 {
