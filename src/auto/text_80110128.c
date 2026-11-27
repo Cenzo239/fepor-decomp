@@ -4,7 +4,7 @@
 
 #pragma push
 #pragma optimization_level 3
-u32 fn_80110128(void)
+volatile unsigned int fn_80110128(void)
 {
   extern s32 lbl_8032BD5C[];
   extern u8 gMapObjEventList[];
@@ -47,4 +47,3 @@ u32 fn_80110128(void)
   gMapObjEventList[2] = 0;
   gMapObjEventList[3] = 0;
 }
-#pragma pop
