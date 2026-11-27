@@ -153,7 +153,10 @@ auto/text_80041514.c:
 	.text       start:0x80041514 end:0x80042558
 
 auto/text_80042558.c:
-	.text       start:0x80042558 end:0x800536CC
+	.text       start:0x80042558 end:0x8004781C
+
+auto/text_8004781C.c:
+	.text       start:0x8004781C end:0x800536CC
 
 auto/text_800536CC.c:
 	.text       start:0x800536CC end:0x800537E8
