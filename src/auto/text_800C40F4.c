@@ -2442,6 +2442,7 @@ void Xml_GetChildValue(void *arg0, void *arg1)
 #pragma push
 #pragma optimization_level 4
 #pragma opt_propagation off
+#pragma opt_reorder off
 void Xml_GetNamedValue(void *arg0, void *arg1, String *arg2) {
     u32 strlen(const char *);
     s32 String_Compare(String *, u32, u32, char *, u32);
@@ -14216,7 +14217,8 @@ extern "C" void fn_800E1340(SortIterator first1, SortIterator last1, SortIterato
         SortIterator t1 = first1;
         s32 value = *t1.ptr;
         key = Sort_GetKey((void *)*t2.ptr);
-        if (Sort_GetKey((void *)value) > key) {
+        s32 key1 = Sort_GetKey((void *)value);
+        if (key1 > key) {
             SortIterator tmp = first2;
             s32 val = *tmp.ptr;
             first2.ptr++;
@@ -22966,62 +22968,58 @@ void fn_800F09A8(s32 arg0) {
     }
 }
 
-void fn_800F0A3C(s32 arg0) {
+void fn_800F0A3C(s32 arg0)
+{
     extern u8 lbl_8032B2B8[];
     u8 *base;
     u8 *p;
     s8 delta;
     s8 typ;
-    s8 idx;
+    u8 idx;
     u8 t;
 
     base = lbl_8032B2B8;
     delta = (s8)(arg0 - base[0x80]);
     base[0x100] = 0;
 
-    while ((idx = (s8)base[0x100]) < 0x40) {
-        p = base + idx;
+    while ((s8)(idx = base[0x100]) < 0x40) {
+        p = base + (s8)idx;
         p[0x80] = (u8)(p[0x80] + delta);
         p = base + (s8)base[0x100];
         typ = (s8)p[0xC0];
-        if (typ < 0xC) {
-            if (typ >= 0x8) {
-                break;
-            }
-            if ((s8)p[0x80] <= 0) {
-                break;
-            }
-        }
-        base[0x100] = (u8)(base[0x100] + 1);
+        if (typ < 0xC && typ >= 8) break;
+        if ((s8)p[0x80] <= 0) break;
+        base[0x100]++;
     }
 
-    p = lbl_8032B2B8 + (s8)lbl_8032B2B8[0x100];
-    t = *(p += 0xC0);
-    if (t <= 0x13) {
-        switch (t) {
-        case 0:
-        case 0x10:
-        case 0x12:
-            t = 8;
-            break;
-        case 3:
-        case 0xD:
-        case 0xF:
-            t = 0xB;
-            break;
-        case 1:
-        case 0xC:
-        case 0x11:
-            t = 9;
-            break;
-        case 2:
-        case 0xE:
-        case 0x13:
-            t = 0xA;
-            break;
-        }
+    p = lbl_8032B2B8;
+    p += (s8)base[0x100];
+    idx = *(p += 0xC0);
+    switch (idx) {
+    case 0x0:
+    case 0x10:
+    case 0x12:
+        idx = 0x8;
+        break;
+    case 0x3:
+    case 0xD:
+    case 0xF:
+        idx = 0xB;
+        break;
+    case 0x1:
+    case 0xC:
+    case 0x11:
+        idx = 0x9;
+        break;
+    case 0x2:
+    case 0xE:
+    case 0x13:
+        idx = 0xA;
+        break;
+    default:
+        break;
     }
-    *p = t;
+    *p = (u8)idx;
 }
 
 void fn_800F0B18(u8 *arg0) {
