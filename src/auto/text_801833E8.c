@@ -52,10 +52,6 @@ if(!(entry[5]&63) && target==item) count++;
 return count;
 }
 
-static inline f32 Math_ModuloF(f32 a, f32 b) {
-    return a - b * (f32)(s32)(a / b);
-}
-
 typedef struct PathHeightPoint { s32 index; f32 height; f32 rawHeight; } PathHeightPoint;
 extern u16 gUnkGlobalVar_803306E0[];
 
@@ -4202,13 +4198,16 @@ void fn_8018B934(void *arg0) {
     f32 ad48;
     f32 ace8;
     f32 temp_f1;
+    f32 rem;
     void *temp_r4;
 
     M2C_FIELD(arg0, s32 *, 0x3C) = M2C_FIELD(arg0, s32 *, 0x3C) + 1;
     temp_f1 = fn_8005A028(2, M2C_FIELD(arg0, f32 *, 0x40), M2C_FIELD(arg0, f32 *, 0x44), (f32) M2C_FIELD(arg0, s32 *, 0x38), (f32) M2C_FIELD(arg0, s32 *, 0x3C));
     ad48 = lbl_8036AD48;
     ace8 = lbl_8036ACE8;
-    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 0x15C) = (s16) (ace8 * (temp_f1 - ad48 * (f32) (s32) (temp_f1 / ad48)));
+    rem = temp_f1;
+    rem -= ad48 * (f32)(s32)(temp_f1 / ad48);
+    M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), s16 *, 0x15C) = (s16) (ace8 * rem);
     if (M2C_FIELD(arg0, s32 *, 0x3C) == M2C_FIELD(arg0, s32 *, 0x38)) {
         temp_r4 = M2C_FIELD(arg0, void **, 0x30);
         M2C_FIELD(temp_r4, s16 *, 0x15C) = (s16) (ace8 * M2C_FIELD(arg0, f32 *, 0x34));
