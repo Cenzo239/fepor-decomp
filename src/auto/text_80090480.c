@@ -120,8 +120,8 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     void fn_8008CD34(void);
     s8 Unit_GetMaxHp(void *);
     void *Msg_Expand(char *);
-    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
-    s32 fn_800398B0(void *, s32);
+    void fn_8001003C(s16, s32, s32, s32, s32, f32, f32, char *, ...);
+    s8 fn_800398B0(void *, u8);
     void *fn_80017570(s32);
 
     extern f32 gZeroF;
@@ -129,7 +129,6 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     extern f32 lbl_80369784;
     extern f32 lbl_80369790;
     extern f32 lbl_80369768;
-    extern f32 lbl_80369754;
     extern char gBattleHelpStrings[];
 
     u8 *por;
@@ -148,12 +147,12 @@ void fn_80090688(void *arg0, s32 arg1, s32 arg2) {
     hp = ((u8 *)arg0)[0x1A8];
     maxHp = Unit_GetMaxHp(arg0);
     text = Msg_Expand(gBattleHelpStrings + 0x111);
-    fn_8001003C(0x10, 0x2C, 1, 1, 0, gBattleHelpStrings + 0xFA, text, (s8)hp, (s8)maxHp, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0x2C, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0xFA, text, (s8)hp, (s8)maxHp);
 
-    value1 = (s8)fn_800398B0(arg0, (u8)arg1);
-    value2 = (s8)fn_800398B0(arg0, (u8)arg1);
+    value1 = fn_800398B0(arg0, arg1);
+    value2 = fn_800398B0(arg0, arg1);
     text = fn_80017570(arg1);
-    fn_8001003C(0x10, 0x48, 1, 1, 0, gBattleHelpStrings + 0x152, text, value2, lbl_80369754, gZeroF, arg2 + value1);
+    fn_8001003C(0x10, 0x48, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0x152, text, value2, arg2 + value1);
 }
 #pragma opt_common_subs on
 #pragma use_lmw_stmw off
