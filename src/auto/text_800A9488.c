@@ -30,17 +30,18 @@ static inline void *fn_800AA794_helper(void) {
     return NULL;
 }
 
+typedef struct BattleMap {
+    s32 width;
+    s32 height;
+    u8 pad8[5];
+    u8 unitMap[0x6101];
+    s16 cost[0x4040];
+    s8 fog[0x4000];
+} BattleMap;
+
 static inline void BattleMap_FillRangeAll(u8 minRange, u8 maxRange) {
     void Map_FillAttackRange(void *, s8, s8, u8, u8);
-    struct BattleMap {
-        s32 width;
-        s32 height;
-        u8 pad8[5];
-        u8 unitMap[0x6101];
-        s16 cost[0x4040];
-        s8 fog[0x4000];
-    };
-    extern struct BattleMap gBattleMap;
+    extern BattleMap gBattleMap;
     s8 x, y;
     for (y = 0; y < gBattleMap.height; y++) {
         for (x = 0; x < gBattleMap.width; x++) {
