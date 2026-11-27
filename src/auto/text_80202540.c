@@ -187,32 +187,54 @@ asm void fn_802025E8(const register Mtx src, register Mtx dst, register f32 xS, 
 }
 #pragma pop
 
-void fn_80202640(void) {
-    M2C_ERROR(/* unknown instruction: ps_mul $f6, $f4, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f9, $f4, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f8, $f5, $f5, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f5, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f3, $f8, $f8, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_muls1 $f10, $f9, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f8, $f7, $f8, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_nmsub $f3, $f3, $f11, $f2 */);
-    M2C_ERROR(/* unknown instruction: ps_muls1 $f7, $f5, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f3, $f11, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f6, $f6, $f6 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f11, $f4, $f9, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_msub $f7, $f4, $f9, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_nmsub $f6, $f6, $f3, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_nmsub $f8, $f8, $f3, $f1 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f11, $f11, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f7, $f7, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_madds0 $f9, $f4, $f5, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_merge00 $f5, $f11, $f8 */);
-    M2C_ERROR(/* unknown instruction: ps_nmsub $f10, $f10, $f2, $f9 */);
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f4, $f8, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f9, $f9, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f10, $f3 */);
-    M2C_ERROR(/* unknown instruction: ps_merge10 $f7, $f10, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_merge01 $f11, $f10, $f9 */);
+void fn_80202640(register f32 (*m)[4], const register f32 *q) {
+    extern f32 lbl_8036BC38;
+    register f32 c_zero, c_one, c_two, scale;
+    register f32 tmp0, tmp1, tmp2, tmp3, tmp4;
+    register f32 tmp5, tmp6, tmp7, tmp8, tmp9;
+    c_one = lbl_8036BC38;
+
+	asm {
+        psq_l tmp0, 0(q), 0, 0
+        psq_l tmp1, 8(q), 0, 0
+        fsubs c_zero, c_one, c_one
+        fadds c_two, c_one, c_one
+        ps_mul tmp2, tmp0, tmp0
+        ps_merge10 tmp5, tmp0, tmp0
+        ps_madd tmp4, tmp1, tmp1, tmp2
+        ps_mul tmp3, tmp1, tmp1
+        ps_sum0 scale, tmp4, tmp4, tmp4
+        ps_muls1 tmp7, tmp5, tmp1
+        fres tmp9, scale
+        ps_sum1 tmp4, tmp3, tmp4, tmp2
+        ps_nmsub scale, scale, tmp9, c_two
+        ps_muls1 tmp6, tmp1, tmp1
+        ps_mul scale, tmp9, scale
+        ps_sum0 tmp2, tmp2, tmp2, tmp2
+        fmuls scale, scale, c_two
+        ps_madd tmp8, tmp0, tmp5, tmp6
+        ps_msub tmp6, tmp0, tmp5, tmp6
+        psq_st c_zero, 12(m), 1, 0
+        ps_nmsub tmp2, tmp2, scale, c_one
+        ps_nmsub tmp4, tmp4, scale, c_one
+        psq_st c_zero, 44(m), 1, 0
+        ps_mul tmp8, tmp8, scale
+        ps_mul tmp6, tmp6, scale
+        psq_st tmp2, 40(m), 1, 0
+        ps_madds0 tmp5, tmp0, tmp1, tmp7
+        ps_merge00 tmp1, tmp8, tmp4
+        ps_nmsub tmp7, tmp7, c_two, tmp5
+        ps_merge10 tmp0, tmp4, tmp6
+        psq_st tmp1, 16(m), 0, 0
+        ps_mul tmp5, tmp5, scale
+        ps_mul tmp7, tmp7, scale
+        psq_st tmp0, 0(m), 0, 0
+        psq_st tmp5, 8(m), 1, 0
+        ps_merge10 tmp3, tmp7, c_zero
+        ps_merge01 tmp9, tmp7, tmp5
+        psq_st tmp3, 24(m), 0, 0
+        psq_st tmp9, 32(m), 0, 0
+	}
 }
 
 #pragma push
@@ -297,28 +319,59 @@ void C_MTXLightOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 sx, f32 sy, f32 tx,
   m[11] = lbl_8036BC38;
 }
 #pragma scheduling off
-f32 fn_802029C4(void) {
-    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f1, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f6, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f10, $f8, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f11, $f9, $f1, $f10 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f12, $f11, $f12, $f11 */);
-    M2C_ERROR(/* unknown instruction: ps_mul $f4, $f2, $f0 */);
-    M2C_ERROR(/* unknown instruction: ps_madd $f5, $f3, $f1, $f4 */);
-    M2C_ERROR(/* unknown instruction: ps_sum0 $f6, $f5, $f6, $f5 */);
-    return M2C_ERROR(/* psq_l unimplemented */);
+#pragma push
+asm void fn_802029C4(const register f32 (*m)[4], const register f32 *src, register f32 *dst) {
+    nofralloc
+    psq_l f0, 0(src), 0, 0
+    psq_l f2, 0(m), 0, 0
+    psq_l f1, 8(src), 1, 0
+    ps_mul f4, f2, f0
+    psq_l f3, 8(m), 0, 0
+    ps_madd f5, f3, f1, f4
+    psq_l f8, 16(m), 0, 0
+    ps_sum0 f6, f5, f6, f5
+    psq_l f9, 24(m), 0, 0
+    ps_mul f10, f8, f0
+    psq_st f6, 0(dst), 1, 0
+    ps_madd f11, f9, f1, f10
+    psq_l f2, 32(m), 0, 0
+    ps_sum0 f12, f11, f12, f11
+    psq_l f3, 40(m), 0, 0
+    ps_mul f4, f2, f0
+    psq_st f12, 4(dst), 1, 0
+    ps_madd f5, f3, f1, f4
+    ps_sum0 f6, f5, f6, f5
+    psq_st f6, 8(dst), 1, 0
+    blr
 }
+#pragma pop
 
-void fn_80202A18(const f32 m[3][4], const f32 *v, f32 *out) {
-    f32 x=v[0], y=v[1], z=v[2];
-    f32 a=m[0][0]*x+m[0][1]*y;
-    f32 b=m[1][0]*x+m[1][1]*y;
-    f32 c=m[2][0]*x+m[2][1]*y;
-    out[0]=m[0][2]*z+a;
-    out[1]=m[1][2]*z+b;
-    out[2]=m[2][2]*z+c;
+#pragma push
+asm void fn_80202A18(const register f32 (*m)[4], const register f32 *src, register f32 *dst) {
+    nofralloc
+    psq_l f0, 0x0(m), 0, 0
+    psq_l f6, 0x0(src), 0, 0
+    psq_l f2, 0x10(m), 0, 0
+    ps_mul f8, f0, f6
+    psq_l f4, 0x20(m), 0, 0
+    ps_mul f10, f2, f6
+    psq_l f7, 0x8(src), 1, 0
+    ps_mul f12, f4, f6
+    psq_l f3, 0x18(m), 0, 0
+    ps_sum0 f8, f8, f8, f8
+    psq_l f5, 0x28(m), 0, 0
+    ps_sum0 f10, f10, f10, f10
+    psq_l f1, 0x8(m), 0, 0
+    ps_sum0 f12, f12, f12, f12
+    ps_madd f9, f1, f7, f8
+    psq_st f9, 0x0(dst), 1, 0
+    ps_madd f11, f3, f7, f10
+    psq_st f11, 0x4(dst), 1, 0
+    ps_madd f13, f5, f7, f12
+    psq_st f13, 0x8(dst), 1, 0
+    blr
 }
+#pragma pop
 
 #pragma scheduling on
 void fn_80202A6C(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
