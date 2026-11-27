@@ -8242,16 +8242,16 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     u32 *Item_GetFlagsPtr(s32);
     s32 UnitInv_FindEmptyLow(void *);
     s32 UnitInv_FindEmptyHigh(void *);
-    void *Process_CreateChild(void *, void *);
+    void *fn_8000CAA0(void *, void *);
     void Ui_PlaySeCue(void *, s32);
     s32 UnitInv_GetSlot(void *, s16);
     void Item_Copy(s32, s32);
     void UnitInv_Refresh(void *);
     void fn_801436AC(void *, s32);
     void fn_80143C9C(void *);
-    void Item_Clear(s32);
-    s16 UnitInv_FindFilledDown(void *, s16);
-    s16 UnitInv_FindFilledUp(void *, s16);
+    void fn_8001D580(s32);
+    s16 fn_80164FBC(void *, s16);
+    s16 fn_80164E78(void *, s16);
     void Process_Goto(void *, s32);
     extern u8 gUiMsgPopupProc[];
     extern u16 gUiMsgStrings[];
@@ -8301,7 +8301,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
         slot = UnitInv_FindEmptyLow(inv);
         if (!(*(u32 *)((u8 *)inv + 0x60) & 1) || ((s16)slot < 0)) {
             *(Vec2s *)&posLow = ((Obj *)list)->v13();
-            popup = Process_CreateChild(gUiMsgPopupProc, self);
+            popup = fn_8000CAA0(gUiMsgPopupProc, self);
             *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posLow;
             *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posLow + 1);
             *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x260;
@@ -8311,7 +8311,7 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
         slot = UnitInv_FindEmptyHigh(inv);
         if (!(*(u32 *)((u8 *)inv + 0x60) & 2) || ((s16)slot < 0)) {
             *(Vec2s *)&posHigh = ((Obj *)list)->v13();
-            popup = Process_CreateChild(gUiMsgPopupProc, self);
+            popup = fn_8000CAA0(gUiMsgPopupProc, self);
             *(f32 *)((u8 *)popup + 0x30) = (f32)*(s16 *)&posHigh;
             *(f32 *)((u8 *)popup + 0x34) = (f32)*((s16 *)&posHigh + 1);
             *(void **)((u8 *)popup + 0x54) = (u8 *)gUiMsgStrings + 0x260;
@@ -8323,10 +8323,10 @@ extern "C" void Ui_ConfirmItemTake(void *arg0) {
     UnitInv_Refresh(inv);
     fn_801436AC(list, item);
     fn_80143C9C(list);
-    Item_Clear(item);
-    next = UnitInv_FindFilledDown(inv, *(s16 *)((u8 *)inv + 0x4c));
-    if (next < 0) {
-        next = UnitInv_FindFilledUp(inv, *(s16 *)((u8 *)inv + 0x4c));
+    fn_8001D580(item);
+    next = fn_80164FBC(inv, *(s16 *)((u8 *)inv + 0x4c));
+    if (0 > next) {
+        next = fn_80164E78(inv, *(s16 *)((u8 *)inv + 0x4c));
     }
     if (next >= 0) {
         *(s16 *)((u8 *)inv + 0x4c) = next;
