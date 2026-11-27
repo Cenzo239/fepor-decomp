@@ -3309,7 +3309,7 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 #pragma peephole off
 void UiCtx_BeginMoveSelect(s32 *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
