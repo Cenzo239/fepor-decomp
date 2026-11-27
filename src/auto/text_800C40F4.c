@@ -2006,12 +2006,12 @@ s32 fn_800C802C(void *arg0, s32 arg1) {
  Block value, temp, fallback;
  String str;
  u8 alloc;
- register s32 result;
+ s32 result;
  u8 *self;
  u8 *entry;
  s32 offset;
  s32 j,k;
- register s32 index;
+ s32 index;
  u8 *list;
  s32 listOffset;
  u8 equal;
@@ -32083,7 +32083,9 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
             }
             if (flag2 != 0) {
                 x16 = (s16)x;
-                for (nb = lbl_802732A0, count = 0; nb[0] != 0x7FFF; nb += 2) {
+                nb = lbl_802732A0;
+                count = 0;
+                while (nb[0] != 0x7FFF) {
                     u8 oob;
                     s32 nx;
                     s32 ny;
@@ -32107,6 +32109,7 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                             }
                         }
                     }
+                    nb += 2;
                 }
                 if (count != 0) {
                     continue;
