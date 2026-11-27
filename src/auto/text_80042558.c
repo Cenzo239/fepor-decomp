@@ -2359,10 +2359,10 @@ static inline u8 MapObj_Contains(u8 *entry, s32 x, s32 y) {
     return 0;
 }
 
-static inline void *Map_FindObjAt_Inline(void *arg0, s32 x, s32 y, u32 arg3, u32 arg4) {
+static inline void *Map_FindObjAt_Inline(void *arg0, s32 n, s32 x, s32 y, u32 arg3, u32 arg4) {
     typedef struct { u8 pad[0xB4]; } MapObjEntry;
     s32 i;
-    for (i = *(s16 *)((u8 *)arg0 + 6) - 1; i >= 0; i--) {
+    for (i = n; i >= 0; i--) {
         MapObjEntry *base = *(MapObjEntry **)((u8 *)arg0 + 0x14);
         u8 *entry = (u8 *)&base[i];
         u32 flags = *(u32 *)((u8 *)*(void **)(entry + 0x10) + 0xBC);
