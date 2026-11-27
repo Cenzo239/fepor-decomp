@@ -833,7 +833,7 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma pop
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 2
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 
@@ -851,8 +851,8 @@ void fn_801C9170(void *arg0) {
     void *self;
     u8 b2;
     u8 b1;
-    u8 b0;
     s32 held;
+    u8 b0;
     s32 trig;
     s32 buttons;
     void *obj;
