@@ -10091,10 +10091,6 @@ s32 off;
 u8 *slot;
 s32 i;
 u8 valid;
-u8 *cand;
-u8 *found;
-s32 j;
-s32 off2;
 i=0; off=0x1a000;
 for(;i<2;i++) {
 base=*save;
@@ -10102,46 +10098,7 @@ slot=base+off;
 if(*(u32 *)(slot+0x40)!=0x4645384AU) valid=0;
 else if(*(u32 *)(slot+0x44)!=0x20050201U) valid=0;
 else valid=1;
-if(valid) {
-for(j=0,off2=0x2000;j<4;j+=2) {
-cand=base+off2;
-if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid) {
-if(slot[0x63]==cand[0x62]) {
-found=cand;
-goto done;
-}
-}
-off2+=0x4000;
-cand=base+off2;
-if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid) {
-if(slot[0x63]==cand[0x62]) {
-found=cand;
-goto done;
-}
-}
-off2+=0x4000;
-cand=base+off2;
-if(*(u32 *)(cand+0x40)!=0x4645384AU) valid=0;
-else if(*(u32 *)(cand+0x44)!=0x20050201U) valid=0;
-else valid=1;
-if(valid) {
-if(slot[0x63]==cand[0x62]) {
-found=cand;
-goto done;
-}
-}
-off2+=0x4000;
-}
-found=0;
-done:
-if(found!=0) return slot;
-}
+if(valid && Save_FindLinkedSlot(base,slot[0x63])) return slot;
 off+=0x6000;
 }
 return 0;
