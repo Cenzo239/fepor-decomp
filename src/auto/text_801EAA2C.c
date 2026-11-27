@@ -1727,6 +1727,7 @@ void *AramCache_Find(s32 arg0) {
 }
 
 static inline void *AramCache_Unlink(void *head, u8 *node) {
+    void *res = head;
     void *next = *(void **)(node + 0x60);
     void *prev;
     if (next != 0) {
@@ -1736,9 +1737,9 @@ static inline void *AramCache_Unlink(void *head, u8 *node) {
     if (prev != 0) {
         *(void **)((u8 *)prev + 0x60) = *(void **)(node + 0x60);
     } else {
-        head = *(void **)(node + 0x60);
+        res = *(void **)(node + 0x60);
     }
-    return head;
+    return res;
 }
 
 static inline void AramCache_EvictByFlag(u8 *node, s32 i) {
