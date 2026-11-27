@@ -99,4 +99,5 @@ void fn_800956D8(u8 *arg0) {
  *(f32 *)(cam+0x70)=lbl_803697C0;
  EventLock_Inc();
 }
+#pragma peephole reset
 #pragma optimization_level reset
