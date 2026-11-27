@@ -1047,6 +1047,7 @@ s32 fn_8021371C(s32 arg0) {
     return temp_r31;
 }
 
+volatile u16 gPadRegsAbs[32] : 0xCC005000;
 void fn_80213760(u32 arg0, u32 arg1) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
@@ -1366,7 +1367,7 @@ blr
 #pragma peephole off
 void fn_80213E30(void) {
 s64 OSGetTime(void);
-extern s64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
+extern const s64 lbl_803686B0, lbl_803686B8, lbl_803686C0, lbl_803686C8, lbl_803686D0;
 extern volatile u32 OS_AIRegs[8];
 s64 start, elapsed;
 s64 now = 0;
@@ -1377,13 +1378,11 @@ while (!done) {
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~0x20) | 0x20;
 (*(volatile u32 *)0xCC006C00) &= ~2;
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
-sample = ((volatile u32 *)0xCC006C00)[2];
-while (sample == ((volatile u32 *)0xCC006C00)[2]) {}
+AI_WaitSampleChange((volatile u32 *)0xCC006C00);
 start = OSGetTime();
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~2) | 2;
 (*(volatile u32 *)0xCC006C00) = ((*(volatile u32 *)0xCC006C00) & ~1) | 1;
-sample = ((volatile u32 *)0xCC006C00)[2];
-while (sample == ((volatile u32 *)0xCC006C00)[2]) {}
+AI_WaitSampleChange((volatile u32 *)0xCC006C00);
 now = OSGetTime();
 elapsed = now - start;
 (*(volatile u32 *)0xCC006C00) &= ~2;
