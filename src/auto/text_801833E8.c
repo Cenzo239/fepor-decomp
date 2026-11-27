@@ -16195,21 +16195,21 @@ s32 ScriptCmd_UnitWarp(u8 unitId, u8 x, u8 y) {
 #pragma push
 #pragma opt_lifetimes off
 s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
-    extern u8 lbl_802B14E4[];
-    extern u8 lbl_80296F90[];
-    extern u8 lbl_80296FA8[];
-    extern u8 lbl_802CA518[];
-    extern s32 lbl_80367110;
-    void *fn_8000C0C0(u8 *);
-    void *fn_8000CAF0(u8 *, s32);
-    void fn_8002297C(u8 *);
-    void fn_8003816C(void *, u8, u8);
+    extern u8 gUnits[];
+    extern u8 E_EventState_script[];
+    extern u8 Proc_MuEventInst[];
+    extern u8 gBattleMap[];
+    extern s32 gUiInputFlags;
+    void *Process_Find(u8 *);
+    void *Process_Create(u8 *, s32);
+    void Map_RefreshUnitMap(u8 *);
+    void Unit_SetMapPos(void *, u8, u8);
     void fn_8004FE98(void *, s32);
     void fn_80050C90(void *);
     s32 fn_800C0658(void);
-    s32 fn_80107D64(void *, u8 *, u8 *, s32, s32, s32);
+    s32 Unit_ResolveWarpPos(void *, u8 *, u8 *, s32, s32, s32);
     u32 fn_80127C48(void);
-    void fn_80184264(void *, s32, u16, void *);
+    void MoveAnim_BindPath(void *, s32, u16, void *);
     void fn_80184750(void *, s32, s32, s32);
 
     u8 *var_r31;
@@ -16225,7 +16225,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     s32 sw;
 
     if (arg0 != 0) {
-        var_r31 = lbl_802B14E4 + ((arg0 - 1) * 0x280);
+        var_r31 = gUnits + ((arg0 - 1) * 0x280);
     } else {
         var_r31 = NULL;
     }
@@ -16234,7 +16234,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
     }
 
     var_r30 = 0x80;
-    temp = fn_8000C0C0(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         b = ((u8 *)temp)[0x30];
     } else {
@@ -16244,7 +16244,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         var_r30 |= 0x40;
     }
 
-    temp = fn_8000C0C0(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         b = ((u8 *)temp)[0x31];
     } else {
@@ -16254,7 +16254,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         var_r30 |= 0x200;
     }
 
-    temp = fn_8000C0C0(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         sw = ((u8 *)temp)[0x32];
     } else {
@@ -16269,7 +16269,7 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
         break;
     }
 
-    temp = fn_8000C0C0(lbl_80296F90);
+    temp = Process_Find(E_EventState_script);
     if (temp != NULL) {
         temp_r0 = *(u16 *)((u8 *)temp + 0x34);
     } else {
@@ -16279,15 +16279,15 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
 
     sp9 = arg1;
     sp8 = arg2;
-    temp_r28 = fn_80107D64(var_r31, &sp9, &sp8, 1, 0, 0);
+    temp_r28 = Unit_ResolveWarpPos(var_r31, &sp9, &sp8, 1, 0, 0);
     if (temp_r28 != 0) {
-        fn_8003816C(var_r31, sp9, sp8);
-        if (lbl_80367110 & 1) {
+        Unit_SetMapPos(var_r31, sp9, sp8);
+        if (gUiInputFlags & 1) {
             fn_8004FE98(var_r31, 0);
             fn_80184750(var_r31, var_r30 & 0xF, 0, 0);
             fn_80050C90(var_r31);
         } else {
-            temp = fn_8000C0C0(lbl_80296FA8);
+            temp = Process_Find(Proc_MuEventInst);
             if (temp != NULL) {
                 var_r6 = temp;
             } else {
@@ -16295,12 +16295,12 @@ s32 fn_801A0F68(u8 arg0, u8 arg1, u8 arg2) {
                 if (var_r3 == 0) {
                     var_r3 = fn_800C0658();
                 }
-                var_r6 = fn_8000CAF0(lbl_80296FA8, var_r3);
+                var_r6 = Process_Create(Proc_MuEventInst, var_r3);
             }
-            fn_80184264(var_r31, temp_r28, var_r30, var_r6);
+            MoveAnim_BindPath(var_r31, temp_r28, var_r30, var_r6);
         }
     }
-    fn_8002297C(lbl_802CA518);
+    Map_RefreshUnitMap(gBattleMap);
     return 1;
 }
 #pragma pop
