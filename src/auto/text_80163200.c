@@ -1039,16 +1039,16 @@ extern "C" void fn_801645D8(void *arg0, s32 arg1) {
     extern f32 lbl_8036A890;
     extern f32 lbl_8036A8A0;
     extern f32 lbl_8036A8A4;
-    s16 y;
-    s16 half;
-    s16 slot;
     void *text;
     s16 t;
     s16 ox;
-    s16 x;
-    s32 accum;
     s16 row_h;
+    s16 x;
     u32 *item;
+    s32 accum;
+    s16 half;
+    s16 slot;
+    s16 y;
     s16 *rect;
     s16 w;
     s16 h;
@@ -4359,41 +4359,39 @@ fn_8005C8B4((s32)sp8);
 }
 
 void fn_8016A0CC(void *arg0) {
-    char *strcpy(char *, char *);
+    char *fn_80234450(char *, char *);
     s32 fn_80161FB8(void);
     s32 fn_801620AC(void);
-    u8 FileCache_IsReady(void *);
+    u8 fn_8005BA10(void *);
     void fn_80162054(void);
-    void *Archive_Load(void *);
-    void Process_ClearFunc(void *);
+    void *fn_8003FCCC(void *);
+    void fn_8000C188(void *);
     extern u8 lbl_80277BC0[];
-    extern u8 gBattleState[];
+    extern u8 lbl_80330708[];
     char sp8[0x40];
 
-    switch ((s32)gBattleState[0xA6]) {
+    switch ((s32)lbl_80330708[0xA6]) {
     case 3:
     case 0:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x103);
+        fn_80234450(sp8, (char *)lbl_80277BC0 + 0x103);
         break;
     case 1:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x117);
+        fn_80234450(sp8, (char *)lbl_80277BC0 + 0x117);
         break;
     case 2:
-        strcpy(sp8, (char *)lbl_80277BC0 + 0x12B);
+        fn_80234450(sp8, (char *)lbl_80277BC0 + 0x12B);
         break;
     }
     if (fn_80161FB8() != 0) {
-        if (FileCache_IsReady((void *)fn_801620AC()) != 0) {
-            while (FileCache_IsReady(sp8) == 0) {
-                goto done;
+        if (fn_8005BA10((void *)fn_801620AC()) != 0) {
+            if (fn_8005BA10(sp8) != 0) {
+                fn_80162054();
+                *(void **)((u8 *)arg0 + 0x44) = fn_8003FCCC((void *)fn_801620AC());
+                *(void **)((u8 *)arg0 + 0x48) = fn_8003FCCC(sp8);
+                fn_8000C188(arg0);
             }
-            fn_80162054();
-            *(void **)((u8 *)arg0 + 0x44) = Archive_Load((void *)fn_801620AC());
-            *(void **)((u8 *)arg0 + 0x48) = Archive_Load(sp8);
-            Process_ClearFunc(arg0);
         }
     }
-done: ;
 }
 
 #pragma push
@@ -13917,6 +13915,8 @@ void *fn_801795C0(void) {
     return (char *)&gUiMsgStrings + 0x69A;
 }
 
+#pragma push
+#pragma opt_propagation off
 s32 fn_801795D0(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u32 *Unit_GetItemSlot(void *, s32);
@@ -13957,6 +13957,7 @@ s32 fn_801795D0(void *arg0) {
     }
     return 0;
 }
+#pragma pop
 
 s32 fn_801796CC(void *menu, void *parent, void *item) {
 void Process_DetachChild(void *);
@@ -14874,16 +14875,22 @@ void Stream_Read(void *arg0, s32 arg1, s32 arg2) {
     s->ptr = s->ptr + arg1;
 }
 
-u64 fn_8017A860(s8 **arg0) {
-    u64 v = (u64)(u8)*arg0[1]++ << 56;
-    v += (u64)(u8)*arg0[1]++ << 48;
-    v += (u64)(u8)*arg0[1]++ << 40;
-    v += (u64)(u8)*arg0[1]++ << 32;
-    v += (u64)(u8)*arg0[1]++ << 24;
-    v += (u64)(u8)*arg0[1]++ << 16;
-    v += (u64)(u8)*arg0[1]++ << 8;
-    v += (u64)(u8)*arg0[1]++;
-    return v;
+u64 fn_8017A860(u8 **arg0)
+{
+  u64 v = ((u64) ((*(arg0[1]++)) & 0xFFU)) << 56;
+  u8 new_var;
+  v += ((u64) (((((((((*(arg0[1]++)) & 0xFFU) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF) & 0xFFFF)) << 48;
+  v += ((u64) ((*(arg0[1]++)) & 0xFFU)) << 40;
+  v += ((u64) ((*(arg0[1]++)) & 0xFFU)) << 32;
+  v += ((u64) ((*(arg0[1]++)) & 0xFFU)) << 24;
+  if ((v && v) && v)
+  {
+  }
+  v += ((u64) ((*(arg0[1]++)) & 0xFFU)) << 16;
+  v += ((u64) ((*(arg0[1]++)) & 0xFFU)) << 8;
+  new_var = *(arg0[1]++);
+  v += (u64) (new_var & 0xFFU);
+  return v;
 }
 
 u32 fn_8017A950(u8 **arg0) {
