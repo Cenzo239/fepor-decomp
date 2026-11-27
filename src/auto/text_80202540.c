@@ -118,12 +118,31 @@ stfs c1, 0(m)
     }
 }
 
-f32 fn_80202574(f64 farg0, f64 farg1, f64 farg2) {
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f5, $f1, $f5, $f5 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f7, $f2, $f7, $f7 */);
-    M2C_ERROR(/* unknown instruction: ps_sum1 $f8, $f3, $f8, $f8 */);
-    return (f32) farg0;
+#pragma push
+#pragma optimization_level 1
+asm void fn_80202574(const register Mtx src, register Mtx dst, register f32 xT, register f32 yT, register f32 zT) {
+    nofralloc
+    psq_l fp4, 0(src), 0, 0
+    frsp xT, xT
+    psq_l fp5, 8(src), 0, 0
+    frsp yT, yT
+    psq_l fp7, 24(src), 0, 0
+    frsp zT, zT
+    psq_l fp8, 40(src), 0, 0
+    psq_st fp4, 0(dst),  0, 0
+    ps_sum1 fp5, xT, fp5, fp5
+    psq_l fp6, 16(src), 0, 0
+    psq_st fp5, 8(dst), 0, 0
+    ps_sum1 fp7, yT, fp7, fp7
+    psq_l fp9, 32(src), 0, 0
+    psq_st fp6, 16(dst), 0, 0
+    ps_sum1 fp8, zT, fp8, fp8
+    psq_st fp7, 24(dst), 0, 0
+    psq_st fp9, 32(dst), 0, 0
+    psq_st fp8, 40(dst), 0, 0
+    blr
 }
+#pragma pop
 
 void PSMTXScale(register Mtx m, register f32 xS, register f32 yS, register f32 zS) {
     register f32 c0 = 0.0f;
@@ -139,14 +158,34 @@ stfs c0, 44(m)
     }
 }
 
-void fn_802025E8(f32 *src, f32 *dst, f32 x, f32 y, f32 z) {
-    dst[0] = src[0] * x;
-    dst[1] = src[1] * x;
-    dst[2] = src[2] * y;
-    dst[3] = src[3] * y;
-    dst[4] = src[4] * z;
-    dst[5] = src[5] * z;
+#pragma push
+#pragma optimization_level 1
+asm void fn_802025E8(const register Mtx src, register Mtx dst, register f32 xS, register f32 yS, register f32 zS) {
+    nofralloc
+    frsp xS, xS
+    psq_l fp4, 0(src), 0, 0
+    frsp yS, yS
+    psq_l fp5, 8(src), 0, 0
+    frsp zS, zS
+    ps_muls0 fp4, fp4, xS
+    psq_l fp6, 16(src), 0, 0
+    ps_muls0 fp5, fp5, xS
+    psq_l fp7, 24(src), 0, 0
+    ps_muls0 fp6, fp6, yS
+    psq_l fp8, 32(src), 0, 0
+    psq_st fp4, 0(dst), 0, 0
+    ps_muls0 fp7, fp7, yS
+    psq_l fp2, 40(src), 0, 0
+    psq_st fp5, 8(dst), 0, 0
+    ps_muls0 fp8, fp8, zS
+    psq_st fp6, 16(dst), 0, 0
+    ps_muls0 fp2, fp2, zS
+    psq_st fp7, 24(dst), 0, 0
+    psq_st fp8, 32(dst), 0, 0
+    psq_st fp2, 40(dst), 0, 0
+    blr
 }
+#pragma pop
 
 void fn_80202640(void) {
     M2C_ERROR(/* unknown instruction: ps_mul $f6, $f4, $f4 */);
