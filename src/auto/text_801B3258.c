@@ -1357,35 +1357,12 @@ void fn_801B6290(void *arg0) {
     u8 fn_800AA188(void);
     void Unit_FocusCamera(void *, s32);
     void Process_Goto(void *, s32);
-    extern u8 gBattle[];
-    u8 byte;
-    void *obj;
-    void *sub;
+    void *unit;
 
     if (fn_800AA188() != 0) {
-        obj = *(void **)(gBattle + 0x280);
-        if (obj != NULL) {
-            sub = *(void **)((u8 *)obj + 0x190);
-            byte = *(u8 *)((u8 *)sub + 8);
-            if (byte == 0) goto focus;
-            if (byte == 5) goto focus;
-            else goto second;
-        }
-    second:
-        obj = *(void **)(gBattle + 0x560);
-        if (obj != NULL) {
-            sub = *(void **)((u8 *)obj + 0x190);
-            byte = *(u8 *)((u8 *)sub + 8);
-            if (byte == 0) goto focus;
-            if (byte == 5) goto focus;
-            else goto set_null;
-        }
-        goto set_null;
-    set_null:
-        obj = NULL;
-    focus:
-        if (obj != NULL) {
-            Unit_FocusCamera(obj, 0);
+        unit = Battle_FindActiveSideUnit();
+        if (unit != NULL) {
+            Unit_FocusCamera(unit, 0);
         }
     } else {
         Process_Goto(arg0, 0);
@@ -7876,8 +7853,8 @@ void fn_801C1AC8(s16 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5, s32
 void fn_801C1BC0(s8 arg0, s16 arg1, s16 arg2, s32 arg3, s32 arg4, s32 arg5) {
     void *Process_Create(void *, s32);
     extern u8 lbl_80297FF8[];
-    extern f32 lbl_8036B328;
-    extern f64 lbl_8036B330;
+    extern const f32 lbl_8036B328;
+    extern const f64 lbl_8036B330;
     void *obj;
     union { f64 d; struct { u32 hi; u32 lo; } w; } conv;
     union { f64 d; struct { f32 hi; f32 lo; } f; } diff;
@@ -11015,11 +10992,10 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
         var_f2 = lbl_8036B47C;
     }
     var_r6 = (u8 *)&spC;
-    var_r9 = 0;
     temp_r0 = (s32)((f32)(s8)lbl_80366E9C * var_f2);
     temp_r8 = (s8)lbl_80366E9C - (u16)temp_r0;
     count = temp_r8 % 4;
-    for (var_ctr = 2; var_ctr != 0; var_ctr--) {
+    for (var_r9 = 0, var_ctr = 2; var_ctr != 0; var_ctr--) {
         if (var_r9 < count) {
             *var_r6 = (u8)(s32)((f32)temp_r8 * lbl_8036B480 + lbl_8036B478);
         } else {
@@ -11035,8 +11011,7 @@ void fn_801C7C18(u8 arg0,u8 arg1,u8 arg2) {
         var_r9 = temp_r9 + 1;
     }
     var_r6_2 = (u8 *)&sp8;
-    var_r8 = 0;
-    for (var_ctr = 3; var_ctr != 0; var_ctr--) {
+    for (var_r8 = 0, var_ctr = 3; var_ctr != 0; var_ctr--) {
         if (var_r8 < (s32)((u16)temp_r0 % 3)) {
             *var_r6_2 = (u8)(s32)(lbl_8036B478 + (f32)(u16)temp_r0 / lbl_8036B484);
         } else {
