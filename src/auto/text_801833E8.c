@@ -3,11 +3,6 @@
 #include "global.h"
 
 
-static inline void Mu_CopyTwoBytes(u8 *dst, u8 *src) {
-    dst[0] = src[0];
-    dst[1] = src[1];
-}
-
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
 typedef struct UiDrawRect { s32 v[4]; } UiDrawRect;
