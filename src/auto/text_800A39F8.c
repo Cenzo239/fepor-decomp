@@ -1211,7 +1211,6 @@ void fn_800A5968(void *arg0) {
     extern const f32 lbl_80369A68;
     extern const f32 lbl_80369A64;
     extern const f32 lbl_80369A60;
-    extern const f32 lbl_80369A5C;
     extern const f32 lbl_80369A58;
     extern const f32 lbl_80369A54;
     extern const f32 lbl_80369A50;
@@ -1227,22 +1226,22 @@ void fn_800A5968(void *arg0) {
     if (temp_r0 >= 0x46 && temp_r0 <= 0x64) {
         M2C_FIELD(arg0, u8 *, 0x61) = 8;
         M2C_FIELD(arg0, s16 *, 0x42) = (s16)Math_Ease(4, lbl_80369A50, lbl_80369A54, (f32)(M2C_FIELD(arg0, s32 *, 0x38) - 0x46), lbl_80369A58);
-        M2C_FIELD(arg0, u8 *, 0x60) = (u8)Math_Ease(0, lbl_80369A5C, lbl_80369A60, (f32)(M2C_FIELD(arg0, s32 *, 0x38) - 0x46), lbl_80369A58);
+        M2C_FIELD(arg0, u8 *, 0x60) = (u8)Math_Ease(0, 0.0f, lbl_80369A60, (f32)(M2C_FIELD(arg0, s32 *, 0x38) - 0x46), lbl_80369A58);
     }
     temp_r3 = M2C_FIELD(arg0, s32 *, 0x38);
     if (temp_r3 >= 0xC8 && temp_r3 <= 0xDC) {
-        M2C_FIELD(arg0, u8 *, 0x60) = (u8)Math_Ease(0, lbl_80369A60, lbl_80369A5C, (f32)(temp_r3 - 0xC8), lbl_80369A64);
+        M2C_FIELD(arg0, u8 *, 0x60) = (u8)Math_Ease(0, lbl_80369A60, 0.0f, (f32)(temp_r3 - 0xC8), lbl_80369A64);
     }
     if (M2C_FIELD(arg0, s32 *, 0x38) > 0xDC) {
         Process_ClearFunc(arg0);
     }
     Prim2D_Begin();
-    Prim2D_SetTransform(lbl_80369A5C, lbl_80369A5C, lbl_80369A5C, lbl_80369A68);
+    Prim2D_SetTransform(0.0f, 0.0f, 0.0f, lbl_80369A68);
     Prim2D_SetColorByte(0xFF);
     Prim2D_BindTexture(M2C_FIELD(arg0, s32 *, 0x34), 0, 0x11);
     Prim2D_PrepareTex();
     Prim2D_AddPrim(1);
-    Prim2D_SetQuadMin((f32)M2C_FIELD(arg0, s16 *, 0x40), (f32)M2C_FIELD(arg0, s16 *, 0x42), lbl_80369A5C, lbl_80369A5C);
+    Prim2D_SetQuadMin((f32)M2C_FIELD(arg0, s16 *, 0x40), (f32)M2C_FIELD(arg0, s16 *, 0x42), 0.0f, 0.0f);
     Prim2D_SetQuadMax((f32)(M2C_FIELD(arg0, s16 *, 0x40) + 0x1E0), (f32)(M2C_FIELD(arg0, s16 *, 0x42) + 0xA0), lbl_80369A6C, lbl_80369A70);
     Prim2D_SetColor(0xFF, 0xFF, 0xFF, M2C_FIELD(arg0, u8 *, 0x60));
     Prim2D_EndPrim();
