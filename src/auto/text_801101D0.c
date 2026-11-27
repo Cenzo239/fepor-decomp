@@ -1986,6 +1986,7 @@ void fn_80113F88(void *arg0) {
     }
     SeCue_PlayAt((char *)gActorXmlStrs + 0x481, 0x64, fx, fy, fz);
 }
+#pragma opt_lifetimes on
 #pragma push
 #pragma optimization_level 1
 void fn_80114078(void *arg0)
