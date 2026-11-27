@@ -13915,8 +13915,6 @@ void *fn_801795C0(void) {
     return (char *)&gUiMsgStrings + 0x69A;
 }
 
-#pragma push
-#pragma optimization_level 3
 s32 fn_801795D0(void *arg0) {
     void *Item_GetFlagsPtr(void *);
     u32 *Unit_GetItemSlot(void *, s32);
@@ -13957,7 +13955,6 @@ s32 fn_801795D0(void *arg0) {
     }
     return 0;
 }
-#pragma pop
 
 s32 fn_801796CC(void *menu, void *parent, void *item) {
 void Process_DetachChild(void *);
