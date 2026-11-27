@@ -7761,12 +7761,11 @@ extern "C" void fn_8016FD08(void *arg0) {
 
 #pragma push
 #pragma optimization_level 4
-#pragma opt_propagation off
 extern "C" u8 fn_8016FDA4(u32 *arg0) {
     u64 *Item_GetFlagsPtr(void *);
     s32 var_r31;
     u64 *bits;
-    s64 zero;
+    s32 zero;
 
     if (arg0 == NULL || *arg0 == 0U) {
         return 0U;
@@ -7774,10 +7773,10 @@ extern "C" u8 fn_8016FDA4(u32 *arg0) {
     var_r31 = 0;
     bits = Item_GetFlagsPtr(arg0);
     zero = 0;
-    if ((*(s64 *)bits & 0x20000000000LL) == zero) {
+    if ((*(s64 *)bits & 0x20000000000LL) == (s64)zero) {
         bits = Item_GetFlagsPtr(arg0);
         zero = 0;
-        if ((*(s64 *)bits & 0x200LL) == zero) {
+        if ((*(s64 *)bits & 0x200LL) == (s64)zero) {
             var_r31 = 1;
         }
     }
