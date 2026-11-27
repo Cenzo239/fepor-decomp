@@ -3471,6 +3471,8 @@ void fn_8004983C(void *arg0) {
     }
 }
 
+#pragma push
+#pragma opt_propagation off
 void fn_800498A4(void *arg0, void *arg1, u8 arg2)
 {
     extern u8 lbl_802856C8[];
@@ -3525,8 +3527,6 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
         *(f32 *)(process + 0x3C) = (f32)((s8)obj[5] + (s8)obj[7]) / 2.0f;
         *(f32 *)(process + 0x40) = *(f32 *)(obj + 0xC);
         switch (mode) {
-        default:
-            return;
         case 0:
             fn_8005FEE8(obj + 0x14, lbl_80368EE4);
             *(f32 *)(node + 0x5C) = lbl_80368F10;
@@ -3539,7 +3539,7 @@ void fn_800498A4(void *arg0, void *arg1, u8 arg2)
         break;
     }
 }
-
+#pragma pop
 void fn_80049A3C(void *arg0)
 {
     void fn_8005FEE8(void *, f32);
@@ -6705,7 +6705,7 @@ void fn_80050C90(void *arg0)
         enabled = 1;
         mode = (u8)(gMapBlendMode - 1);
 
-        if (((u32)((~(mode) | enabled) -
+        if (((u32)((enabled | ~mode) -
             ((u32)(enabled - mode) >> 1)) >> 31) == 0) {
             enabled = 0;
         }
@@ -7575,6 +7575,16 @@ void *fn_80052B54(void *name, u32 priority) {
         *(u32 *)((u8 *)init + 8) |= 0x20000000;
     }
     return proc;
+}
+
+static inline u8 *Obj_GetActiveUnit(u8 *object) {
+    if (*(u32 *)(object + 8) & 0x20000000) {
+        u8 *unit = *(u8 **)(object + 0x34);
+        if (unit != 0) {
+            return unit;
+        }
+    }
+    return *(u8 **)(object + 0x30);
 }
 
 void fn_80052CA8(void *arg0) {
