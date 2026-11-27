@@ -1,6 +1,10 @@
 /* Functions from 0x800A39F8 to 0x800A9384, found by decomp-toolkit. */
 #include "common.h"
 
+static inline void *SlotPtr(u8 *base, s32 idx) {
+    return base + idx * 0xC;
+}
+
 static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
     s32 fn_8023C56C(s32, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
@@ -619,11 +623,11 @@ void fn_800A46E0(void) {
 s32 fn_800A46F4(s32 arg0) {
     s32 fn_8020CC28(void *, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
+    void *temp_r6;
     u32 temp_r4;
     s32 temp_r6_2;
     u32 var_r29;
     u32 var_r28;
-    void *temp_r6;
 
     if (((s32) M2C_FIELD(lbl_803123A0, s32 *, 0xA0) != 0) && ((u8) M2C_FIELD(lbl_803123A0, u8 *, 0xA4) == 0)) {
         var_r28 = 0xAU;
