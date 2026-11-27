@@ -584,14 +584,12 @@ extern "C" void fn_80163974(void *arg0, s32 arg1) {
     s16 h;
     u8 ok;
     void *obj;
-    s16 mid;
     s16 dw;
     s16 dh;
     void *info;
-    register s32 lim;
 
-    idx = arg1;
     self = (Obj *)arg0;
+    idx = arg1;
     self->v2();
     fn_8008BBF8(0, 0, (s16)(self->unkE - self->unkA), (s16)(self->unk10 - self->unkC), 0, 0xFF);
     self->v3(idx);
@@ -648,18 +646,16 @@ loop_test:
 
     if (self->unk4A != 0) {
         s16 x0, x1, y0, y1, t;
-        s16 a, b, width;
         Prim2D_Begin();
         Prim2D_AddZ(lbl_8036A894);
         Prim2D_PrepareTex();
         obj = Face_Create(fn_8003A114(*(void **)&self->unk58), 0x100);
-        lim = 0x130;
-        a = self->unkA;
-        b = self->unkE;
-        width=(s16)(b-a);
-        *(u16 *)((u8 *)obj + 0x46) &= (u16)~1;
-        mid = (s16)(a + (width >> 1));
-        *(u16 *)((u8 *)obj + 0x46) |= (u16)(mid < lim);
+        {
+            s16 left = self->unkA;
+            s16 width = self->unkE - left;
+            *(u16 *)((u8 *)obj + 0x46) &= 0xFFFE;
+            *(u16 *)((u8 *)obj + 0x46) |= (s16)(left + (width >> 1)) < 304;
+        }
         x0 = self->unk12;
         x1 = self->unk16;
         info = *(void **)((u8 *)obj + 0x34);
@@ -15804,7 +15800,7 @@ void fn_8017BB94(void *arg0) {
 #pragma use_lmw_stmw reset
 
 #pragma scheduling off
-#pragma optimization_level 3
+#pragma global_optimizer off
 s32 fn_8017BC94(void *arg0) {
     u8 Status_Test(void *, u8);
     void *fn_80105C5C(void *, u8);
@@ -15854,7 +15850,7 @@ s32 fn_8017BC94(void *arg0) {
     } while (i < 0x62);
     return count;
 }
-#pragma optimization_level reset
+#pragma global_optimizer on
 #pragma scheduling on
 #pragma cplusplus off
 s32 Unit_CountExtraSkills(void *arg0) {
