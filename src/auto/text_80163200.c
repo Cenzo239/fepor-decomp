@@ -16042,15 +16042,15 @@ void fn_8017C170(void *arg0) {
 }
 
 #pragma global_optimizer off
+#pragma opt_lifetimes off
 s32 fn_8017C22C(void *arg0) {
 u8 Status_Test(void *, u8); void *fn_80105C5C(void *, u8);
-void *self; s32 i; void *unit; void *parent; void *item; u8 check;
-self = arg0;
-unit = *(void **)((u8 *)*(void **)((u8 *)self + 0x30) + 0x4c);
+s32 i; void *unit; void *parent; void *item; u8 check;
+unit = *(void **)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x4c);
 for (i = 0; i < 0x62; i++) {
 item = fn_80105C5C((u8 *)unit + 0x1bc, (u8)i);
 if (item && *(u8 *)((u8 *)item + 0x19)) {
-parent = *(void **)((u8 *)self + 0x30);
+parent = *(void **)((u8 *)arg0 + 0x30);
 if (*(u8 *)((u8 *)item + 0x19) == 0)
 check = 0;
 else {
@@ -16063,7 +16063,7 @@ check = 0;
 else
 check = Status_Test((u8 *)*(void **)((u8 *)parent + 0x4c) + 0x1bc, *(u8 *)((u8 *)item + 0x18));
 }
-if (check && *(u8 *)((u8 *)*(void **)((u8 *)self + 0x38) + 0x18) < *(u8 *)((u8 *)item + 0x18))
+if (check && *(u8 *)((u8 *)*(void **)((u8 *)arg0 + 0x38) + 0x18) < *(u8 *)((u8 *)item + 0x18))
 return 1;
 }
 }
@@ -16605,7 +16605,7 @@ void fn_8017D4B8(s32 *ret, const R_8017D4B8 *r) {
 s16 fn_8017D52C(void *arg0, s16 arg1) {
     f32 fn_80037818(s32, u8);
     u8 fn_80105BC0(s32, M2C_UNK);
-    extern const f32 lbl_8036ABD8;
+    extern f32 lbl_8036ABD8;
     s32 temp_r31;
     s16 var_r30;
 
