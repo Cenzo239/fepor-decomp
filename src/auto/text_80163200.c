@@ -1119,15 +1119,16 @@ loop_test:
     }
 
     if (self->unk4A != 0) {
-        s16 left, width;
         fn_8000A258();
         fn_80009C0C(lbl_8036A8A4);
         fn_8000A248();
         obj = fn_8007BA4C(fn_8003A064(*(void **)&self->unk58), 0x100);
-        left = self->unkA;
-        width = self->unkE - left;
-        *(u16 *)((u8 *)obj + 0x46) &= 0xFFFE;
-        *(u16 *)((u8 *)obj + 0x46) |= (s16)(left + (width >> 1)) < 304;
+        {
+            s16 left = self->unkA;
+            s16 width = self->unkE - left;
+            *(u16 *)((u8 *)obj + 0x46) &= 0xFFFE;
+            *(u16 *)((u8 *)obj + 0x46) |= (s16)(left + (width >> 1)) < 304;
+        }
         dw = (s16)(self->unk16 - self->unk12);
         dh = (s16)(self->unk18 - self->unk14);
         info = *(void **)((u8 *)obj + 0x34);
@@ -15722,8 +15723,8 @@ void fn_8017BB94(void *arg0) {
     s16 count;
     u8 r;
     u8 r2;
-    s32 cur;
     s32 lim;
+    s32 cur;
     s32 total;
 
     count = 0;
@@ -17959,6 +17960,8 @@ fn_8008A290(1,0);
 }
 
 #pragma use_lmw_stmw on
+#pragma push
+#pragma optimization_level 2
 void fn_8017FD84(void *arg0) {
     void fn_8013FEF0(void);
     void fn_8016A5AC(void *);
@@ -17976,7 +17979,7 @@ void fn_8017FD84(void *arg0) {
     void *other;
     register void *obj82;
     void *node;
-    s32 index;
+    s16 index;
     void *self;
 
     self = arg0;
@@ -17987,13 +17990,13 @@ void fn_8017FD84(void *arg0) {
     unit = fn_8013AC54(obj81);
     index = *(s16 *)((u8 *)obj82 + 0x4E);
     node = *(void **)((u8 *)obj82 + 0x64);
-    if ((s16)index >= 0) {
-        while ((s16)index > 0) {
+    if (index >= 0) {
+        while (index > 0) {
             node = *(void **)((u8 *)node + 4);
             index--;
         }
     } else {
-        while ((s16)index < 0) {
+        while (index < 0) {
             node = *(void **)node;
             index++;
         }
@@ -18004,6 +18007,7 @@ void fn_8017FD84(void *arg0) {
     obj81 = *(void **)((u8 *)unit + 0x188);
     fn_800BE3CC(obj81, obj82, fn_80036EAC(unit, (s8)fn_80036DE0(unit, other)), self);
 }
+#pragma pop
 #pragma use_lmw_stmw reset
 
 void fn_8017FE84(void *arg0) {
