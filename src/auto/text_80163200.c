@@ -14992,6 +14992,9 @@ extern "C" void fn_8017AACC(void *arg0) {
     }
 }
 #pragma pop
+#pragma push
+#pragma optimization_level 3
+#pragma opt_loop_invariants off
 extern "C" void fn_8017AC8C(void *arg0, void *arg1) {
     void Prim2D_AddZ(f32);
     void Prim2D_PrepareTex(void);
