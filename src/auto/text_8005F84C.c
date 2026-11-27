@@ -1233,6 +1233,9 @@ s32 GActor_FindNode(void *arg0, void *name) {
     return -1;
 }
 
+#pragma push
+#pragma opt_common_subs off
+#pragma opt_propagation off
 void GActor_Finalize(void *arg0)
 {
     void Game_Assert(void *, s32, void *);
@@ -1250,10 +1253,9 @@ void GActor_Finalize(void *arg0)
     u8 *scaleNode;
     u8 *self;
     u8 *cur;
-    u8 *source;
-    u8 *buffer;
-    s32 i;
     s32 offset;
+    s32 i;
+    u8 *source;
     s32 size;
     s32 count;
 
@@ -1283,73 +1285,10 @@ void GActor_Finalize(void *arg0)
     *(void *volatile *)(self + 0x6C) = 0;
     *(void *volatile *)(self + 0x6C) = 0;
 
-    cur = self;
-    goto model_test;
-
-model_loop:
-    model = *(u8 **)(cur + 0x40);
-    if (model == 0) goto model_advance;
-    goto model_found;
-
-model_advance:
-    cur = *(u8 **)(cur + 4);
-
-model_test:
-    if (cur != 0) goto model_loop;
-    model = 0;
-
-model_found:
-
-    cur = self;
-    goto mesh_test;
-
-mesh_loop:
-    mesh = *(u8 **)(cur + 0x48);
-    if (mesh == 0) goto mesh_advance;
-    goto mesh_found;
-
-mesh_advance:
-    cur = *(u8 **)(cur + 4);
-
-mesh_test:
-    if (cur != 0) goto mesh_loop;
-    mesh = 0;
-
-mesh_found:
-
-    cur = self;
-    goto geometry_test;
-
-geometry_loop:
-    geometry = *(u8 **)(cur + 0x50);
-    if (geometry == 0) goto geometry_advance;
-    goto geometry_found;
-
-geometry_advance:
-    cur = *(u8 **)(cur + 4);
-
-geometry_test:
-    if (cur != 0) goto geometry_loop;
-    geometry = 0;
-
-geometry_found:
-
-    cur = self;
-    goto scale_test;
-
-scale_loop:
-    scaleNode = *(u8 **)(cur + 0x44);
-    if (scaleNode == 0) goto scale_advance;
-    goto scale_found;
-
-scale_advance:
-    cur = *(u8 **)(cur + 4);
-
-scale_test:
-    if (cur != 0) goto scale_loop;
-    scaleNode = 0;
-
-scale_found:
+    model = (u8 *)GActor_FindInherited(self, 0x40);
+    mesh = (u8 *)GActor_FindInherited(self, 0x48);
+    geometry = (u8 *)GActor_FindInherited(self, 0x50);
+    scaleNode = (u8 *)GActor_FindInherited(self, 0x44);
 
     if (model != 0) {
         count = *(s32 *)(model + 8);
@@ -1364,23 +1303,15 @@ scale_found:
         offset = 0;
         source = *(u8 **)(model + 0xC);
 
-        goto copy_test;
+        while (i < *(s32 *)(model + 8)) {
+            PSMTXCopy(
+                source + 0xBC,
+                *(u8 **)(self + 0x60) + offset
+            );
 
-copy_loop:
-        buffer = *(u8 **)(self + 0x60);
-
-        PSMTXCopy(
-            source + 0xBC,
-            buffer + offset
-        );
-
-        offset += 0x30;
-        i++;
-        source += 0xF4;
-
-copy_test:
-        if (i < *(s32 *)(model + 8)) {
-            goto copy_loop;
+            offset += 0x30;
+            i++;
+            source += 0xF4;
         }
     }
 
@@ -1419,16 +1350,16 @@ copy_test:
 
     if (geometry != 0) {
         if (*(u32 *)(geometry + 0xC) & 1) {
-            offset = *(u16 *)(mesh + 0x4C) * 6;
+            s32 geomOff = *(u16 *)(mesh + 0x4C) * 6;
 
             *(void **)(self + 0x6C) = fn_800C4638(
-                offset + *(u16 *)(mesh + 0x4E) * 3,
+                geomOff + *(u16 *)(mesh + 0x4E) * 3,
                 lbl_8026B590 + 0x27,
                 0
             );
 
             *(void **)(self + 0x70) =
-                *(u8 **)(self + 0x6C) + offset;
+                *(u8 **)(self + 0x6C) + geomOff;
         }
     }
 
@@ -1439,7 +1370,7 @@ copy_test:
 
     fn_80150FEC(self);
 }
-
+#pragma pop
 void fn_800616A0(void *arg0) {
     void Game_Assert(void *, s32, void *);
     void fn_800C4588(void *);
@@ -5333,7 +5264,8 @@ s32 fn_80068D84(void *arg0, s32 arg1, void *arg2, void *arg3) {
     void fn_800690D4(void *,void *,void *);
     void fn_80069354(void *,void **,void *,void *,void *);
     s32 GMaterial_SetupColor(void *,s32,void *,void *);
-    s32 i, stage, offset;
+    s32 i, stage;
+    u32 offset;
     u32 ctx = fn_8006060C(arg0);
     void (*cb)(void *,u32);
     gMaterialTevStageCount = 0;
@@ -5376,7 +5308,7 @@ s32 fn_80068D84(void *arg0, s32 arg1, void *arg2, void *arg3) {
         }
     }
     if (!(*(u32 *)arg0 & 0x20000) && (M2C_FIELD(arg3,u16 *,4)&0x8000) && M2C_FIELD(arg3,void **,0x18)) {
-        for(offset=0,i=0;i<8;offset+=4,i++) {
+        for(offset=0,i=0;i<8;i++,offset+=4) {
             cb=*(void (**)(void *,u32))((u8 *)M2C_FIELD(arg3,void **,0x18)+offset);
             if(cb) cb(arg3,ctx);
         }
