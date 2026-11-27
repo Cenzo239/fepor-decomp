@@ -232,6 +232,7 @@ auto/text_8005F84C.c:
 
 auto/Ui_MenuWork.c:
 	.text       start:0x8006F10C end:0x8006F170
+	.bss        start:0x80311CA8 end:0x80311D50
 
 auto/UiWin_Prims.c:
 	.text       start:0x8006F170 end:0x8006FBE4
@@ -288,12 +289,9 @@ auto/text_80083DC0.c:
 auto/text_800852BC.c:
 	.text       start:0x800852BC end:0x80089490
 
-text_80089490.c:
-	.text       start:0x80089490 end:0x800894F8
-
 text_800894F8.c:
-	.text       start:0x800894F8 end:0x80089980
-	.data       start:0x80289950 end:0x802899C0
+	.text       start:0x80089490 end:0x80089980
+	.data       start:0x80289950 end:0x80289A14
 
 auto/text_80089980.c:
 	.text       start:0x80089980 end:0x80089A28
@@ -582,6 +580,7 @@ auto/text_80149FB8.c:
 auto/text_8014A25C.c:
 	.text       start:0x8014A25C end:0x8014A370
 	.ctors      start:0x80267AF4 end:0x80267AF8
+	.data       start:0x80292808 end:0x802928A8
 
 auto/text_8014A370.c:
 	.text       start:0x8014A370 end:0x8014A928
@@ -925,6 +924,7 @@ dolphin/exi/EXIBios.c:
 
 dolphin/si/SIBios.c:
 	.text       start:0x8023ABD4 end:0x8023C53C
+	.data       start:0x8029EF68 end:0x8029EFD0
 
 auto/text_8023C53C.c:
 	.text       start:0x8023C53C end:0x8023C56C

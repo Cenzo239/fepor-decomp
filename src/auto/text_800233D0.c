@@ -831,50 +831,127 @@ void *GfxEnt_Get(u8);
 void Ui_PlaySeCue(void *, s32);
 
 #pragma cplusplus on
+struct UiMenuDefinition {
+    u8 pad[4];
+    virtual void v0() = 0;
+    virtual u8 v1() = 0;
+    virtual void v2() = 0;
+    virtual void v3(void *) = 0;
+    virtual void v4() = 0;
+    virtual void v5(void *) = 0;
+    virtual void v6() = 0;
+    virtual void v7(void *, u8) = 0;
+    virtual void v8() = 0;
+    virtual void v9() = 0;
+    virtual void v10() = 0;
+    virtual void v11() = 0;
+    virtual void v12() = 0;
+    virtual void v13() = 0;
+    virtual void v14() = 0;
+    virtual void *v15(s32) = 0;
+    virtual s32 v16() = 0;
+    virtual s32 v17() = 0;
+    virtual s32 v18() = 0;
+    virtual s32 v19() = 0;
+    virtual s32 v20() = 0;
+    virtual s32 v21() = 0;
+    virtual s32 v22() = 0;
+    virtual s32 v23() = 0;
+    virtual void v24() = 0;
+    virtual void v25() = 0;
+    virtual u32 v26() = 0;
+};
+struct UiMenuEntry {
+    virtual void i0() = 0;
+    virtual void i1() = 0;
+    virtual void i2() = 0;
+    virtual void i3() = 0;
+    virtual void i4() = 0;
+    virtual void i5() = 0;
+    virtual void i6() = 0;
+    virtual s32 i7(void *, u8) = 0;
+};
+
+static inline void Ui_BuildMenuItems(UiMenuDefinition *menu, u8 *object, s32 accumulator)
+{
+    extern u8 lbl_80284588[];
+    void *item;
+    s32 status;
+    u8 *holder;
+    s32 value;
+    s32 cursor;
+
+    cursor = 0;
+    object[0x60] = accumulator;
+    *(s8 *)(object + 0x62) = -1;
+
+    while (1) {
+        item = menu->v15(cursor);
+
+        if (item == NULL) {
+            break;
+        }
+
+        status = ((UiMenuEntry *)item)->i7(item, (u8)cursor);
+
+        if ((u8)status != 3) {
+            if ((u8)status == 1) {
+                if ((s8)object[0x62] < 0) {
+                    object[0x62] = object[0x60];
+                }
+                status = 0;
+            }
+
+            holder = (u8 *)Process_Create(lbl_80284588, object);
+
+            *(void **)(holder + 0x34) = item;
+            holder[0x3A] = (u8)cursor;
+            holder[0x3B] = object[0x60];
+            holder[0x39] = (u8)status;
+
+            *(s16 *)(holder + 0x30) = menu->v16();
+
+            value = menu->v17();
+            *(s16 *)(holder + 0x32) = accumulator + value;
+
+            *(u32 *)(holder + 0x3C) = 0;
+
+            value = menu->v20();
+            accumulator += value;
+
+            value = fn_8000B920(holder);
+
+            {
+                s8 slot = (s8)object[0x60];
+                object[0x60]++;
+                object[0x40 + slot] = (u8)value;
+            }
+        }
+        cursor++;
+    }
+
+    if ((s8)object[0x62] < 0) {
+        object[0x62] = 0;
+    }
+    *(void **)(object + 0x3C) = menu;
+
+    *(s16 *)(object + 0x30) = menu->v21();
+    *(s16 *)(object + 0x32) = menu->v22();
+    *(s16 *)(object + 0x34) = menu->v18();
+
+    value = menu->v19();
+    if ((s16)value != 0) {
+        *(s16 *)(object + 0x36) = menu->v19();
+    } else {
+        s32 dimension = menu->v20() * (s8)object[0x60];
+        s32 height = menu->v17();
+        *(s16 *)(object + 0x36) = height + dimension;
+    }
+}
+
 extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     extern u8 lbl_80284548[];
-    extern u8 lbl_80284588[];
 
-    struct Menu {
-        u8 pad[4];
-        virtual void v0() = 0;
-        virtual u8 v1() = 0;
-        virtual void v2() = 0;
-        virtual void v3(void *) = 0;
-        virtual void v4() = 0;
-        virtual void v5(void *) = 0;
-        virtual void v6() = 0;
-        virtual void v7(void *, u8) = 0;
-        virtual void v8() = 0;
-        virtual void v9() = 0;
-        virtual void v10() = 0;
-        virtual void v11() = 0;
-        virtual void v12() = 0;
-        virtual void v13() = 0;
-        virtual void v14() = 0;
-        virtual void *v15(s32) = 0;
-        virtual s32 v16() = 0;
-        virtual s32 v17() = 0;
-        virtual s32 v18() = 0;
-        virtual s32 v19() = 0;
-        virtual s32 v20() = 0;
-        virtual s32 v21() = 0;
-        virtual s32 v22() = 0;
-        virtual s32 v23() = 0;
-        virtual void v24() = 0;
-        virtual void v25() = 0;
-        virtual u32 v26() = 0;
-    };
-    struct Item {
-        virtual void i0() = 0;
-        virtual void i1() = 0;
-        virtual void i2() = 0;
-        virtual void i3() = 0;
-        virtual void i4() = 0;
-        virtual void i5() = 0;
-        virtual void i6() = 0;
-        virtual s32 i7(void *, u8) = 0;
-    };
     struct Selected {
         virtual void s0() = 0;
         virtual void s1() = 0;
@@ -892,100 +969,24 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
         virtual void s13() = 0;
         virtual void s14(void *, void *) = 0;
     };
-    struct { u8 *ptr; } holder;
-
-    struct { s32 value; } cursor;
-    struct { s32 value; } accumulator;
     u8 *object;
-    s32 status;
-    void *item;
     void *first;
     void *second;
     Selected *selected;
     s32 value;
-    s32 height;
-    s32 neg;
 
     object = (u8 *)Process_CreateEx(lbl_80284548, arg1);
 
     if ((u8)arg2 != 0) {
         object[0x2B] = (u8)arg2;
     }
-        accumulator.value = 0;
-        cursor.value = accumulator.value;
-        neg = -1;
-        object[0x60] = accumulator.value;
-        *(s8 *)(object + 0x62) = neg;
-
-        while (1) {
-            item = ((Menu *)arg0)->v15(cursor.value);
-
-            if (item == NULL) {
-                break;
-            }
-
-            status = ((Item *)item)->i7(item, (u8)cursor.value);
-
-            if ((u8)status != 3) {
-
-            if ((u8)status == 1) {
-                if ((s8)object[0x62] < 0) object[0x62] = object[0x60];
-                status = 0;
-
-            }
-
-                holder.ptr = (u8 *)Process_Create(lbl_80284588, object);
-
-                *(void **)(holder.ptr + 0x34) = item;
-                holder.ptr[0x3A] = (u8)cursor.value;
-                holder.ptr[0x3B] = object[0x60];
-                holder.ptr[0x39] = (u8)status;
-
-                *(s16 *)(holder.ptr + 0x30) = ((Menu *)arg0)->v16();
-
-                value = ((Menu *)arg0)->v17();
-                *(s16 *)(holder.ptr + 0x32) = accumulator.value + value;
-
-                *(u32 *)(holder.ptr + 0x3C) = 0;
-
-                value = ((Menu *)arg0)->v20();
-                accumulator.value += value;
-
-                value = fn_8000B920(holder.ptr);
-
-                {
-                    s8 slot = (s8)object[0x60];
-                    object[0x60]++;
-                    object[0x40 + slot] = (u8)value;
-                }
-            }
-            cursor.value++;
-        }
-
-    if ((s8)object[0x62] < 0) {
-        object[0x62] = 0;
-    }
-        *(void **)(object + 0x3C) = arg0;
-
-        *(s16 *)(object + 0x30) = ((Menu *)arg0)->v21();
-        *(s16 *)(object + 0x32) = ((Menu *)arg0)->v22();
-        *(s16 *)(object + 0x34) = ((Menu *)arg0)->v18();
-
-        value = ((Menu *)arg0)->v19();
-        if ((s16)value != 0) {
-            *(s16 *)(object + 0x36) = ((Menu *)arg0)->v19();
-        } else {
-            accumulator.value = ((Menu *)arg0)->v20() * (s8)object[0x60];
-            height = ((Menu *)arg0)->v17();
-            *(s16 *)(object + 0x36) = height + accumulator.value;
-        }
-
+    Ui_BuildMenuItems((UiMenuDefinition *)arg0, object, 0);
     object[0x63] = object[0x62];
     *(s16 *)(object + 0x38) = -1;
     *(s16 *)(object + 0x3A) = -1;
 
-    ((Menu *)arg0)->v3(object);
-    ((Menu *)arg0)->v5(object);
+    ((UiMenuDefinition *)arg0)->v3(object);
+    ((UiMenuDefinition *)arg0)->v5(object);
 
     first = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
     second = (void *)GfxEnt_Get(object[0x40 + (s8)object[0x62]]);
@@ -993,16 +994,16 @@ extern "C" void *Ui_CreateMenu(void *arg0, void *arg1, u32 arg2) {
     selected = *(Selected **)((u8 *)second + 0x34);
     selected->s14(object, first);
 
-    *(s16 *)(object + 0x28) = ((Menu *)arg0)->v23();
+    *(s16 *)(object + 0x28) = ((UiMenuDefinition *)arg0)->v23();
 
     object[0x61] = 1;
 
-    if (((Menu *)arg0)->v26() != 0) {
-        value = ((Menu *)arg0)->v26();
+    if (((UiMenuDefinition *)arg0)->v26() != 0) {
+        value = ((UiMenuDefinition *)arg0)->v26();
         Ui_PlaySeCue((void *)value, 0x64);
     }
 
-    if (((Menu *)arg0)->v1() != 0) {
+    if (((UiMenuDefinition *)arg0)->v1() != 0) {
         *(s8 *)(object + 0x62) = -1;
     }
 
