@@ -3309,7 +3309,7 @@ void UiCtx_BindUnit(void *arg0, void *arg1) {
 }
 
 #pragma push
-#pragma scheduling off
+#pragma peephole off
 void UiCtx_BeginMoveSelect(s32 *arg0, void *arg1) {
     s8 Unit_GetMov(void *);
     u8 *map;
