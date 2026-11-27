@@ -2,6 +2,45 @@
 #include "common.h"
 #include "global.h"
 
+static inline void Ui_InitPortraitPanelFields(void *temp_r31)
+{
+    extern u8 lbl_8028FDB0[], lbl_80292230[], lbl_80291A3C[];
+    extern const f32 lbl_8036AE20;
+    f32 scale;
+        M2C_FIELD(temp_r31, void **, 0) = lbl_8028FDB0;
+        M2C_FIELD(temp_r31, s32 *, 4) = 0;
+        M2C_FIELD(temp_r31, void **, 0) = lbl_80292230;
+        M2C_FIELD(temp_r31, s16 *, 8) = -1;
+        M2C_FIELD(temp_r31, s16 *, 0xA) = 0x260;
+        M2C_FIELD(temp_r31, s16 *, 0xC) = 0xA7;
+        M2C_FIELD(temp_r31, s16 *, 0xE) = 0x368;
+        M2C_FIELD(temp_r31, s16 *, 0x10) = 0xFC;
+        M2C_FIELD(temp_r31, s16 *, 0x12) = 0;
+        M2C_FIELD(temp_r31, s16 *, 0x14) = 0;
+        M2C_FIELD(temp_r31, s16 *, 0x16) = 0x108;
+        M2C_FIELD(temp_r31, s16 *, 0x18) = 0x55;
+        M2C_FIELD(temp_r31, s16 *, 0x1A) = 0;
+        M2C_FIELD(temp_r31, s16 *, 0x1C) = 0;
+        M2C_FIELD(temp_r31, u8 *, 0x1E) = 0xFF;
+        M2C_FIELD(temp_r31, u8 *, 0x1F) = 0xFF;
+        M2C_FIELD(temp_r31, u8 *, 0x20) = 0xFF;
+        M2C_FIELD(temp_r31, u8 *, 0x21) = 0xFF;
+        M2C_FIELD(temp_r31, s16 *, 0x22) = 0x190;
+        M2C_FIELD(temp_r31, s16 *, 0x24) = 0;
+        scale = lbl_8036AE20;
+        M2C_FIELD(temp_r31, f32 *, 0x28) = scale;
+        M2C_FIELD(temp_r31, f32 *, 0x2C) = scale;
+        M2C_FIELD(temp_r31, f32 *, 0x30) = scale;
+        M2C_FIELD(temp_r31, s32 *, 0x34) = 0;
+        M2C_FIELD(temp_r31, s32 *, 0x38) = 0;
+        M2C_FIELD(temp_r31, void **, 0) = lbl_80291A3C;
+        M2C_FIELD(temp_r31, s32 *, 0x3C) = 0;
+        M2C_FIELD(temp_r31, s32 *, 0x40) = 0x1003A;
+        M2C_FIELD(temp_r31, s32 *, 0x4C) = 0;
+        M2C_FIELD(temp_r31, s32 *, 0x50) = 0;
+}
+
+
 
 typedef struct MoveSoundButtons { u32 words[7]; } MoveSoundButtons;
 typedef struct MoveClassKind { u8 value; } MoveClassKind;
@@ -5565,6 +5604,11 @@ static inline s32 Convoy_CountMatchingEC8C(void *target) {
     return count;
 }
 
+#pragma use_lmw_stmw on
+#pragma opt_strength_reduction off
+#pragma push
+#pragma optimization_level 4
+#pragma optimization_level 3
 void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
@@ -5606,17 +5650,7 @@ void fn_8018EC8C(void *arg0, s16 arg1, u8 arg2) {
         spC = *Ui_GetColor(2);
         Prim2D_SetColorPacked(&spC);
         target = M2C_FIELD(arg0, void **, 0x40);
-        count = 0;
-        if (target != NULL) {
-            e = gConvoy;
-            for (ctr = 0; ctr < 200; ctr++) {
-                    p0 = e->ptr;
-                    if (p0 != NULL && (e->flags & 0x3F) == 0 && p0 == target) {
-                        count++;
-                    }
-                    e++;
-            }
-        }
+        count = Convoy_CountMatchingEC8C(target);
         fn_80006B18(y + 0xA4, x, 0, 0, count);
         Prim2D_EndPrim();
     } else {
@@ -5997,7 +6031,7 @@ extern "C" void fn_8018F9E4(void *arg0) {
     s32 Text_MeasureHeight(s32, f32);
     void *Msg_Expand(void *);
     void Text_Draw(s16, s16, s32, ...);
-    s32 fn_80104E58(s16, s16, s16);
+    s32 fn_80104E58(void);
     void Prim2D_Begin(void);
     void Prim2D_AddZ(f32);
     void Prim2D_SetTex(s32, u16);
@@ -6021,9 +6055,9 @@ extern "C" void fn_8018F9E4(void *arg0) {
     a = *(s16 *)((u8 *)arg0 + 0x12);
     b = *(s16 *)((u8 *)arg0 + 0x16);
     y = *(s16 *)((u8 *)arg0 + 0x40);
-    w = (s16)((b - a) - y);
+    w = (s16)((s16)(b - a) - y);
     x += *(s16 *)((u8 *)arg0 + 0x42);
-    w = (s16)(w - (fn_80104E58(w, a, y) + 8));
+    w = (s16)(w - (fn_80104E58() + 8));
     Prim2D_Begin();
     Prim2D_AddZ(lbl_8036ADF4);
     Prim2D_SetTex(0, (u16)(*(s32 *)((u8 *)arg0 + 0x34) | 0x13));
