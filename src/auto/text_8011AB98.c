@@ -1823,12 +1823,10 @@ void fn_8011CB2C(void *arg0) {
     }
 }
 
-#pragma push
-#pragma optimization_level 2
 void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
     s32 t48;
-    u8 flag;
     s32 t4c;
+    u8 flag;
     s32 x;
     s32 t64;
     s32 y;
@@ -1858,7 +1856,6 @@ void fn_8011CB6C(void *arg0, s32 arg1, s32 arg2) {
         }
     }
 }
-#pragma pop
 
 #pragma global_optimizer off
 void fn_8011CC04(u8 *arg0) {
