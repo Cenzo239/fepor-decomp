@@ -657,8 +657,6 @@ s32 fn_800A46F4(s32 arg0) {
     return 0;
 }
 #pragma use_lmw_stmw reset
-#pragma push
-#pragma optimization_level 2
 void fn_800A4878(s32 result) {
 extern u8 lbl_803123A0[];
 s32 fn_8020CB38(void *,void *,s32,s32,void (*)(s32),s32);
