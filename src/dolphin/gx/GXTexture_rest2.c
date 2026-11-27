@@ -223,7 +223,7 @@ void fn_80224860(u8 arg0, u8 arg1)
 
 #pragma global_optimizer off
 #pragma push
-#pragma peephole off
+#pragma opt_propagation off
 void fn_802248D8(u32 base, u32 size) {
     extern u8 lbl_8033AA70[];
     extern void *lbl_803687A8;
