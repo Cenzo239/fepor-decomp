@@ -700,10 +700,10 @@ void fn_80184578(s32 arg0, u8 *arg1, u32 arg2) {
     u8 sp8[0x34];
     u32 var_r31;
     void *temp_r3;
+    u8 a;
     u8 d;
     u8 c;
     u8 b;
-    u8 a;
 
     var_r31 = arg2;
     *(s32 *)(sp8 + 0x30) = arg0;
