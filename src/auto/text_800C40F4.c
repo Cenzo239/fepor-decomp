@@ -16312,8 +16312,8 @@ void fn_800E4F30(void *arg0)
     f32 y;
     register void *obj;
     register f32 x;
-    register f32 py;
     register f32 pz;
+    f32 py;
 
     obj = *(void **)((u8 *)arg0 + 0xEC);
     if (obj != NULL) {
