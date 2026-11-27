@@ -96,7 +96,7 @@ struct UnitItemListPanel {
     s16 rowHeight;
     u8 pad56[0x58 - 0x56];
     s32 unit;
-    u8 pad5C[0x60 - 0x5C];
+    s32 unk5C;
     s32 dimMode;
     s16 itemX;
     s16 itemY;
