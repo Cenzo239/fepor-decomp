@@ -1447,7 +1447,7 @@ void fn_80008B94(void)
 }
 
 #pragma push
-#pragma optimization_level 2
+#pragma optimization_level 4
 void fn_80008C24(u8 *arg0, u8 *arg1, s8 *arg2, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
     void *fn_80005C40(void);
     s32 fn_80011010(s32);
