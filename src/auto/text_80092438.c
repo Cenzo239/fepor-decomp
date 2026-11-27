@@ -501,6 +501,7 @@ done:
     return result;
 }
 #pragma optimization_level reset
+#pragma pop
 u8 fn_80092C50(void *arg0, u8 arg1, u8 arg2) {
     u8 Status_Test(void *, s32);
     if (arg1==7 && Status_Test((u8 *)arg0+0x1BC,0x28)) goto clamp;
