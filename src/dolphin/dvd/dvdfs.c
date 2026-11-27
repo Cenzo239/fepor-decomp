@@ -192,7 +192,7 @@ static inline BOOL DVDComparePathComponent(char *path, char *name) {
     while (*name) {
         s32 first = fn_80230CE0(*name++);
         s32 second = fn_80230CE0(*path++);
-        if (first != second) return FALSE;
+        if (second != first) return FALSE;
     }
     if (*path == '/' || *path == 0) return TRUE;
     return FALSE;
@@ -246,7 +246,6 @@ u32 fn_8020C3E0(char *path) {
     char *extension;
     s32 invalid;
     s32 dotted;
-    s32 i;
 
     original = path;
     entry = (u32)currentDirectory;
@@ -307,11 +306,7 @@ u32 fn_8020C3E0(char *path) {
             for (end = path; *end && *end != '/'; end++) {
             }
         }
-        if (*end == 0) {
-            more = 0;
-        } else {
-            more = 1;
-        }
+        more = (*end == 0) ? 0 : 1;
         parent = entry;
         length = end - path;
         for (entry++; entry < FstStart_8036857C[parent].nextEntryOrLength;) {
@@ -328,7 +323,7 @@ u32 fn_8020C3E0(char *path) {
         if (!more) {
             return entry;
         }
-        path += length;
+        path = length + path;
         path++;
     }
 }
