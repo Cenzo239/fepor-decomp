@@ -31058,8 +31058,7 @@ void fn_801007A0(void *arg0) {
         M2C_FIELD(unit, u32 *, 0x254) |= 0x01000000;
     }
  }
-#pragma opt_register_coloring reset
-
+ 
  void fn_80100B08(void)
 {
     void Allegiance_FillMask(s32, u8 *);
