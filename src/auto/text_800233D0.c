@@ -1243,7 +1243,7 @@ extern "C" void fn_80024D74(s32 unused, void *arg1) {
 }
 #pragma opt_strength_reduction reset
 #pragma push
-#pragma opt_lifetimes off
+#pragma optimization_level 3
 extern "C" void fn_80024DE4(s32 unused, void *arg1) {
     void *GfxEnt_Get(u8);
     void Ui_PlaySeCue(void *, s32);
