@@ -1,5 +1,15 @@
 /* Functions from 0x801F196C to 0x801FC620, found by decomp-toolkit. */
 #include "common.h"
+static inline void StaffRoll_InitEntryVec(u8 *entry, f32 zero) {
+    void StaffRoll_VecReserve(void *, u32);
+    u32 *vec = (u32 *)(entry + 0x30);
+    vec[0] = 0;
+    vec[1] = 0;
+    vec[2] = 0;
+    *(f32 *)(entry + 0x3C) = zero;
+    *(u32 *)(entry + 0x4C) = 0;
+    StaffRoll_VecReserve(vec, 0x28);
+}
 
 
 typedef struct {
@@ -4141,9 +4151,7 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 }
 
 #pragma push
-#pragma optimization_level 3
-#pragma opt_lifetimes off
-#pragma opt_pointer off
+#pragma opt_lifetimes on
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
@@ -5571,9 +5579,9 @@ s32 fn_801FBF98(s32 arg0, s32 arg1, u16 *arg2, u8 (*arg3)(s32, u16)) {
 }
 
 #pragma push
-#pragma optimization_level 4
+#pragma optimization_level 3
 #pragma scheduling off
-void Tree_Destroy(void *context, void *node) {
+void Tree_Destroy(void *context, u8 *node) {
     void Heap_Free(void *);
     void fn_801FC400(void *);
     void fn_801FC404(void *);
