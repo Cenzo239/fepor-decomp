@@ -3185,6 +3185,7 @@ void fn_80154138(s16 arg0, s16 arg1, s32 arg2) {
 #pragma push
 #pragma optimization_level 4
 #pragma global_optimizer off
+#pragma opt_lifetimes off
 void fn_80154370(s16 arg0, s16 arg1) {
 #pragma use_lmw_stmw on
     void Ui_DrawWindowFrame(void);
@@ -3215,6 +3216,8 @@ void fn_80154370(s16 arg0, s16 arg1) {
     extern u8 gUiTexScratch[64];
     extern s32 gUiTexAtlas;
 
+    s16 ax;
+    s16 ay;
     f32 sp10;
     u8 spC[4];
     s32 sp8;
@@ -3230,6 +3233,8 @@ void fn_80154370(s16 arg0, s16 arg1) {
     s16 temp_r30;
     s32 temp_r31;
 
+    ax = arg0;
+    ay = arg1;
     Ui_DrawWindowFrame();
     temp_r22 = Prim2D_PushZ(&sp10);
     temp_r21 = Msg_Expand(lbl_802774F0 + 0x1DA);
@@ -3251,8 +3256,8 @@ void fn_80154370(s16 arg0, s16 arg1) {
         t5 = (s16)(rC40[2] - rC40[0]) + 1;
         t4 = (s16)(temp_r26[2] - temp_r26[0]);
         t7 = (s16)(temp_r25[3] - temp_r25[1]) + 8;
-        temp_r30 = arg0 + t5;
-        temp_r29 = arg1 + t7;
+        temp_r30 = ax + t5;
+        temp_r29 = ay + t7;
         temp_r27 = temp_r30 + (s16)(width + t4);
         t8 = (s16)(temp_r26[3] - temp_r26[1]);
         temp_r20 = temp_r29 + t8;
@@ -3296,8 +3301,8 @@ void fn_80154370(s16 arg0, s16 arg1) {
     Prim2D_AddZ(lbl_8036A878);
     Prim2D_PrepareTex();
     Text_Draw(
-        (s16)(arg0 + (s16)(temp_r26[2] - lbl_80367CE8.f0)),
-        (s16)(arg1 + ((s16)(temp_r25[3] - temp_r25[1]) + 8 + temp_r20)),
+        (s16)(ax + (s16)(temp_r26[2] - lbl_80367CE8.f0)),
+        (s16)(ay + ((s16)(temp_r25[3] - temp_r25[1]) + 8 + temp_r20)),
         9, temp_r21, lbl_80367CE8.f0);
     Prim2D_PopZ(temp_r22, sp10);
 }
