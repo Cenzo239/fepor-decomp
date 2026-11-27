@@ -1,7 +1,6 @@
 /* Functions from 0x800A39F8 to 0x800A9384, found by decomp-toolkit. */
 #include "common.h"
 
-static inline s32 Movie_AddOffset(s32 ptr, s32 base) { return ptr + base; }
 static inline s32 Movie_DecodeFrame(s32 data, u8 *state) {
     s32 fn_8023C56C(s32, s32, s32, s32, s32);
     extern u8 lbl_803123A0[];
