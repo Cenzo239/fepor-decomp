@@ -23984,6 +23984,7 @@ Item_Destroy(weapon,-1);return ret;
 #pragma push
 #pragma optimization_level 4
 #pragma opt_propagation off
+#pragma scheduling off
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 void fn_800FDDBC(s32,s32,s32,s32,s32);
 int Abs(int);
