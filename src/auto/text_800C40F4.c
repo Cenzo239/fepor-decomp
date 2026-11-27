@@ -23987,7 +23987,7 @@ Item_Destroy(weapon,-1);return ret;
 u8 fn_800F3860(u8 (*arg0)(void *),s32 arg1,u8 arg2) {
 void fn_800FDDBC(s32,s32,s32,s32,s32);
 int Abs(int);
-void Item_Destroy(void *,int);
+void *Item_Destroy(void *,s32);
 extern u8 gAiState[],gUiContext[],gBattleMap[];
 u8 fn_800F7D28(void *,void *); s8 Unit_GetMov(void *); u8 Item_GetRangeForUnit(void *,void *);
 void fn_800FB96C(u8,s8,s8,void *,u8,u8,s8,s32,s32);
@@ -26545,8 +26545,6 @@ void fn_800F904C(void *arg0, s32 arg1) {
 }
 
 #pragma use_lmw_stmw on
-#pragma push
-#pragma optimization_level 2
 s32 fn_800F9178(void *arg0, s16 arg1, s16 arg2, s16 *arg3, s16 *arg4, s8 *arg5) {
     u8 fn_8001D500(void **);
     u8 Item_GetRangeForUnit(void *, void *);
