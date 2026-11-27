@@ -1825,7 +1825,6 @@ void CardLink_ApplyBonus(void *proc) {
 
 #pragma push
 #pragma optimization_level 2
-#pragma opt_common_subs on
 void fn_801F5830(u8 *self) {
 void *Process_Find(void *);
 s32 Msg_Expand(void *);
@@ -1866,7 +1865,7 @@ if (progress) {
  if(state==3 || state==4) {
  *(s16 *)(*(u8 **)(self+0x50)+2)=200;
  Process_ClearFunc(self);
- }
+}
 }
 #pragma pop
 /* While waiting on a card-link scan: end when status is 2, or cancel on B. */
@@ -3517,6 +3516,8 @@ void fn_801F8A98(void *arg0) {
     extern u8 gUnits[];
     extern u8 StaffRoll_str[];
     extern void *lbl_8029B378[];
+    extern f64 lbl_8036BA08;
+    extern f64 lbl_8036BA10;
     extern f32 lbl_8036BA00;
     extern f32 lbl_8036BA04;
 
@@ -4140,28 +4141,27 @@ void fn_801F9D1C(s32 arg0, s32 arg1) {
 }
 
 #pragma push
-#pragma optimization_level 3
-#pragma opt_lifetimes off
-#pragma opt_pointer off
+#pragma optimization_level 4
 void *fn_801F9D50(void *arg0)
 {
     extern u8 lbl_8029B32C[];
     extern f32 lbl_8036BA00;
     void *Process_CreateChild(void *, void *);
     void StaffRoll_VecReserve(void *, u32);
+    typedef struct { u32 x, y, z; } Vec3;
     u8 *entry;
     u8 *tmp;
-    u32 *vec;
+    Vec3 *vec;
     f32 zero;
 
     entry = Process_CreateChild(lbl_8029B32C, arg0);
     tmp = entry;
     if (tmp != NULL) {
-        vec = (u32 *)(tmp + 0x30);
-        *(u32 *)(tmp + 0x30) = 0;
+        vec = (Vec3 *)(tmp + 0x30);
+        vec->x = 0;
         zero = lbl_8036BA00;
-        *(u32 *)(tmp + 0x34) = 0;
-        vec[2] = 0;
+        vec->y = 0;
+        vec->z = 0;
         *(f32 *)(tmp + 0x3C) = zero;
         *(u32 *)(tmp + 0x4C) = 0;
         StaffRoll_VecReserve(vec, 0x28);
