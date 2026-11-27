@@ -5685,9 +5685,6 @@ s32 fn_80052F9C(void *arg0) {
     return M2C_FIELD(M2C_FIELD(M2C_FIELD(arg0, void **, 0x30), void **, 0x2C), u8 *, 4) & 3;
 }
 
-#pragma push
-#pragma scheduling off
-#pragma global_optimizer off
 void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
     f32 fn_80059440(f32, f32, f32, f32);
     extern const f32 lbl_8036909C;
@@ -5718,9 +5715,6 @@ void fn_80052FB0(void *arg0, f32 *arg1, f32 *arg2) {
         *(f32 *)((u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x14) = lbl_8036909C + z;
     }
 }
-#pragma global_optimizer on
-#pragma scheduling on
-#pragma pop
 
 #pragma push
 #pragma optimization_level 4
