@@ -511,11 +511,12 @@ static inline Vec3_800193D8 CamPath_Eval(void **keysPtr, s32 n, f32 farg0) {
     extern f32 lbl_80368C88;
     extern f32 lbl_80368C8C;
     Vec3_800193D8 def = *(Vec3_800193D8 *)lbl_80268318;
+    Vec3_800193D8 a = def;
     Vec3_800193D8 out = def;
     s32 i;
     void *pt;
     if (n == 0) {
-        return def;
+        return a;
     }
     pt = *keysPtr;
     for (i = 0; i < n; i++, pt = (u8 *)pt + 0x14) {
