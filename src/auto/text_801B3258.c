@@ -10738,33 +10738,69 @@ void fn_801C77A4(void) {
 }
 
 #pragma opt_common_subs off
-void GActor_FreeTexWork(void *arg0) {
-    void Process_UnlinkByKey(void *);
-    void GActor_UnlinkNodeLink(void);
+#pragma push
+#pragma opt_propagation on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw off
+#pragma opt_loop_invariants off
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw off
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+#pragma opt_common_subs off
+#pragma opt_common_subs off
+#pragma cplusplus on
+#pragma cplusplus on
+#pragma cplusplus off
+#pragma optimization_level 3
+#pragma opt_common_subs off
+#pragma global_optimizer off
+#pragma use_lmw_stmw on
+#pragma cplusplus on
+#pragma cplusplus off
+#pragma global_optimizer off
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma opt_common_subs off
+#pragma use_lmw_stmw on
+#pragma opt_common_subs on
+#pragma use_lmw_stmw on
+#pragma use_lmw_stmw on
+#pragma global_optimizer off
+#pragma global_optimizer on
+#pragma optimization_level 3
+#pragma opt_common_subs off
+static inline void fn_801C77D0_free(void *arg0, s32 zero) {
+    void Heap_Free(void *);
+    extern u8 LightFade_script[];
+    void fn_8000BF00(void *);
+    void fn_80057EDC(void);
     void fn_8005376C(void);
     void fn_800C4588(void *);
     void fn_8005FA14(void *, s32);
     void Heap_Free(void *);
-    extern u8 LightFade_script[];
-    s32 i;
-    void **ptr;
     void **walk;
-    s32 zero;
+    void **ptr;
+    s32 i;
     s32 base;
 
     base = (s32)LightFade_script;
-    Process_UnlinkByKey((void *)(base + 0x54));
-    Process_UnlinkByKey((void *)(base + 0x7c));
-    GActor_UnlinkNodeLink();
-    Process_UnlinkByKey((void *)(base + 0x24));
+    fn_8000BF00((void *)(base + 0x54));
+    fn_8000BF00((void *)(base + 0x7c));
+    fn_80057EDC();
+    fn_8000BF00((void *)(base + 0x24));
     fn_8005376C();
     ptr = *(void ***)((u8 *)arg0 + 0x30);
     if (ptr != NULL) {
         fn_800C4588(*ptr);
-        zero = base - base;
         walk = ptr;
         *ptr = (void *)zero;
-        i = zero;
+        i = 0;
         *ptr = (void *)zero;
         do {
             if (walk[1] != NULL) {
@@ -10778,6 +10814,10 @@ void GActor_FreeTexWork(void *arg0) {
     }
     *(void **)((u8 *)arg0 + 0x30) = 0;
 }
+void GActor_FreeTexWork(void *arg0) {
+    fn_801C77D0_free(arg0, 0);
+}
+#pragma pop
 #pragma opt_common_subs on
 void GActor_InitTexWork(void *proc) {
     /* Alloc 32-slot tex work, load 608x448 texture into slot 0, attach to proc. */

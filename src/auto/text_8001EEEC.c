@@ -79,33 +79,34 @@ typedef struct {
 
 #pragma push
 #pragma opt_lifetimes off
+#pragma push
+#pragma cplusplus on
+#pragma cplusplus off
 void fn_8001EEEC(s8 *p)
 {
-start:
-    switch (*p) {
-    case 0:
-        *p = 0x10;
-        return;
-    case 0x34:
-        *p = 1;
-        break;
-    case 0x38:
-        *p = 8;
-        break;
-    case 0x36:
-        *p = 2;
-        break;
-    case 0x32:
-        *p = 4;
-        break;
+    while (1) {
+        switch (*p) {
+        case 0:
+            *p = 0x10;
+            return;
+        case 0x34:
+            *p = 1;
+            break;
+        case 0x38:
+            *p = 8;
+            break;
+        case 0x36:
+            *p = 2;
+            break;
+        case 0x32:
+            *p = 4;
+            break;
+        }
+        p++;
     }
-    p += 1;
-    goto start;
 }
 #pragma pop
-void fn_8001EF7C(void) {
-
-}
+#pragma pop
 
 #pragma use_lmw_stmw on
 #pragma opt_common_subs off
