@@ -438,8 +438,7 @@ s32 fn_802264B4(void *buffer, u8 *arg1) {
     }
     return result;
 }
-#pragma global_optimizer on
-#pragma use_lmw_stmw reset
+#pragma optimization_level 3
 s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
     extern u8 gTRKBigEndian[];
     void fn_80003488(void *, void *, u32);
@@ -486,7 +485,7 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
         if (size == 1) {
             *((u8 *)base + (position + 0x10)) = *src;
         } else {
-            fn_80003488(&((u8 *)base)[position + 0x10], src, size);
+            fn_80003488((u8 *)((position + 0x10) + (u32)base), src, size);
         }
 
         *(u32 *)((u8 *)base + 0xC) = *(u32 *)((u8 *)base + 0xC) + size;
@@ -498,7 +497,7 @@ s32 fn_8022659C(void *buffer, u32 *words, s32 count) {
 
     return result;
 }
-#pragma use_lmw_stmw reset
+#pragma optimization_level reset
 s32 TRKAppendBuffer(void *arg0, u8 *arg1, s32 arg2) {
     u8 byte;
     u32 var;
@@ -732,25 +731,27 @@ s32 fn_80226B68(void) {
     return 0;
 }
 
+#pragma push
+#pragma optimization_level 2
 s32 TRKInitializeSerialHandler(void) {
     void MWTRACE(u8 level, char *fmt, ...);
     extern u16 lbl_802822F0[200];
     extern u16 lbl_8033CA28[12];
     u8 *g = (u8 *)lbl_8033CA28;
-    char *table = (char *)lbl_802822F0;
+    char *msgs = (char *)lbl_802822F0;
 
     *(s32 *)(g + 0) = -1;
     *(s32 *)(g + 8) = 0;
     *(s32 *)(g + 0xc) = 0;
-    MWTRACE(1, &table[0x00], 0x40);
-    MWTRACE(1, &table[0x24], 0x40);
-    MWTRACE(1, &table[0x48], 0x40);
-    MWTRACE(1, &table[0x6c], 0x40);
-    MWTRACE(1, &table[0x8c], 0x40);
-    MWTRACE(1, &table[0xac], 0x40);
+    MWTRACE(1, msgs + 0, 0x40);
+    MWTRACE(1, msgs + 0x24, 0x40);
+    MWTRACE(1, msgs + 0x48, 0x40);
+    MWTRACE(1, msgs + 0x6c, 0x40);
+    MWTRACE(1, msgs + 0x8c, 0x40);
+    MWTRACE(1, msgs + 0xac, 0x40);
     return 0;
 }
-
+#pragma pop
 void fn_80226C34(s32 arg0) {
     void fn_80225F4C(void *, s32);
     void fn_80225F64(void *, s32 *);
@@ -2826,6 +2827,7 @@ s32 TRKTargetAccessDefault(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4) 
     u8 *status;
     s32 count;
     u32 *registers;
+    s32 result;
 
     if (arg1 > 0x24) {
         return 0x701;
@@ -2833,20 +2835,20 @@ s32 TRKTargetAccessDefault(u32 arg0, u32 arg1, void *arg2, s32 *arg3, s32 arg4) 
     status = gTRKExceptionStatus_8029E574;
     saved = *(ExceptionStatus *)status;
     status[0xd] = 0;
-    count = (arg1 - arg0) + 1;
     registers = (u32 *)gTRKCPUState + arg0;
+    count = (arg1 - arg0) + 1;
     *arg3 = count * 4;
     if (arg4) {
-        arg0 = fn_8022659C(arg2, registers, count);
+        result = fn_8022659C(arg2, registers, count);
     } else {
-        arg0 = fn_8022632C(arg2, registers, count);
+        result = fn_8022632C(arg2, registers, count);
     }
     if (status[0xd]) {
-        arg0 = 0x702;
+        result = 0x702;
         *arg3 = 0;
     }
     *(ExceptionStatus *)gTRKExceptionStatus_8029E574 = saved;
-    return arg0;
+    return result;
 }
 
 s32 fn_8022A098(u32 *arg0, u32 arg1) {
