@@ -62,6 +62,7 @@ static inline s32 Ai_CountHostileNeighbors(s16 x16, s16 y16, s16 *nb) {
 
 return count;
 }
+static inline s16 *Ai_NeighborTable(s16 *table) { return table; }
 static inline void *Ai_ActionTileUnit(u8 id) {
     extern u8 gUnits[];
     if (id) return gUnits + (id - 1) * 0x280;
@@ -14056,15 +14057,13 @@ extern "C" void fn_800E0A94(SortIterator &first1, SortIterator last1, s32 *first
 #pragma opt_propagation off
 extern "C" s32 *fn_800E0C44(s32 *begin, s32 *end, SortIterator &first, SortIterator last, s32 *out, SortCompare comp) {
  s32 Sort_GetKey(void *);
- s32 value;
- s32 key;
  if (begin == end) { return Sort_CopyBackwardIter(first,last,out); }
  if(first.ptr == last.ptr) { return Sort_CopyBackwardPtr(begin,end,out); }
  --end; --last.ptr;
  for (;;) {
  SortIterator tmp(last);
- value=*end;
- key=Sort_GetKey((void*)*tmp.ptr);
+ s32 value=*end;
+ s32 key=Sort_GetKey((void*)*tmp.ptr);
  if(Sort_GetKey((void*)value)>key) {
  *--out=*end;
  if(begin==end) {
@@ -25748,7 +25747,7 @@ s32 fn_800F7A60(void *arg0, s32 arg1, s32 arg2, void *arg3) {
     s8 *cur;
     s32 acc;
     s32 sx;
-    u32 penalty;
+    s32 penalty;
     s32 result;
     void **temp;
     u8 *inner;
@@ -26398,12 +26397,13 @@ void fn_800F8994(void *arg0) {
  min=0x7FFF;
  for(i=0;i<4;i++) {
  void *item;
- slot=Unit_GetHeldItemSlot(unit,i); item=*slot;
+ slot=Unit_GetHeldItemSlot(unit,i);
+ item=*slot;
  if(!item)break;
  if(fn_8009339C(unit,item)) {
- u8 value; item=*slot;
- value=item?M2C_FIELD(item,u8 *,0x1D):0;
- if(value<min) { value=item?M2C_FIELD(item,u8 *,0x1D):0; min=value; }
+ if((u8)(*slot?M2C_FIELD(*slot,u8 *,0x1D):0)<min) {
+ min=(u8)(*slot?M2C_FIELD(*slot,u8 *,0x1D):0);
+ }
  }
  }
  Map_BuildUnitMoveRange(unit,5,-1);
@@ -32083,9 +32083,7 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
             }
             if (flag2 != 0) {
                 x16 = (s16)x;
-                nb = lbl_802732A0;
-                count = 0;
-                while (nb[0] != 0x7FFF) {
+                for (nb = lbl_802732A0, count = 0; nb[0] != 0x7FFF; nb += 2) {
                     u8 oob;
                     s32 nx;
                     s32 ny;
@@ -32109,7 +32107,6 @@ s32 Ai_FindActionTile(void *arg0, s32 flags, s32 arg2, s16 *outX, s16 *outY) {
                             }
                         }
                     }
-                    nb += 2;
                 }
                 if (count != 0) {
                     continue;
