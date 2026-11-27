@@ -1540,7 +1540,7 @@ static inline u8 *Save_FindWritableHeaderIn(u8 **arg0) {
 
 u8 *base,*dst; s32 i,off; u8 hdrOk,chkOk; void *buf; u32 sum;
 
-    for (i = 0, off = 0x20000 - 0x6000; i < 2; i++) {
+        for (i = 0, off = 0x20000 - 0x6000; i < 2; i++) {
     dst = *arg0 + off;
     if (*(u32 *)(dst + 0x40) != 0x4645384AU) {
         hdrOk = 0;
@@ -1550,7 +1550,7 @@ u8 *base,*dst; s32 i,off; u8 hdrOk,chkOk; void *buf; u32 sum;
         hdrOk = 1;
     }
     if (hdrOk == 0) {
-        return dst;
+        goto got;
     }
     if (*(u32 *)(dst + 0x50) == 0x12345678U) {
         chkOk = 1;
@@ -1568,15 +1568,16 @@ u8 *base,*dst; s32 i,off; u8 hdrOk,chkOk; void *buf; u32 sum;
         }
     }
     if (chkOk == 0) {
-        return dst;
+        goto got;
     }
     off += 0x6000;
     }
     base = *arg0;
     dst = base + 0x1A000;
-    if (save_slot_size(dst) < save_slot_size(base + 0x20000)) return dst;
-    return base + 0x20000;
-
+    if (save_slot_size(dst) < save_slot_size(base + 0x20000)) goto got;
+    dst = base + 0x20000;
+got:
+    return dst;
 }
 static inline u8 *Save_FindLinkedSlot(u8 *base, s32 id)
 {
