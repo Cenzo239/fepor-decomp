@@ -952,8 +952,6 @@ void Battle_SetAttackHit(s32 arg0, u8 arg1) {
 }
 
 #pragma opt_common_subs off
-#pragma push
-#pragma optimization_level 2
 void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
     s32 Unit_GetMaxHp(void *);
     s32 fn_800AA76C(s32, s32, s32);
@@ -975,7 +973,6 @@ void Battle_ApplyHpDelta(u8 *obj, s32 a1) {
         BattleAnim_Queue(obj + 0x8A0, 0xB, 0);
     }
 }
-#pragma pop
 #pragma opt_common_subs reset
 void fn_801A4B40(u8 *obj, s8 a1) {
     s32 Unit_GetMaxHp(void *);
