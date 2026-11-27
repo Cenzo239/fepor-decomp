@@ -1736,7 +1736,6 @@ s8 Unit_GetMagAtk(void *arg0) {
     }
     return result;
 }
-#pragma peephole reset
 #pragma pop
 s8 Unit_GetCarryWtLimit(void *arg0) {
     s8 fn_80039408(void *);
