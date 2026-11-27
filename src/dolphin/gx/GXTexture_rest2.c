@@ -221,7 +221,6 @@ void fn_80224860(u8 arg0, u8 arg1)
   __GXFlushTextureState();
 }
 
-#pragma global_optimizer off
 void fn_802248D8(u32 base, u32 size) {
     extern u8 lbl_8033AA70[];
     extern void *lbl_803687A8;
@@ -251,18 +250,20 @@ void fn_802248D8(u32 base, u32 size) {
     GXSetCPUFifo(save);
     fn_80220554();
 }
-#pragma global_optimizer off
+#pragma push
+#pragma optimization_level 3
 s32 fn_802249A4(void) {
     s32 OSDisableInterrupts(void);
     void OSRestoreInterrupts(s32);
-    extern u8 lbl_8033AA70[];
+    typedef struct { u8 bytes[0x5B0]; } SaveBuf;
+    extern SaveBuf lbl_8033AA70;
     extern u32 *__piReg;
     extern void *lbl_803687A8;
     void fn_802204F8(void);
     void fn_8021F0A0(void *);
     void GXSetCPUFifo(void *);
     void *memcpy(void *, const void *, u32);
-    u8 *save = lbl_8033AA70;
+    SaveBuf *save = &lbl_8033AA70;
     u32 flag;
     s32 interrupts;
     u32 old;
@@ -273,16 +274,16 @@ s32 fn_802249A4(void) {
     if (((u8 *)__GXData)[0x5A9] != 0) {
         interrupts = OSDisableInterrupts();
         old = *(u32 *)((u8 *)__GXData + 8);
-        memcpy(__GXData, save + 0x24, 0x5B0);
+        memcpy(__GXData, save->bytes + 0x24, 0x5B0);
         *(u32 *)((u8 *)__GXData + 8) = old;
         OSRestoreInterrupts(interrupts);
     }
     ((u8 *)__GXData)[0x5A8] = 0;
     if (flag == 0)
-        return *(s32 *)(save + 0x1C);
+        return *(s32 *)(save->bytes + 0x1C);
     return 0;
 }
-#pragma global_optimizer on
+#pragma pop
 void fn_80224A68(s32 arg0, s32 arg1) {
     void fn_80220D6C(void);
     void fn_80220EBC(void);
