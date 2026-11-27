@@ -1634,7 +1634,6 @@ return 0;
 }
 #pragma push
 #pragma optimization_level 4
-#pragma opt_lifetimes off
 #pragma opt_loop_invariants off
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
@@ -1647,13 +1646,59 @@ void fn_801E0154(u8 **arg0, s32 arg1) {
     extern void *gSaveDataBase;
     extern u8 gSaveStrings[];
 
-s32 self; u8 **save; u8 *src; u8 *dst;
-self=arg1;save=arg0;
-src=Save_FindLinkedHeader(save);
-dst=Save_FindWritableHeaderIn(save);
+    s32 i;
+    u8 *src;
+    s32 off;
+    u8 *dst;
+    s32 self;
+    u8 **save;
+    u32 sum;
+    void *buf;
+    u8 *base;
+    u8 hdrOk;
+    u8 chkOk;
+
+    self = arg1;
+    save = arg0;
+    src = Save_FindLinkedHeader(save);
+    i = 0;
+    off = 0x20000 - 0x6000;
+    for (; i < 2; i++, off += 0x6000) {
+        dst = *save + off;
+        if (*(u32 *)(dst + 0x40) != 0x4645384AU) hdrOk = 0;
+        else if (*(u32 *)(dst + 0x44) != 0x20050201U) hdrOk = 0;
+        else hdrOk = 1;
+        if (hdrOk == 0) {
+            goto got_dst;
+        }
+        if (*(u32 *)(dst + 0x50) == 0x12345678U) {
+            chkOk = 1;
+        } else if (dst[0x60] == 1) {
+            chkOk = 1;
+        } else {
+            buf = fn_800C4638(0x400, gSaveStrings + 0x14E, 0);
+            Crc32_InitTable();
+            sum = Crc32_Calc(buf, dst + 0x70, *(s32 *)(dst + 0x4C) - 0x70);
+            fn_800C4588(buf);
+            if (*(u32 *)(dst + 0x50) != sum) {
+                chkOk = 0;
+            } else {
+                chkOk = 1;
+            }
+        }
+        if (chkOk != 0) {
+            continue;
+        }
+        goto got_dst;
+    }
+    base = *save;
+    dst = base + 0x1A000;
+    if (save_slot_size(dst) < save_slot_size(base + 0x20000)) goto got_dst;
+    dst = base + 0x20000;
+got_dst:
     fn_800062CC(dst, src, *(s32 *)(src + 0x4C));
     fn_801E3CA8(dst);
-    *(u8 *)(dst + 0x60) = 1;
+    dst[0x60] = 1;
     Card_RequestWrite(dst, 0x2000, (s32)dst - (s32)gSaveDataBase, -1, self);
 }
 #pragma push
