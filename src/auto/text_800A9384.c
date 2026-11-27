@@ -36,8 +36,6 @@ extern void *lbl_803677F4;
 extern void *lbl_803677F8;
 extern u8 lbl_80366E30;
 #pragma use_lmw_stmw on
-#pragma push
-#pragma scheduling off
 void fn_800A9384(void) {
     void *v_cb44;
     void *v_cb90;
