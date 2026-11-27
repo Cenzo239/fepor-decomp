@@ -275,10 +275,10 @@ extern void OSRestoreInterrupts(void);
 #pragma peephole on
 
 #pragma use_lmw_stmw on
-static inline u32 fn_8020FD50_cntlzd(u64 bit) {
+static inline s32 fn_8020FD50_cntlzd(u64 bit) {
     u32 hi = (u32)(bit >> 32);
     u32 lo = (u32)(bit & 0xFFFFFFFF);
-    u32 value = __cntlzw(hi);
+    s32 value = __cntlzw(hi);
     if (value < 32) {
         return value;
     }
@@ -295,11 +295,9 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
     extern u32 lbl_80368608;
     extern s32 lbl_8036860C;
 
-    struct {
-        s16 sp14;
-        s16 sp16;
-        OSContext ctx;
-    } local;
+    OSContext ctx;
+    s16 sp16;
+    s16 sp14;
     volatile u16 *r5;
     volatile u16 *rp;
     u16 val0;
@@ -339,19 +337,19 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
         regMask |= 8;
     }
     if ((regMask & 4) || (regMask & 8)) {
-        OSClearContext(&local.ctx);
-        OSSetCurrentContext(&local.ctx);
+        OSClearContext(&ctx);
+        OSSetCurrentContext(&ctx);
         if (lbl_8036861C != NULL) {
-            fn_80211B30((s32)&local.sp16, (s32)&local.sp14);
-            ((void (*)(s16, s16))lbl_8036861C)(local.sp16, local.sp14);
+            fn_80211B30((s32)&sp16, (s32)&sp14);
+            ((void (*)(s16, s16))lbl_8036861C)(sp16, sp14);
         }
-        OSClearContext(&local.ctx);
+        OSClearContext(&ctx);
         OSSetCurrentContext(ctxArg);
         return;
     }
     lbl_80368604 += 1;
-    OSClearContext(&local.ctx);
-    OSSetCurrentContext(&local.ctx);
+    OSClearContext(&ctx);
+    OSSetCurrentContext(&ctx);
     if ((u32)lbl_80368614 != 0) {
         ((void (*)(u32))lbl_80368614)(lbl_80368604);
     }
@@ -377,11 +375,11 @@ void fn_8020FD50(s32 unused, OSContext *arg1) {
         }
     }
     if (lbl_80368618 != NULL) {
-        OSClearContext(&local.ctx);
+        OSClearContext(&ctx);
         ((void (*)(u32))lbl_80368618)(lbl_80368604);
     }
     fn_8020AEC4(&lbl_8036860C);
-    OSClearContext(&local.ctx);
+    OSClearContext(&ctx);
     OSSetCurrentContext(ctxArg);
 }
 #pragma use_lmw_stmw reset
