@@ -278,6 +278,7 @@ s32 fn_800113BC(void) {
 #pragma push
 #pragma cplusplus on
 #pragma optimization_level 4
+#pragma peephole off
 extern "C" void fn_800113C4(void *obj, s32 arg1, u8 *color, f32 x, f32 y, f32 z) {
     f64 fn_802387C8(f64, f64);
     void fn_80220DEC(s32, s32, s32);
