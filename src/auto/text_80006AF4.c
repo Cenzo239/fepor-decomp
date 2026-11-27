@@ -871,7 +871,7 @@ static inline void *Prim2D_FindNode(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma opt_loop_invariants off
 void Prim2D_AddPrim(u8 arg0) {
     extern void *gPrim2D;
     extern const f32 lbl_80368B98;
