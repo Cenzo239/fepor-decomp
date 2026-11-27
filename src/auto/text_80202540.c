@@ -385,37 +385,36 @@ void fn_80202A6C(f32 *m, f32 farg0, f32 farg1, f32 farg2, f32 farg3) {
  m[10]=-farg2*r; m[11]=r*-(farg3*farg2); m[12]=z; m[13]=z; m[14]=lbl_8036BC64; m[15]=z;
 }
 #pragma scheduling reset
-void C_MTXOrtho(f32 *m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
-{
-  extern f32 lbl_8036BC58;
-  extern f32 lbl_8036BC5C;
-  extern f32 lbl_8036BC60;
-  extern f32 lbl_8036BC64;
-  f32 one = lbl_8036BC58;
-  f32 two = lbl_8036BC5C;
-  f32 rw = one / (r - l);
-  f32 rh = one / (t - b);
-  f32 rd;
-  f32 zero;
-  m[0] = rw * two;
-  zero = lbl_8036BC60;
-  m[1] = zero;
-  m[2] = zero;
-  m[3] = rw * (-(r + l));
-  m[4] = zero;
-  m[5] = rh * two;
-  m[6] = zero;
-  m[7] = rh * (-(t + b));
-  rd = one / (f - n);
-  m[8] = zero;
-  m[9] = zero;
-  m[10] = lbl_8036BC64 * rd;
-  m[11] = (-f) * rd;
-  m[12] = zero;
-  m[13] = zero;
-  m[14] = zero;
-  m[15] = one;
+#pragma push
+#pragma scheduling on
+void C_MTXOrtho(f32 (*m)[4], f32 t, f32 b, f32 l, f32 r, f32 n, f32 f) {
+    extern const f32 lbl_8036BC58;
+    extern const f32 lbl_8036BC5C;
+    extern const f32 lbl_8036BC60;
+    extern const f32 lbl_8036BC64;
+    f32 tmp;
+
+    tmp = lbl_8036BC58 / (r - l);
+    m[0][0] = lbl_8036BC5C * tmp;
+    m[0][1] = lbl_8036BC60;
+    m[0][2] = lbl_8036BC60;
+    m[0][3] = (tmp * -(r + l));
+    tmp = lbl_8036BC58 / (t - b);
+    m[1][0] = lbl_8036BC60;
+    m[1][1] = lbl_8036BC5C * tmp;
+    m[1][2] = lbl_8036BC60;
+    m[1][3] = (tmp * -(t + b));
+    m[2][0] = lbl_8036BC60;
+    m[2][1] = lbl_8036BC60;
+    tmp = lbl_8036BC58 / (f - n);
+    m[2][2] = (lbl_8036BC64 * tmp);
+    m[2][3] = (-f * tmp);
+    m[3][0] = lbl_8036BC60;
+    m[3][1] = lbl_8036BC60;
+    m[3][2] = lbl_8036BC60;
+    m[3][3] = lbl_8036BC58;
 }
+#pragma pop
 
 #pragma push
 typedef f32 Mtx44[4][4];
@@ -654,20 +653,41 @@ s32 fn_80202D1C(f32 *src, f32 *inv) {
     return 1;
 }
 
-void fn_8020310C(f32 *m, f32 *v, f32 *out) {
-    f32 x;
-    f32 y;
-    f32 z;
-    f32 w;
-    x = v[0];
-    y = v[1];
-    z = v[2];
-    w = x * m[12] + y * m[13] + z * m[14];
-    w = z / w;
-    out[0] = (x * m[0] + y * m[1]) * w;
-    out[1] = (x * m[4] + y * m[5]) * w;
-    out[2] = (x * m[8] + y * m[9]) * w;
+#pragma push
+asm void fn_8020310C(const register f32 (*m)[4], const register f32 *src, register f32 *dst) {
+    nofralloc
+    psq_l f0, 0x0(src), 0, 0
+    psq_l f2, 0x30(m), 0, 0
+    psq_l f1, 0x8(src), 1, 0
+    ps_mul f4, f0, f2
+    psq_l f3, 0x38(m), 0, 0
+    ps_madd f5, f1, f3, f4
+    ps_merge11 f12, f1, f1
+    ps_sum0 f13, f5, f5, f5
+    psq_l f4, 0x0(m), 0, 0
+    ps_merge00 f13, f13, f13
+    psq_l f5, 0x8(m), 0, 0
+    ps_div f13, f12, f13
+    psq_l f6, 0x10(m), 0, 0
+    psq_l f7, 0x18(m), 0, 0
+    psq_l f8, 0x20(m), 0, 0
+    psq_l f9, 0x28(m), 0, 0
+    ps_mul f4, f0, f4
+    ps_madd f2, f1, f5, f4
+    ps_mul f6, f0, f6
+    ps_madd f3, f1, f7, f6
+    ps_mul f8, f0, f8
+    ps_sum0 f2, f2, f2, f2
+    ps_madd f9, f1, f9, f8
+    ps_sum1 f2, f3, f2, f3
+    ps_sum0 f3, f9, f9, f9
+    ps_mul f2, f2, f13
+    psq_st f2, 0x0(dst), 0, 0
+    ps_mul f3, f3, f13
+    psq_st f3, 0x8(dst), 1, 0
+    blr
 }
+#pragma pop
 
 asm void fn_80203184(const register f32 *a, const register f32 *b, register f32 *ab) {
     psq_l f2, 0(a), 0, 0
