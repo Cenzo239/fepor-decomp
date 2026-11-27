@@ -1635,6 +1635,7 @@ return 0;
 #pragma push
 #pragma optimization_level 4
 #pragma opt_lifetimes off
+#pragma opt_loop_invariants off
 void fn_801E0154(u8 **arg0, s32 arg1) {
     void fn_800062CC(void *, void *, s32);
     void fn_801E3CA8(void *);
