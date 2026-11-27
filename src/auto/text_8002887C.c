@@ -4184,9 +4184,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         if (var_r31 == NULL) {
             goto end;
         }
-        if (var_r31 != cur) goto do_body;
-        goto end;
-    do_body:
+        if (var_r31 == cur) goto end;
         {
             s8 c0 = ((u8 *)var_r31)[0];
             s8 c1 = ((u8 *)var_r31)[1];
@@ -4202,7 +4200,7 @@ extern "C" void fn_8002F0D0(void *arg0, void *arg1) {
         temp_r4 = ((u8 *)arg1)[0x3E];
         if ((s8)temp_r4 != (s8)((u8 *)arg1)[0x3C] ||
             (s8)((u8 *)arg1)[0x3D] != (s8)((u8 *)arg1)[0x3F]) {
-            found = map_find_xy(gTargetList, temp_r4, ((u8 *)arg1)[0x3F]);
+            found = map_find_xy_2(temp_r4, ((u8 *)arg1)[0x3F], gTargetList);
             *(void **)((u8 *)arg1 + 0x40) = found;
             if (found != NULL) {
                 *(void **)((u8 *)arg1 + 0x44) = found;
