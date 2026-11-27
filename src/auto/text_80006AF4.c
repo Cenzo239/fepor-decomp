@@ -871,50 +871,26 @@ static inline void *Prim2D_FindNode(void) {
 }
 
 #pragma use_lmw_stmw on
-#pragma global_optimizer off
+#pragma global_optimizer on
 void Prim2D_AddPrim(u8 arg0) {
     extern void *gPrim2D;
     extern const f32 lbl_80368B98;
     extern const f32 gFloat1;
     extern char lbl_80267C70[];
     s32 fn_80006AF4(void *);
-    s32 fn_80006264(void *, void *, s32);
     void fn_800062CC(void *, void *, s32);
     void OSPanic(char *, ...);
     u8 *Ui_GetColor(s32);
 
-    void *prev;
-    void *node;
-    void *self;
     s32 size;
+    u32 type;
+    void *node;
 
     if (*(u8 *)((u8 *)gPrim2D + 0xA8) == 2) {
         s32 tmp;
         tmp = fn_80006AF4((u8 *)gPrim2D + 0x20);
-        prev = 0;
         *(s32 *)((u8 *)gPrim2D + 0x18) = tmp;
-        self = gPrim2D;
-        node = *(void **)((u8 *)self + 0xC);
-        while (node) {
-            if (*(u32 *)((u8 *)node + 8) == *(u32 *)((u8 *)self + 0x18)) {
-                if (fn_80006264((u8 *)node + 0x10, (u8 *)self + 0x20, 0x70) == 0) {
-                    if (*(void **)((u8 *)gPrim2D + 0xC) != node)
-                        goto unlink;
-                    goto after_loop;
-                unlink:
-                    if (prev != 0) {
-                        *(void **)prev = *(void **)node;
-                    }
-                    *(void **)node = *(void **)((u8 *)gPrim2D + 0xC);
-                    *(void **)((u8 *)gPrim2D + 0xC) = node;
-                    goto after_loop;
-                }
-            }
-            prev = node;
-            node = *(void **)node;
-        }
-        node = 0;
-    after_loop:
+        node = Prim2D_FindNode();
         if (node == 0) {
             void *ctx;
             void *entry;
@@ -932,7 +908,6 @@ void Prim2D_AddPrim(u8 arg0) {
         *(u8 *)((u8 *)gPrim2D + 0xA8) = 3;
     }
     {
-        u32 type;
         void *entry;
         type = arg0;
         switch (type) {
