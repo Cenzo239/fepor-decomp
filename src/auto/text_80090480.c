@@ -60,7 +60,7 @@ void UnitInfo_DrawCombatStats(void *arg0, s32 arg1) {
     s8 Unit_GetMaxHp(void *);
     s8 fn_8003A778(void *);
     void *Msg_Expand(char *);
-    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+    void fn_8001003C(s16, s32, s32, s32, s32, f32, f32, char *, ...);
     s32 fn_8010418C(void *, s32);
     s32 fn_8010424C(void *);
     void Ui_DrawIcon(void *, s32, s32, s32);
@@ -70,7 +70,6 @@ void UnitInfo_DrawCombatStats(void *arg0, s32 arg1) {
     extern f32 lbl_80369784;
     extern f32 lbl_8036978C;
     extern f32 lbl_80369768;
-    extern f32 lbl_80369754;
     extern char gBattleHelpStrings[];
     extern u8 gUiIconDrawer[];
 
@@ -92,17 +91,17 @@ void UnitInfo_DrawCombatStats(void *arg0, s32 arg1) {
     hp = self[0x1A8];
     maxHp = Unit_GetMaxHp(self);
     text = Msg_Expand(gBattleHelpStrings + 0x111);
-    fn_8001003C(0x10, 0x2C, 1, 1, 0, gBattleHelpStrings + 0xFA, text, (s8)hp, (s8)maxHp, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0x2C, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0xFA, text, (s8)hp, (s8)maxHp);
 
     maxHp = fn_8003A778(self);
     text = Msg_Expand(gBattleHelpStrings + 0x143);
-    fn_8001003C(0x10, 0x48, 1, 1, 0, gBattleHelpStrings + 0x117, text, (s8)maxHp, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0x48, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0x117, text, (s8)maxHp);
 
     text = Msg_Expand(gBattleHelpStrings + 0x14B);
-    fn_8001003C(0x86, 0x48, 1, 1, 0, gBattleHelpStrings + 0x117, text, combatArg, lbl_80369754, gZeroF);
+    fn_8001003C(0x86, 0x48, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0x117, text, combatArg);
 
     text = Msg_Expand(gBattleHelpStrings + 0x135);
-    fn_8001003C(0x10, 0x64, 1, 1, 0, gBattleHelpStrings + 0x12D, text, lbl_80369754, gZeroF);
+    fn_8001003C(0x10, 0x64, 1, 1, 0, 1.0f, 0.0f, gBattleHelpStrings + 0x12D, text);
 
     maxHp = 0;
     hp = 0x48;
@@ -412,119 +411,68 @@ void UnitInfo_DrawHealStats(void *arg0, s32 arg1) {
 }
 #pragma opt_common_subs on
 #pragma opt_strength_reduction on
-void UnitInfo_DrawStatus(void *arg0) {
-    void fn_8008BA80(void *, s32, s32, s32);
-    void fn_8007D044(f32, f32, f32, f32, s32, u8);
-    void fn_8008CD64(f32);
-    void fn_8008CD34(void);
-    s8 Unit_GetMaxHp(void *);
-    s8 fn_8003A1E0(void *);
-    void *Msg_Expand(char *);
-    void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
-    s32 fn_8010418C(void *, s32);
-    s32 fn_8010424C(void *);
-    void Ui_DrawIcon(void *, s32, s32, s32);
+void UnitInfo_DrawStatus(void *arg0)
+{
+  void fn_8008BA80(void *, s32, s32, s32);
+  void fn_8007D044(f32, f32, f32, f32, s32, u8);
+  int new_var;
+  void fn_8008CD64(f32);
+  void fn_8008CD34(void);
+  s8 Unit_GetMaxHp(void *);
+  s8 fn_8003A1E0(void *);
+  char *new_var4;
+  void *Msg_Expand(char *);
+  void fn_8001003C(s16, s32, s32, s32, s32, char *, ...);
+  s32 fn_8010418C(void *, s32);
+  s32 fn_8010424C(void *);
+  char *new_var3;
+  void Ui_DrawIcon(void *, s32, s32, s32);
+  extern f32 gZeroF;
+  f32 new_var2;
+  extern f32 lbl_80369780;
+  extern f32 lbl_80369784;
+  extern f32 lbl_80369790;
+  extern f32 lbl_80369768;
+  extern f32 lbl_80369754;
+  extern char gBattleHelpStrings[];
+  extern u8 gUiIconDrawer[];
+  u8 *self;
+  u8 *por;
+  s32 maxHp;
+  s32 hp;
+  volatile long new_var5;
+  s32 i;
+  void *drawer;
+  void *text;
+  s32 x;
+  self = (u8 *) arg0;
+  fn_8008BA80(self, 0, 0, 0);
+  por = *((u8 **) (0x190 + self));
+  fn_8007D044(gZeroF, lbl_80369780, lbl_80369784, lbl_80369790, 0xB3, por[8]);
+  new_var = 0x126;
+  fn_8008CD64(lbl_80369768);
+  fn_8008CD34();
+  hp = self[0x1A8];
+  maxHp = Unit_GetMaxHp(self);
+  text = Msg_Expand((0, gBattleHelpStrings + 0x111));
+  fn_8001003C(0x10, 0x2C, 1, 1, 0, gBattleHelpStrings + 0xFA, text, (s8) hp, new_var5 = (s8) maxHp, lbl_80369754, gZeroF);
+  maxHp = fn_8003A1E0(self);
+  text = Msg_Expand(gBattleHelpStrings + new_var);
+  new_var3 = gBattleHelpStrings + 0x117;
+  fn_8001003C(0x86, 0x2C, 1, 1, 0, new_var3, text, (s8) maxHp, lbl_80369754, gZeroF);
+  text = Msg_Expand(gBattleHelpStrings + 0x135);
+  new_var4 = gBattleHelpStrings + 0x12D;
+  new_var2 = lbl_80369754;
+  fn_8001003C(0x10, 0x48, 1, 1, 0, new_var4, text, new_var2, gZeroF);
+  i = 0;
+  x = 0x48;
+  while (i < fn_8010424C(self + 0x1A4))
+  {
+    Ui_DrawIcon(gUiIconDrawer, x, 0x4A, fn_8010418C(self + 0x1A4, i));
+    x += 0x1A;
+    i++;
+  }
 
-    extern f32 gZeroF;
-    extern f32 lbl_80369780;
-    extern f32 lbl_80369784;
-    extern f32 lbl_80369790;
-    extern f32 lbl_80369768;
-    extern f32 lbl_80369754;
-    extern char gBattleHelpStrings[];
-    extern u8 gUiIconDrawer[];
-
-    u8 *self;
-    u8 *por;
-    s32 maxHp;
-    s32 hp;
-    s32 i;
-    void *drawer;
-    void *text;
-    s32 x;
-
-    self = (u8 *)arg0;
-
-    fn_8008BA80(self, 0, 0, 0);
-
-    por = *(u8 **)(self + 0x190);
-
-    fn_8007D044(
-        gZeroF,
-        lbl_80369780,
-        lbl_80369784,
-        lbl_80369790,
-        0xB3, por[8]
-    );
-
-    fn_8008CD64(lbl_80369768);
-    fn_8008CD34();
-
-    hp = self[0x1A8];
-    maxHp = Unit_GetMaxHp(self);
-
-    text = Msg_Expand(gBattleHelpStrings + 0x111);
-
-    fn_8001003C(
-        0x10,
-        0x2C,
-        1,
-        1,
-        0,
-        gBattleHelpStrings + 0xFA,
-        text,
-        (s8)hp,
-        (s8)maxHp,
-        lbl_80369754,
-        gZeroF
-    );
-
-    maxHp = fn_8003A1E0(self);
-
-    text = Msg_Expand(gBattleHelpStrings + 0x126);
-
-    fn_8001003C(
-        0x86,
-        0x2C,
-        1,
-        1,
-        0,
-        gBattleHelpStrings + 0x117,
-        text,
-        (s8)maxHp,
-        lbl_80369754,
-        gZeroF
-    );
-
-    text = Msg_Expand(gBattleHelpStrings + 0x135);
-
-    fn_8001003C(
-        0x10,
-        0x48,
-        1,
-        1,
-        0,
-        gBattleHelpStrings + 0x12D,
-        text,
-        lbl_80369754,
-        gZeroF
-    );
-
-    i = 0;
-    
-    x = 0x48;
-
-    while (i < fn_8010424C(self + 0x1A4)) {
-        Ui_DrawIcon(
-            gUiIconDrawer,
-            x,
-            0x4A,
-            fn_8010418C(self + 0x1A4, i)
-        );
-
-        x += 0x1A;
-        i++;
-    }
 }
 #pragma opt_common_subs reset
 #pragma opt_strength_reduction off
