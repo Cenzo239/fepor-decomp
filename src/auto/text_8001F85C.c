@@ -502,7 +502,6 @@ u8 *fn_8001FC7C(void *arg0, u8 *arg1, s8 arg2, s8 arg3) {
 #pragma push
 #pragma optimization_level 4
 #pragma opt_propagation off
-#pragma opt_common_subs off
 volatile char Map_FillAttackRange(void *arg0, s8 arg1, s8 arg2, u8 arg3, u8 arg4)
 {
     void Map_FillLayer(void *, s32, s32);
