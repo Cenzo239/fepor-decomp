@@ -206,6 +206,7 @@ outer_test:
 #pragma optimization_level 4
 #pragma use_lmw_stmw on
 #pragma opt_strength_reduction off
+#pragma opt_propagation off
 void fn_8001F140(void *arg0) {
     s32 OSGetTick(void);
     void fn_80022DAC(void *, s32, s32);
@@ -362,11 +363,10 @@ void fn_8001F140(void *arg0) {
         r -= 1;
     }
 
-    one = 1;
-    var_r4 = one;
+    var_r4 = 1;
     temp = (u8)(lbl_80367289 - 1);
-    u = (u32)(one - temp) >> 1;
-    t = ~temp | one;
+    u = (u32)(1 - temp) >> 1;
+    t = ~temp | var_r4;
     if (((u32)(t - u) >> 31) == 0) {
         var_r4 = 0;
     }
