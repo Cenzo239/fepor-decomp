@@ -3229,24 +3229,23 @@ void fn_80048ECC(void *arg0) {
     void Model_SetColor(void *, u8, u8, u8);
     void Model_SetAlpha(void *, u8);
     void Process_ClearFunc(void *);
-    extern f32 lbl_80368EE4;
-    extern f32 lbl_80368F70;
-    u8 spC[4];
-    s32 sp8;
-    s32 t;
+    struct Color { u8 r, g, b, a; } color, copy;
+    struct Proc { u8 pad[0x30]; u8 *model; s32 frame, duration; u8 start[4], end[4]; };
+    struct Proc *proc = (struct Proc *)arg0;
     void *model;
+    s32 t;
 
-    *(s32 *)((u8 *)arg0 + 0x34) = *(s32 *)((u8 *)arg0 + 0x34) + 1;
-    t = (s32)fn_80059EB8(*(s32 *)((u8 *)arg0 + 0x38), *(s32 *)((u8 *)arg0 + 0x34), lbl_80368EE4, lbl_80368F70);
-    ((u8 *)spC)[0] = (s32)Math_Lerp((f32)t, (f32)*(u8 *)((u8 *)arg0 + 0x3c), lbl_80368F70, (f32)*(u8 *)((u8 *)arg0 + 0x40));
-    ((u8 *)spC)[1] = (s32)Math_Lerp((f32)t, (f32)*(u8 *)((u8 *)arg0 + 0x3d), lbl_80368F70, (f32)*(u8 *)((u8 *)arg0 + 0x41));
-    ((u8 *)spC)[2] = (s32)Math_Lerp((f32)t, (f32)*(u8 *)((u8 *)arg0 + 0x3e), lbl_80368F70, (f32)*(u8 *)((u8 *)arg0 + 0x42));
-    ((u8 *)spC)[3] = (s32)Math_Lerp((f32)t, (f32)*(u8 *)((u8 *)arg0 + 0x3f), lbl_80368F70, (f32)*(u8 *)((u8 *)arg0 + 0x43));
-    sp8 = *(s32 *)spC;
-    model = (u8 *)*(void **)((u8 *)arg0 + 0x30) + 0x14;
-    Model_SetColor(model, ((u8 *)&sp8)[0], ((u8 *)&sp8)[1], ((u8 *)&sp8)[2]);
-    Model_SetAlpha(model, ((u8 *)&sp8)[3]);
-    if (*(s32 *)((u8 *)arg0 + 0x38) == *(s32 *)((u8 *)arg0 + 0x34)) {
+    ++proc->frame;
+    t = (s32)fn_80059EB8(proc->duration, proc->frame, 0.0f, 256.0f);
+    color.r = Math_Lerp((f32)proc->start[0], (f32)proc->end[0], 256.0f, (f32)t);
+    color.g = Math_Lerp((f32)proc->start[1], (f32)proc->end[1], 256.0f, (f32)t);
+    color.b = Math_Lerp((f32)proc->start[2], (f32)proc->end[2], 256.0f, (f32)t);
+    color.a = Math_Lerp((f32)proc->start[3], (f32)proc->end[3], 256.0f, (f32)t);
+    model = proc->model + 0x14;
+    copy = color;
+    Model_SetColor(model, copy.r, copy.g, copy.b);
+    Model_SetAlpha(model, copy.a);
+    if (proc->duration == proc->frame) {
         Process_ClearFunc(arg0);
     }
 }
