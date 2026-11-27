@@ -833,7 +833,7 @@ static inline void fn_801C77D0_free(void *arg0, s32 zero) {
 #pragma pop
 
 #pragma push
-#pragma optimization_level 3
+#pragma optimization_level 1
 #pragma opt_common_subs off
 #pragma opt_strength_reduction off
 
@@ -852,18 +852,16 @@ void fn_801C9170(void *arg0) {
     u8 b2;
     u8 b1;
     u8 b0;
-    s32 held;
-    s32 *pad;
+    register s32 held asm("r5");
     s32 trig;
     s32 buttons;
     void *obj;
 
     self = arg0;
-    pad = (s32 *)gPadInput;
-    buttons = pad[3];
-    held = pad[1];
-    trig = held & (pad[2] ^ held);
     b0 = lbl_803682B0;
+    held = *(s32 *)((u8 *)gPadInput + 4);
+    buttons = *(s32 *)((u8 *)gPadInput + 0xC);
+    trig = held & (*(s32 *)((u8 *)gPadInput + 8) ^ held);
 
     if ((s8)b0 > -0x14 && (buttons & 0x01000001)) {
         lbl_803682B0 = b0 - 1;
