@@ -7631,9 +7631,9 @@ void fn_80161B98(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s16 *arg5, s3
     c2 = arg6[2];
     c3 = arg6[3];
     *(s32 *)&sp2C = c0;
+    *(s32 *)&sp28 = c1;
     *(s32 *)&sp24 = c2;
     *(s32 *)&sp20 = c3;
-    *(s32 *)&sp28 = c1;
     Prim2D_AddPrim(3);
     Prim2D_SetRect((f32)arg0, (f32)arg1, (f32)w, (f32)h);
     t1 = arg5[1];
