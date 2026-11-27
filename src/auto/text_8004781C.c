@@ -2,6 +2,18 @@
 #include "common.h"
 extern u8 gBattleMap[];
 
+static inline void Model_CopyColorBytes(u8 *dst, u8 *src) {
+    u8 c0, c1, c2, c3;
+    c0 = src[0];
+    c1 = src[1];
+    dst[0] = c0;
+    c2 = src[2];
+    dst[1] = c1;
+    c3 = src[3];
+    dst[2] = c2;
+    dst[3] = c3;
+}
+
 typedef struct { f32 x, y, z; } Vec;
 typedef struct MapHeightCell444 { u8 pad[0x142D4]; s16 lower; u8 gap[0x8002]; s16 upper; } MapHeightCell444;
 static inline void Map_CopyHeights444(u8 *map, s32 index, const s16 *lower, const s16 *upper)
@@ -5062,6 +5074,7 @@ void fn_80051564(u32 *arg0, u8 arg1, f32 fx, f32 fy)
 
     volatile f32 *wgpipe = (volatile f32 *)0xCC008000;
     volatile u8 *colorpipe = (volatile u8 *)0xCC008000;
+    u8 rbottom, gbottom, bbottom, abottom;
     s32 x = (s32)fx;
     s32 y = (s32)fy;
     f32 dy0;
@@ -5474,7 +5487,6 @@ if ((x) >= 0 && (y - 1) >= 0 &&
     }
     if (dy2 > lbl_80369050) {
         /* Below: tile (x, y + 1) */
-        u8 rbottom, gbottom, abottom, bbottom;
         color8 = *arg0;
 if ((x) >= 0 && (y + 1) >= 0 &&
             (x) < *(s32 *)(gBattleMap + 0) &&
