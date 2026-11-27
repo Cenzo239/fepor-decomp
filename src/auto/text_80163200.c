@@ -9660,6 +9660,8 @@ cancel:
 #pragma cplusplus reset
 }
 #pragma pop
+#pragma push
+#pragma opt_lifetimes off
 void fn_80172B74(void *arg0) {
     u8 Status_Test(void *, s32);
     s16 UnitInv_FindFilledUp(void *, s32, void *);
@@ -9693,6 +9695,7 @@ void fn_80172B74(void *arg0) {
         Ui_SetWidgetText(ret, (u8 *)gUiMsgStrings + 0x343);
     }
 }
+#pragma pop
 
 void fn_80172C44(void *arg0) {
     M2C_UNK Process_AdvanceStep(s32);
