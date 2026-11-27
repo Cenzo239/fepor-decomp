@@ -1639,7 +1639,8 @@ extern u32 lbl_80368EE0;
 f32 matrix[3][4];
 u32 color,mat,amb;
 s32 stage;
-u8 enabled;
+s32 flag;
+u32 t;
 if(M2C_FIELD(arg0,u32 *,0x64)&1){
 M2C_FIELD(arg0,u32 *,0x64)&=~1;
 fn_80044BE4(arg0);
@@ -1670,9 +1671,10 @@ fn_802245D8(1,4,5,0);
 fn_802246B8(1);
 fn_80223E5C(0,0,1,7,0);
 GXSetZMode(1,3,0);
-enabled=1;
-if(!((u8)(gMapBlendMode-1)<=enabled)) enabled=0;
-if(enabled) fn_800C15A8();
+flag=1;
+t=((u8)(gMapBlendMode-1)<=(u32)flag);
+if(!t) flag=0;
+if((u8)flag) fn_800C15A8();
 GXSetNumTevStages(fn_80069E74());
 GXSetNumChans(fn_80069DB4());
 fn_80224A68(M2C_FIELD(arg0,s32 *,0xa4),M2C_FIELD(arg0,s32 *,0xa8));
@@ -7587,6 +7589,8 @@ static inline void Obj_GetActiveUnit(u8 *object, u8 **out) {
     *out = *(u8 **)(object + 0x30);
 }
 
+#pragma push
+#pragma opt_dead_code off
 void fn_80052CA8(void *arg0) {
  f32 Map_SampleHeightRaw(void *,f32,f32);
  s32 fn_8005F84C(void *,s32,s32);
@@ -7604,14 +7608,9 @@ void fn_80052CA8(void *arg0) {
  if(*(void **)(object+0x34)==0 || *(void **)(object+0x30)==0) return;
  *(u32 *)(object+8)^=0x20000000;
  object=*(u8 **)((u8 *)arg0+0x30);
- if(*(u32 *)(object+8)&0x20000000) {
-     unit=*(u8 **)(object+0x34);
-     if(unit==0) goto obj30;
- } else goto obj30;
- goto unit_found;
-obj30:
- unit=*(u8 **)(object+0x30);
-unit_found:
+ if(!(*(u32 *)(object+8)&0x20000000) || (unit=*(u8 **)(object+0x34))==0) {
+     unit=*(u8 **)(object+0x30);
+ }
  x=unit[0x19e]; y=unit[0x19f];
  dest.x=lbl_80369098+(f32)(s8)x;
  dest.y=lbl_80369098+(f32)(s8)y;
@@ -7633,7 +7632,7 @@ unit_found:
  }
  }
 }
-
+#pragma pop
 void MapObj_LerpPosProc(u8 *proc) {
     /* Advance map-object position lerp by one frame; clear when duration is reached. */
     f32 Math_Lerp(f32, f32, f32, f32);
