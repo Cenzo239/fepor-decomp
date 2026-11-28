@@ -1276,18 +1276,16 @@ lbl_803686A8=1;
 void fn_80213CB0(s32 arg0, OSContext *context)
 {
     extern void (*lbl_80368698)(u32);
-    OSContext tempContext;
-    OSContext *ctx;
-    *(u32 *)0xCC006C00 |= 8;
-    ctx = context;
-    OSClearContext(&tempContext);
-    OSSetCurrentContext(&tempContext);
-    if (lbl_80368698 != 0) {
-        u32 *regs = (u32 *)0xCC006C00;
-        lbl_80368698(regs[2]);
+    OSContext exceptionContext;
+
+    __AIRegs_abs[0] |= 8;
+    OSClearContext(&exceptionContext);
+    OSSetCurrentContext(&exceptionContext);
+    if (lbl_80368698) {
+        lbl_80368698(__AIRegs_abs[2]);
     }
-    OSClearContext(&tempContext);
-    OSSetCurrentContext(ctx);
+    OSClearContext(&exceptionContext);
+    OSSetCurrentContext(context);
 }
 #pragma optimization_level reset
 #pragma opt_lifetimes off
