@@ -1122,36 +1122,33 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
   extern s64 __OSGetSystemTime(void);
   extern void PPCMtdec(u32);
   extern void OSLoadContext(OSContext *);
-  extern void InsertAlarm(struct OSAlarm *, s64, void (*)(void *, OSContext *));
-  extern void OSDisableScheduler(void);
-  extern void OSEnableScheduler(void);
+  extern void InsertAlarm(void *, s64, void (*)(void *, OSContext *));
+  extern s32 OSDisableScheduler(void);
+  extern s32 OSEnableScheduler(void);
   extern void __OSReschedule(void);
-  u8 exceptionContext[0x2C0];
   struct OSAlarm *alarm;
   struct OSAlarm *next;
   void (*handler)(void *, OSContext *);
-  s64 now;
-  s64 new_var[2];
-  struct OSAlarm *head;
-  (void) type;
-  now = __OSGetSystemTime();
+  s64 time;
+  OSContext exceptionContext;
+
+  time = __OSGetSystemTime();
   alarm = AlarmQueue_80368490.head;
   if (alarm == NULL)
   {
     OSLoadContext(context);
   }
-  if (now < alarm->fire)
+  if (time < alarm->fire)
   {
-    now = __OSGetSystemTime();
-    new_var[0] = alarm->fire - now;
-    new_var[1] = (u32) new_var[0];
-    if (new_var[0] < 0)
+    struct OSAlarm *a = alarm;
+    s64 delta = a->fire - __OSGetSystemTime();
+    if (delta < 0)
     {
       PPCMtdec(0);
     }
-    else if (new_var[0] < 0x80000000LL)
+    else if (delta < 0x80000000)
     {
-      PPCMtdec(new_var[1]);
+      PPCMtdec((u32)delta);
     }
     else
     {
@@ -1175,19 +1172,17 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
   {
     InsertAlarm(alarm, 0, handler);
   }
-  head = AlarmQueue_80368490.head;
-  if (head != NULL)
+  if (AlarmQueue_80368490.head != NULL)
   {
-    now = __OSGetSystemTime();
-    new_var[0] = head->fire - now;
-    new_var[1] = (u32) new_var[0];
-    if (new_var[0] < 0)
+    struct OSAlarm *a = AlarmQueue_80368490.head;
+    s64 delta = a->fire - __OSGetSystemTime();
+    if (delta < 0)
     {
       PPCMtdec(0);
     }
-    else if (new_var[0] < 0x80000000LL)
+    else if (delta < 0x80000000)
     {
-      PPCMtdec(new_var[1]);
+      PPCMtdec((u32)delta);
     }
     else
     {
@@ -1195,10 +1190,10 @@ void DecrementerExceptionCallback(u8 type, OSContext *context)
     }
   }
   OSDisableScheduler();
-  OSClearContext((OSContext *)exceptionContext);
-  OSSetCurrentContext((OSContext *)exceptionContext);
+  OSClearContext(&exceptionContext);
+  OSSetCurrentContext(&exceptionContext);
   handler(alarm, context);
-  OSClearContext((OSContext *)exceptionContext);
+  OSClearContext(&exceptionContext);
   OSSetCurrentContext(context);
   OSEnableScheduler();
   __OSReschedule();
