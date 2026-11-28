@@ -390,25 +390,45 @@ void fn_802212C8(s32 arg0) {
 }
 
 void fn_8022257C(s32, u16, u16, u32 *, u32 *, u32 *);
-void fn_802212FC(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
- u32 x, y, z;
- u32 format = arg2 & 15;
- M2C_FIELD(__GXData, u8 *, 0x200) = 0;
- if (arg2 == 0x13) format = 11;
- switch(arg2) {
- case 0: case 1: case 2: case 3: case 0x26:
- M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),3,15,15,16); break;
- default: M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),2,15,15,16); break;
- }
- M2C_FIELD(__GXData,u8 *,0x200) = !((arg2 & 0x10) - 0x10);
- M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),format,0,28,28);
- format &= 7;
- fn_8022257C(arg2,arg0,arg1,&x,&y,&z);
- M2C_FIELD(__GXData, u32 *, 0x1F8) = 0;
- M2C_FIELD(__GXData, u32 *, 0x1F8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1F8),x*z,0,22,31);
- M2C_FIELD(__GXData, u32 *, 0x1F8) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1F8),0x4D,24,0,7);
- M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),arg3,9,22,22);
- M2C_FIELD(__GXData, u32 *, 0x1FC) = __rlwimi(M2C_FIELD(__GXData, u32 *, 0x1FC),format,4,25,27);
+void fn_802212FC(u16 wd, u16 ht, s32 fmt, u8 mipmap) {
+    u32 rowTiles;
+    u32 colTiles;
+    u32 cmpTiles;
+    u32 peTexFmt;
+    u32 peTexFmtH;
+
+    *((u8 *)__GXData + 0x200) = 0;
+    peTexFmt = fmt & 0xF;
+
+    if (fmt == 0x13) {
+        peTexFmt = 0xB;
+    }
+
+    switch (fmt) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 0x26:
+        *(u32 *)((u8 *)__GXData + 0x1FC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1FC), 3, 15, 15, 16);
+        break;
+    default:
+        *(u32 *)((u8 *)__GXData + 0x1FC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1FC), 2, 15, 15, 16);
+        break;
+    }
+
+    *((u8 *)__GXData + 0x200) = 0x10 == (fmt & 0x10);
+    peTexFmtH = (peTexFmt >> 3) & 1;
+    !peTexFmt;
+    *(u32 *)((u8 *)__GXData + 0x1FC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1FC), peTexFmtH, 3, 28, 28);
+    peTexFmt = peTexFmt & 7;
+    fn_8022257C(fmt, wd, ht, &rowTiles, &colTiles, &cmpTiles);
+
+    *(u32 *)((u8 *)__GXData + 0x1F8) = 0;
+    *(u32 *)((u8 *)__GXData + 0x1F8) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1F8), rowTiles * cmpTiles, 0, 22, 31);
+    *(u32 *)((u8 *)__GXData + 0x1F8) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1F8), 0x4D, 24, 0, 7);
+    *(u32 *)((u8 *)__GXData + 0x1FC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1FC), mipmap, 9, 22, 22);
+    *(u32 *)((u8 *)__GXData + 0x1FC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1FC), peTexFmt, 4, 25, 27);
 }
 
 void fn_8022142C(u32 arg0) {

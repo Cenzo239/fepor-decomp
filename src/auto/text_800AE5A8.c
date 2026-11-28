@@ -9066,7 +9066,7 @@ void fn_800C0CA4(void *arg0) {
 void Capture_DrawRotated(void *cap) {
     void fn_8022097C(void);
     void fn_8022124C(s32, s32, s32, s32);
-    void fn_802212FC(s32, s32, s32, s32);
+    void fn_802212FC(u16, u16, s32, u8);
     void GXCopyTex(s32, s32);
     void fn_802209FC(void);
     void fn_80222EB4(void);
