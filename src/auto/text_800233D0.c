@@ -3389,11 +3389,11 @@ void UiCtx_GetItemSlot(void *arg0) {
 #pragma scheduling on
 #pragma use_lmw_stmw off
 typedef struct { u8 pad[0xCAC]; u32 flags; } G_80330EAC;
-void fn_800285EC(void *p) {
+void fn_800285EC(s32 p) {
     extern u8 gBattle[];
     extern u8 lbl_80367707;
-    void fn_80098A9C(void *);
-    void fn_800D5818(void *);
+    void fn_80098A9C(s32);
+    void fn_800D5818(s32);
     if (lbl_80367707 == 0) {
         if ((((G_80330EAC *)gBattle)->flags & 0x80000000) != 0) {
             fn_80098A9C(p);
