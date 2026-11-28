@@ -2655,31 +2655,44 @@ dump:
 }
 #pragma push
 #pragma optimization_level 4
-s32 fn_80206658(u8 *buffer, s32 argc, char **argv) {
-    char *end;
-    u32 count;
-    u32 *table;
+s32 fn_80206658(u8 *addr, s32 argc, char **argv) {
+    void *memset(void *, s32, u32);
+    s32 strlen(const char *);
+    char *strcpy(char *, const char *);
+    s32 numArgs;
+    char *bootInfo2;
+    char *ptr;
+    char **list;
     u32 i;
-    memset(buffer, 0, 0x2000);
+
+    bootInfo2 = (char *)addr;
+    memset(bootInfo2, 0, 0x2000);
+
     if (argc == 0) {
-        *(u32 *)(buffer + 8) = 0;
+        *(u32 *)(bootInfo2 + 8) = 0;
     } else {
-        count = argc;
-        end = (char *)buffer + 0x2000;
+        numArgs = argc;
+        ptr = bootInfo2 + 0x2000;
         while (--argc >= 0) {
-            end -= strlen(argv[argc]) + 1;
-            strcpy(end, argv[argc]);
-            argv[argc] = (char *)(end - (char *)buffer);
+            ptr -= strlen(argv[argc]) + 1;
+            strcpy(ptr, argv[argc]);
+            argv[argc] = (char *)(ptr - bootInfo2);
         }
-        end = (char *)buffer + ((end - (char *)buffer) & ~3);
-        end -= (count + 1) * 4;
-        table = (u32 *)end;
-        for (i = 0; i < (u32)(count + 1); i++)
-            table[i] = (u32)argv[i];
-        end -= 4;
-        *(u32 *)end = count;
-        *(u32 *)(buffer + 8) = (u8 *)end - buffer;
+
+        ptr = bootInfo2 + ((ptr - bootInfo2) & ~0x3);
+        ptr -= ((numArgs + 1) * 4);
+        list = (char **)ptr;
+
+        for (i = 0; i < numArgs + 1; i++) {
+            list[i] = argv[i];
+        }
+
+        ptr -= 4;
+        *(u32 *)ptr = numArgs;
+
+        *(u32 *)(bootInfo2 + 8) = (ptr - bootInfo2);
     }
+
     return 1;
 }
 #pragma pop
