@@ -688,88 +688,99 @@ void fn_802220E8(void *lt_obj_, u32 light_) {
     (*(GXData *const *)&__GXData)->bpSentNot = 1;
 }
 
-#pragma optimization_level 3
 void fn_80222164(s32 arg0, void *arg1) {
-    u32 value;
-    s32 index;
-    struct GXChanData { u16 unused; u16 dirty; u8 pad[0xA4]; u32 color[2]; } *gx;
+    u32 reg;
+    u32 rgb;
+    u32 colIdx;
+
     switch (arg0) {
-    case 0: index = 0; value = *(u32 *)((u8 *)__GXData + 0xA8); value = __rlwimi(value, *(u32 *)arg1, 0, 0, 23); break;
-    case 1: index = 1; value = *(u32 *)((u8 *)__GXData + 0xAC); value = __rlwimi(value, *(u32 *)arg1, 0, 0, 23); break;
-    case 2: index = 0; value = *(u32 *)((u8 *)__GXData + 0xA8); value = __rlwimi(value, ((u8 *)arg1)[3], 0, 24, 31); break;
-    case 3: index = 1; value = *(u32 *)((u8 *)__GXData + 0xAC); value = __rlwimi(value, ((u8 *)arg1)[3], 0, 24, 31); break;
-    case 4: value = *(u32 *)arg1; index = 0; break;
-    case 5: value = *(u32 *)arg1; index = 1; break;
-    default: return;
-    }
-    GXWGFifo.u8 = 0x10;
-    gx = (void *)__GXData;
-    GXWGFifo.u32 = (index + 0x100A) & 0xFFFFFFFFFFFFFFFF;
-    GXWGFifo.u32 = value;
-    gx->dirty = 1;
-    gx->color[index] = value;
-}
-#pragma optimization_level 3
-void GXSetChanMatColor(s32 arg0, void *arg1)
-{
-  s32 index;
-  u32 value;
-  struct GXChanData
-  {
-    u16 unused;
-    u16 dirty;
-    u8 pad[0xAC];
-    u32 color[2];
-  } *gx;
-  switch (arg0)
-  {
     case 0:
-      index = 0;
-      value = *((u32 *) (((u8 *) __GXData) + 0xB0));
-      value = __rlwimi(value, *((u32 *) arg1), 0, 0, 23);
-      break;
-
+        reg = *(u32 *)((u8 *)__GXData + 0xA8);
+        rgb = *(u32 *)arg1 >> 8;
+        reg = __rlwimi(reg, rgb, 8, 0, 23);
+        colIdx = 0;
+        break;
     case 1:
-      index = 1;
-      value = *((u32 *) (((u8 *) __GXData) + 0xB4));
-      value = __rlwimi(value, *((u32 *) arg1), 0, 0, 23);
-      break;
-
+        reg = *(u32 *)((u8 *)__GXData + 0xAC);
+        rgb = *(u32 *)arg1 >> 8;
+        reg = __rlwimi(reg, rgb, 8, 0, 23);
+        colIdx = 1;
+        break;
     case 2:
-      index = 0;
-      value = *((u32 *) (((u8 *) __GXData) + 0xB0));
-      value = __rlwimi(value, ((u8 *) arg1)[3], 0, 24, 31);
-      break;
-
+        reg = *(u32 *)((u8 *)__GXData + 0xA8);
+        reg = __rlwimi(reg, ((u8 *)arg1)[3], 0, 24, 31);
+        colIdx = 0;
+        break;
     case 3:
-      index = 1;
-      value = *((u32 *) (((u8 *) __GXData) + 0xB4));
-      value = __rlwimi(value, ((u8 *) arg1)[3], 0, 24, 31);
-      break;
-
+        reg = *(u32 *)((u8 *)__GXData + 0xAC);
+        reg = __rlwimi(reg, ((u8 *)arg1)[3], 0, 24, 31);
+        colIdx = 1;
+        break;
     case 4:
-      value = *((u32 *) arg1);
-      index = 0;
-      break;
-
+        reg = *(u32 *)arg1;
+        colIdx = 0;
+        break;
     case 5:
-      value = *((u32 *) arg1);
-      index = 1;
-      break;
-
+        reg = *(u32 *)arg1;
+        colIdx = 1;
+        break;
     default:
-      return;
+        return;
+    }
 
-  }
-
-  GXWGFifo.u8 = 0x10;
-  gx = (void *) __GXData;
-  GXWGFifo.u32 = (index + 0x100C) & 0xFFFFFFFFFFFFFFFF;
-  GXWGFifo.u32 = value;
-  gx->dirty = 1;
-  gx->color[index] = value;
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x1000 + (colIdx + 10);
+    GXWGFifo.u32 = reg;
+    __GXData[1] = 1;
+    ((u32 *)((u8 *)__GXData + 0xA8))[colIdx] = reg;
 }
-#pragma optimization_level reset
+
+void GXSetChanMatColor(s32 arg0, void *arg1) {
+    u32 reg;
+    u32 rgb;
+    u32 colIdx;
+
+    switch (arg0) {
+    case 0:
+        reg = *(u32 *)((u8 *)__GXData + 0xB0);
+        rgb = *(u32 *)arg1 >> 8;
+        reg = __rlwimi(reg, rgb, 8, 0, 23);
+        colIdx = 0;
+        break;
+    case 1:
+        reg = *(u32 *)((u8 *)__GXData + 0xB4);
+        rgb = *(u32 *)arg1 >> 8;
+        reg = __rlwimi(reg, rgb, 8, 0, 23);
+        colIdx = 1;
+        break;
+    case 2:
+        reg = *(u32 *)((u8 *)__GXData + 0xB0);
+        reg = __rlwimi(reg, ((u8 *)arg1)[3], 0, 24, 31);
+        colIdx = 0;
+        break;
+    case 3:
+        reg = *(u32 *)((u8 *)__GXData + 0xB4);
+        reg = __rlwimi(reg, ((u8 *)arg1)[3], 0, 24, 31);
+        colIdx = 1;
+        break;
+    case 4:
+        reg = *(u32 *)arg1;
+        colIdx = 0;
+        break;
+    case 5:
+        reg = *(u32 *)arg1;
+        colIdx = 1;
+        break;
+    default:
+        return;
+    }
+
+    GXWGFifo.u8 = 0x10;
+    GXWGFifo.u32 = 0x1000 + (colIdx + 12);
+    GXWGFifo.u32 = reg;
+    __GXData[1] = 1;
+    ((u32 *)((u8 *)__GXData + 0xB0))[colIdx] = reg;
+}
 void GXSetCullMode(u32 arg0) {
 u32 *gxData = (u32*)__GXData;
 u32 count = (u8)arg0;
