@@ -384,71 +384,47 @@ void fn_80221FE8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
     M2C_FIELD(arg0, f32 *, 0x30) = farg2;
 }
 
-#pragma optimization_level 2
-void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
-    extern f32 lbl_8036BCE0;
-    extern f32 lbl_8036BCF8;
-    extern f32 lbl_8036BD20;
-    extern f64 lbl_8036BD10;
-    extern f64 lbl_8036BD18;
-    f32 x = -farg0;
-    f32 y = -farg1;
-    f32 z = lbl_8036BCF8 - farg2;
-    f32 xx;
-    f32 yy;
-    f32 zz;
-    f32 mag;
-    f32 scale;
-    f32 root;
-    volatile f32 sp18;
-    f64 r;
-    f64 t;
-    f32 px;
-    f32 py;
-    f32 pz;
+#pragma push
+#pragma fp_contract off
+static inline float sqrtf(float x) {
+    static const double _half = .5;
+    static const double _three = 3.0;
+    volatile float y;
 
-    xx = x * x;
-    yy = y * y;
-    zz = z * z;
-    mag = xx + yy;
-    mag = mag + zz;
-    scale = mag;
-    if (lbl_8036BCE0 != mag) {
-        if (scale > lbl_8036BCE0) {
-            r = __frsqrte(scale);
-            t = r * r;
-            r = lbl_8036BD10 * r;
-            t = (f64)scale * t;
-            t = lbl_8036BD18 - t;
-            r = r * t;
-            t = r * r;
-            r = lbl_8036BD10 * r;
-            t = (f64)scale * t;
-            t = lbl_8036BD18 - t;
-            r = r * t;
-            t = r * r;
-            r = lbl_8036BD10 * r;
-            t = (f64)scale * t;
-            t = lbl_8036BD18 - t;
-            r = r * t;
-            sp18 = (f32)((f64)scale * r);
-            root = sp18;
-        } else {
-            root = scale;
-        }
-        scale = lbl_8036BCF8 / root;
+    if (x > 0.0f) {
+        double guess = __frsqrte((double) x);
+        guess = _half * guess * (_three - guess * guess * x);
+        guess = _half * guess * (_three - guess * guess * x);
+        guess = _half * guess * (_three - guess * guess * x);
+        y = (float) (x * guess);
+        return y;
     }
-    *(f32 *)((u8 *)arg0 + 0x34) = x * scale;
-    *(f32 *)((u8 *)arg0 + 0x38) = y * scale;
-    *(f32 *)((u8 *)arg0 + 0x3C) = z * scale;
-    px = lbl_8036BD20 * farg0;
-    py = lbl_8036BD20 * farg1;
-    pz = lbl_8036BD20 * farg2;
-    *(f32 *)((u8 *)arg0 + 0x28) = px;
-    *(f32 *)((u8 *)arg0 + 0x2C) = py;
-    *(f32 *)((u8 *)arg0 + 0x30) = pz;
+    return x;
 }
-#pragma optimization_level reset
+
+void fn_80221FF8(void *arg0, f32 farg0, f32 farg1, f32 farg2) {
+    f32 mag;
+    f32 vx;
+    f32 vy;
+    f32 vz;
+
+    vx = -farg0;
+    vy = -farg1;
+    vz = -farg2 + 1.0f;
+
+    mag = (vx * vx) + (vy * vy) + (vz * vz);
+    if (mag != 0.0f) {
+        mag = 1.0f / sqrtf(mag);
+    }
+
+    *(f32 *)((u8 *)arg0 + 0x34) = vx * mag;
+    *(f32 *)((u8 *)arg0 + 0x38) = vy * mag;
+    *(f32 *)((u8 *)arg0 + 0x3C) = vz * mag;
+    *(f32 *)((u8 *)arg0 + 0x28) = farg0 * -1000000000000000000.0f;
+    *(f32 *)((u8 *)arg0 + 0x2C) = farg1 * -1000000000000000000.0f;
+    *(f32 *)((u8 *)arg0 + 0x30) = farg2 * -1000000000000000000.0f;
+}
+#pragma pop
 void fn_802220DC(void *arg0, s32 *arg1) {
     M2C_FIELD(arg0, s32 *, 0xC) = (s32) *arg1;
 }
