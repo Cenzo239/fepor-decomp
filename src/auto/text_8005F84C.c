@@ -6988,12 +6988,12 @@ static inline void Scale(u8 *m, s32 z) {
     }
 }
 void * fn_8006CCBC(char *id_, s32 k) {
-    u8 *Archive_LoadFlags(s32, s32);
-    s32 FileCache_GetFlags(void);
+    void *Archive_LoadFlags(s32, u32);
+    u16 FileCache_GetFlags(char *);
     u8 *m;
     u8 ok = 1;
-    if (FileCache_GetFlags() & 0x4000) ok = 0;
-    m = Archive_LoadFlags((s32)id_, k);
+    if (FileCache_GetFlags(id_) & 0x4000) ok = 0;
+    m = (u8 *)Archive_LoadFlags((s32)id_, (u32)k);
     if (ok) {
         Reloc(m);
         Scale(m, 0);
@@ -7006,12 +7006,12 @@ void * fn_8006CCBC(char *id_, s32 k) {
 #pragma inline_max_size(1000)
 #pragma optimization_level 4
 void * fn_8006CE14(char *id_) {
-    u8 *Archive_LoadFlags(s32, s32);
-    s32 FileCache_GetFlags(void);
+    void *Archive_LoadFlags(s32, u32);
+    u16 FileCache_GetFlags(char *);
     u8 *m;
     u8 ok = 1;
-    if (FileCache_GetFlags() & 0x4000) ok = 0;
-    m = Archive_LoadFlags((s32)id_, 0);
+    if (FileCache_GetFlags(id_) & 0x4000) ok = 0;
+    m = (u8 *)Archive_LoadFlags((s32)id_, 0);
     if (ok) {
         Reloc(m);
         Scale(m, 0);
