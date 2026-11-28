@@ -547,40 +547,53 @@ f32 fn_802214A8(u16 efbHeight, u16 xfbHeight)
 }
 #pragma use_lmw_stmw reset
 
-#pragma push
-#pragma optimization_level 3
-u32 fn_802216E0(f32 scale)
-{
-    u32 yscale;
-    u32 enabled;
-    u32 reg;
-    u32 height;
-    u32 result;
-    u32 y;
+static inline u32 GX_GetNumXfbLines(u32 efbHt, u32 iScale) {
+    u32 count;
+    u32 realHt;
+    u32 iScaleD;
 
-    yscale = (u32)__cvt_fp2unsigned(lbl_8036BCD0 / scale) & 511;
-    enabled = 0x100 - yscale;
-    GXWGFifo.u8 = 0x61;
-    enabled = (enabled - 1) < enabled;
-    reg = __rlwimi(0, yscale, 0, 23, 31);
+    count = (efbHt - 1) * 0x100;
+    realHt = (count / iScale) + 1;
+
+    iScaleD = iScale;
+
+    if (iScaleD > 0x80 && iScaleD < 0x100) {
+        while (iScaleD % 2 == 0) {
+            iScaleD /= 2;
+        }
+
+        if (efbHt % iScaleD == 0) {
+            realHt++;
+        }
+    }
+
+    if (realHt > 0x400) {
+        realHt = 0x400;
+    }
+
+    return realHt;
+}
+
+u32 fn_802216E0(f32 vscale)
+{
+    u8 enable;
+    u32 iScale;
+    u32 ht;
+    u32 reg;
+
+    iScale = (u32)(lbl_8036BCD0 / vscale) & 0x1FF;
+    enable = (iScale != 256);
+
+    reg = 0;
+    reg = __rlwimi(reg, iScale, 0, 23, 31);
     reg = __rlwimi(reg, 0x4E, 24, 0, 7);
+    GXWGFifo.u8 = 0x61;
     GXWGFifo.u32 = reg;
     __GXData[1] = 0;
-    y = yscale;
-    *(u32 *)((u8 *)__GXData + 0x1EC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1EC), enabled, 10, 21, 21);
-    height = ((*(u32 *)((u8 *)__GXData + 0x1E4) >> 10) & 1023) + 1;
-    result = ((height - 1) << 8) / yscale + 1;
-    if (yscale > 128 && yscale < 256) {
-        while (!(y & 1))
-            y >>= 1;
-        if (height % y == 0)
-            result++;
-    }
-    if (result > 1024)
-        result = 1024;
-    return result;
+    *(u32 *)((u8 *)__GXData + 0x1EC) = __rlwimi(*(u32 *)((u8 *)__GXData + 0x1EC), enable, 10, 21, 21);
+    ht = ((*(u32 *)((u8 *)__GXData + 0x1E4) >> 10) & 0x3FF) + 1;
+    return GX_GetNumXfbLines(ht, iScale);
 }
-#pragma pop
 void GXSetCopyClear(u8 *clear, u32 z) {
     u32 val;
 
