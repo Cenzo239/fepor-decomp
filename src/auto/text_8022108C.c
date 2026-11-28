@@ -429,124 +429,6 @@ void fn_80221450(u32 arg0) {
 extern const f64 lbl_8036BCD8;
 extern const f32 lbl_8036BCD0;
 s32 __cvt_fp2unsigned(f32);
-#pragma use_lmw_stmw on
-f32 fn_802214A8(u16 efbHeight, u16 xfbHeight)
-{
-  f64 bias;
-  f32 f256;
-  f32 best;
-  f32 ratio;
-  u32 efb;
-  u32 fixed;
-  unsigned int new_var;
-  u32 xfbOrig;
-  u32 yScale;
-  u32 save0;
-  u32 efbOrig;
-  u32 save1;
-  u32 denom;
-  u32 lines;
-  u32 cmp;
-  f32 tmp;
-  f32 inv;
-  bias = lbl_8036BCD8;
-  f256 = lbl_8036BCD0;
-  yScale = xfbHeight;
-  efb = efbHeight;
-  save0 = efbHeight;
-  save1 = xfbHeight;
-  tmp = (f32) efb;
-  tmp = ((f32) yScale) / tmp;
-  inv = f256 / tmp;
-  ratio = tmp;
-  denom = ((u32) __cvt_fp2unsigned(inv)) & 0x1FF;
-  fixed = (efb - 1) << 8;
-  new_var = (fixed / denom) + 1;
-  lines = new_var;
-  if ((denom > 0x80U) && (denom < 0x100U))
-  {
-    while ((denom & 1) == 0)
-    {
-      denom >>= 1;
-    }
-
-    if ((efb % denom) == 0)
-    {
-      lines += 1;
-    }
-  }
-  if (lines > 0x400U)
-  {
-    lines = 0x400U;
-    new_var = new_var;
-  }
-  cmp = lines;
-  xfbOrig = (u16) save1;
-  efbOrig = (u16) save0;
-  while (cmp > xfbOrig)
-  {
-    yScale -= 1;
-    tmp = ((f32) yScale) / ((f32) efbOrig);
-    inv = f256 / tmp;
-    ratio = tmp;
-    denom = ((u32) __cvt_fp2unsigned(inv)) & 0x1FF;
-    lines = (fixed / denom) + 1;
-    if ((denom > 0x80U) && (denom < 0x100U))
-    {
-      while ((denom & 1) == 0)
-      {
-        denom >>= 1;
-      }
-
-      if ((efb % denom) == 0)
-      {
-        lines += 1;
-      }
-    }
-    if (lines > 0x400U)
-    {
-      lines = 0x400U;
-    }
-    cmp = lines;
-  }
-
-  best = ratio;
-  bias = lbl_8036BCD8;
-  f256 = lbl_8036BCD0;
-  lines = xfbOrig;
-  efbOrig = (u16) save0;
-  while (cmp < lines)
-  {
-    yScale += 1;
-    best = ratio;
-    tmp = ((f32) yScale) / ((f32) efbOrig);
-    inv = f256 / tmp;
-    ratio = tmp;
-    denom = ((u32) __cvt_fp2unsigned(inv)) & 0x1FF;
-    lines = (fixed / denom) + 1;
-    if ((denom > 0x80U) && (denom < 0x100U))
-    {
-      while ((denom & 1) == 0)
-      {
-        denom >>= 1;
-      }
-
-      if ((efbHeight % denom) == 0)
-      {
-        lines += 1;
-      }
-    }
-    if (lines > 0x400U)
-    {
-      lines = 0x400U;
-    }
-    cmp = lines;
-  }
-
-  return best;
-}
-#pragma use_lmw_stmw reset
-
 static inline u32 GX_GetNumXfbLines(u32 efbHt, u32 iScale) {
     u32 count;
     u32 realHt;
@@ -573,6 +455,40 @@ static inline u32 GX_GetNumXfbLines(u32 efbHt, u32 iScale) {
 
     return realHt;
 }
+
+#pragma use_lmw_stmw on
+f32 fn_802214A8(u16 efbHeight, u16 xfbHeight)
+{
+    f32 fScale;
+    f32 yScale;
+    u32 iScale;
+    u32 tgtHt;
+    u32 realHt;
+
+    tgtHt = xfbHeight;
+    yScale = (f32)xfbHeight / (f32)efbHeight;
+    iScale = (u32)(256.0f / yScale) & 0x1FF;
+    realHt = GX_GetNumXfbLines(efbHeight, iScale);
+
+    while (realHt > xfbHeight) {
+        tgtHt--;
+        yScale = (f32)tgtHt / (f32)efbHeight;
+        iScale = (u32)(256.0f / yScale) & 0x1FF;
+        realHt = GX_GetNumXfbLines(efbHeight, iScale);
+    }
+
+    fScale = yScale;
+    while (realHt < xfbHeight) {
+        fScale = yScale;
+        tgtHt++;
+        yScale = (f32)tgtHt / (f32)efbHeight;
+        iScale = (u32)(256.0f / yScale) & 0x1FF;
+        realHt = GX_GetNumXfbLines(efbHeight, iScale);
+    }
+
+    return fScale;
+}
+#pragma use_lmw_stmw reset
 
 u32 fn_802216E0(f32 vscale)
 {
