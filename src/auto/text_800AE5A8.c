@@ -1614,7 +1614,7 @@ void fn_800B3490(void) {
 }
 
 #pragma use_lmw_stmw on
-typedef struct { void *x0; u8 pad0[0x1c]; void *x20; u8 pad1[0x1c]; void *x40; u8 pad2[0x7c]; s32 xc0[8]; u32 xe0; u8 pad3[4]; s32 xe8; u8 pad4[0x56]; char name[0x302]; void *x444; void *x448; } SoundSys_800B34B0;
+typedef struct { s32 x0; u8 pad0[0x1c]; void *x20; u8 pad1[0x1c]; s32 x40; u8 pad2[0x7c]; s32 xc0[8]; u32 xe0; u8 pad3[4]; s32 xe8; u8 pad4[0x56]; char name[0x302]; void *x444; void *x448; } SoundSys_800B34B0;
 static inline void *LoadFile_800B34B0(const char *name) {
     extern s32 lbl_8036780C;
     extern u8 Sound_str[];
@@ -1651,9 +1651,9 @@ s32 fn_800B34B0(u8 *list) {
     extern u16 gSoundSys[4976];
     extern void *gSoundLoadBuf;
     void fn_800C4588(void *);
-    void fn_80258D74(void *, u32);
-    u8 Sound_PushGroup(void *, u16, s32, void *, void *);
-    void Sound_CopyLoadChunk(void);
+    void fn_80258D74(u8 *(*)(s32, u32), u32);
+    s32 Sound_PushGroup(void *, u16, s32, s32, s32);
+    u8 *Sound_CopyLoadChunk(s32, u32);
     s32 *cnt;
     s32 i;
     if ((*(SoundSys_800B34B0 *)&gSoundSys).xe0 >= 8) return 0;
@@ -1672,7 +1672,7 @@ cnt = (*(SoundSys_800B34B0 *)&gSoundSys).xc0; *cnt = 0;
         }
     } else {
         for (i = 0; i < 6; i++) {
-            if (Sound_PushGroup((*(SoundSys_800B34B0 *)&gSoundSys).x20, i, 0, (*(SoundSys_800B34B0 *)&gSoundSys).x40, (*(SoundSys_800B34B0 *)&gSoundSys).x0) == 1) {
+            if ((u8)Sound_PushGroup((*(SoundSys_800B34B0 *)&gSoundSys).x20, i, 0, (*(SoundSys_800B34B0 *)&gSoundSys).x40, (*(SoundSys_800B34B0 *)&gSoundSys).x0) == 1) {
                 (*cnt)++;
                 (*(SoundSys_800B34B0 *)&gSoundSys).xe8++;
             }
@@ -10877,24 +10877,24 @@ s32 fn_800B0AEC(u16 *dstL, u32 nL, u16 *dstR, u32 nR, u32 ch) {
 }
 
 #pragma optimization_level 3
-typedef struct { u16 flags; u16 x2; u8 pad[0x28]; u32 x2c; u8 x30[0x28]; void *x58; u8 pad2[4]; s32 x60; s32 x64; u8 pad3[0xc]; s32 x74; u8 pad4[0x13c - 0x78]; } Ch_800B125C;
-typedef struct { u8 pad[0xf8]; Ch_800B125C *ch; u8 pad2[0x38]; s32 x134[4]; } SoundSys_800B125C;
+typedef struct { u16 flags; u16 x2; u8 pad[0x28]; u32 x2c; u8 x30[0x28]; void *x58; u8 pad2[4]; u32 x60; u32 x64; u8 pad3[0xc]; u32 x74; u8 pad4[0x13c - 0x78]; } Ch_800B125C;
+typedef struct { u8 pad[0xf8]; Ch_800B125C *ch; u8 pad2[0x38]; u32 x134[4]; } SoundSys_800B125C;
 void fn_800B125C(s32 result, u32 req) {
     extern u16 gSoundSys[4976];
     extern u32 lbl_80367818;
     void DCFlushRange(void *, u32);
-    void ARQPostRequest(void *, u32, s32, s32, void *, s32, u32, void *);
-    void fn_800B1368(void);
+    void ARQPostRequest(void *, u32, u32, u32, u32, u32, u32, void (*)(void *));
+    void fn_800B1368(void *);
     Ch_800B125C *e = (*(SoundSys_800B125C *)&gSoundSys).ch;
     s32 i;
     for (i = 0; i < 3; e++, i++) {
         if (e->flags != 0 && e->x2c + 0x40 == req) {
             if (result >= 0) {
-                s32 addr;
+                u32 addr;
                 e->x60 += e->x74;
-                addr = e->x64 + ((s32 *)((u8 *)gSoundSys + 0x134))[e->x2];
+                addr = e->x64 + ((u32 *)((u8 *)gSoundSys + 0x134))[e->x2];
                 DCFlushRange(e->x58, 0x8000);
-                ARQPostRequest(e->x30, (lbl_80367818++ << 16) | i, 0, 0, e->x58, addr, 0x8000, fn_800B1368);
+                ARQPostRequest(e->x30, (lbl_80367818++ << 16) | i, 0, 0, (u32)e->x58, addr, 0x8000, fn_800B1368);
                 e->x64 += e->x74;
             }
             return;
