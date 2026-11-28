@@ -3194,7 +3194,9 @@ s32 fn_8022A230(u32 start, s32 length, s32 mode) {
 #pragma push
 #pragma use_lmw_stmw off
 #pragma global_optimizer on
-asm void fn_8022A4E0(void) {
+/* TRKAccessFile: debugger file access. The trap is serviced by the host debugger,
+   which resumes with the result in r3. */
+asm u8 fn_8022A4E0(u8 command, s32 file_handle, s32 *length_ptr, s32 buffer_ptr) {
     nofralloc
     twi 31, r0, 0x0
     blr
@@ -3204,6 +3206,8 @@ asm void fn_8022A4E0(void) {
 #pragma push
 #pragma use_lmw_stmw off
 #pragma global_optimizer on
+/* MetroTRK file-I/O trap stub (TRKOpenFile in MetroTRK). Nothing in GFEE01 calls it,
+   so its argument list can't be established from this binary; left as void(void). */
 asm void fn_8022A4E8(void) {
     nofralloc
     twi 31, r0, 0x0
@@ -3508,12 +3512,14 @@ err=TRKTerminateNub(); TRK_mainError_8033CFD0[0]=err;
 }
 
 s32 TRKInitializeIntDrivenUART(s32 arg0, s32 arg1, s32 arg2, void *arg3);
-void TRKLoadContext(void);
+void TRKLoadContext(void *ctx, u32 exception);
 void TRK_main(void);
 u32 fn_8022AE34(u32 arg0);
 void TRKInterruptHandler(void);
 #pragma push
-asm void TRKLoadContext(void) {
+/* Restores the OSContext in r3 (no shared OSContext type in include/) and tail-branches to TRKInterruptHandler with the
+   exception id in r4; it does not return to its caller. */
+asm void TRKLoadContext(void *ctx, u32 exception) {
     nofralloc
     lwz r0, 0x0(r3)
     lwz r1, 0x4(r3)
@@ -3719,9 +3725,8 @@ else {OSReport(base+0x80,device);OSReport(base+0xAC);OSReport(base+0xDC);}return
 #pragma pop
 void TRKEXICallBack(s32 arg0, s32 arg1) {
     M2C_UNK OSEnableScheduler();
-    M2C_UNK TRKLoadContext(s32, M2C_UNK);
     OSEnableScheduler();
-    TRKLoadContext(arg1, 0x500);
+    TRKLoadContext((void *)arg1, 0x500);
 }
 
 s32 TRKTargetContinue(void) {
@@ -4303,12 +4308,15 @@ extern u8 gTRKCPUState[1072];
 #include "common.h"
 extern u8 gTRKCPUState[1072];
 
-asm void fn_8022A4F0(void) {
+/* TRKCloseFile: result returned in r3 by the debugger, see fn_8022B4AC. */
+asm u8 fn_8022A4F0(u8 command, s32 file_handle) {
     nofralloc
     twi 31, r0, 0x0
     blr
 }
 
+/* MetroTRK file-I/O trap stub (TRKPositionFile in MetroTRK). No callers in GFEE01;
+   left as void(void). */
 asm void fn_8022A4F8(void) {
     nofralloc
     twi 31, r0, 0x0
